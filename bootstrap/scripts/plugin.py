@@ -18,7 +18,7 @@ def basename(value: str) -> str:
 
 # Return a list of files in the talos patches directory
 def talos_patches(value: str) -> list[str]:
-    path = Path(f'bootstrap/templates/kubernetes/bootstrap/talos/patches/{value}')
+    path = Path(f'bootstrap/templates/k8s/bootstrap/talos/patches/{value}')
     if not path.is_dir():
         return []
     return [str(f) for f in sorted(path.glob('*.yaml.j2')) if f.is_file()]
