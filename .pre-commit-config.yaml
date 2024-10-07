@@ -1,0 +1,11 @@
+repos:
+  - repo: https://github.com/google/yamlfmt
+    # renovate: datasource=github-releases depName=google/yamlfmt
+    rev: v0.10.0
+    hooks:
+      - id: yamlfmt
+  - repo: https://github.com/onedr0p/sops-pre-commit
+    # renovate: datasource=github-releases depName=onedr0p/sops-pre-commit
+    rev: v2.1.0
+    hooks:
+      - id: forbid-secrets
