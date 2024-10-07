@@ -63,17 +63,16 @@ nodes:
             #% endif %#
         #% else %#
         #% if item.address %#
-        dhcp: true
-        # dhcp: false
-        # addresses:
-        #   - "#{ item.address }#/#{ bootstrap_node_network.split('/') | last }#"
-        # routes:
-        #   - network: 0.0.0.0/0
-        #     #% if bootstrap_node_default_gateway %#
-        #     gateway: "#{ bootstrap_node_default_gateway }#"
-        #     #% else %#
-        #     gateway: "#{ bootstrap_node_network | nthhost(1) }#"
-        #     #% endif %#
+        dhcp: false
+        addresses:
+          - "#{ item.address }#/#{ bootstrap_node_network.split('/') | last }#"
+        routes:
+          - network: 0.0.0.0/0
+            #% if bootstrap_node_default_gateway %#
+            gateway: "#{ bootstrap_node_default_gateway }#"
+            #% else %#
+            gateway: "#{ bootstrap_node_network | nthhost(1) }#"
+            #% endif %#
         #% else %#
         dhcp: true
         #% endif %#
