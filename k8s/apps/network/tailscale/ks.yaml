@@ -17,3 +17,8 @@ spec:
   wait: false
   interval: 30m
   timeout: 5m
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+      namespace: flux-system
