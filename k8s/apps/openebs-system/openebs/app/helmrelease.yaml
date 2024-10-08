@@ -29,19 +29,6 @@ spec:
       replicated:
         mayastor:
           enabled: false
-    mayastor:
-      io_engine:
-        # reduce from default of 2
-        cpuCount: "1"
-      etcd:
-        # podAntiAffinityPreset is set to "hard" by default, causing crashes on
-        # clusters with < 3 nodes. Setting to none, sets it to "soft" allowing
-        # pods to be scheduled on one node
-        podAntiAffinityPreset: ""
-      csi:
-        node:
-          initContainers:
-            enabled: false
     openebs-crds:
       csi:
         volumeSnapshots:
