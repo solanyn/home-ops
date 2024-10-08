@@ -4,7 +4,6 @@ resources:
   - ./helmrelease.yaml
 secretGenerator:
   - name: values
-    namespace: tailscale
     files:
       - values.yaml=values.sops.yaml
 configurations:
