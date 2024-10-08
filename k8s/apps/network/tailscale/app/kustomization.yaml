@@ -7,3 +7,5 @@ secretGenerator:
     namespace: tailscale
     files:
       - values.yaml=values.sops.yaml
+configurations:
+  - kustomizeconfig.yaml
