@@ -1,16 +1,12 @@
----
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: "Flux Diff"
-
 on:
   pull_request:
     branches: ["main"]
     paths: ["kubernetes/**"]
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
   cancel-in-progress: true
-
 jobs:
   flux-diff:
     name: Flux Diff
@@ -27,27 +23,16 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: pull
-
       - name: Checkout Default Branch
         uses: actions/checkout@v4
         with:
           ref: "${{ github.event.repository.default_branch }}"
           path: default
-
       - name: Diff Resources
         uses: docker://ghcr.io/allenporter/flux-local:v5.5.1
         with:
           args: >-
-            diff ${{ matrix.resources }}
-            --unified 6
-            --path /github/workspace/pull/${{ matrix.paths }}/flux
-            --path-orig /github/workspace/default/${{ matrix.paths }}/flux
-            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
-            --limit-bytes 10000
-            --all-namespaces
-            --sources "home-kubernetes"
-            --output-file diff.patch
-
+            diff ${{ matrix.resources }} --unified 6 --path /github/workspace/pull/${{ matrix.paths }}/flux --path-orig /github/workspace/default/${{ matrix.paths }}/flux --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart" --limit-bytes 10000 --all-namespaces --sources "homelab" --output-file diff.patch
       - name: Generate Diff
         id: diff
         run: |
@@ -55,7 +40,6 @@ jobs:
           echo "diff<<EOF" >> $GITHUB_OUTPUT
           cat diff.patch >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-
       - if: ${{ steps.diff.outputs.diff != '' }}
         name: Add comment
         uses: mshick/add-pr-comment@v2
