@@ -37,7 +37,10 @@ spec:
       ingress:
         enabled: true
         ingressClassName: tailscale
-        hosts: ["alertmanager.bison-beaufort.ts.net"]
+        hosts: ["alertmanager"]
+        tls:
+          - hosts:
+              - alertmanager
         pathType: Prefix
       alertmanagerSpec:
         useExistingSecret: true
@@ -71,6 +74,9 @@ spec:
         annotations:
         ingressClassName: tailscale
         hosts: ["prometheus"]
+        tls:
+          - hosts:
+              - prometheus
         pathType: Prefix
       prometheusSpec:
         scrapeInterval: 1m # Must match interval in Grafana Helm chart

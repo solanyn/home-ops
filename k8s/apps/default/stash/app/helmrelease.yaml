@@ -97,6 +97,9 @@ spec:
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - stash
     persistence:
       config:
         existingClaim: stash

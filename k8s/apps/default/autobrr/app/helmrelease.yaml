@@ -89,6 +89,9 @@ spec:
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - autobrr
     persistence:
       tmp:
         type: emptyDir
