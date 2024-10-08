@@ -4,7 +4,7 @@ metadata:
   name: &app tailscale
   namespace: tailscale
 spec:
-  targetNamespace: network
+  targetNamespace: tailscale
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
