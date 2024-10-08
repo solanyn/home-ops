@@ -14,3 +14,5 @@ spec:
     kind: GitRepository
     name: homelab
   wait: true
+  interval: 30m
+  timeout: 5m
