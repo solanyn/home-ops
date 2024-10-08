@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/kube-system/intel-device-plugin/app
+  path: ./k8s/apps/kube-system/intel-device-plugin/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -29,7 +29,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/main/apps/kube-system/intel-device-plugin/gpu
+  path: ./k8s/apps/kube-system/intel-device-plugin/gpu
   prune: true
   sourceRef:
     kind: GitRepository
