@@ -1,4 +1,3 @@
----
 creation_rules:
   - # IMPORTANT: This rule MUST be above the others
     path_regex: talos/.*\.sops\.ya?ml
@@ -7,6 +6,11 @@ creation_rules:
           - "age1yq7xwc03yg7gp2ew9k3jehrz6ctlmuwsffypwvskvl27e26frqmqa5d7de"
   - path_regex: k8s/.*\.sops\.ya?ml
     encrypted_regex: "^(data|stringData)$"
+    key_groups:
+      - age:
+          - "age1yq7xwc03yg7gp2ew9k3jehrz6ctlmuwsffypwvskvl27e26frqmqa5d7de"
+  - path_regex: values/.*\.sops\.ya?ml$
+    encrypted_regex: 'client'
     key_groups:
       - age:
           - "age1yq7xwc03yg7gp2ew9k3jehrz6ctlmuwsffypwvskvl27e26frqmqa5d7de"
