@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: qbtools
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: qbittorrent
+      namespace: default
+  values:
+    controllers:
+      tagging:
+        type: cronjob
+        cronjob: &cronJobSpec
+          schedule: "@hourly"
+          timeZone: &timeZone America/New_York
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+        initContainers:
+          tagging: &container
+            image:
+              repository: ghcr.io/buroa/qbtools
+              tag: v0.17.8@sha256:46b7ac79ba934482d04880e8a84abb9447051a3f60692e9c914052e3be0d3360
+            env:
+              QBITTORRENT_HOST: qbittorrent.default.svc.cluster.local
+              QBITTORRENT_PORT: 80
+              TZ: *timeZone
+            args: ["tagging", "--added-on", "--expired", "--last-activity", "--sites", "--unregistered"]
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 25m
+              limits:
+                memory: 256M
+        containers:
+          prune-unregistered:
+            !!merge <<: *container
+            args: ["prune", "--exclude-category", "manual", "--exclude-category", "music", "--exclude-tag", "added:24h", "--include-tag", "unregistered", "--dry-run"]
+          prune-expired:
+            !!merge <<: *container
+            args: ["prune", "--exclude-category", "manual", "--exclude-category", "music", "--exclude-tag", "added:24h", "--include-tag", "expired", "--dry-run"]
+        pod:
+          restartPolicy: OnFailure
+      orphaned:
+        type: cronjob
+        cronjob:
+          !!merge <<: *cronJobSpec
+          schedule: "@weekly"
+        containers:
+          app:
+            !!merge <<: *container
+            args: ["orphaned", "--exclude-pattern", "*_unpackerred*", "--exclude-pattern", "*/manual/*", "--dry-run"]
+        pod:
+          restartPolicy: OnFailure
+      reannounce:
+        containers:
+          app:
+            !!merge <<: *container
+            args: ["reannounce", "--process-seeding"]
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        seccompProfile: {type: RuntimeDefault}
+    persistence:
+      secret-file:
+        type: secret
+        name: qbtools-secret
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+            readOnly: true
+      media:
+        type: nfs
+        server: expanse.internal
+        path: /eros/Media
+        advancedMounts:
+          orphaned:
+            app:
+              - path: /media/Downloads/qbittorrent
+                subPath: Downloads/qbittorrent

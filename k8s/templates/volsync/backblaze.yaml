@@ -18,7 +18,7 @@ spec:
         AWS_SECRET_ACCESS_KEY: "{{ .AWS_SECRET_ACCESS_KEY }}"
   dataFrom:
     - extract:
-        key: cloudflare
+        key: backblaze
     - extract:
         key: volsync-backblaze-template
 ---
