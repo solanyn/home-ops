@@ -6,6 +6,8 @@ metadata:
 spec:
   interval: 30m
   url: "https://github.com/solanyn/homelab.git"
+  secretRef:
+    name: github-deploy-key
   ref:
     branch: "main"
   ignore: |
