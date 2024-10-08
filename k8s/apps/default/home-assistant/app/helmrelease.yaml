@@ -85,6 +85,9 @@ spec:
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - hass
       code-server:
         className: tailscale
         hosts:
@@ -94,6 +97,9 @@ spec:
                 service:
                   identifier: app
                   port: code-server
+        tls:
+          - hosts:
+              - code
     persistence:
       config:
         existingClaim: home-assistant

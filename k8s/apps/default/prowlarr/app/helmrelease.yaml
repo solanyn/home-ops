@@ -96,6 +96,9 @@ spec:
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - prowlarr
     persistence:
       config:
         type: emptyDir

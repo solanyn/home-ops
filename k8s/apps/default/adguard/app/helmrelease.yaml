@@ -79,6 +79,9 @@ spec:
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - adguard
     persistence:
       tmp:
         type: emptyDir
