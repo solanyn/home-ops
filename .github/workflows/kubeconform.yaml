@@ -5,7 +5,7 @@ on:
     branches: ["main"]
     paths: ["k8s/**"]
 env:
-  KUBERNETES_DIR: ./kubernetes
+  KUBERNETES_DIR: ./k8s
 jobs:
   kubeconform:
     name: Kubeconform
