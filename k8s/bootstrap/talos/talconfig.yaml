@@ -36,13 +36,6 @@ nodes:
           ip: "192.168.68.200"
 # Global patches
 patches:
-  # Force nameserver
-  - |-
-    machine:
-      network:
-        nameservers:
-          - 1.1.1.1
-          - 192.168.68.1
   - "@./patches/global/cluster-discovery.yaml"
   - "@./patches/global/containerd.yaml"
   - "@./patches/global/disable-search-domain.yaml"
