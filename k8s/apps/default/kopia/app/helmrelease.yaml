@@ -43,7 +43,7 @@ spec:
               - --address
               - 0.0.0.0:80
               - --override-hostname
-              - n0.local
+              - 192.168.68.10
               - --override-username
               - solanyn
               - --without-password
@@ -131,7 +131,7 @@ spec:
           - path: /app/logs
       eros:
         type: nfs
-        server: n0.local
+        server: 192.168.68.10
         path: /mnt/nfs
         globalMounts:
           - path: /nfs
