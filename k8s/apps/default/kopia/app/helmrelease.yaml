@@ -109,6 +109,9 @@ spec:
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - kopia
     persistence:
       config:
         type: emptyDir
