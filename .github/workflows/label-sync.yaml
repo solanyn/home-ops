@@ -1,13 +1,10 @@
----
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: "Label Sync"
-
 on:
   workflow_dispatch:
   push:
     branches: ["main"]
     paths: [".github/labels.yaml"]
-
 jobs:
   label-sync:
     name: Label Sync
@@ -15,7 +12,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Sync Labels
         uses: EndBug/label-sync@v2
         with:
