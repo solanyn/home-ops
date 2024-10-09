@@ -5,6 +5,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: postgres.solanyn.dev
     lbipam.cilium.io/ips: 192.168.168.125
+    tailscale.com/tailnet-fqdn: postgres.bison-beaufort.ts.net
 spec:
   type: LoadBalancer
   ports:
