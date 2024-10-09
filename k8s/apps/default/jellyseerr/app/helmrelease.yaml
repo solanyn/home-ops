@@ -84,6 +84,9 @@ spec:
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - jellyseerr
     persistence:
       config:
         existingClaim: jellyseerr
