@@ -21,22 +21,14 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+  # dependsOn:
+  #   - name: rook-ceph-cluster
+  #     namespace: rook-ceph
   values:
     controllers:
       stash:
         annotations:
           reloader.stakater.com/auto: "true"
-        # initContainers:
-        #   init-db:
-        #     image:
-        #       repository: ghcr.io/onedr0p/postgres-init
-        #       tag: 16
-        #     envFrom: &envFrom
-        #       - secretRef:
-        #           name: stash-secret
         containers:
           app:
             image:
