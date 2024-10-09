@@ -1,11 +1,9 @@
----
 helmDefaults:
   wait: true
   waitForJobs: true
   timeout: 600
   recreatePods: true
   force: true
-
 repositories:
   - name: cilium
     url: https://helm.cilium.io
@@ -13,7 +11,6 @@ repositories:
     url: https://coredns.github.io/helm
   - name: postfinance
     url: https://postfinance.github.io/kubelet-csr-approver
-
 releases:
   - name: prometheus-operator-crds
     namespace: observability

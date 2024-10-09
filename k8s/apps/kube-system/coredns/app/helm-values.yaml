@@ -1,4 +1,3 @@
----
 fullnameOverride: coredns
 k8sAppLabelOverride: kube-dns
 serviceAccount:
