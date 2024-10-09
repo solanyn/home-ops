@@ -71,8 +71,6 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             resources:
-              requests:
-                cpu: 100m
               limits:
                 memory: 4Gi
     defaultPodOptions:

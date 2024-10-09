@@ -55,8 +55,6 @@ spec:
               seccompProfile:
                 type: RuntimeDefault
             resources:
-              requests:
-                cpu: 10m
               limits:
                 memory: 64Mi
     defaultPodOptions:
