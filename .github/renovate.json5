@@ -15,16 +15,16 @@
   "schedule": ["every weekend"],
   "ignorePaths": ["**/*.sops.*"],
   "flux": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
+    "fileMatch": ["(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$"]
   },
   "helm-values": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
+    "fileMatch": ["(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$"]
   },
   "helmfile": {
     "fileMatch": ["(^|/)helmfile\\.ya?ml(?:\\.j2)?$"]
   },
   "kubernetes": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"]
+    "fileMatch": ["(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$"]
   },
   "kustomize": {
     "fileMatch": ["(^|/)kustomization\\.ya?ml(?:\\.j2)?$"]
@@ -191,7 +191,7 @@
     {
       "customType": "regex",
       "description": ["Process custom dependencies"],
-      "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"],
+      "fileMatch": ["(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$"],
       "matchStrings": [
         // # renovate: datasource=helm depName=cilium repository=https://helm.cilium.io
         // version: 1.15.1

@@ -1,12 +1,9 @@
----
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: "Release"
-
 on:
   workflow_dispatch:
   schedule:
     - cron: "0 0 1 * *"
-
 jobs:
   release:
     if: ${{ github.repository == 'onedr0p/cluster-template' }}
@@ -15,7 +12,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Create Release
         shell: bash
         env:
