@@ -112,7 +112,7 @@ spec:
     persistence:
       config:
         type: nfs
-        server: n0.local
+        server: 192.168.68.10
         path: /mnt/nfs/backups
         globalMounts:
           - path: /data
