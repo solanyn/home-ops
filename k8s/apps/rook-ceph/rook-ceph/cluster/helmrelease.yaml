@@ -90,7 +90,7 @@ spec:
             memory: 1Gi
         osd:
           requests:
-            cpu: 500m
+            cpu: 200m
             memory: 2Gi
           limits:
             memory: 6Gi
