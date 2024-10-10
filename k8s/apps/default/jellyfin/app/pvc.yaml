@@ -7,5 +7,4 @@ spec:
   resources:
     requests:
       storage: 75Gi
-  # storageClassName: ceph-block
-  storageClassName: openebs-hostpath
+  storageClassName: ceph-block
