@@ -34,6 +34,10 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.68.200"
+    extensionServices:
+      - name: tailscale
+        environment:
+          - TS_AUTHKEY={TAILSCALE_AUTHKEY}
 # Global patches
 patches:
   - "@./patches/global/cluster-discovery.yaml"
