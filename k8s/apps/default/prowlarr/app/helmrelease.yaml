@@ -26,14 +26,14 @@ spec:
       prowlarr:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16
-              # envFrom: &envFrom
-              #   - secretRef:
-              #       name: prowlarr-secret
+        # initContainers:
+        #   init-db:
+        #     image:
+        #       repository: ghcr.io/onedr0p/postgres-init
+        #       tag: 16
+        #       envFrom: &envFrom
+        #         - secretRef:
+        #             name: prowlarr-secret
         containers:
           app:
             image:
@@ -41,7 +41,7 @@ spec:
               tag: 1.25.1.4770@sha256:8b59eb7f9e5321b702bdacae3468b63d71720091ba3b0e9dfaca686a7705d2b8
             env:
               PROWLARR__APP__INSTANCENAME: Prowlarr
-              # PROWLARR__APP__THEME: dark
+              PROWLARR__APP__THEME: dark
               PROWLARR__AUTH__METHOD: External
               PROWLARR__AUTH__REQUIRED: DisabledForLocalAddresses
               # PROWLARR__LOG__DBENABLED: "False"
