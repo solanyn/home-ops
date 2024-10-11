@@ -77,29 +77,27 @@ spec:
             port: 12321
     ingress:
       app:
-        className: tailscale
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.devbu.io
+        className: internal
         hosts:
-          - host: hass
+          - host: "hass.devbu.io"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - hass
       code-server:
-        className: tailscale
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.devbu.io
+        className: internal
         hosts:
-          - host: code
+          - host: "hass-code.devbu.io"
             paths:
               - path: /
                 service:
                   identifier: app
-                  port: code-server
-        tls:
-          - hosts:
-              - code
+                  port: http
     persistence:
       config:
         existingClaim: home-assistant

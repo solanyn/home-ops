@@ -36,11 +36,10 @@ spec:
     alertmanager:
       ingress:
         enabled: true
-        ingressClassName: tailscale
-        hosts: ["alertmanager"]
-        tls:
-          - hosts:
-              - alertmanager
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+        ingressClassName: internal
+        hosts: ["alertmanager.${SECRET_DOMAIN}"]
         pathType: Prefix
       alertmanagerSpec:
         useExistingSecret: true
@@ -72,11 +71,8 @@ spec:
       ingress:
         enabled: true
         annotations:
-        ingressClassName: tailscale
+        ingressClassName: internal
         hosts: ["prometheus"]
-        tls:
-          - hosts:
-              - prometheus
         pathType: Prefix
       prometheusSpec:
         scrapeInterval: 1m # Must match interval in Grafana Helm chart

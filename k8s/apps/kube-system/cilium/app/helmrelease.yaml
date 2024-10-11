@@ -51,11 +51,8 @@ spec:
         rollOutPods: true
         ingress:
           enabled: true
-          className: tailscale
+          className: internal
           hosts: ["hubble"]
-          tls:
-            - hosts:
-                - hubble
     operator:
       prometheus:
         enabled: true

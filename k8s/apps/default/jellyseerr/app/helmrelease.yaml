@@ -76,17 +76,16 @@ spec:
             port: *port
     ingress:
       app:
-        className: tailscale
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.devbu.io
+        className: internal
         hosts:
-          - host: jellyseerr
+          - host: "{{ .Release.Name }}.devbu.io"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - jellyseerr
     persistence:
       config:
         existingClaim: jellyseerr
