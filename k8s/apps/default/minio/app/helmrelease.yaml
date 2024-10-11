@@ -32,7 +32,7 @@ spec:
               repository: quay.io/minio/minio
               tag: RELEASE.2024-09-22T00-33-43Z@sha256:7d80fd232a2f7108aa6f133fcfe5fade3f1626d92d31ae1318076e7aa61928a2
             env:
-              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.solanyn.dev,https://s3.solanyn.dev
+              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.solanyn.dev,https://s3.solanyn.dev,https://minio.bison-beaufort.ts.net
               MINIO_BROWSER_REDIRECT_URL: https://minio.solanyn.dev
               MINIO_PROMETHEUS_JOB_ID: minio
               MINIO_PROMETHEUS_URL: https://prometheus.solanyn.dev
@@ -93,17 +93,15 @@ spec:
             scrapeTimeout: 10s
     ingress:
       app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.solanyn.dev
-        className: internal
+        className: tailscale
         hosts:
-          - host: "{{ .Release.Name }}.solanyn.dev"
+          - host: "{{ .Release.Name }}"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-          - host: s3.solanyn.dev
+          - host: s3
             paths:
               - path: /
                 service:
