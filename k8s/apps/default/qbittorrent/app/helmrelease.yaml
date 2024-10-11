@@ -91,10 +91,10 @@ spec:
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.devbu.io
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN
         className: internal
         hosts:
-          - host: "qb.devbu.io"
+          - host: "qb.${SECRET_DOMAIN"
             paths:
               - path: /
                 service:
