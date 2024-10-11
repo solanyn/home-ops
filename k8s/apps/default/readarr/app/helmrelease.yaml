@@ -51,8 +51,8 @@ spec:
               READARR__LOG__LEVEL: info
               READARR__SERVER__PORT: &port 80
               READARR__UPDATE__BRANCH: develop
-              TZ: Australia/Sydney
-            # envFrom: *envFrom
+              TZ: "Australia/Sydney"
+            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: true
