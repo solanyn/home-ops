@@ -211,11 +211,10 @@ spec:
       enabled: true
     ingress:
       enabled: true
-      ingressClassName: tailscale
-      hosts: ["grafana"]
-      tls:
-        - hosts:
-            - grafana
+      annotations:
+        external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+      ingressClassName: internal
+      hosts: ["grafana.${SECRET_DOMAIN}"]
     persistence:
       enabled: false
     testFramework:

@@ -33,9 +33,11 @@ spec:
       createPrometheusRules: true
     ingress:
       dashboard:
-        ingressClassName: tailscale
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+        ingressClassName: internal
         host:
-          name: rook
+          name: "rook.${SECRET_DOMAIN}"
           path: /
     toolbox:
       enabled: true
@@ -216,9 +218,10 @@ spec:
         ingress:
           enabled: true
           annotations:
+            external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
             nginx.ingress.kubernetes.io/proxy-body-size: "0"
             nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-          ingressClassName: tailscale
+          ingressClassName: internal
           host:
             name: rgw
             path: /

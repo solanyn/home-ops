@@ -90,17 +90,16 @@ spec:
             protocol: TCP
     ingress:
       app:
-        className: tailscale
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.devbu.io
+        className: internal
         hosts:
-          - host: qb
+          - host: "qb.devbu.io"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - qb
     persistence:
       config:
         existingClaim: qbittorrent

@@ -90,17 +90,16 @@ spec:
             port: 1900
     ingress:
       app:
-        className: tailscale
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.devbu.io
+        className: internal
         hosts:
-          - host: jellyfin
+          - host: "{{ .Release.Name }}.devbu.io"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
-        tls:
-          - hosts:
-              - jellyfin
     persistence:
       config:
         existingClaim: jellyfin
