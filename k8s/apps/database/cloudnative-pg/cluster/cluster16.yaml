@@ -50,6 +50,7 @@ spec:
   bootstrap:
     initdb:
       database: postgres16-v0
+      owner: postgres
     recovery:
       source: &previousCluster postgres16-v0
   # Note: externalClusters is needed when recovering from an existing cnpg cluster
