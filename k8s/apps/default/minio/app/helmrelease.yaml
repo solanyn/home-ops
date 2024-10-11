@@ -107,6 +107,10 @@ spec:
                 service:
                   identifier: app
                   port: s3
+        tls:
+          - hosts:
+              - s3
+              - minio
     persistence:
       config:
         type: nfs
