@@ -48,14 +48,15 @@ spec:
   # Note: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
   bootstrap:
+    # NOTE: Set initdb and comment out recovery when no backup!
     initdb:
       database: postgres16-v0
       owner: postgres
-    recovery:
-      source: &previousCluster postgres16-v0
-  # Note: externalClusters is needed when recovering from an existing cnpg cluster
-  externalClusters:
-    - name: *previousCluster
-      barmanObjectStore:
-        !!merge <<: *barmanObjectStore
-        serverName: *previousCluster
+      # recovery:
+      #   source: &previousCluster postgres16-v0
+  # NOTE: externalClusters is needed when recovering from an EXISTING cnpg cluster
+  # externalClusters:
+  #   - name: *previousCluster
+  #     barmanObjectStore:
+  #       !!merge <<: *barmanObjectStore
+  #       serverName: *previousCluster
