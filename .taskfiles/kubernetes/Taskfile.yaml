@@ -1,7 +1,5 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
-vars:
-  KUBECONFORM_SCRIPT: "{{.SCRIPTS_DIR}}/kubeconform.sh"
 tasks:
   delete-failed-pods:
     desc: Delete all pods with an Evicted/Failed/Succeeded status
@@ -39,12 +37,6 @@ tasks:
     vars:
       resource: >-
         nodes gitrepositories kustomizations helmrepositories helmreleases certificates certificaterequests ingresses pods
-  kubeconform:
-    desc: Validate Kubernetes manifests with kubeconform
-    cmd: bash {{.KUBECONFORM_SCRIPT}} {{.KUBERNETES_DIR}}
-    preconditions:
-      - msg: Missing kubeconform script
-        sh: test -f {{.KUBECONFORM_SCRIPT}}
   .reset:
     internal: true
     cmd: rm -rf {{.KUBERNETES_DIR}}

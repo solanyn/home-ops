@@ -24,11 +24,11 @@ tasks:
     requires:
       vars: ['CLUSTER', 'NODES', 'DISK']
     cmds:
-      - task: apply-talos-config
-      - task: fetch-kubeconfig
-      - task: install-helm-apps
-      - {task: install-rook, vars: *vars}
-      - task: install-flux
+      - task: talos
+      - task: kubeconfig
+      - task: helm
+      - {task: helm, vars: *vars}
+      - task: flux
       - talosctl health --server=false
     preconditions:
       - msg: Missing talhelper config file
@@ -37,7 +37,7 @@ tasks:
         sh: test -f {{.SOPS_CONFIG_FILE}}
       - msg: Missing Sops Age key file
         sh: test -f {{.AGE_FILE}}
-  apply-talos-config:
+  talos:
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
     cmds:
       - |
@@ -58,14 +58,14 @@ tasks:
         sh: test -f {{.SOPS_CONFIG_FILE}}
       - msg: Missing Sops Age key file
         sh: test -f {{.AGE_FILE}}
-  fetch-kubeconfig:
+  kubeconfig:
     desc: Fetch kubeconfig
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
     cmd: until talhelper gencommand kubeconfig --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="{{.ROOT_DIR}} --force" | bash; do sleep 10; done
     preconditions:
       - msg: Missing talhelper config file
         sh: test -f {{.TALHELPER_CONFIG_FILE}}
-  install-helm-apps:
+  helm:
     desc: Bootstrap core apps needed for Talos
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
     cmds:
@@ -77,7 +77,7 @@ tasks:
         sh: test -f {{.KUBECONFIG_FILE}}
       - msg: Missing helmfile
         sh: test -f {{.HELMFILE_FILE}}
-  install-rook:
+  rook:
     vars: &vars
       CLUSTER: '{{.CLUSTER}}'
       NODE: '{{.ITEM}}'
@@ -129,7 +129,7 @@ tasks:
       - test -f $GOPATH/bin/envsubst
       - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/wait-for-job.sh
       - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/rook-data-job.tmpl.yaml
-  install-flux:
+  flux:
     desc: Bootstrap Flux into a Kubernetes cluster
     cmds:
       - kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --kustomize {{.KUBERNETES_DIR}}/bootstrap/flux
@@ -139,6 +139,7 @@ tasks:
         else
           echo "sops-age secret already exists, skipping creation."
         fi
+      - sops --decrypt {{.GITHUB_DEPLOY_KEY_FILE}} | kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --filename -
       - sops --decrypt {{.CLUSTER_SECRET_SOPS_FILE}} | kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --filename -
       - kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --filename {{.CLUSTER_SETTINGS_FILE}}
       - kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --kustomize {{.KUBERNETES_DIR}}/flux/config
