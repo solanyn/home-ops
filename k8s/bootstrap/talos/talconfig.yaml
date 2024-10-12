@@ -19,7 +19,9 @@ cniConfig:
 nodes:
   - hostname: "n1"
     ipAddress: "192.168.68.11"
-    installDisk: "/dev/sdb"
+    installDisk:
+      diskSelector:
+        model: TS256GSSD370
     talosImageURL: factory.talos.dev/installer/1f3b7c825b44aad40388ffebcfabf8c4f1a30d76a6722d49452aa4fec01ef03f
     controlPlane: true
     networkInterfaces:
