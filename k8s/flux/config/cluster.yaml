@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
-  url: "https://github.com/solanyn/homelab.git"
+  url: "ssh://git@github.com/solanyn/homelab.git"
   ref:
     branch: "main"
   ignore: |
