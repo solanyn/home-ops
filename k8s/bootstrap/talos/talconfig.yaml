@@ -19,10 +19,9 @@ cniConfig:
 nodes:
   - hostname: "n1"
     ipAddress: "192.168.68.11"
-    installDisk:
-      diskSelector:
-        model: TS256GSSD370
-    talosImageURL: factory.talos.dev/installer/1f3b7c825b44aad40388ffebcfabf8c4f1a30d76a6722d49452aa4fec01ef03f
+    installDiskSelector:
+      model: TS256GSSD370
+    talosImageURL: factory.talos.dev/installer/5b3717ebb1bc80ddea39bb8ae3cfd3294bfcfb13e05dcd6f1aa54b8e8f9dbcc1
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
@@ -36,10 +35,6 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.68.200"
-    extensionServices:
-      - name: tailscale
-        environment:
-          - TS_AUTHKEY={TAILSCALE_AUTHKEY}
 # Global patches
 patches:
   - "@./patches/global/cluster-discovery.yaml"
