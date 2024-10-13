@@ -6,9 +6,9 @@ resources:
   - ./helmrelease.yaml
   - ../../../../templates/volsync
 configMapGenerator:
-  - name: plex-loki-rules
+  - name: jellyfin-loki-rules
     files:
-      - plex.yaml=./resources/lokirule.yaml
+      - jellyfin.yaml=./resources/lokirule.yaml
     options:
       labels:
         loki_rule: "true"
