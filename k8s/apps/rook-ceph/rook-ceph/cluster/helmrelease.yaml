@@ -34,10 +34,10 @@ spec:
     ingress:
       dashboard:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         ingressClassName: internal
         host:
-          name: "rook.${SECRET_DOMAIN}"
+          name: rook.${SECRET_DOMAIN}
           path: /
     toolbox:
       enabled: true
@@ -135,7 +135,7 @@ spec:
         spec:
           metadataPool:
             replicated:
-              size: 1
+              size: 3
           dataPools:
             - failureDomain: host
               replicated:
@@ -218,10 +218,10 @@ spec:
         ingress:
           enabled: true
           annotations:
-            external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+            external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
             nginx.ingress.kubernetes.io/proxy-body-size: "0"
             nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
           ingressClassName: internal
           host:
-            name: rgw
+            name: rgw.${SECRET_DOMAIN}
             path: /
