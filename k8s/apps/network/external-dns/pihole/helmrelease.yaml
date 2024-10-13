@@ -28,17 +28,15 @@ spec:
       name: pihole
     env:
       - name: &name EXTERNAL_DNS_PIHOLE_SERVER
-        # valueFrom:
-        #   secretKeyRef:
-        #     name: &secret external-dns-pihole-secret
-        #     key: *name
-        value: http://192.168.68.10
+        valueFrom:
+          secretKeyRef:
+            name: &secret external-dns-pihole-secret
+            key: *name
       - name: &name EXTERNAL_DNS_PIHOLE_PASSWORD
-        # valueFrom:
-        #   secretKeyRef:
-        #     name: *secret
-        #     key: *name
-        value: "1234"
+        valueFrom:
+          secretKeyRef:
+            name: *secret
+            key: *name
     extraArgs:
       - --ingress-class=internal
       - --ignore-ingress-tls-spec
