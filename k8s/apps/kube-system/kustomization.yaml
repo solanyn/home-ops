@@ -10,4 +10,3 @@ resources:
   - ./spegel/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./intel-device-plugin/ks.yaml
-  - ./tailscale.yaml
