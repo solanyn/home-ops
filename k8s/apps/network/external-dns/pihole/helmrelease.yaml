@@ -28,15 +28,17 @@ spec:
       name: pihole
     env:
       - name: &name EXTERNAL_DNS_PIHOLE_SERVER
-        valueFrom:
-          secretKeyRef:
-            name: &secret external-dns-pihole-secret
-            key: *name
+        # valueFrom:
+        #   secretKeyRef:
+        #     name: &secret external-dns-pihole-secret
+        #     key: *name
+        value: http://192.168.68.24
       - name: &name EXTERNAL_DNS_PIHOLE_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: *secret
-            key: *name
+        # valueFrom:
+        #   secretKeyRef:
+        #     name: *secret
+        #     key: *name
+        value: "1234"
     extraArgs:
       - --ingress-class=internal
       - --registry=noop
@@ -48,5 +50,5 @@ spec:
     domainFilters: ["${SECRET_DOMAIN}"]
     serviceMonitor:
       enabled: true
-    podAnnotations:
-      secret.reloader.stakater.com/reload: *secret
+    # podAnnotations:
+    #   secret.reloader.stakater.com/reload: *secret
