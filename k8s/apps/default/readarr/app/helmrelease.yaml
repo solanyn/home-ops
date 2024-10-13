@@ -43,7 +43,7 @@ spec:
               repository: ghcr.io/onedr0p/readarr-develop
               tag: 0.3.32@sha256:1ffa6357a1e0f2dd9c608a1a2d4064e09b76d834059dda38414c734146cfa201
             env:
-              READARR__APP__INSTANCENAME: Radarr
+              READARR__APP__INSTANCENAME: Readarr
               # READARR__APP__THEME: dark
               READARR__AUTH__METHOD: External
               READARR__AUTH__REQUIRED: DisabledForLocalAddresses
@@ -107,7 +107,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: 192.168.68.10
+        server: nfs.internal
         path: /mnt/nfs
         globalMounts:
           - path: /data

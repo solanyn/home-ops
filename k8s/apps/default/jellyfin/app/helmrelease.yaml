@@ -117,7 +117,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: 192.168.68.10
+        server: nfs.internal
         path: /mnt/nfs/media
         globalMounts:
           - path: /media
