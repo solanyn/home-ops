@@ -5,11 +5,17 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
-  - ./autobrr/ks.yaml
   - ./echo-server/ks.yaml
+  - ./kopia/ks.yaml
   - ./home-assistant/ks.yaml
   - ./minio/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
+  - ./autobrr/ks.yaml
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
+  - ./readarr/ks.yaml
+  - ./audiobookshelf/ks.yaml
+  - ./stash/ks.yaml
+  - ./jellyfin/ks.yaml
+  - ./jellyseerr/ks.yaml
