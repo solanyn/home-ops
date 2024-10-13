@@ -50,3 +50,5 @@ spec:
         enabled: true
       podAnnotations:
         secret.reloader.stakater.com/reload: *secret
+      securityContext:
+        fsGroup: 65534 # For ExternalDNS to be able to read Kubernetes token files
