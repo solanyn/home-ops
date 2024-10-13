@@ -78,7 +78,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+          - host: "books.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -87,6 +87,8 @@ spec:
     persistence:
       config:
         existingClaim: audiobookshelf
+        globalMounts:
+          - path: /config
       media:
         type: nfs
         server: 192.168.68.10
