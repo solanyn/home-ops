@@ -28,6 +28,10 @@ spec:
     - name: snapshot-controller
       namespace: volsync-system
   values:
+    # Delete this section when you get 3 nodes
+    cephClusterSpec:
+      mon:
+        count: 1
     monitoring:
       enabled: true
       createPrometheusRules: true
@@ -37,7 +41,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         ingressClassName: internal
         host:
-          name: rook.${SECRET_DOMAIN}
+          name: "rook.${SECRET_DOMAIN}"
           path: /
     toolbox:
       enabled: true
@@ -107,6 +111,7 @@ spec:
         spec:
           failureDomain: host
           replicated:
+            # size: 3
             size: 1
         storageClass:
           enabled: true
@@ -139,6 +144,7 @@ spec:
           dataPools:
             - failureDomain: host
               replicated:
+                # size: 3
                 size: 1
               name: data0
           metadataServer:
@@ -187,6 +193,7 @@ spec:
           metadataPool:
             failureDomain: host
             replicated:
+              # size: 3
               size: 1
           dataPool:
             failureDomain: host
@@ -223,5 +230,5 @@ spec:
             nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
           ingressClassName: internal
           host:
-            name: rgw.${SECRET_DOMAIN}
+            name: "rgw.${SECRET_DOMAIN}"
             path: /
