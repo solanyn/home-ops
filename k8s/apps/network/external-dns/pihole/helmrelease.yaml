@@ -41,7 +41,6 @@ spec:
         value: "1234"
     extraArgs:
       - --ingress-class=internal
-      - --registry=noop
       - --policy=upsert-only
       - --ignore-ingress-tls-spec
       - --pihole-tls-skip-verify
