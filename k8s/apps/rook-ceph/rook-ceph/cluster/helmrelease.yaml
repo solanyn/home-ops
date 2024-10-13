@@ -28,10 +28,6 @@ spec:
     - name: snapshot-controller
       namespace: volsync-system
   values:
-    # Delete this section when you get 3 nodes
-    cephClusterSpec:
-      mon:
-        count: 1
     monitoring:
       enabled: true
       createPrometheusRules: true
@@ -51,6 +47,9 @@ spec:
       bdev_async_discard = true
       osd_class_update_on_start = false
     cephClusterSpec:
+      # Delete this section when you get 3 nodes
+      mon:
+        count: 1
       crashCollector:
         disable: false
       dashboard:
