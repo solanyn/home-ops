@@ -90,8 +90,8 @@ spec:
         retention: 14d
         retentionSize: 70GB
         resources:
-          requests:
-            cpu: 100m
+          # requests:
+          #   cpu: 100m
           limits:
             memory: 1500Mi
         storageSpec:
