@@ -43,7 +43,7 @@ spec:
               - --address
               - 0.0.0.0:80
               - --override-hostname
-              - kopia.internal
+              - nfs.internal
               - --override-username
               - solanyn
               - --without-password
@@ -100,7 +100,7 @@ spec:
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         className: internal
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"

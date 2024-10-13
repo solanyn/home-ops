@@ -34,7 +34,7 @@ spec:
     ingress:
       dashboard:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
         ingressClassName: internal
         host:
           name: rook.${SECRET_DOMAIN}
@@ -218,7 +218,7 @@ spec:
         ingress:
           enabled: true
           annotations:
-            external-dns.alpha.kubernetes.io/target: internal.${SECRET_DOMAIN}
+            external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
             nginx.ingress.kubernetes.io/proxy-body-size: "0"
             nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
           ingressClassName: internal
