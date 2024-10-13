@@ -129,7 +129,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /app/logs
-      eros:
+      nfs:
         type: nfs
         server: 192.168.68.10
         path: /mnt/nfs
