@@ -46,9 +46,7 @@ tasks:
             sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}
         fi
       - |
-        sops --decrypt --in-place {{.TALHELPER_ENV_FILE}}
-        talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --env-file {{.TALHELPER_ENV_FILE}}
-        sops --encrypt --in-place {{.TALHELPER_ENV_FILE}}
+        talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
       - talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="--insecure" | bash
       - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
     preconditions:
