@@ -41,6 +41,9 @@ spec:
           path: /
     toolbox:
       enabled: true
+      resources:
+        requests:
+          cpu: null
     configOverride: |
       [global]
       bdev_enable_discard = true
@@ -84,27 +87,46 @@ spec:
         mgr:
           requests:
             # cpu: 100m
+            cpu: null
             memory: 512Mi
           limits:
             memory: 2Gi
         mon:
           requests:
             # cpu: 50m
+            cpu: null
             memory: 512Mi
           limits:
             memory: 1Gi
         osd:
           requests:
             # cpu: 200m
+            cpu: null
             memory: 2Gi
           limits:
             memory: 6Gi
+        prepareosd:
+          requests:
+            cpu: null
         mgr-sidecar:
           requests:
             # cpu: 50m
+            cpu: null
             memory: 128Mi
           limits:
             memory: 256Mi
+        crashcollector:
+          requests:
+            cpu: null
+        logcollector:
+          requests:
+            cpu: null
+        cleanup:
+          requests:
+            cpu: null
+        exporter:
+          requests:
+            cpu: null
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -162,6 +184,7 @@ spec:
             resources:
               requests:
                 # cpu: 100m
+                cpu: null
                 memory: 1Gi
               limits:
                 memory: 4Gi
@@ -206,6 +229,7 @@ spec:
             resources:
               requests:
                 # cpu: 100m
+                cpu: null
                 memory: 1Gi
               limits:
                 memory: 2Gi
