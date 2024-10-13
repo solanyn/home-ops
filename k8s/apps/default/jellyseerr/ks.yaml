@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./k8s/apps/default/overseerr/app
+  path: ./k8s/apps/default/jellyseerr/app
   prune: true
   sourceRef:
     kind: GitRepository
