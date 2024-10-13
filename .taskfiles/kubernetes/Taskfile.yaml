@@ -44,7 +44,7 @@ tasks:
     desc: Apply a Flux Kustomization resource for a cluster
     summary: |
       CLUSTER: Cluster to run command against (required)
-      PATH: Path to the Flux Kustomization resource from the apps base dir (required, e.g. default/plex)
+      PATH: Path to the Flux Kustomization resource from the apps base dir (required, e.g. default/jellyfin)
       NS: Namespace the Flux Kustomization exists in (default: flux-system)
     cmd: |
       flux build ks {{base .PATH}} \
