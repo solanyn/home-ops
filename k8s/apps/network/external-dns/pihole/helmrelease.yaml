@@ -32,7 +32,7 @@ spec:
         #   secretKeyRef:
         #     name: &secret external-dns-pihole-secret
         #     key: *name
-        value: http://192.168.68.24
+        value: http://192.168.68.10
       - name: &name EXTERNAL_DNS_PIHOLE_PASSWORD
         # valueFrom:
         #   secretKeyRef:
