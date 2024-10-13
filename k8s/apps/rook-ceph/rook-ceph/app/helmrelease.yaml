@@ -26,10 +26,6 @@ spec:
     - name: snapshot-controller
       namespace: volsync-system
   values:
-    discover:
-      resources:
-        requests:
-          cpu: 50m
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
       enableLiveness: true
