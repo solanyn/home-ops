@@ -45,8 +45,8 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             resources:
-              requests:
-                cpu: 10m
+              # requests:
+              #   cpu: 10m
               limits:
                 memory: 2Gi
           code-server:
@@ -55,8 +55,8 @@ spec:
               tag: 4.93.1@sha256:c69e398d1b64589b3b77a7becfd03f4ec524982def20e6bffbb51b1b839e72ba
             args: ["--auth", "none", "--user-data-dir", "/config/.vscode", "--extensions-dir", "/config/.vscode", "--port", "12321", "/config"]
             resources:
-              requests:
-                cpu: 10m
+              # requests:
+              #   cpu: 10m
               limits:
                 memory: 512Mi
     defaultPodOptions:
