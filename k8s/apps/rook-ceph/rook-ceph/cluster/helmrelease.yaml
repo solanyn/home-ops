@@ -44,6 +44,7 @@ spec:
       resources:
         requests:
           cpu: null
+          memory: null
     configOverride: |
       [global]
       bdev_enable_discard = true
@@ -100,7 +101,8 @@ spec:
             # single node
             # cpu: 50m
             cpu: null
-            memory: 512Mi
+            # memory: 512Mi
+            memory: null
           limits:
             memory: 1Gi
         osd:
@@ -115,6 +117,7 @@ spec:
         prepareosd:
           requests:
             cpu: null
+            memory: null
         mgr-sidecar:
           requests:
             # single node
