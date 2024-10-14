@@ -50,7 +50,7 @@ spec:
       bdev_async_discard = true
       osd_class_update_on_start = false
     cephClusterSpec:
-      # Delete this section when you get 3 nodes
+      # single node
       mon:
         count: 1
       crashCollector:
@@ -61,6 +61,8 @@ spec:
         ssl: false
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       mgr:
+        # single node
+        count: 1
         modules:
           - name: pg_autoscaler
             enabled: true
@@ -86,6 +88,7 @@ spec:
       resources:
         mgr:
           requests:
+            # single node
             # cpu: 100m
             cpu: null
             memory: 512Mi
@@ -93,6 +96,7 @@ spec:
             memory: 2Gi
         mon:
           requests:
+            # single node
             # cpu: 50m
             cpu: null
             memory: 512Mi
@@ -100,6 +104,7 @@ spec:
             memory: 1Gi
         osd:
           requests:
+            # single node
             # cpu: 200m
             cpu: null
             memory: 2Gi
@@ -110,6 +115,7 @@ spec:
             cpu: null
         mgr-sidecar:
           requests:
+            # single node
             # cpu: 50m
             cpu: null
             memory: 128Mi
@@ -132,6 +138,7 @@ spec:
         spec:
           failureDomain: host
           replicated:
+            # single node
             # size: 3
             size: 1
         storageClass:
@@ -165,6 +172,7 @@ spec:
           dataPools:
             - failureDomain: host
               replicated:
+                # single node
                 # size: 3
                 size: 1
               name: data0
@@ -183,6 +191,7 @@ spec:
                       app.kubernetes.io/part-of: *cephFileSystemName
             resources:
               requests:
+                # single node
                 # cpu: 100m
                 cpu: null
                 memory: 1Gi
@@ -215,6 +224,7 @@ spec:
           metadataPool:
             failureDomain: host
             replicated:
+              # single node
               # size: 3
               size: 1
           dataPool:
@@ -228,6 +238,7 @@ spec:
             port: 80
             resources:
               requests:
+                # single node
                 # cpu: 100m
                 cpu: null
                 memory: 1Gi
