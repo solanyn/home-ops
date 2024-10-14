@@ -19,6 +19,11 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
+  valuesFrom:
+    - targetPath: controller.maxmindLicenseKey
+      kind: Secret
+      name: nginx-external-maxmind-secret
+      valuesKey: MAXMIND_LICENSE_KEY
   dependsOn:
     - name: cloudflared
       namespace: network
