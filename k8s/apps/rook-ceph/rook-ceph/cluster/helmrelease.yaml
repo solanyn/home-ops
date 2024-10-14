@@ -168,7 +168,9 @@ spec:
         spec:
           metadataPool:
             replicated:
-              size: 3
+              # single node
+              # size: 3
+              size: 1
           dataPools:
             - failureDomain: host
               replicated:
