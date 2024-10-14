@@ -52,7 +52,7 @@ spec:
         ingress:
           enabled: true
           className: internal
-          hosts: ["hubble"]
+          hosts: ["hubble.${SECRET_DOMAIN}"]
     operator:
       prometheus:
         enabled: true
