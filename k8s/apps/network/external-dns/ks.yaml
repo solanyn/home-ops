@@ -8,6 +8,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: external-secrets-stores
   path: ./k8s/apps/network/external-dns/cloudflare
   prune: true
   sourceRef:
@@ -27,6 +29,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: external-secrets-stores
   path: ./k8s/apps/network/external-dns/pihole
   prune: true
   sourceRef:
