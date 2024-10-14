@@ -68,6 +68,9 @@ spec:
             resources: &resources
               # requests:
               #   cpu: 10m
+              requests:
+                cpu: null
+                memory: null
               limits:
                 memory: 256M
           sync:
