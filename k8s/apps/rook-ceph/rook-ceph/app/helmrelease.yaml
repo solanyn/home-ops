@@ -35,7 +35,8 @@ spec:
       enabled: true
     resources:
       requests:
-        memory: 128Mi
+        # memory: 128Mi
+        memory: null
         # cpu: 50m
         cpu: null
       limits: {}

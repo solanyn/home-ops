@@ -91,7 +91,8 @@ spec:
             # single node
             # cpu: 100m
             cpu: null
-            memory: 512Mi
+            # memory: 512Mi
+            memory: null
           limits:
             memory: 2Gi
         mon:
@@ -107,7 +108,8 @@ spec:
             # single node
             # cpu: 200m
             cpu: null
-            memory: 2Gi
+            # memory: 2Gi
+            memory: null
           limits:
             memory: 6Gi
         prepareosd:
@@ -118,7 +120,8 @@ spec:
             # single node
             # cpu: 50m
             cpu: null
-            memory: 128Mi
+            # memory: 128Mi
+            memory: null
           limits:
             memory: 256Mi
         crashcollector:
@@ -196,7 +199,8 @@ spec:
                 # single node
                 # cpu: 100m
                 cpu: null
-                memory: 1Gi
+                # memory: 1Gi
+                memory: null
               limits:
                 memory: 4Gi
         storageClass:
@@ -243,7 +247,8 @@ spec:
                 # single node
                 # cpu: 100m
                 cpu: null
-                memory: 1Gi
+                # memory: 1Gi
+                memory: null
               limits:
                 memory: 2Gi
             instances: 2
