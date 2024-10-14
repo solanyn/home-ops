@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./k8s/cert-manager/cert-manager/app
+  path: ./k8s/apps/cert-manager/cert-manager/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -32,7 +32,7 @@ spec:
   dependsOn:
     - name: cert-manager
     - name: external-secrets-stores
-  path: ./k8s/cert-manager/cert-manager/issuers
+  path: ./k8s/apps/cert-manager/cert-manager/issuers
   prune: true
   sourceRef:
     kind: GitRepository
