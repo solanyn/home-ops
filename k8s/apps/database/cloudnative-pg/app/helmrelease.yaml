@@ -27,6 +27,10 @@ spec:
     - name: openebs
       namespace: openebs-system
   values:
+    resources:
+      requests:
+        cpu: null
+        memory: null
     crds:
       create: true
     monitoring:
