@@ -41,6 +41,7 @@ spec:
               STASH_GENERATED: /config/generated
               STASH_METADATA: /config/metadata
               STASH_CACHE: /config/cache
+              USER: andrew
             probes:
               liveness: &probes
                 enabled: true
