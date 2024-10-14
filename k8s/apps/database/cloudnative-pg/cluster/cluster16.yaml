@@ -21,6 +21,9 @@ spec:
     inProgress: false
     reusePVC: true
   resources:
+    requests:
+      cpu: null
+      memory: null
     limits:
       memory: 4Gi
   monitoring:
