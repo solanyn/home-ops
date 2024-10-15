@@ -11,6 +11,7 @@ spec:
       automountServiceAccountToken: false
       restartPolicy: Never
       nodeName: {{ ENV.NODE }}
+      hostNetwork: true
       containers:
         - name: main
           image: docker.io/library/alpine:latest
