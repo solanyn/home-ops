@@ -30,6 +30,7 @@ includes:
   talos: .taskfiles/talos
   sops: .taskfiles/sops
   workstation: .taskfiles/workstation
+  volsync: .taskfiles/volsync
 tasks:
   default: task --list
   init:
