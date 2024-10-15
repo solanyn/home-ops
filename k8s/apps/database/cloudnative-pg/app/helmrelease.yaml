@@ -29,8 +29,8 @@ spec:
   values:
     resources:
       requests:
-        cpu: null
-        memory: null
+        cpu: 10m
+        memory: 10Mi
     crds:
       create: true
     monitoring:
