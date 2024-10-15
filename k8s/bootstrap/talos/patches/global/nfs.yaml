@@ -1,0 +1,14 @@
+machine:
+  files:
+    - content: |
+        [ NFSMount_Global_Options ]
+        nfsvers=4.2
+        hard=True
+        noatime=True
+        nodiratime=True
+        rsize=131072
+        wsize=131072
+        nconnect=8
+      permissions: 420
+      path: /etc/nfsmount.conf
+      op: overwrite
