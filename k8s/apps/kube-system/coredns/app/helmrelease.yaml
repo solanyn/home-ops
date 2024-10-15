@@ -20,6 +20,10 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  values:
+    resources:
+      requests:
+        cpu: 10m
   valuesFrom:
     - kind: ConfigMap
       name: coredns-helm-values

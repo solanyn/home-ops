@@ -23,6 +23,9 @@ spec:
     - kind: ConfigMap
       name: kubelet-csr-approver-helm-values
   values:
+    resources:
+      requests:
+        cpu: 10m
     metrics:
       enable: true
       serviceMonitor:
