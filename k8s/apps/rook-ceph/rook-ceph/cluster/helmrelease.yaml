@@ -51,10 +51,7 @@ spec:
       bdev_async_discard = true
       osd_class_update_on_start = false
     cephClusterSpec:
-      # single node
       mon:
-        count: 1
-        # single node
         allowMultiplePerNode: true
       crashCollector:
         disable: false
@@ -64,9 +61,6 @@ spec:
         ssl: false
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       mgr:
-        # single node
-        count: 1
-        # single node
         allowMultiplePerNode: true
         modules:
           - name: pg_autoscaler
@@ -93,7 +87,6 @@ spec:
       resources:
         mgr:
           requests:
-            # single node
             # cpu: 100m
             cpu: 10m
             # memory: 512Mi
@@ -102,7 +95,6 @@ spec:
             memory: 2Gi
         mon:
           requests:
-            # single node
             # cpu: 50m
             cpu: 10m
             # memory: 512Mi
@@ -111,7 +103,6 @@ spec:
             memory: 1Gi
         osd:
           requests:
-            # single node
             # cpu: 200m
             cpu: 10m
             # memory: 2Gi
@@ -124,7 +115,6 @@ spec:
             memory: 10Mi
         mgr-sidecar:
           requests:
-            # single node
             # cpu: 50m
             cpu: 10m
             # memory: 128Mi
@@ -149,9 +139,7 @@ spec:
           # single node
           failureDomain: osd
           replicated:
-            # single node
-            # size: 3
-            size: 1
+            size: 3
         storageClass:
           enabled: true
           name: ceph-block
@@ -179,15 +167,11 @@ spec:
         spec:
           metadataPool:
             replicated:
-              # single node
-              # size: 3
-              size: 1
+              size: 3
           dataPools:
             - failureDomain: osd
               replicated:
-                # single node
-                # size: 3
-                size: 1
+                size: 3
               name: data0
           metadataServer:
             activeCount: 1
@@ -204,7 +188,6 @@ spec:
                       app.kubernetes.io/part-of: *cephFileSystemName
             resources:
               requests:
-                # single node
                 # cpu: 100m
                 cpu: 10m
                 # memory: 1Gi
@@ -238,9 +221,7 @@ spec:
           metadataPool:
             failureDomain: osd
             replicated:
-              # single node
-              # size: 3
-              size: 1
+              size: 3
           dataPool:
             failureDomain: osd
             erasureCoded:
@@ -252,7 +233,6 @@ spec:
             port: 80
             resources:
               requests:
-                # single node
                 # cpu: 100m
                 cpu: 10m
                 # memory: 1Gi
