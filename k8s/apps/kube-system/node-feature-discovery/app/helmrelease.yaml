@@ -24,6 +24,10 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    master:
+      resources:
+        requests:
+          cpu: 10m
     worker:
       config:
         core:
