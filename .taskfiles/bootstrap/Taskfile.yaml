@@ -24,12 +24,30 @@ tasks:
     requires:
       vars: ['CLUSTER', 'NODES', 'DISK']
     cmds:
-      - task: talos
       - task: kubeconfig
       - task: helm
       - {task: rook, vars: *vars}
       - task: flux
       - talosctl health --server=false
+    preconditions:
+      - msg: Missing talhelper config file
+        sh: test -f {{.TALHELPER_CONFIG_FILE}}
+      - msg: Missing Sops config file
+        sh: test -f {{.SOPS_CONFIG_FILE}}
+      - msg: Missing Sops Age key file
+        sh: test -f {{.AGE_FILE}}
+  talos:
+    dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
+    cmds:
+      - |
+        if [ ! -f "{{.TALHELPER_SECRET_FILE}}" ]; then
+            talhelper gensecret > {{.TALHELPER_SECRET_FILE}}
+            sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}
+        fi
+      - |
+        talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
+      - talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="--insecure" | bash
+      - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
     preconditions:
       - msg: Missing talhelper config file
         sh: test -f {{.TALHELPER_CONFIG_FILE}}
@@ -68,7 +86,7 @@ tasks:
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
     cmds:
       - until kubectl wait --for=condition=Ready=False nodes --all --timeout=10m; do sleep 10; done
-      - helmfile --quiet --file {{.CLUSTER_DIR}}/bootstrap/helmfile.yaml apply --skip-diff-on-install --suppress-diff
+      - helmfile --quiet --file {{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml apply --skip-diff-on-install --suppress-diff
       - until kubectl wait --for=condition=Ready nodes --all --timeout=10m; do sleep 10; done
     preconditions:
       - msg: Missing kubeconfig

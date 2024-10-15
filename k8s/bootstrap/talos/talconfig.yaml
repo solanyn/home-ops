@@ -25,8 +25,8 @@ nodes:
     controlPlane: true
     networkInterfaces:
       - deviceSelector:
-          hardwareAddr: "b8:85:84:a2:5d:97"
-        dhcp: false
+          physical: true
+        dhcp: true
         addresses:
           - "192.168.68.11/24"
         routes:
@@ -44,6 +44,8 @@ patches:
   - "@./patches/global/kubelet.yaml"
   - "@./patches/global/openebs-local.yaml"
   - "@./patches/global/sysctl.yaml"
+  - "@./patches/global/udev.yaml"
+  - "@./patches/global/nfs.yaml"
 # Controller patches
 controlPlane:
   patches:
