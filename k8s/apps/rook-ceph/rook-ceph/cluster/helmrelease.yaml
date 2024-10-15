@@ -43,8 +43,8 @@ spec:
       enabled: true
       resources:
         requests:
-          cpu: null
-          memory: null
+          cpu: 10m
+          memory: 10Mi
     configOverride: |
       [global]
       bdev_enable_discard = true
@@ -91,54 +91,54 @@ spec:
           requests:
             # single node
             # cpu: 100m
-            cpu: null
+            cpu: 10m
             # memory: 512Mi
-            memory: null
+            memory: 10Mi
           limits:
             memory: 2Gi
         mon:
           requests:
             # single node
             # cpu: 50m
-            cpu: null
+            cpu: 10m
             # memory: 512Mi
-            memory: null
+            memory: 10Mi
           limits:
             memory: 1Gi
         osd:
           requests:
             # single node
             # cpu: 200m
-            cpu: null
+            cpu: 10m
             # memory: 2Gi
-            memory: null
+            memory: 10Mi
           limits:
             memory: 6Gi
         prepareosd:
           requests:
-            cpu: null
-            memory: null
+            cpu: 10m
+            memory: 10Mi
         mgr-sidecar:
           requests:
             # single node
             # cpu: 50m
-            cpu: null
+            cpu: 10m
             # memory: 128Mi
-            memory: null
+            memory: 10Mi
           limits:
             memory: 256Mi
         crashcollector:
           requests:
-            cpu: null
+            cpu: 10m
         logcollector:
           requests:
-            cpu: null
+            cpu: 10m
         cleanup:
           requests:
-            cpu: null
+            cpu: 10m
         exporter:
           requests:
-            cpu: null
+            cpu: 10m
     cephBlockPools:
       - name: ceph-blockpool
         spec:
@@ -201,9 +201,9 @@ spec:
               requests:
                 # single node
                 # cpu: 100m
-                cpu: null
+                cpu: 10m
                 # memory: 1Gi
-                memory: null
+                memory: 10Mi
               limits:
                 memory: 4Gi
         storageClass:
@@ -249,9 +249,9 @@ spec:
               requests:
                 # single node
                 # cpu: 100m
-                cpu: null
+                cpu: 10m
                 # memory: 1Gi
-                memory: null
+                memory: 10Mi
               limits:
                 memory: 2Gi
             instances: 2
