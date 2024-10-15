@@ -25,6 +25,9 @@ spec:
       retries: 3
   values:
     controller:
+      resources:
+        cpu: 10m
+        memory: 10Mi
       serviceMonitor:
         create: true
     webhook:

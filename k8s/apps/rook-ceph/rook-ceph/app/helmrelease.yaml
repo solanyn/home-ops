@@ -44,8 +44,6 @@ spec:
       - name : csi-provisioner
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 100m
             memory: 10Mi
             cpu: 50m
           limits:
@@ -53,8 +51,6 @@ spec:
       - name : csi-resizer
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 100m
             memory: 10Mi
             cpu: 50m
           limits:
@@ -62,8 +58,6 @@ spec:
       - name : csi-attacher
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 100m
             memory: 10Mi
             cpu: 50m
           limits:
@@ -71,8 +65,6 @@ spec:
       - name : csi-snapshotter
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 100m
             memory: 10Mi
             cpu: 50m
           limits:
@@ -80,15 +72,13 @@ spec:
       - name : csi-rbdplugin
         resource:
           requests:
-            # memory: 512Mi
+            cpu: 10m
             memory: 10Mi
           limits:
             memory: 1Gi
       - name : csi-omap-generator
         resource:
           requests:
-            # memory: 512Mi
-            # cpu: 250m
             memory: 10Mi
             cpu: 50m
           limits:
@@ -96,8 +86,6 @@ spec:
       - name : liveness-prometheus
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 50m
             memory: 10Mi
             cpu: 10m
           limits:
@@ -108,8 +96,6 @@ spec:
       - name : driver-registrar
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 50m
             memory: 10Mi
             cpu: 10m
           limits:
@@ -117,8 +103,6 @@ spec:
       - name : csi-rbdplugin
         resource:
           requests:
-            # memory: 512Mi
-            # cpu: 250m
             memory: 10Mi
             cpu: 50m
           limits:
@@ -126,8 +110,6 @@ spec:
       - name : liveness-prometheus
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 50m
             memory: 10Mi
             cpu: 10m
           limits:
@@ -138,8 +120,6 @@ spec:
       - name : csi-provisioner
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 100m
             memory: 10Mi
             cpu: 10m
           limits:
@@ -147,8 +127,6 @@ spec:
       - name : csi-resizer
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 100m
             memory: 10Mi
             cpu: 10m
           limits:
@@ -156,8 +134,6 @@ spec:
       - name : csi-attacher
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 100m
             memory: 10Mi
             cpu: 10m
           limits:
@@ -165,8 +141,6 @@ spec:
       - name : csi-snapshotter
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 100m
             memory: 10Mi
             cpu: 10m
           limits:
@@ -174,8 +148,6 @@ spec:
       - name : csi-cephfsplugin
         resource:
           requests:
-            # memory: 512Mi
-            # cpu: 250m
             memory: 10Mi
             cpu: 50m
           limits:
@@ -183,8 +155,6 @@ spec:
       - name : liveness-prometheus
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 50m
             memory: 10Mi
             cpu: 10m
           limits:
@@ -195,8 +165,6 @@ spec:
       - name : driver-registrar
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 50m
             memory: 10Mi
             cpu: 10m
           limits:
@@ -204,8 +172,6 @@ spec:
       - name : csi-cephfsplugin
         resource:
           requests:
-            # memory: 512Mi
-            # cpu: 250m
             memory: 10Mi
             cpu: 50m
           limits:
@@ -213,8 +179,6 @@ spec:
       - name : liveness-prometheus
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 50m
             memory: 10Mi
             cpu: 10m
           limits:
@@ -225,8 +189,6 @@ spec:
       - name : csi-provisioner
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 100m
             memory: 10Mi
             cpu: 10m
           limits:
@@ -234,8 +196,6 @@ spec:
       - name : csi-nfsplugin
         resource:
           requests:
-            # memory: 512Mi
-            # cpu: 250m
             memory: 10Mi
             cpu: 50m
           limits:
@@ -243,8 +203,6 @@ spec:
       - name : csi-attacher
         resource:
           requests:
-            # memory: 512Mi
-            # cpu: 250m
             memory: 10Mi
             cpu: 50m
           limits:
@@ -255,8 +213,6 @@ spec:
       - name : driver-registrar
         resource:
           requests:
-            # memory: 128Mi
-            # cpu: 50m
             memory: 10Mi
             cpu: 10m
           limits:
@@ -264,8 +220,6 @@ spec:
       - name : csi-nfsplugin
         resource:
           requests:
-            # memory: 512Mi
-            # cpu: 250m
             memory: 10Mi
             cpu: 50m
           limits:
