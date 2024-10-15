@@ -120,6 +120,9 @@ spec:
             memory: 10Mi
           limits:
             memory: 256Mi
+        crashcollector:
+          requests:
+            cpu: 10m
         logcollector:
           requests:
             cpu: 10m
