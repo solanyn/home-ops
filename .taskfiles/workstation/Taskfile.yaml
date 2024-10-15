@@ -1,8 +1,9 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 vars:
-  BREWFILE: "{{.ROOT_DIR}}/.taskfiles/Workstation/Brewfile"
+  BREWFILE: "{{.ROOT_DIR}}/.taskfiles/workstation/Brewfile"
   GENERIC_BIN_DIR: "{{.ROOT_DIR}}/.bin"
+  MINIJINJA_CMD: '{{ .HOME }}/.cargo/bin/minijinja-cli --env --trim-blocks --lstrip-blocks --autoescape=none --strict'
 tasks:
   direnv:
     desc: Run direnv hooks
@@ -22,9 +23,12 @@ tasks:
       - "{{.VIRTUAL_ENV}}/pyvenv.cfg"
     preconditions:
       - {msg: "Missing Pip requirements file", sh: "test -f {{.PIP_REQUIREMENTS_FILE}}"}
-  brew:
-    desc: Install workstation dependencies with Brew
-    cmd: brew bundle --file {{.BREWFILE}}
+  deps:
+    desc: Install workstation dependencies
+    cmds:
+      - brew bundle --file {{.BREWFILE}}
+      - curl -sSfL https://github.com/mitsuhiko/minijinja/releases/latest/download/minijinja-cli-installer.sh | sh
     preconditions:
       - {msg: "Missing Homebrew", sh: "command -v brew"}
       - {msg: "Missing Brewfile", sh: "test -f {{.BREWFILE}}"}
+      - {msg: "Missing uv", sh: "command -v uv"}
