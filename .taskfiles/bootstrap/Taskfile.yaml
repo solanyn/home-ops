@@ -27,7 +27,7 @@ tasks:
       - task: talos
       - task: kubeconfig
       - task: helm
-      - {task: helm, vars: *vars}
+      - {task: rook, vars: *vars}
       - task: flux
       - talosctl health --server=false
     preconditions:
@@ -67,8 +67,9 @@ tasks:
     desc: Bootstrap core apps needed for Talos
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
     cmds:
-      - until kubectl --kubeconfig {{.KUBECONFIG_FILE}} wait --for=condition=Ready=False nodes --all --timeout=600s; do sleep 10; done
-      - helmfile --kubeconfig {{.KUBECONFIG_FILE}} --file {{.HELMFILE_FILE}} apply --skip-diff-on-install --suppress-diff
+      - until kubectl wait --for=condition=Ready=False nodes --all --timeout=10m; do sleep 10; done
+      - helmfile --quiet --file {{.CLUSTER_DIR}}/bootstrap/helmfile.yaml apply --skip-diff-on-install --suppress-diff
+      - until kubectl wait --for=condition=Ready nodes --all --timeout=10m; do sleep 10; done
     preconditions:
       - msg: Missing kubeconfig
         sh: test -f {{.KUBECONFIG_FILE}}
@@ -89,8 +90,8 @@ tasks:
   rook-disk:
     internal: true
     cmds:
-      - $GOPATH/bin/envsubst < <(cat {{.BOOTSTRAP_RESOURCES_DIR}}/rook-disk-job.tmpl.yaml) | kubectl apply -f -
-      - bash {{.BOOTSTRAP_RESOURCES_DIR}}/wait-for-job.sh {{.JOB}} {{.NS}}
+      - '{{.MINIJINJA_CMD}} {{.BOOTSTRAP_RESOURCES_DIR}}/templates/rook-disk-job.yaml.j2 | kubectl apply -f -'
+      - bash {{.BOOTSTRAP_RESOURCES_DIR}}/scripts/wait-for-job.sh {{.JOB}} {{.NS}}
       - kubectl --namespace {{.NS}} wait job/{{.JOB}} --for condition=complete --timeout=1m
       - kubectl --namespace {{.NS}} logs job/{{.JOB}}
       - kubectl --namespace {{.NS}} delete job {{.JOB}}
@@ -103,14 +104,13 @@ tasks:
       NODE: '{{.NODE}}'
       NS: '{{.NS}}'
     preconditions:
-      - test -f $GOPATH/bin/envsubst
-      - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/wait-for-job.sh
-      - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/rook-disk-job.tmpl.yaml
+      - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/scripts/wait-for-job.sh
+      - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/templates/rook-disk-job.yaml.j2
   rook-data:
     internal: true
     cmds:
-      - $GOPATH/bin/envsubst < <(cat {{.BOOTSTRAP_RESOURCES_DIR}}/rook-data-job.tmpl.yaml) | kubectl apply -f -
-      - bash {{.BOOTSTRAP_RESOURCES_DIR}}/wait-for-job.sh {{.JOB}} {{.NS}}
+      - '{{.MINIJINJA_CMD}} {{.BOOTSTRAP_RESOURCES_DIR}}/templates/rook-data-job.yaml.j2 | kubectl apply -f -'
+      - bash {{.BOOTSTRAP_RESOURCES_DIR}}/scripts/wait-for-job.sh {{.JOB}} {{.NS}}
       - kubectl --namespace {{.NS}} wait job/{{.JOB}} --for condition=complete --timeout=1m
       - kubectl --namespace {{.NS}} logs job/{{.JOB}}
       - kubectl --namespace {{.NS}} delete job {{.JOB}}
@@ -123,9 +123,8 @@ tasks:
       NODE: '{{.NODE}}'
       NS: '{{.NS}}'
     preconditions:
-      - test -f $GOPATH/bin/envsubst
-      - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/wait-for-job.sh
-      - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/rook-data-job.tmpl.yaml
+      - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/scripts/wait-for-job.sh
+      - test -f {{.BOOTSTRAP_RESOURCES_DIR}}/templates/rook-data-job.yaml.j2
   flux:
     desc: Bootstrap Flux into a Kubernetes cluster
     cmds:
