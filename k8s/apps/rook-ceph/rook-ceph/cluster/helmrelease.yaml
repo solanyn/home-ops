@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: rook-ceph
-        namespace: flux-syste÷m
+        namespace: flux-system
   install:
     remediation:
       retries: 3
@@ -121,9 +121,6 @@ spec:
             memory: 10Mi
           limits:
             memory: 256Mi
-        crashcollector:
-          requests:
-            cpu: 10m
         logcollector:
           requests:
             cpu: 10m
