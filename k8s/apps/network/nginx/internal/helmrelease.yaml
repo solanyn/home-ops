@@ -72,8 +72,8 @@ spec:
         # requests:
         #   cpu: 100m
         requests:
-          cpu: null
-          memory: null
+          cpu: 10m
+          memory: 10Mi
         limits:
           memory: 500Mi
     defaultBackend:
