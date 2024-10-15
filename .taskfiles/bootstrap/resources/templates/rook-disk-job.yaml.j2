@@ -21,8 +21,6 @@ spec:
               sgdisk --zap-all {{ ENV.DISK }};
               dd if=/dev/zero of={{ ENV.DISK }} bs=1M count=100 oflag=direct;
               blkdiscard {{ ENV.DISK }};
-              rm -rf /dev/ceph-*;
-              rm -rf /dev/mapper/ceph--*;
               partprobe {{ ENV.DISK }};
           securityContext:
             privileged: true

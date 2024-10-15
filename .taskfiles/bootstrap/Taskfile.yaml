@@ -1,5 +1,6 @@
 version: "3"
 vars:
+  MINIJINJA_CMD: '{{ .HOME }}/.cargo/bin/minijinja-cli --env --trim-blocks --lstrip-blocks --autoescape=none --strict'
   TALHELPER_CLUSTER_DIR: "{{.KUBERNETES_DIR}}/bootstrap/talos/clusterconfig"
   TALHELPER_SECRET_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.sops.yaml"
   TALHELPER_CONFIG_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talconfig.yaml"
