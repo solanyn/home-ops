@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: rook-ceph
-        namespace: flux-system
+        namespace: flux-syste÷m
   install:
     remediation:
       retries: 3
@@ -54,6 +54,8 @@ spec:
       # single node
       mon:
         count: 1
+        # single node
+        allowMultiplePerNode: true
       crashCollector:
         disable: false
       dashboard:
@@ -64,6 +66,8 @@ spec:
       mgr:
         # single node
         count: 1
+        # single node
+        allowMultiplePerNode: true
         modules:
           - name: pg_autoscaler
             enabled: true
@@ -142,6 +146,7 @@ spec:
     cephBlockPools:
       - name: ceph-blockpool
         spec:
+          # single node
           failureDomain: host
           replicated:
             # single node
@@ -178,7 +183,8 @@ spec:
               # size: 3
               size: 1
           dataPools:
-            - failureDomain: host
+            # - failureDomain: host
+            - failureDomain: osd
               replicated:
                 # single node
                 # size: 3
