@@ -46,8 +46,7 @@ patches:
   - "@./patches/global/sysctl.yaml"
   - "@./patches/global/udev.yaml"
   - "@./patches/global/nfs.yaml"
-  - "@./patches/global/disable-kexec.yaml"
-  - "@./patches/global/pod-security.yaml"
+  - "@./patches/global/mayastor.yaml"
 # Controller patches
 controlPlane:
   patches:
