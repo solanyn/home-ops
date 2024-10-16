@@ -47,6 +47,7 @@ patches:
   - "@./patches/global/udev.yaml"
   - "@./patches/global/nfs.yaml"
   - "@./patches/global/disable-kexec.yaml"
+  - "@./patches/global/pod-security.yaml"
 # Controller patches
 controlPlane:
   patches:
