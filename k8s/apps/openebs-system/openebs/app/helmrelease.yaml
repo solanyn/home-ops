@@ -49,6 +49,8 @@ spec:
         isDefaultClass: false
         basePath: /var/openebs/local
     mayastor:
+      etcd:
+        replicaCount: 1
       csi:
         node:
           initContainers:
