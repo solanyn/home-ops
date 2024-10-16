@@ -54,6 +54,11 @@ spec:
         resources:
           requests:
             cpu: 50m
+      agents:
+        core:
+          resources:
+            requests:
+              cpu: 50m
       etcd:
         replicaCount: 1
       csi:
