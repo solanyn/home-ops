@@ -20,6 +20,9 @@ spec:
     remediation:
       retries: 3
   values:
+    obs:
+      callhome:
+        enabled: false
     engines:
       local:
         lvm:
