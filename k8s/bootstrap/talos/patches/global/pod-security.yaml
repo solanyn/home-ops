@@ -1,0 +1,12 @@
+machine:
+  files:
+    - op: add
+      path: /cluster/apiServer/admissionControl
+      value:
+        - name: PodSecurity
+          configuration:
+            apiVersion: pod-security.admission.config.k8s.io/v1
+            kind: PodSecurityConfiguration
+            exemptions:
+              namespaces:
+                - mayastor
