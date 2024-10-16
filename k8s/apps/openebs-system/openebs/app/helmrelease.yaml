@@ -20,6 +20,11 @@ spec:
     remediation:
       retries: 3
   values:
+    mayastor:
+      csi:
+        node:
+          initContainers:
+            enabled: false
     engines:
       local:
         lvm:
