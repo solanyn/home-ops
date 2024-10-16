@@ -49,6 +49,11 @@ spec:
         isDefaultClass: false
         basePath: /var/openebs/local
     mayastor:
+      io_engine:
+        cpuCount: "0.5"
+        resources:
+          requests:
+            cpu: 50m
       etcd:
         replicaCount: 1
       csi:
