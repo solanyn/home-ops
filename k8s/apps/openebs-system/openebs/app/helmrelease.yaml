@@ -20,11 +20,6 @@ spec:
     remediation:
       retries: 3
   values:
-    mayastor:
-      csi:
-        node:
-          initContainers:
-            enabled: false
     engines:
       local:
         lvm:
@@ -51,6 +46,10 @@ spec:
         isDefaultClass: false
         basePath: /var/openebs/local
     mayastor:
+      csi:
+        node:
+          initContainers:
+            enabled: false
       resources:
         requests:
           cpu: 50m
