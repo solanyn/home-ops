@@ -23,8 +23,8 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: rook-ceph-operator
-      namespace: rook-ceph
+    # - name: rook-ceph-operator
+    #   namespace: rook-ceph
     - name: snapshot-controller
       namespace: volsync-system
   values:
@@ -133,7 +133,7 @@ spec:
           requests:
             cpu: 10m
     cephBlockPools:
-      - name: ceph-blockpool
+      - name: openebs-hostpathpool
         spec:
           # single node
           failureDomain: osd
@@ -141,7 +141,7 @@ spec:
             size: 3
         storageClass:
           enabled: true
-          name: ceph-block
+          name: openebs-hostpath
           isDefault: true
           reclaimPolicy: Delete
           allowVolumeExpansion: true
@@ -158,7 +158,7 @@ spec:
             csi.storage.k8s.io/fstype: ext4
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
-      name: csi-ceph-blockpool
+      name: openebs-hostpath
       isDefault: false
       deletionPolicy: Delete
     cephFileSystems:
