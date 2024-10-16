@@ -28,7 +28,7 @@ spec:
           enabled: false
       replicated:
         mayastor:
-          enabled: false
+          enabled: true
     openebs-crds:
       csi:
         volumeSnapshots:
@@ -45,3 +45,32 @@ spec:
         name: openebs-hostpath
         isDefaultClass: false
         basePath: /var/openebs/local
+    mayastor:
+      resources:
+        requests:
+          cpu: 50m
+      operator:
+        resources:
+          requests:
+            cpu: 50m
+      ha:
+        resources:
+          requests:
+            cpu: 50m
+      node:
+        resources:
+          requests:
+            cpu: 50m
+      cluster:
+        resources:
+          requests:
+            cpu: 50m
+      apis:
+        rest:
+          resources:
+            requests:
+              cpu: 50m
+      stats:
+        resources:
+          requests:
+            cpu: 50m
