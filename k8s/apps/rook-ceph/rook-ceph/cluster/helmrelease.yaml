@@ -162,7 +162,7 @@ spec:
       isDefault: false
       deletionPolicy: Delete
     cephFileSystems:
-      - name: &cephFileSystemName ceph-filesystem
+      - name: &cephFileSystemName openebs-hostpath
         spec:
           metadataPool:
             replicated:
@@ -196,7 +196,7 @@ spec:
         storageClass:
           enabled: true
           isDefault: false
-          name: ceph-filesystem
+          name: openebs-hostpath
           pool: data0
           reclaimPolicy: Delete
           allowVolumeExpansion: true
@@ -211,7 +211,7 @@ spec:
             csi.storage.k8s.io/fstype: ext4
     cephFileSystemVolumeSnapshotClass:
       enabled: true
-      name: csi-ceph-filesystem
+      name: openebs-hostpath
       isDefault: false
       deletionPolicy: Delete
     cephObjectStores:
