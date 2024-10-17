@@ -11,4 +11,4 @@ spec:
   resources:
     requests:
       storage: "${VOLSYNC_CAPACITY}"
-  storageClassName: "${VOLSYNC_STORAGECLASS:-openebs-single-replica}"
+  storageClassName: "${VOLSYNC_STORAGECLASS:-ceph-block}"

@@ -6,7 +6,6 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./echo-server/ks.yaml
-  # - ./kopia/ks.yaml
   - ./home-assistant/ks.yaml
   - ./minio/ks.yaml
   - ./prowlarr/ks.yaml
