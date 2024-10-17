@@ -52,7 +52,7 @@ spec:
       osd_class_update_on_start = false
     cephClusterSpec:
       mon:
-        allowMultiplePerNode: true
+        count: 1
       crashCollector:
         disable: false
       dashboard:
@@ -61,7 +61,7 @@ spec:
         ssl: false
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       mgr:
-        # allowMultiplePerNode: true
+        count: 1
         modules:
           - name: pg_autoscaler
             enabled: true
