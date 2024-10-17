@@ -11,8 +11,8 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-    - name: openebs
-      namespace: openebs-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   path: ./k8s/apps/default/audiobookshelf/app
   prune: true
   sourceRef:
