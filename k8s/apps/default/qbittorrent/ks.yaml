@@ -25,5 +25,5 @@ spec:
       GATUS_SUBDOMAIN: qb
       VOLSYNC_CAPACITY: 2Gi
       VOLSYNC_ACCESSMODES: ReadWriteMany
-      VOLSYNC_STORAGECLASS: openebs-single-replica
-      VOLSYNC_SNAPSHOTCLASS: csi-mayastor-snapshotclass
+      VOLSYNC_STORAGECLASS: ceph-filesystem
+      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
