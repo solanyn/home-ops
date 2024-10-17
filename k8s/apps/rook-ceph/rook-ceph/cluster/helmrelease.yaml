@@ -61,7 +61,7 @@ spec:
         ssl: false
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       mgr:
-        allowMultiplePerNode: true
+        # allowMultiplePerNode: true
         modules:
           - name: pg_autoscaler
             enabled: true
@@ -133,15 +133,14 @@ spec:
           requests:
             cpu: 10m
     cephBlockPools:
-      - name: openebs-hostpathpool
+      - name: ceph-blockpool
         spec:
-          # single node
-          failureDomain: osd
+          failureDomain: host
           replicated:
-            size: 3
+            size: 1
         storageClass:
           enabled: true
-          name: openebs-hostpath
+          name: ceph-block
           isDefault: true
           reclaimPolicy: Delete
           allowVolumeExpansion: true
@@ -158,11 +157,11 @@ spec:
             csi.storage.k8s.io/fstype: ext4
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
-      name: openebs-hostpath
+      name: csi-ceph-blockpool
       isDefault: false
       deletionPolicy: Delete
     cephFileSystems:
-      - name: &cephFileSystemName openebs-hostpath
+      - name: &cephFileSystemName ceph-filesystem
         spec:
           metadataPool:
             replicated:
@@ -196,7 +195,7 @@ spec:
         storageClass:
           enabled: true
           isDefault: false
-          name: openebs-hostpath
+          name: ceph-filesystem
           pool: data0
           reclaimPolicy: Delete
           allowVolumeExpansion: true
@@ -211,7 +210,7 @@ spec:
             csi.storage.k8s.io/fstype: ext4
     cephFileSystemVolumeSnapshotClass:
       enabled: true
-      name: openebs-hostpath
+      name: csi-ceph-filesystem
       isDefault: false
       deletionPolicy: Delete
     cephObjectStores:
