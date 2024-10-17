@@ -165,11 +165,11 @@ spec:
         spec:
           metadataPool:
             replicated:
-              size: 3
+              size: 1
           dataPools:
-            - failureDomain: osd
+            - failureDomain: host
               replicated:
-                size: 3
+                size: 1
               name: data0
           metadataServer:
             activeCount: 1
@@ -217,11 +217,11 @@ spec:
       - name: ceph-objectstore
         spec:
           metadataPool:
-            failureDomain: osd
+            failureDomain: host
             replicated:
-              size: 3
+              size: 1
           dataPool:
-            failureDomain: osd
+            failureDomain: host
             erasureCoded:
               dataChunks: 2
               codingChunks: 1
