@@ -23,4 +23,4 @@ resources:
   - ./node-feature-discovery.yaml
   - ./piraeus.yaml
   - ./external-secrets.yaml
-  # - ./rook-ceph.yaml
+  - ./rook-ceph.yaml
