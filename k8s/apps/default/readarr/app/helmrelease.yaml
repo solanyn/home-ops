@@ -29,19 +29,10 @@ spec:
       readarr:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: readarr-secret
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/readarr-develop
-              tag: 0.3.32@sha256:1ffa6357a1e0f2dd9c608a1a2d4064e09b76d834059dda38414c734146cfa201
+              repository: ghcr.io/hotio/readarr:latest
             env:
               READARR__APP__INSTANCENAME: Readarr
               # READARR__APP__THEME: dark
@@ -52,7 +43,6 @@ spec:
               READARR__SERVER__PORT: &port 80
               READARR__UPDATE__BRANCH: develop
               TZ: "Australia/Sydney"
-            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: true
@@ -105,6 +95,8 @@ spec:
     persistence:
       config:
         existingClaim: readarr
+      cache:
+        existingClaim: readarr-cache
       tmp:
         type: emptyDir
       media:
