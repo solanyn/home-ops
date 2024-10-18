@@ -37,7 +37,7 @@ spec:
             env:
               CONFIG_PATH: /config
               METADATA_PATH: /config/metadata
-              PORT: &port 80
+              PORT: &port 13378
             probes:
               liveness: &probes
                 enabled: true
