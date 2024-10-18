@@ -31,21 +31,6 @@ spec:
       qbittorrent:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          git-sync:
-            image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.0.0
-            restartPolicy: Always
-            args:
-              - --repo=https://github.com/VueTorrent/VueTorrent
-              - --depth=1
-              - --branch=latest-release
-              - --period=3600
-              - --root=/themes/vuetorrent
-            volumeMounts:
-              - name: themes
-                mountPath: /themes
         containers:
           app:
             image:
@@ -76,6 +61,20 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 32Gi
+          git-sync:
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.0.0
+            restartPolicy: Always
+            args:
+              - --repo=https://github.com/VueTorrent/VueTorrent
+              - --depth=1
+              - --branch=latest-release
+              - --period=3600
+              - --root=/themes/vuetorrent
+            volumeMounts:
+              - name: themes
+                mountPath: /themes
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
