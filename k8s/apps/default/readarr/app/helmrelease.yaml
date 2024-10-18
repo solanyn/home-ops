@@ -32,7 +32,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/hotio/readarr:latest
+              repository: ghcr.io/hotio/readarr
+              tag: latest
             env:
               READARR__APP__INSTANCENAME: Readarr
               # READARR__APP__THEME: dark
