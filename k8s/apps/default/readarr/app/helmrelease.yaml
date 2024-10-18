@@ -40,8 +40,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/readarr-develop
-              tag: 0.3.32@sha256:1ffa6357a1e0f2dd9c608a1a2d4064e09b76d834059dda38414c734146cfa201
+              repository: docker pull ghcr.io/hotio/readarr:latest
             env:
               READARR__APP__INSTANCENAME: Readarr
               # READARR__APP__THEME: dark

@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: ghcr.io/hotio/jellyseerr
-              tag: release-2bb6c27@sha256:edfbd2dee24debf90b2faae5d734f69632fee8480e383ca464d3485387cd550b
+              tag: release-1.9.2@sha256:4062fb1a2df222569c0c7800b6eed79f7e81f5445a64d007c252658f424927d7
             env:
               TZ: Australia/Sydney
             probes:
