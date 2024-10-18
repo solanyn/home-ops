@@ -97,3 +97,6 @@ spec:
         globalMounts:
           - path: /media
             readOnly: true
+      metadata:
+        type: emptyDir
+        path: /config/metadata
