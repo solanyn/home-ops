@@ -35,7 +35,7 @@ spec:
               repository: stashapp/stash
               tag: v0.27.1@sha256:b2bfd8ddf706a69ea788e3ca9e6121cb35b9adb8a24c38fa9183cdeb8234c7da
             env:
-              PORT: &port 9999
+              PORT: &port 80
               STASH_CONFIG_FILE: /config/config.yml
               STASH_STASH: /data
               STASH_GENERATED: /config/generated
