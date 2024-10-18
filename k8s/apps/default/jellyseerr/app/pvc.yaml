@@ -12,7 +12,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jellyfin
+  name: jellyseerr
 spec:
   accessModes: ["ReadWriteMany"]
   resources:
