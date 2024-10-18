@@ -25,6 +25,7 @@ spec:
     controller:
       service:
         annotations:
+          external-dns.alpha.kubernetes.io/hostname: "internal.${SECRET_DOMAIN}"
           lbipam.cilium.io/ips: "192.168.68.201"
         externalTrafficPolicy: Cluster
       ingressClassResource:
@@ -37,13 +38,12 @@ spec:
             - key: ingress-class
               operator: In
               values: ["internal"]
+      allowSnippetAnnotations: true
       config:
         block-user-agents: "GPTBot,~*GPTBot*,ChatGPT-User,~*ChatGPT-User*,Google-Extended,~*Google-Extended*,CCBot,~*CCBot*,Omgilibot,~*Omgilibot*,FacebookBot,~*FacebookBot*" # taken from https://github.com/superseriousbusiness/gotosocial/blob/main/internal/web/robots.go
         client-body-buffer-size: 100M
         client-body-timeout: 120
         client-header-timeout: 120
-        disable-ipv6: "true"
-        disable-ipv6-dns: "true"
         enable-brotli: "true"
         enable-ocsp: "true"
         enable-real-ip: "true"
@@ -67,13 +67,20 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: "network/${SECRET_DOMAIN/./-}-tls"
+        default-ssl-certificate: network/solanyn-dev-tls
+      terminationGracePeriodSeconds: 120
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: ingress-nginx
+              app.kubernetes.io/instance: nginx-internal
+              app.kubernetes.io/component: controller
       resources:
-        # requests:
-        #   cpu: 100m
         requests:
           cpu: 10m
-          memory: 10Mi
         limits:
           memory: 500Mi
     defaultBackend:
