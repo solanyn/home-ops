@@ -137,7 +137,7 @@ spec:
     cephBlockPools:
       - name: ceph-blockpool
         spec:
-          failureDomain: host
+          failureDomain: osd
           replicated:
             size: 1
         storageClass:
@@ -169,7 +169,7 @@ spec:
             replicated:
               size: 1
           dataPools:
-            - failureDomain: host
+            - failureDomain: osd
               replicated:
                 size: 1
               name: data0
@@ -219,11 +219,11 @@ spec:
       - name: ceph-objectstore
         spec:
           metadataPool:
-            failureDomain: host
+            failureDomain: osd
             replicated:
               size: 1
           dataPool:
-            failureDomain: host
+            failureDomain: osd
             erasureCoded:
               dataChunks: 2
               codingChunks: 1
