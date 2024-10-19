@@ -39,25 +39,25 @@ spec:
             env:
               QBT_WEBUI_PORT: &port 8080
               QBT_TORRENTING_PORT: &torrentPort 50413
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+            # securityContext:
+            #   allowPrivilegeEscalation: false
+            #   readOnlyRootFilesystem: true
+            #   capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 memory: 256Mi
               limits:
                 memory: 32Gi
-          git-sync:
-            image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.0.0
-            args:
-              - --repo=https://github.com/VueTorrent/VueTorrent
-              - --depth=1
-              - --branch=latest-release
-              - --period=3600
-              - --root=/themes/vuetorrent
+                # git-sync:
+                #   image:
+                #     repository: registry.k8s.io/git-sync/git-sync
+                #     tag: v4.0.0
+                #   args:
+                #     - --repo=https://github.com/VueTorrent/VueTorrent
+                #     - --depth=1
+                #     - --branch=latest-release
+                #     - --period=3600
+                #     - --root=/themes/vuetorrent
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
