@@ -57,7 +57,7 @@ spec:
               - --depth=1
               - --ref=latest-release
               - --period=1h
-              - --root=/themes/vuetorrent
+              - --root=/config/vuetorrent
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
