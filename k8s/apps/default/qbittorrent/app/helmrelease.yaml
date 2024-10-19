@@ -48,7 +48,7 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 32Gi
-          git-sync:
+          vuetorrent:
             image:
               repository: registry.k8s.io/git-sync/git-sync
               tag: v4.0.0
@@ -58,6 +58,16 @@ spec:
               - --ref=latest-release
               - --period=1h
               - --root=/config/vuetorrent
+          iqbit:
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.0.0
+            args:
+              - --repo=https://github.com/ntoporcov/iQbit
+              - --depth=1
+              - --ref=master
+              - --period=1h
+              - --root=/config/iqbit
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
