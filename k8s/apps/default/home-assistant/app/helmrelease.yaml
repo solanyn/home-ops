@@ -39,7 +39,7 @@ spec:
             env:
               TZ: Australia/Sydney
               HASS_HTTP_TRUSTED_PROXY_1: 10.69.0.0/16
-              HASS_HTTP_TRUSTED_PROXY_2: "hass.${SECRET_DOMAIN}"
+              HASS_HTTP_TRUSTED_PROXY_2: 192.168.68.0/24
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

@@ -44,24 +44,11 @@ spec:
               READARR__SERVER__PORT: &port 80
               READARR__UPDATE__BRANCH: develop
               TZ: "Australia/Sydney"
-            # securityContext:
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: true
-            #   capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 memory: 256Mi
               limits:
                 memory: 4Gi
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 568
-    #     runAsGroup: 568
-    #     fsGroup: 568
-    #     fsGroupChangePolicy: OnRootMismatch
-    #     supplementalGroups: [10000]
-    #     seccompProfile: {type: RuntimeDefault}
     service:
       app:
         controller: readarr
