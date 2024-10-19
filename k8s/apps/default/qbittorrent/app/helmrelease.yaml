@@ -72,9 +72,6 @@ spec:
               - --branch=latest-release
               - --period=3600
               - --root=/themes/vuetorrent
-            volumeMounts:
-              - name: themes
-                mountPath: /themes
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
