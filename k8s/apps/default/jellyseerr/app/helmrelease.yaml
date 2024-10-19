@@ -38,19 +38,6 @@ spec:
               tag: release-1.9.2@sha256:4062fb1a2df222569c0c7800b6eed79f7e81f5445a64d007c252658f424927d7
             env:
               TZ: Australia/Sydney
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: &port 5055
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
             resources:
               # requests:
               #   cpu: 10m
@@ -63,7 +50,7 @@ spec:
         controller: jellyseerr
         ports:
           http:
-            port: *port
+            port: 8096
     ingress:
       app:
         annotations:

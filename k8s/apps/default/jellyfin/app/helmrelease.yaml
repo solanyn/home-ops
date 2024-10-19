@@ -38,19 +38,6 @@ spec:
             image:
               repository: jellyfin/jellyfin
               tag: 2024100705@sha256:95b380c6beafc0969ee97c89e0f6ac997811cb29b5281339f033edc5cc11fc05
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: 8096
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
             resources:
               requests:
                 memory: 256Mi
