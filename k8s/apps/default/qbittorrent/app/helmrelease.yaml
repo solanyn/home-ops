@@ -48,22 +48,12 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 32Gi
-          vuetorrent:
-            image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.0.0
-            args:
-              - --repo=https://github.com/VueTorrent/VueTorrent
-              - --depth=1
-              - --ref=latest-release
-              - --period=1h
-              - --root=/config
           iqbit:
             image:
               repository: registry.k8s.io/git-sync/git-sync
               tag: v4.0.0
             args:
-              - --repo=https://github.com/ntoporcov/iQbit
+              - --repo=https://github.com/ntoporcov/iQbit.git
               - --depth=1
               - --ref=master
               - --period=1h
