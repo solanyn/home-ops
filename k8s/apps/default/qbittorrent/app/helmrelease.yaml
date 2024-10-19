@@ -55,8 +55,8 @@ spec:
             args:
               - --repo=https://github.com/VueTorrent/VueTorrent
               - --depth=1
-              - --branch=latest-release
-              - --period=3600
+              - --ref=latest-release
+              - --period=1h
               - --root=/themes/vuetorrent
     defaultPodOptions:
       securityContext:
