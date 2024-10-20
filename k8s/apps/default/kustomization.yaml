@@ -10,6 +10,7 @@ resources:
   - ./minio/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
+  - ./omegabrr/ks.yaml
   - ./autobrr/ks.yaml
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
