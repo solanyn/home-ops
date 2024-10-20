@@ -48,7 +48,7 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 32Gi
-          iqbit:
+          vuetorrent:
             image:
               repository: registry.k8s.io/git-sync/git-sync
               tag: v4.0.0
