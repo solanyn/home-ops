@@ -31,6 +31,7 @@ spec:
       home-assistant:
         annotations:
           reloader.stakater.com/auto: "true"
+          lbipam.cilium.io/ips: 192.168.68.126
         containers:
           app:
             image:
