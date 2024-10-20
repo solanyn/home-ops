@@ -44,6 +44,9 @@ spec:
               READARR__SERVER__PORT: &port 80
               READARR__UPDATE__BRANCH: develop
               TZ: "Australia/Sydney"
+            envFrom:
+              - secretRef:
+                  name: readarr-secret
             resources:
               requests:
                 memory: 256Mi
