@@ -53,9 +53,9 @@ spec:
               repository: registry.k8s.io/git-sync/git-sync
               tag: v4.0.0
             args:
-              - --repo=https://github.com/ntoporcov/iQbit.git
+              - --repo=https://github.com/VueTorrent/VueTorrent
               - --depth=1
-              - --ref=master
+              - --ref=latest-release
               - --period=1h
               - --root=/config
     defaultPodOptions:
