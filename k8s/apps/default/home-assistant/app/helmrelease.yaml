@@ -32,7 +32,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
           lbipam.cilium.io/ips: 192.168.68.126
-        hostNetwork: true
         containers:
           app:
             image:
@@ -71,6 +70,7 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
+      hostNetwork: true
     service:
       app:
         controller: home-assistant

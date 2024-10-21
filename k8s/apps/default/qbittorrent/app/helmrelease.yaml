@@ -31,7 +31,6 @@ spec:
       qbittorrent:
         annotations:
           reloader.stakater.com/auto: "true"
-        hostNetwork: true
         containers:
           app:
             image:
@@ -69,6 +68,7 @@ spec:
         supplementalGroups: [10000]
         seccompProfile: {type: RuntimeDefault}
       terminationGracePeriodSeconds: 300
+      hostNetwork: true
     service:
       app:
         controller: qbittorrent
