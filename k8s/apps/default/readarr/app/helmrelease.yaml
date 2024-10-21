@@ -38,7 +38,7 @@ spec:
               - secretRef:
                   name: readarr-secret
             env:
-              INIT_POSTGRES_DBNAME: readarr-main
+              INIT_POSTGRES_DBNAME: readarr_main
           init-cache-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
