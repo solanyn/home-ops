@@ -30,13 +30,26 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          init-db:
+          init-main-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
             envFrom: &envFrom
               - secretRef:
                   name: readarr-secret
+            env:
+              READARR__POSTGRES__MAINDB: &dbName readarr_main
+              INIT_POSTGRES_DBNAME: *dbName
+          init-cache-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: readarr-secret
+            env:
+              READARR__POSTGRES__MAINDB: &dbName readarr_cache
+              INIT_POSTGRES_DBNAME: *dbName
         containers:
           app:
             image:
