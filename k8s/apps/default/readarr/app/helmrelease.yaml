@@ -48,7 +48,7 @@ spec:
               - secretRef:
                   name: readarr-secret
             env:
-              READARR__POSTGRES__MAINDB: &dbName readarr_cache
+              READARR__POSTGRES__CACHEDB: &dbName readarr_cache
               INIT_POSTGRES_DBNAME: *dbName
         containers:
           app:
