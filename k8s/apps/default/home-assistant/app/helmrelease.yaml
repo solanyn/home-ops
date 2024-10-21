@@ -32,6 +32,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
           lbipam.cilium.io/ips: 192.168.68.126
+        hostNetwork: true
         containers:
           app:
             image:
