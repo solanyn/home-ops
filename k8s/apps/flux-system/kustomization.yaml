@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./alerts/ks.yaml
-  - ./webhooks/ks.yaml
+  - ./pushover/ks.yaml
