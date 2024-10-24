@@ -46,4 +46,4 @@ spec:
                   - name: repository
                     nfs:
                       server: nfs.internal
-                      path: /mnt/nfs/backups/volsync
+                      path: /mnt/nfs/backups/
