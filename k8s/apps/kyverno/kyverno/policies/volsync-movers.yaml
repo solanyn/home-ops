@@ -45,5 +45,5 @@ spec:
                 volumes:
                   - name: repository
                     nfs:
-                      server: expanse.internal
-                      path: /eros/Volsync
+                      server: nfs.internal
+                      path: /mnt/nfs/
