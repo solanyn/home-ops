@@ -24,4 +24,4 @@ resources:
   - ./piraeus.yaml
   - ./external-secrets.yaml
   - ./rook-ceph.yaml
-  - ./kyverno.yml
+  - ./kyverno.yaml
