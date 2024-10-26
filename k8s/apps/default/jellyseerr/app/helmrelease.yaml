@@ -50,7 +50,7 @@ spec:
         controller: jellyseerr
         ports:
           http:
-            port: 8096
+            port: 5055
     ingress:
       app:
         annotations:
