@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   # - ./claim.yaml
   - ./nfs.yaml
-  - ./r2.yaml
+  - ./b2.yaml
