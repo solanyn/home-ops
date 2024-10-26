@@ -37,7 +37,7 @@ spec:
           app:
             image:
               repository: jellyfin/jellyfin
-              tag: 2024101405@sha256:87ddeb24e3a45bb8167f602331232bcc8f0c0009568683663a5514ee1969a5ef
+              tag: 2024102105@sha256:2825e1416b75b6785f4e0916b8b0c5e6fa4cc41c6371034afafc97f0661e18c5
             resources:
               requests:
                 memory: 256Mi
