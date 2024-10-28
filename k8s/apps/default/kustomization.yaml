@@ -19,3 +19,4 @@ resources:
   - ./stash/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
+  - ./filebrowser/ks.yaml
