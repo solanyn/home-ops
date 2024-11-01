@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: redis
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: redis
+      version: 11.0.6
+      sourceRef:
+        kind: HelmRepository
+        name: redis
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: openebs
+      namespace: openebs-system
+  values:
+    global:
+      redis:
+        password: "1234"
+    persistence:
+      size: 1Gi
+    cluster:
+      nodes: 3
