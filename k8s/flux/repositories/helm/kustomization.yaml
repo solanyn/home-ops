@@ -25,3 +25,7 @@ resources:
   - ./external-secrets.yaml
   - ./rook-ceph.yaml
   - ./kyverno.yaml
+  - ./immich.yaml
+  - ./redis.yaml
+  - ./druid.yaml
+  - ./kafka.yaml
