@@ -4,5 +4,6 @@ metadata:
   name: redis
   namespace: flux-system
 spec:
+  type: oci
   interval: 1h
   url: oci://registry-1.docker.io/bitnamicharts/redis-cluster
