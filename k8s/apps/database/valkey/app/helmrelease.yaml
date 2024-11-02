@@ -2,13 +2,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: redis
+  name: valkey
 spec:
   interval: 30m
   chart:
     spec:
-      chart: redis
-      version: 11.0.6
+      chart: valkey-cluster
+      version: 2.0.1
       sourceRef:
         kind: HelmRepository
         name: redis
@@ -25,10 +25,9 @@ spec:
     - name: openebs
       namespace: openebs-system
   values:
-    global:
-      redis:
-        password: "1234"
     persistence:
       size: 1Gi
+      storageClass: openebs-hostpath
     cluster:
       nodes: 3
+      replicas: 0
