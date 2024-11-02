@@ -44,8 +44,8 @@ spec:
                 volumes:
                   - name: repository
                     nfs:
-                      server: expanse.internal
-                      path: /eros/Volsync
+                      server: 192.168.68.10
+                      path: /mnt/nfs/backups/
     - name: mutate-volsync-dst-movers
       match:
         any:
