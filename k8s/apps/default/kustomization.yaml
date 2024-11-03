@@ -15,8 +15,9 @@ resources:
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./readarr/ks.yaml
-  - ./audiobookshelf/ks.yaml
+  - ./komga/ks.yaml
   - ./stash/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./filebrowser/ks.yaml
+  # - ./immich/ks.yaml

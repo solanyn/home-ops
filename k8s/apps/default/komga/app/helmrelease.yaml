@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: audiobookshelf
+  name: &app komga
 spec:
   interval: 30m
   chart:
@@ -26,24 +26,20 @@ spec:
       namespace: rook-ceph
   values:
     controllers:
-      audiobookshelf:
+      komga:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: advplyr/audiobookshelf
-              tag: 2.16.2@sha256:acfda2baa0dce0c7a31e1703b8cd694e59cd3f3de9cfabe5b7e9dd2029896169
+              repository: gotson/komga
+              tag: 1.14.1@sha256:6e9336c7790c8481afa767e6f39395b720746f5f86ce733547c58799016adf8e
             env:
               CONFIG_PATH: /config
-              PORT: &port 13378
-            resources:
-              requests:
-                memory: 256Mi
-                #   cpu: 10m
+              PORT: &port 25600
     service:
       app:
-        controller: audiobookshelf
+        controller: komga
         ports:
           http:
             port: *port
@@ -61,7 +57,7 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: audiobookshelf
+        existingClaim: *app
         globalMounts:
           - path: /config
       media:
@@ -69,5 +65,5 @@ spec:
         server: 192.168.68.10
         path: /mnt/nfs/media
         globalMounts:
-          - path: /media
+          - path: /data
             readOnly: true
