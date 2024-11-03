@@ -11,11 +11,11 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/flux-system/addons/app
+  path: ./k8s/apps/flux-system/addons/app
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: homelab
   wait: false
   interval: 30m
   timeout: 5m
