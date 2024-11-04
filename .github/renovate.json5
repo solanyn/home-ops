@@ -12,7 +12,11 @@
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
   "rebaseWhen": "conflicted",
-  "schedule": ["hourly"],
+  "automergeSchedule": [
+    "every weekend"
+  ],
+  "timezone": "Australia/Sydney",
+  "schedule": ["after 5pm"],
   "ignorePaths": ["**/*.sops.*"],
   "flux": {
     "fileMatch": ["(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$"]
