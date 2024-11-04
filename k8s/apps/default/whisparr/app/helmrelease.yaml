@@ -44,30 +44,19 @@ spec:
               tag: v3@sha256:c102e9cfc32588bdf259bf9ec4615f40506a600b3578e100a6cf8fa2f17f409e
             env:
               WHISPARR__APP__INSTANCENAME: whisparr
-              # WHISPARR__APP__THEME: dark
+              WHISPARR__APP__THEME: dark
               WHISPARR__AUTH__METHOD: External
               WHISPARR__AUTH__REQUIRED: DisabledForLocalAddresses
               WHISPARR__LOG__DBENABLED: "False"
               WHISPARR__LOG__LEVEL: info
               WHISPARR__SERVER__PORT: &port 80
               TZ: Australia/Sydney
+              PUID: 568
+              PGID: 568
             envFrom: *envFrom
-            securityContext:
-              allowPrivilegeEscalation: true
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
             resources:
               limits:
                 memory: 4Gi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
-        seccompProfile: {type: RuntimeDefault}
     service:
       app:
         controller: whisparr
