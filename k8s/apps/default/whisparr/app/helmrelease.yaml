@@ -47,7 +47,7 @@ spec:
               - secretRef:
                   name: whisparr-secret
             env:
-              INIT_POSTGRES_DBNAME: whisparr_log
+              INIT_POSTGRES_DBNAME: whisparr-log
         containers:
           app:
             image:
