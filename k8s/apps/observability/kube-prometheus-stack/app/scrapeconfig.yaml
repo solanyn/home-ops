@@ -6,7 +6,7 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - nfs.internal:9100
+        - 192.168.68.10:9100
   metricsPath: /metrics
   relabelings:
     - action: replace
