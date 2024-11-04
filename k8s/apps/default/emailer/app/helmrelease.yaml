@@ -29,7 +29,7 @@ spec:
           reloader.stakater.com/auto: "true"
         cronjob:
           timeZone: Australia/Sydney
-          schedule: "0 11 * * SUN"
+          schedule: "0 13 * * SUN"
         containers:
           app:
             image:
