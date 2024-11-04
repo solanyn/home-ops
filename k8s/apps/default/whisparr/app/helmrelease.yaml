@@ -30,13 +30,24 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          init-db:
+          init-main-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
             envFrom: &envFrom
               - secretRef:
                   name: whisparr-secret
+            env:
+              INIT_POSTGRES_DBNAME: whisparr_main
+          init-log-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: whisparr-secret
+            env:
+              INIT_POSTGRES_DBNAME: whisparr_log
         containers:
           app:
             image:
@@ -49,7 +60,7 @@ spec:
               WHISPARR__AUTH__REQUIRED: DisabledForLocalAddresses
               WHISPARR__LOG__DBENABLED: "False"
               WHISPARR__LOG__LEVEL: info
-              WHISPARR__SERVER__PORT: &port 80
+              WHISPARR__SERVER__PORT: &port 6969
               TZ: Australia/Sydney
               PUID: 568
               PGID: 568
