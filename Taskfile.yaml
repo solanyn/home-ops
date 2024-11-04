@@ -23,14 +23,14 @@ env:
   SOPS_AGE_KEY_FILE: "{{.AGE_FILE}}"
   VIRTUAL_ENV: "{{.ROOT_DIR}}/.venv"
 includes:
-  bootstrap: .taskfiles/bootstrap
-  kubernetes: .taskfiles/kubernetes
-  flux: .taskfiles/flux
-  repository: .taskfiles/repository
-  talos: .taskfiles/talos
-  sops: .taskfiles/sops
-  workstation: .taskfiles/workstation
-  volsync: .taskfiles/volsync
+  b: .taskfiles/bootstrap
+  k: .taskfiles/kubernetes
+  f: .taskfiles/flux
+  r: .taskfiles/repository
+  t: .taskfiles/talos
+  s: .taskfiles/sops
+  w: .taskfiles/workstation
+  v: .taskfiles/volsync
 tasks:
   default: task --list
   init:
