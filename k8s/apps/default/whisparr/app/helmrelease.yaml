@@ -53,12 +53,10 @@ spec:
               TZ: Australia/Sydney
             envFrom: *envFrom
             securityContext:
-              allowPrivilegeEscalation: false
+              allowPrivilegeEscalation: true
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             resources:
-              requests:
-                memory: 256Mi
               limits:
                 memory: 4Gi
     defaultPodOptions:
