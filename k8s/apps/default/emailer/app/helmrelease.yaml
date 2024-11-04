@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/emailer
-              tag: main@sha256:655cd19e46599c73b2c6e7a59038e08cd71a8a800fa2529ac532ccf242075ab0
+              tag: main@sha256:737e48b891bc6de5752c2d58d1c82e5c2a42a35b53f6f8503e14e23de544c132
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
