@@ -5,4 +5,4 @@ metadata:
   namespace: flux-system
 spec:
   interval: 1h
-  url: https://spotahome.github.io/redis-operator
+  url: https://ot-container-kit.github.io/helm-charts/
