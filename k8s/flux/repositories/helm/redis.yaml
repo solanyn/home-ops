@@ -1,9 +1,8 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: valkey
+  name: redis
   namespace: flux-system
 spec:
-  type: oci
   interval: 1h
-  url: oci://ghcr.io/hyperspike/valkey-operator
+  url: https://spotahome.github.io/redis-operator
