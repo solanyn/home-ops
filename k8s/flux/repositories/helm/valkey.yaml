@@ -6,4 +6,4 @@ metadata:
 spec:
   type: oci
   interval: 1h
-  url: oci://registry-1.docker.io/bitnamicharts/valkey
+  url: oci://ghcr.io/hyperspike/valkey-operator

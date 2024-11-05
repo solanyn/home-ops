@@ -7,7 +7,7 @@ spec:
   interval: 30m
   chart:
     spec:
-      chart: valkey-cluster
+      chart: valkey
       version: 2.0.0
       sourceRef:
         kind: HelmRepository
@@ -24,10 +24,3 @@ spec:
   dependsOn:
     - name: openebs
       namespace: openebs-system
-  values:
-    persistence:
-      size: 1Gi
-      storageClass: openebs-hostpath
-    cluster:
-      nodes: 3
-      replicas: 0
