@@ -30,4 +30,4 @@ spec:
         resources:
           requests:
             storage: 500Mi
-            storageClassName: openebs-hostpath
+        storageClassName: openebs-hostpath
