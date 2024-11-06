@@ -5,4 +5,8 @@ ingress:
     service: https://nginx-external-controller.network.svc.cluster.local:443
   - hostname: "*.${SECRET_HOME_DOMAIN}"
     service: https://nginx-external-controller.network.svc.cluster.local:443
+  - hostname: "${SECRET_DEV_DOMAIN}"
+    service: https://nginx-external-controller.network.svc.cluster.local:443
+  - hostname: "*.${SECRET_DEV_DOMAIN}"
+    service: https://nginx-external-controller.network.svc.cluster.local:443
   - service: http_status:404
