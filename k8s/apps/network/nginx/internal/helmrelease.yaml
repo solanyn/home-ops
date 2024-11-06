@@ -25,7 +25,7 @@ spec:
     controller:
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "internal.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/hostname: "internal.${SECRET_HOME_DOMAIN}"
           lbipam.cilium.io/ips: "192.168.68.201"
         externalTrafficPolicy: Cluster
       ingressClassResource:
@@ -67,7 +67,7 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: "network/${SECRET_DOMAIN//./-}-tls"
+        default-ssl-certificate: "network/${SECRET_HOME_DOMAIN//./-}-tls"
       terminationGracePeriodSeconds: 120
       topologySpreadConstraints:
         - maxSkew: 1

@@ -34,10 +34,10 @@ spec:
     ingress:
       dashboard:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_HOME_DOMAIN}"
         ingressClassName: internal
         host:
-          name: "rook.${SECRET_DOMAIN}"
+          name: "rook.${SECRET_HOME_DOMAIN}"
           path: /
     toolbox:
       enabled: true

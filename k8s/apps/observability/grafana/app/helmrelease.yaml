@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: grafana
-      version: 8.5.12
+      version: 8.5.11
       sourceRef:
         kind: HelmRepository
         name: grafana
@@ -31,7 +31,7 @@ spec:
       GF_EXPLORE_ENABLED: true
       GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS: natel-discrete-panel,pr0ps-trackmap-panel,panodata-map-panel
       GF_SECURITY_ANGULAR_SUPPORT_ENABLED: true
-      GF_SERVER_ROOT_URL: "https://grafana.${SECRET_DOMAIN}"
+      GF_SERVER_ROOT_URL: "https://grafana.${SECRET_HOME_DOMAIN}"
     grafana.ini:
       analytics:
         check_for_updates: false
@@ -212,9 +212,9 @@ spec:
     ingress:
       enabled: true
       annotations:
-        external-dns.alpha.kubernetes.io/target: "internal.${SECRET_DOMAIN}"
+        external-dns.alpha.kubernetes.io/target: "internal.${SECRET_HOME_DOMAIN}"
       ingressClassName: internal
-      hosts: ["grafana.${SECRET_DOMAIN}"]
+      hosts: ["grafana.${SECRET_HOME_DOMAIN}"]
     persistence:
       enabled: false
     testFramework:
