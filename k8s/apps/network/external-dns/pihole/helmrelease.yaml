@@ -43,7 +43,7 @@ spec:
       - --pihole-tls-skip-verify
     policy: sync
     sources: ["service", "ingress"]
-    domainFilters: ["${SECRET_DOMAIN}"]
+    domainFilters: ["${SECRET_HOME_DOMAIN}"]
     serviceMonitor:
       enabled: true
     podAnnotations:
