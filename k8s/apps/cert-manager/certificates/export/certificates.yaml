@@ -2,15 +2,15 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${SECRET_DOMAIN//./-}"
+  name: "${SECRET_HOME_DOMAIN//./-}"
 spec:
-  secretName: "${SECRET_DOMAIN//./-}-tls"
+  secretName: "${SECRET_HOME_DOMAIN//./-}-tls"
   privateKey:
     rotationPolicy: Always
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "${SECRET_DOMAIN}"
+  commonName: "${SECRET_HOME_DOMAIN}"
   dnsNames:
-    - "${SECRET_DOMAIN}"
-    - "*.${SECRET_DOMAIN}"
+    - "${SECRET_HOME_DOMAIN}"
+    - "*.${SECRET_HOME_DOMAIN}"
