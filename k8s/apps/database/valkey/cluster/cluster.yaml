@@ -1,0 +1,9 @@
+apiVersion: hyperspike.io/v1
+kind: Valkey
+spec:
+  clusterDomain: valkey.${SECRET_HOME_DOMAIN}"
+  nodes: 1
+  prometheus: true
+  replicas: 1
+  volumePermissions: true
+  tls: true
