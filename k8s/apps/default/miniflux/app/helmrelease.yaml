@@ -41,7 +41,7 @@ spec:
               repository: ghcr.io/miniflux/miniflux
               tag: 2.2.2-distroless@sha256:87b040bcb034f70bbeebbf7286b8e896bf5466aaa9634d362d3c3051e167e32d
             env:
-              BASE_URL: https://miniflux.goyangi.cloud
+              BASE_URL: https://miniflux.${SECRET_HOME_DOMAIN}
               CREATE_ADMIN: "1"
               # DEBUG: "1"
               LOG_DATE_TIME: "1"
