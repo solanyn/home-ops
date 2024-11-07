@@ -8,6 +8,7 @@ resources:
   - ./echo-server/ks.yaml
   - ./home-assistant/ks.yaml
   - ./minio/ks.yaml
+  - ./kopia/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./omegabrr/ks.yaml
@@ -16,6 +17,9 @@ resources:
   - ./sonarr/ks.yaml
   - ./readarr/ks.yaml
   - ./whisparr/ks.yaml
+  - ./recyclarr/ks.yaml
+  - ./bazarr/ks.yaml
+  - ./cross-seed/ks.yaml
   - ./komga/ks.yaml
   - ./stash/ks.yaml
   - ./jellyfin/ks.yaml
