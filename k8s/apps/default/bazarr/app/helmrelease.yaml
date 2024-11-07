@@ -93,10 +93,10 @@ spec:
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.devbu.io
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
         className: internal
         hosts:
-          - host: bazarr.devbu.io
+          - host: bazarr.${SECRET_HOME_DOMAIN}
             paths:
               - path: /
                 service:

@@ -37,11 +37,6 @@ spec:
             env:
               TZ: Australia/Sydney
             args: ["daemon"]
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
