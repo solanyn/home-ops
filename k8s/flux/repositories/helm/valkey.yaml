@@ -6,4 +6,4 @@ metadata:
 spec:
   type: oci
   interval: 5m
-  url: oci://ghcr.io/hyperspike/valkey-operator
+  url: oci://ghcr.io/hyperspike
