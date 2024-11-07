@@ -25,5 +25,6 @@ resources:
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./filebrowser/ks.yaml
+  - ./miniflux/ks.yaml
   - ./emailer/ks.yaml
   # - ./immich/ks.yaml
