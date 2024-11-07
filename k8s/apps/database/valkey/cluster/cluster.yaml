@@ -1,5 +1,7 @@
 apiVersion: hyperspike.io/v1
 kind: Valkey
+metadata:
+  name: valkey-cluster
 spec:
   clusterDomain: valkey.${SECRET_HOME_DOMAIN}"
   nodes: 1
