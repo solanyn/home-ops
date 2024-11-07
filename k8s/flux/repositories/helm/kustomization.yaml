@@ -26,6 +26,6 @@ resources:
   - ./rook-ceph.yaml
   - ./kyverno.yaml
   - ./immich.yaml
-  - ./redis.yaml
+  - ./valkey.yaml
   - ./druid.yaml
   - ./kafka.yaml
