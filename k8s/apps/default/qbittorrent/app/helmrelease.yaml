@@ -45,7 +45,17 @@ spec:
               CROSS_SEED_PORT: 80
               CROSS_SEED_SLEEP_INTERVAL: 0
               PUSHOVER_ENABLED: true
-            securityContext:
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
@@ -57,13 +67,18 @@ spec:
           vuetorrent:
             image:
               repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.3.0
-            args:
-              - --repo=https://github.com/VueTorrent/VueTorrent
-              - --depth=1
-              - --ref=latest-release
-              - --period=1h
-              - --root=/config
+              tag: v4.3.0@sha256:5813a7da0ccd58f6dfb9d5e48480e2877355e6bb3d7d81c8908eb1adc3a23b6e
+            env:
+              GITSYNC_REPO: https://github.com/VueTorrent/VueTorrent
+              GITSYNC_REF: latest-release
+              GITSYNC_PERIOD: 24h
+              GITSYNC_ROOT: /config
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+            securityContext: *securityContext
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true

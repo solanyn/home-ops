@@ -45,13 +45,26 @@ spec:
               AUTOBRR__PORT: &port 80
               AUTOBRR__LOG_LEVEL: INFO
             envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthz/liveness
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             resources:
-              # requests:
-              #   cpu: 10m
+              requests:
+                cpu: 10m
               limits:
                 memory: 256Mi
     defaultPodOptions:
