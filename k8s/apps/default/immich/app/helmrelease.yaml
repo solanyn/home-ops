@@ -95,7 +95,7 @@ spec:
         intel.feature.node.kubernetes.io/gpu: "true"
     service:
       app:
-        controller: *app
+        controller: immich
         type: LoadBalancer
         ports:
           http:
