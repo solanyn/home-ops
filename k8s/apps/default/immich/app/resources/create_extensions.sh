@@ -31,6 +31,7 @@ until pg_isready; do
 done
 
 printf "\e[1;32m%-6s\e[m\n" "Creating extensions..."
-psql --command "CREATE EXTENSION cube;"
-psql --command "CREATE EXTENSION earthdistance;"
-psql --command "CREATE EXTENSION vectors;"
+psql --command "CREATE EXTENSION IF NOT EXISTS cube;"
+psql --command "CREATE EXTENSION IF NOT EXISTS earthdistance;"
+psql --command 'ALTER SYSTEM SET search_path TO "$user", public, vectors;'
+psql --command "CREATE EXTENSION IF NOT EXISTS vectors;"
