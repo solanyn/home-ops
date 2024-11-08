@@ -41,16 +41,16 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: immich-secret
-                  # init-db-extensions:
-                  #   image:
-                  #     repository: ghcr.io/onedr0p/postgres-init
-                  #     tag: 16
-                  #   command: ["/bin/sh", "-c"]
-                  #   args:
-                  #     - /scripts/create_extensions.sh
-                  #   envFrom: &envFrom
-                  #     - secretRef:
-                  #         name: immich-secret
+          init-db-extensions:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            command: ["/bin/sh", "-c"]
+            args:
+              - /scripts/create_extensions.sh
+            envFrom: &envFrom
+              - secretRef:
+                  name: immich-secret
         containers:
           app:
             image:
@@ -94,7 +94,6 @@ spec:
     service:
       app:
         controller: immich
-        type: LoadBalancer
         ports:
           http:
             port: *port
