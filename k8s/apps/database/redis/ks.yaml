@@ -32,7 +32,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: valkey
+    - name: redis
   path: ./k8s/apps/database/redis/cluster
   prune: true
   sourceRef:
