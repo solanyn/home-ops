@@ -8,7 +8,9 @@ spec:
     runAsUser: 1000
     fsGroup: 1000
   pdb:
-    enabled: false
+    enabled: true
+  externalService:
+    enabled: true
   kubernetesConfig:
     image: quay.io/opstree/redis:v7.0.12
     imagePullPolicy: IfNotPresent
