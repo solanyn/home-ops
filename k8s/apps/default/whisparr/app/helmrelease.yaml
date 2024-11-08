@@ -65,9 +65,35 @@ spec:
               PUID: 568
               PGID: 568
             envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            # securityContext:
+            #   allowPrivilegeEscalation: false
+            #   readOnlyRootFilesystem: true
+            #   capabilities: { drop: ["ALL"] }
             resources:
               limits:
                 memory: 4Gi
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsNonRoot: true
+    #     runAsUser: 568
+    #     runAsGroup: 568
+    #     fsGroup: 568
+    #     fsGroupChangePolicy: OnRootMismatch
+    #     supplementalGroups: [10000]
+    #     seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: whisparr
