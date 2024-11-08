@@ -15,7 +15,6 @@ resources:
   - ./ingress-nginx.yaml
   - ./k8s-gateway.yaml
   - ./tailscale.yaml
-  - ./actions-runner-controller.yaml
   - ./backube.yaml
   - ./cloudnative-pg.yaml
   - ./grafana.yaml
