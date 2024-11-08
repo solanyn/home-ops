@@ -30,7 +30,7 @@ spec:
       namespace: volsync-system
   values:
     controllers:
-      jellyfin:
+      immich:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
