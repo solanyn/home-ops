@@ -38,11 +38,11 @@ spec:
   targetNamespace: default
   dependsOn:
     - name: external-secrets-stores
-  path: ./kubernetes/main/apps/default/plex/tools
+  path: ./k8s/apps/default/plex/tools
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: homelab
   wait: false
   interval: 30m
   timeout: 5m

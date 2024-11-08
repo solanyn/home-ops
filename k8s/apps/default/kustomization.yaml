@@ -23,7 +23,9 @@ resources:
   - ./komga/ks.yaml
   - ./stash/ks.yaml
   - ./jellyfin/ks.yaml
+  - ./plex/ks.yaml
   - ./jellyseerr/ks.yaml
+  - ./overseerr/ks.yaml
   - ./filebrowser/ks.yaml
   - ./miniflux/ks.yaml
   - ./emailer/ks.yaml
