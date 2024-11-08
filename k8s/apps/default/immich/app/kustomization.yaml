@@ -6,3 +6,11 @@ resources:
   - ./helmrelease.yaml
   - ../../../../templates/gatus/guarded
   - ../../../../templates/volsync
+configMapGenerator:
+  - name: immich-configmap
+    files:
+      - create_extensions.sh=./resources/create_extensions.sh
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

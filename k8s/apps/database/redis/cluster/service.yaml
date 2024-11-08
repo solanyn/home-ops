@@ -6,6 +6,7 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: redis.${SECRET_HOME_DOMAIN}
     lbipam.cilium.io/ips: 192.168.68.135
 spec:
+  type: LoadBalancer
   ports:
     - name: redis-client
       port: 6379
