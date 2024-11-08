@@ -41,16 +41,16 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: immich-secret
-          init-db-extensions:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16
-            command: ["/bin/sh", "-c"]
-            args:
-              - /scripts/create_extensions.sh
-            envFrom: &envFrom
-              - secretRef:
-                  name: immich-secret
+                  # init-db-extensions:
+                  #   image:
+                  #     repository: ghcr.io/onedr0p/postgres-init
+                  #     tag: 16
+                  #   command: ["/bin/sh", "-c"]
+                  #   args:
+                  #     - /scripts/create_extensions.sh
+                  #   envFrom: &envFrom
+                  #     - secretRef:
+                  #         name: immich-secret
         containers:
           app:
             image:
@@ -82,15 +82,15 @@ spec:
               limits:
                 gpu.intel.com/i915: 1
                 memory: 1Gi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [44, 10000]
-        seccompProfile: {type: RuntimeDefault}
+                # defaultPodOptions:
+                #   securityContext:
+                #     runAsNonRoot: true
+                #     runAsUser: 568
+                #     runAsGroup: 568
+                #     fsGroup: 568
+                #     fsGroupChangePolicy: OnRootMismatch
+                #     supplementalGroups: [44, 10000]
+                #     seccompProfile: {type: RuntimeDefault}
       nodeSelector:
         intel.feature.node.kubernetes.io/gpu: "true"
     service:
