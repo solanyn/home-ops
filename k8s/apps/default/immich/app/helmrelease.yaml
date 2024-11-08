@@ -7,11 +7,11 @@ spec:
   interval: 30m
   chart:
     spec:
-      chart: immich
-      version: 0.8.4
+      chart: app-template
+      version: 3.5.1
       sourceRef:
         kind: HelmRepository
-        name: immich
+        name: bjw-s
         namespace: flux-system
   install:
     remediation:
@@ -21,62 +21,109 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  dependsOn:
+    - name: intel-device-plugin-gpu
+      namespace: kube-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
   values:
-    env:
-      REDIS_HOSTNAME: 'redis.database.svc.cluster.local'
-      DB_HOSTNAME: 'postgres.database.svc.cluster.local'
-      DB_USERNAME: "{{ .IMMICH_POSTGRES_USER }}"
-      DB_DATABASE_NAME: immich
-      DB_PASSWORD: "{{ .IMMICH_POSTGRES_PASSWORD }}"
-      UPLOAD_LOCATION: /data/immich
-    image:
-      tag: v1.119.0
-    immich:
-      metrics:
-        enabled: true
-      persistence:
-        library:
-          existingClaim: false
-          type: nfs
-          server: 192.168.68.10
-          path: /mnt/nfs
-          globalMounts:
-            - path: /data
-        config:
-          existingClaim: *app
-      configuration:
-        machineLearning:
-          enabled: false
-        server:
-          externalDomain: 'photos.${SECRET_HOME_DOMAIN}'
-    postgresql:
-      enabled: false
-      primary:
-        containerSecurityContext:
-          readOnlyRootFilesystem: true
-        initdb:
-          scripts:
-            create-extensions.sql: |
-              CREATE EXTENSION cube;
-              CREATE EXTENSION earthdistance;
-              CREATE EXTENSION vectors;
-    redis:
-      enabled: false
-    server:
-      enabled: true
-      image:
-        repository: ghcr.io/immich-app/immich-server
-        pullPolicy: IfNotPresent
-      ingress:
-        main:
-          enabled: true
-          annotations:
-            # proxy-body-size is set to 0 to remove the body limit on file uploads
-            nginx.ingress.kubernetes.io/proxy-body-size: "0"
-            external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
-          hosts:
-            - host: "photos.${SECRET_HOME_DOMAIN}"
-              paths:
-                - path: "/"
-    machine-learning:
-      enabled: false
+    controllers:
+      jellyfin:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: immich-secret
+          init-db-extensions:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            command: ["/bin/sh", "-c"]
+            args:
+              - /scripts/create_extensions.sh
+            envFrom: &envFrom
+              - secretRef:
+                  name: immich-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/immich-app/immich-server
+              tag: v1.120.1
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server-info/ping
+                    port: &port 2283
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                gpu.intel.com/i915: 1
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44, 10000]
+        seccompProfile: {type: RuntimeDefault}
+      nodeSelector:
+        intel.feature.node.kubernetes.io/gpu: "true"
+    service:
+      app:
+        controller: *app
+        type: LoadBalancer
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_HOME_DOMAIN}"
+        className: internal
+        hosts:
+          - host: "photos.${SECRET_HOME_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      library:
+        type: nfs
+        server: 192.168.68.10
+        path: /mnt/nfs
+        globalMounts:
+          - path: /data
+      scripts:
+        type: configMap
+        name: immich-configmap
+        defaultMode: 0775
+        globalMounts:
+          - path: /scripts/create_extensions.sh
+            subPath: create_extensions.sh
+            readOnly: true
