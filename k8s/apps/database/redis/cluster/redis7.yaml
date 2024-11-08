@@ -14,7 +14,7 @@ spec:
     imagePullPolicy: IfNotPresent
     resources:
       requests:
-        cpu: 101m
+        cpu: 10m
         memory: 128Mi
       limits:
         cpu: 101m
@@ -25,10 +25,9 @@ spec:
     imagePullPolicy: Always
     resources:
       requests:
-        cpu: 100m
+        cpu: 10m
         memory: 128Mi
       limits:
-        cpu: 100m
         memory: 128Mi
         # Environment Variables for Redis Exporter
     env:
