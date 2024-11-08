@@ -33,21 +33,21 @@ spec:
               tag: v1.15.0@sha256:4f6099a76ff9d248e9f032e29c04a92b483f21456e46f3b01eb20399f4732ad0
             env:
               TZ: Australia/Sydney
-            # securityContext:
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: true
-            #   capabilities: {drop: ["ALL"]}
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 256Mi
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 65534
-    #     runAsGroup: 65534
-    #     seccompProfile: {type: RuntimeDefault}
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile: {type: RuntimeDefault}
     service:
       app:
         controller: omegabrr

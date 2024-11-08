@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./pvc.yaml
   - ./helmrelease.yaml
+  - ../../../../templates/gatus/guarded
   - ../../../../templates/volsync
 configMapGenerator:
   - name: bazarr-scripts
