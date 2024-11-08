@@ -128,5 +128,5 @@ spec:
         server: 192.168.68.10
         path: /mnt/nfs
         globalMounts:
-          - path: /media
+          - path: /data
             readOnly: true
