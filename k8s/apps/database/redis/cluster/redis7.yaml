@@ -31,9 +31,9 @@ spec:
         cpu: 100m
         memory: 128Mi
         # Environment Variables for Redis Exporter
-      env:
-        - name: REDIS_EXPORTER_INCL_SYSTEM_METRICS
-          value: "true"
+    env:
+      - name: REDIS_EXPORTER_INCL_SYSTEM_METRICS
+        value: "true"
   storage:
     volumeClaimTemplate:
       spec:
