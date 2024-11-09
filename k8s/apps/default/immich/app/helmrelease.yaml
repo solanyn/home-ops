@@ -63,7 +63,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/server-info/ping
+                    path: /api/server/ping
                     port: &port 2283
                   initialDelaySeconds: 0
                   periodSeconds: 10
@@ -101,14 +101,18 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.${SECRET_HOME_DOMAIN}"
+          nginx.ingress.kubernetes.io/proxy-body-size: "0"
         className: internal
         hosts:
-          - host: "photos.${SECRET_HOME_DOMAIN}"
+          - host: photos.${SECRET_HOME_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
+        tls:
+          - hosts:
+              - photos.${SECRET_HOME_DOMAIN}
     persistence:
       library:
         type: nfs
