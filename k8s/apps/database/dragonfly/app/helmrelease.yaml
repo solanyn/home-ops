@@ -1,7 +1,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app dragonfly-operator
+  name: &app dragonfly
 spec:
   interval: 30m
   chart:
@@ -21,7 +21,7 @@ spec:
       retries: 3
   values:
     controllers:
-      dragonfly-operator:
+      dragonfly:
         containers:
           app:
             image:
