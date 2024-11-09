@@ -24,6 +24,7 @@ resources:
   - ./stash/ks.yaml
   - ./jellyfin/ks.yaml
   - ./plex/ks.yaml
+  - ./tautulli/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./overseerr/ks.yaml
   - ./filebrowser/ks.yaml
