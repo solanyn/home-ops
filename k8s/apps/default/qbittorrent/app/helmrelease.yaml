@@ -118,6 +118,14 @@ spec:
     persistence:
       config:
         existingClaim: qbittorrent
+      tmp:
+        type: emptyDir
+      scripts:
+        type: configMap
+        name: qbittorrent-scripts
+        defaultMode: 0775
+        globalMounts:
+          - readOnly: true
       media:
         type: nfs
         server: 192.168.68.10
