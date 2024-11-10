@@ -52,7 +52,7 @@ spec:
           app:
             image:
               repository: ghcr.io/hotio/whisparr
-              tag: v3@sha256:c102e9cfc32588bdf259bf9ec4615f40506a600b3578e100a6cf8fa2f17f409e
+              tag: v3@sha256:d77320f295a37c00f9342d639dce3e4fef7912cee7915b07d3f1e44a35b9fd4c
             env:
               WHISPARR__APP__INSTANCENAME: whisparr
               WHISPARR__APP__THEME: dark
