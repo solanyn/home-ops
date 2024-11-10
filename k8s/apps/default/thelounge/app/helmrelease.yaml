@@ -28,17 +28,8 @@ spec:
   values:
     controllers:
       thelounge:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
-        statefulset:
-          volumeClaimTemplates:
-            - name: config
-              accessMode: ReadWriteOnce
-              size: 1Gi
-              storageClass: ceph-block
-              globalMounts:
-                - path: /config
         containers:
           app:
             image:
@@ -93,3 +84,6 @@ spec:
                 service:
                   identifier: app
                   port: http
+    persistence:
+      config:
+        existingClaim: thelounge
