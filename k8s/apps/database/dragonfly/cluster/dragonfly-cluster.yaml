@@ -21,8 +21,3 @@ spec:
       memory: 128Mi
     limits:
       memory: 512Mi
-  serviceSpec:
-    type: LoadBalancer
-    annotations:
-      lbipam.cilium.io/ips: 192.168.68.207
-      external-dns.alpha.kubernetes.io/hostname: redis.${SECRET_HOME_DOMAIN}
