@@ -29,7 +29,7 @@ jobs:
           ref: "${{ github.event.repository.default_branch }}"
           path: default
       - name: Diff Resources
-        uses: docker://ghcr.io/allenporter/flux-local:v6.0.1
+        uses: docker://ghcr.io/allenporter/flux-local:v6.0.2
         with:
           args: >-
             diff ${{ matrix.resources }} --unified 6 --path /github/workspace/pull/${{ matrix.paths }}/flux --path-orig /github/workspace/default/${{ matrix.paths }}/flux --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart" --limit-bytes 10000 --all-namespaces --sources "homelab" --output-file diff.patch
