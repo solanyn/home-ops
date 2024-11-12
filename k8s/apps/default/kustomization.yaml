@@ -16,7 +16,6 @@ resources:
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
   - ./readarr/ks.yaml
-  - ./whisparr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./bazarr/ks.yaml
   - ./cross-seed/ks.yaml
