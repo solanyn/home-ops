@@ -120,7 +120,7 @@ spec:
         server: 192.168.68.10
         path: /mnt/nfs/media/
         globalMounts:
-          - path: /media
+          - path: /data
       scripts:
         type: configMap
         name: bazarr-scripts
