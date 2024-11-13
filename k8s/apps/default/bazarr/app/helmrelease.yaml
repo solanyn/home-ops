@@ -118,7 +118,7 @@ spec:
       media:
         type: nfs
         server: 192.168.68.10
-        path: /mnt/nfs/media/
+        path: /mnt/nfs
         globalMounts:
           - path: /data
       scripts:
