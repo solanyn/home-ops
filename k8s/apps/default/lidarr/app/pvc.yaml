@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: readarr
+  name: lidarr
 spec:
   accessModes: ["ReadWriteMany"]
   resources:
     requests:
-      storage: 15Gi
+      storage: 5Gi
   storageClassName: ceph-filesystem
