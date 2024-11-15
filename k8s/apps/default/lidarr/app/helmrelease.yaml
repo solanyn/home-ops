@@ -39,15 +39,15 @@ spec:
                   name: lidarr-secret
             env:
               INIT_POSTGRES_DBNAME: lidarr_main
-              # init-log-db:
-              #   image:
-              #     repository: ghcr.io/onedr0p/postgres-init
-              #     tag: 16
-              #   envFrom: &envFrom
-              #     - secretRef:
-              #         name: lidarr-secret
-              #   env:
-              #     INIT_POSTGRES_DBNAME: lidarr_log
+          init-log-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: lidarr-secret
+            env:
+              INIT_POSTGRES_DBNAME: lidarr_log
         containers:
           app:
             image:
