@@ -1,0 +1,21 @@
+trackers:
+  - name: myanonamouse
+    urls: ["myanonamouse.net"]
+    required_seed_ratio: 0
+    required_seed_days: 0
+  - name: avistaz
+    urls: ["avistaz.to"]
+    required_seed_ratio: 0.91
+    required_seed_days: 8.1
+  - name: privatehd
+    urls: ["privatehd.to"]
+    required_seed_ratio: 0.91
+    required_seed_days: 8.1
+  - name: cinemaz
+    urls: ["cinemaz.to"]
+    required_seed_ratio: 0.91
+    required_seed_days: 8.1
+  - name: exoticaz
+    urls: ["exoticaz.to"]
+    required_seed_ratio: 0.91
+    required_seed_days: 8.1
