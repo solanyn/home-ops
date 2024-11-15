@@ -118,8 +118,6 @@ spec:
     persistence:
       config:
         existingClaim: readarr
-      cache:
-        existingClaim: readarr-cache
       tmp:
         type: emptyDir
       media:
