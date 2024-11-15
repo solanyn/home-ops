@@ -47,7 +47,7 @@ spec:
               - secretRef:
                   name: lidarr-secret
             env:
-              INIT_POSTGRES_DBNAME: lidarr_log
+              INIT_POSTGRES_DBNAME: lidarr-log
         containers:
           app:
             image:
