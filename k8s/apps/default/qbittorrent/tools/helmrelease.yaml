@@ -56,10 +56,14 @@ spec:
         containers:
           unregistered:
             !!merge <<: *container
-            args: ["prune", "--exclude-category", "manual", "--exclude-category", "music", "--exclude-tag", "added:1d", "--include-tag", "unregistered", "--with-data", "--dry-run"]
+            args: ["prune", "--exclude-category", "manual", "--exclude-category", "music", "--exclude-tag", "added:1d", "--include-tag", "unregistered", "--with-data",
+              # "--dry-run",
+            ]
           expired:
             !!merge <<: *container
-            args: ["prune", "--exclude-category", "manual", "--exclude-category", "music", "--exclude-tag", "added:1d", "--include-tag", "expired", "--with-data", "--dry-run"]
+            args: ["prune", "--exclude-category", "manual", "--exclude-category", "music", "--exclude-tag", "added:1d", "--exclude-tag", "site:myanonamouse", "--include-tag", "expired", "--with-data",
+              # "--dry-run",
+            ]
         pod:
           restartPolicy: OnFailure
       orphaned:
@@ -71,7 +75,9 @@ spec:
         containers:
           app:
             !!merge <<: *container
-            args: ["orphaned", "--exclude-pattern", "*_unpackerred*", "--dry-run"]
+            args: ["orphaned", "--exclude-pattern", "*_unpackerred*",
+              # "--dry-run",
+            ]
         pod:
           restartPolicy: OnFailure
       reannounce:
