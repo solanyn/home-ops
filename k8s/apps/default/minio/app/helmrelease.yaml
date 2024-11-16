@@ -114,7 +114,7 @@ spec:
     persistence:
       config:
         type: nfs
-        server: 192.168.68.10
+        server: nas.internal
         path: /mnt/nfs/backups
         globalMounts:
           - path: /data
