@@ -44,7 +44,7 @@ spec:
                 volumes:
                   - name: repository
                     nfs:
-                      server: 192.168.68.10
+                      server: nas.internal
                       path: /mnt/nfs/backups/
     - name: mutate-volsync-dst-movers
       match:
@@ -69,5 +69,5 @@ spec:
                 volumes:
                   - name: repository
                     nfs:
-                      server: 192.168.68.10
+                      server: nas.internal
                       path: /mnt/nfs/backups/
