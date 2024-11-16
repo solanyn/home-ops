@@ -26,6 +26,8 @@ resources:
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
   - ./overseerr/ks.yaml
+  - ./wizarr/ks.yaml
+  - ./maintainerr/ks.yaml
   - ./filebrowser/ks.yaml
   - ./miniflux/ks.yaml
   - ./emailer/ks.yaml
