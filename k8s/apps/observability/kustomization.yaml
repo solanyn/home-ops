@@ -10,3 +10,4 @@ resources:
   - ./gatus/ks.yaml
   - ./blackbox-exporter/ks.yaml
   - ./smartctl-exporter/ks.yaml
+  - ./speedtest-exporter/ks.yaml
