@@ -46,3 +46,19 @@ endpoints:
       - "[STATUS] == 404"
     alerts:
       - type: pushover
+  - name: nas
+    group: guarded
+    url: "ssh://nas.internal"
+    interval: 1m
+    ssh:
+      username: "$${NAS_SSH_USER}"
+      password: "$${NAS_SSH_PASSWORD}"
+    body: |
+      {
+        "command": "uptime"
+      }
+    conditions:
+      - "[STATUS] == 0"
+      - "[CONNECTED] == true"
+    alerts:
+      - type: pushover
