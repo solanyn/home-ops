@@ -47,7 +47,7 @@ endpoints:
     alerts:
       - type: pushover
   - name: nas
-    group: guarded
+    group: infrastructure
     url: "ssh://nas.internal"
     interval: 1m
     ssh:
