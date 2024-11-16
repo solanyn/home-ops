@@ -86,7 +86,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: 192.168.68.10
+        server: nas.internal
         path: /mnt/nfs
         globalMounts:
           - path: /data

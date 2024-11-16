@@ -133,7 +133,7 @@ spec:
           - path: /app/logs
       eros:
         type: nfs
-        server: 192.168.68.10
+        server: nas.internal
         path: /mnt/nfs/
         globalMounts:
           - path: /nfs
