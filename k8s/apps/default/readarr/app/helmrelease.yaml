@@ -60,8 +60,8 @@ spec:
         containers:
           app:
             image:
-              repository: lscr.io/linuxserver/readarr
-              tag: develop
+              repository: ghcr.io/drag0n141/readarr-develop
+              tag: 0.4.3@sha256:c5240cce1c2545c5d33a732bcdb0a3e26346e6431ae4d4f566c5325a72a42bdf
             env:
               READARR__APP__INSTANCENAME: Readarr
               # READARR__APP__THEME: dark
