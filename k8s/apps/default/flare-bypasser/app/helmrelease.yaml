@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app flaresolverr
+  name: &app flare-bypasser
 spec:
   interval: 30m
   chart:
@@ -23,15 +23,15 @@ spec:
       retries: 3
   values:
     controllers:
-      flaresolverr:
+      flare-bypasser:
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/flaresolverr/flaresolverr
-              tag: v3.3.21
+              repository: ghcr.io/yoori/flare-bypasser
+              tag: main@sha256:e0e188baf13b340d7fbf987e757048c8e4c3bc7f5dfa525c34cf8c601687ec10
             resources:
               requests:
                 cpu: 15m
@@ -39,7 +39,6 @@ spec:
     service:
       app:
         controller: *app
-        type: ClusterIP
         ports:
           http:
-            port: 8191
+            port: 8080
