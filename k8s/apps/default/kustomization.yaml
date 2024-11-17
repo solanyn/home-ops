@@ -8,7 +8,6 @@ resources:
   - ./echo-server/ks.yaml
   - ./home-assistant/ks.yaml
   - ./minio/ks.yaml
-  - ./kopia/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./omegabrr/ks.yaml
