@@ -60,17 +60,17 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/drag0n141/whisparr-nightly
-              tag: 2.0.0@sha256:998473e6a4de6210acc625a6648cb26dd7268dda6682cfc1677229f867217b9d
+              repository: ghcr.io/hotio/whisparr
+              tag: v3-71a6f32@sha256:a09a6c953b997a618ca058af96282da53822e6fefcea1dc53aeb6026ed294563
             env:
-              READARR__APP__INSTANCENAME: Readarr
-              # READARR__APP__THEME: dark
-              READARR__AUTH__METHOD: External
-              READARR__AUTH__REQUIRED: DisabledForLocalAddresses
-              READARR__LOG__DBENABLED: false
-              READARR__LOG__LEVEL: info
-              READARR__SERVER__PORT: &port 80
-              READARR__UPDATE__BRANCH: develop
+              WHISPARR__APP__INSTANCENAME: Whisparr
+              # WHISPARR__APP__THEME: dark
+              WHISPARR__AUTH__METHOD: External
+              WHISPARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              WHISPARR__LOG__DBENABLED: false
+              WHISPARR__LOG__LEVEL: info
+              WHISPARR__SERVER__PORT: &port 80
+              WHISPARR__UPDATE__BRANCH: develop
               TZ: "Australia/Sydney"
             envFrom:
               - secretRef:
@@ -88,10 +88,10 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+            # securityContext:
+            #   allowPrivilegeEscalation: false
+            #   readOnlyRootFilesystem: true
+            #   capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 memory: 256Mi
