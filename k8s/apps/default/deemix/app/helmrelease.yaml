@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app komga
+  name: &app deemix
 spec:
   interval: 30m
   chart:
@@ -26,43 +26,38 @@ spec:
       namespace: rook-ceph
   values:
     controllers:
-      komga:
+      deemix:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: gotson/komga
-              tag: 1.14.1@sha256:6e9336c7790c8481afa767e6f39395b720746f5f86ce733547c58799016adf8e
-            env:
-              CONFIG_PATH: /config
-              PORT: &port 25600
+              repository: ghcr.io/bambanah/deemix
+              tag: v4.2.10@sha256:c327b953bf4a10ee2ccc137670545e7fc1127655ce083cf33b3b1c23214f156f
             probes:
-              liveness: &probes
+              liveness:
                 enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /actuator/health
-                    port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
     service:
       app:
-        controller: komga
+        controller: deemix
         ports:
           http:
-            port: *port
+            port: 6595
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.${SECRET_HOME_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
         className: internal
         hosts:
-          - host: "books.${SECRET_HOME_DOMAIN}"
+          - host: "{{ .Release.Name }}.${SECRET_HOME_DOMAIN}"
             paths:
               - path: /
                 service:
@@ -71,13 +66,9 @@ spec:
     persistence:
       config:
         existingClaim: *app
-        globalMounts:
-          - path: /config
       media:
         type: nfs
-        server: nas.internal
-        path: /mnt/nfs/media
+        path: /mnt/nfs/media/
         globalMounts:
-          - path: /media/books
-            subPath: books
-            readOnly: true
+          - path: /media/downloads/deemix
+            subPath: downloads/deemix

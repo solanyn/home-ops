@@ -37,9 +37,15 @@ spec:
               UN_WEBSERVER_LOG_FILE: /logs/webserver.log
               UN_ACTIVITY: true
               UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local
-              UN_SONARR_0_PATHS_0: /data/torrents/complete/movies
+              UN_SONARR_0_PATHS_0: /media/downloads/torrents/complete/sonarr
               UN_RADARR_0_URL: http://radarr.default.svc.cluster.local
-              UN_RADARR_0_PATHS_0: /data/torrents/complete/tv
+              UN_RADARR_0_PATHS_0: /media/downloads/torrents/complete/radarr
+              UN_LIDARR_0_URL: http://lidarr.default.svc.cluster.local
+              UN_LIDARR_0_PATHS_0: /media/downloads/torrents/complete/lidarr
+              UN_READARR_0_URL: http://readarr.default.svc.cluster.local
+              UN_READARR_0_PATHS_0: /media/downloads/torrents/complete/readarr
+              # UN_WHISPARR_0_URL: http://whisparr.default.svc.cluster.local
+              # UN_WHISPARR_0_PATHS_0: /media/downloads/torrents/complete/whisparr
             envFrom:
               - secretRef:
                   name: unpackerr-secret
@@ -87,6 +93,6 @@ spec:
       media:
         type: nfs
         server: nas.internal
-        path: /mnt/nfs
+        path: /mnt/nfs/media
         globalMounts:
-          - path: /data
+          - path: /media

@@ -85,6 +85,7 @@ spec:
       media:
         type: nfs
         server: nas.internal
-        path: /mnt/nfs/
+        path: /mnt/nfs/media
         globalMounts:
-          - path: /data
+          - path: /media/downloads/torrents
+            subPath: downloads/torrents
