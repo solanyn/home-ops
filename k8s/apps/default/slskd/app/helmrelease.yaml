@@ -125,7 +125,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: expanse.internal
+        server: nas.internal
         path: /mnt/nfs/media
         globalMounts:
           - path: /media/downloads/soulseek
