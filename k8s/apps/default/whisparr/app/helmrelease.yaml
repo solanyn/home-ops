@@ -34,29 +34,25 @@ spec:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
+            env:
+              INIT_POSTGRES_DBNAME: whisparr_main
             envFrom: &envFrom
               - secretRef:
                   name: whisparr-secret
-            env:
-              INIT_POSTGRES_DBNAME: whisparr_main
           init-cache-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: whisparr-secret
             env:
               INIT_POSTGRES_DBNAME: whisparr_cache
+            envFrom: *envFrom
           init-log-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: whisparr-secret
             env:
               INIT_POSTGRES_DBNAME: whisparr_log
+            envFrom: *envFrom
         containers:
           app:
             image:
