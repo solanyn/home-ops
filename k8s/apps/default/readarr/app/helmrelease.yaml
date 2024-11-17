@@ -34,29 +34,25 @@ spec:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
+            env:
+              INIT_POSTGRES_DBNAME: readarr_main
             envFrom: &envFrom
               - secretRef:
                   name: readarr-secret
-            env:
-              INIT_POSTGRES_DBNAME: readarr_main
           init-cache-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: readarr-secret
             env:
-              INIT_POSTGRES_DBNAME: readarr_cache
+              INIT_POSTGRES_DBNAME: readarr_cach
+            envFrom: *envFrom
           init-log-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: readarr-secret
             env:
               INIT_POSTGRES_DBNAME: readarr_log
+            envFrom: *envFrom
         containers:
           app:
             image:
