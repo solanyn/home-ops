@@ -69,8 +69,8 @@ spec:
               WHISPARR__AUTH__REQUIRED: DisabledForLocalAddresses
               WHISPARR__LOG__DBENABLED: false
               WHISPARR__LOG__LEVEL: info
-              WHISPARR__SERVER__PORT: &port 80
-              WHISPARR__UPDATE__BRANCH: develop
+              WHISPARR__SERVER__PORT: &port 6969
+              WHISPARR__UPDATE__BRANCH: eros
               TZ: "Australia/Sydney"
             envFrom:
               - secretRef:
