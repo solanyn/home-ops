@@ -39,7 +39,6 @@ spec:
     service:
       app:
         controller: *app
-        type: ClusterIP
         ports:
           http:
             port: 8191
