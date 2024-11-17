@@ -92,4 +92,4 @@ spec:
         server: nas.internal
         path: /mnt/nfs
         globalMounts:
-          - path: /data
+          - path: /nfs
