@@ -1,30 +1,25 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: speedtest-exporter
+  name: &app speedtest-exporter
 spec:
-  interval: 60m
+  interval: 30m
   chart:
     spec:
       chart: app-template
       version: 3.5.1
-      interval: 60m
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     controllers:
       speedtest-exporter:
@@ -32,25 +27,47 @@ spec:
           app:
             image:
               repository: ghcr.io/miguelndecarvalho/speedtest-exporter
-              tag: v3.5.4
+              tag: v3.5.4@sha256:f1064d49124c7fc45faabb87c6c876a2fd04e92b3dc14d4b871301217ba30fed
+            env:
+              SPEEDTEST_PORT: &port 9798
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
             resources:
               requests:
-                cpu: 15m
-                memory: 64M
+                cpu: 10m
               limits:
-                memory: 64M
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+    persistence:
+      config:
+        type: emptyDir
+        globalMounts:
+          - path: /.config
     service:
       app:
-        controller: speedtest-exporter
+        controller: *app
         ports:
           http:
-            port: 9798
+            port: *port
     serviceMonitor:
       app:
-        serviceName: speedtest-exporter
+        serviceName: *app
         endpoints:
           - port: http
             scheme: http
             path: /metrics
             interval: 60m
-            scrapeTimeout: 1m
+            scrapeTimeout: 5m
