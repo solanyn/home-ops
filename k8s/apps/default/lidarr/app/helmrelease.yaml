@@ -51,8 +51,8 @@ spec:
         containers:
           app:
             image:
-              repository: lscr.io/linuxserver/lidarr
-              tag: develop
+              repository: ghcr.io/drag0n141/lidarr
+              tag: 2.7.1@sha256:3f397f141f903f311d6f5b864cb0e29a92a7396875b07583c7d319759d8e5f16
             env:
               LIDARR__APP__INSTANCENAME: lidarr
               # LIDARR__APP__THEME: dark
@@ -79,10 +79,10 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            # securityContext:
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: true
-            #   capabilities: { drop: ["ALL"] }
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 memory: 256Mi
