@@ -61,7 +61,7 @@ spec:
             ]
           expired:
             !!merge <<: *container
-            args: ["prune", "--exclude-category", "manual", "--exclude-category", "music", "--exclude-tag", "added:1d", "--exclude-tag", "site:myanonamouse", "--include-tag", "expired", "--with-data",
+            args: ["prune", "--exclude-category", "manual", "--exclude-category", "music", "--exclude-category", "readarr", "--exclude-category", "other", "--exclude-tag", "added:1d", "--exclude-tag", "site:myanonamouse", "--include-tag", "expired", "--with-data",
               # "--dry-run",
             ]
         pod:
