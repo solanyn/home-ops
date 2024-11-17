@@ -10,5 +10,5 @@ spec:
   targets:
     staticConfig:
       static:
-        - nfs.internal
+        - nas.internal
         - pihole.internal
