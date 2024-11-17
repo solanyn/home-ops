@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: readarr
+  name: whisparr
 spec:
   interval: 30m
   chart:
@@ -26,7 +26,7 @@ spec:
       namespace: rook-ceph
   values:
     controllers:
-      readarr:
+      whisparr:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -36,32 +36,32 @@ spec:
               tag: 16
             envFrom: &envFrom
               - secretRef:
-                  name: readarr-secret
+                  name: whisparr-secret
             env:
-              INIT_POSTGRES_DBNAME: readarr_main
+              INIT_POSTGRES_DBNAME: whisparr_main
           init-cache-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
             envFrom: &envFrom
               - secretRef:
-                  name: readarr-secret
+                  name: whisparr-secret
             env:
-              INIT_POSTGRES_DBNAME: readarr_cache
+              INIT_POSTGRES_DBNAME: whisparr_cache
           init-log-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
               tag: 16
             envFrom: &envFrom
               - secretRef:
-                  name: readarr-secret
+                  name: whisparr-secret
             env:
-              INIT_POSTGRES_DBNAME: readarr_log
+              INIT_POSTGRES_DBNAME: whisparr_log
         containers:
           app:
             image:
-              repository: ghcr.io/drag0n141/readarr-develop
-              tag: 0.4.3@sha256:c5240cce1c2545c5d33a732bcdb0a3e26346e6431ae4d4f566c5325a72a42bdf
+              repository: ghcr.io/drag0n141/whisparr-nightly
+              tag: 2.0.0@sha256:998473e6a4de6210acc625a6648cb26dd7268dda6682cfc1677229f867217b9d
             env:
               READARR__APP__INSTANCENAME: Readarr
               # READARR__APP__THEME: dark
@@ -74,7 +74,7 @@ spec:
               TZ: "Australia/Sydney"
             envFrom:
               - secretRef:
-                  name: readarr-secret
+                  name: whisparr-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -99,7 +99,7 @@ spec:
                 memory: 4Gi
     service:
       app:
-        controller: readarr
+        controller: whisparr
         ports:
           http:
             port: *port
@@ -117,7 +117,7 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: readarr
+        existingClaim: whisparr
       tmp:
         type: emptyDir
       media:
