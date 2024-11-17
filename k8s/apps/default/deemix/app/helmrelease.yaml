@@ -68,6 +68,7 @@ spec:
         existingClaim: *app
       media:
         type: nfs
+        server: nas.internal
         path: /mnt/nfs/media/
         globalMounts:
           - path: /media/downloads/deemix
