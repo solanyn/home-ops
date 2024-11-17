@@ -19,3 +19,7 @@ trackers:
     urls: ["exoticaz.to"]
     required_seed_ratio: 0.91
     required_seed_days: 8.1
+  - name: animez
+    urls: ["animetorrents.me"]
+    required_seed_ratio: 0.91
+    required_seed_days: 8.1
