@@ -82,7 +82,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 memory: 256Mi
@@ -114,6 +114,6 @@ spec:
       media:
         type: nfs
         server: nas.internal
-        path: /mnt/nfs
+        path: /mnt/nfs/media
         globalMounts:
-          - path: /data
+          - path: /media/
