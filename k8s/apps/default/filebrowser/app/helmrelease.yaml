@@ -34,7 +34,7 @@ spec:
             env:
               TZ: Australia/Sydney
               FB_DATABASE: /config/filebrowser.db
-              FB_ROOT: /data
+              FB_ROOT: /nfs
               FB_LOG: stdout
               FB_NOAUTH: true
             probes:
