@@ -32,8 +32,8 @@ jobs:
         uses: actions/create-github-app-token@v1
         id: app-token
         with:
-          app-id: "${{ secrets.ACTION_RUNNER_CONTROLLER_GITHUB_APP_ID }}" # <- Change this if you called the secret something else
-          private-key: "${{ secrets.ACTION_RUNNER_CONTROLLER_GITHUB_PRIVATE_KEY }}" # <- Change this if you called the secret something else
+          app-id: "${{ secrets.BOT_APP_ID }}" # <- Change this if you called the secret something else
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}" # <- Change this if you called the secret something else
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -43,5 +43,5 @@ jobs:
       - name: Renovate # <- Run Renovate
         uses: renovatebot/github-action@v41.0.3
         with:
-          configurationFile: .github/renovate.json
+          configurationFile: .github/renovate.json5
           token: "${{ steps.app-token.outputs.token }}"
