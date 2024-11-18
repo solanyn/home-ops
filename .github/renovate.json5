@@ -10,11 +10,9 @@
   ],
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
-  "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
+  "suppressNotifications": ["prEditedNotification"],
   "rebaseWhen": "conflicted",
-  "automergeSchedule": [
-    "after 5pm"
-  ],
+  "automergeSchedule": ["after 5pm"],
   "timezone": "Australia/Sydney",
   "schedule": ["after 5pm"],
   "ignorePaths": ["**/*.sops.*"],
