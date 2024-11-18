@@ -18,14 +18,12 @@ resources:
   - ./lidarr/ks.yaml
   - ./whisparr/ks.yaml
   - ./flaresolverr/ks.yaml
-  - ./deemix/ks.yaml
   - ./slskd/ks.yaml
   - ./recyclarr/ks.yaml
   - ./bazarr/ks.yaml
   - ./cross-seed/ks.yaml
   - ./komga/ks.yaml
   - ./stash/ks.yaml
-  - ./jellyfin/ks.yaml
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
   - ./overseerr/ks.yaml
@@ -34,4 +32,3 @@ resources:
   - ./filebrowser/ks.yaml
   - ./miniflux/ks.yaml
   - ./emailer/ks.yaml
-  - ./thelounge/ks.yaml
