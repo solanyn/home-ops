@@ -1,5 +1,4 @@
-{
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+module.exports = {
   "extends": [
     "config:recommended",
     "docker:enableMajor",
