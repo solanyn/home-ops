@@ -91,7 +91,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
         className: internal
         hosts:
-          - host: "read.${SECRET_HOME_DOMAIN}"
+          - host: "calibre-server.${SECRET_HOME_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
@@ -110,7 +110,7 @@ spec:
       # TODO: move metadata.db to a separate volume
       books:
         type: nfs
-        server: nfs.internal
+        server: nas.internal
         path: /mnt/nfs/media
         globalMounts:
           - path: /media/books
