@@ -4,6 +4,5 @@ kind: Kustomization
 resources:
   - ./pvc.yaml
   - ./helmrelease.yaml
-  - ./gatus.yaml
   - ../../../../templates/gatus/guarded/
   - ../../../../templates/volsync
