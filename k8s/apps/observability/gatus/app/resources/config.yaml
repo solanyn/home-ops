@@ -48,33 +48,17 @@ endpoints:
       - type: pushover
   - name: nas
     group: infrastructure
-    url: "ssh://nas.internal"
+    url: "icmp://nas.internal"
     interval: 1m
-    ssh:
-      username: "$${NAS_SSH_USER}"
-      password: "$${NAS_SSH_PASSWORD}"
-    body: |
-      {
-        "command": "uptime"
-      }
     conditions:
-      - "[STATUS] == 0"
       - "[CONNECTED] == true"
     alerts:
       - type: pushover
   - name: pihole
     group: infrastructure
-    url: "ssh://pihole.internal"
+    url: "icmp://pihole.internal"
     interval: 1m
-    ssh:
-      username: "$${PI_SSH_USER}"
-      password: "$${PI_SSH_PASSWORD}"
-    body: |
-      {
-        "command": "uptime"
-      }
     conditions:
-      - "[STATUS] == 0"
       - "[CONNECTED] == true"
     alerts:
       - type: pushover

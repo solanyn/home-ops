@@ -89,7 +89,7 @@ spec:
         type: emptyDir
       books:
         type: nfs
-        server: nfs.internal
+        server: nas.internal
         path: /mnt/nfs/media
         globalMounts:
           - path: /media/books

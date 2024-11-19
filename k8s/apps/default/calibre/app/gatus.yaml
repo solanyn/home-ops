@@ -7,7 +7,7 @@ metadata:
 data:
   config.yaml: |
     endpoints:
-      - name: Calibre webserver
+      - name: calibre-server
         group: guarded
         url: 1.1.1.1
         interval: 5m
@@ -19,16 +19,5 @@ data:
           hide-hostname: true
         conditions:
           - "len([BODY]) == 0"
-        alerts:
-          - type: pushover
-      - name: Calibre webserver
-        group: internal
-        url: "https://read.${SECRET_INTERNAL_DOMAIN}"
-        interval: 1m
-        ui:
-          hide-url: true
-          hide-hostname: true
-        conditions:
-          - "[CONNECTED] == true"
         alerts:
           - type: pushover
