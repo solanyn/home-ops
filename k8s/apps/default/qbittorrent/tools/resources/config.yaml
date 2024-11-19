@@ -6,20 +6,20 @@ trackers:
   - name: avistaz
     urls: ["avistaz.to"]
     required_seed_ratio: 1
-    required_seed_days: 30d
+    required_seed_days: 30
   - name: privatehd
     urls: ["privatehd.to"]
     required_seed_ratio: 1
-    required_seed_days: 30d
+    required_seed_days: 30
   - name: cinemaz
     urls: ["cinemaz.to"]
     required_seed_ratio: 1
-    required_seed_days: 30d
+    required_seed_days: 30
   - name: exoticaz
     urls: ["exoticaz.to"]
     required_seed_ratio: 1
-    required_seed_days: 30d
+    required_seed_days: 30
   - name: animetorrents
     urls: ["animetorrents.me"]
     required_seed_ratio: 1
-    required_seed_days: 30d
+    required_seed_days: 30
