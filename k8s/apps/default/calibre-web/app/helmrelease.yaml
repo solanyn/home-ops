@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: unpackerr
+  name: calibre
 spec:
   interval: 30m
   chart:
@@ -21,33 +21,32 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     controllers:
-      unpackerr:
-        annotations:
-          reloader.stakater.com/auto: "true"
+      calibre:
         containers:
           app:
             image:
-              repository: ghcr.io/unpackerr/unpackerr
-              tag: 0.14.5@sha256:dc72256942ce50d1c8a1aeb5aa85b6ae2680a36eefd2182129d8d210fce78044
+              repository: lscr.io/linuxserver/calibre-web
+              tag: "2021.12.16"
             env:
               TZ: Australia/Sydney
-              UN_WEBSERVER_METRICS: true
-              UN_WEBSERVER_LOG_FILE: /logs/webserver.log
-              UN_ACTIVITY: true
-              UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local
-              UN_SONARR_0_PATHS_0: /media/downloads/torrents/complete/sonarr
-              UN_RADARR_0_URL: http://radarr.default.svc.cluster.local
-              UN_RADARR_0_PATHS_0: /media/downloads/torrents/complete/radarr
-            envFrom:
-              - secretRef:
-                  name: unpackerr-secret
+              PUID: 568
+              PGID: 568
+              DOCKER_MODS: linuxserver/mods:universal-calibre
             probes:
               liveness:
                 enabled: true
               readiness:
                 enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -55,38 +54,43 @@ spec:
             resources:
               requests:
                 cpu: 10m
+                memory: 128Mi
               limits:
-                memory: 8Gi
+                memory: 512Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
         runAsUser: 568
         runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
         seccompProfile: {type: RuntimeDefault}
     service:
-      app:
-        controller: unpackerr
+      main:
+        controller: calibre
         ports:
           http:
-            port: 5656
-    serviceMonitor:
-      app:
-        serviceName: unpackerr
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
+            port: 8083
+    ingress:
+      main:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
+        className: internal
+        hosts:
+          - host: "books.${SECRET_HOME_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: main
+                  port: http
     persistence:
-      logs:
+      config:
+        existingClaim: calibre-web
+      tmp:
         type: emptyDir
-      media:
+      books:
         type: nfs
-        server: nas.internal
+        server: nfs.internal
         path: /mnt/nfs/media
         globalMounts:
-          - path: /media
+          - path: /media/books
+            subPath: downloads/torrents/complete/books
