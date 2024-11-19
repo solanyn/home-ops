@@ -59,12 +59,12 @@ spec:
                 memory: 250M
               limits:
                 memory: 2Gi
-    defaultPodOptions:
-      securityContext:
-        # runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        seccompProfile: {type: RuntimeDefault}
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsNonRoot: true
+    #     runAsUser: 568
+    #     runAsGroup: 568
+    #     seccompProfile: {type: RuntimeDefault}
     service:
       main:
         controller: calibre
