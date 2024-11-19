@@ -29,14 +29,15 @@ spec:
       calibre:
         containers:
           app:
-            image:
-              repository: lscr.io/linuxserver/calibre
-              tag: 7.21.0
+            args:
+              - --port=8081
+              - /media/books
             env:
+              HOME: /config
               TZ: Australia/Sydney
-              TITLE: Calibre
-              # PUID: 568
-              # PGID: 568
+            image:
+              repository: ghcr.io/vaskozl/calibre
+              tag: 7.17.0@sha256:abd2ae81fe8e8d82b77a7a01ee59271d7dcbe8da343f1a14f6aca5053a056dd8
             probes:
               liveness:
                 enabled: true
@@ -48,8 +49,8 @@ spec:
                   failureThreshold: 30
                   periodSeconds: 5
             securityContext:
-              # allowPrivilegeEscalation: false
-              # readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
               capabilities:
                 drop: ["ALL"]
                 add: ["seccomp:unconfined"]
@@ -59,19 +60,17 @@ spec:
                 memory: 250M
               limits:
                 memory: 2Gi
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 568
-    #     runAsGroup: 568
-    #     seccompProfile: {type: RuntimeDefault}
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        seccompProfile: {type: RuntimeDefault}
     service:
       main:
         controller: calibre
         ports:
           http:
-            port: 8080
-          web:
             port: 8081
     ingress:
       main:
@@ -86,25 +85,9 @@ spec:
                 service:
                   identifier: main
                   port: http
-      web:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
-        className: internal
-        hosts:
-          - host: "calibre-server.${SECRET_HOME_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-                service:
-                  identifier: main
-                  port: web
     persistence:
       config:
         existingClaim: calibre
-      inbox:
-        existingClaim: calibre-inbox
-        globalMounts:
-          - path: /config/inbox
       tmp:
         type: emptyDir
       # TODO: move metadata.db to a separate volume
@@ -115,4 +98,3 @@ spec:
         globalMounts:
           - path: /media/books
             subPath: downloads/torrents/complete/books
-            readOnly: true
