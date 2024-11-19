@@ -1,0 +1,117 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: calibre
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    controllers:
+      calibre:
+        containers:
+          app:
+            image:
+              repository: lscr.io/linuxserver/calibre
+              tag: 7.20.0
+            env:
+              TZ: Australia/Sydney
+              TITLE: Calibre
+              PUID: 568
+              PGID: 568
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: ["ALL"]
+                add: ["seccomp:unconfined"]
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250M
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        seccompProfile: {type: RuntimeDefault}
+    service:
+      main:
+        controller: calibre
+        ports:
+          http:
+            port: 8080
+          web:
+            port: 8081
+    ingress:
+      main:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.${SECRET_HOME_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: main
+                  port: http
+      web:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
+        className: internal
+        hosts:
+          - host: "read.${SECRET_HOME_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: main
+                  port: web
+    persistence:
+      config:
+        existingClaim: calibre
+      inbox:
+        existingClaim: calibre-inbox
+        globalMounts:
+          - path: /config/inbox
+      tmp:
+        type: emptyDir
+      # TODO: move metadata.db to a separate volume
+      books:
+        type: nfs
+        server: nfs.internal
+        path: /mnt/nfs/media
+        globalMounts:
+          - path: /media/books
+            subPath: downloads/torrents/complete/books
