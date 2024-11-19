@@ -35,8 +35,8 @@ spec:
             env:
               TZ: Australia/Sydney
               TITLE: Calibre
-              PUID: 568
-              PGID: 568
+              # PUID: 568
+              # PGID: 568
             probes:
               liveness:
                 enabled: true
@@ -115,3 +115,4 @@ spec:
         globalMounts:
           - path: /media/books
             subPath: downloads/torrents/complete/books
+            readOnly: true

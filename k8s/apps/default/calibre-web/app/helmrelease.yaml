@@ -34,8 +34,8 @@ spec:
               tag: "2021.12.16"
             env:
               TZ: Australia/Sydney
-              PUID: 568
-              PGID: 568
+              # PUID: 568
+              # PGID: 568
               DOCKER_MODS: linuxserver/mods:universal-calibre
             probes:
               liveness:
@@ -94,3 +94,4 @@ spec:
         globalMounts:
           - path: /media/books
             subPath: downloads/torrents/complete/books
+            readOnly: true
