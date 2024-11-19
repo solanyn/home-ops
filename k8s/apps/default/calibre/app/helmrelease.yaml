@@ -90,7 +90,6 @@ spec:
         existingClaim: calibre
       tmp:
         type: emptyDir
-      # TODO: move metadata.db to a separate volume
       books:
         type: nfs
         server: nas.internal

@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: calibre
+  name: calibre-web
 spec:
   interval: 30m
   chart:
@@ -26,17 +26,15 @@ spec:
       namespace: rook-ceph
   values:
     controllers:
-      calibre:
+      calibre-web:
         containers:
           app:
-            image:
-              repository: lscr.io/linuxserver/calibre-web
-              tag: "2021.12.16"
             env:
-              TZ: Australia/Sydney
-              # PUID: 568
-              # PGID: 568
-              DOCKER_MODS: linuxserver/mods:universal-calibre
+              CACHE_DIR: /cache
+              CALIBRE_DBPATH: /config
+            image:
+              repository: ghcr.io/vaskozl/calibre-web
+              tag: 0.6.23@sha256:1077240876b9fefa6e906464d2da81acf8d47c78ca759a3bf952e9efe621e857
             probes:
               liveness:
                 enabled: true
@@ -48,21 +46,21 @@ spec:
                   failureThreshold: 30
                   periodSeconds: 5
             securityContext:
-              # allowPrivilegeEscalation: false
-              # readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {add: ["NET_BIND_SERVICE"], drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
                 memory: 128Mi
               limits:
                 memory: 512Mi
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 568
-    #     runAsGroup: 568
-    #     seccompProfile: {type: RuntimeDefault}
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        seccompProfile: {type: RuntimeDefault}
     service:
       main:
         controller: calibre
@@ -95,3 +93,7 @@ spec:
           - path: /media/books
             subPath: downloads/torrents/complete/books
             readOnly: true
+      cache:
+        globalMounts:
+          - path: /cache
+        type: emptyDir
