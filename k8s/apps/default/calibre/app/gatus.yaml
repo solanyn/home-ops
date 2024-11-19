@@ -12,7 +12,7 @@ data:
         url: 1.1.1.1
         interval: 5m
         dns:
-          query-name: "calibre.${SECRET_INTERNAL_DOMAIN}"
+          query-name: "calibre.${SECRET_HOME_DOMAIN}"
           query-type: A
         ui:
           hide-url: true
@@ -23,7 +23,7 @@ data:
           - type: pushover
       - name: Calibre webserver
         group: internal
-        url: "https://calibre-web.${SECRET_INTERNAL_DOMAIN}"
+        url: "https://read.${SECRET_INTERNAL_DOMAIN}"
         interval: 1m
         ui:
           hide-url: true
