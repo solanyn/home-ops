@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: readarr
+  name: calibre-web
 spec:
   accessModes: ["ReadWriteMany"]
   resources:
     requests:
-      storage: 15Gi
+      storage: 30Gi
   storageClassName: ceph-filesystem
