@@ -63,7 +63,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
     service:
       main:
-        controller: calibre
+        controller: calibre-web
         ports:
           http:
             port: 8083
