@@ -18,6 +18,7 @@ resources:
   - ./recyclarr/ks.yaml
   - ./bazarr/ks.yaml
   - ./cross-seed/ks.yaml
+  - ./calibre-web/ks.yaml
   - ./komga/ks.yaml
   - ./stash/ks.yaml
   - ./plex/ks.yaml
