@@ -31,7 +31,7 @@ spec:
           app:
             args:
               - --port=8081
-              - /media/books
+              - /media/calibre
             env:
               HOME: /config
               TZ: Australia/Sydney
