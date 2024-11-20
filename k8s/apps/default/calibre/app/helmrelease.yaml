@@ -31,7 +31,6 @@ spec:
           app:
             args:
               - --port=8081
-              - /media/calibre
             env:
               HOME: /config
               TZ: Australia/Sydney
@@ -90,10 +89,3 @@ spec:
         existingClaim: calibre
       tmp:
         type: emptyDir
-      books:
-        type: nfs
-        server: nas.internal
-        path: /mnt/nfs/media
-        globalMounts:
-          - path: /media/calibre
-            subPath: calibre
