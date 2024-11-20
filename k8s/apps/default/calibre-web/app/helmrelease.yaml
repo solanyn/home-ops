@@ -76,8 +76,7 @@ spec:
         server: nas.internal
         path: /mnt/nfs/media
         globalMounts:
-          - path: /media/books
-            subPath: downloads/torrents/complete/books
+          - path: /media
             readOnly: true
       cache:
         type: emptyDir
