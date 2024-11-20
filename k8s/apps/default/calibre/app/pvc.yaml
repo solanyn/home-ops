@@ -8,14 +8,3 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: ceph-filesystem
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: calibre-inbox
-spec:
-  accessModes: ["ReadWriteMany"]
-  resources:
-    requests:
-      storage: 100Mi
-  storageClassName: ceph-filesystem
