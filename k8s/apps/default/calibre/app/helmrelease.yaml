@@ -78,7 +78,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}-server.${SECRET_HOME_DOMAIN}"
+          - host: "{{ .Release.Name }}.${SECRET_HOME_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
