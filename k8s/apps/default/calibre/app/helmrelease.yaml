@@ -93,4 +93,7 @@ spec:
       calibre:
         type: nfs
         server: nas.internal
-        path: /calibre
+        path: /mnt/nfs
+        globalMounts:
+          - path: /calibre
+            subPath: calibre
