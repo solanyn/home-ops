@@ -74,9 +74,10 @@ spec:
       media:
         type: nfs
         server: nas.internal
-        path: /mnt/nfs/media
+        path: /mnt/nfs/
         globalMounts:
-          - path: /media
+          - path: /calibre
+            subPath: calibre
             readOnly: true
       cache:
         type: emptyDir
