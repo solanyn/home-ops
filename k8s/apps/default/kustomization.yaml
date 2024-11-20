@@ -13,13 +13,14 @@ resources:
   - ./autobrr/ks.yaml
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
+  - ./calibre/ks.yaml
+  - ./calibre-web/ks.yaml
   - ./readarr/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./slskd/ks.yaml
   - ./recyclarr/ks.yaml
   - ./bazarr/ks.yaml
   - ./cross-seed/ks.yaml
-  - ./calibre-web/ks.yaml
   - ./komga/ks.yaml
   - ./stash/ks.yaml
   - ./plex/ks.yaml
