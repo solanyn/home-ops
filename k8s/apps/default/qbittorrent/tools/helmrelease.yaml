@@ -56,12 +56,12 @@ spec:
         containers:
           unregistered:
             !!merge <<: *container
-            args: ["prune", "--exclude-category", "manual", "--exclude-category", "music", "--exclude-category", "other", "--exclude-category", "books", "--exclude-category", "audiobooks", "--exclude-tag", "added:1d", "--include-tag", "unregistered", "--with-data",
+            args: ["prune", "--exclude-category", "manual", "--include-tag", "unregistered", "--with-data",
               # "--dry-run",
             ]
           expired:
             !!merge <<: *container
-            args: ["prune", "--exclude-category", "manual", "--exclude-category", "music", "--exclude-category", "books", "--exclude-category", "audiobooks", "--exclude-category", "other", "--exclude-tag", "added:1d", "--exclude-tag", "site:myanonamouse", "--include-tag", "expired", "--with-data",
+            args: ["prune", "--exclude-category", "manual", "--exclude-category", "music", "--exclude-category", "books", "--exclude-category", "audiobooks", "--exclude-category", "other", "--exclude-tag", "added:1d", "--include-tag", "expired", "--with-data",
               # "--dry-run",
             ]
         pod:
@@ -70,7 +70,7 @@ spec:
         type: cronjob
         cronjob:
           !!merge <<: *cronJobSpec
-          schedule: "@weekly"
+          schedule: "@daily"
           suspend: true
         containers:
           app:
