@@ -79,5 +79,5 @@ spec:
         path: /mnt/nfs/media
         globalMounts:
           - path: /media/books
-            subPath: downloads/torrents/complete/books
+            subPath: books
             readOnly: true
