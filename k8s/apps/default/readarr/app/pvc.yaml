@@ -3,8 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: readarr
 spec:
-  accessModes: ["ReadWriteMany"]
+  accessModes: ["ReadWriteOnce"]
   resources:
     requests:
       storage: 15Gi
-  storageClassName: ceph-filesystem
+  storageClassName: ceph-block
