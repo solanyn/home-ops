@@ -71,7 +71,7 @@ spec:
         cronjob:
           !!merge <<: *cronJobSpec
           schedule: "@daily"
-          suspend: true
+          suspend: false
         containers:
           app:
             !!merge <<: *container
