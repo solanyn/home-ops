@@ -103,7 +103,7 @@ spec:
       media:
         type: nfs
         server: nas.internal
-        path: /mnt/nfs/media
+        path: /mnt/world/media
         advancedMounts:
           orphaned:
             app:
