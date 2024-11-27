@@ -25,8 +25,6 @@ env:
 includes:
   b: .taskfiles/bootstrap
   k: .taskfiles/kubernetes
-  f: .taskfiles/flux
-  r: .taskfiles/repository
   t: .taskfiles/talos
   s: .taskfiles/sops
   w: .taskfiles/workstation
@@ -46,19 +44,7 @@ tasks:
   configure:
     desc: Configure repository from bootstrap vars
     prompt: Any conflicting config in the kubernetes directory will be overwritten... continue?
-    deps: ['workstation:direnv', 'workstation:venv', 'sops:age-keygen', 'init']
+    deps: ["workstation:direnv", "workstation:venv", "sops:age-keygen", "init"]
     cmds:
       - task: template
       - task: sops:encrypt
-  template:
-    internal: true
-    cmd: '{{.VIRTUAL_ENV}}/bin/makejinja'
-    preconditions:
-      - msg: Missing virtual environment
-        sh: test -d {{.VIRTUAL_ENV}}
-      - msg: Missing Makejinja config file
-        sh: test -f {{.MAKEJINJA_CONFIG_FILE}}
-      - msg: Missing Makejinja plugin file
-        sh: test -f {{.BOOTSTRAP_DIR}}/scripts/plugin.py
-      - msg: Missing bootstrap config file
-        sh: test -f {{.BOOTSTRAP_CONFIG_FILE}}
