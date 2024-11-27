@@ -90,6 +90,6 @@ spec:
       data:
         type: nfs
         server: nas.internal
-        path: /mnt/nfs
+        path: /mnt/world
         globalMounts:
           - path: /nfs
