@@ -7,19 +7,30 @@ version: '3'
 vars:
   VOLSYNC_RESOURCES_DIR: '{{.ROOT_DIR}}/.taskfiles/volsync/resources'
 tasks:
-  state-*:
-    desc: Suspend or resume Volsync [CLUSTER=main]
+  cleanup:
+    desc: Delete volume populator PVCs in all namespaces [CLUSTER=main]
     cmds:
-      - flux --namespace flux-system {{.STATE}} kustomization volsync
-      - flux --namespace volsync-system {{.STATE}} helmrelease volsync
-      - kubectl --namespace volsync-system scale deployment volsync --replicas {{if eq .STATE "suspend"}}0{{else}}1{{end}}
-    vars:
-      STATE: '{{index .MATCH 0}}'
+      - for: {var: dest}
+        cmd: |
+          {{- $items := (split "/" .ITEM) }}
+          kubectl --context {{.CLUSTER}} delete pvc -n {{ $items._0 }} {{ $items._1 }}
+      - for: {var: cache}
+        cmd: |
+          {{- $items := (split "/" .ITEM) }}
+          kubectl --context {{.CLUSTER}} delete pvc -n {{ $items._0 }} {{ $items._1 }}
+      - for: {var: snaps}
+        cmd: |
+          {{- $items := (split "/" .ITEM) }}
+          kubectl --context {{.CLUSTER}} delete volumesnapshot -n {{ $items._0 }} {{ $items._1 }}
     requires:
       vars: [CLUSTER]
-    preconditions:
-      - '[[ "{{.STATE}}" == "suspend" || "{{.STATE}}" == "resume" ]]'
-      - which flux kubectl
+    vars:
+      dest:
+        sh: kubectl get pvc --all-namespaces --no-headers | grep "bootstrap-dest" | awk '{print $1 "/" $2}'
+      cache:
+        sh: kubectl get pvc --all-namespaces --no-headers | grep "bootstrap-cache" | awk '{print $1 "/" $2}'
+      snaps:
+        sh: kubectl get volumesnapshot --all-namespaces --no-headers | grep "bootstrap-dest" | awk '{print $1 "/" $2}'
   unlock:
     desc: Unlock all restic source repos [CLUSTER=main]
     cmds:
@@ -32,6 +43,8 @@ tasks:
       vars: [CLUSTER]
     preconditions:
       - which kubectl
+  # To run backup jobs in parallel for all replicationsources:
+  #   - kubectl get replicationsources --all-namespaces --no-headers | awk '{print $2, $1}' | xargs --max-procs=4 -l bash -c 'task v:snapshot APP=$0 NS=$1'
   snapshot:
     desc: Snapshot an app [CLUSTER=main] [NS=default] [APP=required]
     cmds:
