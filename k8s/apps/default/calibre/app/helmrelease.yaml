@@ -22,8 +22,10 @@ spec:
         containers:
           app:
             args:
-              - --port=8081
+              - --port=8080
               - /config/calibre
+              - --userdb=/config/calibre/users.sqlite
+              - --enable-auth
             image:
               repository: ghcr.io/vaskozl/calibre
               tag: 7.17.0@sha256:8f752521f9be448206d1f30cb6d81ef2f2f0e5d078a6f0a878ca3c20f3d09c0d
