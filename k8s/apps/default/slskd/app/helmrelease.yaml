@@ -126,7 +126,7 @@ spec:
       media:
         type: nfs
         server: nas.internal
-        path: /mnt/world
+        path: /mnt/world/media
         globalMounts:
           - path: /media/downloads/soulseek
-            subPath: media/downloads/soulseek
+            subPath: downloads/soulseek
