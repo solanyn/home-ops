@@ -21,7 +21,7 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            command: ["bin/bash"]
+            command: ["sleep", "infinity"]
             # args:
             #   - --port=8080
             #   - /config/calibre
