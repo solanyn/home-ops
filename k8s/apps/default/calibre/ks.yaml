@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app calibre-web
+  name: &app calibre
   namespace: flux-system
 spec:
   targetNamespace: default
@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   interval: 30m
   timeout: 5m
-  path: ./k8s/apps/default/calibre-web/app
+  path: ./k8s/apps/default/calibre/app
   prune: true
   sourceRef:
     kind: GitRepository
