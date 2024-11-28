@@ -78,7 +78,6 @@ spec:
         globalMounts:
           - path: /calibre
             subPath: calibre
-            readOnly: true
       cache:
         type: emptyDir
         globalMounts:
