@@ -21,20 +21,19 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            command: ["sleep", "infinity"]
-            # args:
-            #   - --port=8080
-            #   - /config/calibre
-            #   - --userdb=/config/calibre/users.sqlite
-            #   - --enable-auth
+            args:
+              - --port=8080
+              - /config/calibre
+              - --userdb=/config/calibre/users.sqlite
+              - --enable-auth
             image:
               repository: ghcr.io/vaskozl/calibre
               tag: 7.17.0@sha256:8f752521f9be448206d1f30cb6d81ef2f2f0e5d078a6f0a878ca3c20f3d09c0d
-            # probes:
-            #   liveness:
-            #     enabled: true
-            #   readiness:
-            #     enabled: true
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
             resources:
               requests:
                 cpu: 10m
@@ -47,6 +46,7 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
+        # Needs 1000 because of funky vaskozl container
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
