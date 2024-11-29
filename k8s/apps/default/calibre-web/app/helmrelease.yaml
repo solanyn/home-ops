@@ -71,13 +71,11 @@ spec:
     persistence:
       config:
         existingClaim: *app
-      media:
-        type: nfs
-        server: nas.internal
-        path: /mnt/world/
+      calibre:
+        existingClaim: calibre
         globalMounts:
           - path: /calibre
-            subPath: calibre
+            readOnly: true
       cache:
         type: emptyDir
         globalMounts:

@@ -75,10 +75,3 @@ spec:
         existingClaim: *app
       tmp:
         type: emptyDir
-      media:
-        type: nfs
-        server: nas.internal
-        path: /mnt/world/
-        globalMounts:
-          - path: /config/calibre
-            subPath: calibre
