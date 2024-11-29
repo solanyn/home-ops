@@ -10,27 +10,21 @@ tasks:
   cleanup:
     desc: Delete volume populator PVCs in all namespaces [CLUSTER=main]
     cmds:
-      - for: {var: dest}
+      - for: {var: volsync}
         cmd: |
           {{- $items := (split "/" .ITEM) }}
-          kubectl --context {{.CLUSTER}} delete pvc -n {{ $items._0 }} {{ $items._1 }}
-      - for: {var: cache}
+          kubectl delete pvc -n {{ $items._0 }} {{ $items._1 }}
+      - for: {var: snapshot}
         cmd: |
           {{- $items := (split "/" .ITEM) }}
-          kubectl --context {{.CLUSTER}} delete pvc -n {{ $items._0 }} {{ $items._1 }}
-      - for: {var: snaps}
-        cmd: |
-          {{- $items := (split "/" .ITEM) }}
-          kubectl --context {{.CLUSTER}} delete volumesnapshot -n {{ $items._0 }} {{ $items._1 }}
+          kubectl delete volumesnapshot -n {{ $items._0 }} {{ $items._1 }}
     requires:
       vars: [CLUSTER]
     vars:
-      dest:
-        sh: kubectl get pvc --all-namespaces --no-headers | grep "bootstrap-dest" | awk '{print $1 "/" $2}'
-      cache:
-        sh: kubectl get pvc --all-namespaces --no-headers | grep "bootstrap-cache" | awk '{print $1 "/" $2}'
-      snaps:
-        sh: kubectl get volumesnapshot --all-namespaces --no-headers | grep "bootstrap-dest" | awk '{print $1 "/" $2}'
+      volsync:
+        sh: kubectl get pvc --all-namespaces --no-headers | grep "volsync" | awk '{print $1 "/" $2}'
+      snapshot:
+        sh: kubectl get volumesnapshot --all-namespaces --no-headers | grep -E "volsync-*-dst-dest" | awk '{print $1 "/" $2}'
   unlock:
     desc: Unlock all restic source repos [CLUSTER=main]
     cmds:

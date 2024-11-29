@@ -58,6 +58,14 @@ tasks:
       NS: '{{.NS | default "default"}}'
     requires:
       vars: [CLUSTER, CLAIM]
+  patch-finalizer:
+    desc: Remove finalizers on resurce [CLUSTER=main] [NS=default] [RESOURCE=required] [NAME=required]
+    cmds:
+      - kubectl --namespace {{.NS}} patch {{.RESOURCE}} {{.NAME}} -p '{"metadata":{"finalizers":null}}'
+    vars:
+      NS: '{{.NS | default "default"}}'
+    requires:
+      vars: [CLUSTER, RESOURCE, NAME]
     preconditions:
-      - kubectl --namespace {{.NS}} get persistentvolumeclaims {{.CLAIM}}
+      - kubectl --namespace {{.NS}} get {{.RESOURCE}} {{.NAME}}
       - which kubectl
