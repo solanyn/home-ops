@@ -5,3 +5,11 @@ resources:
   - ./helmrelease.yaml
   - ../../../../templates/volsync
   - ../../../../templates/gatus/guarded
+configMapGenerator:
+  - name: calibre-configmap
+    files:
+      - init.sh=./resources/init.sh
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
