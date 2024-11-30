@@ -80,16 +80,12 @@ spec:
         existingClaim: *app
       calibre:
         existingClaim: calibre
-        globalMounts:
-          - path: /calibre
       media:
         type: nfs
         server: nas.internal
         path: /mnt/world/media
         globalMounts:
-          path: /media/books
-          subPath: books
+          - path: /media/books
+            subPath: books
       cache:
         type: emptyDir
-        globalMounts:
-          - path: /cache
