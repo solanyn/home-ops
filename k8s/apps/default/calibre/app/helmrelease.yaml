@@ -31,13 +31,17 @@ spec:
             image:
               repository: ghcr.io/vaskozl/calibre
               tag: 7.17.0@sha256:8f752521f9be448206d1f30cb6d81ef2f2f0e5d078a6f0a878ca3c20f3d09c0d
-            command: ["/scripts/init.sh"]
+            command: ["calibredb add /media/tmp/prideandprejudice.epub --automerge ignore --with-library /media/books"]
+            env:
+              CALIBRE_OVERRIDE_DATABASE_PATH: /config/metadata.db
         containers:
           app:
             image:
               repository: ghcr.io/vaskozl/calibre
               tag: 7.17.0@sha256:8f752521f9be448206d1f30cb6d81ef2f2f0e5d078a6f0a878ca3c20f3d09c0d
-            args: ["--port=8080", "/config", "--enable-local-write"]
+            args: ["--port=8080", "/media/books", "--enable-local-write"]
+            env:
+              CALIBRE_OVERRIDE_DATABASE_PATH: /config/metadata.db
             probes:
               liveness:
                 enabled: true
@@ -82,13 +86,18 @@ spec:
     persistence:
       config:
         existingClaim: *app
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          path: /media/books
+          subPath: books
+      nfs-tmp:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/tmp
+        globalMounts:
+          path: /media/tmp
       tmp:
         type: emptyDir
-      scripts:
-        type: configMap
-        name: calibre-configmap
-        defaultMode: 0775
-        globalMounts:
-          - path: /scripts/init.sh
-            subPath: init.sh
-            readOnly: true
