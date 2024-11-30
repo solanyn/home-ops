@@ -31,9 +31,7 @@ spec:
             image:
               repository: ghcr.io/vaskozl/calibre
               tag: 7.17.0@sha256:8f752521f9be448206d1f30cb6d81ef2f2f0e5d078a6f0a878ca3c20f3d09c0d
-            args: ["--port=8080", "/media/books", "--enable-local-write"]
-            env:
-              CALIBRE_OVERRIDE_DATABASE_PATH: /config/metadata.db
+            args: ["--port=8080", "/config", "--enable-local-write"]
             probes:
               liveness:
                 enabled: true
