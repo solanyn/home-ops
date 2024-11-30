@@ -35,11 +35,11 @@ spec:
             command: ["sleep", "infinity"]
             env:
               CALIBRE_OVERRIDE_DATABASE_PATH: /config/metadata.db
-            probes:
-              liveness:
-                enabled: true
-              readiness:
-                enabled: true
+            # probes:
+            #   liveness:
+            #     enabled: true
+            #   readiness:
+            #     enabled: true
             resources:
               requests:
                 cpu: 10m
