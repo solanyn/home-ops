@@ -82,7 +82,6 @@ spec:
         existingClaim: calibre
         globalMounts:
           - path: /calibre
-            readOnly: true
       cache:
         type: emptyDir
         globalMounts:
