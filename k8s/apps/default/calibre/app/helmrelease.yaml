@@ -31,13 +31,12 @@ spec:
             image:
               repository: ghcr.io/vaskozl/calibre
               tag: 7.17.0@sha256:8f752521f9be448206d1f30cb6d81ef2f2f0e5d078a6f0a878ca3c20f3d09c0d
-            # args: ["--port=8080", "/config", "--enable-local-write", "--username", "calibre", "--password", "1234"]
-            command: ["sleep", "infinity"]
-            # probes:
-            #   liveness:
-            #     enabled: true
-            #   readiness:
-            #     enabled: true
+            args: ["--port=8080", "/media/books", "--userdb", "/media/books/users.sqlite", "--enable-auth"]
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
             resources:
               requests:
                 cpu: 10m
