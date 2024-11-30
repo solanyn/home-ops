@@ -72,8 +72,6 @@ tasks:
     preconditions:
       - talosctl --nodes {{.IP}} get machineconfig
       - talosctl config info
-      - test -f {{.CLUSTER_DIR}}/cluster.env
-      - test -f {{.CLUSTER_DIR}}/talosconfig
       - which talosctl
   shutdown-cluster:
     desc: Shutdown Talos across the whole cluster [CLUSTER=main]
@@ -128,16 +126,16 @@ tasks:
   down:
     internal: true
     cmds:
-      - until kubectl wait cephcluster --for=jsonpath=.status.ceph.health=HEALTH_OK --timeout=10m --all --all-namespaces &>/dev/null; do sleep 5; done
+      - until kubectl wait cephcluster --for=jsonpath=.status.ceph.health=HEALTH_WARN --timeout=10m --all --all-namespaces &>/dev/null; do sleep 5; done
       - until kubectl wait jobs --all --all-namespaces --for=condition=complete --timeout=5m &>/dev/null; do sleep 5; done
-      - task: :volsync:state-suspend
+      - task: :v:state-suspend
     preconditions:
       - which kubectl
   up:
     internal: true
     cmds:
-      - until kubectl wait cephcluster --for=jsonpath=.status.ceph.health=HEALTH_OK --timeout=10m --all --all-namespaces &>/dev/null; do sleep 5; done
+      - until kubectl wait cephcluster --for=jsonpath=.status.ceph.health=HEALTH_WARN --timeout=10m --all --all-namespaces &>/dev/null; do sleep 5; done
       - until kubectl wait jobs --all --all-namespaces --for=condition=complete --timeout=5m &>/dev/null; do sleep 5; done
-      - task: :volsync:state-resume
+      - task: :v:state-resume
     preconditions:
       - which kubectl
