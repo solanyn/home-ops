@@ -25,6 +25,19 @@ tasks:
         sh: kubectl get pvc --all-namespaces --no-headers | grep "volsync" | awk '{print $1 "/" $2}'
       snapshot:
         sh: kubectl get volumesnapshot --all-namespaces --no-headers | grep -E "volsync-*-dst-dest" | awk '{print $1 "/" $2}'
+  state-*:
+    desc: Suspend or resume Volsync [CLUSTER=main]
+    cmds:
+      - flux --namespace flux-system {{.STATE}} kustomization volsync
+      - flux --namespace volsync-system {{.STATE}} helmrelease volsync
+      - kubectl --namespace volsync-system scale deployment volsync --replicas {{if eq .STATE "suspend"}}0{{else}}1{{end}}
+    vars:
+      STATE: '{{index .MATCH 0}}'
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - '[[ "{{.STATE}}" == "suspend" || "{{.STATE}}" == "resume" ]]'
+      - which flux kubectl
   unlock:
     desc: Unlock all restic source repos [CLUSTER=main]
     cmds:
