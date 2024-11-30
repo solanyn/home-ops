@@ -31,7 +31,7 @@ spec:
             image:
               repository: ghcr.io/vaskozl/calibre
               tag: 7.17.0@sha256:8f752521f9be448206d1f30cb6d81ef2f2f0e5d078a6f0a878ca3c20f3d09c0d
-            command: ["calibredb", "add", "/config", "--automerge", "ignore", "--with-library", "/config"]
+            command: ["/scripts/init.sh"]
         containers:
           app:
             image:
@@ -84,3 +84,11 @@ spec:
         existingClaim: *app
       tmp:
         type: emptyDir
+      scripts:
+        type: configMap
+        name: calibre-configmap
+        defaultMode: 0775
+        globalMounts:
+          - path: /scripts/init.sh
+            subPath: init.sh
+            readOnly: true
