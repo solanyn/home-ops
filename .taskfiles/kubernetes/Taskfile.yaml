@@ -52,7 +52,7 @@ tasks:
   delete-pvc:
     desc: Delete pvc [CLUSTER=main] [NS=default] [CLAIM=required]
     cmds:
-      - kubectl --namespace {{.NS}} delete pvc {{.CLAIM}} --grace-period=0 --force
+      - kubectl --namespace {{.NS}} delete pvc {{.CLAIM}} --grace-period=0 --force &
       - kubectl --namespace {{.NS}} patch pvc {{.CLAIM}} -p '{"metadata":{"finalizers":null}}'
     vars:
       NS: '{{.NS | default "default"}}'
