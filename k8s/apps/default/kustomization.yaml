@@ -5,6 +5,7 @@ resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
   # Flux-Kustomizations
+  - ./echo-server/ks.yaml
   - ./home-assistant/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
