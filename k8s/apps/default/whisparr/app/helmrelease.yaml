@@ -47,6 +47,7 @@ spec:
             image:
               repository: ghcr.io/hotio/whisparr
               tag: v3@sha256:f1a0da4e16b347009a685082b3da0a16f514dc0fd2f937a3d1d4ecba59141731
+            command: ["sleep", "infinity"]
             env:
               WHISPARR__APP__INSTANCENAME: Whisparr
               WHISPARR__APP__THEME: dark
