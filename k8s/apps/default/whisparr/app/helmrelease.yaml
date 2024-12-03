@@ -1,0 +1,104 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app whisparr
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    controllers:
+      lidarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16.6@sha256:35353a77777ee8f634d0f3945f495b4a40065134b8619e0d18bd49b0ee9c855b
+            envFrom: &envFrom
+              - secretRef:
+                  name: whisparr-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/jfroy/whisparr-nightly
+              tag: 2.0.0@sha256:00bed07ec3bbbbad19169e632e9a9873a0f1a53590069ada05dab1938523e9b8
+            env:
+              WHISPARR__APP__INSTANCENAME: Whisparr
+              WHISPARR__APP__THEME: dark
+              WHISPARR__AUTH__METHOD: External
+              WHISPARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              WHISPARR__SERVER__PORT: &port 80
+              WHISPARR__LOG_LEVEL: info
+              WHISPARR__UPDATE__BRANCH: develop
+              TZ: Australia/Sydney
+            envFrom: *envFrom
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: {type: RuntimeDefault}
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.${SECRET_HOME_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: *app
+      config-file:
+        type: secret
+        name: whisparr-secret
+        globalMounts:
+          - path: /config/config.xml
+            subPath: config.xml
+            readOnly: true
+      tmp:
+        type: emptyDir
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          - path: /media

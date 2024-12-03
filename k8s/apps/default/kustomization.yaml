@@ -15,6 +15,7 @@ resources:
   - ./sonarr/ks.yaml
   - ./readarr/ks.yaml
   - ./lidarr/ks.yaml
+  - ./whisparr/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./slskd/ks.yaml
   - ./recyclarr/ks.yaml
