@@ -43,6 +43,7 @@ spec:
               repository: ghcr.io/joryirving/readarr-develop
               tag: 0.4.4.2686@sha256:e43066ec0e300687fc8cabde9385f3ad6975d79c5fe9795797c2ae0bfe0320fa
             env:
+              # NOTE: Environment variables only work because onedr0p containers do some cool things to turn ENV variables to config.xml
               READARR__APP__INSTANCENAME: Readarr
               READARR__APP__THEME: dark
               READARR__AUTH__METHOD: External
@@ -87,6 +88,14 @@ spec:
     persistence:
       config:
         existingClaim: readarr
+      # NOTE: While ENV variable config is not available
+      config-file:
+        type: secret
+        name: readarr-secret
+        globalMounts:
+          - path: /config/config.xml
+            subPath: config.xml
+            readOnly: true
       tmp:
         type: emptyDir
       media:
