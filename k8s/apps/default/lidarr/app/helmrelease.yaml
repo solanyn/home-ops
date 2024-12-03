@@ -93,7 +93,6 @@ spec:
         globalMounts:
           - path: /config/config.xml
             subPath: config.xml
-            readOnly: true
       tmp:
         type: emptyDir
       media:
