@@ -61,7 +61,7 @@ spec:
             ]
           expired:
             !!merge <<: *container
-            args: ["prune", "--exclude-category", "manual", "--exclude-category", "music", "--exclude-category", "books", "--exclude-category", "audiobooks", "--exclude-category", "other", "--exclude-tag", "added:1d", "--include-tag", "expired", "--with-data",
+            args: ["prune", "--exclude-category", "manual", "--exclude-category", "seed", "--exclude-category", "music", "--exclude-category", "audiobooks", "--exclude-category", "other", "--exclude-category", "readarr", "--exclude-category", "lidarr", "--exclude-tag", "added:1d", "--include-tag", "expired", "--with-data",
               # "--dry-run",
             ]
         pod:
@@ -71,7 +71,7 @@ spec:
         cronjob:
           !!merge <<: *cronJobSpec
           schedule: "@daily"
-          suspend: false
+          suspend: true
         containers:
           app:
             !!merge <<: *container
