@@ -28,6 +28,14 @@ trackers:
     required_seed_ratio: 0
     required_seed_days: 0
   - name: orpheus
-    urls: ["orpheus.network"]
+    urls: ["opsfet.ch"]
     required_seed_ratio: 0
     required_seed_days: 0
+  - name: milkie
+    urls: ["milkie.cc"]
+    required_seed_ratio: 0
+    required_seed_days: 1
+  - name: digitalcore.club
+    urls: ["digitalcore.club"]
+    required_seed_ratio: 0
+    required_seed_days: 1
