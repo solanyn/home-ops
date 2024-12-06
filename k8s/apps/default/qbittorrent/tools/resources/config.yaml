@@ -6,19 +6,19 @@ trackers:
   - name: avistaz
     urls: ["avistaz.to"]
     required_seed_ratio: 1
-    required_seed_days: 30
+    required_seed_days: 7
   - name: privatehd
     urls: ["privatehd.to"]
     required_seed_ratio: 1
-    required_seed_days: 30
+    required_seed_days: 7
   - name: cinemaz
     urls: ["cinemaz.to"]
-    required_seed_ratio: 0
-    required_seed_days: 30
+    required_seed_ratio: 1
+    required_seed_days: 7
   - name: exoticaz
     urls: ["exoticaz.to"]
-    required_seed_ratio: 0
-    required_seed_days: 30
+    required_seed_ratio: 1
+    required_seed_days: 7
   - name: animetorrents
     urls: ["animetorrents.me"]
     required_seed_ratio: 0
@@ -26,7 +26,7 @@ trackers:
   - name: hawke.uno
     urls: ["hawke.uno"]
     required_seed_ratio: 0
-    required_seed_days: 30
+    required_seed_days: 14
   - name: orpheus
     urls: ["opsfet.ch"]
     required_seed_ratio: 0
@@ -37,7 +37,7 @@ trackers:
     required_seed_days: 1
   - name: digitalcore.club
     urls: ["digitalcore.club"]
-    required_seed_ratio: 1
+    required_seed_ratio: 0
     required_seed_days: 1
   - name: torrentleech.org
     urls: ["torrentleech.org"]
