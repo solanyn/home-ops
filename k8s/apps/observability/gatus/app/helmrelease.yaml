@@ -125,6 +125,7 @@ spec:
     persistence:
       config:
         type: emptyDir
+        sizeLimit: 1Gi
       config-file:
         type: configMap
         name: gatus-configmap

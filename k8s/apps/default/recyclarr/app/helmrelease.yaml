@@ -77,5 +77,6 @@ spec:
             readOnly: true
       config-logs:
         type: emptyDir
+        sizeLimit: 100Mi
         globalMounts:
           - path: /config/logs

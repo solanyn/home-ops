@@ -105,14 +105,17 @@ spec:
     persistence:
       add-ons:
         type: emptyDir
+        sizeLimit: 1Gi
       cache:
         type: emptyDir
+        sizeLimit: 1Gi
         globalMounts:
           - path: /config/cache
       config:
         existingClaim: bazarr
       log:
         type: emptyDir
+        sizeLimit: 100Mi
         globalMounts:
           - path: /config/log
       media:
@@ -129,3 +132,4 @@ spec:
           - readOnly: true
       tmp:
         type: emptyDir
+        sizeLimit: 1Gi

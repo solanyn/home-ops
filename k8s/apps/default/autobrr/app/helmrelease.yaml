@@ -94,3 +94,4 @@ spec:
     persistence:
       tmp:
         type: emptyDir
+        sizeLimit: 1Gi
