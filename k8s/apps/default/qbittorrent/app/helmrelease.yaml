@@ -123,6 +123,7 @@ spec:
         existingClaim: qbittorrent
       tmp:
         type: emptyDir
+        sizeLimit: 1Gi
       scripts:
         type: configMap
         name: qbittorrent-scripts

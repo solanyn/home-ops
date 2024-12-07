@@ -69,6 +69,7 @@ spec:
     persistence:
       config:
         type: emptyDir
+        sizeLimit: 1Gi
       secret-file:
         type: secret
         name: cross-seed-secret

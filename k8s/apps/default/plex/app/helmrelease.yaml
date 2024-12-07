@@ -117,10 +117,12 @@ spec:
           - path: /config/Library/Application Support/Plex Media Server/Cache
       logs:
         type: emptyDir
+        sizeLimit: 100Mi
         globalMounts:
           - path: /config/Library/Application Support/Plex Media Server/Logs
       tmp:
         type: emptyDir
+        sizeLimit: 1Gi
       transcode:
         type: emptyDir
       media:

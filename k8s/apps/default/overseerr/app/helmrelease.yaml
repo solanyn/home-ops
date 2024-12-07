@@ -100,7 +100,9 @@ spec:
           - path: /app/config/cache
       logs:
         type: emptyDir
+        sizeLimit: 100Mi
         globalMounts:
           - path: /app/config/logs
       tmp:
         type: emptyDir
+        sizeLimit: 1Gi

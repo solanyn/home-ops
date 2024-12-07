@@ -80,6 +80,7 @@ spec:
     persistence:
       tmp:
         type: emptyDir
+        sizeLimit: 1Gi
       etc-ssl:
         type: hostPath
         hostPath: /etc/ssl

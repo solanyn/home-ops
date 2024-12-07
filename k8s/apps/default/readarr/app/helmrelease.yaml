@@ -119,6 +119,7 @@ spec:
             subPath: config.xml
       tmp:
         type: emptyDir
+        sizeLimit: 1Gi
       media:
         type: nfs
         server: nas.internal
