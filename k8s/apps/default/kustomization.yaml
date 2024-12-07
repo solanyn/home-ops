@@ -24,6 +24,7 @@ resources:
   - ./plex/ks.yaml
   - ./tautulli/ks.yaml
   - ./overseerr/ks.yaml
+  - ./dashbrr/ks.yaml
   - ./wizarr/ks.yaml
   - ./maintainerr/ks.yaml
   - ./filebrowser/ks.yaml
