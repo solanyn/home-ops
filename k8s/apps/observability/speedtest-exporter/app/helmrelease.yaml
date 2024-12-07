@@ -54,6 +54,7 @@ spec:
     persistence:
       config:
         type: emptyDir
+        sizeLimit: 1Gi
         globalMounts:
           - path: /.config
     service:

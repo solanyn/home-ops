@@ -101,5 +101,7 @@ spec:
     persistence:
       config:
         type: emptyDir
+        sizeLimit: 100Mi
       tmp:
         type: emptyDir
+        sizeLimit: 1Gi
