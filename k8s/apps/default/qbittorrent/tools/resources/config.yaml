@@ -40,6 +40,6 @@ trackers:
     required_seed_ratio: 0
     required_seed_days: 1
   - name: torrentleech.org
-    urls: ["torrentleech.org"]
+    urls: ["torrentleech.org", "tleechreload.org"]
     required_seed_ratio: 1
     required_seed_days: 14
