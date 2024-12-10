@@ -15,6 +15,6 @@ configMapGenerator:
   - name: autobrr-configmap
     files:
       - config.toml=./resources/config.toml
-      - myanonamouse.yaml=./resources/defintions/myanonamouse.yaml
+      - myanonamouse.yaml=./resources/definitions/myanonamouse.yaml
 generatorOptions:
   disableNameSuffixHash: true
