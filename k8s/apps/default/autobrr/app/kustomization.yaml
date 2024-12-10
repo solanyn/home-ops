@@ -12,5 +12,9 @@ configMapGenerator:
     options:
       labels:
         loki_rule: "true"
+  - name: autobrr-configmap
+    files:
+      - config.toml=./resources/config.toml
+      - myanonamouse.yaml=./resources/defintions/myanonamouse.yaml
 generatorOptions:
   disableNameSuffixHash: true
