@@ -36,7 +36,8 @@ spec:
               tag: 2.17.5@sha256:aa88c9f4652872a2a72043511a87d17ec743b60f53e8024e9868ebec5aae59bd
             env:
               CONFIG_PATH: /config
-              PORT: &port 13378
+              METADATA_PATH: /config/metadata
+              PORT: &port 80
     service:
       app:
         controller: *app
