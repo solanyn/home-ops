@@ -44,6 +44,7 @@ spec:
               AUTOBRR__HOST: 0.0.0.0
               AUTOBRR__PORT: &port 80
               AUTOBRR__LOG_LEVEL: INFO
+            args: ["--config", "/config"]
             envFrom: *envFrom
             probes:
               liveness: &probes
@@ -95,3 +96,13 @@ spec:
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
+      config:
+        type: configMap
+        name: autobrr-configmap
+        globalMounts:
+          - path: /config/config.toml
+            subPath: config.toml
+            readOnly: true
+          - path: /config/definitions/myanonamouse.yaml
+            subPath: myanonamouse.yaml
+            readOnly: true
