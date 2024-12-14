@@ -32,3 +32,4 @@ resources:
   - ./miniflux/ks.yaml
   - ./emailer/ks.yaml
   - ./thelounge/ks.yaml
+  - ./actual/ks.yaml
