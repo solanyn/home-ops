@@ -48,17 +48,17 @@ endpoints:
       - type: pushover
   - name: nas
     group: infrastructure
-    url: "icmp://nas.goyangi.cloud"
+    url: "https://nas.goyangi.cloud"
     interval: 1m
     conditions:
-      - "[CONNECTED] == true"
+      - "[STATUS] == 200"
     alerts:
       - type: pushover
   - name: pihole
     group: infrastructure
-    url: "icmp://pihole.goyangi.cloud"
+    url: "http://pihole.goyangi.cloud"
     interval: 1m
     conditions:
-      - "[CONNECTED] == true"
+      - "[STATUS] == 200"
     alerts:
       - type: pushover
