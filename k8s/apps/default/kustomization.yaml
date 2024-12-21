@@ -16,6 +16,7 @@ resources:
   - ./lazylibrarian/ks.yaml
   - ./readarr/ks.yaml
   - ./readarr-ab/ks.yaml
+  - ./deemix/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./slskd/ks.yaml
   - ./recyclarr/ks.yaml
