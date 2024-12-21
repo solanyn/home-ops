@@ -13,6 +13,7 @@ resources:
   - ./autobrr/ks.yaml
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
+  - ./lazylibrarian/ks.yaml
   - ./readarr/ks.yaml
   - ./readarr-ab/ks.yaml
   - ./flaresolverr/ks.yaml
