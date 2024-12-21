@@ -90,6 +90,10 @@ spec:
     persistence:
       config:
         existingClaim: lazylibrarian
+      cache:
+        existingClaim: lazylibrarian-cache
+        globalMounts:
+          - path: /config/cache
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
