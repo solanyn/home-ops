@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: overseerr
+  name: jellyseerr
 spec:
   interval: 30m
   chart:
@@ -24,18 +24,16 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
   values:
     controllers:
-      overseerr:
+      jellyseerr:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/sct/overseerr
-              tag: develop@sha256:568f126f69663cf764d12bf19ba5a250be2246cca49852e556f363d0acac2603
+              repository: docker.io/fallenbagel/jellyseerr
+              tag: 2.1.0@sha256:af5563771964282e5bfb6a4f30b05c75c8d30661a920f0399086f575217d0573
             env:
               TZ: Australia/Sydney
               LOG_LEVEL: "info"
@@ -60,27 +58,24 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 100Mi
               limits:
                 memory: 2Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
     service:
       app:
-        controller: overseerr
+        controller: jellyseerr
         ports:
           http:
             port: *port
     ingress:
       app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_HOME_DOMAIN}
         className: external
         hosts:
           - host: requests.${SECRET_HOME_DOMAIN}
@@ -91,18 +86,16 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: overseerr
+        existingClaim: jellyseerr
         globalMounts:
           - path: /app/config
       cache:
-        existingClaim: overseerr-cache
+        existingClaim: jellyseerr-cache
         globalMounts:
           - path: /app/config/cache
       logs:
         type: emptyDir
-        sizeLimit: 100Mi
         globalMounts:
           - path: /app/config/logs
       tmp:
         type: emptyDir
-        sizeLimit: 1Gi

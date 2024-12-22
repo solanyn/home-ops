@@ -2,18 +2,20 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app overseerr
+  name: &app jellyseerr
   namespace: flux-system
 spec:
   targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./k8s/apps/default/overseerr/app
+  dependsOn:
+    - name: volsync
+  path: ./k8s/apps/default/jellyseerr/app
   prune: true
   sourceRef:
     kind: GitRepository
-    name: homelab
+    name: home-kubernetes
   wait: false
   interval: 30m
   timeout: 5m
@@ -22,6 +24,4 @@ spec:
       APP: *app
       GATUS_SUBDOMAIN: requests
       GATUS_PATH: /api/v1/status
-      VOLSYNC_ACCESSMODES: ReadWriteMany
-      VOLSYNC_STORAGECLASS: ceph-filesystem
-      VOLSYNC_SNAPSHOTCLASS: csi-ceph-filesystem
+      VOLSYNC_CAPACITY: 5Gi
