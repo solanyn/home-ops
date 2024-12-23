@@ -41,6 +41,7 @@ spec:
       - --ingress-class=internal
       - --ignore-ingress-tls-spec
       - --pihole-tls-skip-verify
+    triggerLoopOnEvent: true
     policy: sync
     sources: ["service", "ingress"]
     domainFilters: ["${SECRET_HOME_DOMAIN}"]
