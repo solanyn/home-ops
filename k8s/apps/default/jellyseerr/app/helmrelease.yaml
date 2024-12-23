@@ -78,7 +78,7 @@ spec:
       app:
         className: external
         hosts:
-          - host: requests.${SECRET_HOME_DOMAIN}
+          - host: jellyseerr.${SECRET_HOME_DOMAIN}
             paths:
               - path: /
                 service:
