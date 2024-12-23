@@ -97,5 +97,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /app/config/logs
+        sizeLimit: 1Gi
       tmp:
         type: emptyDir
+        sizeLimit: 1Gi
