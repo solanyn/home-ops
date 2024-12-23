@@ -77,8 +77,10 @@ spec:
     ingress:
       app:
         className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_HOME_DOMAIN}
         hosts:
-          - host: jellyseerr.${SECRET_HOME_DOMAIN}
+          - host: requests.${SECRET_HOME_DOMAIN}
             paths:
               - path: /
                 service:
