@@ -6,6 +6,11 @@ resources:
   - ./namespace.yaml
   # Flux-Kustomizations
   - ./home-assistant/ks.yaml
+  - ./emqx/ks.yaml
+  - ./go2rtc/ks.yaml
+  - ./rtlamr2mqtt/ks.yaml
+  - ./zigbee/ks.yaml
+  - ./zwave/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./autobrr/ks.yaml
