@@ -1,5 +1,4 @@
 hass:
   config: "/config"
 streams:
-  dining_room_camera:
-    - hass: hass:camera.dining_room_camera
+  dining_room_camera: hass:camera.dining_room_camera
