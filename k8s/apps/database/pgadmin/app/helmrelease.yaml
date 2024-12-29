@@ -75,7 +75,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
         hosts:
-          - host: "{{ .Release.Name }}.${SECRET_INTERNAL_DOMAIN}"
+          - host: "{{ .Release.Name }}.${SECRET_HOME_DOMAIN}"
             paths:
               - path: /
                 service:
