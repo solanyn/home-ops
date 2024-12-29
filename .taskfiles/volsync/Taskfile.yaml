@@ -7,24 +7,6 @@ version: '3'
 vars:
   VOLSYNC_RESOURCES_DIR: '{{.ROOT_DIR}}/.taskfiles/volsync/resources'
 tasks:
-  cleanup:
-    desc: Delete volume populator PVCs in all namespaces [CLUSTER=main]
-    cmds:
-      - for: {var: volsync}
-        cmd: |
-          {{- $items := (split "/" .ITEM) }}
-          kubectl delete pvc -n {{ $items._0 }} {{ $items._1 }}
-      - for: {var: snapshot}
-        cmd: |
-          {{- $items := (split "/" .ITEM) }}
-          kubectl delete volumesnapshot -n {{ $items._0 }} {{ $items._1 }}
-    requires:
-      vars: [CLUSTER]
-    vars:
-      volsync:
-        sh: kubectl get pvc --all-namespaces --no-headers | grep "volsync" | awk '{print $1 "/" $2}'
-      snapshot:
-        sh: kubectl get volumesnapshot --all-namespaces --no-headers | grep -E "volsync-*-dst-dest" | awk '{print $1 "/" $2}'
   state-*:
     desc: Suspend or resume Volsync [CLUSTER=main]
     cmds:
@@ -50,8 +32,6 @@ tasks:
       vars: [CLUSTER]
     preconditions:
       - which kubectl
-  # To run backup jobs in parallel for all replicationsources:
-  #   - kubectl get replicationsources --all-namespaces --no-headers | awk '{print $2, $1}' | xargs --max-procs=4 -l bash -c 'task v:snapshot APP=$0 NS=$1'
   snapshot:
     desc: Snapshot an app [CLUSTER=main] [NS=default] [APP=required]
     cmds:
