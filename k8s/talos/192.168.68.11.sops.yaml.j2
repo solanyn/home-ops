@@ -17,6 +17,13 @@ machine:
     extraConfig:
       maxPods: 2000
     extraMounts:
+      - destination: /var/openebs/local
+        type: bind
+        source: /var/mnt/extra
+        options:
+          - bind
+          - rshared
+          - rw
       - destination: /var/mnt/extra
         type: bind
         source: /var/mnt/extra
