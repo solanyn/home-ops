@@ -56,7 +56,7 @@ spec:
     #   database: postgres16-v0
     #   owner: postgres
     recovery:
-      source: &previousCluster postgres16-v1
+      source: &previousCluster postgres16-v2
   # NOTE: externalClusters is needed when recovering from an EXISTING cnpg cluster
   externalClusters:
     - name: *previousCluster
