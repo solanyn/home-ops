@@ -26,7 +26,7 @@ spec:
           args: ["unlock", "--remove-all"]
           envFrom:
             - secretRef:
-                name: {{ ENV.APP }}-volsync-r2-secret
+                name: {{ ENV.APP }}-volsync-b2-secret
           resources: {}
       volumes:
         - name: repository
