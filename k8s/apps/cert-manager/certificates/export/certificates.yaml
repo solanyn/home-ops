@@ -2,17 +2,17 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${SECRET_HOME_DOMAIN//./-}"
+  name: goyangi-cloud
 spec:
-  secretName: "${SECRET_HOME_DOMAIN//./-}-tls"
+  secretName: goyangi-cloud-tls
   privateKey:
     rotationPolicy: Always
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: "${SECRET_HOME_DOMAIN}"
+  commonName: goyangi.cloud
   dnsNames:
-    - "${SECRET_HOME_DOMAIN}"
-    - "*.${SECRET_HOME_DOMAIN}"
-    - "${SECRET_DEV_DOMAIN}"
-    - "*.${SECRET_DEV_DOMAIN}"
+    - "goyangi.cloud"
+    - "*.goyangi.cloud"
+    - "solanyn.dev"
+    - "*.solanyn.dev"

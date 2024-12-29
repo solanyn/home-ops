@@ -6,7 +6,7 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: "${SECRET_ACME_EMAIL}"
+    email: andrew@goyangi.cloud
     privateKeySecretRef:
       name: letsencrypt-production
     solvers:
@@ -17,8 +17,8 @@ spec:
               key: CLOUDFLARE_API_TOKEN
         selector:
           dnsZones:
-            - "${SECRET_HOME_DOMAIN}"
-            - "${SECRET_DEV_DOMAIN}"
+            - goyangi.cloud
+            - solanyn.dev
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cert-manager.io/clusterissuer_v1.json
 apiVersion: cert-manager.io/v1
@@ -28,7 +28,7 @@ metadata:
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
-    email: "${SECRET_ACME_EMAIL}"
+    email: andrew@goyangi.cloud
     privateKeySecretRef:
       name: letsencrypt-staging
     solvers:
@@ -39,5 +39,5 @@ spec:
               key: CLOUDFLARE_API_TOKEN
         selector:
           dnsZones:
-            - "${SECRET_HOME_DOMAIN}"
-            - "${SECRET_DEV_DOMAIN}"
+            - goyangi.cloud
+            - solanyn.dev
