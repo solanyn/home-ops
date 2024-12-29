@@ -35,8 +35,8 @@ spec:
               repository: ghcr.io/bambanah/deemix
               tag: v4.2.10@sha256:c327b953bf4a10ee2ccc137670545e7fc1127655ce083cf33b3b1c23214f156f
             env:
-              PUID: 568
-              PGID: 568
+              PUID: 1000
+              PGID: 1000
               DEEMIX_DATA_DIR: /config
               DEEMIX_MUSIC_DIR: /media/downloads/deemix
               DEEMIX_SERVER_PORT: &port 80
