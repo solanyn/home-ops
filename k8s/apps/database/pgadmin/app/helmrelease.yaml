@@ -92,3 +92,4 @@ spec:
         globalMounts:
           - path: /pgadmin4/servers.json
             subPath: servers.json
+            readOnly: true
