@@ -53,6 +53,8 @@ spec:
       osd_pool_default_min_size = 1
       osd_pool_default_size = 1
     cephClusterSpec:
+      cephVersion:
+        image: quay.io/ceph/ceph:v19.2.0 # TODO: Remove when Rook is updated >= v19.2.0
       mon:
         count: 1
       crashCollector:
@@ -65,8 +67,16 @@ spec:
       mgr:
         count: 1
         modules:
+          - name: insights
+            enabled: true
           - name: pg_autoscaler
             enabled: true
+          - name: rook
+            enabled: true
+      network:
+        provider: host
+        connections:
+          requireMsgr2: true
       storage:
         useAllNodes: true
         useAllDevices: true
@@ -146,7 +156,7 @@ spec:
           volumeBindingMode: Immediate
           parameters:
             imageFormat: "2"
-            imageFeatures: layering
+            imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
             csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
             csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
