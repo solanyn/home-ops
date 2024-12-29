@@ -41,7 +41,7 @@ spec:
               repository: ghcr.io/miniflux/miniflux
               tag: 2.2.4-distroless@sha256:c09492e6c353ab15c8aae824dd2c0c4247dc84d1ef0ac795226155365465343d
             env:
-              BASE_URL: https://miniflux.${SECRET_HOME_DOMAIN}
+              BASE_URL: https://miniflux.goyangi.cloud
               CREATE_ADMIN: "1"
               # DEBUG: "1"
               LOG_DATE_TIME: "1"
@@ -99,10 +99,10 @@ spec:
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: internal.goyangi.cloud
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.${SECRET_HOME_DOMAIN}"
+          - host: "{{ .Release.Name }}.goyangi.cloud"
             paths:
               - path: /
                 service:
