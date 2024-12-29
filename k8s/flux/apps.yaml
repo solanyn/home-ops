@@ -25,6 +25,11 @@ spec:
             provider: sops
             secretRef:
               name: sops-age
+          postBuild:
+            substituteFrom:
+              - kind: Secret
+                name: cluster-secrets
+                optional: true
       target:
         group: kustomize.toolkit.fluxcd.io
         kind: Kustomization
