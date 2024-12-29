@@ -3,6 +3,7 @@ version: '3'
 set: [pipefail]
 shopt: [globstar]
 vars:
+  CLUSTER: 'homelab'
   CLUSTER_DIR: '{{.ROOT_DIR}}/k8s'
 env:
   KUBECONFIG: '{{.CLUSTER_DIR}}/kubeconfig'
