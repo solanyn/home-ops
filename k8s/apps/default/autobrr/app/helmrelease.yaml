@@ -97,13 +97,3 @@ spec:
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
-      config:
-        type: configMap
-        name: autobrr-configmap
-        globalMounts:
-          - path: /config/config.toml
-            subPath: config.toml
-            readOnly: true
-          - path: /config/definitions/myanonamouse.yaml
-            subPath: myanonamouse.yaml
-            readOnly: true
