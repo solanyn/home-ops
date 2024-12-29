@@ -38,4 +38,3 @@ resources:
   - ./emailer/ks.yaml
   - ./thelounge/ks.yaml
   - ./actual/ks.yaml
-  - ./shiori/ks.yaml
