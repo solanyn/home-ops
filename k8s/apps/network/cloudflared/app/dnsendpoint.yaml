@@ -4,6 +4,6 @@ metadata:
   name: cloudflared
 spec:
   endpoints:
-    - dnsName: "external.${SECRET_HOME_DOMAIN}"
+    - dnsName: "external.goyangi.cloud"
       recordType: CNAME
-      targets: ["${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]
+      targets: ["4822490d-d152-4724-b1eb-39b00e298cb9.cfargotunnel.com"]

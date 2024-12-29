@@ -44,7 +44,7 @@ spec:
     triggerLoopOnEvent: true
     policy: sync
     sources: ["service", "ingress"]
-    domainFilters: ["${SECRET_HOME_DOMAIN}"]
+    domainFilters: ["goyangi.cloud"]
     serviceMonitor:
       enabled: true
     podAnnotations:

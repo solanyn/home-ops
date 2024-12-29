@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: postgres-lb
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: postgres.${SECRET_HOME_DOMAIN}
+    external-dns.alpha.kubernetes.io/hostname: postgres.goyangi.cloud
     lbipam.cilium.io/ips: 192.168.68.125
 spec:
   type: LoadBalancer

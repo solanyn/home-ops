@@ -26,10 +26,10 @@ spec:
     ingress:
       enabled: true
       annotations:
-        external-dns.alpha.kubernetes.io/target: internal.${SECRET_HOME_DOMAIN}
+        external-dns.alpha.kubernetes.io/target: internal.goyangi.cloud
       className: internal
       hosts:
-        - host: blackbox-exporter.${SECRET_HOME_DOMAIN}
+        - host: blackbox-exporter.goyangi.cloud
           paths:
             - path: /
               pathType: Prefix

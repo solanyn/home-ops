@@ -25,7 +25,7 @@ spec:
     controller:
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: &hostname "internal.${SECRET_HOME_DOMAIN}"
+          external-dns.alpha.kubernetes.io/hostname: &hostname "internal.goyangi.cloud"
           lbipam.cilium.io/ips: "192.168.68.201"
         externalTrafficPolicy: Cluster
       ingressClassResource:
@@ -67,7 +67,7 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: "network/${SECRET_HOME_DOMAIN//./-}-tls"
+        default-ssl-certificate: "network/goyangi-cloud-tls"
         publish-status-address: *hostname
       terminationGracePeriodSeconds: 120
       topologySpreadConstraints:

@@ -52,7 +52,7 @@ spec:
               ZIGBEE2MQTT_CONFIG_DEVICE_OPTIONS_RETAIN: "true"
               ZIGBEE2MQTT_CONFIG_EXPERIMENTAL_NEW_API: "true"
               ZIGBEE2MQTT_CONFIG_FRONTEND_PORT: &port 80
-              ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee.${SECRET_HOME_DOMAIN}
+              ZIGBEE2MQTT_CONFIG_FRONTEND_URL: https://zigbee.goyangi.cloud
               ZIGBEE2MQTT_CONFIG_HOMEASSISTANT: "true"
               ZIGBEE2MQTT_CONFIG_MQTT_INCLUDE_DEVICE_INFORMATION: "true"
               ZIGBEE2MQTT_CONFIG_MQTT_KEEPALIVE: 60
@@ -104,7 +104,7 @@ spec:
       app:
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.${SECRET_HOME_DOMAIN}"
+          - host: "{{ .Release.Name }}.goyangi.cloud"
             paths:
               - path: /
                 service:

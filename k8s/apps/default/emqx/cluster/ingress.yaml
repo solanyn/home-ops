@@ -5,7 +5,7 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: emqx.${SECRET_HOME_DOMAIN}
+    - host: emqx.goyangi.cloud
       http:
         paths:
           - path: /
