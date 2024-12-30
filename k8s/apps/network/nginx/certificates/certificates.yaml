@@ -12,5 +12,5 @@ spec:
   dnsNames:
     - goyangi.cloud
     - "*.goyangi.cloud"
-    - solanyn.dev
+    # - solanyn.dev
     - "*.solanyn.dev"
