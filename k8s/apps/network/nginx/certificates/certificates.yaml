@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: goyangi-cloud-tls
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-production
     kind: ClusterIssuer
   commonName: goyangi.cloud
   dnsNames:
