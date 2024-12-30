@@ -28,7 +28,7 @@ connectivity:
 endpoints:
   - name: status
     group: external
-    url: https://status.$goyangi.cloud
+    url: https://status.goyangi.cloud
     interval: 1m
     client:
       dns-resolver: tcp://1.1.1.1:53
