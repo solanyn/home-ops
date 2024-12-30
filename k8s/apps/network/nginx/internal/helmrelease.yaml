@@ -70,15 +70,8 @@ spec:
         default-ssl-certificate: "network/goyangi-cloud-tls"
         publish-status-address: *hostname
       terminationGracePeriodSeconds: 120
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: ingress-nginx
-              app.kubernetes.io/instance: nginx-internal
-              app.kubernetes.io/component: controller
+      publishService:
+        enabled: false
       resources:
         requests:
           cpu: 10m
