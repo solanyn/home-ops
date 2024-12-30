@@ -72,6 +72,8 @@ spec:
         default-ssl-certificate: "network/${SECRET_HOME_DOMAIN/./-}-tls"
         publish-status-address: *hostname
       terminationGracePeriodSeconds: 120
+      publishService:
+        enabled: false
       resources:
         requests:
           cpu: 10m
