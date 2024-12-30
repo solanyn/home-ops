@@ -104,3 +104,8 @@ spec:
         type: nfs
         server: nas.internal
         path: /mnt/world/media
+        advancedMounts:
+          orphaned:
+            app:
+              - path: /media/downloads/torrents
+                subPath: downloads/torrents
