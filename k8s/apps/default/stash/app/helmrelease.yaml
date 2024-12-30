@@ -70,3 +70,6 @@ spec:
         type: nfs
         server: nas.internal
         path: /mnt/world/media
+        globalMounts:
+          - path: /media
+            subPath: downloads/torrents/complete/other
