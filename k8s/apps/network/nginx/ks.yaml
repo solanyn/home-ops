@@ -30,8 +30,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: nginx-certificates
+  # dependsOn:
+  #   - name: nginx-certificates
   path: ./k8s/apps/network/nginx/internal
   prune: true
   sourceRef:
@@ -51,8 +51,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: nginx-certificates
+  # dependsOn:
+  #   - name: nginx-certificates
   path: ./k8s/apps/network/nginx/external
   prune: true
   sourceRef:
