@@ -14,5 +14,3 @@ spec:
     - "*.goyangi.cloud"
     - solanyn.dev
     - "*.solanyn.dev"
-    # TODO: Delete me, temporary workaround for letsencrypt rate limit
-    - jank.goyangi.cloud
