@@ -34,7 +34,7 @@ spec:
             image:
               repository: alpine
               tag: 3.21.0@sha256:21dc6063fd678b478f57c0e13f47560d0ea4eeba26dfc947b2a4f81f686b9f45
-            command: ["sh", "-c", "cp /secret/config.xml /config/config.xml && chown 568:568 /config/config.xml"]
+            command: ["sh", "-c", "cp /secret/config.xml /config/config.xml && chown 1000:1000 /config/config.xml"]
           init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
