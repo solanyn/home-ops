@@ -37,10 +37,10 @@ spec:
             env:
               PORT: &port 9999
               STASH_CONFIG_FILE: /config/config.yml
-              STASH_STASH: /data
-              STASH_GENERATED: /config/generated
               STASH_METADATA: /config/metadata
-              STASH_CACHE: /config/cache
+              STASH_STASH: /media
+              STASH_GENERATED: /cache/generated
+              STASH_CACHE: /cache/cache
               USER: andrew
     service:
       app:
@@ -63,6 +63,8 @@ spec:
     persistence:
       config:
         existingClaim: stash
+      cache:
+        existingClaim: stash-cache
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
