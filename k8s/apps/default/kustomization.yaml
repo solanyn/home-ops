@@ -28,7 +28,6 @@ resources:
   - ./wizarr/ks.yaml
   - ./maintainerr/ks.yaml
   - ./filebrowser/ks.yaml
-  - ./miniflux/ks.yaml
   - ./emailer/ks.yaml
   - ./thelounge/ks.yaml
   - ./actual/ks.yaml
