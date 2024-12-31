@@ -88,21 +88,21 @@ spec:
               path: /var/lib/grafana/dashboards/default
     dashboards:
       default:
-        # ceph-cluster:
-        #   # renovate: depName="Ceph Cluster"
-        #   gnetId: 2842
-        #   revision: 18
-        #   datasource: Prometheus
-        # ceph-osd:
-        #   # renovate: depName="Ceph - OSD (Single)"
-        #   gnetId: 5336
-        #   revision: 9
-        #   datasource: Prometheus
-        # ceph-pools:
-        #   # renovate: depName="Ceph - Pools"
-        #   gnetId: 5342
-        #   revision: 9
-        #   datasource: Prometheus
+        ceph-cluster:
+          # renovate: depName="Ceph Cluster"
+          gnetId: 2842
+          revision: 18
+          datasource: Prometheus
+        ceph-osd:
+          # renovate: depName="Ceph - OSD (Single)"
+          gnetId: 5336
+          revision: 9
+          datasource: Prometheus
+        ceph-pools:
+          # renovate: depName="Ceph - Pools"
+          gnetId: 5342
+          revision: 9
+          datasource: Prometheus
         cert-manager:
           url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
           datasource: Prometheus
@@ -167,6 +167,9 @@ spec:
           gnetId: 11454
           revision: 14
           datasource: Prometheus
+        miniflux:
+          url: https://raw.githubusercontent.com/miniflux/v2/main/contrib/grafana/dashboard.json
+          datasource: Prometheus
         nginx:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
           datasource: Prometheus
@@ -186,6 +189,18 @@ spec:
           gnetId: 19105
           revision: 5
           datasource: Prometheus
+        smart:
+          # renovate: depName="Dashboard for smartctl_exporter"
+          gnetId: 20204
+          revision: 1
+          datasource:
+            - {name: DS_PROMETHEUS, value: Prometheus}
+        unpackerr:
+          # renovate: depName="Unpackerr"
+          gnetId: 18817
+          revision: 1
+          datasource:
+            - {name: DS_PROMETHEUS, value: Prometheus}
         volsync:
           # renovate: depName="VolSync Dashboard"
           gnetId: 21356
