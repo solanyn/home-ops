@@ -26,16 +26,6 @@ connectivity:
     target: 1.1.1.1:53
     interval: 1m
 endpoints:
-  - name: status
-    group: external
-    url: https://status.goyangi.cloud
-    interval: 1m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[STATUS] == 200"
-    alerts:
-      - type: pushover
   - name: flux-webhook
     group: external
     url: https://flux-webhook.goyangi.cloud
@@ -44,21 +34,5 @@ endpoints:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
       - "[STATUS] == 404"
-    alerts:
-      - type: pushover
-  - name: nas
-    group: infrastructure
-    url: "https://nas.goyangi.cloud"
-    interval: 1m
-    conditions:
-      - "[STATUS] == 200"
-    alerts:
-      - type: pushover
-  - name: pihole
-    group: infrastructure
-    url: "http://pihole.goyangi.cloud"
-    interval: 1m
-    conditions:
-      - "[STATUS] == 200"
     alerts:
       - type: pushover
