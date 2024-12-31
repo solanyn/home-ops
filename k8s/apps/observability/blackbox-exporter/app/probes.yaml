@@ -11,4 +11,4 @@ spec:
     staticConfig:
       static:
         - nas.internal
-        - pihole.internal
+        - pi.internal
