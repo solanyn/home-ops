@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/linuxserver/lazylibrarian
-              tag: version-2e00878f@sha256:ef81640c788ecdac31f6aa4b6ec7d18913ce8573cb6928b749588b8230722a72
+              tag: latest
             env:
               PUID: 1000
               PGID: 1000
