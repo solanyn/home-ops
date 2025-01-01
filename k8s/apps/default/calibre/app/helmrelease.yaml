@@ -29,20 +29,20 @@ spec:
       calibre:
         containers:
           app:
-            # args: ["--port=80", "--with-library=/media/calibre", "/config"]
+            args: ["--port=80", "--with-library=/media/calibre", "/config"]
             env:
-              # HOME: /config
+              HOME: /config
               TZ: Australia/Sydney
-              CUSTOM_PORT: 80
-              CLI_ARGS: "--with-library=/media/calibre"
-              TITLE: calibre
-              PUID: 1000
-              PGID: 1000
+              # CUSTOM_PORT: 80
+              # CLI_ARGS: "--with-library=/media/calibre"
+              # TITLE: calibre
+              # PUID: 1000
+              # PGID: 1000
             image:
-              # repository: ghcr.io/vaskozl/calibre
-              # tag: 7.17.0@sha256:abd2ae81fe8e8d82b77a7a01ee59271d7dcbe8da343f1a14f6aca5053a056dd8
-              repository: linuxserver/calibre
-              tag: latest
+              repository: ghcr.io/vaskozl/calibre
+              tag: 7.17.0@sha256:abd2ae81fe8e8d82b77a7a01ee59271d7dcbe8da343f1a14f6aca5053a056dd8
+              # repository: linuxserver/calibre
+              # tag: latest
             probes:
               liveness:
                 enabled: true
@@ -53,24 +53,24 @@ spec:
                 spec:
                   failureThreshold: 30
                   periodSeconds: 5
-            # securityContext:
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: true
-            #   capabilities:
-            #     drop: ["ALL"]
-            #     add: ["seccomp:unconfined"]
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: ["ALL"]
+                add: ["seccomp:unconfined"]
             resources:
               requests:
                 cpu: 10m
               limits:
                 memory: 500Mi
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 1000
-    #     runAsGroup: 1000
-    #     fsGroup: 1000
-    #     seccompProfile: {type: RuntimeDefault}
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile: {type: RuntimeDefault}
     service:
       main:
         controller: calibre
