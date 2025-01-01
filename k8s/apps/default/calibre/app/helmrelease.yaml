@@ -29,7 +29,7 @@ spec:
       calibre:
         containers:
           app:
-            args: ["--port=80"]
+            args: ["--port=80", "--enable-local-write"]
             env:
               HOME: /config
               TZ: Australia/Sydney
