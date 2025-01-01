@@ -36,17 +36,17 @@ spec:
             args: ["while true; do sleep 30; done;"]
             env:
               CACHE_DIR: /cache
-              # CALIBRE_DBPATH: /calibre/metadata.db
-            # probes:
-            #   liveness:
-            #     enabled: true
-            #   readiness:
-            #     enabled: true
-            #   startup:
-            #     enabled: true
-            #     spec:
-            #       failureThreshold: 30
-            #       periodSeconds: 5
+              CALIBRE_DBPATH: /calibre/metadata.db
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -101,4 +101,3 @@ spec:
         existingClaim: calibre
         globalMounts:
           - path: /calibre
-            readOnly: true
