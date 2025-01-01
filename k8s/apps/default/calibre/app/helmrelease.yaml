@@ -29,7 +29,7 @@ spec:
       calibre:
         containers:
           app:
-            args: ["--port=80", "--trusted-ips=0.0.0.0"]
+            args: ["--port=80", "--trusted-ips=0.0.0.0/0"]
             env:
               HOME: /config
               TZ: Australia/Sydney
