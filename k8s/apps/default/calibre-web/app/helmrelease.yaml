@@ -78,7 +78,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: calibre-web
+                  identifier: app
                   port: http
     persistence:
       config:
