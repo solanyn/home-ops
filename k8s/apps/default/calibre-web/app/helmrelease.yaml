@@ -90,8 +90,8 @@ spec:
         server: nas.internal
         path: /mnt/world/media
         globalMounts:
-          - path: /media/books
-            subPath: books
+          - path: /media/calibre
+            subPath: calibre
             readOnly: true
       cache:
         existingClaim: calibre-web-cache
