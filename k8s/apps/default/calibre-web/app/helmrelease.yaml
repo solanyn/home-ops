@@ -89,10 +89,10 @@ spec:
         globalMounts:
           - path: /media/calibre
             subPath: calibre
-            # readOnly: true
+            readOnly: true
       cache:
         existingClaim: calibre-web-cache
-      # calibre:
-      #   existingClaim: calibre
-      #   globalMounts:
-      #     - path: /calibre
+      calibre:
+        existingClaim: calibre
+        globalMounts:
+          - path: /calibre
