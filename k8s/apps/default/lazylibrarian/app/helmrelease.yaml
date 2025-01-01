@@ -39,19 +39,19 @@ spec:
               PGID: 1000
               TZ: Australia/Sydney
               DOCKER_MODS: linuxserver/mods:universal-calibre
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: &port 5299
-                  initialDelaySeconds: 0
-                  periodSeconds: 60
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /
+            #         port: &port 5299
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 60
+            #       timeoutSeconds: 1
+            #       failureThreshold: 3
+            #   readiness: *probes
             # securityContext:
             #   allowPrivilegeEscalation: false
             #   readOnlyRootFilesystem: true
@@ -75,7 +75,8 @@ spec:
         controller: *app
         ports:
           http:
-            port: *port
+            # port: *port
+            port: 5299
     ingress:
       app:
         annotations:
