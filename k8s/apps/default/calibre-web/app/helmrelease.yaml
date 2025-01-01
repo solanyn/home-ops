@@ -62,13 +62,13 @@ spec:
         fsGroup: 1000
         seccompProfile: {type: RuntimeDefault}
     service:
-      calibre-web:
+      app:
         controller: calibre-web
         ports:
           http:
             port: 8083
     ingress:
-      calibre-web:
+      app:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.goyangi.cloud
         className: internal
