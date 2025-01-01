@@ -29,9 +29,7 @@ spec:
       calibre:
         containers:
           app:
-            args:
-              - --port=80
-              - /media/books
+            args: ["--port=80", "--with-library=/media/books", "/config"]
             env:
               HOME: /config
               TZ: Australia/Sydney
