@@ -38,6 +38,7 @@ spec:
               PUID: 1000
               PGID: 1000
               TZ: Australia/Sydney
+              DOCKER_MODS: linuxserver/mods:universal-calibre
             probes:
               liveness: &probes
                 enabled: true
