@@ -14,7 +14,7 @@
   "rebaseWhen": "conflicted",
   "automergeSchedule": ["after 5pm"],
   "timezone": "Australia/Sydney",
-  "schedule": ["after 5pm"],
+  "schedule": ["after 12am"],
   "ignorePaths": ["**/*.sops.*"],
   "flux": {
     "fileMatch": ["(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$"]
@@ -73,6 +73,20 @@
         "siderolabs/talosctl",
         "siderolabs/installer"
       ],
+      "matchDatasources": ["docker"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      },
+      "separateMinorPatch": true
+    },
+    {
+      "description": ["linuxserver.io"],
+      "groupName": "LinuxServer",
+      "matchPackagePatterns": [
+        "^ghcr.io\\/linuxserver\\/",
+        "linuxserver"
+      ],
+      "versioning": "regex:^(?<compatibility>.*?)-(?<major>v?\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)[\\.-]*r?(?<build>\\d+)*-*r?(?<release>\\w+)*",
       "matchDatasources": ["docker"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
