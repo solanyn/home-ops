@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/vaskozl/calibre-web
-              tag: 0.6.23@sha256:1077240876b9fefa6e906464d2da81acf8d47c78ca759a3bf952e9efe621e857
+              tag: 0.6.24@sha256:f24dc3a4da943ba50e95ef98e6a162bbca3d8d812e16a06f03c02a9678c89819
             # command: ["/bin/bash", "-c", "--"]
             # args: ["while true; do sleep 30; done;"]
             env:
