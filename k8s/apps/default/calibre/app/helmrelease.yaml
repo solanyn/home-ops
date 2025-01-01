@@ -29,7 +29,7 @@ spec:
       calibre:
         containers:
           app:
-            args: ["--port=80", "--with-library=/media/calibre", "/config"]
+            args: ["--port=80", /media/calibre"]
             env:
               HOME: /config
               TZ: Australia/Sydney
