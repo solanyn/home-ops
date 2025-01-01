@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.5.1
+      version: 3.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -62,13 +62,13 @@ spec:
         fsGroup: 1000
         seccompProfile: {type: RuntimeDefault}
     service:
-      main:
-        controller: calibre
+      calibre-web:
+        controller: calibre-web
         ports:
           http:
             port: 8083
     ingress:
-      main:
+      calibre-web:
         annotations:
           external-dns.alpha.kubernetes.io/target: internal.goyangi.cloud
         className: internal
@@ -78,7 +78,7 @@ spec:
               - path: /
                 pathType: Prefix
                 service:
-                  identifier: main
+                  identifier: calibre-web
                   port: http
     persistence:
       config:
