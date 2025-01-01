@@ -32,6 +32,8 @@ spec:
             image:
               repository: ghcr.io/bjw-s-labs/calibre-web
               tag: 0.6.24@sha256:3adac22931efde3722834b9a12f9e3559944403db28545968949e1360939d64c
+            env:
+              TZ: Australia/Sydney
             probes:
               liveness:
                 enabled: true
