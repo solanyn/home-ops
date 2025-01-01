@@ -11,8 +11,10 @@ resources:
   - ./autobrr/ks.yaml
   - ./radarr/ks.yaml
   - ./sonarr/ks.yaml
-  - ./lazylibrarian/ks.yaml
+  - ./calibre/ks.yaml
+  - ./calibre-web/ks.yaml
   - ./readarr/ks.yaml
+  - ./readarr-ab/ks.yaml
   - ./deemix/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./slskd/ks.yaml
