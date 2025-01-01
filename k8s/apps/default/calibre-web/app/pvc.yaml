@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: lazylibrarian-cache
+  name: calibre-web-cache
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
