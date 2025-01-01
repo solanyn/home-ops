@@ -29,14 +29,14 @@ spec:
       calibre:
         containers:
           app:
-            # args: ["--port=80", "--with-library=/media/books", "/config"]
+            # args: ["--port=80", "--with-library=/media/calibre", "/config"]
             env:
               # HOME: /config
               TZ: Australia/Sydney
               CUSTOM_PORT: 80
               CUSTOM_USER: readarr
               PASSWORD: 1234
-              CLI_ARGS: "--with-library=/media/books"
+              CLI_ARGS: "--with-library=/media/calibre"
               TITLE: calibre
               PUID: 1000
               PGID: 1000
@@ -102,5 +102,5 @@ spec:
         server: nas.internal
         path: /mnt/world/media
         globalMounts:
-          - path: /media/books
-            subPath: books
+          - path: /media/calibre
+            subPath: calibre
