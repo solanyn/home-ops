@@ -28,7 +28,6 @@ resources:
   - ./tautulli/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./wizarr/ks.yaml
-  - ./maintainerr/ks.yaml
   - ./filebrowser/ks.yaml
   - ./emailer/ks.yaml
   - ./thelounge/ks.yaml
