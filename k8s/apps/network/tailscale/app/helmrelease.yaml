@@ -26,3 +26,5 @@ spec:
       hostname: "tailscale-operator"
     apiServerProxyConfig:
       mode: "true"
+    proxyClass:
+      defaultProxyClass: "tun-access"
