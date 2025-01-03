@@ -5,6 +5,7 @@ resources:
   - ./cloudflared/ks.yaml
   - ./tailscale/ks.yaml
   - ./k8s-gateway/ks.yaml
+  - ./blocky/ks.yaml
   - ./external-dns/ks.yaml
   - ./nginx/ks.yaml
   - ./echo-server/ks.yaml
