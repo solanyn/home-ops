@@ -49,6 +49,7 @@ spec:
         tailscale.com/expose: "true"
         tailscale.com/hostname: "k8s-gateway"
         tailscale.com/tags: "tag:k8s-gateway"
+        tailscale.com/tailnet-ip: "100.100.100.202"
       externalTrafficPolicy: Cluster
     watchedResources: ["Ingress", "Service"]
     zoneFiles:
