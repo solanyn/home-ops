@@ -70,7 +70,6 @@ spec:
           lbipam.cilium.io/ips: "192.168.68.101"
           tailscale.com/expose: "true"
           tailscale.com/tags: "tag:dns"
-          tailscale.com/tailnet-ip: "100.100.100.101"
         ports:
           dns:
             port: 53
