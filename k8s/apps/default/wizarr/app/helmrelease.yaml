@@ -38,10 +38,9 @@ spec:
               TZ: Australia/Sydney
             resources:
               requests:
-                cpu: 15m
-                memory: 180M
+                cpu: 10m
               limits:
-                memory: 300M
+                memory: 256Mi
     # defaultPodOptions:
     #   securityContext:
     #     runAsNonRoot: true
