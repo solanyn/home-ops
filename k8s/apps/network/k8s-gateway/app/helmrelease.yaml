@@ -32,15 +32,12 @@ spec:
         configBlock: |-
           lameduck 5s
       - name: ready
-      - name: hosts
-        configBlock: |-
-          192.168.68.10 nas.internal
-          192.168.68.24 pi.internal
-          fallthrough
       - name: prometheus
         parameters: 0.0.0.0:9153
       - name: forward
         parameters: . /etc/resolv.conf
+      - name: file
+        parameters: /etc/coredns/internal.db .
       - name: loop
       - name: reload
       - name: loadbalance
@@ -54,3 +51,11 @@ spec:
         tailscale.com/tags: "tag:k8s-gateway"
       externalTrafficPolicy: Cluster
     watchedResources: ["Ingress", "Service"]
+    zoneFiles:
+      - filename: internal.db
+        domain: .
+        contents: |
+          nas.internal IN A 100.109.54.32
+          nas.internal IN A 192.168.68.10
+          pi.internal IN A 100.91.196.13
+          pi.internal IN A 192.168.68.24
