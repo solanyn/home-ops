@@ -8,15 +8,14 @@ spec:
   chart:
     spec:
       chart: app-template
+      version: 3.6.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
-      version: 3.6.0
   values:
     controllers:
       blocky:
-        replicas: 2
         containers:
           app:
             image:
@@ -49,7 +48,7 @@ spec:
         fsGroup: 1000
         seccompProfile: {type: RuntimeDefault}
     service:
-      blocky:
+      app:
         controller: blocky
         ports:
           http:
