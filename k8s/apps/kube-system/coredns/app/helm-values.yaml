@@ -20,6 +20,11 @@ servers:
       - name: log
         configBlock: |-
           class error
+      - name: hosts
+        configBlock: |-
+          192.168.68.10 nas.internal
+          192.168.68.24 pi.internal
+          fallthrough
       - name: prometheus
         parameters: 0.0.0.0:9153
       - name: kubernetes
