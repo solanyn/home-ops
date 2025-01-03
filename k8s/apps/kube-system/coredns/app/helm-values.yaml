@@ -20,11 +20,6 @@ servers:
       - name: log
         configBlock: |-
           class error
-      - name: hosts
-        configBlock: |-
-          192.168.68.10 nas.internal
-          192.168.68.24 pi.internal
-          fallthrough
       - name: prometheus
         parameters: 0.0.0.0:9153
       - name: kubernetes
@@ -34,11 +29,21 @@ servers:
           fallthrough in-addr.arpa ip6.arpa
       - name: forward
         parameters: . /etc/resolv.conf
+      - name: file
+        parameters: /etc/coredns/internal.db .
       - name: cache
         parameters: 30
       - name: loop
       - name: reload
       - name: loadbalance
+zoneFiles:
+  - filename: internal.db
+    domain: .
+    contents: |
+      nas.internal IN A 100.109.54.32
+      nas.internal IN A 192.168.68.10
+      pi.internal IN A 100.91.196.13
+      pi.internal IN A 192.168.68.24
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
