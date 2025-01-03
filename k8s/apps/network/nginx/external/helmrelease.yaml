@@ -29,6 +29,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: &hostname "external.goyangi.cloud"
           lbipam.cilium.io/ips: "192.168.68.203"
+          tailscale.com/expose: "true"
         externalTrafficPolicy: Cluster
       ingressClassResource:
         name: external
