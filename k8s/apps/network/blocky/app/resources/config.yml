@@ -20,7 +20,8 @@ blocking:
       - https://raw.githubusercontent.com/hagezi/dns-blocklists/main/wildcard/doh.txt
   allowlists:
     hagezi:
-      - www.googleadservices.com
+      - |
+        googleadservices.com
   clientGroupsBlock:
     default:
       - hagezi
