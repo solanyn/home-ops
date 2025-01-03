@@ -27,6 +27,8 @@ spec:
     - name: node-feature-discovery
       namespace: kube-system
   values:
+    controllerExtraArgs: |
+      - --devices=gpu
     resources:
       requests:
         cpu: 10m
