@@ -1,0 +1,4 @@
+kind: Kustomization
+namespace: mariadb-operator
+resources:
+  - helmrelease.yaml
