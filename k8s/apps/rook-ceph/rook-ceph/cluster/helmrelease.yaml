@@ -53,8 +53,6 @@ spec:
       osd_pool_default_min_size = 1
       osd_pool_default_size = 1
     cephClusterSpec:
-      cephVersion:
-        image: quay.io/ceph/ceph:v19.2.0 # TODO: Remove when Rook is updated >= v19.2.0
       mon:
         count: 1
       crashCollector:
