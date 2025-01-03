@@ -24,7 +24,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app tailscale-proxy
+  name: &app tailscale-connector
   namespace: flux-system
 spec:
   targetNamespace: network
@@ -33,7 +33,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./k8s/apps/network/tailscale/proxy
+  path: ./k8s/apps/network/tailscale/connector
   prune: false
   sourceRef:
     kind: GitRepository
