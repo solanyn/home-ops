@@ -37,6 +37,9 @@ spec:
               - get
               - list
               - watch
+      resources:
+        requests:
+          cpu: 10m
       serviceMonitor:
         enabled: true
     backgroundController:
@@ -53,8 +56,6 @@ spec:
       resources:
         requests:
           cpu: 10m
-        limits:
-          memory: 1Gi
       serviceMonitor:
         enabled: true
     reportsController:
@@ -70,6 +71,12 @@ spec:
               - watch
       serviceMonitor:
         enabled: true
+      resources:
+        requests:
+          cpu: 10m
     cleanupController:
       serviceMonitor:
         enabled: true
+      resources:
+        requests:
+          cpu: 10m
