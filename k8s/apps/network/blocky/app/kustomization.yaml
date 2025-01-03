@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: blocky
 resources:
   - ./helmrelease.yaml
+  - ../../../../templates/gatus/guarded
 configMapGenerator:
   - name: config
     files:
