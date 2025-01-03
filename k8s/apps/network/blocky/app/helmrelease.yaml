@@ -62,9 +62,7 @@ spec:
         controller: blocky
         ports:
           http:
-            port: 8080
-            protocol: HTTP
-            appProtocol: http
+            port: 4000
       dns:
         controller: blocky
         type: LoadBalancer
@@ -77,11 +75,9 @@ spec:
           dns:
             port: 53
             protocol: TCP
-            targetPort: 8053
           dns-tcp:
             port: 53
             protocol: UDP
-            nodePort: 8053
     ingress:
       app:
         annotations:
