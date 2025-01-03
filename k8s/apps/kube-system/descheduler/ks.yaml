@@ -16,3 +16,5 @@ spec:
     name: homelab
   wait: false
   interval: 30m
+  # TODO: enable when num_nodes > 1, doesn't work otherwise
+  suspend: true
