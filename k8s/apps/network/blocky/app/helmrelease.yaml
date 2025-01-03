@@ -41,7 +41,6 @@ spec:
                 memory: 256Mi
               requests:
                 cpu: 10m
-              readOnlyRootFilesystem: true
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -51,6 +50,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
     service:
       blocky:
+        controller: blocky
         ports:
           http:
             port: 8080
@@ -60,7 +60,7 @@ spec:
         controller: blocky
         type: LoadBalancer
         annotations:
-          tailscale.com/expose: true
+          tailscale.com/expose: "true"
           tailscale.com/tags: "tag:dns"
           tailscale.com/tailnet-ip: 100.100.100.101
         ports:
