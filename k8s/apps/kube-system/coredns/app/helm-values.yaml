@@ -29,23 +29,11 @@ servers:
           fallthrough in-addr.arpa ip6.arpa
       - name: forward
         parameters: . /etc/resolv.conf
-      - name: file
-        parameters: /etc/coredns/internal.db goyangi.cloud
       - name: cache
         parameters: 30
       - name: loop
       - name: reload
       - name: loadbalance
-zoneFiles:
-  - filename: internal.db
-    domain: goyangi.cloud
-    contents: |
-      internal.    IN SOA ns.dns.goyangi.cloud. hostmaster.goyangi.cloud. 2015082541 7200 3600 1209600 3600
-      internal.    IN NS  ns.dns.goyangi.cloud.
-      nas.internal IN A 100.109.54.32
-      nas.internal IN A 192.168.68.10
-      pi.internal  IN A 100.91.196.13
-      pi.internal  IN A 192.168.68.24
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
