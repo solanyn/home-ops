@@ -25,6 +25,25 @@ spec:
     fallthrough:
       enabled: true
     ttl: 1
+    extraZonePlugins:
+      - name: log
+      - name: errors
+      - name: health
+        configBlock: |-
+          lameduck 5s
+      - name: ready
+      - name: hosts
+        configBlock: |-
+          192.168.68.10 nas.internal
+          192.168.68.24 pi.internal
+          fallthrough
+      - name: prometheus
+        parameters: 0.0.0.0:9153
+      - name: forward
+        parameters: . /etc/resolv.conf
+      - name: loop
+      - name: reload
+      - name: loadbalance
     service:
       type: LoadBalancer
       port: 53
