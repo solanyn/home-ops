@@ -89,7 +89,7 @@ spec:
         existingClaim: filebrowser
       data:
         type: nfs
-        server: nas.internal
+        server: nas.goyangi.cloud
         path: /mnt/world
         globalMounts:
           - path: /nfs
