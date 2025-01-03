@@ -51,6 +51,6 @@ spec:
         lbipam.cilium.io/ips: "192.168.68.202"
         tailscale.com/expose: "true"
         tailscale.com/hostname: "k8s-gateway"
-        tailscale.com/tags: "tag:k8"
+        tailscale.com/tags: "tag:k8s"
       externalTrafficPolicy: Cluster
     watchedResources: ["Ingress", "Service"]
