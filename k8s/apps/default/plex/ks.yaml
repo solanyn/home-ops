@@ -49,4 +49,5 @@ spec:
   wait: false
   interval: 30m
   timeout: 5m
+  # TODO: enable if clearing Plex On Deck is needed
   suspend: true
