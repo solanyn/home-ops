@@ -35,7 +35,7 @@ spec:
             resources:
               requests:
                 cpu: 15m
-                memory: 150Mi
+                memory: 10Mi
     service:
       app:
         controller: *app
