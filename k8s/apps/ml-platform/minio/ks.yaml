@@ -5,13 +5,13 @@ metadata:
   name: &app minio
   namespace: flux-system
 spec:
-  targetNamespace: ml
+  targetNamespace: ml-platform
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./k8s/apps/ml/minio/app
+  path: ./k8s/apps/ml-platform/minio/app
   prune: true
   sourceRef:
     kind: GitRepository
