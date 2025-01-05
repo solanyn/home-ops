@@ -52,7 +52,7 @@ spec:
               OAUTH2_PROXY_SESSION_STORE_TYPE: cookie
               OAUTH2_PROXY_SET_AUTHORIZATION-HEADER: true
               OAUTH2_PROXY_SET_XAUTHREQUEST: true
-              OAUTH2_PROXY_WHITELIST_DOMAINS: "*.goyangi.cloud"
+              OAUTH2_PROXY_WHITELIST_DOMAINS: ".goyangi.cloud"
               OAUTH2_PROXY_RELATIVE_REDIRECT_URL: true
             securityContext:
               allowPrivilegeEscalation: false
