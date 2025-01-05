@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app lazylibrarian
+  name: &app readarr
   namespace: flux-system
 spec:
   targetNamespace: default
@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-  path: ./k8s/apps/default/lazylibrarian/app
+  path: ./k8s/apps/default/readarr/app
   prune: true
   sourceRef:
     kind: GitRepository
