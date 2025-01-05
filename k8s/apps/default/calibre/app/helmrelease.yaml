@@ -30,7 +30,7 @@ spec:
         initContainers:
           init:
             image:
-              repository: ghcr.io/curl/curl-container/curl
+              repository: quay.io/curl/curl
               tag: latest
             args: ["-Lo", "/media/calibre/metadata.db", "--silent", "--no-clobber", "https://github.com/kovidgoyal/calibre/raw/refs/heads/master/src/calibre/db/tests/metadata.db"]
         containers:
