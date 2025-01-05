@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: lazylibrarian-cache
+  name: readarr-ab
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
     requests:
-      storage: 10Gi
+      storage: 5Gi
   storageClassName: ceph-block
