@@ -82,9 +82,6 @@ spec:
       app:
         annotations:
           external-dns.alpha.kubernetes.io/target: "internal.goyangi.cloud"
-          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.goyangi.cloud/oauth2/auth
-          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.goyangi.cloud/oauth2/start?rd=$scheme://$best_http_host$request_uri
-          nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email"
         className: internal
         hosts:
           - host: "{{ .Release.Name }}.goyangi.cloud"
