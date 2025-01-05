@@ -27,11 +27,11 @@ spec:
   values:
     controllers:
       calibre:
+        initContainers:
+          init:
+            image: ghcr.io/curl/curl-container/curl
+          args: ["-Lo", "/media/calibre/metadata.db", "--silent", "--no-clobber", "https://github.com/kovidgoyal/calibre/raw/refs/heads/master/src/calibre/db/tests/metadata.db"]
         containers:
-          initContainers:
-            init-calibredb:
-              image: ghcr.io/curl/curl-container/curl
-            args: ["-Lo", "/media/calibre/metadata.db", "--silent", "--no-clobber", "https://github.com/kovidgoyal/calibre/raw/refs/heads/master/src/calibre/db/tests/metadata.db"]
           app:
             args: ["--port=80", "--trusted-ips=0.0.0.0/0"]
             env:
