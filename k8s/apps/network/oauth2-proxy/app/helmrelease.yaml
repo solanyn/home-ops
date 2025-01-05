@@ -1,0 +1,113 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app oauth2-proxy
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      oauth2-proxy:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          oauth2-proxy:
+            image:
+              repository: quay.io/oauth2-proxy/oauth2-proxy
+              tag: v7.7.1@sha256:f6a4aa83a27e316114bf79664302b1ffb2cc8ce697fb479273af4feb3fb16fe3
+            envFrom:
+              - secretRef:
+                  name: oauth2-proxy-secret
+            env:
+              OAUTH2_PROXY_COOKIE_DOMAINS: "goyangi.cloud"
+              OAUTH2_PROXY_COOKIE_SECURE: true
+              OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+              OAUTH2_PROXY_HTTP_ADDRESS: 0.0.0.0:4180
+              OAUTH2_PROXY_METRICS_ADDRESS: 0.0.0.0:44180
+              OAUTH2_PROXY_PASS_ACCESS_TOKEN: true
+              OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER: true
+              OAUTH2_PROXY_PASS_USER_HEADERS: true
+              OAUTH2_PROXY_PREFER_EMAIL_TO_USER: true
+              OAUTH2_PROXY_PROVIDER: oidc
+              OAUTH2_PROXY_REVERSE_PROXY: true
+              OAUTH2_PROXY_SESSION_STORE_TYPE: cookie
+              OAUTH2_PROXY_SET_AUTHORIZATION-HEADER: true
+              OAUTH2_PROXY_SET_XAUTHREQUEST: true
+              OAUTH2_PROXY_WHITELIST_DOMAINS: ".goyangi.cloud"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: &port 4180
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ready
+                    port: *port
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: {type: RuntimeDefault}
+    service:
+      oauth2-proxy:
+        controller: oauth2-proxy
+        ports:
+          http:
+            port: *port
+          metrics:
+            port: 44180
+    ingress:
+      oauth2-proxy:
+        className: internal
+        hosts:
+          - host: oauth2-proxy.goyangi.cloud
+            paths:
+              - path: /oauth2
+                service:
+                  identifier: oauth2-proxy
+                  port: http
+    serviceMonitor:
+      oauth2-proxy:
+        enabled: true
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
+            metricRelabelings:
+              - action: labeldrop
+                regex: (pod)
