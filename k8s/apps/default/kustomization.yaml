@@ -32,3 +32,4 @@ resources:
   - ./emailer/ks.yaml
   - ./thelounge/ks.yaml
   - ./actual/ks.yaml
+  - ./pgadmin/ks.yaml
