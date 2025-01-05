@@ -32,7 +32,7 @@ spec:
             image:
               repository: ghcr.io/curl/curl-container/curl
               tag: latest
-          args: ["-Lo", "/media/calibre/metadata.db", "--silent", "--no-clobber", "https://github.com/kovidgoyal/calibre/raw/refs/heads/master/src/calibre/db/tests/metadata.db"]
+            args: ["-Lo", "/media/calibre/metadata.db", "--silent", "--no-clobber", "https://github.com/kovidgoyal/calibre/raw/refs/heads/master/src/calibre/db/tests/metadata.db"]
         containers:
           app:
             args: ["--port=80", "--trusted-ips=0.0.0.0/0"]
