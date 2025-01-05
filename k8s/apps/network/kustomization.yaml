@@ -3,9 +3,8 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./cloudflared/ks.yaml
-  - ./internal/ks.yaml
   - ./tailscale/ks.yaml
-  - ./k8s-gateway/ks.yaml
+  - ./oauth2-proxy/ks.yaml
   - ./blocky/ks.yaml
   - ./external-dns/ks.yaml
   - ./nginx/ks.yaml
