@@ -121,6 +121,6 @@ spec:
       ml:
         type: nfs
         server: nas.internal
-        path: /mnt/world/ml
+        path: /mnt/world/ml-platform
         globalMounts:
           - path: /ml
