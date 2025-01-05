@@ -47,6 +47,7 @@ spec:
               OAUTH2_PROXY_PASS_USER_HEADERS: true
               OAUTH2_PROXY_PREFER_EMAIL_TO_USER: true
               OAUTH2_PROXY_PROVIDER: oidc
+              OAUTH2_PROXY_ISSUER_URL: "https://pid.goyangi.cloud"
               OAUTH2_PROXY_REVERSE_PROXY: true
               OAUTH2_PROXY_SESSION_STORE_TYPE: cookie
               OAUTH2_PROXY_SET_AUTHORIZATION-HEADER: true
