@@ -23,6 +23,7 @@ resources:
   - ./audiobookshelf/ks.yaml
   - ./stash/ks.yaml
   - ./plex/ks.yaml
+  - ./pocket-id/ks.yaml
   - ./tautulli/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./wizarr/ks.yaml
