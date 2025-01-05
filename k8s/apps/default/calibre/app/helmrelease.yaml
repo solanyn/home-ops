@@ -39,7 +39,7 @@ spec:
               TZ: Australia/Sydney
             image:
               repository: ghcr.io/vaskozl/calibre
-              tag: 7.17.0@sha256:abd2ae81fe8e8d82b77a7a01ee59271d7dcbe8da343f1a14f6aca5053a056dd8
+              tag: 7.22.0@sha256:8d843db0ba263563ae88fb2ed7ee64dc6090e0321bfba18fdc7b0c17fd137de1
             probes:
               liveness:
                 enabled: true
