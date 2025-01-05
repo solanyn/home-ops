@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./k8s/observability/headlamp/app
+  path: ./k8s/apps/observability/headlamp/app
   prune: true
   sourceRef:
     kind: GitRepository
