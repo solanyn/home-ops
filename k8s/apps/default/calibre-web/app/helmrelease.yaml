@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: calibre-web
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    controllers:
+      calibre-web:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/bjw-s-labs/calibre-web
+              tag: 0.6.24@sha256:3adac22931efde3722834b9a12f9e3559944403db28545968949e1360939d64c
+            env:
+              CACHE_DIR: /cache
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 4Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: {type: RuntimeDefault}
+    service:
+      app:
+        controller: calibre-web
+        ports:
+          http:
+            port: 8083
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: internal.goyangi.cloud
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.goyangi.cloud"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: calibre-web
+      tmp:
+        type: emptyDir
+      calibre:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          - path: /media/calibre
+            subPath: calibre
+            readOnly: true
+      cache:
+        type: emptyDir
