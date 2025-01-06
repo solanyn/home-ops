@@ -1,8 +1,8 @@
 trackers:
   - name: myanonamouse
     urls: ["myanonamouse.net"]
-    required_seed_ratio: 0
-    required_seed_days: 30
+    required_seed_ratio: 1
+    required_seed_days: 3
   - name: avistaz
     urls: ["avistaz.to"]
     required_seed_ratio: 1
@@ -21,41 +21,41 @@ trackers:
     required_seed_days: 7
   - name: animetorrents
     urls: ["animetorrents.me"]
-    required_seed_ratio: 0
-    required_seed_days: 0
+    required_seed_ratio: 20
+    required_seed_days: 10000
   - name: hawke.uno
     urls: ["hawke.uno"]
-    required_seed_ratio: 0
-    required_seed_days: 14
+    required_seed_ratio: 5
+    required_seed_days: 5
   - name: orpheus
     urls: ["opsfet.ch"]
-    required_seed_ratio: 0
-    required_seed_days: 0
+    required_seed_ratio: 20
+    required_seed_days: 10000
   - name: milkie
     urls: ["milkie.cc"]
     required_seed_ratio: 0
-    required_seed_days: 1
+    required_seed_days: 0
   - name: digitalcore.club
     urls: ["digitalcore.club"]
     required_seed_ratio: 0
-    required_seed_days: 1
+    required_seed_days: 5
   - name: torrentleech.org
     urls: ["torrentleech.org", "tleechreload.org"]
     required_seed_ratio: 1
-    required_seed_days: 14
+    required_seed_days: 8
   - name: seedpool.org
     urls: ["seedpool.org"]
     required_seed_ratio: 1
-    required_seed_days: 14
+    required_seed_days: 3
   - name: sportscult.org
     urls: ["sportscult.org"]
-    required_seed_ratio: 1
-    required_seed_days: 14
+    required_seed_ratio: 2
+    required_seed_days: 7
   - name: lst.gg
     urls: ["lst.gg"]
     required_seed_ratio: 1
-    required_seed_days: 14
+    required_seed_days: 3
   - name: oldtoons.world
     urls: ["oldtoons.world"]
     required_seed_ratio: 1
-    required_seed_days: 14
+    required_seed_days: 2
