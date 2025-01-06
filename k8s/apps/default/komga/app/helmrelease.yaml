@@ -81,3 +81,6 @@ spec:
           - path: /media/books
             subPath: books
             readOnly: true
+          - path: /media/calibre
+            subPath: calibre
+            readOnly: true
