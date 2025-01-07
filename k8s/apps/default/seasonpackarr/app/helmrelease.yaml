@@ -44,9 +44,6 @@ spec:
               - secretRef:
                   name: seasonpackarr-secret
             args: ["--config", "/config"]
-            envFrom: &envFrom
-              - secretRef:
-                  name: seasonpackarr-secret
             probes:
               liveness: &probes
                 enabled: true
