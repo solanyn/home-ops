@@ -27,6 +27,12 @@ spec:
   values:
     controllers:
       calibre-web:
+        initContainers:
+          init:
+            image:
+              repository: quay.io/curl/curl
+              tag: latest
+            args: ["-Lo", "/media/calibre/metadata.db", "--silent", "--no-clobber", "https://github.com/kovidgoyal/calibre/raw/refs/heads/master/src/calibre/db/tests/metadata.db"]
         containers:
           app:
             image:
@@ -61,7 +67,7 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
+        supplementalGroups: [65542]
         seccompProfile: {type: RuntimeDefault}
     service:
       app:
