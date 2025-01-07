@@ -63,3 +63,7 @@ trackers:
     urls: ["happyfappy.org"]
     required_seed_ratio: 1
     required_seed_days: 7
+  - name: ianon
+    urls: ["ianon.app"]
+    required_seed_ratio: 1
+    required_seed_days: 30
