@@ -34,3 +34,4 @@ resources:
   - ./thelounge/ks.yaml
   - ./actual/ks.yaml
   - ./pgadmin/ks.yaml
+  - ./seasonpackarr/ks.yaml
