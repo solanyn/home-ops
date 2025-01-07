@@ -26,6 +26,12 @@ spec:
       seasonpackarr:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          touch:
+            image:
+              repository: docker.io/library/busybox
+              tag: latest
+            command: ["sh", "-c", "touch /config/config.yaml"]
         containers:
           app:
             image:
