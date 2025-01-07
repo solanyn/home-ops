@@ -95,6 +95,21 @@ spec:
     persistence:
       config:
         existingClaim: seasonpackarr
+      secret-file:
+        type: configMap
+        name: seasonpackarr-config
+        defaultMode: 0775
+        globalMounts:
+          - path: /config/config.yaml
+            subPath: config.yaml
+            readOnly: true
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          - path: /media/downloads/torrents
+            subPath: downloads/torrents
