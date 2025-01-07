@@ -40,6 +40,7 @@ spec:
               tag: 0.6.24@sha256:f24dc3a4da943ba50e95ef98e6a162bbca3d8d812e16a06f03c02a9678c89819
             env:
               CACHE_DIR: /cache
+              CALIBRE_DBPATH: /media/calibre
             probes:
               liveness:
                 enabled: true
