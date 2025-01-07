@@ -40,6 +40,9 @@ spec:
               SEASONPACKARR__PARSE_TORRENT_FILE: true
               SEASONPACKARR__SKIP_REPACK_COMPARE: true
               SEASONPACKARR__SIMPLIFY_HDR_COMPARE: false
+            envFrom:
+              - secretRef:
+                  name: seasonpackarr-secret
             args: ["--config", "/config"]
             envFrom: &envFrom
               - secretRef:
