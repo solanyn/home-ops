@@ -43,7 +43,9 @@ spec:
             envFrom:
               - secretRef:
                   name: seasonpackarr-secret
-            args: ["--config", "/config"]
+            # args: ["--config", "/config"]
+            command: ["/bin/bash", "-c", "--"]
+            args: ["while true; do sleep 30; done;"]
             probes:
               liveness: &probes
                 enabled: true
