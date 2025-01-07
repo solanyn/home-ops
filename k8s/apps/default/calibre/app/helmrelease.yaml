@@ -24,15 +24,10 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: calibre-web
   values:
     controllers:
       calibre:
-        initContainers:
-          init:
-            image:
-              repository: quay.io/curl/curl
-              tag: latest
-            args: ["-Lo", "/media/calibre/metadata.db", "--silent", "--no-clobber", "https://github.com/kovidgoyal/calibre/raw/refs/heads/master/src/calibre/db/tests/metadata.db"]
         containers:
           app:
             args: ["--port=80", "--trusted-ips=0.0.0.0/0"]
