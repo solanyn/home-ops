@@ -36,8 +36,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/bjw-s-labs/calibre-web
-              tag: 0.6.24@sha256:3adac22931efde3722834b9a12f9e3559944403db28545968949e1360939d64c
+              repository: ghcr.io/vaskozl/calibre-web
+              tag: 0.6.24@sha256:f24dc3a4da943ba50e95ef98e6a162bbca3d8d812e16a06f03c02a9678c89819
             env:
               CACHE_DIR: /cache
             probes:
@@ -67,7 +67,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [65542]
         seccompProfile: {type: RuntimeDefault}
     service:
       app:
