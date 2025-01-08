@@ -2,7 +2,7 @@
 host: "0.0.0.0"
 port: 80
 clients:
-  default:
+  qbittorrent:
     host: "http://qbittorrent.default.svc.cluster.local"
     port: 8080
     username: "andrew"
