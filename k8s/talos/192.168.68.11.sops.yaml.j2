@@ -12,8 +12,6 @@ machine:
     - 192.168.68.200
   kubelet:
     image: ghcr.io/siderolabs/kubelet:{{ ENV.KUBERNETES_VERSION }}
-    extraArgs:
-      rotate-server-certificates: "true"
     extraConfig:
       maxPods: 2000
     extraMounts:
@@ -212,7 +210,7 @@ cluster:
       listen-metrics-urls: http://0.0.0.0:2381
     advertisedSubnets:
       - 192.168.68.0/24
-  allowSchedulingOnMasters: true
+  allowSchedulingOnControlPlanes: true
 sops:
   kms: []
   gcp_kms: []
