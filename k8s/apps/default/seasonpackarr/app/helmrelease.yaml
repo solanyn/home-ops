@@ -84,6 +84,7 @@ spec:
       secret-file:
         type: secret
         name: seasonpackarr-secret
+        defaultMode: 0775
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
