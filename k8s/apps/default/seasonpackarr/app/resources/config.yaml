@@ -2,10 +2,10 @@
 host: "0.0.0.0"
 port: 80
 clients:
-  qbittorrent:
+  default:
     host: "http://qbittorrent.default.svc.cluster.local"
     port: 8080
-    username: "andrew"
+    username: "admin"
     password: "1234"
     preImportPath: "/media/downloads/complete/sonarr"
 logLevel: "INFO"

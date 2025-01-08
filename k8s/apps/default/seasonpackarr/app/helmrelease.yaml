@@ -44,8 +44,6 @@ spec:
               - secretRef:
                   name: seasonpackarr-secret
             args: ["--config", "/config"]
-            # command: ["sh", "-c", "--"]
-            # args: ["while true; do sleep 30; done;"]
             probes:
               liveness: &probes
                 enabled: true
@@ -82,18 +80,6 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
-      app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.goyangi.cloud"
-        className: internal
-        hosts:
-          - host: "{{ .Release.Name }}.goyangi.cloud"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
     persistence:
       config:
         existingClaim: seasonpackarr
