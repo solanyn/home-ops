@@ -5,4 +5,4 @@ clients:
     port: 8080
     username: "admin"
     password: "1234"
-    preImportPath: "/media/downloads/complete/sonarr"
+    preImportPath: "/media/downloads/torrents/complete/sonarr"
