@@ -50,7 +50,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/healthz
+                    path: /healthz
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
