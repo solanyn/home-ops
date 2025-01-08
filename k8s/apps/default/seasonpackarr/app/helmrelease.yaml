@@ -61,7 +61,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/liveness
+                    path: /api/healthz/liveness
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
