@@ -81,6 +81,8 @@ spec:
           http:
             port: *port
     persistence:
+      config:
+        existingClaim: seasonpackarr
       secret-file:
         type: secret
         name: seasonpackarr-secret
