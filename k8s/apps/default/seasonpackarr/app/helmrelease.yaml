@@ -43,22 +43,22 @@ spec:
             envFrom:
               - secretRef:
                   name: seasonpackarr-secret
-            # args: ["--config", "/config"]
-            command: ["sh", "-c", "--"]
-            args: ["while true; do sleep 30; done;"]
-            # probes:
-            #   liveness: &probes
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /api/healthz
-            #         port: *port
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probes
+            args: ["--config", "/config"]
+            # command: ["sh", "-c", "--"]
+            # args: ["while true; do sleep 30; done;"]
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthz
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
