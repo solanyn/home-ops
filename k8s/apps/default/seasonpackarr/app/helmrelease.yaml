@@ -82,9 +82,8 @@ spec:
             port: *port
     persistence:
       secret-file:
-        type: configMap
-        name: seasonpackarr-config
-        defaultMode: 0775
+        type: secret
+        name: seasonpackarr-secret
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
