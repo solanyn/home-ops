@@ -8,7 +8,7 @@ clients:
     username: "admin"
     password: "1234"
     preImportPath: "/media/downloads/complete/sonarr"
-logLevel: "INFO"
+logLevel: "DEBUG"
 smartMode: true
 smartModeThreshold: 0.75
 parseTorrentFile: true
