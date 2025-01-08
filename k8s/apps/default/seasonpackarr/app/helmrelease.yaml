@@ -33,7 +33,7 @@ spec:
               tag: 3.21.1@sha256:b97e2a89d0b9e4011bb88c02ddf01c544b8c781acf1f4d559e7c8f12f1047ac3
             command: ["sh", "-c"]
             args: >-
-              cp /secret/config.yaml/ config/config.yaml; chown $PUID:$PGID /config/config.yaml;
+              cp /secret/config.yaml config/config.yaml; chown $PUID:$PGID /config/config.yaml;
             env:
               PGID: 1000
               PUID: 1000
@@ -92,6 +92,8 @@ spec:
           http:
             port: *port
     persistence:
+      config:
+        existingClaim: seasonpackarr
       secret-file:
         type: secret
         name: seasonpackarr-secret
