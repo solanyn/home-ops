@@ -83,14 +83,14 @@ spec:
     persistence:
       config:
         existingClaim: seasonpackarr
-      secret-file:
-        type: configMap
-        name: seasonpackarr-config
-        defaultMode: 0775
-        globalMounts:
-          - path: /config/config.yaml
-            subPath: config.yaml
-            readOnly: true
+      # secret-file:
+      #   type: configMap
+      #   name: seasonpackarr-config
+      #   defaultMode: 0775
+      #   globalMounts:
+      #     - path: /config/config.yaml
+      #       subPath: config.yaml
+      #       readOnly: true
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
