@@ -45,7 +45,7 @@ spec:
             env:
               SEASONPACKARR__HOST: 0.0.0.0
               SEASONPACKARR__PORT: &port 80
-              SEASONPACKARR__LOG_LEVEL: DEBUG
+              SEASONPACKARR__LOG_LEVEL: INFO
               SEASONPACKARR__SMART_MODE: true
               SEASONPACKARR__SMART_MODE_THRESHOLD: 0.75
               SEASONPACKARR__PARSE_TORRENT_FILE: true
@@ -93,8 +93,6 @@ spec:
           http:
             port: *port
     persistence:
-      config:
-        existingClaim: seasonpackarr
       secret-file:
         type: secret
         name: seasonpackarr-secret
