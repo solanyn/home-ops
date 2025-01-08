@@ -93,9 +93,8 @@ spec:
         seccompProfile: {type: RuntimeDefault}
     persistence:
       secret-file:
-        type: configMap
-        name: qbtools-config
-        defaultMode: 0775
+        type: secret
+        name: qbtools-config-secret
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
