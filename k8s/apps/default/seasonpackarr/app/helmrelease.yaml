@@ -34,7 +34,7 @@ spec:
             env:
               SEASONPACKARR__HOST: 0.0.0.0
               SEASONPACKARR__PORT: &port 80
-              SEASONPACKARR__LOG_LEVEL: INFO
+              SEASONPACKARR__LOG_LEVEL: DEBUG
               SEASONPACKARR__SMART_MODE: true
               SEASONPACKARR__SMART_MODE_THRESHOLD: 0.75
               SEASONPACKARR__PARSE_TORRENT_FILE: true
