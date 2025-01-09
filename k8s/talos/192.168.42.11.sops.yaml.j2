@@ -9,7 +9,7 @@ machine:
     key: ENC[AES256_GCM,data:ivoYxsjmkcTXE7pUqb1sGQwmDe8jy6J18pMS2LbX3PlvCDjV7UxXHLgHWmzP3nRWkCO63nhbkqjSXEmDQcj+tgZQAxbB/EcFavmkFbX/RyXfoI1c9tWFSa70L+AwgQQKtx+bJm2FWNltTeB00aJf69kwfrh1I7R9dDg3hgmrAMXUOhE0o9RpLyeNUGh2tBg+TpzWdKtWWDQiTpYvDnTmNO6mpqztzdgWuE32hhFiJ1Wp70ch,iv:o4NXfAdZdrj7WEs4ISZWAMn+FKH/t5dEv5oPnAEiGpk=,tag:n4AFEtG7KAsXfXDI3U917g==,type:str]
   certSANs:
     - 127.0.0.1
-    - 192.168.68.200
+    - 192.168.42.200
   kubelet:
     image: ghcr.io/siderolabs/kubelet:{{ ENV.KUBERNETES_VERSION }}
     extraConfig:
@@ -32,7 +32,7 @@ machine:
     defaultRuntimeSeccompProfileEnabled: true
     nodeIP:
       validSubnets:
-        - 192.168.68.0/24
+        - 192.168.42.0/24
     disableManifestsDirectory: true
   network:
     hostname: n1
@@ -42,7 +42,7 @@ machine:
         mtu: 9000
         dhcp: true
         vip:
-          ip: 192.168.68.200
+          ip: 192.168.42.200
   install:
     diskSelector:
       model: TS256GSSD370
@@ -137,7 +137,7 @@ cluster:
   id: ENC[AES256_GCM,data:xH15947PEMcvFfQjfdvrU4TpwjXDgFnCXQMmrtLz2J9rhK3TAny/WBWd76E=,iv:jcLI4bzO+MYRtEGjZaYy6pdbq9uxV3K+T2W0u7Ud4vY=,tag:jQQ0wKnCRG3tmIS4Gmk0jA==,type:str]
   secret: ENC[AES256_GCM,data:yz4TMiQABFmgr1yKCr/tzH9QEb3nzG8r9eTI4I5GwrUGN062cEURKpO6R4k=,iv:4E0MMv1fMwKJFitBRqlEuJAB2HJJplb0VsCvjrWuVd4=,tag:7RHkejslNNMG+jEgA8wjWA==,type:str]
   controlPlane:
-    endpoint: https://192.168.68.200:6443
+    endpoint: https://192.168.42.200:6443
   clusterName: homelab
   network:
     cni:
@@ -165,7 +165,7 @@ cluster:
       feature-gates: AuthorizeNodeWithSelectors=false
     certSANs:
       - 127.0.0.1
-      - 192.168.68.200
+      - 192.168.42.200
     disablePodSecurityPolicy: true
     auditPolicy:
       apiVersion: audit.k8s.io/v1
@@ -209,7 +209,7 @@ cluster:
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
     advertisedSubnets:
-      - 192.168.68.0/24
+      - 192.168.42.0/24
   allowSchedulingOnControlPlanes: true
 sops:
   kms: []
