@@ -1,4 +1,7 @@
 instance:
+  distribution:
+    # renovate: datasource=github-releases depName=fluxcd/flux2
+    version: 2.4.0
   cluster:
     networkPolicy: false
   components:
@@ -13,6 +16,9 @@ instance:
     ref: refs/heads/main
     path: k8s/flux/config
     pullSecret: github-deploy-key
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: flux
   kustomize:
     patches:
       # Increase the number of workers and limits
