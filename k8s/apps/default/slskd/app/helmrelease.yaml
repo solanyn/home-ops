@@ -81,7 +81,7 @@ spec:
         controller: slskd
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: 192.168.68.127
+          lbipam.cilium.io/ips: 192.168.42.127
         ports:
           http:
             port: *port
