@@ -33,7 +33,7 @@ spec:
           change-ownership:
             image:
               repository: alpine
-              tag: 3.21.1@sha256:b97e2a89d0b9e4011bb88c02ddf01c544b8c781acf1f4d559e7c8f12f1047ac3
+              tag: 3.21.2@sha256:56fa17d2a7e7f168a043a2712e63aed1f8543aeafdcee47c58dcffe38ed51099
             command: ["sh", "-c"]
             args: >-
               cp /secret/config.xml /config/config.xml; chown $PUID:$PGID /config/config.xml;
@@ -43,7 +43,7 @@ spec:
           init-db:
             image:
               repository: ghcr.io/onedr0p/postgres-init
-              tag: 16.6@sha256:c1d3a845d47fe1aeebd110fefb5f43f54c4735aec1d2b0c01de8d4d5e8cdd6a4
+              tag: 16.6@sha256:4b8f9ccbad38b36805723fd517c507c7510b6924dd082344996fd22ac684a2d1
             envFrom: &envFrom
               - secretRef:
                   name: readarr-secret
