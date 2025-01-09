@@ -8,10 +8,10 @@ instance:
     - notification-controller
   sync:
     kind: GitRepository
-    name: home-kubernetes
-    url: ssh://git@github.com/onedr0p/home-ops
+    name: homelab
+    url: ssh://git@github.com/solanyn/homelab
     ref: refs/heads/main
-    path: kubernetes/main/flux/config
+    path: k8s/flux/config
     pullSecret: github-deploy-key
   kustomize:
     patches:
