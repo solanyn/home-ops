@@ -68,7 +68,7 @@ spec:
         controller: blocky
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: "192.168.42.101"
+          lbipam.cilium.io/ips: "192.168.1.101"
           tailscale.com/expose: "true"
           tailscale.com/tags: "tag:dns"
         ports:
