@@ -82,19 +82,10 @@ spec:
           requireMsgr2: true
       storage:
         useAllNodes: true
-        useAllDevices: true
+        useAllDevices: false
         deviceFilter: nvme0n1
         config:
           osdsPerDevice: "1"
-      placement:
-        mgr: &placement
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                    - key: node-role.kubernetes.io/control-plane
-                      operator: Exists
-        mon: *placement
       resources:
         mgr:
           requests:
