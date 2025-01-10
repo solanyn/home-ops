@@ -56,4 +56,4 @@ securityContext:
       - SYS_RESOURCE
 socketLB:
   enabled: true
-  hostNamspaceOnly: true # Needed for tailscale
+  hostNamespaceOnly: true # Needed for tailscale
