@@ -215,11 +215,11 @@ spec:
           volumeBindingMode: Immediate
           parameters:
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-            csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Name }}"
+            csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-            csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Name }}"
+            csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-            csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Name }}"
+            csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
             csi.storage.k8s.io/fstype: ext4
     cephFileSystemVolumeSnapshotClass:
       enabled: true
