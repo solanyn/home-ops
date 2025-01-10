@@ -41,11 +41,6 @@ spec:
             envFrom:
               - secretRef:
                   name: unpoller-secret
-            # probes:
-            #   liveness:
-            #     enabled: true
-            #   readiness:
-            #     enabled: true
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
