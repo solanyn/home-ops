@@ -1,57 +1,13 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 tasks:
-  encrypt-secrets:
-    desc: Encrypt secrets with Sops
-    cmds:
-      - for: {var: SECRET_FILES}
-        cmd: |
-          if sops filestatus "{{.ITEM}}" | jq --exit-status ".encrypted == false" &>/dev/null; then
-              sops --encrypt --in-place "{{.ITEM}}"
-          fi
-      - for: {var: SECRET_J2_FILES}
-        cmd: |
-          if ! grep -q -x  "sops:" "{{.ITEM}}"; then
-              sops --encrypt --in-place --input-type yaml --output-type yaml "{{.ITEM}}"
-          fi
-    vars:
-      SECRET_FILES:
-        sh: find "{{.CLUSTER_DIR}}" -type f -name "*.sops.yaml"
-      SECRET_J2_FILES:
-        sh: find "{{.CLUSTER_DIR}}" -type f -name "*.sops.*.j2"
-    preconditions:
-      - test -f {{.SOPS_AGE_KEY_FILE}}
-      - test -f {{.SOPS_CONFIG_FILE}}
-      - which sops
-  decrypt-secrets:
-    desc: Decrypt secrets with Sops
-    cmds:
-      - for: {var: SECRET_FILES}
-        cmd: |
-          if sops filestatus "{{.ITEM}}" | jq --exit-status ".encrypted == true" &>/dev/null; then
-              sops --decrypt --in-place --input-type yaml --output-type yaml "{{.ITEM}}"
-          fi
-      - for: {var: SECRET_J2_FILES}
-        cmd: |
-          if grep -q -x  "sops:" "{{.ITEM}}"; then
-              sops --decrypt --in-place --input-type yaml --output-type yaml "{{.ITEM}}"
-          fi
-    vars:
-      SECRET_FILES:
-        sh: find "{{.CLUSTER_DIR}}" -type f -name "*.sops.yaml"
-      SECRET_J2_FILES:
-        sh: find "{{.CLUSTER_DIR}}" -type f -name "*.sops.*.j2"
-    preconditions:
-      - test -f {{.SOPS_AGE_KEY_FILE}}
-      - test -f {{.SOPS_CONFIG_FILE}}
-      - which sops
   ks-*:
-    desc: Apply a Flux KS for a cluster [CLUSTER=main] [PATH=required]
+    desc: Apply a Flux KS for a cluster [PATH=required]
     cmd: >
       flux build --namespace flux-system ks {{base .PATH}} --kustomization-file {{.CLUSTER_DIR}}/apps/{{.PATH}}/ks.yaml --path {{.CLUSTER_DIR}}/apps/{{.PATH}}{{if contains .KUSTOMIZATION "not found"}} --dry-run{{end}} | yq 'with(select(.apiVersion == "kustomize.toolkit.fluxcd.io/v1" and .kind == "Kustomization"); .metadata.namespace = "flux-system")' - | kubectl {{.OPERATION}} {{if eq .OPERATION "apply"}}--server-side  --field-manager=kustomize-controller{{end}} --filename -
 
     requires:
-      vars: [CLUSTER, PATH]
+      vars: [PATH]
     vars:
       OPERATION: '{{index .MATCH 0}}'
       KUSTOMIZATION:
@@ -60,57 +16,44 @@ tasks:
       - test -f {{.CLUSTER_DIR}}/apps/{{.PATH}}/ks.yaml
       - which flux kubectl yq
   browse-pvc:
-    desc: Mount a PVC to an temp container [CLUSTER=main] [NS=default] [CLAIM=required]
+    desc: Mount a PVC to an temp container [NS=default] [CLAIM=required]
     interactive: true
     cmd: kubectl browse-pvc --namespace {{.NS}} --image docker.io/library/alpine:latest {{.CLAIM}}
     vars:
       NS: '{{.NS | default "default"}}'
     requires:
-      vars: [CLUSTER, CLAIM]
+      vars: [CLAIM]
     preconditions:
       - kubectl --namespace {{.NS}} get persistentvolumeclaims {{.CLAIM}}
       - kubectl browse-pvc --version
       - which kubectl
   sync-secrets:
-    desc: Sync all ExternalSecrets [CLUSTER=main]
+    desc: Sync all ExternalSecrets
     cmds:
       - for: {var: SECRETS, split: "\n"}
         cmd: kubectl --namespace {{splitList "," .ITEM | first}} annotate externalsecret {{splitList "," .ITEM | last}} force-sync="{{now | unixEpoch}}" --overwrite
     vars:
       SECRETS:
         sh: kubectl get externalsecret --all-namespaces --no-headers --output=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name}{"\n"}{end}'
-    requires:
-      vars: [CLUSTER]
     preconditions:
       - which kubectl
   cleanse-pods:
-    desc: Cleanse pods with a Failed/Pending/Succeeded phase [CLUSTER=main]
+    desc: Cleanse pods with a Failed/Pending/Succeeded phase
     cmds:
       - for:
           matrix:
             PHASE: [Failed, Pending, Succeeded]
         cmd: kubectl delete pods --all-namespaces --field-selector status.phase={{.ITEM.PHASE}} --ignore-not-found=true
-    requires:
-      vars: [CLUSTER]
     preconditions:
       - which kubectl
-  delete-pvc:
-    desc: Delete pvc [CLUSTER=main] [NS=default] [CLAIM=required]
+  # https://docs.github.com/en/enterprise-cloud@latest/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/deploying-runner-scale-sets-with-actions-runner-controller#upgrading-arc
+  upgrade-arc:
+    desc: Upgrade the ARC
     cmds:
-      - kubectl --namespace {{.NS}} delete pvc {{.CLAIM}} --grace-period=0 --force &
-      - kubectl --namespace {{.NS}} patch pvc {{.CLAIM}} -p '{"metadata":{"finalizers":null}}'
-    vars:
-      NS: '{{.NS | default "default"}}'
-    requires:
-      vars: [CLUSTER, CLAIM]
-  patch-finalizer:
-    desc: Remove finalizers on resurce [CLUSTER=main] [NS=default] [RESOURCE=required] [NAME=required]
-    cmds:
-      - kubectl --namespace {{.NS}} patch {{.RESOURCE}} {{.NAME}} -p '{"metadata":{"finalizers":null}}'
-    vars:
-      NS: '{{.NS | default "default"}}'
-    requires:
-      vars: [CLUSTER, RESOURCE, NAME]
+      - helm -n actions-runner-system uninstall gha-runner-scale-set
+      - helm -n actions-runner-system uninstall gha-runner-scale-set-controller
+      - sleep 5
+      - flux -n actions-runner-system reconcile hr gha-runner-scale-set-controller
+      - flux -n actions-runner-system reconcile hr gha-runner-scale-set
     preconditions:
-      - kubectl --namespace {{.NS}} get {{.RESOURCE}} {{.NAME}}
-      - which kubectl
+      - which flux helm
