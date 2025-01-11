@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: pocket-id
   path: ./kubernetes/apps/network/oauth2-proxy/app
   prune: true
   sourceRef:
