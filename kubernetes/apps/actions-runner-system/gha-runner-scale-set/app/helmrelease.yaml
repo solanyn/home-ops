@@ -36,7 +36,7 @@ spec:
   values:
     nameOverride: gha-runner-scale-set
     runnerScaleSetName: gha-runner-scale-set
-    githubConfigUrl: https://github.com/onedr0p/home-ops
+    githubConfigUrl: https://github.com/solanyn/homelab
     minRunners: 1
     maxRunners: 3
     containerMode:
