@@ -34,7 +34,7 @@ spec:
               tag: v2.14.0@sha256:6e9eb4a34b8d976e398511766281ec51946aafa51b5f563fca9238656eeaa118
             env:
               TZ: Australia/Sydney
-              UP_UNIFI_DEFAULT_ROLE: unpoller
+              UP_UNIFI_DEFAULT_ROLE: home-ops
               UP_UNIFI_DEFAULT_URL: https://192.168.1.1
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
               UP_INFLUXDB_DISABLE: true
