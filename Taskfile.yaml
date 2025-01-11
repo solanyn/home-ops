@@ -4,7 +4,7 @@ set: [pipefail]
 shopt: [globstar]
 vars:
   CLUSTER: 'homelab'
-  CLUSTER_DIR: '{{.ROOT_DIR}}/k8s'
+  CLUSTER_DIR: '{{.ROOT_DIR}}/kubernetes'
 env:
   KUBECONFIG: '{{.CLUSTER_DIR}}/kubeconfig'
   MINIJINJA_CONFIG_FILE: '{{.ROOT_DIR}}/.minijinja.toml'
