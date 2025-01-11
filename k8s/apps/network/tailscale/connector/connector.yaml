@@ -2,6 +2,8 @@ apiVersion: tailscale.com/v1alpha1
 kind: Connector
 metadata:
   name: connector
+  annotations:
+    tailscale.com/tailnet-ip: 100.100.42.200
 spec:
   hostname: connector
   exitNode: true

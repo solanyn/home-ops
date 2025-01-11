@@ -24,6 +24,8 @@ spec:
   values:
     operatorConfig:
       hostname: "tailscale-operator"
+      podAnnotations:
+        tailscale.com/tailnet-ip: 100.100.42.100
     apiServerProxyConfig:
       mode: "true"
     proxyClass:
