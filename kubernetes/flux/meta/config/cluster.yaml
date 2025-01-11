@@ -12,7 +12,7 @@ spec:
     # exclude all
     /*
     # include kubernetes directory
-    !/k8s
+    !/kubernetes
   secretRef:
     name: github-deploy-key
 ---
