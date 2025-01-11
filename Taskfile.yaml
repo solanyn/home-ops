@@ -13,7 +13,7 @@ env:
 includes:
   b: .taskfiles/bootstrap
   k: .taskfiles/kubernetes
-  s: ./taskfiles/sops
+  s: .taskfiles/sops
   t: .taskfiles/talos
   v: .taskfiles/volsync
   w: .taskfiles/workstation
