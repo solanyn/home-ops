@@ -11,10 +11,9 @@ instance:
     - notification-controller
   sync:
     kind: GitRepository
-    name: homelab
     url: ssh://git@github.com/solanyn/homelab
     ref: refs/heads/main
-    path: kubernetes/flux/meta/config
+    path: kubernetes/flux/cluster
     pullSecret: github-deploy-key
   commonMetadata:
     labels:
