@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
+  - ../../templates/flux
   - ./unpoller/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./loki/ks.yaml
@@ -12,3 +13,11 @@ resources:
   - ./smartctl-exporter/ks.yaml
   - ./speedtest-exporter/ks.yaml
   - ./headlamp/ks.yaml
+transformers:
+  - |-
+    apiVersion: builtin
+    kind: NamespaceTransformer
+    metadata:
+      name: not-used
+      namespace: network
+    unsetOnly: true

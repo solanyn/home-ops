@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   # Pre Flux-Kustomizations
   - ./namespace.yaml
+  - ../../templates/flux
   # Flux-Kustomizations
   - ./home-assistant/ks.yaml
   - ./kopia/ks.yaml
@@ -34,3 +35,11 @@ resources:
   - ./actual/ks.yaml
   - ./pgadmin/ks.yaml
   - ./seasonpackarr/ks.yaml
+transformers:
+  - |-
+    apiVersion: builtin
+    kind: NamespaceTransformer
+    metadata:
+      name: not-used
+      namespace: default
+    unsetOnly: true
