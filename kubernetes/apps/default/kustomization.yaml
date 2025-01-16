@@ -23,7 +23,6 @@ resources:
   - ./bazarr/ks.yaml
   - ./cross-seed/ks.yaml
   - ./audiobookshelf/ks.yaml
-  - ./stash/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
   - ./tautulli/ks.yaml
@@ -34,6 +33,11 @@ resources:
   - ./actual/ks.yaml
   - ./pgadmin/ks.yaml
   - ./seasonpackarr/ks.yaml
+  - ./echo-server/ks.yaml
+  - ./tailscale/ks.yaml
+  - ./atuin/ks.yaml
+  - ./zipline/ks.yaml
+  - ./oauth2-proxy/ks.yaml
 transformers:
   - |-
     apiVersion: builtin
