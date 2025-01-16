@@ -10,7 +10,6 @@ spec:
   target:
     name: "${APP}-volsync-r2-secret"
     template:
-      engineVersion: v2
       data:
         RESTIC_REPOSITORY: "{{ .RESTIC_REPOSITORY }}/${APP}"
         RESTIC_PASSWORD: "{{ .RESTIC_PASSWORD }}"
