@@ -80,3 +80,7 @@ spec:
         sizeLimit: 100Mi
         globalMounts:
           - path: /config/logs
+      config-repositories:
+        type: emptyDir
+        globalMounts:
+          - path: /config/repositories
