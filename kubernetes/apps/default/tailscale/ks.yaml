@@ -2,15 +2,17 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cert-manager
+  name: &app tailscale
   namespace: flux-system
 spec:
-  targetNamespace: cert-manager
+  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/cert-manager/cert-manager/app
-  prune: true
+  dependsOn:
+    - name: external-secrets-stores
+  path: ./kubernetes/apps/default/tailscale/app
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -22,41 +24,17 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cert-manager-issuers
+  name: &app tailscale-connector
   namespace: flux-system
 spec:
-  targetNamespace: cert-manager
+  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cert-manager
     - name: external-secrets-stores
-  path: ./kubernetes/apps/cert-manager/cert-manager/issuers
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  wait: true
-  interval: 30m
-  timeout: 5m
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app cert-manager-tls
-  namespace: flux-system
-spec:
-  targetNamespace: cert-manager
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cert-manager-issuers
-    - name: external-secrets-stores
-  path: ./kubernetes/apps/cert-manager/cert-manager/tls
-  prune: true
+  path: ./kubernetes/apps/default/tailscale/connector
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

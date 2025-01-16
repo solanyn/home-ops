@@ -2,7 +2,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app zipline
+  name: &app atuin
   namespace: flux-system
 spec:
   targetNamespace: default
@@ -10,9 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cloudnative-pg-cluster
-    - name: external-secrets-stores
-  path: ./kubernetes/apps/default/zipline/app
+    - name: volsync
+  path: ./kubernetes/apps/default/atuin/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -23,3 +22,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      GATUS_SUBDOMAIN: sh
+      VOLSYNC_CAPACITY: 5Gi
