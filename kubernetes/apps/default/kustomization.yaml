@@ -34,7 +34,6 @@ resources:
   - ./pgadmin/ks.yaml
   - ./seasonpackarr/ks.yaml
   - ./echo-server/ks.yaml
-  - ./tailscale/ks.yaml
   - ./atuin/ks.yaml
   - ./zipline/ks.yaml
   - ./oauth2-proxy/ks.yaml
