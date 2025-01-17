@@ -34,7 +34,7 @@ spec:
             env:
               TZ: Australia/Sydney
               FB_DATABASE: /config/filebrowser.db
-              FB_ROOT: /nfs
+              FB_ROOT: /media
               FB_LOG: stdout
               FB_NOAUTH: true
             probes:
@@ -93,6 +93,6 @@ spec:
       data:
         type: nfs
         server: nas.internal
-        path: /mnt/world
+        path: /mnt/world/media
         globalMounts:
-          - path: /nfs
+          - path: /media
