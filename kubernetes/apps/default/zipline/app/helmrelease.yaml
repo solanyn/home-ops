@@ -47,6 +47,7 @@ spec:
               CORE_HOST: 0.0.0.0
               CORE_PORT: &port 80
               CORE_LOGGER: true
+              DATASOURCE_LOCAL_DIRECTORY: /media
             envFrom: *envFrom
             probes:
               liveness: &probes
