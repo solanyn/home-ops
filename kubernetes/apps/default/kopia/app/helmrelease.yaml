@@ -132,7 +132,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /app/logs
-      eros:
+      world:
         type: nfs
         server: nas.internal
         path: /mnt/world
