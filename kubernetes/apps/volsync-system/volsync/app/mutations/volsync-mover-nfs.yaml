@@ -47,7 +47,7 @@ spec:
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
                   server: "nas.internal",
-                  path: "/mnt/eros/Volsync"
+                  path: "/mnt/world/backups"
                 }
               }
             }
