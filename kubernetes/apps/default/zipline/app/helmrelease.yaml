@@ -42,7 +42,7 @@ spec:
             env:
               CORE_RETURN_HTTPS: true
               CORE_HOST: 0.0.0.0
-              CORE_PORT: &port 80
+              CORE_PORT: &port 3000
               CORE_LOGGER: true
               DATASOURCE_LOCAL_DIRECTORY: /media
             envFrom: *envFrom
