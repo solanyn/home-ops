@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # - ./minio/ks.yaml
-  - ../../templates/flux
+  - ../../templates/alerts
 transformers:
   - |-
     apiVersion: builtin
