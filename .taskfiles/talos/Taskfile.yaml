@@ -1,5 +1,9 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
+
+includes:
+  s:
+    taskfile: ../sops/Taskfile.yaml
 tasks:
   apply-node:
     desc: Apply Talos config to a node [IP=required]
@@ -173,3 +177,20 @@ tasks:
       - until kubectl wait jobs --all --all-namespaces --for=condition=complete --timeout=5m &>/dev/null; do sleep 5; done
     preconditions:
       - which kubectl
+  talosconfig:
+    cmds:
+      - task: s:decrypt-secrets
+      - yq -r .machine.ca.crt {{.BOOTSTRAP_DIR}}/talos/{{.IP}}.sops.yaml.j2 | base64 -d > ca.crt
+      - yq -r .machine.ca.key {{.BOOTSTRAP_DIR}}/talos/{{.IP}}.sops.yaml.j2 | base64 -d > ca.key
+      - talosctl gen key --name admin
+      - talosctl gen csr --key admin.key --ip 127.0.0.1
+      - talosctl gen crt --ca ca --csr admin.csr --name admin --hours 8760
+      - yq eval '.contexts.main.ca = "'"$(cat ca.crt | base64)"'" | .contexts.main.crt = "'"$(cat admin.crt | base64)"'" | .contexts.main.key = "'"$(cat admin.key | base64)"'"' -i {{ .CLUSTER_DIR }}/talosconfig
+      - task: s:encrypt-secrets
+      - rm admin.key ca.crt ca.key admin.csr admin.crt
+    vars:
+      IP:
+        sh: ls {{.BOOTSTRAP_DIR}}/talos/ | head -n 1 | cut -d '.' -f1-4
+    preconditions:
+      - which yq talosctl base64
+
