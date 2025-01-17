@@ -101,8 +101,8 @@ spec:
                   identifier: app
                   port: http
     persistence:
-      config:
-        existingClaim: zipline
+      # config:
+      #   existingClaim: zipline
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
