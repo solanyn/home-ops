@@ -36,7 +36,6 @@ resources:
   - ./seasonpackarr/ks.yaml
   - ./echo-server/ks.yaml
   - ./atuin/ks.yaml
-  - ./zipline/ks.yaml
   - ./oauth2-proxy/ks.yaml
 transformers:
   - |-
