@@ -21,9 +21,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   values:
     controllers:
       zipline:
@@ -43,7 +40,7 @@ spec:
               repository: ghcr.io/diced/zipline
               tag: v4@sha256:0dfaf467ca3f755d70df585008e9d50e9f8912b1a7ed4e4b9fa651ee998e5fa0
             env:
-              CORE_RETURN_HTTPS: false
+              CORE_RETURN_HTTPS: true
               CORE_HOST: 0.0.0.0
               CORE_PORT: &port 80
               CORE_LOGGER: true
