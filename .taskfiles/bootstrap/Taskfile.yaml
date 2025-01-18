@@ -20,6 +20,25 @@ tasks:
       - talosctl config info
       - test -f {{.CLUSTER_DIR}}/talosconfig
       - which jq minijinja-cli sops talosctl
+  cnpg:
+    desc: Increments cloudnative-pg cluster version
+    prompt: Increment cloudnative-pg cluster version, commit and push?
+    cmds:
+      - yq eval ".spec.backup.barmanObjectStore.serverName = \"{{.CLUSTER_NAME}}-v{{.CURRENT | add1 }}\"" -i {{.CLUSTER_DIR}}/apps/database/cloudnative-pg/cluster/cluster16.yaml
+      - yq eval ".spec.bootstrap.recovery.source = \"{{.CLUSTER_NAME}}-v{{.PREVIOUS | add1 }}\"" -i {{.CLUSTER_DIR}}/apps/database/cloudnative-pg/cluster/cluster16.yaml
+      - git add {{.CLUSTER_DIR}}/apps/database/cloudnative-pg/cluster/cluster16.yaml
+      - "git commit -m 'chore(cnpg): increment cluster task'"
+      - git push
+    vars:
+      CLUSTER_NAME:
+        sh: yq eval '.metadata.name' {{.CLUSTER_DIR}}/apps/database/cloudnative-pg/cluster/cluster16.yaml
+      CURRENT:
+        sh: yq eval '.spec.backup.barmanObjectStore.serverName | split("-v") | .[1] | tonumber' {{.CLUSTER_DIR}}/apps/database/cloudnative-pg/cluster/cluster16.yaml
+      PREVIOUS:
+        sh: yq eval '.spec.bootstrap.recovery.source | split("-v") | .[1] | tonumber' {{.CLUSTER_DIR}}/apps/database/cloudnative-pg/cluster/cluster16.yaml
+    preconditions:
+      - test -f {{.CLUSTER_DIR}}/apps/database/cloudnative-pg/cluster/cluster16.yaml
+      - which yq git
   apps:
     desc: Bootstrap Apps [ROOK_DISK=required]
     summary: |
