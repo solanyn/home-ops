@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: onepassword-connect
+  name: onepassword
 spec:
   interval: 30m
   chart:
@@ -23,8 +23,9 @@ spec:
       retries: 3
   values:
     controllers:
-      onepassword-connect:
+      onepassword:
         strategy: RollingUpdate
+        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -40,7 +41,7 @@ spec:
               OP_SESSION:
                 valueFrom:
                   secretKeyRef:
-                    name: onepassword-connect-secret
+                    name: onepassword-secret
                     key: 1password-credentials.json
             probes:
               liveness:
@@ -64,12 +65,10 @@ spec:
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
             resources: &resources
               requests:
-                memory: 128Mi
-              # requests:
-              #   cpu: 10m
+                cpu: 10m
               limits:
                 memory: 256M
           sync:
@@ -84,7 +83,7 @@ spec:
               OP_SESSION:
                 valueFrom:
                   secretKeyRef:
-                    name: onepassword-connect-secret
+                    name: onepassword-secret
                     key: 1password-credentials.json
             probes:
               liveness:
@@ -114,16 +113,15 @@ spec:
         runAsGroup: 999
         fsGroup: 999
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: {type: RuntimeDefault}
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: onepassword-connect
+        controller: onepassword
         ports:
           http:
             port: *apiPort
     persistence:
       config:
         type: emptyDir
-        sizeLimit: 1Gi
         globalMounts:
           - path: *configDir
