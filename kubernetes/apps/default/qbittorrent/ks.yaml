@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
   path: ./kubernetes/apps/default/qbittorrent/app
   prune: true
   sourceRef:
@@ -41,8 +41,12 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
   path: ./kubernetes/apps/default/qbittorrent/tools
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
   prune: true
   sourceRef:
     kind: GitRepository

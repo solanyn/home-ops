@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets-stores
+    - name: onepassword-store
     - name: volsync
   path: ./kubernetes/apps/default/pgadmin/app
   prune: true

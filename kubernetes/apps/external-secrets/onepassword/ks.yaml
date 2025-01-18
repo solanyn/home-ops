@@ -2,21 +2,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app internal-external-dns
+  name: &app onepassword
   namespace: flux-system
 spec:
-  targetNamespace: network
+  targetNamespace: external-secrets
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: onepassword-store
-  path: ./kubernetes/apps/network/internal/external-dns
+  path: ./kubernetes/apps/external-secrets/onepassword/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
+  wait: true
   interval: 30m
   timeout: 5m
 ---
@@ -24,20 +22,21 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app internal-ingress-nginx
+  name: &app onepassword-store
   namespace: flux-system
 spec:
-  targetNamespace: network
+  targetNamespace: external-secrets
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cert-manager-tls
-  path: ./kubernetes/apps/network/internal/ingress-nginx
+    - name: onepassword
+  path: ./kubernetes/apps/external-secrets/onepassword/store
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  wait: false
+  wait: true
   interval: 30m
   timeout: 5m
+
