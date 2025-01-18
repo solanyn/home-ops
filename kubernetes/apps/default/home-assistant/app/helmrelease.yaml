@@ -106,12 +106,12 @@ spec:
         existingClaim: home-assistant
         globalMounts:
           - path: /config
-      logs:
+      config-logs:
         type: emptyDir
         sizeLimit: 100Mi
         globalMounts:
           - path: /config/logs
-      tts:
+      config-tts:
         type: emptyDir
         sizeLimit: 1Gi
         globalMounts:

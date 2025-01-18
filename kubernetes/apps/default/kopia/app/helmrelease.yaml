@@ -124,11 +124,11 @@ spec:
           - path: /app/config/repository.config
             subPath: repository.config
             readOnly: true
-      cache:
+      config-cache:
         type: emptyDir
         globalMounts:
           - path: /app/cache
-      logs:
+      config-logs:
         type: emptyDir
         globalMounts:
           - path: /app/logs
