@@ -11,4 +11,3 @@ spec:
     staticConfig:
       static:
         - nas.internal
-        # - pi.internal
