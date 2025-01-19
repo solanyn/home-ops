@@ -7,7 +7,6 @@ spec:
   staticConfigs:
     - targets:
         - nas.internal:9100
-        - pi.internal:9100
   metricsPath: /metrics
   relabelings:
     - action: replace
