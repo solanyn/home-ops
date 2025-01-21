@@ -15,7 +15,7 @@ data:
           hide-hostname: true
           hide-url: true
         dns:
-          query-name: "${GATUS_SUBDOMAIN:-${APP}}.goyangi.cloud"
+          query-name: "${GATUS_SUBDOMAIN:=${APP}}.goyangi.cloud"
           query-type: A
         conditions:
           - "len([BODY]) == 0"
