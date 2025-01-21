@@ -4,5 +4,5 @@ metadata:
   name: redis
   namespace: flux-system
 spec:
-  interval: 5m
+  interval: 30m
   url: https://ot-container-kit.github.io/helm-charts

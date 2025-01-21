@@ -10,8 +10,6 @@ repositories:
     url: https://helm.cilium.io
   - name: coredns
     url: https://coredns.github.io/helm
-  - name: external-secrets
-    url: https://charts.external-secrets.io
   - name: jetstack
     url: https://charts.jetstack.io
 releases:
@@ -45,7 +43,7 @@ releases:
       - kube-system/coredns
   - name: external-secrets
     namespace: external-secrets
-    chart: external-secrets/external-secrets
+    chart: oci://ghcr.io/external-secrets/charts/external-secrets
     version: 0.12.1
     values:
       - ../../apps/external-secrets/external-secrets/app/helm-values.yaml
