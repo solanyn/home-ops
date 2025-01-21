@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/cross-seed/cross-seed
-              tag: 6.0.0-44@sha256:881ce834570f3b369860e47a0801b89ab10469b3beccf5279f90e041d3725058
+              tag: 6.9.1@sha256:575f491204d4ae7e003a98c5e15959c01b0c647e8bbeb75c3de9b9a9a92f3d1b
             env:
               TZ: Australia/Sydney
             args: ["daemon"]
@@ -69,20 +69,13 @@ spec:
             port: 80
     persistence:
       config:
-        type: emptyDir
-        sizeLimit: 1Gi
+        existingClaim: cross-seed
       secret-file:
         type: secret
         name: cross-seed-secret
         globalMounts:
           - path: /config/config.js
             subPath: config.js
-            readOnly: true
-      qbittorrent:
-        existingClaim: qbittorrent
-        globalMounts:
-          - path: /qbittorrent/qBittorrent/BT_backup
-            subPath: qBittorrent/BT_backup
             readOnly: true
       media:
         type: nfs
