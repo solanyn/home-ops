@@ -31,4 +31,4 @@ spec:
     name: flux-system
     namespace: flux-system
   wait: false
-  interval: 5m
+  interval: 30m
