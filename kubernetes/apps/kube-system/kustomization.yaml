@@ -1,10 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  # Pre Flux-Kustomizations
-  - ./namespace.yaml
-  - ../../templates/alerts
-  # Flux-Kustomizations
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
   - ./generic-device-plugin/ks.yaml
@@ -13,11 +9,14 @@ resources:
   - ./spegel/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./intel-device-plugin/ks.yaml
-transformers:
-  - |-
-    apiVersion: builtin
-    kind: NamespaceTransformer
-    metadata:
-      name: not-used
-      namespace: kube-system
-    unsetOnly: true
+components:
+  - ../../flux/components/alerts
+  - ../../flux/components/sops
+  - ../../flux/components/namespace
+patches:
+  - patch: |
+      - op: add
+        path: /metadata/name
+        value: flux-system
+    target:
+      kind: Namespace
