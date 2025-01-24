@@ -11,6 +11,10 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: volsync
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../flux/components/gatus/guarded
+    - ../../../../flux/components/volsync
   path: ./kubernetes/apps/default/atuin/app
   prune: true
   sourceRef:

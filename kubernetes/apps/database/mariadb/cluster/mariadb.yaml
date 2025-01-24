@@ -12,7 +12,7 @@ spec:
     generate: false
   storage:
     size: 1Gi
-  replicas: 3
+  replicas: 1
   galera:
     enabled: true
   myCnf: |
