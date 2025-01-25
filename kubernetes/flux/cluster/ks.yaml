@@ -18,7 +18,7 @@ spec:
     name: flux-system
     namespace: flux-system
   # Flux repositories under this need flux-system hardcoded as namespace for Renovate lookups
-  targetNamespace: *namespace
+  targetNamespace: flux-system
   timeout: 5m
   wait: true
 ---
