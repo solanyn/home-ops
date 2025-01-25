@@ -24,6 +24,8 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: plex
+      namespace: default
   values:
     controllers:
       wizarr:
