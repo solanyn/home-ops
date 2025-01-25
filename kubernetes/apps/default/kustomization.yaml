@@ -32,8 +32,12 @@ resources:
   - ./pgadmin/ks.yaml
   - ./seasonpackarr/ks.yaml
   - ./echo-server/ks.yaml
+  - ./emqx/ks.yaml
+  - ./go2rtc/ks.yaml
   - ./atuin/ks.yaml
   - ./oauth2-proxy/ks.yaml
+  - ./zigbee/ks.yaml
+  - ./zwave/ks.yaml
 components:
   - ../../flux/components/alerts
   - ../../flux/components/sops
