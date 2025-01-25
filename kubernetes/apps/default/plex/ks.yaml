@@ -1,11 +1,11 @@
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app plex
-  namespace: flux-system
+  namespace: &namespace default
 spec:
-  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -14,43 +14,47 @@ spec:
     - ../../../../flux/components/volsync
   dependsOn:
     - name: onepassword-store
-  path: ./kubernetes/apps/default/plex/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: false
+      namespace: external-secrets
+    - name: volsync
+      namespace: volsync-system
   interval: 30m
-  timeout: 5m
+  path: ./kubernetes/apps/default/plex/app
   postBuild:
     substitute:
       APP: *app
       GATUS_PATH: /web/index.html
       VOLSYNC_CACHE_CAPACITY: 25Gi
       VOLSYNC_CAPACITY: 50Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app plex-tools
-  namespace: flux-system
+  namespace: &namespace default
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  targetNamespace: default
   dependsOn:
     - name: onepassword-store
+      namespace: external-secrets
+  interval: 30m
   path: ./kubernetes/apps/default/plex/tools
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: false
-  interval: 30m
-  timeout: 5m
-  # TODO: enable if clearing Plex On Deck is needed
   suspend: true
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
