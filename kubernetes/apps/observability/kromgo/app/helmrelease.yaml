@@ -79,7 +79,7 @@ spec:
       app:
         className: external
         hosts:
-          - host: "{{ .Release.Name }}.devbu.io"
+          - host: "{{ .Release.Name }}.goyangi.cloud"
             paths:
               - path: /
                 service:
