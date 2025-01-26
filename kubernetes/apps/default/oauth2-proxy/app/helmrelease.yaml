@@ -32,7 +32,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          oauth2-proxy:
+          app:
             image:
               repository: quay.io/oauth2-proxy/oauth2-proxy
               tag: v7.8.1@sha256:d62e2d81c6f5048f652f67c302083be1272c181b971fad80e5a30ebe2b8b75d8
@@ -85,7 +85,7 @@ spec:
         supplementalGroups: [10000]
         seccompProfile: {type: RuntimeDefault}
     service:
-      oauth2-proxy:
+      app:
         controller: oauth2-proxy
         ports:
           http:
@@ -93,7 +93,7 @@ spec:
           metrics:
             port: 44180
     ingress:
-      oauth2-proxy:
+      app:
         className: internal
         hosts:
           - host: oauth2-proxy.goyangi.cloud
@@ -103,7 +103,7 @@ spec:
                   identifier: oauth2-proxy
                   port: http
     serviceMonitor:
-      oauth2-proxy:
+      app:
         enabled: true
         serviceName: *app
         endpoints:
