@@ -68,6 +68,8 @@ spec:
         ports:
           http:
             port: *port
+          search:
+            port: 3000
     ingress:
       app:
         className: internal
@@ -78,6 +80,10 @@ spec:
                 service:
                   identifier: app
                   port: http
+              - path: /
+                service:
+                  identifier: app
+                  port: 3000
 
     persistence:
       config:
