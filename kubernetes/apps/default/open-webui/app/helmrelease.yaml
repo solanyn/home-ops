@@ -36,6 +36,9 @@ spec:
               WEBUI_URL: http://0.0.0.0:3000
               PORT: &port 80
               DATA_DIR: /config
+            envFrom:
+              - secretRef:
+                  name: open-webui-secret
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
