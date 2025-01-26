@@ -74,7 +74,7 @@ spec:
           http:
             port: *port
     ingress:
-      main:
+      app:
         className: internal
         hosts:
           - host: "llm.goyangi.cloud"

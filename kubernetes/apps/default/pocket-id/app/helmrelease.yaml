@@ -27,7 +27,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          pocket-id:
+          app:
             image:
               repository: docker.io/stonith404/pocket-id
               tag: v0.27.1@sha256:fcb68d40da2b13d0ddd16a502a0c6add5c9d24e2599612b2c4f93d6c12fa3cbb
@@ -72,7 +72,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
         supplementalGroups: [10000]
     service:
-      pocket-id:
+      app:
         controller: *app
         type: LoadBalancer
         annotations:
@@ -81,7 +81,7 @@ spec:
           http:
             port: *port
     ingress:
-      pocket-id:
+      app:
         className: internal
         hosts:
           - host: pid.goyangi.cloud
