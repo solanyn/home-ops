@@ -77,7 +77,7 @@ spec:
       main:
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.goyangi.cloud"
+          - host: "llm.goyangi.cloud"
             paths:
               - path: /
                 service:
