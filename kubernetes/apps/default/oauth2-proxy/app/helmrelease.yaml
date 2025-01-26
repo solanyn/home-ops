@@ -100,7 +100,7 @@ spec:
             paths:
               - path: /oauth2
                 service:
-                  identifier: oauth2-proxy
+                  identifier: app
                   port: http
     serviceMonitor:
       app:
