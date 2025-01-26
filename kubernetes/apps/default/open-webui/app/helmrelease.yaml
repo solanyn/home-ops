@@ -36,6 +36,7 @@ spec:
               ENABLE_SIGNUP: "false"
               ENABLE_LOGIN_FORM: "false"
               ENABLE_OAUTH_SIGNUP: "true"
+              ENABLE_OPENAI_API: "false"
               OLLAMA_BASE_URL: http://mac.internal:11434
               CORS_ALLOW_ORIGIN: "https://ai.goyangi.cloud"
               DEFAULT_USER_ROLE: user
