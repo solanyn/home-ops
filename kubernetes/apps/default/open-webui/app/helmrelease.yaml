@@ -37,8 +37,10 @@ spec:
               ENABLE_LOGIN_FORM: "false"
               ENABLE_OAUTH_SIGNUP: "true"
               OLLAMA_BASE_URL: http://mac.internal:11434
+              CORS_ALLOW_ORIGIN: "https://ai.goyangi.cloud"
+              DEFAULT_USER_ROLE: user
               OAUTH_PROVIDER_NAME: "Pocket ID"
-              # OAUTH_ALLOWED_DOMAINS: "goyangi.cloud"
+              OFFLINE_MODE: "true"
               OPENID_PROVIDER_URL: "https://pid.goyangi.cloud/.well-known/openid-configuration"
               OPENID_REDIRECT_URI: "https://ai.goyangi.cloud/oauth/oidc/callback"
               PORT: &port 80
