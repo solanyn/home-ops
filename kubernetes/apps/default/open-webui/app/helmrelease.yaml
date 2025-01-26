@@ -36,6 +36,13 @@ spec:
               WEBUI_URL: http://0.0.0.0:3000
               PORT: &port 80
               DATA_DIR: /config
+              OPENID_PROVIDER_URL: "https://pid.goyangi.cloud/.well-known/openid-configuration"
+              OAUTH_PROVIDER_NAME: "Pocket ID"
+              OPENID_REDIRECT_URI: "https://ai.goyangi.cloud/oauth/oidc/callback"
+              OAUTH_ALLOWED_DOMAINS: ".goyangi.cloud"
+              ENABLE_SIGNUP: "false"
+              ENABLE_LOGIN_FORM: "false"
+              ENABLE_OAUTH_SIGNUP: "true"
             envFrom:
               - secretRef:
                   name: open-webui-secret
