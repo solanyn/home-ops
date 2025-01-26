@@ -34,30 +34,25 @@ spec:
             env:
               OLLAMA_BASE_URL: http://mac.internal:11434
               WEBUI_URL: http://0.0.0.0:3000
-              PORT: 80
+              PORT: &port 80
               DATA_DIR: /config
-              FONTS_DIR: /fonts
-              FRONTEND_BUILD_DIR: /build
-              STATIC_DIR: /static
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
             probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: &port 4180
-              readiness:
+              liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /
                     port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -69,7 +64,7 @@ spec:
         seccompProfile: {type: RuntimeDefault}
     service:
       app:
-        controller: open-webui
+        controller: *app
         ports:
           http:
             port: *port
