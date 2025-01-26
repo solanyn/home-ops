@@ -32,17 +32,17 @@ spec:
               repository: ghcr.io/open-webui/open-webui
               tag: main@sha256:b2c83b5c7b9b244999307b4b1c0e195d41268f3d3a62b84b470c0cea5c5743fd
             env:
-              OLLAMA_BASE_URL: http://mac.internal:11434
-              WEBUI_URL: http://0.0.0.0:3000
-              PORT: &port 80
               DATA_DIR: /config
-              OPENID_PROVIDER_URL: "https://pid.goyangi.cloud/.well-known/openid-configuration"
-              OAUTH_PROVIDER_NAME: "Pocket ID"
-              OPENID_REDIRECT_URI: "https://ai.goyangi.cloud/oauth/oidc/callback"
-              OAUTH_ALLOWED_DOMAINS: ".goyangi.cloud"
               ENABLE_SIGNUP: "false"
               ENABLE_LOGIN_FORM: "false"
               ENABLE_OAUTH_SIGNUP: "true"
+              OLLAMA_BASE_URL: http://mac.internal:11434
+              OAUTH_PROVIDER_NAME: "Pocket ID"
+              OAUTH_ALLOWED_DOMAINS: "goyangi.cloud"
+              OPENID_PROVIDER_URL: "https://pid.goyangi.cloud/.well-known/openid-configuration"
+              OPENID_REDIRECT_URI: "https://ai.goyangi.cloud/oauth/oidc/callback"
+              PORT: &port 80
+              WEBUI_URL: http://0.0.0.0:3000
             envFrom:
               - secretRef:
                   name: open-webui-secret
