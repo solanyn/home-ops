@@ -1,20 +1,12 @@
 originRequest:
-  http2Origin: true
+  originServerName: "external.goyangi.cloud"
 ingress:
   - hostname: "goyangi.cloud"
     service: https://external-ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: "external.goyangi.cloud"
   - hostname: "*.goyangi.cloud"
     service: https://external-ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: "external.goyangi.cloud"
   - hostname: "solanyn.dev"
     service: https://external-ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: "external.goyangi.cloud"
   - hostname: "*.solanyn.dev"
     service: https://external-ingress-nginx-controller.network.svc.cluster.local:443
-    originRequest:
-      originServerName: "external.goyangi.cloud"
   - service: http_status:404
