@@ -102,10 +102,10 @@ graph TD
 
 While I self-host infrastructure and workloads where I can, I rely on cloud services for key parts of my setup.
 
-| Service                                         | Use                                                               | Cost           |
+| Service                                         | Use                                                               | Cost (AUD)           |
 |-------------------------------------------------|-------------------------------------------------------------------|----------------|
-| [1Password](https://1password.com/)             | Secrets with [External Secrets](https://external-secrets.io/)     | ~100AUD/yr        |
-| [Cloudflare](https://www.cloudflare.com/)       | Domains and S3                                                     | ~$30AUD/yr        |
+| [1Password](https://1password.com/)             | Secrets with [External Secrets](https://external-secrets.io/)     | ~$100/yr        |
+| [Cloudflare](https://www.cloudflare.com/)       | Domains and S3                                                     | ~$30/yr        |
 | [GitHub](https://github.com/)                   | Hosting this repository and continuous integration/deployments    | Free           |
 | [Pushover](https://pushover.net/)               | Kubernetes Alerts and application notifications                   | $5 OTP         |
 |                                                 |                                                                   | Total: ~$11AUD/mo |
