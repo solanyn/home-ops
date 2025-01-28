@@ -108,7 +108,7 @@ While I self-host infrastructure and workloads where I can, I rely on cloud serv
 | [Cloudflare](https://www.cloudflare.com/)       | Domains and S3                                                     | ~$30/yr        |
 | [GitHub](https://github.com/)                   | Hosting this repository and continuous integration/deployments    | Free           |
 | [Pushover](https://pushover.net/)               | Kubernetes Alerts and application notifications                   | $5 OTP         |
-|                                                 |                                                                   | Total: ~$11AUD/mo |
+|                                                 |                                                                   | Total: ~$11/mo |
 
 ---
 
