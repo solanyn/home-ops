@@ -106,7 +106,7 @@ tasks:
     cmd: talosctl reset --nodes {{.IP_ADDRS}} --graceful=false
     vars:
       IP_ADDRS:
-        sh: talosctl config info --output json | jq --join-output '[.nodes[]] | join(",")'
+        sh: talosctl --talosconfig {{.CLUSTER_DIR}}/talosconfig config info --output json | jq --join-output '[.nodes[]] | join(",")'
     preconditions:
       - talosctl --nodes {{.IP_ADDRS}} get machineconfig
       - talosctl config info
