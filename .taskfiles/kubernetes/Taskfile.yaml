@@ -34,7 +34,7 @@ tasks:
         cmd: kubectl --namespace {{splitList "," .ITEM | first}} annotate externalsecret {{splitList "," .ITEM | last}} force-sync="{{now | unixEpoch}}" --overwrite
     vars:
       SECRETS:
-        sh: kubectl get externalsecret --all-namespaces --no-headers --output=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name}{"\n"}{end}'
+        sh: kubectl --kubeconfig {{.CLUSTER_DIR}}/kubeconfig get externalsecret --all-namespaces --no-headers --output=jsonpath='{range .items[*]}{.metadata.namespace},{.metadata.name}{"\n"}{end}'
     preconditions:
       - which kubectl
   cleanse-pods:
