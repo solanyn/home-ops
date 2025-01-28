@@ -24,10 +24,6 @@ jobs:
         with:
           sparse-checkout: .github/labeler.yaml
           token: "${{ steps.app-token.outputs.token }}"
-      - name: DEBUG
-        run: |
-          ls -la
-          ls -la .github
       - name: Labeler
         uses: actions/labeler@v5
         with:
