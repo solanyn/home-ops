@@ -38,11 +38,6 @@ jobs:
           ref: "${{ github.event.repository.default_branch }}"
           path: default
 
-      - name: DEBUG
-        run: |
-          ls -la /github/workspace/pull/kubernetes/flux/cluster
-          ls -la /github/workspace/default/kubernetes/flux/cluster
-
       - name: Diff Resources
         uses: docker://ghcr.io/allenporter/flux-local:v7.0.0@sha256:abf237e31d20de26f8a4b08e588cc927cb0a9f0ecf90d04bada00f393b919354
         with:
