@@ -31,11 +31,6 @@ jobs:
           sparse-checkout: .github/labels.yaml
           token: "${{ steps.app-token.outputs.token }}"
 
-      - name: DEBUG
-        run: |
-          ls -la
-          ls -la .github
-
       - name: Sync Labels
         uses: EndBug/label-sync@v2
         with:
