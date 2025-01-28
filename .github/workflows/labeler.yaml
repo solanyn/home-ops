@@ -20,6 +20,11 @@ jobs:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
+      - name: DEBUG
+        run: |
+          ls -la
+          ls -la .github
+
       - name: Labeler
         uses: actions/labeler@v5
         with:
