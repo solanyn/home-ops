@@ -30,7 +30,6 @@ jobs:
         with:
           sparse-checkout: .github/labels.yaml
           token: "${{ steps.app-token.outputs.token }}"
-          path: pull
 
       - name: DEBUG
         run: |
