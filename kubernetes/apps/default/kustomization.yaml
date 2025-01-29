@@ -13,7 +13,6 @@ resources:
   - ./cross-seed/ks.yaml
   - ./echo-server/ks.yaml
   - ./emailer/ks.yaml
-  - ./emqx/ks.yaml
   - ./filebrowser/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./go2rtc/ks.yaml
