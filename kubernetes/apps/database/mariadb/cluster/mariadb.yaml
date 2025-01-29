@@ -5,7 +5,7 @@ metadata:
 spec:
   maxScaleRef:
     name: maxscale-galera
-    namespace: maxscale
+    namespace: database
   rootPasswordSecretKeyRef:
     name: mariadb
     key: password
@@ -25,7 +25,7 @@ spec:
     max_allowed_packet=256M
   resources:
     requests:
-      cpu: 100m
+      cpu: 10m
       memory: 128Mi
     limits:
       memory: 1Gi

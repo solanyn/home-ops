@@ -3,6 +3,7 @@ kind: HelmRelease
 metadata:
   name: mariadb-operator
 spec:
+  interval: 30m
   chart:
     spec:
       chart: mariadb-operator
@@ -10,7 +11,14 @@ spec:
         kind: HelmRepository
         name: mariadb-operator
       version: "0.28.1"
-  interval: 1h0m0s
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
   values:
     metrics:
       enabled: true
