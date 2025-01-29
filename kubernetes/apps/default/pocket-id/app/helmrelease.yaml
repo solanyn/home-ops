@@ -34,7 +34,7 @@ spec:
             command: ["/bin/sh", "/app/scripts/docker/entrypoint.sh"]
             env:
               DB_PATH: /data/pocket-id.db
-              PUBLIC_APP_URL: https://pid.goyangi.cloud
+              PUBLIC_APP_URL: https://sso.goyangi.cloud
               SQLITE_DB_PATH: /data/pocket-id.db
               TRUST_PROXY: true
               TZ: Australia/Sydney
@@ -84,7 +84,7 @@ spec:
       app:
         className: internal
         hosts:
-          - host: pid.goyangi.cloud
+          - host: sso.goyangi.cloud
             paths:
               - path: /
                 service:
