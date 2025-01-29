@@ -6,7 +6,7 @@ spec:
   interval: 30m
   chart:
     spec:
-      chart: mariadb
+      chart: mariadb-operator
       version: 0.28.1
       sourceRef:
         kind: HelmRepository
