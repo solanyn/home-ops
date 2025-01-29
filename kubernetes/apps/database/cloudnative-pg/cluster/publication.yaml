@@ -13,7 +13,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Publication
 metadata:
-  name: postgres16-publisher
+  name: autobrr-publisher
 spec:
   cluster:
     name: postgres16
@@ -26,7 +26,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Publication
 metadata:
-  name: postgres16-publisher
+  name: gatus-publisher
 spec:
   cluster:
     name: postgres16
@@ -39,7 +39,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Publication
 metadata:
-  name: postgres16-publisher
+  name: prowlarr_main-publisher
 spec:
   cluster:
     name: postgres16
@@ -52,7 +52,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Publication
 metadata:
-  name: postgres16-publisher
+  name: radarr_main-publisher
 spec:
   cluster:
     name: postgres16
@@ -65,7 +65,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Publication
 metadata:
-  name: postgres16-publisher
+  name: sonarr_main-publisher
 spec:
   cluster:
     name: postgres16
@@ -78,7 +78,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Publication
 metadata:
-  name: postgres16-publisher
+  name: readarr_main-publisher
 spec:
   cluster:
     name: postgres16
@@ -91,7 +91,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Publication
 metadata:
-  name: postgres16-publisher
+  name: readarr_ab_main-publisher
 spec:
   cluster:
     name: postgres16
@@ -104,7 +104,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Publication
 metadata:
-  name: postgres16-publisher
+  name: readarr_cache-publisher
 spec:
   cluster:
     name: postgres16
@@ -117,7 +117,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Publication
 metadata:
-  name: postgres16-publisher
+  name: readarr_ab_cache-publisher
 spec:
   cluster:
     name: postgres16
@@ -130,7 +130,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Publication
 metadata:
-  name: postgres16-publisher
+  name: readarr_log-publisher
 spec:
   cluster:
     name: postgres16
@@ -143,7 +143,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Publication
 metadata:
-  name: postgres16-publisher
+  name: readarr_ab_log-publisher
 spec:
   cluster:
     name: postgres16
