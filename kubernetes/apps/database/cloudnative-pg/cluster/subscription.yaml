@@ -13,7 +13,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Subscription
 metadata:
-  name: postgres-subscription
+  name: autobrr-subscription
 spec:
   cluster:
     name: postgres17
@@ -26,7 +26,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Subscription
 metadata:
-  name: postgres-subscription
+  name: gatus-subscription
 spec:
   cluster:
     name: postgres
@@ -39,7 +39,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Subscription
 metadata:
-  name: postgres-subscription
+  name: prowlarr_main-subscription
 spec:
   cluster:
     name: postgres
@@ -52,7 +52,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Subscription
 metadata:
-  name: postgres-subscription
+  name: radarr_main-subscription
 spec:
   cluster:
     name: postgres
@@ -65,7 +65,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Subscription
 metadata:
-  name: postgres-subscription
+  name: sonarr_main-subscription
 spec:
   cluster:
     name: postgres
@@ -78,7 +78,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Subscription
 metadata:
-  name: postgres-subscription
+  name: readarr_main-subscription
 spec:
   cluster:
     name: postgres
@@ -91,7 +91,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Subscription
 metadata:
-  name: postgres-subscription
+  name: readarr_ab_main-subscription
 spec:
   cluster:
     name: postgres
@@ -104,7 +104,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Subscription
 metadata:
-  name: postgres-subscription
+  name: readarr_cache-subscription
 spec:
   cluster:
     name: postgres
@@ -117,7 +117,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Subscription
 metadata:
-  name: postgres-subscription
+  name: readarr_ab_cache-subscription
 spec:
   cluster:
     name: postgres
@@ -130,7 +130,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Subscription
 metadata:
-  name: postgres-subscription
+  name: readarr_log-subscription
 spec:
   cluster:
     name: postgres
@@ -143,7 +143,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Subscription
 metadata:
-  name: postgres-subscription
+  name: readarr_ab_log-subscription
 spec:
   cluster:
     name: postgres
