@@ -2,7 +2,7 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres
+  name: postgres17
 spec:
   instances: 3
   imageName: ghcr.io/cloudnative-pg/postgresql:17.2@sha256:b17d21f8ec36add9b3c0ea3fb354d05f62a8fddf8ba65ae94e63ba77bc42202e
@@ -29,6 +29,34 @@ spec:
       memory: 4Gi
   monitoring:
     enablePodMonitor: true
+  bootstrap:
+    initdb:
+      import:
+        schemaOnly: true
+        type: microservice
+        databases:
+          - autobrr
+          - gatus
+          - prowlarr_main
+          - radarr_main
+          - readarr_ab_cache
+          - readarr_ab_log
+          - readarr_ab_main
+          - readarr_cache
+          - readarr_log
+          - readarr_main
+          - sonarr_main
+        source:
+          externalCluster: postgres16
+  externalClusters:
+  - name: postgres16
+    connectionParameters:
+      host: postgres16-rw.svc.cluster.local
+      user: postgres
+      dbname: postgres
+    password:
+      name: postgres
+      key: password
   # backup:
   #   retentionPolicy: 14d
   #   barmanObjectStore: &barmanObjectStore
