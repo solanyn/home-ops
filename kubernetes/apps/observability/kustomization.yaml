@@ -11,7 +11,6 @@ resources:
   - ./blackbox-exporter/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./speedtest-exporter/ks.yaml
-  - ./headlamp/ks.yaml
   - ./kromgo/ks.yaml
 components:
   - ../../flux/components/alerts
