@@ -15,9 +15,9 @@ spec:
       endpoint: minio.default.svc.cluster.local:9000
       region: us-east-1
       accessKeyIdSecretKeyRef:
-        name: minio
+        name: mariadb-secret
         key: MINIO_ACCESS_KEY_ID
       secretAccessKeySecretKeyRef:
-        name: minio
+        name: mariadb-secret
         key: MINIO_SECRET_ACCESS_KEY
 
