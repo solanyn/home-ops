@@ -63,9 +63,4 @@ spec:
       barmanObjectStore:
         !!merge <<: *barmanObjectStore
         serverName: *previousCluster
-  managed:
-    roles:
-      - name: postgres
-        login: true
-        replication: true
 
