@@ -33,8 +33,11 @@ spec:
               tag: v0.27.2@sha256:587f6d7286bf26a52134c5abff478de8ba7d437c795a28b0035a8da2cb771116
             command: ["/bin/sh", "/app/scripts/docker/entrypoint.sh"]
             env:
-              DB_PATH: /data/pocket-id.db
-              PUBLIC_APP_URL: https://sso.goyangi.cloud
+              DB_PROVIDER: postgres
+              PUID: 1000
+              PGID: 1000
+              # DB_PATH: /data/pocket-id.db
+              PUBLIC_APP_URL: https://id.goyangi.cloud
               SQLITE_DB_PATH: /data/pocket-id.db
               TRUST_PROXY: true
               TZ: Australia/Sydney
@@ -84,7 +87,7 @@ spec:
       app:
         className: internal
         hosts:
-          - host: sso.goyangi.cloud
+          - host: id.goyangi.cloud
             paths:
               - path: /
                 service:

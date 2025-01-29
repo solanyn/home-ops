@@ -22,7 +22,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_SUBDOMAIN: sso
+      GATUS_SUBDOMAIN: id
   prune: true
   sourceRef:
     kind: GitRepository
