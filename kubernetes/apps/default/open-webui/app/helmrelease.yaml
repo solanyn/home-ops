@@ -42,7 +42,7 @@ spec:
               DEFAULT_USER_ROLE: user
               OAUTH_PROVIDER_NAME: "Pocket ID"
               OFFLINE_MODE: "true"
-              OPENID_PROVIDER_URL: "https://pid.goyangi.cloud/.well-known/openid-configuration"
+              OPENID_PROVIDER_URL: "https://sso.goyangi.cloud/.well-known/openid-configuration"
               OPENID_REDIRECT_URI: "https://ai.goyangi.cloud/oauth/oidc/callback"
               PORT: &port 80
               WEBUI_URL: http://0.0.0.0:3000
