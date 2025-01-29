@@ -1,11 +1,10 @@
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
+apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: kafka
+  name: mariadb
   namespace: flux-system
 spec:
-  type: oci
   interval: 12h
-  url: oci://quay.io/strimzi-helm/strimzi-kafka-operator
+  url: https://mariadb-operator.github.io/mariadb-operator
