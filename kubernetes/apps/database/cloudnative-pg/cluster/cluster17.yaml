@@ -33,7 +33,7 @@ spec:
     initdb:
       import:
         schemaOnly: true
-        type: microservice
+        type: monolith
         databases:
           - autobrr
           - gatus
