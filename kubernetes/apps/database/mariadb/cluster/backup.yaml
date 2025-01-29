@@ -8,16 +8,16 @@ spec:
   schedule:
     cron: "*/1 * * * *"
     suspend: false
-  maxRetention: 720h # 30 days
+  maxRetention: 168h # 7 days
   storage:
     s3:
-      bucket: backups
-      prefix: mariadb
-      endpoint: minio.ml-platform.svc.cluster.local:9000
+      bucket: mariadb-galera
+      endpoint: minio.default.svc.cluster.local:9000
       region: us-east-1
       accessKeyIdSecretKeyRef:
         name: minio
-        key: access-key-id
+        key: MINIO_ACCESS_KEY_ID
       secretAccessKeySecretKeyRef:
         name: minio
-        key: secret-access-key
+        key: MINIO_SECRET_ACCESS_KEY
+
