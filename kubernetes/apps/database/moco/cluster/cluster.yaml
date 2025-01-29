@@ -4,7 +4,7 @@ metadata:
   name: moco-v0
   namespace: database
 spec:
-  replicas: 3
+  replicas: 1
   backupPolicyName: daily
   primaryServiceTemplate:
     metadata:
