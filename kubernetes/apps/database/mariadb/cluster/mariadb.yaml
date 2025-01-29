@@ -7,8 +7,8 @@ spec:
     name: maxscale-galera
     namespace: database
   rootPasswordSecretKeyRef:
-    name: mariadb
-    key: password
+    name: mariadb-secret
+    key: MARIADB_SUPER_PASS
     generate: false
   storage:
     size: 1Gi
