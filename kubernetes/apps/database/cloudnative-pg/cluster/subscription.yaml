@@ -1,0 +1,155 @@
+# - autobrr
+# - gatus
+# - prowlarr_main
+# - radarr_main
+# - readarr_ab_cache
+# - readarr_ab_log
+# - readarr_ab_main
+# - readarr_cache
+# - readarr_log
+# - readarr_main
+# - sonarr_main
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Subscription
+metadata:
+  name: postgres-subscription
+spec:
+  cluster:
+    name: postgres17
+  dbname: autobrr
+  name: autobrr-subscription
+  externalClusterName: postgres16
+  publicationName: autobrr-publisher
+  subscriptionReclaimPolicy: delete
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Subscription
+metadata:
+  name: postgres-subscription
+spec:
+  cluster:
+    name: postgres
+  dbname: gatus
+  name: gatus-subscription
+  externalClusterName: postgres16
+  publicationName: gatus-publisher
+  subscriptionReclaimPolicy: delete
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Subscription
+metadata:
+  name: postgres-subscription
+spec:
+  cluster:
+    name: postgres
+  dbname: prowlarr_main
+  name: prowlarr_main-subscription
+  externalClusterName: postgres16
+  publicationName: prowlarr_main-publisher
+  subscriptionReclaimPolicy: delete
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Subscription
+metadata:
+  name: postgres-subscription
+spec:
+  cluster:
+    name: postgres
+  dbname: radarr_main
+  name: radarr_main-subscription
+  externalClusterName: postgres16
+  publicationName: radarr_main-publisher
+  subscriptionReclaimPolicy: delete
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Subscription
+metadata:
+  name: postgres-subscription
+spec:
+  cluster:
+    name: postgres
+  dbname: sonarr_main
+  name: sonarr_main-subscription
+  externalClusterName: postgres16
+  publicationName: sonarr_main-publisher
+  subscriptionReclaimPolicy: delete
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Subscription
+metadata:
+  name: postgres-subscription
+spec:
+  cluster:
+    name: postgres
+  dbname: readarr_main
+  name: readarr_main-subscription
+  externalClusterName: postgres16
+  publicationName: readarr_main-publisher
+  subscriptionReclaimPolicy: delete
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Subscription
+metadata:
+  name: postgres-subscription
+spec:
+  cluster:
+    name: postgres
+  dbname: readarr_ab_main
+  name: readarr_ab_main-subscription
+  externalClusterName: postgres16
+  publicationName: readarr_ab_main-publisher
+  subscriptionReclaimPolicy: delete
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Subscription
+metadata:
+  name: postgres-subscription
+spec:
+  cluster:
+    name: postgres
+  dbname: readarr_cache
+  name: readarr_cache-subscription
+  externalClusterName: postgres16
+  publicationName: readarr_cache-publisher
+  subscriptionReclaimPolicy: delete
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Subscription
+metadata:
+  name: postgres-subscription
+spec:
+  cluster:
+    name: postgres
+  dbname: readarr_ab_cache
+  name: readarr_ab_cache-subscription
+  externalClusterName: postgres16
+  publicationName: readarr_ab_cache-publisher
+  subscriptionReclaimPolicy: delete
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Subscription
+metadata:
+  name: postgres-subscription
+spec:
+  cluster:
+    name: postgres
+  dbname: readarr_log
+  name: readarr_log-subscription
+  externalClusterName: postgres16
+  publicationName: readarr_log-publisher
+  subscriptionReclaimPolicy: delete
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Subscription
+metadata:
+  name: postgres-subscription
+spec:
+  cluster:
+    name: postgres
+  dbname: readarr_ab_log
+  name: readarr_ab_log-subscription
+  externalClusterName: postgres16
+  publicationName: readarr_ab_log-publisher
+  subscriptionReclaimPolicy: delete
+
