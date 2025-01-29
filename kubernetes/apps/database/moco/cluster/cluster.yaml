@@ -25,7 +25,7 @@ spec:
             memory: 1Gi
   volumeClaimTemplates:
   - metadata:
-      name: mysql
+      name: mysql-data
     spec:
       storageClassName: openebs-hostpath
       accessModes: [ "ReadWriteOnce" ]
