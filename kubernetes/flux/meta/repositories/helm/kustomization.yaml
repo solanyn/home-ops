@@ -21,8 +21,8 @@ resources:
   - ./intel.yaml
   - ./jetstack.yaml
   - ./kafka.yaml
-  - ./mariadb.yaml
   - ./metrics-server.yaml
+  - ./moco.yaml
   - ./node-feature-discovery.yaml
   - ./openebs.yaml
   - ./piraeus.yaml

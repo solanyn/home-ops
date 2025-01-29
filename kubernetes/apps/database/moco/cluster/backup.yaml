@@ -1,0 +1,20 @@
+apiVersion: moco.cybozu.com/v1beta2
+kind: BackupPolicy
+metadata:
+  namespace: database
+  name: daily
+spec:
+  schedule: "@daily"
+  jobConfig:
+    serviceAccountName: default
+    envFrom:
+      - secretRef:
+          name: moco-secret
+    bucketConfig:
+      bucketName: moco
+      endpointURL: http://minio.default.svc.cluster.local:9000
+      usePathStyle: true
+    workVolume:
+      persistentVolumeClaim:
+        claimName: moco-backup
+
