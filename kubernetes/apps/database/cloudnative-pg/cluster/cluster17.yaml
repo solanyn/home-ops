@@ -59,7 +59,7 @@ spec:
   #     endpointURL: https://25450dc0f239d4e727e3488cfb31b5c4.r2.cloudflarestorage.com
   #     # Note: serverName version needs to be incremented
   #     # when recovering from an existing cnpg cluster
-  #     serverName: &currentCluster postgres-v1
+  #     serverName: &currentCluster postgres17-v1
   #     s3Credentials:
   #       accessKeyId:
   #         name: cloudnative-pg-secret
@@ -72,7 +72,7 @@ spec:
   # bootstrap:
   #   # NOTE: Set initdb and comment out recovery when no backup (the very first bootstrap)!
   #   # initdb:
-  #   #   database: postgres-v0
+  #   #   database: postgres17-v0
   #   #   owner: postgres
   #   recovery:
   #     source: &previousCluster postgres16-v11
