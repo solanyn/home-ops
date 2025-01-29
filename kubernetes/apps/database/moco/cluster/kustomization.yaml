@@ -4,5 +4,4 @@ namespace: mariadb
 resources:
   - ./backup.yaml
   - ./cluster.yaml
-  - ./scrapeconfig.yaml
   - ./pvc.yaml
