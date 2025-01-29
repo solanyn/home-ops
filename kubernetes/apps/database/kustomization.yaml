@@ -4,7 +4,8 @@ kind: Kustomization
 namespace: database
 resources:
   - ./cloudnative-pg/ks.yaml
-  - ./mariadb/ks.yaml
+  - ./emqx/ks.yaml
+  - ./moco/ks.yaml
 components:
   - ../../flux/components/alerts
   - ../../flux/components/namespace
