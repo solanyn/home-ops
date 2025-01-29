@@ -34,18 +34,8 @@ spec:
       import:
         schemaOnly: true
         type: monolith
-        databases:
-          - autobrr
-          - gatus
-          - prowlarr_main
-          - radarr_main
-          - readarr_ab_cache
-          - readarr_ab_log
-          - readarr_ab_main
-          - readarr_cache
-          - readarr_log
-          - readarr_main
-          - sonarr_main
+        databases: ["*"]
+        roles: ["*"]
         source:
           externalCluster: postgres16
   externalClusters:
