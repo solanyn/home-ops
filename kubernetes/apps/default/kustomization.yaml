@@ -3,40 +3,41 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: default
 resources:
-  - ./home-assistant/ks.yaml
-  - ./kopia/ks.yaml
-  - ./prowlarr/ks.yaml
-  - ./qbittorrent/ks.yaml
+  - ./actual/ks.yaml
+  - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
-  - ./radarr/ks.yaml
-  - ./sonarr/ks.yaml
+  - ./atuin/ks.yaml
+  - ./bazarr/ks.yaml
   - ./calibre/ks.yaml
   - ./calibre-web/ks.yaml
-  - ./readarr/ks.yaml
-  - ./readarr-ab/ks.yaml
-  - ./flaresolverr/ks.yaml
-  - ./slskd/ks.yaml
-  - ./recyclarr/ks.yaml
-  - ./bazarr/ks.yaml
   - ./cross-seed/ks.yaml
-  - ./audiobookshelf/ks.yaml
+  - ./echo-server/ks.yaml
+  - ./emailer/ks.yaml
+  - ./emqx/ks.yaml
+  - ./filebrowser/ks.yaml
+  - ./flaresolverr/ks.yaml
+  - ./go2rtc/ks.yaml
+  - ./home-assistant/ks.yaml
+  - ./jellyseerr/ks.yaml
+  - ./kopia/ks.yaml
+  - ./minio/ks.yaml
+  - ./oauth2-proxy/ks.yaml
   - ./open-webui/ks.yaml
+  - ./pgadmin/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
-  - ./tautulli/ks.yaml
-  - ./jellyseerr/ks.yaml
-  - ./wizarr/ks.yaml
-  - ./filebrowser/ks.yaml
-  - ./emailer/ks.yaml
-  - ./thelounge/ks.yaml
-  - ./actual/ks.yaml
-  - ./pgadmin/ks.yaml
+  - ./prowlarr/ks.yaml
+  - ./qbittorrent/ks.yaml
+  - ./radarr/ks.yaml
+  - ./readarr/ks.yaml
+  - ./readarr-ab/ks.yaml
+  - ./recyclarr/ks.yaml
+  - ./slskd/ks.yaml
+  - ./sonarr/ks.yaml
   - ./seasonpackarr/ks.yaml
-  - ./echo-server/ks.yaml
-  - ./emqx/ks.yaml
-  - ./go2rtc/ks.yaml
-  - ./atuin/ks.yaml
-  - ./oauth2-proxy/ks.yaml
+  - ./tautulli/ks.yaml
+  - ./thelounge/ks.yaml
+  - ./wizarr/ks.yaml
   - ./zigbee/ks.yaml
   - ./zwave/ks.yaml
 components:
