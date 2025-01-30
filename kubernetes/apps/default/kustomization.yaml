@@ -19,6 +19,7 @@ resources:
   - ./home-assistant/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./kopia/ks.yaml
+  - ./maintainerr/ks.yaml
   - ./minio/ks.yaml
   - ./oauth2-proxy/ks.yaml
   - ./open-webui/ks.yaml
