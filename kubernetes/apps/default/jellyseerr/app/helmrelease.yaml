@@ -99,15 +99,15 @@ spec:
                   identifier: app
                   port: http
     persistence:
+      config:
+        type: emptyDir
+        globalMounts:
+          - path: /app/config
+        sizeLimit: 1Gi
       config-cache:
         existingClaim: jellyseerr-cache
         globalMounts:
           - path: /app/config/cache
-      config-logs:
-        type: emptyDir
-        globalMounts:
-          - path: /app/config/logs
-        sizeLimit: 1Gi
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
