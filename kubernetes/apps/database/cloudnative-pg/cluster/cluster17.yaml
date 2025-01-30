@@ -25,7 +25,7 @@ spec:
       cpu: 10m
       memory: 256Mi
     limits:
-      hugepages-2Mi: 2Gi # Requires sysctl set on the host
+      # hugepages-2Mi: 2Gi # Requires sysctl set on the host
       memory: 4Gi
   monitoring:
     enablePodMonitor: true
