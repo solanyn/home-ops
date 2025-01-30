@@ -36,12 +36,13 @@ spec:
               DB_PROVIDER: postgres
               PUID: 1000
               PGID: 1000
-              # DB_PATH: /data/pocket-id.db
               PUBLIC_APP_URL: https://id.goyangi.cloud
-              SQLITE_DB_PATH: /data/pocket-id.db
               TRUST_PROXY: true
               TZ: Australia/Sydney
               UPLOAD_PATH: /data/uploads
+            envFrom:
+              - secretRef:
+                  name: pocket-id-secret
             probes:
               liveness: &probes
                 enabled: true
