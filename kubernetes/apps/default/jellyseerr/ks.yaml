@@ -17,6 +17,8 @@ spec:
       namespace: external-secrets
     - name: cloudnative-pg-cluster
       namespace: database
+    - name: volsync
+      namespace: volsync-system
   interval: 30m
   path: ./kubernetes/apps/default/jellyseerr/app
   postBuild:
