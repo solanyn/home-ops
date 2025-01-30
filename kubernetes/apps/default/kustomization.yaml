@@ -23,7 +23,6 @@ resources:
   - ./minio/ks.yaml
   - ./oauth2-proxy/ks.yaml
   - ./open-webui/ks.yaml
-  - ./pgadmin/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
   - ./prowlarr/ks.yaml
