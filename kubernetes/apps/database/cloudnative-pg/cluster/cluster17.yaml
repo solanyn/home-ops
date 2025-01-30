@@ -41,7 +41,7 @@ spec:
   externalClusters:
   - name: postgres16
     connectionParameters:
-      host: postgres16-rw.svc.cluster.local
+      host: postgres16-rw.database.svc.cluster.local
       user: postgres
       dbname: postgres
     password:
