@@ -99,10 +99,6 @@ spec:
                   identifier: app
                   port: http
     persistence:
-      config:
-        existingClaim: jellyseerr
-        globalMounts:
-          - path: /app/config
       config-cache:
         existingClaim: jellyseerr-cache
         globalMounts:
