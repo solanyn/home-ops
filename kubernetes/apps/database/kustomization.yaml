@@ -5,7 +5,8 @@ namespace: database
 resources:
   - ./cloudnative-pg/ks.yaml
   - ./emqx/ks.yaml
-  - ./moco/ks.yaml
+  # NOTE: can't configure cpu requests, so deploy when more nodes
+  # - ./moco/ks.yaml
 components:
   - ../../flux/components/alerts
   - ../../flux/components/namespace
