@@ -9,4 +9,3 @@ spec:
   address: https://github.com/solanyn/home-ops
   secretRef:
     name: github-token-secret
-
