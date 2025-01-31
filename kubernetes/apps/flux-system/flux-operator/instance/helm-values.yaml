@@ -11,10 +11,9 @@ instance:
     - notification-controller
   sync:
     kind: GitRepository
-    url: ssh://git@github.com/solanyn/home-ops
+    url: https://github.com/solanyn/home-ops
     ref: refs/heads/main
     path: kubernetes/flux/cluster
-    pullSecret: github-deploy-key
   commonMetadata:
     labels:
       app.kubernetes.io/name: flux
