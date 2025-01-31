@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &name homelab-runner
+  name: &name home-ops-runner
 spec:
   interval: 30m
   chart:
@@ -41,7 +41,7 @@ spec:
       name: actions-runner-controller-secret
       valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_PRIVATE_KEY
   values:
-    githubConfigUrl: https://github.com/solanyn/homelab
+    githubConfigUrl: https://github.com/solanyn/home-ops
     minRunners: 1
     maxRunners: 3
     containerMode:
