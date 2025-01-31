@@ -92,7 +92,6 @@ spec:
         supplementalGroups: [10000]
         seccompProfile: {type: RuntimeDefault}
       terminationGracePeriodSeconds: 300
-      hostNetwork: true
     service:
       app:
         controller: qbittorrent
