@@ -34,8 +34,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/home-assistant
-              tag: 2025.1.4@sha256:6389f9593b4acd80c74322f56c9229fae631e752a3bf49839be12442a153e0dc
+              repository: ghcr.io/solanyn/home-assistant
+              tag: 2025.1.4@sha256:ebb3631dcd18f9e2cef73030e07130cdf6d180b44c37fa388a149fa8cd5588cf
             env:
               TZ: Australia/Sydney
               HASS_HTTP_TRUSTED_PROXY_1: 10.42.0.0/16
