@@ -11,12 +11,10 @@ spec:
     - name: talos
       path: /var/run/secrets/talos.dev
       ignoreUpdates: true
-  concurrency: 1
-  exclusive: true
-  tolerations:
-    - key: node-role.kubernetes.io/control-plane
-      operator: Exists
-      effect: NoSchedule
+  nodeSelector:
+    matchExpressions:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
   prepare: &prepare
     image: ghcr.io/siderolabs/talosctl:${TALOS_VERSION}
     envs:

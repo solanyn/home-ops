@@ -34,4 +34,3 @@ spec:
       - --node=$(NODE)
       - --tag=$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --powercycle
-
