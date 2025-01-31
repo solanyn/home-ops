@@ -5,7 +5,7 @@ metadata:
   name: github
 spec:
   type: github
-  address: ssh://git@github.com/solanyn/homelab
+  address: ssh://git@github.com/solanyn/home-ops
   secretRef:
     name: github-token-secret
 ---
