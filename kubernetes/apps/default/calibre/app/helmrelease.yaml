@@ -32,7 +32,7 @@ spec:
           app:
             args: ["--trusted-ips=0.0.0.0/0"]
             env:
-              CALIBRE__LIBRARY: /config
+              CALIBRE__LIBRARY: /media/calibre
               CALIBRE__PORT: &port 80
               TZ: Australia/Sydney
             image:
