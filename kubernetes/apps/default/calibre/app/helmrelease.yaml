@@ -30,13 +30,14 @@ spec:
       calibre:
         containers:
           app:
-            args: ["--port=80", "--trusted-ips=0.0.0.0/0"]
+            args: ["--trusted-ips=0.0.0.0/0"]
             env:
-              HOME: /config
+              CALIBRE__LIBRARY: /config
+              CALIBRE__PORT: &port 80
               TZ: Australia/Sydney
             image:
-              repository: ghcr.io/vaskozl/calibre
-              tag: 7.22.0@sha256:8d843db0ba263563ae88fb2ed7ee64dc6090e0321bfba18fdc7b0c17fd137de1
+              repository: ghcr.io/solanyn/calibre
+              tag: 7.24.0@sha256:abe3da5d9c683cc2e6979734a562075941c8d8f700d68bd06905feab27559d90
             probes:
               liveness:
                 enabled: true
@@ -71,7 +72,7 @@ spec:
         controller: calibre
         ports:
           http:
-            port: 80
+            port: *port
     ingress:
       app:
         annotations:
