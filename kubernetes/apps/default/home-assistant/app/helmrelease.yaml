@@ -88,7 +88,6 @@ spec:
             port: 12321
           homekit:
             port: 21063
-            protocol: TCP
     ingress:
       app:
         className: internal
