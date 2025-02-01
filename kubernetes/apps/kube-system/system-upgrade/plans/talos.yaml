@@ -11,6 +11,11 @@ spec:
     - name: talos
       path: /var/run/secrets/talos.dev
       ignoreUpdates: true
+  nodeSelector:
+    matchExpressions:
+      - key: kubernetes.io/os
+        operator: In
+        values: ["linux"]
   concurrency: 1
   exclusive: true
   tolerations:
