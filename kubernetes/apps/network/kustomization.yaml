@@ -5,6 +5,8 @@ namespace: network
 resources:
   - ./external/ks.yaml
   - ./internal/ks.yaml
+  # NOTE: Try multus for IoT VLAN bridging when managed switch, allows hass on VLAN to mDNS cast and as host network
+  # - ./multus/ks.yaml
 components:
   - ../../flux/components/alerts
   - ../../flux/components/namespace
