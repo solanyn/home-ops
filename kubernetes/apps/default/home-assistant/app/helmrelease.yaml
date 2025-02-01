@@ -88,6 +88,10 @@ spec:
             port: 12321
           homekit:
             port: 21063
+            protocol: TCP
+          homekit-udp:
+            port: 5353
+            protocol: UDP
     ingress:
       app:
         className: internal
