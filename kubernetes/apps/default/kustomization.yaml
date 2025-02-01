@@ -36,7 +36,6 @@ resources:
   - ./seasonpackarr/ks.yaml
   - ./tautulli/ks.yaml
   - ./thelounge/ks.yaml
-  - ./wizarr/ks.yaml
   # - ./zigbee/ks.yaml
   - ./zwave/ks.yaml
 components:
