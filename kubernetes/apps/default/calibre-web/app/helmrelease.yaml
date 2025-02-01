@@ -27,17 +27,11 @@ spec:
   values:
     controllers:
       calibre-web:
-        initContainers:
-          init:
-            image:
-              repository: quay.io/curl/curl
-              tag: latest
-            args: ["-Lo", "/media/calibre/metadata.db", "--skip-existing", "--silent", "--no-clobber", "https://github.com/kovidgoyal/calibre/raw/refs/heads/master/src/calibre/db/tests/metadata.db"]
         containers:
           app:
             image:
-              repository: ghcr.io/vaskozl/calibre-web
-              tag: 0.6.24@sha256:f24dc3a4da943ba50e95ef98e6a162bbca3d8d812e16a06f03c02a9678c89819
+              repository: ghcr.io/solanyn/calibre-web
+              tag: 0.6.24@sha256:8eca2b40302b7f76482fb8db8e6723f13ed48f7d4ac9a3f978c7cb47dd4793e8
             env:
               CACHE_DIR: /cache
               CALIBRE_DBPATH: /media/calibre
@@ -67,7 +61,7 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-        # fsGroupChangePolicy: OnRootMismatch
+        fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
     service:
       app:
