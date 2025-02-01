@@ -33,6 +33,7 @@ spec:
             args: ["--trusted-ips=0.0.0.0/0"]
             env:
               CALIBRE__LIBRARY: /media/calibre
+              CALIBRE_OVERRIDE_DATABASE_PATH: /config
               CALIBRE__PORT: &port 80
               TZ: Australia/Sydney
             image:
@@ -53,7 +54,6 @@ spec:
               readOnlyRootFilesystem: true
               capabilities:
                 drop: ["ALL"]
-                add: ["seccomp:unconfined"]
             resources:
               requests:
                 cpu: 10m
