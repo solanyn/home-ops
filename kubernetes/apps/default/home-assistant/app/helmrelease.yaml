@@ -86,6 +86,9 @@ spec:
             port: 8123
           code-server:
             port: 12321
+          homekit:
+            port: 21063
+            protocol: TCP
     ingress:
       app:
         className: internal
