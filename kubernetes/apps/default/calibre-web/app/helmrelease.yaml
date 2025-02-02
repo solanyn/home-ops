@@ -34,7 +34,7 @@ spec:
               tag: 0.6.24@sha256:8eca2b40302b7f76482fb8db8e6723f13ed48f7d4ac9a3f978c7cb47dd4793e8
             env:
               CACHE_DIR: /cache
-              CALIBRE_DBPATH: /media/calibre
+              CALIBRE_DBPATH: /calibre
             probes:
               liveness:
                 enabled: true
@@ -48,7 +48,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"], add: ["NET_BIND_SERVICE"]}
+              capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
@@ -88,6 +88,8 @@ spec:
       tmp:
         type: emptyDir
       calibre:
+        existingClaim: calibre
+      library:
         type: nfs
         server: nas.internal
         path: /mnt/world/media
