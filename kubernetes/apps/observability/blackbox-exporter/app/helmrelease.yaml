@@ -25,8 +25,6 @@ spec:
     fullnameOverride: blackbox-exporter
     ingress:
       enabled: true
-      annotations:
-        external-dns.alpha.kubernetes.io/target: internal.goyangi.cloud
       className: internal
       hosts:
         - host: blackbox-exporter.goyangi.cloud
