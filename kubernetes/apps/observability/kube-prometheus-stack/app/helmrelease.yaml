@@ -37,7 +37,6 @@ spec:
       ingress:
         enabled: true
         annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.goyangi.cloud"
           nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.goyangi.cloud/oauth2/auth
           nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.goyangi.cloud/oauth2/start?rd=$scheme://$best_http_host$request_uri
         ingressClassName: internal
@@ -72,8 +71,6 @@ spec:
     prometheus:
       ingress:
         enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "internal.goyangi.cloud"
         ingressClassName: internal
         hosts: ["prometheus.goyangi.cloud"]
         pathType: Prefix

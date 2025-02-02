@@ -71,8 +71,6 @@ spec:
             port: 8083
     ingress:
       app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: internal.goyangi.cloud
         className: internal
         hosts:
           - host: "{{ .Release.Name }}.goyangi.cloud"
