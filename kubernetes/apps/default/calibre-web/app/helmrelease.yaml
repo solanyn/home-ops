@@ -34,7 +34,7 @@ spec:
               tag: 0.6.24@sha256:a3f27a2b81ccc92da3196dffb3f03b46041ad3321e625022355bbdf608da7217
             env:
               CACHE_DIR: /cache
-              CALIBRE_DBPATH: /calibre
+              CALIBRE_DBPATH: /media/calibre
             probes:
               liveness:
                 enabled: true
@@ -87,8 +87,6 @@ spec:
         existingClaim: calibre-web
       tmp:
         type: emptyDir
-      calibre:
-        existingClaim: calibre
       library:
         type: nfs
         server: nas.internal
