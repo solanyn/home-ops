@@ -12,12 +12,12 @@ tasks:
       - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name main {{.CLUSTER_DIR}}
     vars:
       TALOS_CONTROLLER:
-        sh: talosctl --talosconfig {{.CLUSTER_DIR}}/talosconfig config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
+      - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name main {{.KUBERNETES_DIR}}
       TALOS_NODES:
-        sh: ls {{.BOOTSTRAP_DIR}}/talos/*.j2
+        sh: ls {{.KUBERNETES_DIR}}/bootstrap/talos/*.j2
     preconditions:
       - talosctl config info
-      - test -f {{.CLUSTER_DIR}}/talosconfig
+      - test -f {{.KUBERNETES_DIR}}/talosconfig
       - which jq minijinja-cli sops talosctl
   cnpg:
     desc: Increments cloudnative-pg cluster version
@@ -44,11 +44,11 @@ tasks:
       IMPORTANT: All nodes will be used for OSDs and ROOK_DISK must be set to a value that matches the disk model on all nodes (e.g. Micron_7450)
     prompt: Bootstrap apps into the Talos cluster?
     cmds:
-      # - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
-      - op run --env-file {{.BOOTSTRAP_DIR}}/apps/.secrets.env --no-masking -- minijinja-cli {{.BOOTSTRAP_DIR}}/apps/templates/resources.yaml.j2 | kubectl apply --server-side --filename -
+      - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
+      - op run --env-file {{.KUBERNETES_DIR}}/bootstrap/apps/.secrets.env --no-masking -- minijinja-cli {{.KUBERNETES_DIR}}/bootstrap/apps/templates/resources.yaml.j2 | kubectl apply --server-side --filename -
       # NOTE: can break if pod starts before coredns is up
-      - helmfile --quiet --file {{.BOOTSTRAP_DIR}}/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
-      - helmfile --quiet --file {{.BOOTSTRAP_DIR}}/apps/helmfile.yaml destroy --selector name=wipe-rook
+      - helmfile --quiet --file {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
+      - helmfile --quiet --file {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml destroy --selector name=wipe-rook
     env:
       FLUX_GITHUB_PUBLIC_KEYS:
         sh: curl -fsSL https://api.github.com/meta | jq --raw-output '"github.com "+.ssh_keys[]'
@@ -61,8 +61,8 @@ tasks:
     preconditions:
       - op user get --me
       - talosctl config info
-      - test -f {{.CLUSTER_DIR}}/talosconfig
-      - test -f {{.BOOTSTRAP_DIR}}/apps/helmfile.yaml
-      - test -f {{.BOOTSTRAP_DIR}}/apps/templates/resources.yaml.j2
-      - test -f {{.BOOTSTRAP_DIR}}/apps/templates/wipe-rook.yaml.gotmpl
+      - test -f {{.KUBERNETES_DIR}}/talosconfig
+      - test -f {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml
+      - test -f {{.KUBERNETES_DIR}}/bootstrap/apps/templates/resources.yaml.j2
+      - test -f {{.KUBERNETES_DIR}}/bootstrap/apps/templates/wipe-rook.yaml.gotmpl
       - which curl jq helmfile kubectl op talosctl
