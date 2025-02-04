@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: docker.io/stonith404/pocket-id
-              tag: v0.28.0@sha256:d09898b1b3404b199115b7ddb9fa302d049e4e0624767f123d604305c7364ef7
+              tag: v0.28.1@sha256:6994ac6e4cc15bda19fa90c5d84f3788071a66cb382d008ed1ce1d6c8005e241
             command: ["/bin/sh", "/app/scripts/docker/entrypoint.sh"]
             env:
               DB_PROVIDER: postgres
