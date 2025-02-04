@@ -96,8 +96,6 @@ spec:
         serviceName: kopia
         endpoints:
           - port: metrics
-            scheme: http
-            path: /metrics
             interval: 1m
             scrapeTimeout: 10s
     ingress:
