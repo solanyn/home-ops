@@ -3,7 +3,7 @@
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
-  name: dragonfly
+  name: dragonfly-cluster
 spec:
   image: ghcr.io/dragonflydb/dragonfly:v1.26.2
   replicas: 1
