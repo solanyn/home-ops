@@ -1,7 +1,7 @@
 apiVersion: moco.cybozu.com/v1beta2
 kind: MySQLCluster
 metadata:
-  name: moco-v0
+  name: mysql
   namespace: database
 spec:
   replicas: 1
