@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 tasks:
@@ -46,6 +47,10 @@ tasks:
     cmds:
       - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
       - op run --env-file {{.KUBERNETES_DIR}}/bootstrap/apps/.secrets.env --no-masking -- minijinja-cli {{.KUBERNETES_DIR}}/bootstrap/apps/templates/resources.yaml.j2 | kubectl apply --server-side --filename -
+      - kubectl create namespace flux-system --dry-run=client -o yaml | kubectl apply --server-side --filename -
+      - sops exec-file {{.KUBERNETES_DIR}}/flux/components/sops/secret.sops.yaml "kubectl --namespace flux-system apply --server-side --filename {}"
+      - sops exec-file {{.KUBERNETES_DIR}}/flux/components/substitutions/cluster-secrets.sops.yaml "kubectl --namespace flux-system apply --server-side --filename {}"
+      - kubectl --namespace flux-system apply --server-side --filename {{.KUBERNETES_DIR}}/flux/components/substitutions/cluster-settings.yaml
       # NOTE: can break if pod starts before coredns is up
       - helmfile --quiet --file {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
       - helmfile --quiet --file {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml destroy --selector name=wipe-rook
