@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: main@sha256:f3d3d5c1358f1cd511e59ac951be032e4ef8f853f37cb7af33a800b976be6dc2
+              tag: main@sha256:fbe4e8219e0598d05a6c67340b573a9bbb7d6de493baecc5d8d1f2d75b43f206
             env:
               DATA_DIR: /config
               ENABLE_SIGNUP: "false"
