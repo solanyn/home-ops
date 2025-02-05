@@ -1,0 +1,45 @@
+---
+apiVersion: mysql.oracle.com/v2
+kind: InnoDBCluster
+metadata:
+  name: mysql
+spec:
+  secretName: mysql-secret
+  tlsUseSelfSigned: true
+  instances: 1
+  router:
+    instances: 1
+  datadirVolumeClaimTemplate:
+    storageClassName: openebs-hostpath
+    accessModes: [ "ReadWriteOnce" ]
+    resources:
+      requests:
+        storage: 10Gi
+  podSpec:
+    containers:
+    - name: mysql
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          memory: 1Gi
+  backupProfiles:
+    - name: mysql-daily-backup
+      dumpInstance:
+        storage:
+          s3:
+            bucketName: mysql
+            config: mysql-secret
+            endpoint: http://minio.default.svc.cluster.local:9000
+  backupSchedules:
+    - name: daily
+      schedule: "0 0 * * *"
+      backupProfileName: mysql-backup
+      enabled: true
+  router:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 128Mi
+

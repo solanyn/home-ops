@@ -23,6 +23,7 @@ resources:
   - ./kafka.yaml
   - ./metrics-server.yaml
   - ./moco.yaml
+  - ./mysql.yaml
   - ./node-feature-discovery.yaml
   - ./openebs.yaml
   - ./piraeus.yaml
