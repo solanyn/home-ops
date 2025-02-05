@@ -39,11 +39,11 @@ spec:
           requests:
             cpu: 10m
             memory: 300Mi
-      - name: copy-moco-init
+      - name: mysqld-exporter
         resources:
           requests:
             cpu: 10m
-            memory: 300Mi
+            memory: 100Mi
   volumeClaimTemplates:
   - metadata:
       name: mysql-data
