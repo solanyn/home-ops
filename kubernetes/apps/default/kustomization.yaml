@@ -41,5 +41,6 @@ resources:
   - ./seasonpackarr/ks.yaml
   - ./tautulli/ks.yaml
   - ./thelounge/ks.yaml
+  - ./your-spotify/ks.yaml
   # - ./zigbee/ks.yaml
   - ./zwave/ks.yaml
