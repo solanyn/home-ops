@@ -18,7 +18,7 @@ spec:
     - name: volsync
       namespace: volsync-system
   interval: 30m
-  path: ./kubernetes/main/apps/media/your-spotify/app
+  path: ./kubernetes/apps/default/your-spotify/app
   postBuild:
     substitute:
       APP: *app
