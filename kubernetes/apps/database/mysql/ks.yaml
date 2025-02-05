@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app moco
+  name: &app mysql
   namespace: &namespace database
 spec:
   commonMetadata:
@@ -13,7 +13,7 @@ spec:
     - name: onepassword-store
       namespace: external-secrets
   interval: 30m
-  path: ./kubernetes/apps/database/moco/app
+  path: ./kubernetes/apps/database/mysql/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -27,7 +27,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app moco-cluster
+  name: &app mysql-cluster
   namespace: &namespace database
 spec:
   commonMetadata:
@@ -36,7 +36,7 @@ spec:
   dependsOn:
     - name: moco
   interval: 30m
-  path: ./kubernetes/apps/database/moco/cluster
+  path: ./kubernetes/apps/database/mysql/cluster
   prune: true
   sourceRef:
     kind: GitRepository
