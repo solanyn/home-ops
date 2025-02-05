@@ -7,8 +7,6 @@ spec:
   secretName: mysql-secret
   tlsUseSelfSigned: true
   instances: 1
-  router:
-    instances: 1
   datadirVolumeClaimTemplate:
     storageClassName: openebs-hostpath
     accessModes: [ "ReadWriteOnce" ]
