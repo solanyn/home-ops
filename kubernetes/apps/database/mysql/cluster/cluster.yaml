@@ -27,7 +27,7 @@ spec:
   backupProfiles:
     - name: mysql-daily-backup
       dumpInstance:
-        storage:
+        storage: &storage
           s3:
             bucketName: mysql
             config: mysql-secret
@@ -37,9 +37,14 @@ spec:
       schedule: "0 0 * * *"
       backupProfileName: mysql-backup
       enabled: true
+  mycnf: |
+    [mysqld]
+    max_connections=400
   router:
     resources:
       requests:
         cpu: 10m
         memory: 128Mi
-
+  initDB:
+    dump:
+      storage: *storage
