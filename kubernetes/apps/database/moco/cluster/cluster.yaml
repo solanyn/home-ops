@@ -32,6 +32,27 @@ spec:
       resources:
         requests:
           storage: 10Gi
+  overwriteContainer:
+    - name: agent
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+    - name: slow-log
+      resources:
+        requests:
+          cpu: 10m
+          memory: 20Mi
+    - name: moco-init
+      resources:
+        requests:
+          cpu: 10m
+          memory: 300Mi
+    - name: copy-moco-init
+      resources:
+        requests:
+          cpu: 10m
+          memory: 300Mi
   # restore:
   #   sourceName: moco-v0
   #   sourceNamespace: database
