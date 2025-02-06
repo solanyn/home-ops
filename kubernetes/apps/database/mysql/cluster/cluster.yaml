@@ -39,10 +39,12 @@ spec:
     [mysqld]
     max_connections=400
   router:
-    resources:
-      requests:
-        cpu: 10m
-        memory: 128Mi
+    instances: 1
+    podSpec:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
   initDB:
     dump:
       storage: *storage
