@@ -46,6 +46,6 @@ spec:
         requests:
           cpu: 10m
           memory: 128Mi
-  initDB:
-    dump:
-      storage: *storage
+  # initDB:
+  #   dump:
+  #     storage: *storage
