@@ -5,7 +5,7 @@ kind: Dragonfly
 metadata:
   name: dragonfly-cluster
 spec:
-  image: ghcr.io/dragonflydb/dragonfly:v1.26.2
+  image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.26.2@sha256:751e999697d63664ae2829e24d42473d4edfafd32ad5f34697e5e5f90c44a48b
   replicas: 1
   env:
     - name: MAX_MEMORY
@@ -18,13 +18,17 @@ spec:
     - --proactor_threads=2
     - --cluster_mode=emulated
     - --lock_on_hashtags
-    - --default_lua_flags=allow-undeclared-keys
   resources:
     requests:
       cpu: 10m
       memory: 128Mi
     limits:
       memory: 512Mi
+  serviceSpec:
+    type: LoadBalancer
+    annotations:
+      lbipam.cilium.io/ips: 192.168.1.123
+      external-dns.alpha.kubernetes.io/hostname: redis.goyangi.cloud
   topologySpreadConstraints:
     - maxSkew: 1
       topologyKey: "kubernetes.io/hostname"
