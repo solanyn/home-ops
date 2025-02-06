@@ -27,6 +27,7 @@ spec:
       dumpInstance:
         storage: &storage
           s3:
+            prefix: /
             bucketName: mysql
             config: mysql-secret
             endpoint: http://minio.default.svc.cluster.local:9000
