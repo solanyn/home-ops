@@ -34,7 +34,7 @@ spec:
   backupSchedules:
     - name: daily
       schedule: "0 0 * * *"
-      backupProfileName: mysql-backup
+      backupProfileName: mysql-daily-backup
       enabled: true
   mycnf: |
     [mysqld]
@@ -46,6 +46,6 @@ spec:
         requests:
           cpu: 10m
           memory: 128Mi
-  # initDB:
-  #   dump:
-  #     storage: *storage
+  initDB:
+    dump:
+      storage: *storage
