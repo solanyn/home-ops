@@ -15,6 +15,19 @@ stringData:
 apiVersion: v1
 kind: Namespace
 metadata:
+  name: flux-system
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sops-age
+  namespace: flux-system
+stringData:
+  age.agekey: {{ ENV.FLUX_SOPS_PRIVATE_KEY | indent(4) }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
   name: network
 ---
 apiVersion: v1

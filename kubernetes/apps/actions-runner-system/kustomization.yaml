@@ -5,7 +5,6 @@ kind: Kustomization
 namespace: actions-runner-system
 components:
   - ../../flux/components/common
-  - ../../flux/components/substitutions
 resources:
   - ./actions-runner-controller/ks.yaml
 

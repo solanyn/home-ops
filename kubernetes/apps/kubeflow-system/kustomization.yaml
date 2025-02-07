@@ -5,5 +5,4 @@ kind: Kustomization
 namespace: kubeflow-system
 components:
   - ../../flux/components/common
-  - ../../flux/components/substitutions
 resources: []
