@@ -5,7 +5,6 @@ kind: Kustomization
 namespace: cert-manager
 components:
   - ../../flux/components/common
-  - ../../flux/components/substitutions
 resources:
   - ./cert-manager/ks.yaml
 

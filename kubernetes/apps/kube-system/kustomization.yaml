@@ -5,7 +5,6 @@ kind: Kustomization
 namespace: kube-system
 components:
   - ../../flux/components/common
-  - ../../flux/components/substitutions
 resources:
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
@@ -15,3 +14,4 @@ resources:
   - ./reloader/ks.yaml
   - ./spegel/ks.yaml
   - ./system-upgrade/ks.yaml
+
