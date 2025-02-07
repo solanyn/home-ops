@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/calibre-web
-              tag: 0.6.24@sha256:a3f27a2b81ccc92da3196dffb3f03b46041ad3321e625022355bbdf608da7217
+              tag: 0.6.24@sha256:29f90b8701300c3a9c9693075344cdafa6b1780a4bfa870d598f65089d73e94a
             env:
               CACHE_DIR: /cache
               CALIBRE_DBPATH: /media/calibre
