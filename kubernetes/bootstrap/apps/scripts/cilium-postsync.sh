@@ -6,6 +6,7 @@ wait_for_crds() {
         "ciliumbgppeeringpolicies.cilium.io"
         "ciliumloadbalancerippools.cilium.io"
     )
+
     for crd in "${crds[@]}"; do
         until kubectl get crd "$crd" &>/dev/null; do
             sleep 5
