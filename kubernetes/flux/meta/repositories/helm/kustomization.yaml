@@ -22,10 +22,9 @@ resources:
   - ./jetstack.yaml
   - ./kafka.yaml
   - ./metrics-server.yaml
-  - ./moco.yaml
-  - ./mysql.yaml
   - ./node-feature-discovery.yaml
   - ./openebs.yaml
+  - ./percona.yaml
   - ./piraeus.yaml
   - ./prometheus-community.yaml
   - ./rook-ceph.yaml
