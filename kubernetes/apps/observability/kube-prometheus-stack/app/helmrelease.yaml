@@ -38,14 +38,14 @@ spec:
       ingress:
         enabled: true
         ingressClassName: internal
-        hosts: ["alertmanager.devbu.io"]
+        hosts: ["alertmanager.goyangi.cloud"]
         pathType: Prefix
       alertmanagerSpec:
         alertmanagerConfiguration:
           name: alertmanager
           global:
             resolveTimeout: 5m
-        externalUrl: https://alertmanager.devbu.io
+        externalUrl: https://alertmanager.goyangi.cloud
         storage:
           volumeClaimTemplate:
             spec:
@@ -73,7 +73,7 @@ spec:
       ingress:
         enabled: true
         ingressClassName: internal
-        hosts: ["prometheus.devbu.io"]
+        hosts: ["prometheus.goyangi.cloud"]
         pathType: Prefix
       prometheusSpec:
         podMonitorSelectorNilUsesHelmValues: false
