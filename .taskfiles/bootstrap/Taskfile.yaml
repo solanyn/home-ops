@@ -1,24 +1,53 @@
+---
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
+
 tasks:
+
   talos:
     desc: Bootstrap Talos
     cmds:
-      - for: {var: TALOS_NODES}
+      - for: { var: TALOS_NODES }
         cmd: >
           sops exec-file --input-type yaml --output-type yaml {{.ITEM}} "minijinja-cli {}"
           | talosctl --nodes {{base .ITEM | replace ".sops.yaml.j2" ""}} apply-config --insecure --file /dev/stdin
       - until talosctl --nodes {{.TALOS_CONTROLLER}} bootstrap; do sleep 5; done
-      - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name main {{.CLUSTER_DIR}}
+      - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name main {{.KUBERNETES_DIR}}
     vars:
       TALOS_CONTROLLER:
-      - talosctl kubeconfig --nodes {{.TALOS_CONTROLLER}} --force --force-context-name main {{.KUBERNETES_DIR}}
+        sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
       TALOS_NODES:
         sh: ls {{.KUBERNETES_DIR}}/bootstrap/talos/*.j2
     preconditions:
       - talosctl config info
       - test -f {{.KUBERNETES_DIR}}/talosconfig
       - which jq minijinja-cli sops talosctl
+
+  apps:
+    desc: Bootstrap Apps [ROOK_DISK=required]
+    summary: |
+      IMPORTANT: All nodes will be used for OSDs and ROOK_DISK must be set to a value that matches the disk model on all nodes (e.g. Micron_7450)
+    prompt: Bootstrap apps into the Talos cluster?
+    cmds:
+      # - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
+      - op run --env-file {{.KUBERNETES_DIR}}/bootstrap/apps/.secrets.env --no-masking -- minijinja-cli {{.KUBERNETES_DIR}}/bootstrap/apps/templates/resources.yaml.j2 | kubectl apply --server-side --filename -
+      - helmfile --quiet --file {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
+      - helmfile --quiet --file {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml destroy --selector name=wipe-rook
+    env:
+      NODE_COUNT:
+        sh: talosctl config info --output json | jq --raw-output '.nodes | length'
+      ROOK_DISK: '{{.ROOK_DISK}}'
+    requires:
+      vars: [ROOK_DISK]
+    preconditions:
+      - op user get --me
+      - talosctl config info
+      - test -f {{.KUBERNETES_DIR}}/talosconfig
+      - test -f {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml
+      - test -f {{.KUBERNETES_DIR}}/bootstrap/apps/templates/resources.yaml.j2
+      - test -f {{.KUBERNETES_DIR}}/bootstrap/apps/templates/wipe-rook.yaml.gotmpl
+      - which curl jq helmfile kubectl op talosctl
+
   cnpg:
     desc: Increments cloudnative-pg cluster version
     prompt: Increment cloudnative-pg cluster version, commit and push?
@@ -38,31 +67,3 @@ tasks:
     preconditions:
       - test -f {{.CLUSTER_DIR}}/apps/database/cloudnative-pg/cluster/cluster16.yaml
       - which yq git
-  apps:
-    desc: Bootstrap Apps [ROOK_DISK=required]
-    summary: |
-      IMPORTANT: All nodes will be used for OSDs and ROOK_DISK must be set to a value that matches the disk model on all nodes (e.g. Micron_7450)
-    prompt: Bootstrap apps into the Talos cluster?
-    cmds:
-      - until kubectl wait nodes --for=condition=Ready=False --all --timeout=10m; do sleep 5; done
-      - op run --env-file {{.KUBERNETES_DIR}}/bootstrap/apps/.secrets.env --no-masking -- minijinja-cli {{.KUBERNETES_DIR}}/bootstrap/apps/templates/resources.yaml.j2 | kubectl apply --server-side --filename -
-      # NOTE: can break if pod starts before coredns is up
-      - helmfile --quiet --file {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
-      - helmfile --quiet --file {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml destroy --selector name=wipe-rook
-    env:
-      FLUX_GITHUB_PUBLIC_KEYS:
-        sh: curl -fsSL https://api.github.com/meta | jq --raw-output '"github.com "+.ssh_keys[]'
-      NODE_COUNT:
-        sh: talosctl config info --output json | jq --raw-output '.nodes | length'
-      ROOK_DISK: '{{.ROOK_DISK}}'
-      VAULT: kubernetes
-    requires:
-      vars: [ROOK_DISK]
-    preconditions:
-      - op user get --me
-      - talosctl config info
-      - test -f {{.KUBERNETES_DIR}}/talosconfig
-      - test -f {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml
-      - test -f {{.KUBERNETES_DIR}}/bootstrap/apps/templates/resources.yaml.j2
-      - test -f {{.KUBERNETES_DIR}}/bootstrap/apps/templates/wipe-rook.yaml.gotmpl
-      - which curl jq helmfile kubectl op talosctl
