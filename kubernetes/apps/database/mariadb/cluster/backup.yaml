@@ -13,7 +13,7 @@ spec:
   storage:
     s3:
       bucket: mariadb
-      endpoint: http://minio.default.svc.cluster.local:9000
+      endpoint: minio.default.svc.cluster.local:9000
       region: us-east-1
       accessKeyIdSecretKeyRef:
         name: mariadb-secret
