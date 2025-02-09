@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/tautulli
-              tag: 2.15.1@sha256:48a4898f69dbb23443492005790117954e9a08730e76dadb43c9b376767743fb
+              tag: 2.15.1@sha256:f2245be43966b7b28ec33f9c75b049ec73c7f88a11e7d16f8d2c8d2f7c1f4fb4
             env:
               TZ: Australia/Sydney
               TAUTULLI__PORT: &port 80
