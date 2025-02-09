@@ -1,0 +1,31 @@
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: MaxScale
+metadata:
+  name: mariadb
+spec:
+  replicas: 1
+  mariaDbRef:
+    name: mariadb-cluster
+  admin:
+    port: 80
+    guiEnabled: true
+  auth:
+    adminUsername: mariadb
+    adminPasswordSecretKeyRef:
+      name: mariadb-secret
+      key: MARIADB_ROOT_PASSWORD
+    deleteDefaultAdmin: true
+  kubernetesService:
+    type: LoadBalancer
+    metadata:
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: maraidb.goyangi.cloud
+        lbipam.cilium.io/ips: 192.168.1.131
+  guiKubernetesService:
+    type: LoadBalancer
+    metadata:
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: mariadb-gui.goyangi.cloud
+        lbipam.cilium.io/ips: 192.168.1.132
+  metrics:
+    enabled: true
