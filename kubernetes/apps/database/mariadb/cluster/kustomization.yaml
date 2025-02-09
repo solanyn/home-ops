@@ -7,3 +7,4 @@ resources:
   - ./backup.yaml
   - ./cluster.yaml
   - ./gatus.yaml
+  - ./maxscale.yaml

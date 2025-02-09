@@ -17,20 +17,8 @@ spec:
     enabled: false
     config:
       reuseStorageVolume: true
-  maxScale:
-    enabled: true
-    auth:
-      adminUsername: mariadb
-      adminPasswordSecretKeyRef:
-        name: mariadb-secret
-        key: MARIADB_ROOT_PASSWORD
-      deleteDefaultAdmin: true
-    kubernetesService:
-      type: LoadBalancer
-      metadata:
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: maraidb.goyangi.cloud
-          lbipam.cilium.io/ips: 192.168.1.131
+  maxScaleRef:
+    name: maxscale
   myCnf: |
     [mariadb]
     bind-address=*
