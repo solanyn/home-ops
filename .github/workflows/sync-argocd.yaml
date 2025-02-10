@@ -22,7 +22,7 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
 
       - name: Setup Workflow Tools
-        run: brew install kubectl argocd
+        run: brew install kubectl argocd jq
 
       - name: Run sync script
         run: |
@@ -31,5 +31,7 @@ jobs:
           chmod +x ./sync_argocd_apps.sh
 
           # run the script
+          export ARGOCD_NAMESPACE=kubeflow-system
+          export ARGOCD_PRUNE_MODE=always
           bash ./sync_argocd_apps.sh
 
