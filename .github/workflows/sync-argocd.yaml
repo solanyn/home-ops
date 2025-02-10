@@ -8,7 +8,7 @@ on:
     - cron: "0 * * * *" # Every hour
   push:
     branches: ["main"]
-    paths: ["kubernetes/apps/kubeflow-system/deploykf"]
+    paths: ["kubernetes/apps/kubeflow-system/deploykf", ".github/workflows/sync-argocd.yaml"]
 
 env:
   HOMEBREW_NO_ANALYTICS: "1"
@@ -22,7 +22,7 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
 
       - name: Setup Workflow Tools
-        run: brew install kubectl argocd
+        run: brew install kubectl argocd jq
 
       - name: Run sync script
         run: |
@@ -31,5 +31,7 @@ jobs:
           chmod +x ./sync_argocd_apps.sh
 
           # run the script
+          export ARGOCD_NAMESPACE=kubeflow-system
+          export ARGOCD_PRUNE_MODE=always
           bash ./sync_argocd_apps.sh
 
