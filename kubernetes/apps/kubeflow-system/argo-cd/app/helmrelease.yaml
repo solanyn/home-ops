@@ -258,7 +258,7 @@ spec:
         ## INIT_CONTAINER: copy `kubectl` binary to volume
         ##
         - name: deploykf-plugin-setup--kubectl
-          image: docker.io/bitnami/kubectl:1.26.10
+          image: docker.io/bitnami/kubectl:1.26.15
           command:
             - "/bin/sh"
             - "-c"
