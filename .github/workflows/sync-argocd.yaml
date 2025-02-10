@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: "Sync ArgoCD"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *" # Every hour
+  push:
+    branches: ["main"]
+    paths: ["kubernetes/apps/kubeflow-system/deploykf"]
+
+env:
+  HOMEBREW_NO_ANALYTICS: "1"
+
+jobs:
+  sync-argocd:
+    name: Sync ArgoCD
+    runs-on: ["home-ops-runner"]
+    steps:
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Workflow Tools
+        run: brew install kubectl
+
+      - name: Run sync script
+        run: |
+          curl -fL -o "sync_argocd_apps.sh" \
+            "https://raw.githubusercontent.com/deployKF/deployKF/main/scripts/sync_argocd_apps.sh"
+          chmod +x ./sync_argocd_apps.sh
+
+          # run the script
+          bash ./sync_argocd_apps.sh
+
