@@ -2,9 +2,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: kubeflow-system
-components:
-  - ../../flux/components/common
 resources:
-  - ./argo-cd/ks.yaml
-  - ./deploykf/ks.yaml
+  - ./application.yaml
+  - ./externalsecret.yaml
+  - ./database.yaml
+  - ./grant.yaml
+  - ./user.yaml

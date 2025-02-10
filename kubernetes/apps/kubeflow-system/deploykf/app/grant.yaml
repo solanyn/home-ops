@@ -1,0 +1,72 @@
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Grant
+metadata:
+  name: kubeflow-katib
+spec:
+  mariaDbRef:
+    name: mariadb-cluster
+  privileges:
+    - "ALL PRIVILEGES"
+  database: "katib"
+  table: "*"
+  username: kubeflow
+  grantOption: true
+  host: "%"
+  cleanupPolicy: Delete
+  requeueInterval: 30s
+  retryInterval: 5s
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Grant
+metadata:
+  name: kubeflow-kfp_cache
+spec:
+  mariaDbRef:
+    name: mariadb-cluster
+  privileges:
+    - "ALL PRIVILEGES"
+  database: "kfp_cache"
+  table: "*"
+  username: kubeflow
+  grantOption: true
+  host: "%"
+  cleanupPolicy: Delete
+  requeueInterval: 30s
+  retryInterval: 5s
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Grant
+metadata:
+  name: kubeflow-kfp_metadata
+spec:
+  mariaDbRef:
+    name: mariadb-cluster
+  privileges:
+    - "ALL PRIVILEGES"
+  database: "kfp_metadata"
+  table: "*"
+  username: kubeflow
+  grantOption: true
+  host: "%"
+  cleanupPolicy: Delete
+  requeueInterval: 30s
+  retryInterval: 5s
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Grant
+metadata:
+  name: kubeflow-kfp_pipelines
+spec:
+  mariaDbRef:
+    name: mariadb-cluster
+  privileges:
+    - "ALL PRIVILEGES"
+  database: "kfp_pipelines"
+  table: "*"
+  username: kubeflow
+  grantOption: true
+  host: "%"
+  cleanupPolicy: Delete
+  requeueInterval: 30s
+  retryInterval: 5s
