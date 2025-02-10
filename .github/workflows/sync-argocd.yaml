@@ -8,7 +8,7 @@ on:
     - cron: "0 * * * *" # Every hour
   push:
     branches: ["main"]
-    paths: ["kubernetes/apps/kubeflow-system/deploykf"]
+    paths: ["kubernetes/apps/kubeflow-system/deploykf", ".github/workflows/sync-argocd.yaml"]
 
 env:
   HOMEBREW_NO_ANALYTICS: "1"
