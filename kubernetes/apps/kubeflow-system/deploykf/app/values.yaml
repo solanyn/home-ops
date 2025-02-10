@@ -47,6 +47,44 @@ deploykf_core:
       ports:
         http: 80
         https: 443
+      tls:
+        matchSNI: false
+    gatewayService:
+      name: deploykf-gateway
+      type: ClusterIP
+    extraManifests:
+      - |
+        apiVersion: networking.k8s.io/v1
+        kind: Ingress
+        metadata:
+          name: deploykf
+          annotations:
+            ## this annoataion must be set to the name of the Service
+            ## it tells Nginx to talk to the Service over HTTPS
+            nginx.org/ssl-services: "deploykf-gateway"
+        spec:
+          ingressClassName: internal
+          rules:
+            - host: "kubeflow.goyangi.cloud"
+              http:
+                paths:
+                  - path: "/"
+                    pathType: Prefix
+                    backend:
+                      service:
+                        name: "deploykf-gateway"
+                        port:
+                          name: https
+            - host: "*.kubeflow.goyangi.cloud"
+              http:
+                paths:
+                  - path: "/"
+                    pathType: Prefix
+                    backend:
+                      service:
+                        name: "deploykf-gateway"
+                        port:
+                          name: https
   deploykf_profiles_generator:
     namespace: kubeflow-system
 deploykf_opt:
