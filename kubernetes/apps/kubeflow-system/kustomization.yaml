@@ -5,4 +5,6 @@ kind: Kustomization
 namespace: kubeflow-system
 components:
   - ../../flux/components/common
-resources: []
+resources:
+  - ./argo-cd/ks.yaml
+  - ./deploykf/ks.yaml

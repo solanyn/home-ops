@@ -1,0 +1,107 @@
+argocd:
+  namespace: kubeflow-system
+  project: kubeflow
+deploykf_dependencies:
+  cert_manager:
+    enabled: false
+    clusterIssuer:
+      issuerName: letsencrypt-production
+  istio:
+    namespace: kubeflow-system
+  kyverno:
+    namespace: kubeflow-system
+    admissionController:
+      resources:
+        requests:
+          cpu: 10m
+    backgroundController:
+      resources:
+        requests:
+          cpu: 10m
+    cleanupController:
+      resources:
+        requests:
+          cpu: 10m
+    reportsController:
+      resources:
+        requests:
+          cpu: 10m
+deploykf_core:
+  deploykf_auth:
+    namespace: kubeflow-system
+    dex:
+      connectors:
+        - type: oidc
+          id: pocket-id
+          name: Pocket ID
+          config:
+          issuer: https://id.goyangi.cloud
+          configExistingSecret: "deploykf-secret"
+          configExistingSecretKey: "pocket-id-config"
+  deploykf_dashboard:
+    namespace: kubeflow-system
+  deploykf_istio_gateway:
+    namespace: kubeflow-system
+    gateway:
+      hostname: kubeflow.goyangi.cloud
+      ports:
+        http: 80
+        https: 443
+  deploykf_profiles_generator:
+    namespace: kubeflow-system
+deploykf_opt:
+  deploykf_minio:
+    enabled: false
+  deploykf_mysql:
+    enabled: false
+    rootUser:
+      existingSecret: deploykf-secret
+      existingSecretPasswordKey: MARIADB_ROOT_PASSWORD
+      generateSecret: false
+    kubeflowUser:
+      existingSecret: deploykf-secret
+      existingSecretPasswordKey: MARIADB_KUBEFLOW_PASSWORD
+      generateSecret: false
+kubeflow_dependencies:
+  kubeflow_argo_workflows:
+    namespace: kubeflow-system
+kubeflow_tools:
+  katib:
+    mysql:
+      useExternal: true
+      host: mariadb.database.svc.cluster.local
+      port: 3306
+      auth:
+        existingSecret: deploykf-secret
+        existingSecretUsernameKey: MARIADB_KUBEFLOW_USER
+        existingSecretPasswordKey: MARIADB_KUBEFLOW_PASSWORD
+    mysqlDatabase: katib
+  notebooks:
+    enabled: true
+  pipelines:
+    enabled: true
+    bucket:
+      name: kubeflow-pipelines
+      region: us-east-1
+    objectStore:
+      useExternal: true
+      host: minio.default.svc.cluster.local
+      port: 9000
+      useSSL: false
+      auth:
+        existingSecret: deploykf-secret
+        existingSecretAccessKeyKey: "AWS_ACCESS_KEY_ID"
+        existingSecretSecretKeyKey: "AWS_SECRET_ACCESS_KEY"
+    mysql:
+      useExternal: true
+      host: mariadb.database.svc.cluster.local
+      port: 3306
+      auth:
+        existingSecret: deploykf-secret
+        existingSecretUsernameKey: MARIADB_KUBEFLOW_USER
+        existingSecretPasswordKey: MARIADB_KUBEFLOW_PASSWORD
+  tensorboards:
+    enabled: true
+destination:
+  server: "https://kubernetes.default.svc"
+  namespace: "kubeflow-system"

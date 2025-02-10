@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: deploykf-app-of-apps
+  namespace: &namespace kubeflow-system
+  labels:
+    app.kubernetes.io/name: deploykf-app-of-apps
+    app.kubernetes.io/part-of: deploykf
+spec:
+  project: &project "kubeflow"
+  source:
+    repoURL: "https://github.com/solanyn/home-ops.git"
+    targetRevision: "main"
+    path: ./kubernetes/apps/kubeflow-system/deploykf/app/
+    plugin:
+      name: "deploykf"
+      parameters:
+        - name: "source_version"
+          string: "0.1.5"
+        - name: "values_files"
+          array:
+            # renovate: datasource=github-releases depName=deployKF/deployKF
+            - ./sample-values-0.1.5.yaml
+            - ./values.yaml
