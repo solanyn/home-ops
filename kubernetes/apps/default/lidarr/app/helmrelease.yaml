@@ -40,7 +40,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/lidarr
+              repository: ghcr.io/solanyn/lidarr-develop
               tag: 2.9.6@sha256:056914a6576d5f8a5a984499f457d5e6eabf61611e9d93c8ce35c77d0a5a55f9
             env:
               LIDARR__APP__INSTANCENAME: Lidarr
