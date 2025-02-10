@@ -22,3 +22,6 @@ spec:
             # renovate: datasource=github-releases depName=deployKF/deployKF
             - ./sample-values-0.1.5.yaml
             - ./values.yaml
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: kubeflow-system
