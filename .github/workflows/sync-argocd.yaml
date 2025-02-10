@@ -22,7 +22,7 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
 
       - name: Setup Workflow Tools
-        run: brew install kubectl
+        run: brew install kubectl argocd
 
       - name: Run sync script
         run: |
