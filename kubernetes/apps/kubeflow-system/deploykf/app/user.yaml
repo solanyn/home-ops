@@ -5,6 +5,7 @@ metadata:
 spec:
   mariaDbRef:
     name: mariadb-cluster
+    namespace: database
   passwordSecretKeyRef:
     name: mariadb-secret
     key: MARIADB_KUBEFLOW_PASSWORD

@@ -6,6 +6,7 @@ metadata:
 spec:
   mariaDbRef:
     name: mariadb-cluster
+    namespace: database
   privileges:
     - "ALL PRIVILEGES"
   database: "katib"
@@ -24,6 +25,7 @@ metadata:
 spec:
   mariaDbRef:
     name: mariadb-cluster
+    namespace: database
   privileges:
     - "ALL PRIVILEGES"
   database: "kfp_cache"
@@ -42,6 +44,7 @@ metadata:
 spec:
   mariaDbRef:
     name: mariadb-cluster
+    namespace: database
   privileges:
     - "ALL PRIVILEGES"
   database: "kfp_metadata"
@@ -60,6 +63,7 @@ metadata:
 spec:
   mariaDbRef:
     name: mariadb-cluster
+    namespace: database
   privileges:
     - "ALL PRIVILEGES"
   database: "kfp_pipelines"
