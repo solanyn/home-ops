@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: "https://github.com/solanyn/home-ops.git"
     targetRevision: "main"
-    path: ./kubernetes/apps/kubeflow-system/deploykf/app/
+    path: .
     plugin:
       name: "deploykf"
       parameters:
@@ -20,8 +20,8 @@ spec:
         - name: "values_files"
           array:
             # renovate: datasource=github-releases depName=deployKF/deployKF
-            - ./sample-values-0.1.5.yaml
-            - ./values.yaml
+            - ./kubernetes/apps/kubeflow-system/deploykf/app/sample-values-0.1.5.yaml
+            - ./kubernetes/apps/kubeflow-system/deploykf/app/values.yaml
   destination:
     server: "https://kubernetes.default.svc"
     namespace: kubeflow-system
