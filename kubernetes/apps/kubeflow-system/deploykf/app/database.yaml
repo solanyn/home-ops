@@ -13,8 +13,9 @@ spec:
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: Database
 metadata:
+  name: kfp-cache
+spec:
   name: kfp_cache
-spec:
   mariaDbRef:
     name: mariadb-cluster
   cleanupPolicy: Delete
@@ -24,8 +25,9 @@ spec:
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: Database
 metadata:
+  name: kfp-metadata
+spec:
   name: kfp_metadata
-spec:
   mariaDbRef:
     name: mariadb-cluster
   cleanupPolicy: Delete
@@ -35,8 +37,9 @@ spec:
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: Database
 metadata:
-  name: kfp_pipelines
+  name: kfp-pipelines
 spec:
+  name: kfp_pipelines
   mariaDbRef:
     name: mariadb-cluster
   cleanupPolicy: Delete
