@@ -20,7 +20,7 @@ spec:
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: Grant
 metadata:
-  name: kubeflow-kfp_cache
+  name: kubeflow-kfp-cache
 spec:
   mariaDbRef:
     name: mariadb-cluster
@@ -38,7 +38,7 @@ spec:
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: Grant
 metadata:
-  name: kubeflow-kfp_metadata
+  name: kubeflow-kfp-metadata
 spec:
   mariaDbRef:
     name: mariadb-cluster
@@ -56,7 +56,7 @@ spec:
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: Grant
 metadata:
-  name: kubeflow-kfp_pipelines
+  name: kubeflow-kfp-pipelines
 spec:
   mariaDbRef:
     name: mariadb-cluster
