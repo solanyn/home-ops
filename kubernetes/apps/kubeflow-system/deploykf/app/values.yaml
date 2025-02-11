@@ -1,6 +1,5 @@
 argocd:
   namespace: kubeflow-system
-  project: kubeflow
 deploykf_dependencies:
   cert_manager:
     enabled: false
