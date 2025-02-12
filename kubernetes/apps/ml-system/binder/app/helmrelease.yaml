@@ -26,8 +26,7 @@ spec:
       type: ClusterIP
     ingress:
       enabled: true
-      annotations:
-        kubernetes.io/ingress.class: internal
+      ingressClassName: internal
       hosts:
         - binder.goyangi.cloud
     config:
