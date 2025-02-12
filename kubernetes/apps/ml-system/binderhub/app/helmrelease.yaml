@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: binderhub
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: binderhub
+      version: 1.0.0-0.dev.git.3688.h7031b344
+      sourceRef:
+        kind: HelmRepository
+        name: jupyterhub
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    service:
+      type: ClusterIP
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: internal
+      hosts:
+        - binderhub.goyangi.cloud
+    config:
+      BinderHub:
+        hub_url: https://jupyterhub.goyangi.cloud
+    resources:
+      requests:
+        cpu: 10m
+        memory: 256Mi
+
