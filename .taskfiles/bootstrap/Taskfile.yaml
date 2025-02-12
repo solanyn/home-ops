@@ -21,7 +21,7 @@ tasks:
     preconditions:
       - talosctl config info
       - test -f {{.KUBERNETES_DIR}}/talosconfig
-      - which jq minijinja-cli sops talosctl
+      - which jq gum minijinja-cli sops talosctl
 
   apps:
     desc: Bootstrap Apps [CSI_DISK=required]
