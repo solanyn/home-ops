@@ -5,7 +5,8 @@ kind: Kustomization
 namespace: ml-system
 components:
   - ../../flux/components/common
-resources: []
+resources:
+  - ./binderhub/ks.yaml
   # - ./flyte/ks.yaml
   # - ./mlflow/ks.yaml
   # - ./seldon-core/ks.yaml
