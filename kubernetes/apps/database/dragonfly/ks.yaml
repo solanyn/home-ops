@@ -36,7 +36,7 @@ spec:
   dependsOn:
     - name: dragonfly
   interval: 30m
-  path: ./kubernetes/apps/database/dragonfly/app
+  path: ./kubernetes/apps/database/dragonfly/cluster
   prune: true
   sourceRef:
     kind: GitRepository
