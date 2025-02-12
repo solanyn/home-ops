@@ -44,4 +44,8 @@ spec:
     config:
       BinderHub:
         hub_url: https://jupyterhub.goyangi.cloud
+    resources:
+      requests:
+        cpu: 10m
+        memory: 256Mi
 
