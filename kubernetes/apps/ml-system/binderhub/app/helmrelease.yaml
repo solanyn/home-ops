@@ -21,9 +21,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   values:
     service:
       type: ClusterIP
@@ -33,14 +30,6 @@ spec:
         kubernetes.io/ingress.class: internal
       hosts:
         - binderhub.goyangi.cloud
-    service:
-      type: ClusterIP
-    ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: internal
-      hosts:
-        - jupyterhub.goyangi.cloud
     config:
       BinderHub:
         hub_url: https://jupyterhub.goyangi.cloud
