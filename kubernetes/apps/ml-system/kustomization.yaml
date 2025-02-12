@@ -6,7 +6,8 @@ namespace: ml-system
 components:
   - ../../flux/components/common
 resources:
-  - ./binderhub/ks.yaml
+  - ./binder/ks.yaml
   # - ./flyte/ks.yaml
+  # - ./jupyter/ks.yaml
   # - ./mlflow/ks.yaml
   # - ./seldon-core/ks.yaml
