@@ -9,5 +9,5 @@ resources:
   - ./binder/ks.yaml
   # - ./flyte/ks.yaml
   - ./jupyter/ks.yaml
-  # - ./mlflow/ks.yaml
+  - ./mlflow/ks.yaml
   # - ./seldon-core/ks.yaml
