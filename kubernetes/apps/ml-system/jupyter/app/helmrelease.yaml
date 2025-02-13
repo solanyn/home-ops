@@ -28,7 +28,7 @@ spec:
       extraEnv:
         JUPYTERHUB_SINGLEUSER_APP: "jupyter_server.serverapp.ServerApp"
       cpu:
-        guarantee: 10m
+        guarantee: 0.010
       memory:
         limit: 16G
       # required for pytorch
