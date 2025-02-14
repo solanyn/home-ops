@@ -42,9 +42,9 @@ spec:
             env:
               MLFLOW_ARTIFACTS_DESTINATION: s3://mlflow
               MLFLOW_HOST: 0.0.0.0
-              MLFLOW_PORT: "80"
-              MLFLOW_WORKERS: "4"
-              MLFLOW_EXPOSE_PROMETHEUS: "true"
+              MLFLOW_PORT: &port 80
+              MLFLOW_WORKERS: 4
+              MLFLOW_EXPOSE_PROMETHEUS: true
             envFrom:
               - secretRef:
                   name: mlflow-secret
@@ -55,7 +55,7 @@ spec:
                 spec:
                   httpGet:
                     path: /
-                    port: &port 80
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
