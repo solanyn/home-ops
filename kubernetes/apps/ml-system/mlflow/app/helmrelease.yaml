@@ -39,6 +39,7 @@ spec:
             image:
               repository: ghcr.io/mlflow/mlflow
               tag: v2.20.2@sha256:3a8f8ab1c2e11bfedc72605709826c34a3ff317259f397ff9f6c0475b9dbc78f
+            args: ["mlflow", "server"]
             env:
               MLFLOW_ARTIFACTS_DESTINATION: s3://mlflow
               MLFLOW_HOST: 0.0.0.0
