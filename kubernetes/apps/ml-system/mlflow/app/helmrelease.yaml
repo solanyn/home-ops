@@ -45,9 +45,7 @@ spec:
               MLFLOW_PORT: &port 80
               MLFLOW_WORKERS: 4
               MLFLOW_EXPOSE_PROMETHEUS: true
-            envFrom:
-              - secretRef:
-                  name: mlflow-secret
+            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: true
