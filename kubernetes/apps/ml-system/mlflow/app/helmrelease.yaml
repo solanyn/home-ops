@@ -37,8 +37,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/mlflow/model-server
-              tag: v2.20.2@sha256:4ded6928359c2511034eeb94b9179e610dd48741638f3d2f9c1d6e5276f450a5
+              repository: ghcr.io/solanyn/mlflow
+              tag: v2.20.2
             env:
               MLFLOW_ARTIFACTS_DESTINATION: s3://mlflow
               MLFLOW_HOST: 0.0.0.0
