@@ -33,6 +33,7 @@ resources:
   - ./readarr/ks.yaml
   - ./readarr-ab/ks.yaml
   - ./recyclarr/ks.yaml
+  - ./romm/ks.yaml
   - ./slskd/ks.yaml
   - ./sonarr/ks.yaml
   - ./seasonpackarr/ks.yaml
