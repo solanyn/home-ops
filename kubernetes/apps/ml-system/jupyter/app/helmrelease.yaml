@@ -21,35 +21,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  values:
-    fullnameOverride: jupyter
-    singleuser:
-      defaultUrl: "/lab"
-      extraEnv:
-        JUPYTERHUB_SINGLEUSER_APP: "jupyter_server.serverapp.ServerApp"
-      cpu:
-        guarantee: 0.010
-      memory:
-        limit: 16G
-      # required for pytorch
-      storage:
-        dynamic:
-          storageClass: ceph-block
-        extraVolumes:
-          - name: shm-volume
-            emptyDir:
-              medium: Memory
-        extraVolumeMounts:
-          - name: shm-volume
-            mountPath: /dev/shm
-    ingress:
-      enabled: true
-      ingressClassName: internal
-      hosts: ["jupyter.goyangi.cloud"]
-    cull:
-      enabled: true
-      users: true
-      adminUsers: true
   valuesFrom:
     - kind: Secret
       name: jupyter-secret
