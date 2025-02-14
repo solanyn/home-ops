@@ -6,9 +6,12 @@ metadata:
   name: talos
 spec:
   version: ${TALOS_VERSION}
+  concurrency: 1
+  postCompleteDelay: 2m
+  exclusive: true
   serviceAccountName: system-upgrade
   secrets:
-    - name: talos
+    - name: system-upgrade
       path: /var/run/secrets/talos.dev
       ignoreUpdates: true
   nodeSelector:
@@ -16,26 +19,9 @@ spec:
       - key: kubernetes.io/os
         operator: In
         values: ["linux"]
-  concurrency: 1
-  exclusive: true
-  tolerations:
-    - key: node-role.kubernetes.io/control-plane
-      operator: Exists
-      effect: NoSchedule
-  prepare:
-    image: ghcr.io/siderolabs/talosctl:${TALOS_VERSION}
-    envs: &envs
-      - name: NODE
-        valueFrom:
-          fieldRef:
-            fieldPath: spec.nodeName
-    args:
-      - --nodes=$(NODE)
-      - health
   upgrade:
     image: ghcr.io/jfroy/tnu:0.4.0
-    envs: *envs
     args:
-      - --node=$(NODE)
+      - --node=$(SYSTEM_UPGRADE_NODE_NAME)
       - --tag=$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --powercycle
