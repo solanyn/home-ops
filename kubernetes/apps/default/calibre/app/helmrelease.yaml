@@ -37,7 +37,7 @@ spec:
               TZ: Australia/Sydney
             image:
               repository: ghcr.io/solanyn/calibre
-              tag: 7.25.0@sha256:b092f4065ceb4d3349af2c92989cbb8a37a459a2acde0edbee5b55ef176be249
+              tag: 7.26.0@sha256:6120e96af83f67d7fe9edc98e5780598ccadd783478cdd1401a84a22c6b48d31
             probes:
               liveness:
                 enabled: true
