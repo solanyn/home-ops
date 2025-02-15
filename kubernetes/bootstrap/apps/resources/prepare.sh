@@ -2,149 +2,179 @@
 
 set -euo pipefail
 
-# Set default values for the `gum log` command
-readonly LOG_ARGS=("--time=rfc3339" "--prefix=prepare" "--formatter=text" "--structured" "--level")
+# Set default values for the 'gum log' command
+readonly LOG_ARGS=("log" "--time=rfc3339" "--formatter=text" "--structured" "--level")
 
-# Talos requires the nodes to be `Ready=False` before applying resources
+# Verify required CLI tools are installed
+function check_dependencies() {
+    local deps=("gum" "jq" "kubectl" "kustomize" "op" "talosctl" "yq")
+    local missing=()
+
+    for dep in "${deps[@]}"; do
+        if ! command -v "${dep}" &>/dev/null; then
+            missing+=("${dep}")
+        fi
+    done
+
+    if [ ${#missing[@]} -ne 0 ]; then
+        printf "Missing required dependencies: %s\n" "${missing[*]}"
+        printf "Please install them and try again.\n"
+        exit 1
+    fi
+
+    gum "${LOG_ARGS[@]}" debug "Dependencies are installed" dependencies "${deps[*]}"
+}
+
+# Talos requires the nodes to be 'Ready=False' before applying resources
 function wait_for_nodes() {
-    gum log "${LOG_ARGS[@]}" debug "Waiting for nodes to be available"
+    gum "${LOG_ARGS[@]}" debug "Waiting for nodes to be available"
 
-    # Skip waiting if all nodes are `Ready=True`
+    # Skip waiting if all nodes are 'Ready=True'
     if kubectl wait nodes --for=condition=Ready=True --all --timeout=10s &>/dev/null; then
-        gum log "${LOG_ARGS[@]}" info "Nodes are available and ready, skipping the wait of nodes"
+        gum "${LOG_ARGS[@]}" info "Nodes are available and ready, skipping wait for nodes"
         return
     fi
-    # Wait for all nodes to be `Ready=False`
+
+    # Wait for all nodes to be 'Ready=False'
     until kubectl wait nodes --for=condition=Ready=False --all --timeout=10s &>/dev/null; do
-        gum log "${LOG_ARGS[@]}" info "Nodes are not available, waiting for nodes to be available"
+        gum "${LOG_ARGS[@]}" info "Nodes are not available, waiting for nodes to be available. Retrying in 10 seconds..."
         sleep 10
     done
 }
 
 # Applications in the helmfile require Prometheus custom resources (e.g. servicemonitors)
 function apply_prometheus_crds() {
-    gum log "${LOG_ARGS[@]}" debug "Applying Prometheus CRDs"
+    gum "${LOG_ARGS[@]}" debug "Applying Prometheus CRDs"
 
     # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
     local -r version=v0.80.0
+    local resources crds
 
-    local -r crds=(
-        "alertmanagerconfigs" "alertmanagers" "podmonitors" "probes"
-        "prometheusagents" "prometheuses" "prometheusrules"
-        "scrapeconfigs" "servicemonitors" "thanosrulers"
-    )
+    # Fetch resources using kustomize build
+    if ! resources=$(kustomize build "https://github.com/prometheus-operator/prometheus-operator/?ref=${version}" 2>/dev/null) || [[ -z "${resources}" ]]; then
+        gum "${LOG_ARGS[@]}" fatal "Failed to fetch Prometheus CRDs, check the version or the repository URL"
+    fi
 
-    # Apply Prometheus custom resources if they do not exist
-    for crd in "${crds[@]}"; do
-        if kubectl get crd "${crd}.monitoring.coreos.com" &>/dev/null; then
-            gum log "${LOG_ARGS[@]}" info "Prometheus CRD is up-to-date" resource "${crd}"
-            continue
-        fi
-        if kubectl apply --server-side \
-            --filename "https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/${version}/example/prometheus-operator-crd/monitoring.coreos.com_${crd}.yaml" &>/dev/null; then
-            gum log "${LOG_ARGS[@]}" info "Prometheus CRD applied" resource "${crd}"
-        else
-            gum log "${LOG_ARGS[@]}" error "Failed to apply Prometheus CRD" resource "${crd}"
-            exit 1
-        fi
-    done
+    # Extract only CustomResourceDefinitions
+    if ! crds=$(echo "${resources}" | yq '. | select(.kind == "CustomResourceDefinition")' 2>/dev/null) || [[ -z "${crds}" ]]; then
+        gum "${LOG_ARGS[@]}" fatal "No CustomResourceDefinitions found in the fetched resources"
+    fi
+
+    # Check if the CRDs are up-to-date
+    if echo "${crds}" | kubectl diff --filename - &>/dev/null; then
+        gum "${LOG_ARGS[@]}" info "Prometheus CRDs are up-to-date"
+        return
+    fi
+
+    # Apply the CRDs
+    if echo "${crds}" | kubectl apply --server-side --filename - &>/dev/null; then
+        gum "${LOG_ARGS[@]}" info "Prometheus CRDs applied successfully"
+    else
+        gum "${LOG_ARGS[@]}" fatal "Failed to apply Prometheus CRDs"
+    fi
 }
 
 # The application namespaces are created before applying the resources
 function apply_namespaces() {
-    gum log "${LOG_ARGS[@]}" debug "Applying namespaces"
+    gum "${LOG_ARGS[@]}" debug "Applying namespaces"
 
     local -r apps_dir="${KUBERNETES_DIR}/apps"
 
     if [[ ! -d "${apps_dir}" ]]; then
-        gum log "${LOG_ARGS[@]}" error "Directory does not exist" directory "${apps_dir}"
-        exit 1
+        gum "${LOG_ARGS[@]}" fatal "Directory does not exist" directory "${apps_dir}"
     fi
 
-    # Apply namespaces if they do not exist
     for app in "${apps_dir}"/*/; do
         namespace=$(basename "${app}")
 
+        # Check if the namespace resources are up-to-date
         if kubectl get namespace "${namespace}" &>/dev/null; then
-            gum log "${LOG_ARGS[@]}" info "Namespace resource is up-to-date" resource "${namespace}"
+            gum "${LOG_ARGS[@]}" info "Namespace resource is up-to-date" resource "${namespace}"
             continue
         fi
 
+        # Apply the namespace resources
         if kubectl create namespace "${namespace}" --dry-run=client --output=yaml |
             kubectl apply --server-side --filename - &>/dev/null; then
-            gum log "${LOG_ARGS[@]}" info "Namespace resource applied" resource "${namespace}"
+            gum "${LOG_ARGS[@]}" info "Namespace resource applied" resource "${namespace}"
         else
-            gum log "${LOG_ARGS[@]}" error "Failed to apply namespace resource" resource "${namespace}"
-            exit 1
+            gum "${LOG_ARGS[@]}" fatal "Failed to apply namespace resource" resource "${namespace}"
         fi
     done
 }
 
-# Secrets applied before the helmfile charts are installed
+# Secrets to be applied before the helmfile charts are installed
 function apply_secrets() {
-    gum log "${LOG_ARGS[@]}" debug "Applying secrets"
+    gum "${LOG_ARGS[@]}" debug "Applying secrets"
 
     local -r secrets_file="${KUBERNETES_DIR}/bootstrap/apps/resources/secrets.yaml.tpl"
+    local resources
 
     if [[ ! -f "${secrets_file}" ]]; then
-        gum log "${LOG_ARGS[@]}" error "File does not exist" file "${secrets_file}"
-        exit 1
+        gum "${LOG_ARGS[@]}" fatal "File does not exist" file "${secrets_file}"
     fi
 
-    # Check if the bootstrap templates are up-to-date
-    if op inject --in-file "${secrets_file}" | kubectl diff --filename - &>/dev/null; then
-        gum log "${LOG_ARGS[@]}" info "Secret resources are up-to-date"
+    # Inject secrets into the template
+    if ! resources=$(op inject --in-file "${secrets_file}" 2>/dev/null) || [[ -z "${resources}" ]]; then
+        gum "${LOG_ARGS[@]}" fatal "Failed to inject secrets" file "${secrets_file}"
+    fi
+
+    # Check if the secret resources are up-to-date
+    if echo "${resources}" | kubectl diff --filename - &>/dev/null; then
+        gum "${LOG_ARGS[@]}" info "Secret resources are up-to-date"
         return
     fi
 
-    # Apply bootstrap templates
-    if op inject --in-file "${secrets_file}" | kubectl apply --server-side --filename - &>/dev/null; then
-        gum log "${LOG_ARGS[@]}" info "Secret resources applied"
+    # Apply secret resources
+    if echo "${resources}" | kubectl apply --server-side --filename - &>/dev/null; then
+        gum "${LOG_ARGS[@]}" info "Secret resources applied"
     else
-        gum log "${LOG_ARGS[@]}" error "Failed to apply secret resources"
-        exit 1
+        gum "${LOG_ARGS[@]}" fatal "Failed to apply secret resources"
     fi
 }
 
 # Disks in use by rook-ceph must be wiped before Rook is installed
 function wipe_rook_disks() {
-    gum log "${LOG_ARGS[@]}" debug "Wiping Rook disks"
+    gum "${LOG_ARGS[@]}" debug "Wiping Rook disks"
 
     if [[ -z "${ROOK_DISK:-}" ]]; then
-        gum log "${LOG_ARGS[@]}" error "Environment variable not set" env_var ROOK_DISK
-        exit 1
+        gum "${LOG_ARGS[@]}" fatal "Environment variable not set" env_var ROOK_DISK
     fi
 
     # Skip disk wipe if Rook is detected running in the cluster
     if kubectl --namespace rook-ceph get kustomization rook-ceph &>/dev/null; then
-        gum log "${LOG_ARGS[@]}" warn "Rook is detected running in the cluster, skipping disk wipe"
+        gum "${LOG_ARGS[@]}" warn "Rook is detected running in the cluster, skipping disk wipe"
         return
     fi
 
-    # Wipe disks matching the ROOK_DISK environment variable
-    for node in $(talosctl config info --output json | jq --raw-output '.nodes | .[]'); do
-        disk=$(
-            talosctl --nodes "${node}" get disks --output json |
-                jq --raw-output 'select(.spec.model == env.ROOK_DISK) | .metadata.id' |
-                xargs
-        )
+    if ! nodes=$(talosctl config info --output json 2>/dev/null | jq --raw-output '.nodes | join(" ")') || [[ -z "${nodes}" ]]; then
+        gum "${LOG_ARGS[@]}" fatal "No Talos nodes found"
+    fi
 
-        gum log "${LOG_ARGS[@]}" info "Discovered Talos node and disk" node "${node}" disk "${disk}"
+    gum "${LOG_ARGS[@]}" debug "Talos nodes discovered" nodes "${nodes}"
 
-        if [[ -n "${disk}" ]]; then
-            if talosctl --nodes "${node}" wipe disk "${disk}" &>/dev/null; then
-                gum log "${LOG_ARGS[@]}" info "Disk wiped" node "${node}" disk "${disk}"
-            else
-                gum log "${LOG_ARGS[@]}" error "Failed to wipe disk" node "${node}" disk "${disk}"
-                exit 1
-            fi
-        else
-            gum log "${LOG_ARGS[@]}" warn "No disks found" node "${node}" model "${ROOK_DISK:-}"
+    # Wipe disks on each node that match the ROOK_DISK environment variable
+    for node in ${nodes}; do
+        if ! disks=$(talosctl --nodes "${node}" get disk --output json 2>/dev/null |
+            jq --raw-output --slurp '. | map(select(.spec.model == env.ROOK_DISK) | .metadata.id) | join(" ")') || [[ -z "${nodes}" ]]; then
+            gum "${LOG_ARGS[@]}" fatal "No disks found" node "${node}" model "${ROOK_DISK:-}"
         fi
+
+        gum "${LOG_ARGS[@]}" debug "Talos node and disk discovered" node "${node}" disks "${disks}"
+
+        # Wipe each disk on the node
+        for disk in ${disks}; do
+            if talosctl --nodes "${node}" wipe disk "${disk}" &>/dev/null; then
+                gum "${LOG_ARGS[@]}" info "Disk wiped" node "${node}" disk "${disk}"
+            else
+                gum "${LOG_ARGS[@]}" fatal "Failed to wipe disk" node "${node}" disk "${disk}"
+            fi
+        done
     done
 }
 
 function main() {
+    check_dependencies
     wait_for_nodes
     apply_prometheus_crds
     apply_namespaces
