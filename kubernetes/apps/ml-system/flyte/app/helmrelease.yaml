@@ -21,6 +21,7 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  values:
-    externalSecretRef: flyte-secret
-
+  valuesFrom:
+    - kind: Secret
+      name: flyte-secret
+      valuesKey: values.yaml
