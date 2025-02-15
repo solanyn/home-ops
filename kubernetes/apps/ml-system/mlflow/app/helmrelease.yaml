@@ -95,6 +95,9 @@ spec:
                   identifier: app
                   port: http
     persistence:
+      tmp:
+        type: emptyDir
+        sizeLimit: 100Mi
       auth-config:
         type: secret
         name: mlflow-secret
