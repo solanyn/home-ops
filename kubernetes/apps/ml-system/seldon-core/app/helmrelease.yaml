@@ -29,7 +29,7 @@ spec:
       enabled: true
     istio:
       enabled: true
-      gateway: seldon-gateway
+      gateway: ml-system/seldon-gateway
     predictiveUnit:
       defaultEnvSecretRefName: seldon-core-secret
     usageMetrics:
