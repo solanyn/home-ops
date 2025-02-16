@@ -18,5 +18,5 @@ resources:
   # - ./kubeflow-trainer/ks.yaml
   - ./mlflow/ks.yaml
   # - ./ray/ks.yaml
-  # - ./seldon-core/ks.yaml
+  - ./seldon-core/ks.yaml
   # - ./spark/ks.yaml
