@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: seldon-core-operator
-      version: 1.19.0
+      version: 1.19.0--dev
       sourceRef:
         kind: HelmRepository
         name: seldonio
