@@ -12,7 +12,7 @@ resources:
   - ./iceberg/ks.yaml
   - ./jupyter/ks.yaml
   # - ./kafka/ks.yaml
+  - ./kuberay/ks.yaml
   - ./mlflow/ks.yaml
-  # - ./ray/ks.yaml
   - ./seldon-core/ks.yaml
   - ./spark/ks.yaml
