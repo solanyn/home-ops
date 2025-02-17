@@ -36,7 +36,9 @@ spec:
               CATALOG_WAREHOUSE: s3://iceberg/
               CATALOG_IO__IMPL: org.apache.iceberg.aws.s3.S3FileIO
               CATALOG_S3_ENDPOINT: http://minio.default.svc.cluster.local:9000
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: iceberg-secret
             probes:
               liveness: &probes
                 enabled: true
