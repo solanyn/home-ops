@@ -1,0 +1,36 @@
+---
+apiVersion: feast.dev/v1alpha1
+kind: FeatureStore
+metadata:
+  name: feast
+spec:
+  feastProject: feast
+  services:
+    offlineStore:
+      persistence:
+        file:
+          type: duckdb
+    onlineStore:
+      persistence:
+        store:
+          type: redis
+          secretRef:
+            name: feast-secret
+      server:
+        envFrom:
+        - secretRef:
+            name: feast-secret
+        env:
+        - name: MPLCONFIGDIR
+          value: /tmp
+        resources:
+          requests:
+            cpu: 10m
+            memory: 128Mi
+    registry:
+      local:
+        persistence:
+          store:
+            type: sql
+            secretRef:
+              name: feast-secret
