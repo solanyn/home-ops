@@ -11,11 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../flux/components/gatus/guarded
-  dependsOn:
-    - name: onepassword-store
-      namespace: external-secrets
-    - name: cloudnative-pg-cluster
-      namespace: database
   interval: 30m
   path: ./kubernetes/apps/ml-system/spark/app
   prune: false
