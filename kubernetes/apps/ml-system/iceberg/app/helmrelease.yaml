@@ -23,7 +23,7 @@ spec:
       retries: 3
   values:
     controllers:
-      mlflow:
+      iceberg:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
