@@ -33,8 +33,6 @@ spec:
       resources:
         requests:
           cpu: 10m
-    spark:
-      jobNamespaces: ml-system
     prometheus:
       podMonitor:
         create: true
