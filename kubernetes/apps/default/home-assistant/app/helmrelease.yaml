@@ -49,6 +49,7 @@ spec:
             resources:
               requests:
                 cpu: 10m
+                requests: 128Mi
               limits:
                 memory: 2Gi
           code-server:
