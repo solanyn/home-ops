@@ -25,9 +25,7 @@ spec:
     fullnameOverride: spark
     controller:
       uiIngress:
-        enable: true
-        urlFormat: spark.goyangi.cloud
-        ingressClassName: internal
+        enable: false
       resources:
         requests:
           cpu: 10m
