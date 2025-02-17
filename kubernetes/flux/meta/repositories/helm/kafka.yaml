@@ -8,4 +8,4 @@ metadata:
 spec:
   type: oci
   interval: 12h
-  url: oci://quay.io/strimzi-helm/strimzi-kafka-operator
+  url: oci://quay.io/strimzi-helm
