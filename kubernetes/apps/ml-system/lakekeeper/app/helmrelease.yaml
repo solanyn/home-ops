@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app lakekeeper
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: lakekeeper
+      version: 0.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: lakekeeper
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    fullnameOverride: lakekeeper
+    catalog:
+      resources:
+        requests:
+          cpu: 10m
+          requests: 128Mi
+      config:
+        LAKEKEEPER__BASE_URI: https://lakekeeper.goyangi.cloud
