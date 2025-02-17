@@ -21,12 +21,7 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  values:
-    fullnameOverride: lakekeeper
-    catalog:
-      resources:
-        requests:
-          cpu: 10m
-          memory: 128Mi
-      config:
-        LAKEKEEPER__BASE_URI: https://lakekeeper.goyangi.cloud
+  valuesFrom:
+    - kind: Secret
+      name: lakekeeper-secret
+      valuesKey: values.yaml
