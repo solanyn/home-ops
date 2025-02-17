@@ -12,10 +12,12 @@ resources:
   - ./controlplaneio.yaml
   - ./coredns.yaml
   - ./csi-driver-nfs.yaml
+  - ./datainfra.yaml
   - ./descheduler.yaml
   - ./emqx.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
+  - ./feast.yaml
   - ./flyteorg.yaml
   - ./grafana.yaml
   - ./headlamp.yaml
@@ -25,6 +27,7 @@ resources:
   - ./jetstack.yaml
   - ./jupyterhub.yaml
   - ./kafka.yaml
+  - ./kuberay.yaml
   - ./metrics-server.yaml
   - ./node-feature-discovery.yaml
   - ./openebs.yaml
@@ -32,6 +35,7 @@ resources:
   - ./prometheus-community.yaml
   - ./rook-ceph.yaml
   - ./seldonio.yaml
+  - ./spark-operator.yaml
   - ./spegel.yaml
   - ./stakater.yaml
   - ./tailscale.yaml

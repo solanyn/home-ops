@@ -7,10 +7,8 @@ components:
   - ../../flux/components/common
 resources:
   - ./binder/ks.yaml
-  # - ./dask/ks.yaml
   # - ./druid/ks.yaml
   # - ./feast/ks.yaml
-  # - ./flink/ks.yaml
   - ./flyte/ks.yaml
   # - ./iceberg/ks.yaml
   - ./jupyter/ks.yaml
