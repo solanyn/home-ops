@@ -30,7 +30,7 @@ spec:
           app:
             image:
               repository: docker.io/tabulario/iceberg-rest
-              tag: 1.6.0@sha256:f520a03789210e1a4e38eac5970cb77abae248aa511cfce9877b710959fa8f20
+              tag: 1.6.0@sha256:3b7d31bdfec626b68e97531c9778a1b9119659e456fe28545a49f6aa6a9ce472
             env:
               AWS_REGION: us-east-1
               CATALOG_WAREHOUSE: s3://iceberg/
