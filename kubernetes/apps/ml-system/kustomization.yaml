@@ -10,11 +10,10 @@ resources:
   # - ./druid/ks.yaml
   # - ./feast/ks.yaml
   - ./flyte/ks.yaml
-  # - ./iceberg/ks.yaml
+  - ./iceberg/ks.yaml
   - ./jupyter/ks.yaml
   # - ./kafka/ks.yaml
-  # - ./kubeflow-trainer/ks.yaml
   - ./mlflow/ks.yaml
   # - ./ray/ks.yaml
   - ./seldon-core/ks.yaml
-  # - ./spark/ks.yaml
+  - ./spark/ks.yaml
