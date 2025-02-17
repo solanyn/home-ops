@@ -30,3 +30,7 @@ spec:
     replicaCount: 1
     image:
       repository: ghcr.io/emqx/emqx-operator
+    resources:
+      requests:
+        cpu: 10m
+        memory: 128Mi
