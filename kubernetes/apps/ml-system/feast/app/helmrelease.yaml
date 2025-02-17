@@ -24,3 +24,41 @@ spec:
   values:
     feature-server:
       enabled: true
+      application-override.yaml:
+        enabled: true
+        feast:
+          active_store: online
+          stores:
+          - name: online
+            type: REDIS
+            config:
+              host: redis.database.svc.cluster.local
+              port: 6379
+          entityKeySerializationVersion: 2
+        resources:
+          requests:
+            cpu: 10m
+            memory: 128Mi
+        metrics:
+          enabled: true
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+    transformation-service:
+      enabled: true
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+    global:
+      project: default
+      provider: local
+      registry:
+        secretRef: feast-secret
+        secretKeyName: sql
+        resources:
+          requests:
+            cpu: 10m
+            memory: 128Mi
+
