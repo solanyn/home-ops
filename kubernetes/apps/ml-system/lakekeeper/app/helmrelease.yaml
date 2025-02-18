@@ -72,6 +72,12 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 16Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65534
+        seccompProfile: {type: RuntimeDefault}
     service:
       app:
         controller: *app
