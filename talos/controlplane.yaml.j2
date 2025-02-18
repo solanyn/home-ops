@@ -129,7 +129,7 @@ cluster:
       https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.80.0/example/prometheus-operator-crd/monitoring.coreos.com_{{ crd }}.yaml
     {% endfor %}
   token: op://kubernetes/talos/CLUSTER_TOKEN
-  secretboxEncryptionSecret: op://kubernetes/talos/CLUSTER_SECRETBOXENCRYPTIONSECRET
+  secretboxEncryptionSecret: op://kubernetes/talos/CLUSTER_SECRETBOXENCRYPTION_SECRET
   ca:
     crt: op://kubernetes/talos/CLUSTER_CA_CRT
     key: op://kubernetes/talos/CLUSTER_CA_KEY
