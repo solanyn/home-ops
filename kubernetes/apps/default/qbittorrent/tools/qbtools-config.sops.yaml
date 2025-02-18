@@ -3,25 +3,81 @@ kind: Secret
 metadata:
   name: qbtools-config-secret
 stringData:
-  config.yaml: ENC[AES256_GCM,data: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,iv:Hd317GAqME47wa7Cm9SV9DyJuBU1aTNljMUkGxtZ+ns=,tag:exRNp/HWLZdTDI7Rm/GaCQ==,type:str]
-sops:
-  kms: []
-  gcp_kms: []
-  azure_kv: []
-  hc_vault: []
-  age:
-    - recipient: age1yq7xwc03yg7gp2ew9k3jehrz6ctlmuwsffypwvskvl27e26frqmqa5d7de
-      enc: |
-        -----BEGIN AGE ENCRYPTED FILE-----
-        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBPQ1BMNlcxMDNzRzRpRnp0
-        cUQwbWJzN2FGWUdXVmlGSUY1K0ZFUm0yVTJNClozZktnUlY2RGhLS01qQmJXdU5U
-        QktRUThwMDVQS04veU1WQUNJU25ZSFkKLS0tIHF1VElnRGRMNkEzRjRrVjNBRkFm
-        MWFzdkVsdE51OUIwMExTRGJlMGc0enMK+bH/oaMFxSq2xH9h3q/3lFTmGYi8Ut/M
-        PbcD02tqhatc0ekJ1UWrHlFQuTa0YK3/SSo3ly1g6d8pGnyEyTmZJQ==
-        -----END AGE ENCRYPTED FILE-----
-  lastmodified: "2025-02-12T13:46:05Z"
-  mac: ENC[AES256_GCM,data:aw/OOo/NUIcVKndM3s/e3+mqTWmeWD6oJIlwZ/PduyXCHQiRE90OjAZQUurF9B6RUFNfrb5hl+4HeCV16ZNxwfXxAqbK2G83XIEJCWjn2PmdwO1a7mzkrXwjkbUeyutgNS4/7f4FtEaZZgdfPXG1wTkd0+Bvdvsn5dA0AKni6vo=,iv:Pl8/zlI4A4rJ+1OiT0gP7z689QkmzhOxc9SW9oxp+B4=,tag:tLmtf97fImkTV8CXmp+NDg==,type:str]
-  pgp: []
-  encrypted_regex: ^(data|stringData)$
-  mac_only_encrypted: true
-  version: 3.9.4
+  config.yaml: |
+    trackers:
+      - name: myanonamouse
+        urls: ["myanonamouse.net"]
+        required_seed_ratio: 1.01
+        required_seed_days: 3.1
+      - name: avistaz
+        urls: ["avistaz.to"]
+        required_seed_ratio: 1.01
+        required_seed_days: 14.1
+      - name: privatehd
+        urls: ["privatehd.to"]
+        required_seed_ratio: 1
+        required_seed_days: 14.1
+      - name: cinemaz
+        urls: ["cinemaz.to"]
+        required_seed_ratio: 1.01
+        required_seed_days: 14.1
+      - name: exoticaz
+        urls: ["exoticaz.to"]
+        required_seed_ratio: 1.01
+        required_seed_days: 14.1
+      - name: animetorrents
+        urls: ["animetorrents.me"]
+        required_seed_ratio: 20
+        required_seed_days: 10000
+      - name: hawke.uno
+        urls: ["hawke.uno"]
+        required_seed_ratio: 2.01
+        required_seed_days: 5.1
+      - name: orpheus
+        urls: ["opsfet.ch"]
+        required_seed_ratio: 20
+        required_seed_days: 10000
+      - name: milkie
+        urls: ["milkie.cc"]
+        required_seed_ratio: 0.01
+        required_seed_days: 0.1
+      - name: digitalcore.club
+        urls: ["digitalcore.club"]
+        required_seed_ratio: 1.01
+        required_seed_days: 5.1
+      - name: torrentleech.org
+        urls: ["torrentleech.org", "tleechreload.org"]
+        required_seed_ratio: 1.01
+        required_seed_days: 7.1
+      - name: seedpool.org
+        urls: ["seedpool.org"]
+        required_seed_ratio: 1.01
+        required_seed_days: 3.1
+      - name: sportscult.org
+        urls: ["sportscult.org"]
+        required_seed_ratio: 2.01
+        required_seed_days: 7.1
+      - name: lst.gg
+        urls: ["lst.gg"]
+        required_seed_ratio: 0
+        required_seed_days: 3.1
+      - name: oldtoons.world
+        urls: ["oldtoons.world"]
+        required_seed_ratio: 1.01
+        required_seed_days: 2.1
+      - name: happyfappy
+        urls: ["happyfappy.org"]
+        required_seed_ratio: 1.01
+        required_seed_days: 7.1
+      - name: ianon
+        urls: ["ianon.app"]
+        required_seed_ratio: 1.01
+        required_seed_days: 30.1
+      - name: fearnopeer
+        urls: ["fearnopeer.com"]
+        required_seed_ratio: 1.01
+        required_seed_days: 14.1
+      - name: blutopia
+        urls: ["blutopia.cc", "blutopia.xyz"]
+        required_seed_ratio: 0
+        required_seed_days: 14.1
