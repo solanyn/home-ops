@@ -9,8 +9,8 @@ spec:
       - name: init-db
         image: ghcr.io/solanyn/postgres-init:16
         envFrom:
-          secretRef:
-            - name: lakekeeper-secret
+        - secretRef:
+            name: lakekeeper-secret
       restartPolicy: Never
   backoffLimit: 4
 
