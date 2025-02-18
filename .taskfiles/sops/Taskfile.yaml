@@ -16,9 +16,9 @@ tasks:
           fi
     vars:
       SECRET_FILES:
-        sh: find "{{.KUBERNETES_DIR}}" -type f -name "*.sops.yaml"
+        sh: find "{{.ROOT_DIR}}" -type f -name "*.sops.yaml"
       SECRET_J2_FILES:
-        sh: find "{{.KUBERNETES_DIR}}" -type f -name "*.sops.*.j2"
+        sh: find "{{.ROOT_DIR}}" -type f -name "*.sops.*.j2"
     preconditions:
       - test -f {{.SOPS_AGE_KEY_FILE}}
       - test -f {{.SOPS_CONFIG_FILE}}
@@ -38,9 +38,9 @@ tasks:
           fi
     vars:
       SECRET_FILES:
-        sh: find "{{.KUBERNETES_DIR}}" -type f -name "*.sops.yaml"
+        sh: find "{{.ROOT_DIR}}" -type f -name "*.sops.yaml"
       SECRET_J2_FILES:
-        sh: find "{{.KUBERNETES_DIR}}" -type f -name "*.sops.*.j2"
+        sh: find "{{.ROOT_DIR}}" -type f -name "*.sops.*.j2"
     preconditions:
       - test -f {{.SOPS_AGE_KEY_FILE}}
       - test -f {{.SOPS_CONFIG_FILE}}
