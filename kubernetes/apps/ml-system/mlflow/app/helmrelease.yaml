@@ -95,8 +95,8 @@ spec:
                   identifier: app
                   port: http
     persistence:
-      config:
-        existingClaim: *app
+      # config:
+      #   existingClaim: *app
       tmp:
         type: emptyDir
         sizeLimit: 100Mi
