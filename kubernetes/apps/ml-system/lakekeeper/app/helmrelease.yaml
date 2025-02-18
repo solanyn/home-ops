@@ -32,16 +32,23 @@ spec:
             image:
               repository: ghcr.io/solanyn/postgres-init
               tag: 16
-            env:
-              LAKEKEEPER__LISTEN_PORT: &port 8181
             envFrom: &envFrom
               - secretRef:
                   name: lakekeeper-secret
+          migrate:
+            image:
+              repository: quay.io/lakekeeper/catalog
+              tag: 8411bb84-amd64@sha256:89b22f10e5c5b401a154c0dbb6e91eb1308a2dfca7b6e9a44616437a8bf785a0
+            command: ["migrate"]
+            envFrom: *envFrom
         containers:
           app:
             image:
               repository: quay.io/lakekeeper/catalog
               tag: 8411bb84-amd64@sha256:89b22f10e5c5b401a154c0dbb6e91eb1308a2dfca7b6e9a44616437a8bf785a0
+            command: ["serve"]
+            env:
+              LAKEKEEPER__LISTEN_PORT: &port 8181
             envFrom: *envFrom
             probes:
               liveness: &probes
