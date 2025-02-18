@@ -81,6 +81,7 @@ This Git repository contains the following directories under [Kubernetes](./kube
 ```sh
 📁 kubernetes
 ├── 📁 apps           # applications
+├── 📁 components     # commonly reused components e.g., status monitoring templates + volsync backed pvc
 └── 📁 flux           # flux system configuration
 ```
 
@@ -105,11 +106,12 @@ While I self-host infrastructure and workloads where I can, I rely on cloud serv
 
 | Service                                         | Use                                                               | Cost (AUD)           |
 |-------------------------------------------------|-------------------------------------------------------------------|----------------|
-| [1Password](https://1password.com/)             | Secrets with [External Secrets](https://external-secrets.io/)     | ~$100/yr        |
+| [1Password](https://1password.com/)             | Secrets with [External Secrets](https://external-secrets.io/)     | ~$50/yr        |
 | [Cloudflare](https://www.cloudflare.com/)       | Domains and S3                                                     | ~$30/yr        |
 | [GitHub](https://github.com/)                   | Hosting this repository and continuous integration/deployments    | Free           |
 | [Pushover](https://pushover.net/)               | Kubernetes Alerts and application notifications                   | $5 OTP         |
-|                                                 |                                                                   | Total: ~$11/mo |
+| [healthchecks.io](https://healthchecks.io/)               | Monitoring internet connectivity and external facing applications                   | Free         |
+|                                                 |                                                                   | Total: ~$7/mo |
 
 ---
 
