@@ -50,7 +50,7 @@ spec:
               capabilities: {drop: ["ALL"]}
             resources:
               requests:
-                cpu: 25m
+                cpu: 10m
               limits:
                 memory: 256M
         containers:
