@@ -8,7 +8,7 @@ components:
 resources:
   - ./feast/ks.yaml
   - ./flyte/ks.yaml
-  - ./lakekeeper/ks.yaml
+  # - ./lakekeeper/ks.yaml
   - ./jupyter/ks.yaml
   - ./kafka/ks.yaml
   - ./kuberay/ks.yaml
