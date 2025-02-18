@@ -32,6 +32,8 @@ spec:
             image:
               repository: ghcr.io/solanyn/postgres-init
               tag: 16
+            env:
+              LAKEKEEPER__LISTEN_PORT: &port 8181
             envFrom: &envFrom
               - secretRef:
                   name: lakekeeper-secret
