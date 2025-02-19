@@ -12,6 +12,8 @@ spec:
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
+  components:
+    - ../../../../components/volsync
   interval: 30m
   path: ./kubernetes/apps/ml-system/iceberg/app
   prune: false
