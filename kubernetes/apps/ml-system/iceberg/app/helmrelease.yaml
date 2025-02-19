@@ -27,14 +27,14 @@ spec:
       iceberg:
         annotations:
           reloader.stakater.com/auto: "true"
-        # initContainers:
-        #   init-db:
-        #     image:
-        #       repository: ghcr.io/solanyn/postgres-init
-        #       tag: 16
-        #     envFrom: &envFrom
-        #       - secretRef:
-        #           name: iceberg-secret
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/solanyn/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: iceberg-secret
         containers:
           app:
             image:
