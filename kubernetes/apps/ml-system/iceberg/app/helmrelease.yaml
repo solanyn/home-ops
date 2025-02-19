@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app lakekeeper
+  name: &app iceberg
 spec:
   interval: 30m
   chart:
@@ -24,31 +24,14 @@ spec:
       retries: 3
   values:
     controllers:
-      lakekeeper:
+      iceberg:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/solanyn/postgres-init
-              tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: lakekeeper-secret
-          migrate:
-            image:
-              repository: quay.io/lakekeeper/catalog
-              tag: v0.6.2@sha256:6906fb5560385038bf08d9191614c1a0a5d22050bdc5ef8324ae48d02883ab10
-            args: ["migrate"]
-            envFrom: *envFrom
         containers:
           app:
             image:
-              repository: quay.io/lakekeeper/catalog
-              tag: v0.6.2@sha256:6906fb5560385038bf08d9191614c1a0a5d22050bdc5ef8324ae48d02883ab10
-            args: ["serve"]
-            env:
-              LAKEKEEPER__LISTEN_PORT: &port 8181
+              repository: docker.io/apache/iceberg-rest-fixture
+              tag: latest@sha256:cc192c9fecd1b1de2008a7b39fb460ecd86b99fe95e2acd8483c7e9dcbe6085c
             envFrom: *envFrom
             probes:
               liveness: &probes
@@ -56,8 +39,8 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /health
-                    port: *port
+                    path: /
+                    port: &port 8181
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -76,8 +59,8 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 65532
-        runAsGroup: 65534
+        runAsUser: 1000
+        runAsGroup: 1000
         seccompProfile: {type: RuntimeDefault}
     service:
       app:
@@ -85,17 +68,3 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
-      app:
-        className: internal
-        hosts:
-          - host: lakekeeper.goyangi.cloud
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-    persistence:
-      tmp:
-        type: emptyDir
-        sizeLimit: 100Mi
