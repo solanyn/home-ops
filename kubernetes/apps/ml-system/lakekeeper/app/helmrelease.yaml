@@ -46,6 +46,7 @@ spec:
             image:
               repository: quay.io/lakekeeper/catalog
               tag: v0.6.2
+            args: ["serve"]
             env:
               LAKEKEEPER__LISTEN_PORT: &port 8181
             envFrom: *envFrom
