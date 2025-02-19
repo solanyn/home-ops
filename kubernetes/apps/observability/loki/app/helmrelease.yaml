@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -5,7 +6,6 @@ metadata:
   name: loki
 spec:
   interval: 30m
-  timeout: 15m
   chart:
     spec:
       chart: loki
@@ -25,8 +25,8 @@ spec:
       strategy: rollback
       retries: 3
   dependsOn:
-    - name: openebs
-      namespace: openebs-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   values:
     deploymentMode: SingleBinary
     loki:
@@ -37,8 +37,14 @@ spec:
         log_level: info
       commonConfig:
         replication_factor: 1
+      compactor:
+        working_directory: /var/loki/compactor/retention
+        delete_request_store: filesystem
+        retention_enabled: true
       ingester:
         chunk_encoding: snappy
+      limits_config:
+        retention_period: 14d
       storage:
         type: filesystem
       schemaConfig:
@@ -50,13 +56,21 @@ spec:
             index:
               prefix: loki_index_
               period: 24h
-      limits_config:
-        retention_period: 14d
+      structuredConfig:
+        ruler:
+          enable_api: true
+          enable_alertmanager_v2: true
+          alertmanager_url: http://alertmanager-operated.observability.svc.cluster.local:9093
+          storage:
+            type: local
+            local:
+              directory: /rules
+          rule_path: /rules/fake
     singleBinary:
       replicas: 1
       persistence:
         enabled: true
-        storageClass: openebs-hostpath
+        storageClass: ceph-block
         size: 50Gi
     gateway:
       replicas: 0
