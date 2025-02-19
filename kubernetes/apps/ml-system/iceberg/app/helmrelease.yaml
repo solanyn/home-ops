@@ -78,3 +78,7 @@ spec:
         ports:
           http:
             port: *port
+    persistence:
+      tmp:
+        type: emptyDir
+        size: 500Mi
