@@ -33,8 +33,8 @@ spec:
               repository: docker.io/apache/iceberg-rest-fixture
               tag: latest@sha256:cc192c9fecd1b1de2008a7b39fb460ecd86b99fe95e2acd8483c7e9dcbe6085c
             envFrom:
-              secretRef:
-                - name: iceberg-secret
+              - secretRef:
+                  name: iceberg-secret
             probes:
               liveness: &probes
                 enabled: true
