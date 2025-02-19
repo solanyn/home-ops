@@ -38,32 +38,31 @@ spec:
           migrate:
             image:
               repository: quay.io/lakekeeper/catalog
-              tag: v0.6.2
+              tag: v0.6.2@sha256:6906fb5560385038bf08d9191614c1a0a5d22050bdc5ef8324ae48d02883ab10
             args: ["migrate"]
             envFrom: *envFrom
         containers:
           app:
             image:
               repository: quay.io/lakekeeper/catalog
-              tag: v0.6.2
-            # args: ["serve"]
-            command: ["sleep", "infinity"]
+              tag: v0.6.2@sha256:6906fb5560385038bf08d9191614c1a0a5d22050bdc5ef8324ae48d02883ab10
+            args: ["serve"]
             env:
               LAKEKEEPER__LISTEN_PORT: &port 8181
             envFrom: *envFrom
-            # probes:
-            #   liveness: &probes
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /
-            #         port: *port
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probes
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
