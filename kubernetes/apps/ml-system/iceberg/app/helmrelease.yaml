@@ -32,6 +32,8 @@ spec:
             image:
               repository: docker.io/apache/iceberg-rest-fixture
               tag: latest@sha256:cc192c9fecd1b1de2008a7b39fb460ecd86b99fe95e2acd8483c7e9dcbe6085c
+            env:
+              REST_PORT: &port 8181
             envFrom:
               - secretRef:
                   name: iceberg-secret
@@ -41,8 +43,8 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /
-                    port: &port 8181
+                    path: /v1/config
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
