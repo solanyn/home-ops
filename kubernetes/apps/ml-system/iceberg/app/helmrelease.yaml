@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: docker.io/apache/iceberg-rest-fixture
-              tag: latest@sha256:cc192c9fecd1b1de2008a7b39fb460ecd86b99fe95e2acd8483c7e9dcbe6085c
+              tag: latest@sha256:2268f546448f4a15f93e00ffde6f2278f387017f182f3fe80764232aecb1ecac
             env:
               REST_PORT: &port 8181
             envFrom:
