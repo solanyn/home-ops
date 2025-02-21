@@ -12,7 +12,6 @@ resources:
   - ./controlplaneio.yaml
   - ./coredns.yaml
   - ./csi-driver-nfs.yaml
-  - ./datainfra.yaml
   - ./descheduler.yaml
   - ./emqx.yaml
   - ./external-dns.yaml
@@ -35,7 +34,6 @@ resources:
   - ./prometheus-community.yaml
   - ./rook-ceph.yaml
   - ./seldonio.yaml
-  - ./spark-operator.yaml
   - ./spegel.yaml
   - ./stakater.yaml
   - ./tailscale.yaml
