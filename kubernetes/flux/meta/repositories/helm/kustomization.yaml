@@ -12,6 +12,7 @@ resources:
   - ./controlplaneio.yaml
   - ./coredns.yaml
   - ./csi-driver-nfs.yaml
+  - ./dask.yaml
   - ./descheduler.yaml
   - ./emqx.yaml
   - ./external-dns.yaml
