@@ -56,9 +56,9 @@ spec:
     worker:
       name: worker
       replicas: 1
-      env:
-      - name: EXTRA_PIP_PACKAGES
-        value: s3fs dask-ml prometheus-client --upgrade
+      # env:
+      # - name: EXTRA_PIP_PACKAGES
+      #   value: s3fs dask-ml prometheus-client --upgrade
       resources:
         requests:
           cpu: 10m
@@ -84,13 +84,14 @@ spec:
       name: jupyter
       enabled: true
       rbac: true
+      command: "jupyter lab"
       serviceType: "ClusterIP"
       servicePort: 80
       password: "sha1:aae8550c0a44:9507d45e087d5ee481a5ce9f4f16f37a0867318c"
       passwordHint: "dask"
-      env:
-      - name: EXTRA_PIP_PACKAGES
-        value: "s3fs dask-ml --upgrade"
+      # env:
+      # - name: EXTRA_PIP_PACKAGES
+      #   value: "s3fs dask-ml --upgrade"
       extraConfig: |-
         # Extra Jupyter config goes here
         # E.g
