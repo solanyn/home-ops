@@ -1,3 +1,0 @@
-machine:
-  network:
-    hostname: k8s-0
