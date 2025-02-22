@@ -3,25 +3,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app jupyter
+  name: &app dask
   namespace: &namespace ml-system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/gatus/guarded
-  dependsOn:
-    - name: onepassword-store
-      namespace: external-secrets
-    - name: cloudnative-pg-cluster
-      namespace: database
   interval: 30m
-  path: ./kubernetes/apps/ml-system/jupyter/app
+  path: ./kubernetes/apps/ml-system/dask/app
   prune: false
-  postBuild:
-    substitute:
-      APP: *app
   sourceRef:
     kind: GitRepository
     name: flux-system

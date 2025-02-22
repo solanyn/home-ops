@@ -1,0 +1,117 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dask
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: dask
+      version: v1.15.0
+      sourceRef:
+        kind: HelmRepository
+        name: dask
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    scheduler:
+      enabled: true
+      replicas: 1
+      servicePort: 8786 # Scheduler service internal port.
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true # Enable scheduler servicemonitor.
+      livenessProbe:
+        httpGet:
+          path: /health
+          port: 8787
+        initialDelaySeconds: 3
+        periodSeconds: 10
+      readinessProbe:
+        httpGet:
+          path: /status
+          port: 8787
+        initialDelaySeconds: 3
+        periodSeconds: 10
+    webUI:
+      name: webui
+      servicePort: 80
+      ingress:
+        enabled: true
+        ingressClassName: internal
+        hostname: dask.goyangi.cloud
+    worker:
+      name: worker
+      replicas: 1
+      env:
+      - name: EXTRA_PIP_PACKAGES
+        value: s3fs dask-ml prometheus-client --upgrade
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+      portDashboard: 8790
+      metrics:
+        enabled: true
+        podMonitor:
+          enabled: true
+      livenessProbe:
+        httpGet:
+          path: /health
+          port: 8790 # The same as portDashboard
+        initialDelaySeconds: 3
+        periodSeconds: 10
+      readinessProbe:
+        httpGet:
+          path: /status
+          port: 8790 # The same as portDashboard
+        initialDelaySeconds: 3
+        periodSeconds: 10
+    jupyter:
+      name: jupyter
+      enabled: true
+      rbac: true
+      serviceType: "ClusterIP"
+      servicePort: 80
+      password: "sha1:aae8550c0a44:9507d45e087d5ee481a5ce9f4f16f37a0867318c"
+      passwordHint: "dask"
+      env:
+      - name: EXTRA_PIP_PACKAGES
+        value: "s3fs dask-ml --upgrade"
+      extraConfig: |-
+        # Extra Jupyter config goes here
+        # E.g
+        # c.NotebookApp.port = 8888
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+      ingress:
+        enabled: true
+        pathType: Prefix
+        hostname: jupyter.goyangi.cloud
+      livenessProbe:
+        httpGet:
+          path: /login
+          port: 8888
+        initialDelaySeconds: 3
+        periodSeconds: 10
+      readinessProbe:
+        httpGet:
+          path: /login
+          port: 8888
+        initialDelaySeconds: 3
+        periodSeconds: 10

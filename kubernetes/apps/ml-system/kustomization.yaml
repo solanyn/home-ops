@@ -6,9 +6,9 @@ namespace: ml-system
 components:
   - ../../components/common
 resources:
+  - ./dask/ks.yaml
   - ./feast/ks.yaml
   - ./flyte/ks.yaml
-  - ./jupyter/ks.yaml
   - ./kafka/ks.yaml
   - ./kuberay/ks.yaml
   - ./mlflow/ks.yaml
