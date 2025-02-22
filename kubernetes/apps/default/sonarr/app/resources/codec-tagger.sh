@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2154
-set -euo pipefail
+
+set -Eeuo pipefail
 
 CURL_CMD=(curl -fsSL --header "X-Api-Key: ${SONARR__AUTH__APIKEY:-}")
 SONARR_API_URL="http://localhost:${SONARR__SERVER__PORT:-}/api/v3"
@@ -71,7 +71,7 @@ update_series_tags() {
     # Identify tags to add
     for codec in $codecs; do
         tag_id=$(get_or_create_tag_id "${codec}")
-        if ! echo "${series_tags}" | jq --exit-status ". | index(${tag_id})" &> /dev/null; then
+        if ! echo "${series_tags}" | jq ". | index(${tag_id})" &>/dev/null; then
             tags_to_add+=("$tag_id")
         fi
     done
@@ -98,7 +98,6 @@ update_series_tags() {
 
     echo "${series_data}"
 }
-
 
 if [[ "${sonarr_eventtype:-}" == "Download" ]]; then
     cache_existing_tags
@@ -131,5 +130,5 @@ if [[ "${sonarr_eventtype:-}" == "Download" ]]; then
     "${CURL_CMD[@]}" \
         --request PUT \
         --header "Content-Type: application/json" \
-        --data "${updated_series_data}" "${SONARR_API_URL}/series" &> /dev/null
+        --data "${updated_series_data}" "${SONARR_API_URL}/series" &>/dev/null
 fi
