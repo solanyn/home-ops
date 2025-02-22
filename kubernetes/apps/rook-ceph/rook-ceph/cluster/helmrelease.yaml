@@ -50,6 +50,8 @@ spec:
       osd_class_update_on_start = false
       osd_pool_default_min_size = 1
       osd_pool_default_size = 1
+      # allow one mon
+      mon_allow_pool_size_one = true
     cephClusterSpec:
       mon:
         count: 1
