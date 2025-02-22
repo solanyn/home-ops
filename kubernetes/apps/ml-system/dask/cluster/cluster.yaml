@@ -1,0 +1,67 @@
+apiVersion: kubernetes.dask.org/v1
+kind: DaskCluster
+metadata:
+  name: dask-cluster
+spec:
+  worker:
+    replicas: 1
+    spec:
+      containers:
+      - name: worker
+        image:
+          repository: ghcr.io/dask/dask
+          tag: 2025.2.0-py3.10@sha256:0c47b8841c397526f69ba9d575232a8b829ce0ff1079e95d5b5afbb4d2e0aeac
+        args:
+          - dask-worker
+          - --name
+          - $(DASK_WORKER_NAME)
+          - --dashboard
+          - --dashboard-address
+          - "8788"
+        ports:
+          - name: http-dashboard
+            containerPort: 8788
+            protocol: TCP
+  scheduler:
+    spec:
+      containers:
+      - name: scheduler
+        image:
+          repository: ghcr.io/dask/dask
+          tag: 2025.2.0-py3.10@sha256:0c47b8841c397526f69ba9d575232a8b829ce0ff1079e95d5b5afbb4d2e0aeac
+        args:
+          - dask-scheduler
+        ports:
+          - name: tcp-comm
+            containerPort: 8786
+            protocol: TCP
+          - name: http-dashboard
+            containerPort: 8787
+            protocol: TCP
+        readinessProbe:
+          httpGet:
+            port: http-dashboard
+            path: /health
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            port: http-dashboard
+            path: /health
+          initialDelaySeconds: 15
+          periodSeconds: 20
+    service:
+      type: LoadBalancer
+      selector:
+        dask.org/cluster-name: dask-cluster
+        dask.org/component: scheduler
+      ports:
+      - name: tcp-comm
+        protocol: TCP
+        port: 8786
+        targetPort: "tcp-comm"
+      - name: http-dashboard
+        protocol: TCP
+        port: 8787
+        targetPort: "http-dashboard"
+
