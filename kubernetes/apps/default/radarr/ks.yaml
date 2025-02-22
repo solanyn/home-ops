@@ -16,6 +16,8 @@ spec:
       namespace: external-secrets
     - name: cloudnative-pg-cluster
       namespace: database
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 30m
   path: ./kubernetes/apps/default/radarr/app
   postBuild:
