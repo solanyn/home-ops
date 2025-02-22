@@ -13,6 +13,9 @@ spec:
     - ../../../../components/gatus/guarded
   interval: 30m
   path: ./kubernetes/apps/ml-system/dask/app
+  postBuild:
+    substitute:
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
