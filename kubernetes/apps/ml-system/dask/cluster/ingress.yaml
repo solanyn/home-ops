@@ -10,7 +10,7 @@ spec:
       http:
         paths:
           - path: /
-            pathType: Path
+            pathType: Prefix
             backend:
               service:
                 name: dask-cluster-scheduler
