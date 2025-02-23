@@ -8,7 +8,7 @@ resources:
 configMapGenerator:
   - name: radarr-configmap
     files:
-      - pushover-notify.sh=./resources/pushover-notify.sh
+      - pushover-notifier.sh=./resources/pushover-notifier.sh
   - name: radarr-loki-rules
     files:
       - radarr.yaml=./lokirule.yaml
