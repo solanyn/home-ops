@@ -52,6 +52,7 @@ spec:
       osd_pool_default_size = 1
       # allow one mon
       mon_allow_pool_size_one = true
+      mon_warn_on_pool_no_redundancy = false
     cephClusterSpec:
       mon:
         count: 1
