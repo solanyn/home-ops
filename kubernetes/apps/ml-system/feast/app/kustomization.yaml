@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   # renovate: datasource=github-releases depName=feast-dev/feast
-  - https://raw.githubusercontent.com/feast-dev/feast/v0.45/infra/feast-operator/dist/install.yaml
+  - https://raw.githubusercontent.com/feast-dev/feast/v0.46.0/infra/feast-operator/dist/install.yaml
