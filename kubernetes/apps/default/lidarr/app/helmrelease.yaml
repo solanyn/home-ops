@@ -48,7 +48,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lidarr-develop
-              tag: 2.10.0@sha256:d7acdfca9a97ead4aaa4c9a019e36bc089b27e13663e333726275df34f338d23
+              tag: 2.10.0@sha256:370dac8ecd1a6e3e1abed22b42c54d1b5b83878ae7e5a5537e685369fe984c08
             env:
               LIDARR__APP__INSTANCENAME: Lidarr
               LIDARR__APP__THEME: dark
