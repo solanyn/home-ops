@@ -31,7 +31,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/home-assistant
-              tag: 2025.2.5@sha256:9916587babe92c5959ab980854ce693354154cf92469da445dd9c45f00412dee
+              tag: 2025.2.5@sha256:5b28868e46853142f7ebe9e91afa81a3611043f6ffbcb22dd45665243906fa57
             env:
               TZ: Australia/Sydney
               HASS_HTTP_TRUSTED_PROXY_1: 192.168.1.0/24
