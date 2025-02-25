@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/radarr-develop
-              tag: 5.19.2.9720@sha256:710736b4b74207ad08b87954b58e10b39d482e058f4b229cf3977d58da93492b
+              tag: 5.19.2.9720@sha256:6d237a03961e3afc66f18076fa6b663e413427671b5d73b2f3fbf1443c5e98ba
             env:
               RADARR__APP__INSTANCENAME: Radarr
               # RADARR__APP__THEME: dark
