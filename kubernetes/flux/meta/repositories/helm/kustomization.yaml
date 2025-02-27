@@ -18,7 +18,6 @@ resources:
   - ./external-dns.yaml
   - ./external-secrets.yaml
   - ./feast.yaml
-  - ./flyteorg.yaml
   - ./grafana.yaml
   - ./headlamp.yaml
   - ./ingress-nginx.yaml
