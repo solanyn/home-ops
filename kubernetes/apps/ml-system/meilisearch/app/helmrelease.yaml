@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: meilisearch
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: meilisearch
+      version: 0.12.0
+      sourceRef:
+        kind: HelmRepository
+        name: meilisearch
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    fullnameOverride: meilisearch
+    environment:
+      MEILI_NO_ANALYTICS: true
+      MEILI_ENV: production
+    auth:
+      existingMasterKeySecret: meilisearch-secret
+    ingress:
+      enabled: true
+      className: internal
+      hosts:
+        - meilisearch.goyangi.cloud
+    persistence:
+      enabled: true
+      existingClaim: meilisearch
+    serviceMonitor:
+      enabled: true
