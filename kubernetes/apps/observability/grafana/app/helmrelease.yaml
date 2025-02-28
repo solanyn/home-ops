@@ -231,24 +231,6 @@ spec:
           revision: 4
           datasource:
             - {name: DS_PROMETHEUS, value: Prometheus}
-        flyte-propeller:
-          # renovate: depName="Flyte Propeller Dashboard"
-          gnetId: 21719
-          revision: 1
-          datasource:
-            - {name: DS_PROMETHEUS, value: Prometheus}
-        flyte-user:
-          # renovate: depName="Flyte User Dashboard"
-          gnetId: 22146
-          revision: 1
-          datasource:
-            - {name: DS_PROMETHEUS, value: Prometheus}
-        flyte-admin:
-          # renovate: depName="FlyteAdmin Dashboard"
-          gnetId: 21720
-          revision: 1
-          datasource:
-            - {name: DS_PROMETHEUS, value: Prometheus}
     sidecar:
       dashboards:
         enabled: true

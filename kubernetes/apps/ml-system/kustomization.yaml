@@ -8,7 +8,6 @@ components:
 resources:
   - ./dask/ks.yaml
   - ./feast/ks.yaml
-  - ./flyte/ks.yaml
   - ./kafka/ks.yaml
   - ./kuberay/ks.yaml
   - ./mlflow/ks.yaml
