@@ -11,7 +11,7 @@ spec:
           image: ghcr.io/solanyn/postgres-init:16
           envFrom:
             - secretRef:
-                name: prefect-server-secret
+                name: prefect-secret
       restartPolicy: Never
   backoffLimit: 4
 
