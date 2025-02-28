@@ -4,6 +4,7 @@ kind: Job
 metadata:
   name: init-prefect-db
 spec:
+  ttlSecondsAfterFinished: 60
   template:
     spec:
       containers:
