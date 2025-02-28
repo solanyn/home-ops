@@ -11,4 +11,5 @@ resources:
   - ./kafka/ks.yaml
   - ./kuberay/ks.yaml
   - ./mlflow/ks.yaml
+  - ./prefect/ks.yaml
   - ./seldon-core/ks.yaml
