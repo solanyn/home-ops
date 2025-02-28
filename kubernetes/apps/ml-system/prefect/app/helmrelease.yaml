@@ -23,6 +23,12 @@ spec:
       retries: 3
   values:
     server:
+      extraInitContainers:
+        - name: init-db
+          image: ghcr.io/solanyn/postgres-init:16
+          envFrom:
+            - secretRef:
+                name: prefect-server-secret
       image:
         repository: prefecthq/prefect
         prefectTag: 3-python3.11-kubernetes
@@ -34,25 +40,16 @@ spec:
       env:
         - name: PREFECT_API_DATABASE_MIGRATE_ON_START
           value: "True"
-      podSecurityContext:
-        runAsUser: 1000
-        runAsNonRoot: true
-        fsGroup: 1000
-      containerSecurityContext:
-        runAsUser: 1000
-        runAsNonRoot: true
-        readOnlyRootFilesystem: true
-        allowPrivilegeEscalation: false
-    extraInitContainers:
-      - name: init-db
-        image: ghcr.io/solanyn/postgres-init:16
-        envFrom:
-          - secretRef:
-              name: prefect-server-secret
-    resources:
-      requests:
-        cpu: 10m
-        memory: 128Mi
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+    backgroundServices:
+      runAsSeparateDeployment: true
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
     service:
       type: ClusterIP
       port: 4200
@@ -69,4 +66,3 @@ spec:
     secret:
       create: false
       name: prefect-secret
-      port: 5432
