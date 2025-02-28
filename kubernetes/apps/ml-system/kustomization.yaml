@@ -10,6 +10,7 @@ resources:
   - ./feast/ks.yaml
   - ./kafka/ks.yaml
   - ./kuberay/ks.yaml
+  - ./meilisearch/ks.yaml
   - ./mlflow/ks.yaml
   - ./prefect/ks.yaml
   - ./seldon-core/ks.yaml
