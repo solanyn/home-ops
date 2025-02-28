@@ -1,12 +1,11 @@
 ---
-apiVersion: batch/v1
-kind: Job
+apiVersion: v1
+kind: Pod
 metadata:
   name: init-prefect-db
 spec:
   template:
     spec:
-      ttlSecondsAfterFinished: 60
       containers:
         - name: init-db
           image: ghcr.io/solanyn/postgres-init:16
