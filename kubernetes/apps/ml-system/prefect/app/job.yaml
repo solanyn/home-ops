@@ -12,3 +12,5 @@ spec:
           envFrom:
             - secretRef:
                 name: prefect-secret
+      restartPolicy: Never
+
