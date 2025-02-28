@@ -23,7 +23,7 @@ spec:
       retries: 3
   values:
     server:
-      extraInitContainers:
+      extraContainers:
         - name: init-db
           image: ghcr.io/solanyn/postgres-init:16
           envFrom:
