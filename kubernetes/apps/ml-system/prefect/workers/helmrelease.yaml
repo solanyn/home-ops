@@ -28,7 +28,7 @@ spec:
         prefectTag: 3-python3.12-kubernetes
         debug: false
       config:
-        workPool: default
+        workPool: kubernetes
         queryInterval: 5
         prefetchSeconds: 10
         http2: true
