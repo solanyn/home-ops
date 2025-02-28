@@ -7,9 +7,9 @@ spec:
   template:
     spec:
       containers:
-        - name: init-db
-          image: ghcr.io/solanyn/postgres-init:16
-          envFrom:
-            - secretRef:
-                name: prefect-secret
+      - name: init-db
+        image: ghcr.io/solanyn/postgres-init:16
+        envFrom:
+          - secretRef:
+              name: prefect-secret
 
