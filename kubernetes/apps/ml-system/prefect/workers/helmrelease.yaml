@@ -36,7 +36,7 @@ spec:
         installPolicy: always
       apiConfig: server
       serverApiConfig:
-        apiUrl: http://prefect.ml-system.svc.cluster.local:4200/api
+        apiUrl: http://prefect-server.ml-system.svc.cluster.local:4200/api
       replicaCount: 1
       resources:
         requests:
