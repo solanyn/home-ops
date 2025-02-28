@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app prefect
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: prefect-server
+      version: 2025.2.21193831
+      sourceRef:
+        kind: HelmRepository
+        name: prefect
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    server:
+      image:
+        repository: prefecthq/prefect
+        prefectTag: 3-python3.11-kubernetes
+        debug: true
+      prefectApiUrl: http://localhost:4200/api
+      uiConfig:
+        enabled: true
+        prefectUiApiUrl: https://prefect.goyangi.cloud/api
+      env:
+        - name: PREFECT_API_DATABASE_MIGRATE_ON_START
+          value: "True"
+      podSecurityContext:
+        runAsUser: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+      containerSecurityContext:
+        runAsUser: 1000
+        runAsNonRoot: true
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+    extraInitContainers:
+      - name: init-db
+        image: ghcr.io/solanyn/postgres-init:16
+        envFrom:
+          - secretRef:
+              name: prefect-server-secret
+    service:
+      type: ClusterIP
+      port: 4200
+    ingress:
+      enabled: true
+      className: internal
+      host:
+        hostname: prefect.goyangi.cloud
+        path: /
+        pathType: Prefix
+          10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+      tls: true
+    postgresql:
+      enabled: false
+    secret:
+      create: false
+      name: prefect-secret
+      port: 5432

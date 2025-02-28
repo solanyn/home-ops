@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app prefect-workers
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: prefect-worker
+      version: 2025.2.21193831
+      sourceRef:
+        kind: HelmRepository
+        name: prefect
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    worker:
+      image:
+        repository: prefecthq/prefect
+        prefectTag: 3-python3.12-kubernetes
+        debug: false
+      config:
+        workPool: default
+        queryInterval: 5
+        prefetchSeconds: 10
+        http2: true
+        type: kubernetes
+        installPolicy: always
+      apiConfig: server
+      serverApiConfig:
+        apiUrl: http://prefect.ml-system.svc.cluster.local:4200/api
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          memory: 1Gi
+      podSecurityContext:
+        runAsUser: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+      containerSecurityContext:
+        runAsUser: 1000
+        runAsNonRoot: true
+        readOnlyRootFilesystem: true
+        allowPrivilegeEscalation: false
+    role:
+      extraPermissions: []
