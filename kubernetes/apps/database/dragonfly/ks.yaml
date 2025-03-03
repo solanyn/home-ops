@@ -12,9 +12,10 @@ spec:
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/database/dragonfly/app
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -35,9 +36,10 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: dragonfly
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/database/dragonfly/cluster
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
