@@ -46,7 +46,7 @@ spec:
         purge: false
     persistence:
       enabled: true
-      existingClaim: nfs-minio
+      existingClaim: minio
     ingress:
       enabled: true
       ingressClassName: internal
