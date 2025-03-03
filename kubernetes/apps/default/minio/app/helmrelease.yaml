@@ -73,5 +73,5 @@ spec:
       existingClientIdKey: MINIO_CLIENT_ID
       existingClientSecretKey: MINIO_CLIENT_SECRET
       redirectUri: https://minio.goyangi.cloud/oauth_callback
-      claimName: admin
+      claimName: consoleAdmin
       displayName: Pocket ID
