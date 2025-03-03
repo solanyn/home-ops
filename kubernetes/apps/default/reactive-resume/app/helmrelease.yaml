@@ -40,9 +40,44 @@ spec:
               repository: ghcr.io/amruthpillai/reactive-resume
               tag: v4.4.5@sha256:d6e56fa0378801f76a082b5c7a612ed9cece731729afc57e5b48f3b9d6823ff4
             env:
-              PORT: &port 3000
+              PORT: &port 80
               STORAGE_URL: http://minio.default.svc.cluster.local:9000/reactive-resume
               PUBLIC_URL: https://cv.goyangi.cloud
+              CHROME_URL: ws://chrome.default.svc.cluster.local
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+      chrome:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/browserless/chromium
+              tag: v2.25.1@sha256:d0a9779e7a8ba9a1b49db1aeca01104a2c5072ec446e1da2e98906c57db41fd3
+            env:
+              HEALTH: true
+              PROXY_HOST: http://chrome.default.svc.cluster.local
+              PROXY_PORT: *port
             envFrom: *envFrom
             probes:
               liveness: &probes
@@ -76,6 +111,11 @@ spec:
     service:
       app:
         controller: reactive-resume
+        ports:
+          http:
+            port: *port
+      app:
+        controller: chrome
         ports:
           http:
             port: *port
