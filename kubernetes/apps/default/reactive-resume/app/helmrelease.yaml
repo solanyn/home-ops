@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: reactive-resume
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      reactive-resume:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/solanyn/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: reactive-resume-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/amruthpillai/reactive-resume
+              tag: v4.4.5@sha256:d6e56fa0378801f76a082b5c7a612ed9cece731729afc57e5b48f3b9d6823ff4
+            env:
+              PORT: &port 3000
+              STORAGE_URL: http://minio.default.svc.cluster.local:9000/reactive-resume
+              PUBLIC_URL: https://cv.solanyn.dev
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: {type: RuntimeDefault}
+    service:
+      app:
+        controller: reactive-resume
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        className: external
+        hosts:
+          - host: cv.solanyn.dev
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
