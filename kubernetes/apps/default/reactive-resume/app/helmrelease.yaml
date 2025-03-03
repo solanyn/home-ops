@@ -66,7 +66,11 @@ spec:
               requests:
                 cpu: 10m
                 memory: 128Mi
-          chrome:
+      chrome:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
             image:
               repository: ghcr.io/browserless/chromium
               tag: v2.25.1@sha256:d0a9779e7a8ba9a1b49db1aeca01104a2c5072ec446e1da2e98906c57db41fd3
@@ -110,7 +114,7 @@ spec:
         ports:
           http:
             port: *port
-      app:
+      chrome:
         controller: chrome
         ports:
           http:
