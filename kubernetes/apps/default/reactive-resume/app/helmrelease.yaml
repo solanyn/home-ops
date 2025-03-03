@@ -82,7 +82,7 @@ spec:
             port: *port
     ingress:
       app:
-        className: external
+        className: internal
         hosts:
           - host: cv.solanyn.dev
             paths:
