@@ -58,7 +58,7 @@ function log() {
     fi
 
     # Print the log message
-    printf "%s %b%s%b %s %b\n" "$(date --iso-8601=seconds)" \
+    printf "%s %b%s%b %s %b\n" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
         "${color}" "${level^^}" "\033[0m" "${msg}" "${data}" >"${output_stream}"
 
     # Exit if the log level is error
@@ -103,18 +103,6 @@ function check_cli() {
     log debug "Deps are installed" "deps=${deps[*]}"
 }
 
-# Wait for CRDs to be available
-function wait_for_crds() {
-    local crds=("${@}")
-
-    for crd in "${crds[@]}"; do
-        until kubectl get crd "${crd}" &>/dev/null; do
-            log info "CRD is not available. Retrying in 10 seconds..." "crd=${crd}"
-            sleep 10
-        done
-    done
-}
-
 # Render a template using minijinja and inject secrets using op
 function render_template() {
     local -r file="${1}"
@@ -130,4 +118,3 @@ function render_template() {
 
     echo "${output}"
 }
-
