@@ -37,6 +37,5 @@ resources:
   - ./rook-ceph.yaml
   - ./seldonio.yaml
   - ./spegel.yaml
-  - ./stakater.yaml
   - ./tailscale.yaml
   - ./wiremind.yaml
