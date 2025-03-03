@@ -27,10 +27,10 @@ spec:
       replicas: 1
     storageClass:
       create: true
-      name: nfs-minio
+      name: nfs-slow
       parameters:
         server: nas.internal
-        share: /mnt/world/minio
+        share: /mnt/world/kubernetes
       mountOptions:
         - nfsvers=4.2
         - nconnect=16
