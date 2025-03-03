@@ -16,7 +16,7 @@ spec:
       namespace: rook-ceph
     - name: volsync
       namespace: volsync-system
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/default/atuin/app
   postBuild:
     substitute:
@@ -24,6 +24,7 @@ spec:
       GATUS_SUBDOMAIN: sh
       VOLSYNC_CAPACITY: 5Gi
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

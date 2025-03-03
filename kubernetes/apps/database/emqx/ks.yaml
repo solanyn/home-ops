@@ -12,9 +12,10 @@ spec:
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/database/emqx/app
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -36,9 +37,10 @@ spec:
   dependsOn:
     - name: emqx
       namespace: database
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/database/emqx/cluster
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

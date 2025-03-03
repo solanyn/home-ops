@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: seldon-core
 spec:
-  interval: 30m
+  interval: 1h
   chart:
     spec:
       chart: seldon-core-operator
