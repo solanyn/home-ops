@@ -29,6 +29,7 @@ resources:
   - ./kuberay.yaml
   - ./meilisearch.yaml
   - ./metrics-server.yaml
+  - ./minio.yaml
   - ./openebs.yaml
   - ./piraeus.yaml
   - ./prefect.yaml
