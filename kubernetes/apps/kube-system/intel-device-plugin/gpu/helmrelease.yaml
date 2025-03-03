@@ -21,10 +21,7 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: intel-device-plugin-operator
-      namespace: kube-system
   values:
     name: intel-gpu-plugin
-    sharedDevNum: 3
+    sharedDevNum: 99
     nodeFeatureRule: false
