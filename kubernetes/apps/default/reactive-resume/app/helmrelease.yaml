@@ -42,7 +42,7 @@ spec:
             env:
               PORT: &port 3000
               STORAGE_URL: http://minio.default.svc.cluster.local:9000/reactive-resume
-              PUBLIC_URL: https://cv.solanyn.dev
+              PUBLIC_URL: https://cv.goyangi.cloud
             envFrom: *envFrom
             probes:
               liveness: &probes
@@ -84,7 +84,7 @@ spec:
       app:
         className: internal
         hosts:
-          - host: cv.solanyn.dev
+          - host: cv.goyangi.cloud
             paths:
               - path: /
                 service:
