@@ -19,13 +19,14 @@ spec:
       namespace: volsync-system
     - name: cloudnative-pg-cluster
       namespace: database
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/default/pocket-id/app
   postBuild:
     substitute:
       APP: *app
       GATUS_SUBDOMAIN: id
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system

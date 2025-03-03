@@ -16,7 +16,7 @@ spec:
       namespace: external-secrets
     - name: cloudnative-pg-cluster
       namespace: database
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/ml-system/prefect/app
   postBuild:
     substitute:
@@ -43,7 +43,7 @@ spec:
   dependsOn:
     - name: prefect
       namespace: ml-system
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/ml-system/prefect/workers
   prune: false
   sourceRef:

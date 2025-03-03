@@ -12,7 +12,7 @@ spec:
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/rook-ceph/rook-ceph/app
   prune: false
   sourceRef:
@@ -52,7 +52,7 @@ spec:
       kind: CephCluster
       failed: status.ceph.health == 'HEALTH_ERR'
       current: status.ceph.health in ['HEALTH_OK', 'HEALTH_WARN']
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
   postBuild:
     substitute:

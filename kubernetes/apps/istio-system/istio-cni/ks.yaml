@@ -12,7 +12,7 @@ spec:
   dependsOn:
     - name: istio-base
       namespace: istio-system
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/istio-system/istio-cni/app
   prune: false
   sourceRef:

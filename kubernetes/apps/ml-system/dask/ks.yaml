@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/ml-system/dask/app
   prune: false
   sourceRef:
@@ -32,7 +32,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/guarded
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/ml-system/dask/cluster
   postBuild:
     substitute:

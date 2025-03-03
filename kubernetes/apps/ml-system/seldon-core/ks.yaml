@@ -14,7 +14,7 @@ spec:
       namespace: external-secrets
     - name: istiod
       namespace: istio-system
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/ml-system/seldon-core/app
   prune: false
   sourceRef:

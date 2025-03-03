@@ -18,12 +18,13 @@ spec:
       namespace: rook-ceph
     - name: cloudnative-pg-cluster
       namespace: database
-  interval: 30m
+  interval: 1h
   path: ./kubernetes/apps/default/readarr/app
   postBuild:
     substitute:
       APP: *app
   prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
