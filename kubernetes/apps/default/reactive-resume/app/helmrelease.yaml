@@ -43,7 +43,7 @@ spec:
               PORT: &port 80
               STORAGE_URL: http://minio.default.svc.cluster.local:9000/reactive-resume
               PUBLIC_URL: https://cv.goyangi.cloud
-              CHROME_URL: ws://chrome.default.svc.cluster.local:8080
+              CHROME_URL: ws://reactive-resume-chrome.default.svc.cluster.local:8080
             envFrom: *envFrom
             probes:
               liveness: &probes
@@ -72,7 +72,7 @@ spec:
               tag: v2.25.2@sha256:a5f2cb9c71ce425e45b452e3a6ea67900af45e43b2928c5f6a02dd6b31145dc0
             env:
               HEALTH: true
-              PROXY_HOST: http://chrome.default.svc.cluster.local
+              PROXY_HOST: http://reactive-resume-chrome.default.svc.cluster.local
               PROXY_PORT: 8080
             envFrom: *envFrom
             securityContext:
