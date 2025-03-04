@@ -42,7 +42,7 @@ spec:
             env:
               PORT: &port 80
               STORAGE_URL: http://minio.default.svc.cluster.local:9000/reactive-resume
-              PUBLIC_URL: http://cv.goyangi.cloud
+              PUBLIC_URL: https://cv.goyangi.cloud
               CHROME_URL: ws://chrome.default.svc.cluster.local
             envFrom: *envFrom
             probes:
