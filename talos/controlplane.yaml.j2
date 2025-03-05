@@ -28,15 +28,6 @@ machine:
       validSubnets:
         - 192.168.1.0/24
     disableManifestsDirectory: true
-  network:
-    interfaces:
-      - deviceSelector:
-          hardwareAddr: b8:85:84:a2:*
-          driver: e1000e
-        mtu: 9000
-        dhcp: true
-        vip:
-          ip: 192.168.1.120
   install:
     diskSelector:
       model: TS256GSSD370
