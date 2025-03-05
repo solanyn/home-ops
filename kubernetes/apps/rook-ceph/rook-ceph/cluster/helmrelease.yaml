@@ -78,8 +78,8 @@ spec:
         useAllNodes: true
         useAllDevices: false
         # TODO: change this after disks arrive!
-        deviceFilter: /dev/disk/by-id/nvme-SAMSUNG_MZVLQ256HAJD-000H1_.*
-        # deviceFilter: /dev/disk/by-id/sata-SAMSUNG
+        devicePathFilter: /dev/disk/by-id/nvme-SAMSUNG_MZVLQ256HAJD-000H1_.*
+        # devicePathFilter: /dev/disk/by-id/sata-SAMSUNG
         config:
           osdsPerDevice: "1"
       resources:
