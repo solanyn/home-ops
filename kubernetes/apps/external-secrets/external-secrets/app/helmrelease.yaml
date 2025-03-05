@@ -19,5 +19,5 @@ spec:
       retries: 3
   valuesFrom:
     - kind: ConfigMap
-      name: external-secrets-helm-values
+      name: external-secrets-values
 
