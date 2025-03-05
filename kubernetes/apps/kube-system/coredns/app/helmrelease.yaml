@@ -26,4 +26,4 @@ spec:
         cpu: 10m
   valuesFrom:
     - kind: ConfigMap
-      name: coredns-helm-values
+      name: coredns-values
