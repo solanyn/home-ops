@@ -11,6 +11,7 @@ resources:
   - ./bazarr/ks.yaml
   - ./calibre/ks.yaml
   - ./calibre-web/ks.yaml
+  - ./chromium/ks.yaml
   - ./cross-seed/ks.yaml
   - ./echo-server/ks.yaml
   - ./emailer/ks.yaml

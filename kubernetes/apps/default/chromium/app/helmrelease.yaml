@@ -2,13 +2,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: reactive-resume
+  name: &port chromium
 spec:
   interval: 1h
   chart:
     spec:
       chart: app-template
-      version: 3.7.2
+      version: 3.7.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -26,33 +26,26 @@ spec:
       reactive-resume:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/solanyn/postgres-init
-              tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: reactive-resume-secret
         containers:
           app:
             image:
-              repository: ghcr.io/amruthpillai/reactive-resume
-              tag: v4.4.5@sha256:d6e56fa0378801f76a082b5c7a612ed9cece731729afc57e5b48f3b9d6823ff4
+              repository: ghcr.io/browserless/chromium
+              tag: v2.25.2@sha256:a5f2cb9c71ce425e45b452e3a6ea67900af45e43b2928c5f6a02dd6b31145dc0
             env:
-              PORT: &port 80
-              STORAGE_URL: http://minio.default.svc.cluster.local:9000/reactive-resume
-              PUBLIC_URL: https://cv.goyangi.cloud
-              CHROME_URL: wss://chromium.goyangi.cloud
-            envFrom: *envFrom
+              HEALTH: true
+              PROXY_URL: https://chromium.goyangi.cloud
+              PROXY_PORT: &port 80
+            envFrom:
+              - secretRef:
+                  name: chromium-secret
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /
-                    port: *port
+                    path: /active
+                    port: &port 3000
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -69,14 +62,14 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: false
-        runAsUser: 0
-        runAsGroup: 0
-        fsGroup: 0
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: {type: RuntimeDefault}
     service:
       app:
-        controller: reactive-resume
+        controller: *app
         ports:
           http:
             port: *port
@@ -84,7 +77,7 @@ spec:
       app:
         className: internal
         hosts:
-          - host: cv.goyangi.cloud
+          - host: chromium.goyangi.cloud
             paths:
               - path: /
                 service:
