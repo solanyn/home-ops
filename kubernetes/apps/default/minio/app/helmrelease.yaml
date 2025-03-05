@@ -4,14 +4,14 @@ kind: HelmRelease
 metadata:
   name: minio
 spec:
-  interval: 1h
+  interval: 30m
   chart:
     spec:
-      chart: minio
-      version: 5.4.0
+      chart: app-template
+      version: 3.7.1
       sourceRef:
         kind: HelmRepository
-        name: minio
+        name: bjw-s
         namespace: flux-system
   install:
     remediation:
@@ -22,47 +22,95 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    image:
-      repository: quay.io/minio/minio
-      tag: RELEASE.2025-02-28T09-55-16Z@sha256:a929054ae025fa7997857cd0e2a2e3029238e31ad89877326dc032f4c1a14259
-      pullPolicy: IfNotPresent
-    mcImage:
-      repository: quay.io/minio/mc
-      tag: RELEASE.2023-01-11T03-14-16Z
-      pullPolicy: IfNotPresent
-    mode: standalone
-    existingSecret: minio-secret
-    users: []
-    buckets:
-      - name: bps
-        purge: false
-      - name: cloudnative-pg
-        purge: false
-      - name: feast
-        purge: false
-      - name: mlflow
-        purge: false
-      - name: tsw
-        purge: false
-    persistence:
-      enabled: true
-      existingClaim: minio
+    controllers:
+      minio:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: quay.io/minio/minio
+              tag: RELEASE.2024-09-22T00-33-43Z@sha256:7d80fd232a2f7108aa6f133fcfe5fade3f1626d92d31ae1318076e7aa61928a2
+            env:
+              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.goyangi.cloud,https://s3.${SECRET_HOME_DOMAIN}
+              MINIO_BROWSER_REDIRECT_URL: https://minio.goyangi.cloud
+              MINIO_PROMETHEUS_JOB_ID: minio
+              MINIO_PROMETHEUS_URL: https://prometheus.goyangi.cloud
+              MINIO_PROMETHEUS_AUTH_TYPE: public
+              MINIO_SERVER_URL: https://s3.goyangi.cloud
+              MINIO_STORAGE_CLASS_RRS: EC:0
+              MINIO_STORAGE_CLASS_STANDARD: EC:0
+              MINIO_UPDATE: "off"
+            envFrom:
+              - secretRef:
+                  name: minio-secret
+            args: ["server", "/minio", "--console-address", ":9001"]
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /minio/health/live
+                    port: 9000
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 6
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                memory: 128Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: {type: RuntimeDefault}
+    service:
+      app:
+        controller: minio
+        ports:
+          http:
+            port: 9001
+          s3:
+            port: 9000
+    serviceMonitor:
+      app:
+        serviceName: minio
+        endpoints:
+          - port: s3
+            scheme: http
+            path: /minio/v2/metrics/cluster
+            interval: 1m
+            scrapeTimeout: 10s
     ingress:
-      enabled: true
-      ingressClassName: internal
-      hosts:
-        - s3.goyangi.cloud
-    consoleIngress:
-      enabled: true
-      ingressClassName: internal
-      hosts:
-        - minio.goyangi.cloud
-    additionalAnnotations:
-      reloader.stakater.com/auto: "true"
-    resources:
-      requests:
-        memory: 128Mi
-        cpu: 10m
-    metrics:
-      serviceMonitor:
-        enabled: true
+      app:
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.goyangi.cloud"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+          - host: "s3.goyangi.cloud"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: s3
+    persistence:
+      minio:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/minio
