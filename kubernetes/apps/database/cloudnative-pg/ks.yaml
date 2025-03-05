@@ -35,6 +35,9 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cloudnative-pg
+      namespace: database
+    - name: minio
+      namespace: default
   interval: 1h
   path: ./kubernetes/apps/database/cloudnative-pg/cluster
   prune: true

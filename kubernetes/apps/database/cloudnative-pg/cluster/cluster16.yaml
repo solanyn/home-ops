@@ -41,7 +41,7 @@ spec:
       endpointURL: http://minio.default.svc.cluster.local:9000
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
-      serverName: &currentCluster postgres16-v15
+      serverName: &currentCluster postgres16-v16
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
@@ -53,7 +53,7 @@ spec:
   # cluster when recovering from an existing cnpg cluster
   bootstrap:
     recovery:
-      source: &previousCluster postgres16-v14
+      source: &previousCluster postgres16-v15
   # NOTE: externalClusters is needed when recovering from an EXISTING cnpg cluster
   externalClusters:
     - name: *previousCluster
