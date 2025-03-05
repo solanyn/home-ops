@@ -79,7 +79,9 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        deviceFilter: nvme0n1
+        # TODO: change this after disks arrive!
+        deviceFilter: /dev/disk/by-id/nvme-SAMSUNG_MZVLQ256HAJD-000H1_.*
+        # deviceFilter: /dev/disk/by-id/sata-SAMSUNG
         config:
           osdsPerDevice: "1"
       resources:
