@@ -12,8 +12,6 @@ spec:
   dependsOn:
     - name: onepassword-store
       namespace: external-secrets
-    - name: csi-driver-nfs
-      namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/default/minio/app
   postBuild:
