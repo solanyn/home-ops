@@ -11,7 +11,9 @@ vars:
   SCRIPTS_DIR: '{{.ROOT_DIR}}/scripts'
   TALOS_DIR: '{{.ROOT_DIR}}/talos'
 
-dotenv: ['{{.KUBERNETES_DIR}}/bootstrap/.cluster.env']
+dotenv:
+  - '{{.ROOT_DIR}}/onepassword.env'
+  - '{{.KUBERNETES_DIR}}/apps/system-upgrade/versions.env'
 
 env:
   KUBECONFIG: '{{.ROOT_DIR}}/kubeconfig'
