@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+
+  backup:
+    desc: Backup postgres cluster
+    cmds:
+      - |
+        BACKUP_NAME=postgres-$(date +%Y%m%d%H%M%S)
+
+        echo "
+        apiVersion: postgresql.cnpg.io/v1
+        kind: Backup
+        metadata:
+          name: $BACKUP_NAME
+          namespace: database
+        spec:
+          cluster:
+            name: postgres17
+        " | kubectl apply -f -
+
+        until [[ "$(kubectl --namespace database get backup "$BACKUP_NAME" -o jsonpath='{{`{.status.phase}`}}')" == "completed" ]]; do
+          echo "Backup not completed, waiting for backup to complete..."
+          sleep 10
+        done
+
+        echo "Postgres backup complete!"
+    preconditions:
+      - which kubectl
