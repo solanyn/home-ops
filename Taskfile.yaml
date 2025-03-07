@@ -23,6 +23,7 @@ env:
 
 includes:
   b: .taskfiles/bootstrap
+  c: .taskfiles/cnpg
   k: .taskfiles/kubernetes
   s: .taskfiles/sops
   t: .taskfiles/talos
