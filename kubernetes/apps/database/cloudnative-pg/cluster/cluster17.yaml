@@ -1,12 +1,11 @@
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres16
+  name: postgres17
 spec:
-  # TODO: set to n number of nodes
   instances: 1
-  imageName: ghcr.io/cloudnative-pg/postgresql:16.4-51
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.4-3
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
@@ -41,7 +40,7 @@ spec:
       endpointURL: http://minio.default.svc.cluster.local:9000
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
-      serverName: &currentCluster postgres16-v18
+      serverName: &currentCluster postgres17-v1
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
@@ -53,7 +52,7 @@ spec:
   # cluster when recovering from an existing cnpg cluster
   bootstrap:
     recovery:
-      source: &previousCluster postgres16-v17
+      source: &previousCluster postgres17-v1
   # NOTE: externalClusters is needed when recovering from an EXISTING cnpg cluster
   externalClusters:
     - name: *previousCluster
