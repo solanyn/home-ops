@@ -34,7 +34,7 @@ spec:
         http2: true
         type: kubernetes
         installPolicy: always
-      apiConfig: server
+      apiConfig: selfHostedServer
       serverApiConfig:
         apiUrl: http://prefect-server.ml-system.svc.cluster.local:4200/api
       replicaCount: 1
