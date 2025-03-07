@@ -51,26 +51,11 @@ spec:
   # NOTE: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
   bootstrap:
-    # recovery:
-    #   source: &previousCluster postgres17-v1
-    initdb:
-      import:
-        type: monolith
-        databases: ["*"]
-        roles: ["*"]
-        source:
-          externalCluster: postgres16
+    recovery:
+      source: &previousCluster postgres17-v1
   # NOTE: externalClusters is needed when recovering from an EXISTING cnpg cluster
   externalClusters:
-    # - name: *previousCluster
-    #   barmanObjectStore:
-    #     !!merge <<: *barmanObjectStore
-    #     serverName: *previousCluster
-    - name: postgres16
-      connectionParameters:
-        host: postgres16-rw.database.svc.cluster.local
-        user: postgres
-        dbname: postgres
-      password:
-        name: cloudnative-pg-secret
-        key: password
+    - name: *previousCluster
+      barmanObjectStore:
+        !!merge <<: *barmanObjectStore
+        serverName: *previousCluster
