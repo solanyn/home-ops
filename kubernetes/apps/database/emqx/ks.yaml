@@ -4,16 +4,21 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app emqx
-  namespace: &namespace database
+  namespace: &namespace default
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: onepassword-store
+    - name: onepassword
       namespace: external-secrets
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: *namespace
   interval: 1h
-  path: ./kubernetes/apps/database/emqx/app
+  path: ./kubernetes/apps/default/emqx/app
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -22,23 +27,27 @@ spec:
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
-  wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app emqx-cluster
-  namespace: &namespace database
+  namespace: &namespace default
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: emqx
-      namespace: database
+      namespace: default
+  healthCheckExprs:
+    - apiVersion: apps.emqx.io/v2beta1
+      kind: EMQX
+      failed: status.conditions.filter(e, e.type == 'Available').all(e, e.status == 'False')
+      current: status.conditions.filter(e, e.type == 'Available').all(e, e.status == 'True')
   interval: 1h
-  path: ./kubernetes/apps/database/emqx/cluster
+  path: ./kubernetes/apps/default/emqx/cluster
   prune: true
   retryInterval: 2m
   sourceRef:
