@@ -13,8 +13,6 @@ spec:
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
-    - name: onepassword-store
-      namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: rook-ceph
     - name: volsync
@@ -49,8 +47,6 @@ spec:
   dependsOn:
     - name: qbittorrent
       namespace: default
-    - name: onepassword-store
-      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/default/qbittorrent/tools
   prune: true

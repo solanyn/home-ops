@@ -10,8 +10,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: onepassword-store
-      namespace: external-secrets
     - name: istiod
       namespace: istio-system
   interval: 1h
