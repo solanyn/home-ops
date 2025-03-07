@@ -19,9 +19,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: pocket-id
-      namespace: default
   values:
     controllers:
       oauth2-proxy:
