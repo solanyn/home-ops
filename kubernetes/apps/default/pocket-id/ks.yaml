@@ -12,6 +12,7 @@ spec:
   components:
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
+  dependsOn:
     - name: volsync
       namespace: volsync-system
     - name: cloudnative-pg-cluster
