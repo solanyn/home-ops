@@ -9,6 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
     - name: istiod
       namespace: istio-system
   interval: 1h
