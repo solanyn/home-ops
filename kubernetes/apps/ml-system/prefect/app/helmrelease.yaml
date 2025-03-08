@@ -33,6 +33,9 @@ spec:
       env:
         - name: PREFECT_API_DATABASE_MIGRATE_ON_START
           value: "True"
+      basicAuth:
+        enabled: true
+        existingSecret: prefect-secret
       resources:
         requests:
           cpu: 10m
