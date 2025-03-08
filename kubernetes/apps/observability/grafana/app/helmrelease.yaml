@@ -12,7 +12,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: grafana
-        namespace: flux-system
   install:
     remediation:
       retries: 3
