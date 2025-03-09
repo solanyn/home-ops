@@ -44,7 +44,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/readarr-develop
-              tag: 0.4.11.2747@sha256:81b8443fe40c436c6b4930073957d90f76c5628d3eb52aa8c0b2c89545ff8743
+              tag: 0.4.12.2753@sha256:06207f11b562c338effb930aad4f072343dd4218970fb4a8a44f1591106d50bd
             env:
               # NOTE: Environment variables only work because onedr0p containers do some cool things to turn ENV variables to config.xml
               READARR__APP__INSTANCENAME: Readarr
