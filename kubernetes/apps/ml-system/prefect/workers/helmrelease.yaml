@@ -37,9 +37,6 @@ spec:
       apiConfig: selfHostedServer
       selfHostedServerApiConfig:
         apiUrl: http://prefect-server.ml-system.svc.cluster.local:4200/api
-        basicAuth:
-          enabled: true
-          existingSecret: prefect-secret
       replicaCount: 1
       resources:
         requests:
