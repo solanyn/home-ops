@@ -53,5 +53,6 @@ spec:
         runAsNonRoot: true
         readOnlyRootFilesystem: true
         allowPrivilegeEscalation: false
+      extraEnvVarsSecrets: ["prefect-secret"]
     role:
       extraPermissions: []
