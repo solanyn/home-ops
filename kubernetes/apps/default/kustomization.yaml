@@ -13,7 +13,7 @@ resources:
   - ./calibre-web/ks.yaml
   - ./chromium/ks.yaml
   - ./cross-seed/ks.yaml
-  - ./echo-server/ks.yaml
+  - ./echo/ks.yaml
   - ./emailer/ks.yaml
   - ./filebrowser/ks.yaml
   - ./flaresolverr/ks.yaml
