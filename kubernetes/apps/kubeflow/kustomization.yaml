@@ -5,5 +5,4 @@ kind: Kustomization
 namespace: kubeflow
 components:
   - ../../components/common
-resources:
-  - ./kubeflow/ks.yaml
+resources: []
