@@ -36,7 +36,7 @@ spec:
  spec:
    staticConfigs:
      - targets:
-         - expanse.internal:7070
+         - nas.internal:7070
    metricsPath: /metrics
    relabelings:
      - action: replace
