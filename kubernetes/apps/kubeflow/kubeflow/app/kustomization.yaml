@@ -69,18 +69,3 @@ patches:
     patch: |
       - op: remove
         path: "/"
-  # Remove minio
-  - target:
-      kind: Deployment
-      name: "*minio*"
-    patch: |
-      - op: remove
-        path: "/"
-  # Remove postgres
-  - target:
-      kind: "*"
-      name: "*postgres*"
-    patch: |
-      - op: remove
-        path: "/"
-
