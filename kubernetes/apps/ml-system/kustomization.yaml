@@ -13,4 +13,3 @@ resources:
   - ./meilisearch/ks.yaml
   - ./mlflow/ks.yaml
   - ./prefect/ks.yaml
-  - ./seldon-core/ks.yaml
