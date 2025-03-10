@@ -18,8 +18,6 @@ resources:
   - https://github.com/kubeflow/manifests.git//common/knative/knative-serving/overlays/gateways?ref=v1.10.0-rc.2
   - https://github.com/kubeflow/manifests.git//common/istio-1-24/cluster-local-gateway/base?ref=v1.10.0-rc.2
   - https://github.com/kubeflow/manifests.git//common/knative/knative-eventing/base?ref=v1.10.0-rc.2
-  # kubeflow namespace
-  - https://github.com/kubeflow/manifests.git//common/kubeflow-namespace/base?ref=v1.10.0-rc.2
   # network policies
   - https://github.com/kubeflow/manifests.git//common/networkpolicies/base?ref=v1.10.0-rc.2
   # roles
@@ -42,6 +40,17 @@ resources:
   - https://github.com/kubeflow/manifests.git//apps/jupyter/jupyter-web-app/upstream/overlays/istio?ref=v1.10.0-rc.2
 
 patches:
+  # Add labels from https://github.com/kubeflow/manifests.git//common/kubeflow-namespace/base?ref=v1.10.0-rc.2
+  - target:
+      kind: Namespace
+      name: kubeflow
+    patch: |
+      - op: add
+        path: "/metadata/labels/control-plane"
+        value: "kubeflow"
+      - op: add
+        path: "/metadata/labels/istio-injection"
+        value: "enabled"
   # Set low resource requests
   - target:
       kind: Deployment
@@ -63,9 +72,3 @@ patches:
               }
             }
           ]
-  # Remove namespace definitions
-  - target:
-      kind: Namespace
-    patch: |
-      - op: remove
-        path: "/"
