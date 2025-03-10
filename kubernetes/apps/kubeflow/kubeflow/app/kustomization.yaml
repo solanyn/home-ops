@@ -63,10 +63,31 @@ patches:
               }
             }
           ]
+  # Remove namespace definitions
+  - target:
+      kind: Namespace
+    patch: |
+      - op: remove
+        path: "/"
+  # Deploy in kubeflow namespace
   - target:
       kind: Namespace
     patch: |
       - op: replace
         path: "/metadata/name"
         value: "kubeflow"
+  # Remove minio
+  - target:
+      kind: Deployment
+      name: minio
+    patch: |
+      - op: remove
+        path: "/"
+  # Remove postgres
+  - target:
+      kind: Deployment
+      name: postgres
+    patch: |
+      - op: remove
+        path: "/"
 
