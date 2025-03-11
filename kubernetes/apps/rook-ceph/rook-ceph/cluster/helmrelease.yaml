@@ -26,12 +26,6 @@ spec:
     monitoring:
       enabled: true
       createPrometheusRules: true
-    ingress:
-      dashboard:
-        ingressClassName: internal
-        host:
-          name: "rook.goyangi.cloud"
-          path: /
     toolbox:
       enabled: true
       resources:
@@ -72,9 +66,7 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        # TODO: change this after disks arrive!
-        devicePathFilter: /dev/disk/by-id/nvme-SAMSUNG_MZVLQ256HAJD-000H1_.*
-        # devicePathFilter: /dev/disk/by-id/sata-SAMSUNG
+        devicePathFilter: /dev/disk/by-id/ata-SAMSUNG_MZ7LM960HCHP-00003_.*
         config:
           osdsPerDevice: "1"
       resources:

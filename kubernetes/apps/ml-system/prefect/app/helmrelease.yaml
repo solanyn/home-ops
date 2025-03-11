@@ -57,14 +57,6 @@ spec:
     service:
       type: ClusterIP
       port: 4200
-    ingress:
-      enabled: true
-      className: internal
-      host:
-        hostname: prefect.goyangi.cloud
-        path: /
-        pathType: Prefix
-      tls: true
     postgresql:
       enabled: false
     secret:

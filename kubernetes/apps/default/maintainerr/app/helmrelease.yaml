@@ -58,19 +58,18 @@ spec:
         controller: *app
         ports:
           http:
-            port: 6246
-    ingress:
+            port: &port 6246
+    route:
       app:
-        className: internal
-        annotations:
-          gethomepage.dev/enabled: "true"
-        hosts:
-          - host: "{{ .Release.Name }}.goyangi.cloud"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["maintainerr.goyangi.cloud"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       data:
         existingClaim: *app

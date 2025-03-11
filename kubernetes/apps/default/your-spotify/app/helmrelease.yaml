@@ -88,27 +88,31 @@ spec:
         ports:
           http:
             port: 27017
-    ingress:
+    route:
       app:
-        className: external
-        annotations:
-          nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-          nginx.ingress.kubernetes.io/proxy-body-size: 1000m
-          nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-          nginx.ingress.kubernetes.io/rewrite-target: /$1
-        hosts:
-          - host: spotify.goyangi.cloud
-            paths:
-              - path: /?(.*)
-                pathType: Prefix
-                service:
-                  identifier: web
-                  port: http
-              - path: /api/?(.*)
-                pathType: Prefix
-                service:
-                  identifier: server
-                  port: http
+        hostnames: ["spotify.goyangi.cloud"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            backendRefs:
+              - name: web
+                port: 3000
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /api
+            backendRefs:
+              - name: server
+                port: *port
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       configs:
         existingClaim: *app

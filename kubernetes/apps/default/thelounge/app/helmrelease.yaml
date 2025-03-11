@@ -38,41 +38,29 @@ spec:
                 spec:
                   failureThreshold: 30
                   periodSeconds: 5
-            # securityContext:
-            #   allowPrivilegeEscalation: false
-            #   readOnlyRootFilesystem: true
-            #   capabilities: {drop: ["ALL"]}
             resources:
               requests:
                 cpu: 10m
                 memory: 256M
               limits:
                 memory: 512M
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 1000
-    #     runAsGroup: 1000
-    #     fsGroup: 1000
-    #     fsGroupChangePolicy: OnRootMismatch
-    #     supplementalGroups: [10000]
-    #     seccompProfile: {type: RuntimeDefault}
     service:
       app:
         controller: *app
         ports:
           http:
-            port: 9000
-    ingress:
+            port: &port 9000
+    route:
       app:
-        className: internal
-        hosts:
-          - host: "{{ .Release.Name }}.goyangi.cloud"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["{{ .Release.Name }}.goyangi.cloud"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         existingClaim: *app
