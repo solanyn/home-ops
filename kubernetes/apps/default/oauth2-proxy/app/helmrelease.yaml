@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -8,8 +8,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: app-template
-  driftDetection:
-    mode: enabled
   install:
     remediation:
       retries: 3
@@ -84,16 +82,21 @@ spec:
             port: *port
           metrics:
             port: 44180
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: oauth2-proxy.goyangi.cloud
-            paths:
-              - path: /oauth2
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["{{ .Release.Name }}.goyangi.cloud"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /oauth2
+          - backendRefs:
+              - name: *app
+                port: *port
     serviceMonitor:
       app:
         enabled: true

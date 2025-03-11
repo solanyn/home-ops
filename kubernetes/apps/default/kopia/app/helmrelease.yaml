@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: kopia
+  name: &app kopia
 spec:
   interval: 1h
   chartRef:
@@ -93,16 +93,17 @@ spec:
           - port: metrics
             interval: 1m
             scrapeTimeout: 10s
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: "{{ .Release.Name }}.goyangi.cloud"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["kopia.goyangi.cloud"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config:
         type: emptyDir

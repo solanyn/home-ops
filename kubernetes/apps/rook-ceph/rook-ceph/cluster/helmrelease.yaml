@@ -26,12 +26,6 @@ spec:
     monitoring:
       enabled: true
       createPrometheusRules: true
-    ingress:
-      dashboard:
-        ingressClassName: internal
-        host:
-          name: "rook.goyangi.cloud"
-          path: /
     toolbox:
       enabled: true
       resources:

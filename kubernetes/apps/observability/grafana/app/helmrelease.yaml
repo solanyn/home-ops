@@ -17,7 +17,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: grafana
+  name: &app grafana
 spec:
   interval: 1h
   chartRef:
@@ -260,10 +260,14 @@ spec:
       - vonage-status-panel
     serviceMonitor:
       enabled: true
-    ingress:
-      enabled: true
-      ingressClassName: internal
-      hosts: ["grafana.goyangi.cloud"]
+    route:
+       main:
+         enabled: true
+         hostnames: ["{{ .Release.Name }}.goyangi.cloud"]
+         parentRefs:
+           - name: internal
+             namespace: kube-system
+             sectionName: https
     persistence:
       enabled: false
     testFramework:
