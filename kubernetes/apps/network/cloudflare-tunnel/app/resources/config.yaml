@@ -4,11 +4,11 @@ originRequest:
 
 ingress:
   - hostname: "goyangi.cloud"
-    service: &service https://ingress-nginx-cloudflare-controller.cloudflare.svc.cluster.local:443
+    service: &svc https://cilium-gateway-external.kube-system.svc.cluster.local
   - hostname: "*.goyangi.cloud"
-    service: *service
+    service: *svc
   - hostname: "solanyn.dev"
-    service: *service
+    service: *svc
   - hostname: "*.solanyn.dev"
-    service: *service
+    service: *svc
   - service: http_status:404
