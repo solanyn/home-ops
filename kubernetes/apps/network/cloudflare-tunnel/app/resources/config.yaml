@@ -1,6 +1,5 @@
 originRequest:
   originServerName: "external.goyangi.cloud"
-  matchSNItoHost: true
 
 ingress:
   - hostname: "goyangi.cloud"
