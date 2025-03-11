@@ -24,6 +24,8 @@ dashboards:
 enableIPv4BIGTCP: true
 endpointRoutes:
   enabled: true
+envoy:
+  rollOutPods: true
 gatewayAPI:
   enabled: true
   enableAlpn: true
@@ -49,7 +51,6 @@ operator:
     enabled: true
     serviceMonitor:
       enabled: true
-  # TODO: update to 2 when >1 node
   replicas: 1
   rollOutPods: true
 prometheus:
