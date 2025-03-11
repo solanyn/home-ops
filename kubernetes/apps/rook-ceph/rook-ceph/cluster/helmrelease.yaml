@@ -59,7 +59,7 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        devicePathFilter: /dev/disk/by-id/sata.*
+        devicePathFilter: /dev/disk/by-id/ata-SAMSUNG_MZ7LM960HCHP-00003_.*
         config:
           osdsPerDevice: "1"
     cephBlockPools:
