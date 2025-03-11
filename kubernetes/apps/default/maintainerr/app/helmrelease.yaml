@@ -58,7 +58,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: 6246
+            port: &port 6246
     route:
       app:
         hostnames: ["maintainerr.goyangi.cloud"]
