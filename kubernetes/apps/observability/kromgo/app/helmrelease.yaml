@@ -67,7 +67,7 @@ spec:
         ports:
           http:
             primary: true
-            port: *serverPort
+            port: *port
           health:
             port: *healthPort
     route:
