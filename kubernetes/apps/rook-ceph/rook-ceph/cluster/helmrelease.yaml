@@ -86,7 +86,7 @@ spec:
             # memory: 2Gi
             memory: 10Mi
           limits:
-            memory: 6Gi
+            memory: 3Gi
         prepareosd:
           requests:
             cpu: 10m
