@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: ml-system
 components:
   - ../../components/common
+  - ../../components/repos/app-template
 resources:
   - ./dask/ks.yaml
   - ./feast/ks.yaml

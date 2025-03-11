@@ -12,7 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: openebs
-        namespace: flux-system
+        namespace: openebs-system
   install:
     remediation:
       retries: 3
