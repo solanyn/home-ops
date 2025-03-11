@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: observability
 components:
   - ../../components/common
+  - ../../components/repos/app-template
 resources:
   - ./unpoller/ks.yaml
   - ./kube-prometheus-stack/ks.yaml

@@ -4,8 +4,9 @@ kind: Kustomization
 namespace: network
 components:
   - ../../components/common
+  - ../../components/repos/app-template
 resources:
-  - ./external/ks.yaml
-  - ./internal/ks.yaml
+  - ./ingress-nginx-unifi/ks.yaml
+  - ./external-dns-unifi/ks.yaml
   # NOTE: Try multus for IoT VLAN bridging when managed switch, allows hass on VLAN to mDNS cast and as host network
   # - ./multus/ks.yaml
