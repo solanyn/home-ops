@@ -76,7 +76,7 @@ spec:
           lbipam.cilium.io/ips: 192.168.1.128
         ports:
           http:
-            port: 32400
+            port: &port 32400
     route:
       app:
         hostnames: ["{{ .Release.Name }}.goyangi.cloud"]
