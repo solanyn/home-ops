@@ -74,7 +74,7 @@ spec:
         controller: home-assistant
         ports:
           http:
-            port: 8123
+            port: &port 8123
           code-server:
             port: 12321
     route:
