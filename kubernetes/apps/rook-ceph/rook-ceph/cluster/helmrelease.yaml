@@ -62,6 +62,55 @@ spec:
         devicePathFilter: /dev/disk/by-id/ata-SAMSUNG_MZ7LM960HCHP-00003_.*
         config:
           osdsPerDevice: "1"
+      resources:
+        mgr:
+          requests:
+            # cpu: 100m
+            cpu: 10m
+            # memory: 512Mi
+            memory: 10Mi
+          limits:
+            memory: 2Gi
+        mon:
+          requests:
+            # cpu: 50m
+            cpu: 10m
+            # memory: 512Mi
+            memory: 10Mi
+          limits:
+            memory: 1Gi
+        osd:
+          requests:
+            # cpu: 200m
+            cpu: 10m
+            # memory: 2Gi
+            memory: 10Mi
+          limits:
+            memory: 6Gi
+        prepareosd:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        mgr-sidecar:
+          requests:
+            # cpu: 50m
+            cpu: 10m
+            # memory: 128Mi
+            memory: 10Mi
+          limits:
+            memory: 256Mi
+        crashcollector:
+          requests:
+            cpu: 10m
+        logcollector:
+          requests:
+            cpu: 10m
+        cleanup:
+          requests:
+            cpu: 10m
+        exporter:
+          requests:
+            cpu: 10m
     cephBlockPools:
       - name: ceph-blockpool
         spec:
