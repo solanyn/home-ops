@@ -77,25 +77,27 @@ spec:
             port: 8123
           code-server:
             port: 12321
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: hass.goyangi.cloud
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["hass.goyangi.cloud"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
       code-server:
-        className: internal
-        hosts:
-          - host: hass-code.goyangi.cloud
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: code-server
+        hostnames: ["code-server.goyangi.cloud"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: code-server
+                port: 12321
     persistence:
       config:
         existingClaim: home-assistant

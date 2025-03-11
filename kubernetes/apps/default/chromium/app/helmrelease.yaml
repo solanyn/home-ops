@@ -55,16 +55,17 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: chromium.goyangi.cloud
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["chromium.goyangi.cloud"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       tmp:
         type: emptyDir

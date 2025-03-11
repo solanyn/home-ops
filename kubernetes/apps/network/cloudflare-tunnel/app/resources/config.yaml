@@ -1,5 +1,7 @@
 originRequest:
   originServerName: "external.goyangi.cloud"
+  matchSNItoHost: true
+
 ingress:
   - hostname: "goyangi.cloud"
     service: &service https://ingress-nginx-cloudflare-controller.cloudflare.svc.cluster.local:443
