@@ -7,7 +7,7 @@ bpf:
   datapathMode: netkit
   masquerade: true
   preallocateMaps: true
-  tproxy: true
+  # tproxy: true
 bgpControlPlane:
   enabled: true
 cgroup:
@@ -19,12 +19,14 @@ cluster:
   name: main
 cni:
   exclusive: false
-devices: eno+
+dashboards:
+  enabled: true
 enableIPv4BIGTCP: true
 endpointRoutes:
   enabled: true
-envoy:
-  enabled: false
+gatewayAPI:
+  enabled: true
+  enableAlpn: true
 hubble:
   enabled: false
 ipam:
@@ -47,6 +49,7 @@ operator:
     enabled: true
     serviceMonitor:
       enabled: true
+  # TODO: update to 2 when >1 node
   replicas: 1
   rollOutPods: true
 prometheus:
@@ -54,8 +57,6 @@ prometheus:
   serviceMonitor:
     enabled: true
     trustCRDsExist: true
-dashboards:
-  enabled: true
 rollOutCiliumPods: true
 routingMode: native
 securityContext:

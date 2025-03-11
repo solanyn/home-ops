@@ -60,7 +60,7 @@ spec:
         controller: calibre-web
         ports:
           http:
-            port: 8083
+            port: &port 8083
     route:
       app:
         hostnames: ["{{ .Release.Name }}.goyangi.cloud"]
