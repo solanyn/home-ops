@@ -23,9 +23,6 @@ spec:
       retries: 3
   values:
     namespaceOverride: ml-system
-    commonLabels:
-      # NOTE: needed to avoid admission policy failure
-      app.kubernetes.io/created-by: prefect-worker
     worker:
       image:
         repository: prefecthq/prefect
