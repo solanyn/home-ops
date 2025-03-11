@@ -88,6 +88,28 @@ spec:
         ports:
           http:
             port: 27017
+    route:
+      app:
+        hostnames: ["spotify.goyangi.cloud"]
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: Prefix
+                  value: /?(.*)
+            backendRefs:
+              - name: web
+                port: 3000
+          - matches:
+              - path:
+                  type: Prefix
+                  value: /api/?(.*)
+            backendRefs:
+              - name: server
+                port: *port
     ingress:
       app:
         className: external

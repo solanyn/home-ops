@@ -76,16 +76,17 @@ spec:
           webrtc-udp:
             port: 8555
             protocol: UDP
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: go2rtc.goyangi.cloud
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames: ["go2rtc.goyangi.cloud"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
     persistence:
       config-file:
         type: configMap
