@@ -110,6 +110,9 @@ spec:
             backendRefs:
               - name: server
                 port: *port
+          - backendRefs:
+              - name: *app
+                port: *port
     ingress:
       app:
         className: external
