@@ -92,7 +92,7 @@ spec:
       app:
         hostnames: ["spotify.goyangi.cloud"]
         parentRefs:
-          - name: external
+          - name: internal
             namespace: kube-system
             sectionName: https
         rules:
