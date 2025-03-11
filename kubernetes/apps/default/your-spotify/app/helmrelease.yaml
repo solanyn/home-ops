@@ -98,14 +98,14 @@ spec:
         rules:
           - matches:
               - path:
-                  type: Prefix
+                  type: PathPrefix
                   value: /?(.*)
             backendRefs:
               - name: web
                 port: 3000
           - matches:
               - path:
-                  type: Prefix
+                  type: PathPrefix
                   value: /api/?(.*)
             backendRefs:
               - name: server
