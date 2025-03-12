@@ -27,9 +27,12 @@ spec:
               repository: ghcr.io/browserless/chromium
               tag: v2.25.2@sha256:a5f2cb9c71ce425e45b452e3a6ea67900af45e43b2928c5f6a02dd6b31145dc0
             env:
+              DEBUG: "browserless*,-*:trace,-*:verbose"
+              ENABLE_DEBUGGER: "false"
               HEALTH: true
-              PROXY_URL: https://chromium.goyangi.cloud
-              PROXY_PORT: &port 80
+              TIMEOUT: "60000"
+              CONCURRENT: "10"
+              EXIT_ON_HEALTH_FAILURE: "true"
             envFrom:
               - secretRef:
                   name: chromium-secret
@@ -55,17 +58,6 @@ spec:
         ports:
           http:
             port: *port
-    route:
-      app:
-        hostnames: ["chromium.goyangi.cloud"]
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: *app
-                port: *port
     persistence:
       tmp:
         type: emptyDir
