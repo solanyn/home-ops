@@ -33,6 +33,8 @@ spec:
               TIMEOUT: "60000"
               CONCURRENT: "10"
               EXIT_ON_HEALTH_FAILURE: "true"
+              PROXY_PORT: 3000
+              PROXY_URL: chromium.default.svc.cluster.local
             envFrom:
               - secretRef:
                   name: chromium-secret
