@@ -19,7 +19,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      GATUS_SUBDOMAIN: cv
+      GATUS_SUBDOMAIN: rx
   prune: true
   retryInterval: 2m
   sourceRef:
