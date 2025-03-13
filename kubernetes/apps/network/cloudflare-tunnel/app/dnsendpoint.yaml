@@ -7,4 +7,4 @@ spec:
   endpoints:
     - dnsName: external.goyangi.cloud
       recordType: CNAME
-      targets: ["4822490d-d152-4724-b1eb-39b00e298cb9.cfargotunnel.com"]
+      targets: ["${CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]
