@@ -98,7 +98,7 @@ spec:
         rules:
           - backendRefs:
               - name: *app
-                port: *port
+                port: 9001
       s3:
         hostnames: ["s3.goyangi.cloud"]
         parentRefs:
@@ -108,7 +108,7 @@ spec:
         rules:
           - backendRefs:
               - name: *app
-                port: 9001
+                port: *port
     persistence:
       minio:
         type: nfs
