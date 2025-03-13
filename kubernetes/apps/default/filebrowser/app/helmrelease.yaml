@@ -93,6 +93,6 @@ spec:
       other:
         type: nfs
         server: nas.internal
-        path: /mnt/world/media/downloads/complete/other
+        path: /mnt/world/media/downloads/torrents/complete/other
         globalMounts:
           - path: /media/other
