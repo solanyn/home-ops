@@ -90,3 +90,9 @@ spec:
         path: /mnt/world/media
         globalMounts:
           - path: /media
+      other:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media/downloads/complete/other
+        globalMounts:
+          - path: /media/other
