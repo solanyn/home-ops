@@ -118,6 +118,7 @@ spec:
             backendRefs:
               - name: web
                 port: *webport
+    persistence:
       configs:
         existingClaim: *app
         advancedMounts:
