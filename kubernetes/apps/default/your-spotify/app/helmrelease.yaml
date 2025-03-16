@@ -82,7 +82,7 @@ spec:
         controller: web
         ports:
           http:
-            port: 3000
+            port: &webport 3000
       mongodb:
         controller: mongodb
         ports:
@@ -94,28 +94,30 @@ spec:
           - "{{ .Release.Name }}.goyangi.cloud"
           - spotify.goyangi.cloud
         parentRefs:
-          - name: internal
+          - name: external
             namespace: kube-system
             sectionName: https
         rules:
           - matches:
               - path:
                   type: PathPrefix
-                  value: /
-            backendRefs:
-              - name: web
-                port: 3000
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /api
+                  value: "/api"
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: "/"
             backendRefs:
               - name: server
                 port: *port
-          - backendRefs:
-              - name: *app
-                port: *port
-    persistence:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: "/"
+            backendRefs:
+              - name: web
+                port: *webport
       configs:
         existingClaim: *app
         advancedMounts:
