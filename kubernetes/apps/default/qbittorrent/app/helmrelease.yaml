@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/qbittorrent
-              tag: 5.0.4@sha256:35bc3c4fb130327eee71182cef20e9b63228500b0dfa52489a472d169f456f88
+              tag: 5.0.4@sha256:1d7728d250f2f94aae614af0df6c98da7b9491b21d28c7fe1a5ec87f0b1b4fde
             env:
               TZ: Australia/Sydney
               QBT_WEBUI_PORT: &port 80
