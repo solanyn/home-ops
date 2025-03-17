@@ -32,8 +32,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/prowlarr-develop
-              tag: 1.32.2.4987@sha256:e97668009b796b2d170c03e71ba04cb0712154afee33d21ae878c9aa86501345
+              repository: ghcr.io/solanyn/prowlarr
+              tag: 1.32.2.4987@sha256:f422e4f3da54f300eecdd866ead67bb5cdb4cf9945aab5bf5673ddde3f93878a
             env:
               PROWLARR__APP__INSTANCENAME: Prowlarr
               PROWLARR__APP__THEME: dark
