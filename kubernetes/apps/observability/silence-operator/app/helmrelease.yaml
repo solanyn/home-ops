@@ -61,19 +61,6 @@ spec:
       - apiVersion: monitoring.giantswarm.io/v1alpha1
         kind: Silence
         metadata:
-          name: smart-device-high-temperature
-          namespace: observability
-        spec:
-          matchers:
-            - name: alertname
-              value: SmartDeviceHighTemperature
-              isRegex: false
-            - name: device
-              value: nvme0
-              isRegex: false
-      - apiVersion: monitoring.giantswarm.io/v1alpha1
-        kind: Silence
-        metadata:
           name: nas-memory-high-utilization
           namespace: observability
         spec:
