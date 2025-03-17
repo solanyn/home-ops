@@ -32,8 +32,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/radarr-develop
-              tag: 5.20.1.9773@sha256:bc7f7aaacc9c8e72b4e0b9a570446fd56eb989248d9f632ef67b87e6a30d44d0
+              repository: ghcr.io/solanyn/radarr
+              tag: 5.20.1.9773@sha256:ef3becf84fce34afea39f3d505ca3d4d39b9eed7697f8e80981066ac9b24693e
             env:
               RADARR__APP__INSTANCENAME: Radarr
               # RADARR__APP__THEME: dark
