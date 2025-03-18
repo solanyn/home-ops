@@ -5,4 +5,12 @@ kind: Kustomization
 namespace: kubeflow
 components:
   - ../../components/common
-resources: []
+resources:
+  - ./dex/ks.yaml
+  - ./istio/ks.yaml
+  - ./metacontroller/ks.yaml
+  - ./argo-workflows/ks.yaml
+  - ./oauth2-proxy/ks.yaml
+  - ./knative/ks.yaml
+  - ./kubeflow/ks.yaml
+  - ./kserve/ks.yaml
