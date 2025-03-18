@@ -82,7 +82,7 @@ spec:
     - name: istio-ingress-gateway
       namespace: kubeflow
   interval: 1h
-  path: ./kubernetes/apps/istio-system/gateways/cluster-local
+  path: ./kubernetes/apps/kubeflow/istio/cluster-local-gateway
   prune: false
   sourceRef:
     kind: GitRepository
