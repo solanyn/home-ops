@@ -1,0 +1,149 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: kubeflow
+  namespace: kubeflow
+spec:
+  ignore: |
+    # exclude all
+    /*
+    # include charts directory
+    !/charts/
+  interval: 12h
+  ref:
+    branch: helmcharts
+  url: https://github.com/kromanow94/kubeflow-manifests
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kubeflow
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: kubeflow
+      version: 0.4.0
+      sourceRef:
+        kind: GitRepository
+        name: kubeflow
+        namespace: kubeflow
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    pipelines:
+      config:
+        db:
+          driver:
+            value: postgres
+          user:
+            secretKeyRef:
+              name: kubeflow-secret
+              key: KUBEFLOW_POSTGRES_USER
+          password:
+            secretKeyRef:
+              name: kubeflow-secret
+              key: KUBEFLOW_POSTGRES_PASSWORD
+          host:
+            value: postgres17-rw.database.svc.cluster.local
+          port:
+            value: 5432
+          databaseName:
+            value: kubeflow_pipelines
+        objectStore:
+          accessKey:
+            secretKeyRef:
+              name: kubeflow-secret
+              key: accesskey
+          secretAccessKey:
+            secretKeyRef:
+              name: kubeflow-secret
+              key: secretkey
+    katib:
+      dbmanager:
+        config:
+          db:
+            user:
+              secretKeyRef:
+                name: kubeflow-secret
+                key: KUBEFLOW_POSTGRES_USER
+            password:
+              secretKeyRef:
+                name: kubeflow-secret
+                key: KUBEFLOW_POSTGRES_PASSWORD
+          host:
+            value: postgres17-rw.database.svc.cluster.local
+          port:
+            value: 5432
+          databaseName:
+            value: kubeflow_katib
+    notebooks:
+      jupyterWebApp:
+        spawnerFormDefaults:
+          configurations:
+            value:
+              - access-ml-pipeline
+    dexIntegration:
+      svc:
+        namespace: kubeflow
+    oauth2ProxyIntegration:
+      svc:
+        namespace: kubeflow
+    knativeIntegration:
+      knativeServing:
+        name: knative-serving
+        namespace: kubeflow
+        operatorSpec:
+          version: 1.10.2
+          ingress:
+            istio:
+              enabled: true
+              knative-ingress-gateway:
+                selector:
+                  istio: ingress-gateway
+                servers:
+                  - port:
+                      number: 80
+                      name: http
+                      protocol: HTTP
+                    hosts:
+                    - "*"
+              knative-local-gateway:
+                selector:
+                  istio: cluster-local-gateway
+                servers:
+                  - port:
+                      number: 80
+                      name: http
+                      protocol: HTTP
+                    hosts:
+                    - "*"
+          config:
+            # Note: The configuration options may be copied out of
+            # the example blocks, found in each of the supported KNative ConfigMaps.
+            # For more information, visit official knative operator documentation:
+            # https://knative.dev/docs/install/operator/configuring-with-operator/
+            istio:
+              gateway.knative-serving.knative-ingress-gateway: "istio-ingress-gateway.kubeflow.svc.cluster.local"
+              local-gateway.knative-serving.knative-local-gateway: "cluster-local-gateway.kubeflow.svc.cluster.local"
+              external-gateways: |
+                - name: knative-ingress-gateway
+                  namespace: kubeflow
+                  service: istio-ingressgateway.kubeflow.svc.cluster.local
+              local-gateways: |
+                - name: knative-local-gateway
+                  namespace: kubeflow
+                  service: cluster-local-gateway.kubeflow.svc.cluster.local
+            domain:
+              goyangi.cloud: ""
+      knativeEventing:
+        enabled: true
+        namespace: kubeflow
