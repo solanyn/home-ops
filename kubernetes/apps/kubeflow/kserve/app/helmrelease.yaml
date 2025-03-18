@@ -10,8 +10,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 2.6.1
-  url: oci://ghcr.io/metacontroller/metacontroller-helm
+    tag: 0.12.1
+  url: oci://ghcr.io/kserve/charts/kserve
   verify:
     provider: cosign
 ---

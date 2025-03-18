@@ -3,7 +3,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: kserve
+  name: kserve-crds
 spec:
   interval: 1h
   layerSelector:
@@ -24,7 +24,7 @@ spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: kserve
+    name: kserve-crds
   install:
     remediation:
       retries: 3
