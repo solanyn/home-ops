@@ -40,7 +40,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: prefect
-      namespace: ml-system
+      namespace: data-platform
   interval: 1h
   path: ./kubernetes/apps/data-platform/prefect/workers
   prune: false
