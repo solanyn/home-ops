@@ -126,7 +126,7 @@ In my cluster there are two instances of [ExternalDNS](https://github.com/kubern
 |------------------------------|--------------|---------------------------------|------|---------------|-------------------------|
 | Dell Optiplex 7050     | 256GB      |  980GB (rook-ceph) | 32GB | Talos         | Kubernetes              |
 | NAS              | 512GB      | 1x12TB ZFS     | 16GB | TrueNAS SCALE | NFS + Backup Server     |
-| UniFi UXG Ultra                | -            | -                              | -    | -             | Router            |
+| UniFi UCG Ultra                | -            | -                              | -    | -             | Router            |
 
 ---
 
