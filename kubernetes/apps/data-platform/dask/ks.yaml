@@ -32,6 +32,9 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/guarded
+  dependsOn:
+    - name: dask
+      namespace: data-platform
   interval: 1h
   path: ./kubernetes/apps/data-platform/dask/cluster
   postBuild:
