@@ -10,4 +10,3 @@ resources:
   - ./dask/ks.yaml
   - ./kafka/ks.yaml
   - ./prefect/ks.yaml
-  - ./spark/ks.yaml
