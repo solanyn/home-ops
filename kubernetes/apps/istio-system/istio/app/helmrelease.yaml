@@ -4,7 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: istio
-  namespace: kubeflow
+  namespace: istio-system
 spec:
   interval: 12h
   url: https://istio-release.storage.googleapis.com/charts
@@ -13,17 +13,17 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: cluster-local-gateway
+  name: istio
 spec:
   interval: 1h
   chart:
     spec:
-      chart: gateway
+      chart: base
       version: 1.20.2
       sourceRef:
         kind: HelmRepository
         name: istio
-        namespace: kubeflow
+        namespace: istio-system
   install:
     remediation:
       retries: 3
@@ -32,6 +32,3 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  values:
-    service:
-      type: ClusterIP

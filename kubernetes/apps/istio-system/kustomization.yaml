@@ -2,14 +2,11 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: ml-system
+namespace: istio-system
 components:
   - ../../components/common
-  - ../../components/repos/app-template
 resources:
-  - ./dask/ks.yaml
-  - ./feast/ks.yaml
-  - ./kafka/ks.yaml
-  - ./kuberay/ks.yaml
-  - ./mlflow/ks.yaml
-  - ./prefect/ks.yaml
+  - ./istio/ks.yaml
+  - ./istiod/ks.yaml
+  - ./ingress-gateway/ks.yaml
+  - ./cluster-local-gateway/ks.yaml

@@ -4,7 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: istiod
-  namespace: kubeflow
+  namespace: istio-system
 spec:
   interval: 12h
   url: https://istio-release.storage.googleapis.com/charts
@@ -23,7 +23,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: istiod
-        namespace: kubeflow
+        namespace: istio-system
   install:
     remediation:
       retries: 3
@@ -33,8 +33,6 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    global:
-      istioNamespace: kubeflow
     meshConfig:
       extensionProviders:
       - name: oauth2-proxy
