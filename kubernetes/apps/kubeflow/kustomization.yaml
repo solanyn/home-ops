@@ -13,3 +13,6 @@ resources:
   - ./knative/ks.yaml
   - ./kubeflow/ks.yaml
   - ./kserve/ks.yaml
+  - ./feast/ks.yaml
+  - ./kuberay/ks.yaml
+  - ./mlflow/ks.yaml
