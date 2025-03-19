@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: argo-workflows
+    - name: dex
       namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/oauth2-proxy/app
