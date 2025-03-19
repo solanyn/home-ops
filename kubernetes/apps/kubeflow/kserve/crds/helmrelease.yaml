@@ -8,13 +8,13 @@ metadata:
 spec:
   interval: 1h
   type: oci
-  url: oci://ghcr.io/kserve/charts/kserve-crd
+  url: oci://ghcr.io/kserve/charts/
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: kserve-crds
+  name: kserve-crd
 spec:
   interval: 1h
   chart:
