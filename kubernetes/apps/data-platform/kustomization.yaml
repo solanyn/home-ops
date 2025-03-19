@@ -2,14 +2,12 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: kubeflow
+namespace: data-platform
 components:
   - ../../components/common
 resources:
-  - ./dex/ks.yaml
-  - ./metacontroller/ks.yaml
-  - ./argo-workflows/ks.yaml
-  - ./oauth2-proxy/ks.yaml
-  - ./knative/ks.yaml
-  - ./kubeflow/ks.yaml
-  - ./kserve/ks.yaml
+  - ./airflow/ks.yaml
+  - ./dask/ks.yaml
+  - ./kafka/ks.yaml
+  - ./prefect/ks.yaml
+  - ./spark/ks.yaml
