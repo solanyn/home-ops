@@ -47,7 +47,6 @@ spec:
     workers:
       persistence:
         enabled: false
-      storageClassName: ceph-block
     createUserJob:
       args:
         - "bash"
