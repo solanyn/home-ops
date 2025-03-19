@@ -4,7 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: kafka
-  namespace: ml-system
+  namespace: data-platform
 spec:
   type: oci
   interval: 12h
@@ -24,7 +24,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: kafka
-        namespace: ml-system
+        namespace: data-platform
   install:
     remediation:
       retries: 3
