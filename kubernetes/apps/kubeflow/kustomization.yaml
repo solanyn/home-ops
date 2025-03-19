@@ -17,3 +17,7 @@ resources:
   - ./feast/ks.yaml
   - ./kuberay/ks.yaml
   - ./mlflow/ks.yaml
+patches:
+- op: add
+  path: /metadata/labels/istio-injection
+  value: enabled
