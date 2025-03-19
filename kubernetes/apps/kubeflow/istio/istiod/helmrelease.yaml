@@ -33,6 +33,8 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    global:
+      istioNamespace: kubeflow
     meshConfig:
       extensionProviders:
       - name: oauth2-proxy
