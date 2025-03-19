@@ -51,7 +51,7 @@ spec:
       spec:
         containers:
           - name: runner
-            image: ghcr.io/solanyn/actions-runner:2.322.0@sha256:4c06cf15a88949962501ff56ea8664401f9bdb6b5c735697139ec30ae6d7fc45
+            image: ghcr.io/solanyn/actions-runner:2.323.0@sha256:30b3d28043a6790b8481da8ee92d9016ba84546df7bce2409bb02cef4e2e8cde
             command: ["/home/runner/run.sh"]
             env:
               - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
