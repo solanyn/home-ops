@@ -50,7 +50,7 @@ spec:
           secretAccessKeyName: AWS_SECRET_ACCESS_KEY
       controller:
         deploymentMode: "Serverless"
-        rbacProxyImage: gcr.io/kubebuilder/kube-rbac-proxy:v0.13.1
+        rbacProxyImage: gcr.io/kubebuilder/kube-rbac-proxy:v0.16.0
         gateway:
           domain: goyangi.cloud
           domainTemplate: "{{ .Name }}-{{ .Namespace }}.{{ .IngressDomain }}"
