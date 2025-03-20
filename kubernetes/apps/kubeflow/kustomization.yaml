@@ -23,7 +23,6 @@ patches:
       name: kubeflow
     patch: |-
       - op: add
-         path: /spec/metadata/labels
+         path: /spec/metadata/labels/istio-injection
          value:
-           name: istio-injection
            value: enabled
