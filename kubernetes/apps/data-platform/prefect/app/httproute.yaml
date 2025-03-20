@@ -13,5 +13,5 @@ spec:
   rules:
     - backendRefs:
         - name: prefect-server
-          namespace: ml-system
+          namespace: data-platform
           port: 4200
