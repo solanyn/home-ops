@@ -4,7 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: oauth2-proxy
-  namespace: kubeflow
+  namespace: oauth2-proxy
 spec:
   interval: 12h
   url: https://oauth2-proxy.github.io/manifests
@@ -23,7 +23,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: oauth2-proxy
-        namespace: kubeflow
+        namespace: oauth2-proxy
   install:
     remediation:
       retries: 3
@@ -41,11 +41,11 @@ spec:
       - --code-challenge-method=S256
       - --provider=oidc
       - --scope=profile email groups openid
-      - --oidc-issuer-url=http://dex.kubeflow.svc.cluster.local:5556/dex
+      - --oidc-issuer-url=http://dex.dex.svc.cluster.local:5556/dex
       - --skip-oidc-discovery=true
       - --login-url=/dex/auth
-      - --redeem-url=http://dex.kubeflow.svc.cluster.local:5556/dex/token
-      - --oidc-jwks-url=http://dex.kubeflow.svc.cluster.local:5556/dex/keys
+      - --redeem-url=http://dex.dex.svc.cluster.local:5556/dex/token
+      - --oidc-jwks-url=http://dex.dex.svc.cluster.local:5556/dex/keys
       - --skip-auth-route=/dex/.*,^/metrics
       - --skip-provider-button=true # go directly to the configured provider
       - --cookie-name=kubeflow-oauth2-proxy
