@@ -19,8 +19,8 @@ resources:
   - ./mlflow/ks.yaml
 patches:
   - target:
-    kind: namespace
-    name: kubeflow
+      kind: namespace
+      name: kubeflow
     patch: |
       - op: add
          path: /spec/metadata/labels
