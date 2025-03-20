@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: kubeflow
+  name: kubeflow-crds
   namespace: kubeflow
 spec:
   ignore: |
@@ -24,11 +24,11 @@ spec:
   interval: 1h
   chart:
     spec:
-      chart: kubeflow-crds
+      chart: ./charts/kubeflow-crds
       version: 0.3.0
       sourceRef:
         kind: GitRepository
-        name: kubeflow
+        name: kubeflow-crds
         namespace: kubeflow
   install:
     remediation:
