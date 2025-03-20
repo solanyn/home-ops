@@ -6,3 +6,12 @@ resources:
   - ./namespace.yaml
   - ./alerts
   - ./sops
+patches:
+  - target:
+      kind: Namespace
+      name: kubeflow
+    patch: |
+      - op: add
+        path: /metadata/labels/istio-injection
+        value: enabled
+
