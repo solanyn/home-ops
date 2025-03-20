@@ -17,11 +17,11 @@ resources:
   - ./feast/ks.yaml
   - ./kuberay/ks.yaml
   - ./mlflow/ks.yaml
-patches:
-  - target:
-      kind: Namespace
+patchesStrategicMerge:
+  - |
+    apiVersion: v1
+    kind: Namespace
+    metadata:
       name: kubeflow
-    patch: |
-      - op: add
-         path: /metadata/labels/istio-injection
-         value: enabled
+      labels:
+        istio-injection: enabled
