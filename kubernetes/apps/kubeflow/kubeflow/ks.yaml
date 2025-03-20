@@ -11,7 +11,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: knative
-      namespace: kubeflow
+      namespace: knative
   interval: 1h
   path: ./kubernetes/apps/kubeflow/kubeflow/crds
   prune: false
