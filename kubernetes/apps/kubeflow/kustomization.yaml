@@ -21,7 +21,7 @@ patches:
   - target:
       kind: namespace
       name: kubeflow
-    patch: |
+    patch: |-
       - op: add
          path: /spec/metadata/labels
          value:
