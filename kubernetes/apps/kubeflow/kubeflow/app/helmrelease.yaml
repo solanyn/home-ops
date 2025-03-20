@@ -43,19 +43,19 @@ spec:
       config:
         db:
           driver:
-            value: postgres
+            value: mysql
           user:
             secretKeyRef:
               name: kubeflow-secret
-              key: KUBEFLOW_POSTGRES_USER
+              key: MYSQL_ROOT_USER
           password:
             secretKeyRef:
               name: kubeflow-secret
-              key: KUBEFLOW_POSTGRES_PASSWORD
+              key: MYSQL_ROOT_PASSWORD
           host:
-            value: postgres17-rw.database.svc.cluster.local
+            value: mysql-kubeflow.database.svc.cluster.local
           port:
-            value: 5432
+            value: 3306
           databaseName:
             value: kubeflow_pipelines
         objectStore:
@@ -70,19 +70,21 @@ spec:
     katib:
       dbmanager:
         config:
+          driver:
+            value: mysql
           db:
             user:
               secretKeyRef:
                 name: kubeflow-secret
-                key: KUBEFLOW_POSTGRES_USER
+                key: MYSQL_ROOT_USER
             password:
               secretKeyRef:
                 name: kubeflow-secret
-                key: KUBEFLOW_POSTGRES_PASSWORD
+                key: MYSQL_ROOT_PASSWORD
           host:
-            value: postgres17-rw.database.svc.cluster.local
+            value: mysql-kubeflow.database.svc.cluster.local
           port:
-            value: 5432
+            value: 3306
           databaseName:
             value: kubeflow_katib
     notebooks:
