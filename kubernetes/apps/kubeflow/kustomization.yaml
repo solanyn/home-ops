@@ -19,10 +19,9 @@ resources:
   - ./mlflow/ks.yaml
 patches:
   - target:
-      kind: namespace
+      kind: Namespace
       name: kubeflow
-    patch: |-
+    patch: |
       - op: add
-         path: /spec/metadata/labels/istio-injection
-         value:
-           value: enabled
+         path: /metadata/labels/istio-injection
+         value: enabled
