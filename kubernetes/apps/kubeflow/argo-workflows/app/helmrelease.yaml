@@ -51,10 +51,10 @@ spec:
           tableName: argo_workflows
           userNameSecret:
             name: argo-workflows-secret
-            key: ARGO_WORKFLOWS_POSTRGES_USER
+            key: ARGO_WORKFLOWS_POSTGRES_USER
           passwordSecret:
             name: argo-workflows-secret
-            key: ARGO_WORKFLOWS_POSTRGES_PASSWORD
+            key: ARGO_WORKFLOWS_POSTGRES_PASSWORD
           ssl: false
           sslMode: disable
         nodeStatusOffLoad: true
