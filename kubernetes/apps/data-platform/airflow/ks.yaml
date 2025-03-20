@@ -13,6 +13,9 @@ spec:
     - ../../../../components/gatus/guarded
   interval: 1h
   path: ./kubernetes/apps/data-platform/airflow/app
+  postBuild:
+    substitute:
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
