@@ -45,7 +45,7 @@ spec:
           maxIdleConns: 100
           maxOpenConns: 0
         mysql:
-          host: mysql.database.cluster.local
+          host: mysql-kubeflow.database.cluster.local
           port: 3306
           database: argo
           tableName: argo_workflows
