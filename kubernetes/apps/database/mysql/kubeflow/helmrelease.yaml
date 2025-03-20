@@ -22,6 +22,7 @@ spec:
       mysql:
         annotations:
           reloader.stakater.com/auto: "true"
+          external-dns.alpha.kubernetes.io/target: "mysql.kubeflow.goyangi.cloud"
         containers:
           app:
             image:
