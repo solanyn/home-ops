@@ -16,7 +16,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: prefect-worker
-  namespace: ml-system
+  namespace: data-platform
 roleRef:
   kind: ClusterRole
   name: prefect-worker
