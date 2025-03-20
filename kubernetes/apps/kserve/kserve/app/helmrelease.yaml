@@ -23,7 +23,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: kserve
-        namespace: kubeflow
+        namespace: kserve
   install:
     remediation:
       retries: 3
@@ -59,10 +59,10 @@ spec:
           disableIngressCreation: false
           localGateway:
             gateway: knative-serving/knative-local-gateway
-            gatewayService: cluster-local-gateway.kubeflow.svc.cluster.local
+            gatewayService: cluster-local-gateway.istio-system.svc.cluster.local
           ingressGateway:
             gateway: knative-serving/knative-ingress-gateway
-            gatewayService: istio-ingressgateway.kubeflow.svc.cluster.local
+            gatewayService: istio-ingressgateway.istio-system.svc.cluster.local
             className: istio
         image: kserve/kserve-controller
         tag: *defaultVersion

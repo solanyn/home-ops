@@ -5,15 +5,7 @@ kind: Kustomization
 namespace: kubeflow
 components:
   - ../../components/common
-  - ../../components/repos/app-template
 resources:
-  - ./dex/ks.yaml
   - ./metacontroller/ks.yaml
   - ./argo-workflows/ks.yaml
-  - ./oauth2-proxy/ks.yaml
-  - ./knative/ks.yaml
   - ./kubeflow/ks.yaml
-  - ./kserve/ks.yaml
-  - ./feast/ks.yaml
-  - ./kuberay/ks.yaml
-  - ./mlflow/ks.yaml

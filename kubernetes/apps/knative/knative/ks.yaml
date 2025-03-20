@@ -3,14 +3,17 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app feast
-  namespace: &namespace kubeflow
+  name: &app knative
+  namespace: &namespace knative
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: oauth2-proxy
+      namespace: oauth2-proxy
   interval: 1h
-  path: ./kubernetes/apps/kubeflow/feast/app
+  path: ./kubernetes/apps/knative/knative/app
   prune: false
   sourceRef:
     kind: GitRepository
