@@ -19,16 +19,18 @@ spec:
   values:
     controllers:
       calibre:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
+            image:
+              repository: ghcr.io/solanyn/calibre
+              tag: 7.26.0
             args: ["--trusted-ips=0.0.0.0/0"]
             env:
               CALIBRE__LIBRARY: /media/calibre
               CALIBRE__PORT: &port 80
               TZ: Australia/Sydney
-            image:
-              repository: ghcr.io/solanyn/calibre
-              tag: 7.26.0
             probes:
               liveness:
                 enabled: true
