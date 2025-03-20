@@ -13,5 +13,5 @@ spec:
   rules:
     - backendRefs:
         - name: dask-cluster
-          namespace: ml-system
+          namespace: data-platform
           port: 8787
