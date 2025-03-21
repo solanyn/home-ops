@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: init-db
-          image: ghcr.io/solanyn/postgres-init:17
+          image: ghcr.io/home-operations/postgres-init:17
           envFrom:
             - secretRef:
                 name: prefect-secret

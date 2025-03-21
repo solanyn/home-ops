@@ -69,7 +69,7 @@ spec:
         - "$AIRFLOW_ADMIN_PASSWORD"
       extraInitContainers:
         - name: init-db
-          image: ghcr.io/solanyn/postgres-init:17
+          image: ghcr.io/home-operations/postgres-init:17
           envFrom: &envFrom
             - secretRef:
                 name: airflow-secret
