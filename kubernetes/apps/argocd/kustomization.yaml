@@ -6,6 +6,4 @@ namespace: argocd
 components:
   - ../../components/common
 resources:
-  - ./externalsecret.yaml
-  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-  - ./httproute.yaml
+  - ./argocd/ks.yaml
