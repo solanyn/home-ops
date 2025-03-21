@@ -32,8 +32,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/sonarr
-              tag: 4.0.14.2938@sha256:1351214091e752119dcfa91aff9d4813497ef9dff0c41f77794b3a5814928ef1
+              repository: ghcr.io/home-operations/sonarr
+              tag: 4.0.14.2938@sha256:0169c421055790ef8bd9b5c2807663bb487f56daf1f602a20612a0257c491462
             env:
               SONARR__APP__INSTANCENAME: Sonarr
               # SONARR__APP__THEME: dark

@@ -24,8 +24,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/bazarr
-              tag: 1.5.1@sha256:b135e7b9892582ce9d1b718f969a6c37aabf99d06bb3db6a16707fc495dc6614
+              repository: ghcr.io/home-operations/bazarr
+              tag: 1.5.1@sha256:a1b0d3a4e6462adb448dbfe4bf466e1d1bc920c17ac97c705b6db6eeb02b37b9
             env:
               TZ: Australia/Sydney
             probes:
