@@ -122,9 +122,11 @@ In my cluster there are two instances of [ExternalDNS](https://github.com/kubern
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="20" height="20"> Hardware
 
-| Device                       | OS Disk Size | Data Disk Size                  | Ram  | OS            | Function                |
+| Device                       | OS Disk | Rook Disk                  | Ram  | OS            | Function                |
 |------------------------------|--------------|---------------------------------|------|---------------|-------------------------|
-| Dell Optiplex 7050     | 256GB      |  980GB (rook-ceph) | 32GB | Talos         | Kubernetes              |
+| Dell Optiplex 7050     | Samsung PM991 256GB      |  Samsung PM863 960GB | 32GB | Talos         | Kubernetes              |
+| Dell Optiplex 7060     | Samsung PM991 256GB      |  Samsung PM863 960GB | 32GB | Talos         | Kubernetes              |
+| Dell Optiplex 7060     | Samsung PM991 256GB      |  Samsung PM863 960GB | 32GB | Talos         | Kubernetes              |
 | NAS              | 512GB      | 1x12TB ZFS     | 16GB | TrueNAS SCALE | NFS + Backup Server     |
 | UniFi UCG Ultra                | -            | -                              | -    | -             | Router            |
 
