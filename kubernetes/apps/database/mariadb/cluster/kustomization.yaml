@@ -7,4 +7,3 @@ resources:
   - ./externalsecret.yaml
   - ./backup.yaml
   - ./mariadb.yaml
-  - ./maxscale.yaml
