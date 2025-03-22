@@ -44,20 +44,6 @@ spec:
     rbac:
       create: true
     extraDeploy:
-      # TODO: unsilence when 3 nodes
-      - apiVersion: monitoring.giantswarm.io/v1alpha1
-        kind: Silence
-        metadata:
-          name: ceph-cluster-health-warning
-          namespace: observability
-        spec:
-          matchers:
-            - name: alertname
-              value: CephHealthWarning
-              isRegex: false
-            - name: instance
-              value: 192.168.1.10:9283
-              isRegex: false
       - apiVersion: monitoring.giantswarm.io/v1alpha1
         kind: Silence
         metadata:
