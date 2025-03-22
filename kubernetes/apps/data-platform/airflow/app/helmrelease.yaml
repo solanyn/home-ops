@@ -58,15 +58,15 @@ spec:
         - "-r"
         - "Admin"
         - "-u"
-        - "$AIRFLOW_ADMIN_USERNAME"
+        - "$(AIRFLOW_ADMIN_USERNAME)"
         - "-e"
-        - "$AIRFLOW_ADMIN_EMAIL"
+        - "$(AIRFLOW_ADMIN_EMAIL)"
         - "-f"
-        - "$AIRFLOW_ADMIN_FIRST_NAME"
+        - "$(AIRFLOW_ADMIN_FIRST_NAME)"
         - "-l"
-        - "$AIRFLOW_ADMIN_LAST_NAME"
+        - "$(AIRFLOW_ADMIN_LAST_NAME)"
         - "-p"
-        - "$AIRFLOW_ADMIN_PASSWORD"
+        - "$(AIRFLOW_ADMIN_PASSWORD)"
       extraInitContainers:
         - name: init-db
           image: ghcr.io/home-operations/postgres-init:17
