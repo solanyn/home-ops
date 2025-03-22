@@ -4,7 +4,7 @@ metadata:
   name: dask-cluster
 spec:
   worker:
-    replicas: 1
+    replicas: 2
     spec:
       containers:
       - name: worker
