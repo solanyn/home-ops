@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/k8s.mariadb.com/v1alpha1.json
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Backup
+metadata:
+  name: backup
+spec:
+  mariaDbRef:
+    name: mariadb-galera
+  schedule:
+    cron: "*/1 * * * *"
+    suspend: false
+  maxRetention: 168h # 7 days
+  storage:
+    s3:
+      bucket: mariadb
+      endpoint: minio.default.svc.cluster.local:9000
+      region: us-east-1
+      accessKeyIdSecretKeyRef:
+        name: minio
+        key: MINIO_ACCESS_KEY_ID
+      secretAccessKeySecretKeyRef:
+        name: minio
+        key: MINIO_SECRET_ACCESS_KEY
