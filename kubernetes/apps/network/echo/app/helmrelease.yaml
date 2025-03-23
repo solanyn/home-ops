@@ -73,7 +73,6 @@ spec:
       app:
         hostnames:
           - "{{ .Release.Name }}.goyangi.cloud"
-          - "echo.solanyn.dev"
         parentRefs:
           - name: external
             namespace: kube-system
