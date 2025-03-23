@@ -143,6 +143,7 @@ spec:
                         name: deploykf-auth-secret
                         template:
                           data:
+                            DEPLOYKF_AUTH_STATIC_PASSWORD: {{ `{{ .DEPLOYKF_AUTH_STATIC_PASSWORD | quote }}` }}
                             dex-config: |
                               clientID: {{ `{{ .DEPLOYKF_AUTH_CLIENT_ID | quote }}` }}
                               clientSecret: {{ `{{ .DEPLOYKF_AUTH_CLIENT_SECRET | quote }}` }}
@@ -155,12 +156,17 @@ spec:
                         - extract:
                             key: deploykf
                 dex:
-                  connectors:
-                    - type: oidc
-                      id: pocket-id
-                      name: Pocket ID
-                      configExistingSecret: deploykf-auth-secret
-                      configExistingSecretKey: dex-config
+                  connectors: []
+                    # - type: oidc
+                    #   id: pocket-id
+                    #   name: Pocket ID
+                    #   configExistingSecret: deploykf-auth-secret
+                    #   configExistingSecretKey: dex-config
+                  staticPasswords:
+                    - email: "andrew@goyangi.cloud"
+                      password:
+                        existingSecret: deploykf-auth-secret
+                        existingSecretKey: DEPLOYKF_AUTH_STATIC_PASSWORD
 
               ## --------------------------------------
               ##        deploykf-istio-gateway
