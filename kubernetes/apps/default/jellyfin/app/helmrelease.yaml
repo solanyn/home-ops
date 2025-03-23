@@ -85,6 +85,7 @@ spec:
         hostnames: ["{{ .Release.Name }}.goyangi.cloud"]
         parentRefs:
           - name: internal
+            namespace: kube-system
             sectionName: https
         rules:
           - backendRefs:
