@@ -82,9 +82,11 @@ spec:
             port: &port 8096
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.goyangi.cloud"]
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.cloud"
+          - "jf.goyangi.cloud"
         parentRefs:
-          - name: internal
+          - name: external
             namespace: kube-system
             sectionName: https
         rules:
