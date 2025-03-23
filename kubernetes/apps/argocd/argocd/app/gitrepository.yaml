@@ -1,0 +1,11 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: deploykf-argocd
+  namespace: argocd
+spec:
+  interval: 1m
+  ref:
+    branch: main
+  url: https://github.com/deployKF/deployKF.git
