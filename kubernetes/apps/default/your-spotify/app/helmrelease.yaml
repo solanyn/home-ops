@@ -90,9 +90,7 @@ spec:
             port: 27017
     route:
       app:
-        hostnames:
-          - "{{ .Release.Name }}.goyangi.cloud"
-          - spotify.goyangi.cloud
+        hostnames: ["spotify.goyangi.cloud"]
         parentRefs:
           - name: external
             namespace: kube-system
