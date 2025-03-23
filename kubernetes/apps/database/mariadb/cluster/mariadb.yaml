@@ -30,3 +30,29 @@ spec:
     timeoutSeconds: 10
   metrics:
     enabled: true
+  bootstrapFrom:
+    s3:
+      bucket: mariadb
+      endpoint: minio.default.svc.cluster.local:9000
+      accessKeyIdSecretKeyRef:
+        name: mariadb-secret
+        key: MINIO_ROOT_USER
+      secretAccessKeySecretKeyRef:
+        name: mariadb-secret
+        key: MINIO_ROOT_PASSWORD
+    stagingStorage:
+      persistentVolumeClaim:
+        resources:
+          requests:
+            storage: 5Gi
+        accessModes:
+          - ReadWriteOnce
+    restoreJob:
+      args:
+        - --verbose
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          memory: 1Gi
