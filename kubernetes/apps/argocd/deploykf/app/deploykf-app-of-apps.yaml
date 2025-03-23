@@ -78,7 +78,13 @@ spec:
               ## --------------------------------------
               istio:
                 enabled: true
-                namespace: istio-system
+                charts:
+                  istioBase:
+                    # renovate: datasource=github-releases depName=istio/istio
+                    version: 1.25.0
+                  istioDaemon:
+                    # renovate: datasource=github-releases depName=istio/istio
+                    version: 1.25.0
 
               ## --------------------------------------
               ##                kyverno
