@@ -7,4 +7,5 @@ resources:
   - ./backup.yaml
   - ./mariadb.yaml
   - ./gatus.yaml
+  - ./service.yaml
   - ./databases/
