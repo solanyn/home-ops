@@ -284,7 +284,7 @@ spec:
         ## INIT_CONTAINER: copy `helm` binary to volume
         ##
         - name: deploykf-plugin-setup--helm
-          image: docker.io/alpine/helm:3.12.3
+          image: docker.io/alpine/helm:3.17.2
           command:
             - "/bin/sh"
             - "-c"
