@@ -11,6 +11,3 @@ spec:
     key: MARIADB_KUBEFLOW_PASSWORD
   maxUserConnections: 50
   host: "%"
-  cleanupPolicy: Delete
-  requeueInterval: 30s
-  retryInterval: 5s
