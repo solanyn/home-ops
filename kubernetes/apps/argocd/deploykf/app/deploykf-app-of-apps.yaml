@@ -177,6 +177,12 @@ spec:
                   ports:
                     http: 80
                     https: 443
+                gatewayService:
+                  name: "deploykf-gateway"
+                  type: "LoadBalancer"
+                  annotations:
+                    external-dns.alpha.kubernetes.io/hostname: "kubeflow.goyangi.cloud"
+                    lbipam.cilium.io/ips: 192.168.1.140, ::ffff:192.168.1.140
 
               ## --------------------------------------
               ##      deploykf-profiles-generator
