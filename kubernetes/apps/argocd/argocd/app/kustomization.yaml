@@ -3,12 +3,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./gitrepository.yaml
-spec:
-  interval: 1m0s
-  path: ./argocd-plugin/argocd-install
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: deploykf-argocd
-    namespace: argocd
+  - ./helmrelease.yaml
+configMapGenerator:
+  - name: argocd-values
+    files:
+      - values.yaml=https://raw.githubusercontent.com/deployKF/deployKF/refs/heads/main/argocd-plugin/argocd-helm/values.yaml
+configurations:
+  - ./helm/kustomizeconfig.yaml
