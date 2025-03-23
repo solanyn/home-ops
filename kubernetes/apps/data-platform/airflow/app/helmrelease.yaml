@@ -52,8 +52,8 @@ spec:
         - "bash"
         - "-c"
         - |-
-          exec \
-          airflow {{ semverCompare ">=2.0.0" .Values.airflowVersion | ternary "users create" "create_user" }} "$@"
+          airflow users delete --username "{{ .Values.webserver.defaultUser.username }}";
+          airflow users create "$@"
         - --
         - "-r"
         - "Admin"
