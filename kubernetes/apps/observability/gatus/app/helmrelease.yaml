@@ -101,9 +101,7 @@ spec:
             scrapeTimeout: 10s
     route:
       app:
-        hostnames:
-          - "{{ .Release.Name }}.goyangi.cloud"
-          - status.goyangi.cloud
+        hostnames: ["status.goyangi.cloud"]
         parentRefs:
           - name: external
             namespace: kube-system
