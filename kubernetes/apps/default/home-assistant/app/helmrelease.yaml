@@ -81,7 +81,7 @@ spec:
       app:
         hostnames: ["hass.goyangi.cloud"]
         parentRefs:
-          - name: internal
+          - name: external
             namespace: kube-system
             sectionName: https
         rules:
