@@ -7,3 +7,4 @@ resources:
   - ./externalsecret.yaml
   - ./backup.yaml
   - ./mariadb.yaml
+  - ./gatus.yaml
