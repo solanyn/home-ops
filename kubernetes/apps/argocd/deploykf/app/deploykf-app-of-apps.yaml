@@ -243,8 +243,8 @@ spec:
                         name: deploykf-katib-secret
                         template:
                           data:
-                            DEPLOYKF_MARIADB_USER: "{{ .DEPLOYKF_MARIADB_USER }}"
-                            DEPLOYKF_MARIADB_PASSWORD: "{{ .DEPLOYKF_MARIADB_PASSWORD }}"
+                            MARIADB_KUBEFLOW_USER: "{{ .MARIADB_KUBEFLOW_USER }}"
+                            MARIADB_KUBEFLOW_PASSWORD: "{{ .MARIADB_KUBEFLOW_PASSWORD }}"
                       dataFrom:
                         - extract:
                             key: deploykf
@@ -256,8 +256,8 @@ spec:
                   auth:
                     # in kubeflow namespace
                     existingSecret: "deploykf-katib-secret"
-                    existingSecretUsernameKey: "DEPLOYKF_MARIADB_USER"
-                    existingSecretPasswordKey: "DEPLOYKF_MARIADB_PASSWORD"
+                    existingSecretUsernameKey: "MARIADB_KUBEFLOW_USER"
+                    existingSecretPasswordKey: "MARIADB_KUBEFLOW_PASSWORD"
 
               ## --------------------------------------
               ##               notebooks
@@ -292,8 +292,8 @@ spec:
                           data:
                             AWS_ACCESS_KEY_ID: "{{ .MINIO_ROOT_USER }}"
                             AWS_SECRET_ACCESS_KEY: "{{ .MINIO_ROOT_PASSWORD }}"
-                            DEPLOYKF_MARIADB_USER: "{{ .DEPLOYKF_MARIADB_USER }}"
-                            DEPLOYKF_MARIADB_PASSWORD: "{{ .DEPLOYKF_MARIADB_PASSWORD }}"
+                            MARIADB_KUBEFLOW_USER: "{{ .MARIADB_KUBEFLOW_USER }}"
+                            MARIADB_KUBEFLOW_PASSWORD: "{{ .MARIADB_KUBEFLOW_PASSWORD }}"
                       dataFrom:
                         - extract:
                             key: deploykf
@@ -310,8 +310,8 @@ spec:
                   auth:
                     # in kubeflow namespace
                     existingSecret: "deploykf-pipelines-secret"
-                    existingSecretUsernameKey: "DEPLOYKF_MARIADB_USER"
-                    existingSecretPasswordKey: "DEPLOYKF_MARIADB_PASSWORD"
+                    existingSecretUsernameKey: "MARIADB_KUBEFLOW_USER"
+                    existingSecretPasswordKey: "MARIADB_KUBEFLOW_PASSWORD"
                 bucket:
                   name: kubeflow-pipelines
                 objectStore:
