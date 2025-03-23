@@ -3,11 +3,8 @@
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: MariaDB
 metadata:
-  name: mariadb-galera
+  name: mariadb
 spec:
-  maxScaleRef:
-    name: maxscale-galera
-    namespace: database
   rootPasswordSecretKeyRef:
     name: mariadb-secret
     key: MARIADB_ROOT_PASSWORD
