@@ -143,7 +143,7 @@ spec:
                         name: deploykf-auth-secret
                         template:
                           data:
-                            DEPLOYKF_AUTH_STATIC_PASSWORD: {{ `{{ .DEPLOYKF_AUTH_STATIC_PASSWORD | quote }}` }}
+                            DEPLOYKF_AUTH_STATIC_PASSWORD: "{{ .DEPLOYKF_AUTH_STATIC_PASSWORD }}
                             dex-config: |
                               clientID: {{ `{{ .DEPLOYKF_AUTH_CLIENT_ID | quote }}` }}
                               clientSecret: {{ `{{ .DEPLOYKF_AUTH_CLIENT_SECRET | quote }}` }}
