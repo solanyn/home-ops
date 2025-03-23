@@ -147,6 +147,10 @@ spec:
                               clientID: {{ `{{ .DEPLOYKF_AUTH_CLIENT_ID | quote }}` }}
                               clientSecret: {{ `{{ .DEPLOYKF_AUTH_CLIENT_SECRET | quote }}` }}
                               redirectURI: "https://kubeflow.goyangi.cloud/dex/callback"
+                              scopes:
+                                - openid
+                                - email
+                                - profile
                       dataFrom:
                         - extract:
                             key: deploykf
