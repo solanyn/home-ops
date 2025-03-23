@@ -13,4 +13,3 @@ spec:
   username: kubeflow
   grantOption: true
   host: "%"
-  username: kubeflow
