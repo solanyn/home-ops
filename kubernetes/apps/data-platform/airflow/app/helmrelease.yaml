@@ -48,25 +48,6 @@ spec:
       persistence:
         enabled: false
     createUserJob:
-      args:
-        - "bash"
-        - "-c"
-        - |-
-          airflow users delete --username "{{ .Values.webserver.defaultUser.username }}";
-          airflow users create "$@"
-        - --
-        - "-r"
-        - "Admin"
-        - "-u"
-        - "$(AIRFLOW_ADMIN_USERNAME)"
-        - "-e"
-        - "$(AIRFLOW_ADMIN_EMAIL)"
-        - "-f"
-        - "$(AIRFLOW_ADMIN_FIRST_NAME)"
-        - "-l"
-        - "$(AIRFLOW_ADMIN_LAST_NAME)"
-        - "-p"
-        - "$(AIRFLOW_ADMIN_PASSWORD)"
       extraInitContainers:
         - name: init-db
           image: ghcr.io/home-operations/postgres-init:17
