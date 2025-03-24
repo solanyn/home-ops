@@ -104,7 +104,9 @@ spec:
             protocol: TCP
     route:
       app:
-        hostnames: ["qb.goyangi.cloud"]
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.cloud"
+          - qb.goyangi.cloud
         parentRefs:
           - name: internal
             namespace: kube-system
