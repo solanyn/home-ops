@@ -59,12 +59,12 @@ spec:
         AIRFLOW__CORE__LOAD_EXAMPLES: "False"
         AIRFLOW__CORE__DEFAULT_TIMEZONE: "Australia/Sydney"
       users:
-        - username: ${ADMIN_USER}
+        - username: "${ADMIN_USER}"
           role: Admin
-          firstName: ${ADMIN_FIRST_NAME}
-          lastName: ${ADMIN_LAST_NAME}
-          password: ${ADMIN_PASSWORD}
-          email: ${ADMIN_EMAIL}
+          firstName: "${ADMIN_FIRST_NAME}"
+          lastName: "${ADMIN_LAST_NAME}"
+          password: "${ADMIN_PASSWORD}"
+          email: "${ADMIN_EMAIL}"
       usersTemplates:
         ADMIN_USER:
           kind: secret
