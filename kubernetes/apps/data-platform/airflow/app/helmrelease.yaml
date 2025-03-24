@@ -7,7 +7,7 @@ metadata:
   namespace: data-platform
 spec:
   interval: 12h
-  url: https://airflow.apache.org
+  url: https://airflow-helm.github.io/charts
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -19,7 +19,7 @@ spec:
   chart:
     spec:
       chart: airflow
-      version: 1.15.0
+      version: 8.9.0
       sourceRef:
         kind: HelmRepository
         name: airflow
@@ -33,48 +33,126 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    useStandardNaming: true
-    airflowPodAnnotations:
-      reloader.stakater.com/auto: "true"
-    data:
-      metadataSecretName: airflow-secret
-      brokerUrl: redis://redis.database.svc.cluster.local:6379
-    webserverSecretKeySecretName: airflow-secret
-    executor: "CeleryExecutor"
-    extraEnvFrom: |
-      - secretRef:
+    airflow:
+      executor: CeleryExecutor
+      image:
+        repository: apache/airflow
+        tag: 2.8.4-python3.9
+      extraEnv:
+        - name: AIRFLOW__CORE__FERNET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: airflow-secret
+              key: AIRFLOW__CORE__FERNET_KEY
+        - name: AIRFLOW__WEBSERVER__SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: airflow-secret
+              key: AIRFLOW__WEBSERVER__SECRET_KE
+      config:
+        AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+        AIRFLOW__CORE__DEFAULT_TIMEZONE: "Australia/Sydney"
+      users:
+        - username: ${ADMIN_USER}
+          role: Admin
+          firstName: ${ADMIN_FIRST_NAME}
+          lastName: ${ADMIN_LAST_NAME}
+          password: ${ADMIN_PASSWORD}
+          email: ${ADMIN_EMAIL}
+      usersTemplates:
+        ADMIN_USER:
+          kind: secret
           name: airflow-secret
-    workers:
-      extraPipPackages:
-        - beautifulsoup4
-        - httpx
-        - s3fs
-      persistence:
+          key: AIRFLOW_ADMIN_USERNAME
+        ADMIN_PASSWORD:
+          kind: secret
+          name: airflow-secret
+          key: AIRFLOW_ADMIN_PASSWORD
+        ADMIN_EMAIL:
+          kind: secret
+          name: airflow-secret
+          key: AIRFLOW_ADMIN_EMAIL
+        ADMIN_FIRST_NAME:
+          kind: secret
+          name: airflow-secret
+          key: AIRFLOW_ADMIN_FIRST_NAME
+        ADMIN_LAST_NAME:
+          kind: secret
+          name: airflow-secret
+          key: AIRFLOW_ADMIN_LAST_NAME
+      usersUpdate: true
+      connections:
+        - id: my_postgres
+          type: postgres
+          description: my Postgres connection
+          host: postgres.example.com
+          port: 5432
+          login: ${POSTGRES_USERNAME}
+          password: ${POSTGRES_PASSWORD}
+          schema: airflow
+      connectionsTemplates:
+        POSTGRES_USERNAME:
+          kind: secret
+          name: airflow-secret
+          key: INIT_POSTGRES_USER
+        POSTGRES_PASSWORD:
+          kind: secret
+          name: airflow-secret
+          key: INIT_POSTGRES_PASSWORD
+      variables:
+        - key: "S3_ENDPOINT_URL"
+          value: "${S3_ENDPOINT_URL}"
+        - key: "AWS_ACCESS_KEY_ID"
+          value: "${AWS_ACCESS_KEY_ID}"
+        - key: "AWS_SECRET_ACCESS_KEY"
+          value: "${AWS_SECRET_ACCESS_KEY}"
+        - key: "PUSHOVER_USER_KEY"
+          value: "${PUSHOVER_USER_KEY}"
+        - key: "PUSHOVER_API_TOKEN"
+          value: "${PUSHOVER_API_TOKEN}"
+      variablesTemplates:
+        S3_ENDPOINT_URL:
+          kind: secret
+          name: airflow-secret
+          key: S3_ENDPOINT_URL
+        AWS_ACCESS_KEY_ID:
+          kind: secret
+          name: airflow-secret
+          key: AWS_ACCESS_KEY_ID
+        AWS_SECRET_ACCESS_KEY:
+          kind: secret
+          name: airflow-secret
+          key: AWS_SECRET_ACCESS_KEY
+        PUSHOVER_USER_KEY:
+          kind: secret
+          name: airflow-secret
+          key: PUSHOVER_USER_KEY
+        PUSHOVER_API_TOKEN:
+          kind: secret
+          name: airflow-secret
+          key: PUSHOVER_API_TOKEN
+      variablesUpdate: true
+      dags:
+        gitSync:
+          enabled: true
+          repo: https://github.com/solanyn/airflow-pipelines.git
+          branch: main
+          repoSubPath: dags
+      postgresql:
         enabled: false
-    createUserJob:
-      extraInitContainers:
-        - name: init-db
-          image: ghcr.io/home-operations/postgres-init:17
-          envFrom: &envFrom
-            - secretRef:
-                name: airflow-secret
-      useHelmHooks: false
-      applyCustomEnv: false
-    migrateDatabaseJob:
-      useHelmHooks: false
-      applyCustomEnv: false
-    dags:
-      gitSync:
+      pgbouncer:
         enabled: true
-        repo: https://github.com/solanyn/airflow-pipelines
-        branch: main
-        depth: 1
-        subPath: "dags"
-    scheduler:
-      enabled: true
-    redis:
-      enabled: false
-    postgresql:
-      enabled: false
-    statsd:
-      enabled: true
+      externalDatabase:
+        type: postgres
+        host: postgres17-rw.database.svc.cluster.local
+        port: 5432
+        userSecret: airflow-secret
+        userSecretKey: INIT_POSTGRES_USER
+        passwordSecret: airflow-secret
+        passwordSecretKey: INIT_POSTGRES_PASSWORD
+        properties: "?sslmode=disable"
+      redis:
+        enabled: false
+      externalRedis:
+        host: redis.database.svc.cluster.local
+        port: 6379
