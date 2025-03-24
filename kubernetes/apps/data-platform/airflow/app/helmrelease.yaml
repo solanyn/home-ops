@@ -59,12 +59,12 @@ spec:
         AIRFLOW__CORE__LOAD_EXAMPLES: "False"
         AIRFLOW__CORE__DEFAULT_TIMEZONE: "Australia/Sydney"
       users:
-        - username: "${ADMIN_USER}"
+        - username: "$${ADMIN_USER}"
           role: Admin
-          firstName: "${ADMIN_FIRST_NAME}"
-          lastName: "${ADMIN_LAST_NAME}"
-          password: "${ADMIN_PASSWORD}"
-          email: "${ADMIN_EMAIL}"
+          firstName: "$${ADMIN_FIRST_NAME}"
+          lastName: "$${ADMIN_LAST_NAME}"
+          password: "$${ADMIN_PASSWORD}"
+          email: "$${ADMIN_EMAIL}"
       usersTemplates:
         ADMIN_USER:
           kind: secret
@@ -93,8 +93,8 @@ spec:
           description: my Postgres connection
           host: postgres.example.com
           port: 5432
-          login: ${POSTGRES_USERNAME}
-          password: ${POSTGRES_PASSWORD}
+          login: $${POSTGRES_USERNAME}
+          password: $${POSTGRES_PASSWORD}
           schema: airflow
       connectionsTemplates:
         POSTGRES_USERNAME:
@@ -105,38 +105,38 @@ spec:
           kind: secret
           name: airflow-secret
           key: INIT_POSTGRES_PASSWORD
-      # variables:
-      #   - key: "S3_ENDPOINT_URL"
-      #     value: "${S3_ENDPOINT_URL}"
-      #   - key: "AWS_ACCESS_KEY_ID"
-      #     value: "${AWS_ACCESS_KEY_ID}"
-      #   - key: "AWS_SECRET_ACCESS_KEY"
-      #     value: "${AWS_SECRET_ACCESS_KEY}"
-      #   - key: "PUSHOVER_USER_KEY"
-      #     value: "${PUSHOVER_USER_KEY}"
-      #   - key: "PUSHOVER_API_TOKEN"
-      #     value: "${PUSHOVER_API_TOKEN}"
-      # variablesTemplates:
-      #   S3_ENDPOINT_URL:
-      #     kind: secret
-      #     name: airflow-secret
-      #     key: S3_ENDPOINT_URL
-      #   AWS_ACCESS_KEY_ID:
-      #     kind: secret
-      #     name: airflow-secret
-      #     key: AWS_ACCESS_KEY_ID
-      #   AWS_SECRET_ACCESS_KEY:
-      #     kind: secret
-      #     name: airflow-secret
-      #     key: AWS_SECRET_ACCESS_KEY
-      #   PUSHOVER_USER_KEY:
-      #     kind: secret
-      #     name: airflow-secret
-      #     key: PUSHOVER_USER_KEY
-      #   PUSHOVER_API_TOKEN:
-      #     kind: secret
-      #     name: airflow-secret
-      #     key: PUSHOVER_API_TOKEN
+      variables:
+        - key: "S3_ENDPOINT_URL"
+          value: "$${S3_ENDPOINT_URL}"
+        - key: "AWS_ACCESS_KEY_ID"
+          value: "$${AWS_ACCESS_KEY_ID}"
+        - key: "AWS_SECRET_ACCESS_KEY"
+          value: "$${AWS_SECRET_ACCESS_KEY}"
+        - key: "PUSHOVER_USER_KEY"
+          value: "$${PUSHOVER_USER_KEY}"
+        - key: "PUSHOVER_API_TOKEN"
+          value: "$${PUSHOVER_API_TOKEN}"
+      variablesTemplates:
+        S3_ENDPOINT_URL:
+          kind: secret
+          name: airflow-secret
+          key: S3_ENDPOINT_URL
+        AWS_ACCESS_KEY_ID:
+          kind: secret
+          name: airflow-secret
+          key: AWS_ACCESS_KEY_ID
+        AWS_SECRET_ACCESS_KEY:
+          kind: secret
+          name: airflow-secret
+          key: AWS_SECRET_ACCESS_KEY
+        PUSHOVER_USER_KEY:
+          kind: secret
+          name: airflow-secret
+          key: PUSHOVER_USER_KEY
+        PUSHOVER_API_TOKEN:
+          kind: secret
+          name: airflow-secret
+          key: PUSHOVER_API_TOKEN
       variablesUpdate: true
       dags:
         gitSync:
