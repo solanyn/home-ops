@@ -6,10 +6,9 @@ metadata:
   namespace: kubeflow
 spec:
   interval: 5m
-  url: https://github.com/kubeflow/manifests
+  url: https://github.com/solanyn/kubeflow-manifests
   ref:
-    # renovate: datasource=github-releases depName=kubeflow/manifests
-    tag: v1.9.1
+    branch: master
   ignore: |
     # exclude all
     /*
@@ -17,8 +16,4 @@ spec:
     !/apps
     !/common
     !/experimental
-  include:
-    - repository:
-        name: flux-system
-      fromPath: kubernetes/apps/kubeflow/manifests/kustomization.yaml
-      toPath: kustomization.yaml
+    !/kustomization.yaml
