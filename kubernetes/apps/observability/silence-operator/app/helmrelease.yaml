@@ -57,3 +57,25 @@ spec:
             - name: instance
               value: nas.internal:9100
               isRegex: false
+        # TODO: remove when new drives or nodes run cooler
+      - apiVersion: monitoring.giantswarm.io/v1alpha1
+        kind: Silence
+        metadata:
+          name: mounted-drive-high-temperature
+          namespace: observability
+        spec:
+          matchers:
+            - name: alertname
+              value: SmartDeviceHighTemperature
+              isRegex: false
+        # TODO: remove when new rook disks and/or network upgrade and/or node upgrade
+      - apiVersion: monitoring.giantswarm.io/v1alpha1
+        kind: Silence
+        metadata:
+          name: ceph-node-network-packet-drops
+          namespace: observability
+        spec:
+          matchers:
+            - name: alertname
+              value: CephNodeNetworkPacketDrops
+              isRegex: false
