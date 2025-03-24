@@ -7,11 +7,10 @@ metadata:
   namespace: &namespace kubeflow
 spec:
   interval: 1h
-  path: ./example
   prune: false
   sourceRef:
     kind: GitRepository
     name: kubeflow-manifests
-    namespace: flux-system
+    namespace: kubeflow
   timeout: 5m
   wait: true
