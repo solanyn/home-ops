@@ -90,7 +90,25 @@ spec:
               ##                kyverno
               ## --------------------------------------
               kyverno:
-                {}
+                admissionController:
+                  replicas: 1
+                  resources:
+                    requests:
+                      cpu: 10m
+                    limits:
+                      memory: 1Gi
+                backgroundController:
+                  resources:
+                    requests:
+                      cpu: 10m
+                cleanupController:
+                  resources:
+                    requests:
+                      cpu: 10m
+                reportsController:
+                  resources:
+                    requests:
+                      cpu: 10m
             ## --------------------------------------------------------------------------------
             ##                                  deploykf-core
             ## --------------------------------------------------------------------------------
