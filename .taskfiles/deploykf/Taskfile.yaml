@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+
+  sync:
+    desc: Sync DeployKF ArgoCD applications
+    cmds:
+      - curl -s https://raw.githubusercontent.com/deployKF/deployKF/main/scripts/sync_argocd_apps.sh | ARGOCD_PRUNE_MODE=always bash
+    preconditions:
+      - which curl jq argocd kubectl bash
