@@ -1,0 +1,25 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: kubeflow-manifests
+  namespace: kubeflow
+spec:
+  interval: 5m
+  url: https://github.com/kubeflow/manifests
+  ref:
+    # renovate: datasource=github-releases depName=kubeflow/manifests
+    tag: v1.9.1
+  ignore: |
+    # exclude all
+    /*
+    # include deploy dir
+    !/apps
+    !/common
+    !/experimental
+  include:
+    - repository:
+        name: flux-system
+        namespace: flux-system
+      fromPath: kubernetes/apps/kubeflow/manifests/kustomization.yaml
+      toPath: kustomization.yaml
