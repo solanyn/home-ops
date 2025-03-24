@@ -45,6 +45,10 @@ spec:
       - secretRef:
           name: airflow-secret
     workers:
+      extraPipPackages:
+        - beautifulsoup4
+        - httpx
+        - s3fs
       persistence:
         enabled: false
     createUserJob:
