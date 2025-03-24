@@ -3,7 +3,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
   name: kubeflow-manifests
-  namespace: kubeflow
+  namespace: flux-system
 spec:
   interval: 5m
   url: https://github.com/kubeflow/manifests
@@ -20,6 +20,5 @@ spec:
   include:
     - repository:
         name: flux-system
-        namespace: flux-system
       fromPath: kubernetes/apps/kubeflow/manifests/kustomization.yaml
       toPath: kustomization.yaml
