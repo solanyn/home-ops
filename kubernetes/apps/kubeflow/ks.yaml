@@ -12,6 +12,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: kubeflow-manifests
-    namespace: kubeflow
+    namespace: flux-system
   timeout: 5m
   wait: true
