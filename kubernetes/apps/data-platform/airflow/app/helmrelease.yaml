@@ -54,7 +54,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: airflow-secret
-              key: AIRFLOW__WEBSERVER__SECRET_KE
+              key: AIRFLOW__WEBSERVER__SECRET_KEY
       config:
         AIRFLOW__CORE__LOAD_EXAMPLES: "False"
         AIRFLOW__CORE__DEFAULT_TIMEZONE: "Australia/Sydney"
