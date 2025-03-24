@@ -14,4 +14,6 @@ patches:
       - op: add
         path: /metadata/labels/istio-injection
         value: enabled
-
+      - op: add
+        path: /metadata/labels/control-plane
+        value: kubeflow
