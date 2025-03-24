@@ -12,6 +12,5 @@ spec:
     kind: GitRepository
     name: kubeflow-manifests
     namespace: kubeflow
-  targetNamespace: *namespace
   timeout: 5m
   wait: true
