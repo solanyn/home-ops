@@ -33,6 +33,12 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    workers:
+      replicas: 2
+      extraPipPackages:
+        - s3fs
+        - beautifulsoup4
+        - httpx
     airflow:
       executor: CeleryExecutor
       image:
