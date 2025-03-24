@@ -88,10 +88,10 @@ spec:
           key: AIRFLOW_ADMIN_LAST_NAME
       usersUpdate: true
       connections:
-        - id: my_postgres
+        - id: postgres
           type: postgres
-          description: my Postgres connection
-          host: postgres.example.com
+          description: Cluster PostgreSQL
+          host: postgres17-rw.database.svc.cluster.local
           port: 5432
           login: $${POSTGRES_USERNAME}
           password: $${POSTGRES_PASSWORD}
