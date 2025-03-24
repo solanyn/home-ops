@@ -64,6 +64,8 @@ spec:
         enabled: true
         repo: https://github.com/solanyn/airflow-pipelines
         branch: main
+        depth: 1
+        subPath: "dags"
     scheduler:
       enabled: true
     redis:
