@@ -105,38 +105,38 @@ spec:
           kind: secret
           name: airflow-secret
           key: INIT_POSTGRES_PASSWORD
-      variables:
-        - key: "S3_ENDPOINT_URL"
-          value: "${S3_ENDPOINT_URL}"
-        - key: "AWS_ACCESS_KEY_ID"
-          value: "${AWS_ACCESS_KEY_ID}"
-        - key: "AWS_SECRET_ACCESS_KEY"
-          value: "${AWS_SECRET_ACCESS_KEY}"
-        - key: "PUSHOVER_USER_KEY"
-          value: "${PUSHOVER_USER_KEY}"
-        - key: "PUSHOVER_API_TOKEN"
-          value: "${PUSHOVER_API_TOKEN}"
-      variablesTemplates:
-        S3_ENDPOINT_URL:
-          kind: secret
-          name: airflow-secret
-          key: S3_ENDPOINT_URL
-        AWS_ACCESS_KEY_ID:
-          kind: secret
-          name: airflow-secret
-          key: AWS_ACCESS_KEY_ID
-        AWS_SECRET_ACCESS_KEY:
-          kind: secret
-          name: airflow-secret
-          key: AWS_SECRET_ACCESS_KEY
-        PUSHOVER_USER_KEY:
-          kind: secret
-          name: airflow-secret
-          key: PUSHOVER_USER_KEY
-        PUSHOVER_API_TOKEN:
-          kind: secret
-          name: airflow-secret
-          key: PUSHOVER_API_TOKEN
+      # variables:
+      #   - key: "S3_ENDPOINT_URL"
+      #     value: "${S3_ENDPOINT_URL}"
+      #   - key: "AWS_ACCESS_KEY_ID"
+      #     value: "${AWS_ACCESS_KEY_ID}"
+      #   - key: "AWS_SECRET_ACCESS_KEY"
+      #     value: "${AWS_SECRET_ACCESS_KEY}"
+      #   - key: "PUSHOVER_USER_KEY"
+      #     value: "${PUSHOVER_USER_KEY}"
+      #   - key: "PUSHOVER_API_TOKEN"
+      #     value: "${PUSHOVER_API_TOKEN}"
+      # variablesTemplates:
+      #   S3_ENDPOINT_URL:
+      #     kind: secret
+      #     name: airflow-secret
+      #     key: S3_ENDPOINT_URL
+      #   AWS_ACCESS_KEY_ID:
+      #     kind: secret
+      #     name: airflow-secret
+      #     key: AWS_ACCESS_KEY_ID
+      #   AWS_SECRET_ACCESS_KEY:
+      #     kind: secret
+      #     name: airflow-secret
+      #     key: AWS_SECRET_ACCESS_KEY
+      #   PUSHOVER_USER_KEY:
+      #     kind: secret
+      #     name: airflow-secret
+      #     key: PUSHOVER_USER_KEY
+      #   PUSHOVER_API_TOKEN:
+      #     kind: secret
+      #     name: airflow-secret
+      #     key: PUSHOVER_API_TOKEN
       variablesUpdate: true
       dags:
         gitSync:
