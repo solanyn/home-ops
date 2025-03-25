@@ -152,6 +152,7 @@ spec:
         type: postgres
         host: postgres17-rw.database.svc.cluster.local
         port: 5432
+        database: airflow
         userSecret: airflow-secret
         userSecretKey: INIT_POSTGRES_USER
         passwordSecret: airflow-secret
@@ -162,3 +163,4 @@ spec:
       externalRedis:
         host: redis.database.svc.cluster.local
         port: 6379
+        databaseNumber: 1
