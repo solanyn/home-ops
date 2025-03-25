@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: oauth2-proxy
+  namespace: oauth2-proxy
+spec:
+  interval: 12h
+  url: https://oauth2-proxy.github.io/manifests
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: oauth2-proxy
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: oauth2-proxy
+      version: 7.12.6
+      sourceRef:
+        kind: HelmRepository
+        name: oauth2-proxy
+        namespace: oauth2-proxy
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    extraArgs:
+      - --skip-jwt-bearer-tokens=true
+      - --extra-jwt-issuers=https://kubernetes.default.svc.cluster.local=https://kubernetes.default.svc.cluster.local,https://kubernetes.default.svc.cluster.local=pipelines.kubeflow.org
+      - --set-xauthrequest=true
+      - --set-authorization-header=true
+      - --code-challenge-method=S256
+      - --provider=oidc
+      - --scope=profile email groups openid
+      - --oidc-issuer-url=http://dex.dex.svc.cluster.local:5556/dex
+      - --skip-oidc-discovery=true
+      - --login-url=/dex/auth
+      - --redeem-url=http://dex.dex.svc.cluster.local:5556/dex/token
+      - --oidc-jwks-url=http://dex.dex.svc.cluster.local:5556/dex/keys
+      - --skip-auth-route=/dex/.*,^/metrics
+      - --skip-provider-button=true # go directly to the configured provider
+      - --cookie-name=kubeflow-oauth2-proxy
+      - --cookie-expire=24h
+      - --cookie-refresh=1h
+      - --ssl-insecure-skip-verify=true # has to be set for kubernetes self-signed issuer
+      - --upstream=static://200 # without this the authenticated requests are getting 404
+      - --redirect-url=/oauth2/callback
+      - --cookie-secure=false
+      # This is fresh and fruity!
+      # https://github.com/oauth2-proxy/oauth2-proxy/releases/tag/v7.6.0
+      # https://github.com/oauth2-proxy/oauth2-proxy/pull/2183
+      - --relative-redirect-url
+    config:
+      existingSecret: oauth2-proxy-secret
