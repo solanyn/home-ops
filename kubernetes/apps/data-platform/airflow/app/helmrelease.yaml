@@ -41,17 +41,45 @@ spec:
       brokerUrl: redis://redis.database.svc.cluster.local:6379
     webserverSecretKeySecretName: airflow-secret
     executor: "CeleryExecutor"
+    secret:
+      - envName: S3_ENDPOINT_URL
+        secretName: airflow-secret
+        secretKey: S3_ENDPOINT_URL
+      - envName: AWS_ACCESS_KEY_ID
+        secretName: airflow-secret
+        secretKey: AWS_ACCESS_KEY_ID
+      - envName: AWS_SECRET_ACCESS_KEY
+        secretName: airflow-secret
+        secretKey: AWS_SECRET_ACCESS_KEY
+      - envName: PUSHOVER_API_TOKEN
+        secretName: airflow-secret
+        secretKey: PUSHOVER_API_TOKEN
+      - envName: PUSHOVER_USER_KEY
+        secretName: airflow-secret
+        secretKey: PUSHOVER_USER_KEY
     extraEnvFrom: |
       - secretRef:
           name: airflow-secret
-    workers:
-      extraPipPackages:
-        - beautifulsoup4
-        - httpx
-        - s3fs
-      persistence:
-        enabled: false
     createUserJob:
+      args:
+        - "bash"
+        - "-c"
+        - |-
+          exec \
+          airflow {{ semverCompare ">=2.0.0" .Values.airflowVersion | ternary "users create" "create_user" }} "$@"
+        - --
+        - "-r"
+        - "{{ .Values.webserver.defaultUser.role }}"
+        - "-u"
+        - "$${AIRFLOW_ADMIN_USERNAME}"
+        - "-e"
+        - "$${AIRFLOW_ADMIN_EMAIL}"
+        - "-f"
+        - "$${AIRFLOW_ADMIN_FIRST_NAME}"
+        - "-l"
+        - "$${AIRFLOW_ADMIN_LAST_NAME}"
+        - "-p"
+        - "$${AIRFLOW_ADMIN_PASSWORD}"
       extraInitContainers:
         - name: init-db
           image: ghcr.io/home-operations/postgres-init:17
