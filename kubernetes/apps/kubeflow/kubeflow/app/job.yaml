@@ -1,0 +1,16 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: init-kubeflow-db
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      containers:
+        - name: init-db
+          image: ghcr.io/solanyn/postgres-init:17
+          envFrom:
+            - secretRef:
+                name: kubeflow-secret
+      restartPolicy: Never
