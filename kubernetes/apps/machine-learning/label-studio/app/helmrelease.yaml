@@ -1,29 +1,14 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: label-studio
-  namespace: machine-learning
-spec:
-  interval: 12h
-  url: https://charts.heartex.com/
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: label-studio
+  name: &app label-studio
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: labelstudio
-      version: 1.9.7
-      sourceRef:
-        kind: HelmRepository
-        name: label-studio
-        namespace: machine-learning
+  chartRef:
+    kind: OCIRepository
+    name: app-template
   install:
     remediation:
       retries: 3
@@ -33,37 +18,70 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    global:
-      pgConfig:
-        dbName: label_studio
-        userName: label-studio
-        password:
-          secretName: label-studio-secret
-          secretKey: INIT_POSTGRES_USER
-      redisConfig:
-        host: redis://redis.database.svc.cluster.local:6379
-      persistence:
-        enabled: true
-        type: s3
-        config:
-          s3:
-            accessKeyExistingSecret: label-studio-secret
-            accessKeyExistingSecretKey: AWS_ACCESS_KEY_ID
-            secretKeyExistingSecret: label-studio-secret
-            secretKeyExistingSecretKey: AWS_SECRET_ACCESS_KEY
-            bucket: label-studio
-            endpointUrl: minio.default.svc.cluster.local:9000
-    app:
-      FullnameOverride: label-studio
-      resources:
-        requests:
-          cpu: 10m
-          memory: 128Mi
-      annotations:
-        reloader.stakater.com/auto: "true"
-    postgresql:
-      enabled: false
-    redis:
-      enabled: false
-    metrics:
-      enabled: true
+    controllers:
+      label-studio:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17
+            envFrom: &envFrom
+              - secretRef:
+                  name: label-studio-secret
+        containers:
+          app:
+            image:
+              repository: heartexlabs/label-studio
+              tag: 1.16.0@sha256:c84a07af836cb645cb57c49f1f0a4d0a612763cbd6647c18d8edc400192551ff
+            env:
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 4Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["label-studio.goyangi.cloud"]
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
