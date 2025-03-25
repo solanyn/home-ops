@@ -147,7 +147,7 @@ spec:
       postgresql:
         enabled: false
       pgbouncer:
-        enabled: true
+        enabled: false
       externalDatabase:
         type: postgres
         host: postgres17-rw.database.svc.cluster.local
