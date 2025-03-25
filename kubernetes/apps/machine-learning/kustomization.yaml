@@ -10,3 +10,4 @@ resources:
   - ./feast/ks.yaml
   - ./kuberay/ks.yaml
   - ./mlflow/ks.yaml
+  - ./label-studio/ks.yaml
