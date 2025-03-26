@@ -25,7 +25,7 @@ spec:
     name: gha-runner-scale-set-controller
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:

@@ -27,7 +27,7 @@ spec:
         namespace: kubeflow
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     remediation:
       strategy: rollback
