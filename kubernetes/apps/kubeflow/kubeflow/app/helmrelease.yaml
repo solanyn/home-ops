@@ -44,16 +44,16 @@ spec:
         db:
           driver:
             value: mysql
-          user:
+          user: &dbUser
             secretKeyRef:
               name: kubeflow-secret
-              key: MYSQL_ROOT_USER
-          password:
+              key: MARIADB_KUBEFLOW_USER
+          password: &dbPass
             secretKeyRef:
               name: kubeflow-secret
-              key: MYSQL_ROOT_PASSWORD
+              key: MARIADB_KUBEFLOW_PASSWORD
           host:
-            value: mysql-kubeflow.database.svc.cluster.local
+            value: mariadb.database.svc.cluster.local
           port:
             value: 3306
           databaseName:
@@ -62,25 +62,19 @@ spec:
           accessKey:
             secretKeyRef:
               name: kubeflow-secret
-              key: accesskey
+              key: AWS_ACCESS_KEY_ID
           secretAccessKey:
             secretKeyRef:
               name: kubeflow-secret
-              key: secretkey
+              key: AWS_SECRET_ACCESS_KEY
     katib:
       dbmanager:
         config:
           driver:
             value: mysql
           db:
-            user:
-              secretKeyRef:
-                name: kubeflow-secret
-                key: MYSQL_ROOT_USER
-            password:
-              secretKeyRef:
-                name: kubeflow-secret
-                key: MYSQL_ROOT_PASSWORD
+            user: *dbUser
+            password: *dbPass
           host:
             value: mysql-kubeflow.database.svc.cluster.local
           port:
@@ -139,7 +133,7 @@ spec:
               external-gateways: |
                 - name: knative-ingress-gateway
                   namespace: kubeflow
-                  service: istio-ingressgateway.kubeflow.svc.cluster.local
+                  service: istio-ingress-gateway.kubeflow.svc.cluster.local
               local-gateways: |
                 - name: knative-local-gateway
                   namespace: kubeflow
