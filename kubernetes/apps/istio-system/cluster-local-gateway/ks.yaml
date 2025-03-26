@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: istio-ingress-gateway
+    - name: istio-ingressgateway
       namespace: istio-system
   interval: 1h
   path: ./kubernetes/apps/istio-system/cluster-local-gateway/app
