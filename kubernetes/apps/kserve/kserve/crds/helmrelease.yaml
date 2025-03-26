@@ -12,8 +12,6 @@ spec:
   ref:
     tag: v0.14.1
   url: oci://ghcr.io/kserve/charts/kserve-crd
-  verify:
-    provider: cosign
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
