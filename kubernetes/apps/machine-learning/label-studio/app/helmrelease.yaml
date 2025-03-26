@@ -85,5 +85,7 @@ spec:
               - name: *app
                 port: *port
     persistence:
-      label-studio:
+      media:
         type: emptyDir
+        globalMounts:
+          - path: /label-studio/media
