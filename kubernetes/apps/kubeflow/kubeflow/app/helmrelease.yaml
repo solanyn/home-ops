@@ -128,12 +128,12 @@ spec:
             # For more information, visit official knative operator documentation:
             # https://knative.dev/docs/install/operator/configuring-with-operator/
             istio:
-              gateway.knative-serving.knative-ingress-gateway: "istio-ingress-gateway.kubeflow.svc.cluster.local"
+              gateway.knative-serving.knative-ingress-gateway: "istio-ingressgateway.kubeflow.svc.cluster.local"
               local-gateway.knative-serving.knative-local-gateway: "cluster-local-gateway.kubeflow.svc.cluster.local"
               external-gateways: |
                 - name: knative-ingress-gateway
                   namespace: kubeflow
-                  service: istio-ingress-gateway.kubeflow.svc.cluster.local
+                  service: istio-ingressgateway.kubeflow.svc.cluster.local
               local-gateways: |
                 - name: knative-local-gateway
                   namespace: kubeflow
