@@ -53,7 +53,7 @@ spec:
               name: kubeflow-secret
               key: MARIADB_KUBEFLOW_PASSWORD
           host:
-            value: mariadb.database.svc.cluster.local
+            value: &dbHost mariadb.database.svc.cluster.local
           port:
             value: 3306
           databaseName:
@@ -76,7 +76,7 @@ spec:
             user: *dbUser
             password: *dbPass
           host:
-            value: mysql-kubeflow.database.svc.cluster.local
+            value: *dbHost
           port:
             value: 3306
           databaseName:
@@ -89,10 +89,10 @@ spec:
               - access-ml-pipeline
     dexIntegration:
       svc:
-        namespace: kubeflow
+        namespace: dex
     oauth2ProxyIntegration:
       svc:
-        namespace: kubeflow
+        namespace: oauth2-proxy
     knativeIntegration:
       knativeServing:
         name: knative-serving
