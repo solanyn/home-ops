@@ -45,16 +45,16 @@ spec:
           maxIdleConns: 100
           maxOpenConns: 0
         mysql:
-          host: mysql-kubeflow.database.cluster.local
+          host: mariadb.database.cluster.local
           port: 3306
           database: argo
           tableName: argo_workflows
           userNameSecret:
             name: argo-workflows-secret
-            key: MYSQL_USER
+            key: KUBEFLOW_MARIADB_USER
           passwordSecret:
             name: argo-workflows-secret
-            key: MYSQL_PASSWORD
+            key: KUBEFLOW_MARIADB_PASSWORD
           ssl: false
           sslMode: disable
         nodeStatusOffLoad: true
