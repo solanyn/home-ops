@@ -73,7 +73,7 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: cert-manager/goyangi-cloud-tls
+        default-ssl-certificate: kube-system/goyangi-cloud-tls
         publish-status-address: *hostname
       terminationGracePeriodSeconds: 120
       publishService:
