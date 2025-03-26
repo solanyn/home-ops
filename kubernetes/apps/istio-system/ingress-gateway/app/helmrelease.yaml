@@ -33,5 +33,9 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    istio-ingressgateway:
+      resources: {}
+    global:
+      image: proxyv2
     service:
       type: ClusterIP
