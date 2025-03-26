@@ -8,5 +8,5 @@ components:
 resources:
   - ./istio/ks.yaml
   - ./istiod/ks.yaml
-  - ./ingress-gateway/ks.yaml
+  - ./ingressgateway/ks.yaml
   - ./cluster-local-gateway/ks.yaml
