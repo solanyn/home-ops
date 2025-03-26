@@ -84,3 +84,6 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
+    persistence:
+      label-studio:
+        type: emptyDir
