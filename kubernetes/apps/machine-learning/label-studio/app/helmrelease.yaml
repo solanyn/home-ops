@@ -88,4 +88,4 @@ spec:
       data:
         type: emptyDir
         globalMounts:
-          - path: /label-studio/data
+          - path: /label-studio/data/media
