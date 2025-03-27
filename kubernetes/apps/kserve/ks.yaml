@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-kserve
+  namespace: &namespace kserve
+spec:
+  interval: 1h
+  path: ./common/knative/knative-serving/overlays/gateways
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kserve
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-kserve-models
+  namespace: &namespace kserve
+spec:
+  interval: 1h
+  path: ./apps/kserve/models-web-app/overlays/kubeflow
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kserve
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
