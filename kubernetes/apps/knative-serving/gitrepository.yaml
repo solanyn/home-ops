@@ -1,0 +1,19 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: kubeflow-manifests
+spec:
+  interval: 5m
+  url: https://github.com/kubeflow/manifests
+  ref:
+    branch: master
+  ignore: |
+    # exclude all
+    /*
+    # include manifest dirs
+    !/apps
+    !/common
+    !/experimental
+    # exclude file extensions from manifest dirs
+    /**/*.md
