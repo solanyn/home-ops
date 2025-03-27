@@ -17,3 +17,13 @@ patches:
       - op: add
         path: /metadata/labels/control-plane
         value: kubeflow
+  - target:
+      kind: Namespace
+      name: istio-system
+    patch: |
+      - op: add
+        path: /metadata/labels/istio-operator-managed
+        value: Reconcile
+      - op: add
+        path: /metadata/labels/istio-injection
+        value: disabled
