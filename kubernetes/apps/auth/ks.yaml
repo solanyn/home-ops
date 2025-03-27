@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-oauth2-proxy
+  namespace: &namespace auth
+spec:
+  interval: 1h
+  path: ./common/oauth2-proxy/overlays/m2m-dex-only/
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: auth
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-dex
+  namespace: &namespace auth
+spec:
+  interval: 1h
+  path: ./common/dex/overlays/oauth2-proxy/
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: auth
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
