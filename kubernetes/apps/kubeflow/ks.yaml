@@ -1,0 +1,342 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-networkpolicies
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./common/networkpolicies/base
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-roles
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./common/kubeflow-roles/base
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-istio-resources
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./common/istio-1-24/kubeflow-istio-resources/base
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-istio-resources
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./common/istio-1-24/kubeflow-istio-resources/base
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-pipelines
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-kserve
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./common/knative/knative-serving/overlays/gateways
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-kserve-models
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/kserve/models-web-app/overlays/kubeflow
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-katib
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/katib/upstream/installs/katib-with-kubeflow
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-central-dashboard
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/centraldashboard/overlays/oauth2-proxy
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-admission-webhook
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/admission-webhook/upstream/overlays/cert-manager
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-notebooks
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/jupyter/notebook-controller/upstream/overlays/kubeflow
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-jupyter-web-app
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/jupyter/jupyter-web-app/upstream/overlays/istio
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-pvc-viewer-controller
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/pvcviewer-controller/upstream/base
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-profiles
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/profiles/upstream/overlays/kubeflow
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-volumes-web-app
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/volumes-web-app/upstream/overlays/istio
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-volumes-web-app
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/volumes-web-app/upstream/overlays/istio
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-tensorboard
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/tensorboard/tensorboards-web-app/upstream/overlays/istio
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-tensorboard-controller
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/tensorboard/tensorboard-controller/upstream/overlays/kubeflow
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kubeflow-training-operator
+  namespace: &namespace kubeflow
+spec:
+  interval: 1h
+  path: ./apps/training-operator/upstream/overlays/kubeflow
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-manifests
+    namespace: kubeflow
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
