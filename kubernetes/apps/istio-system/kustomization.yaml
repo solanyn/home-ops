@@ -5,6 +5,5 @@ namespace: istio-system
 components:
   - ../../components/common
 resources:
-  - ./istio/ks.yaml
-  - ./ingressgateway/ks.yaml
-  - ./external-authorization/ks.yaml
+  - ./gitrepository.yaml
+  - ./ks.yaml
