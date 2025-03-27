@@ -66,9 +66,11 @@ spec:
             port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
+    extraArgs:
+      - --ignore-ingress-tls-spec
     triggerLoopOnEvent: true
     policy: sync
-    sources: ["gateway-httproute", "service"]
+    sources: ["gateway-httproute", "service", "ingress"]
     txtOwnerId: main
     txtPrefix: k8s.main.
     domainFilters: ["goyangi.cloud"]
