@@ -6,5 +6,5 @@ components:
   - ../../components/common
 resources:
   - ./istio/ks.yaml
-  - ./istio/ingressgateway/ks.yaml
-  - ./istio/external-authorization/ks.yaml
+  - ./ingressgateway/ks.yaml
+  - ./external-authorization/ks.yaml
