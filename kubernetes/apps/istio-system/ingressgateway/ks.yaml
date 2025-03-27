@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/istio-system/istio/ingressgateway
+  path: ./kubernetes/apps/istio-system/ingressgateway
   prune: true
   retryInterval: 2m
   sourceRef:
