@@ -83,5 +83,5 @@ securityContext:
       - SYS_ADMIN
       - SYS_RESOURCE
 # NOTE:: required for kubeflow/istio integration
-# socketLB:
-#   hostNamespaceOnly: true
+socketLB:
+  hostNamespaceOnly: true
