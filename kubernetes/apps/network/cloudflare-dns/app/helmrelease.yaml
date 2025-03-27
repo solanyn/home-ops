@@ -54,9 +54,11 @@ spec:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=external
+      - --ignore-ingress-tls-spec
+      - --ingress-class=external
     triggerLoopOnEvent: true
     policy: sync
-    sources: ["crd", "gateway-httproute"]
+    sources: ["crd", "gateway-httproute", "ingress"]
     txtOwnerId: default
     txtPrefix: k8s.
     domainFilters: ["goyangi.cloud", "solanyn.dev"]
