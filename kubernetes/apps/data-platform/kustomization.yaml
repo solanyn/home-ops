@@ -9,4 +9,3 @@ resources:
   - ./airflow/ks.yaml
   - ./dask/ks.yaml
   - ./kafka/ks.yaml
-  - ./spark/ks.yaml
