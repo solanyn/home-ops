@@ -35,6 +35,10 @@ spec:
             image:
               repository: heartexlabs/label-studio
               tag: 1.16.0@sha256:c84a07af836cb645cb57c49f1f0a4d0a612763cbd6647c18d8edc400192551ff
+            env:
+              CSRF_TRUSTED_ORIGINS: "https://label-studio.goyangi.cloud"
+              EXPERIMENTAL_FEATURES: 1
+              SSRF_PROTECTION_ENABLED: "true"
             envFrom: *envFrom
             probes:
               liveness: &probes
