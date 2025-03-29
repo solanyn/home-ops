@@ -20,6 +20,7 @@ resources:
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./kopia/ks.yaml
+  - ./label-studio/ks.yaml
   - ./lidarr/ks.yaml
   - ./maintainerr/ks.yaml
   - ./miniflux/ks.yaml
