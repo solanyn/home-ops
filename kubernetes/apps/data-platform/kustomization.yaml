@@ -8,4 +8,3 @@ components:
 resources:
   - ./airflow/ks.yaml
   - ./dask/ks.yaml
-  - ./kafka/ks.yaml
