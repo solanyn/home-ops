@@ -99,12 +99,6 @@ spec:
               resources:
                 requests:
                   storage: 50Gi
-        # TODO: temporary after ceph failure
-        containers:
-        - name: prometheus
-          startupProbe:
-            failureThreshold: 600
-            periodSeconds: 30
     prometheus-node-exporter:
       fullnameOverride: node-exporter
       prometheus:
