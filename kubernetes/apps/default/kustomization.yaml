@@ -35,7 +35,6 @@ resources:
   - ./recyclarr/ks.yaml
   - ./romm/ks.yaml
   - ./sonarr/ks.yaml
-  - ./seasonpackarr/ks.yaml
   - ./tautulli/ks.yaml
   - ./thelounge/ks.yaml
   - ./your-spotify/ks.yaml
