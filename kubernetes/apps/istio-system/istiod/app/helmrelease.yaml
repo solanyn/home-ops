@@ -17,7 +17,7 @@ spec:
   interval: 1h
   chart:
     spec:
-      chart: base
+      chart: istiod
       # NOTE: Must match upstream: https://github.com/kubeflow/manifests/tree/master?tab=readme-ov-file#kubeflow-version-master
       version: 1.24.3
       sourceRef:
