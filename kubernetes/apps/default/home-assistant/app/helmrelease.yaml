@@ -29,8 +29,8 @@ spec:
               tag: 2025.4.1@sha256:9495fb2aff6e56e13bf8ccc8f57b6e931b37c44ea1ffef69f6ee3fc5a951633a
             env:
               TZ: Australia/Sydney
-              HOME_ASSISTANT_TRUSTED_PROXIES: 10.42.0.0/16
-              HOME_ASSISTANT_EXTERNAL_URL: https://hass.goyangi.cloud
+              HASS_HTTP_TRUSTED_PROXY_1: 192.168.42.0/24
+              HASS_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
             envFrom:
               - secretRef:
                   name: home-assistant-secret
