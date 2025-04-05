@@ -19,7 +19,6 @@ resources:
   - ./home-assistant/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
-  - ./kopia/ks.yaml
   - ./label-studio/ks.yaml
   - ./lidarr/ks.yaml
   - ./maintainerr/ks.yaml
