@@ -1,0 +1,44 @@
+---
+- id: jellyseerr-pushover
+  execute-command: /config/jellyseerr-pushover.sh
+  command-working-directory: /config
+  pass-arguments-to-command:
+    - source: string
+      name: '{{ getenv "JELLYSEERR_PUSHOVER_URL" }}'
+    - source: entire-payload
+
+- id: radarr-pushover
+  execute-command: /config/radarr-pushover.sh
+  command-working-directory: /config
+  pass-arguments-to-command:
+    - source: string
+      name: '{{ getenv "RADARR_PUSHOVER_URL" }}'
+    - source: entire-payload
+
+- id: sonarr-pushover
+  execute-command: /config/sonarr-pushover.sh
+  command-working-directory: /config
+  pass-arguments-to-command:
+    - source: string
+      name: '{{ getenv "SONARR_PUSHOVER_URL" }}'
+    - source: entire-payload
+
+- id: sonarr-refresh-series
+  execute-command: /config/sonarr-refresh-series.sh
+  command-working-directory: /config
+  pass-arguments-to-command:
+    - source: request
+      name: remote-addr
+    - source: string
+      name: '{{ getenv "SONARR_API_KEY" }}'
+    - source: entire-payload
+
+- id: sonarr-tag-codecs
+  execute-command: /config/sonarr-tag-codecs.sh
+  command-working-directory: /config
+  pass-arguments-to-command:
+    - source: request
+      name: remote-addr
+    - source: string
+      name: '{{ getenv "SONARR_API_KEY" }}'
+    - source: entire-payload
