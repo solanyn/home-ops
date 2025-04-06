@@ -96,14 +96,6 @@ spec:
     persistence:
       config:
         existingClaim: radarr
-      scripts:
-        type: configMap
-        name: radarr-configmap
-        defaultMode: 0775
-        globalMounts:
-          - path: /scripts/pushover-notifier.sh
-            subPath: pushover-notifier.sh
-            readOnly: true
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
