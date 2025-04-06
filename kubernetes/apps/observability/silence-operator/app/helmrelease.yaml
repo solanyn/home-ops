@@ -77,3 +77,14 @@ spec:
             - name: alertname
               value: CephNodeNetworkPacketDrops
               isRegex: false
+        # TODO: Remove when no more DockerHub images
+      - apiVersion: monitoring.giantswarm.io/v1alpha1
+        kind: Silence
+        metadata:
+          name: dockerhub-rate-limit-risk
+          namespace: observability
+        spec:
+          matchers:
+            - name: alertname
+              value: DockerhubRateLimitRisk
+              isRegex: false
