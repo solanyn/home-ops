@@ -1,4 +1,4 @@
-name: Sync Kubeflow Manifests (Matrix)
+name: Sync Kubeflow Manifests
 
 on:
   schedule:
