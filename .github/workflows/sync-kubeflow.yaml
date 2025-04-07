@@ -60,6 +60,8 @@ jobs:
       - name: Check and sync folder
         id: check
         run: |
+          set -x
+
           src="upstream/${{ matrix.folder }}"
           dest="${DEST_BASE}/${{ matrix.folder }}"
           mkdir -p "tmp-sync"
