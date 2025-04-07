@@ -192,7 +192,7 @@ jobs:
           BRANCH="kubeflow-sync-${{ needs.setup.outputs.upstream_ref }}-$(date +%s)"
           git checkout -b "$BRANCH"
           git add kubernetes/apps/kubeflow-system/platform/manifests .last-upstream-ref
-          git commit -m "chore: sync Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}"
+          git commit --signoff -m "chore: sync Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}"
           git push origin "$BRANCH"
           echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
