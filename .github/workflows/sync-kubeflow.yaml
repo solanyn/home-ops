@@ -1,8 +1,8 @@
-name: Sync Kubeflow Manifests
+name: Sync Kubeflow Manifests (Matrix)
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *'  # Daily at 00:00 UTC
   workflow_dispatch:
     inputs:
       upstream_ref:
@@ -11,47 +11,51 @@ on:
         default: ''
 
 jobs:
-  sync:
+  setup:
     runs-on: ubuntu-latest
-
-    env:
-      UPSTREAM_REPO: https://github.com/kubeflow/manifests.git
-      COMMIT_EMAIL: "bot-goyangi[bot]@users.noreply.github.com"
-      COMMIT_NAME: bot-goyangi[bot]
-      DEST_DIR: kubernetes/apps/kubeflow-system/platform/manifests
-
+    outputs:
+      upstream_ref: ${{ steps.ref.outputs.ref }}
+      previous_ref: ${{ steps.prev.outputs.prev }}
     steps:
-      - name: Checkout current repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Determine upstream ref (latest tag fallback)
+      - name: Get latest tag if none provided
         id: ref
         run: |
           if [ -z "${{ github.event.inputs.upstream_ref }}" ]; then
-            latest_tag=$(git ls-remote --tags $UPSTREAM_REPO | grep -o 'refs/tags/.*' | sed 's|refs/tags/||' | sort -V | tail -n1)
-            echo "Using latest tag: $latest_tag"
-            echo "ref=$latest_tag" >> $GITHUB_OUTPUT
+            latest=$(git ls-remote --tags https://github.com/kubeflow/manifests.git | grep -o 'refs/tags/.*' | sed 's|refs/tags/||' | sort -V | tail -n1)
+            echo "Auto-detected latest tag: $latest"
+            echo "ref=$latest" >> $GITHUB_OUTPUT
           else
             echo "ref=${{ github.event.inputs.upstream_ref }}" >> $GITHUB_OUTPUT
           fi
 
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get previously synced upstream ref
+        id: prev
+        run: |
+          if [[ -f .last-upstream-ref ]]; then
+            echo "prev=$(cat .last-upstream-ref)" >> $GITHUB_OUTPUT
+          else
+            echo "prev=unknown" >> $GITHUB_OUTPUT
+          fi
+
+  sync:
+    needs: setup
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        folder: [common, apps, experimental, example]
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
+    env:
+      DEST_BASE: kubernetes/apps/kubeflow-system/platform/manifests
+    steps:
+      - uses: actions/checkout@v4
+
       - name: Clone upstream
         run: |
-          git clone --depth=1 --branch "${{ steps.ref.outputs.ref }}" "$UPSTREAM_REPO" upstream
-
-      - name: Save previous ref
-        id: previous
-        run: |
-          PREV_FILE=".last-upstream-ref"
-          if [[ -f $PREV_FILE ]]; then
-            PREV=$(cat $PREV_FILE)
-          else
-            PREV="unknown"
-          fi
-          echo "${{ steps.ref.outputs.ref }}" > $PREV_FILE
-          echo "from=$PREV" >> $GITHUB_OUTPUT
+          git clone --depth=1 --branch "${{ needs.setup.outputs.upstream_ref }}" https://github.com/kubeflow/manifests.git upstream
 
       - name: Check and sync folder
         id: check
@@ -73,41 +77,58 @@ jobs:
             echo "✅ No changes in ${{ matrix.folder }}"
             echo "changed=false" >> $GITHUB_OUTPUT
 
+      - name: Upload updated folder
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: synced-${{ matrix.folder }}
+          path: ${{ env.DEST_BASE }}/${{ matrix.folder }}
+
+  finalize:
+    needs: [setup, sync]
+    runs-on: ubuntu-latest
+    if: contains(needs.sync.*.outputs.changed, 'true')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download synced folders
+        uses: actions/download-artifact@v4
+        with:
+          pattern: synced-*
+          path: kubernetes/apps/kubeflow-system/platform/manifests
+
+      - name: Save updated upstream ref
+        run: echo "${{ needs.setup.outputs.upstream_ref }}" > .last-upstream-ref
+
       - name: Generate changelog
-        if: steps.sync.outputs.changes == 'true'
         id: changelog
         run: |
-          git clone "$UPSTREAM_REPO" full-upstream
+          git clone https://github.com/kubeflow/manifests.git full-upstream
           cd full-upstream
           git fetch --tags
-          from_ref="${{ steps.previous.outputs.from }}"
-          to_ref="${{ steps.ref.outputs.ref }}"
-
-          if [[ "$from_ref" == "unknown" ]]; then
-            log=$(git log -n 20 --oneline $to_ref)
+          from="${{ needs.setup.outputs.previous_ref }}"
+          to="${{ needs.setup.outputs.upstream_ref }}"
+          if [[ "$from" == "unknown" ]]; then
+            log=$(git log -n 20 --oneline "$to")
           else
-            log=$(git log --oneline "$from_ref..$to_ref" || echo "No changelog available.")
+            log=$(git log --oneline "$from..$to" || echo "No changelog available.")
           fi
-
           echo "CHANGELOG<<EOF" >> $GITHUB_ENV
           echo "$log" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Commit and push changes
-        if: steps.sync.outputs.changes == 'true'
+      - name: Commit and push
         run: |
-          git config user.email "${{ env.COMMIT_EMAIL }}"
-          git config user.name "${{ env.COMMIT_NAME }}"
-          BRANCH="kubeflow-sync-${{ steps.ref.outputs.ref }}-$(date +%s)"
+          git config user.email "${BOT_APP_ID}+bot-goyangi[bot]@users.noreply.github.com"
+          git config user.name "bot-goyangi[bot]"
+          BRANCH="kubeflow-sync-${{ needs.setup.outputs.upstream_ref }}-$(date +%s)"
           git checkout -b "$BRANCH"
-
-          git add $DEST_DIR .last-upstream-ref
-          git commit -m "Sync Kubeflow manifests from upstream ${{ steps.ref.outputs.ref }}"
+          git add kubernetes/apps/kubeflow-system/platform/manifests .last-upstream-ref
+          git commit -m "chore: sync Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}"
           git push origin "$BRANCH"
           echo "BRANCH_NAME=$BRANCH" >> $GITHUB_ENV
 
-      - name: Show diff summary
-        if: steps.sync.outputs.changes == 'true'
+      - name: Get diff summary
         id: diff
         run: |
           summary=$(git diff --stat HEAD~1 HEAD)
@@ -116,29 +137,21 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
 
       - name: Create Pull Request
-        if: steps.sync.outputs.changes == 'true'
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Sync Kubeflow manifests from ${{ steps.ref.outputs.ref }}
+          commit-message: Update Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}
           branch: ${{ env.BRANCH_NAME }}
-          title: "Sync Kubeflow manifests from ${{ steps.ref.outputs.ref }}"
+          title: "Sync Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}"
           body: |
             ## 📦 Synced Kubeflow Manifests
 
-            Synced the following folders from upstream `${{ steps.ref.outputs.ref }}` into:
+            Folders synced from upstream ref: `${{ needs.setup.outputs.upstream_ref }}`
+            to `kubernetes/apps/kubeflow-system/platform/manifests`.
 
-            `kubernetes/apps/kubeflow-system/platform/manifests`
-
-            - `common`
-            - `apps`
-            - `experimental`
-            - `example`
-
-            ---
-            🔄 **Upgrade From**: `${{ steps.previous.outputs.from }}`
-            🚀 **Upgrade To**: `${{ steps.ref.outputs.ref }}`
+            🔄 **From:** `${{ needs.setup.outputs.previous_ref }}`
+            🚀 **To:** `${{ needs.setup.outputs.upstream_ref }}`
 
             ## 📜 Changelog
             ```
@@ -149,3 +162,4 @@ jobs:
             ```
             ${{ env.DIFF }}
             ```
+
