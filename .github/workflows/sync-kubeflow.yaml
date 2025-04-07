@@ -1,16 +1,8 @@
 name: Sync Kubeflow Manifests
 
 on:
-  workflow_call:
-    secrets:
-      BOT_APP_ID:
-        description: The App ID of the GitHub App
-        required: true
-      BOT_APP_PRIVATE_KEY:
-        description: The private key of the GitHub App
-        required: true
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * *'  # Daily at 00:00 UTC
   workflow_dispatch:
     inputs:
       upstream_ref:
@@ -88,8 +80,14 @@ jobs:
             exit 1
           fi
 
-          mkdir -p "tmp-sync"
-          cp -r "$src" "tmp-sync/"
+          # Create temporary directory for processing
+          mkdir -p "tmp-sync/${{ matrix.folder }}"
+
+          # Copy files to temp directory first
+          cp -r "$src"/* "tmp-sync/${{ matrix.folder }}/"
+
+          # Remove all OWNERS files
+          find "tmp-sync/${{ matrix.folder }}" -name "OWNERS" -type f -delete
 
           # Ensure destination folder exists
           mkdir -p "$dest"
@@ -100,7 +98,9 @@ jobs:
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "🔁 Changes found in ${{ matrix.folder }}"
-            rm -rf "$dest"/*
+            # Clean destination without destroying the folder structure
+            find "$dest" -mindepth 1 -delete
+            # Copy content preserving the folder structure
             cp -r "tmp-sync/${{ matrix.folder }}"/* "$dest/"
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
@@ -140,6 +140,8 @@ jobs:
     if: needs.check_changes.outputs.any_changes == 'true'
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Download synced folders
         uses: actions/download-artifact@v4
@@ -207,8 +209,9 @@ jobs:
         with:
           sign-commits: true
           token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
           branch: ${{ env.BRANCH }}
-          labels: kubeflow
+          labels: area/kubeflow
           title: "Sync Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}"
           reviewers: solanyn
           body: |
