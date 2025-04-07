@@ -189,7 +189,7 @@ jobs:
         run: |
           git config user.email "1109230+bot-goyangi[bot]@users.noreply.github.com"
           git config user.name "bot-goyangi[bot]"
-          BRANCH="kubeflow-sync-${{ needs.setup.outputs.upstream_ref }}-$(date +%s)"
+          BRANCH="kubeflow-sync-${{ needs.setup.outputs.upstream_ref }}"
           git checkout -b "$BRANCH"
           git add kubernetes/apps/kubeflow-system/platform/manifests .last-upstream-ref
           git commit --signoff -m "chore: sync Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}"
