@@ -162,7 +162,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: controller
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_controller@sha256:b71eb30909c369c1c8c07185e7ec4c75f874e36696eca563b93df70959e7a619
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_controller@sha256:40c58560de1b6a0247f2597c64c25874e8a2845f7ae9e133a848486e943a5c75
           env:
             - name: WEBHOOK_NAME
               value: inmemorychannel-webhook
