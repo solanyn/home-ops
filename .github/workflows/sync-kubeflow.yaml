@@ -8,7 +8,12 @@ on:
       upstream_ref:
         description: 'Kubeflow tag or branch to sync (leave blank to auto-detect latest tag)'
         required: false
-        default: ''
+        default: 'v1.10.0'
+
+# Add necessary permissions
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   setup:
@@ -56,28 +61,41 @@ jobs:
       - name: Clone upstream
         run: |
           git clone --depth=1 --branch "${{ needs.setup.outputs.upstream_ref }}" https://github.com/kubeflow/manifests.git upstream
+          if [ $? -ne 0 ]; then
+            echo "Failed to clone upstream repository"
+            exit 1
+          fi
 
       - name: Check and sync folder
         id: check
         run: |
-          set -x
+          set -e # Exit immediately if a command fails
 
           src="upstream/${{ matrix.folder }}"
           dest="${DEST_BASE}/${{ matrix.folder }}"
+
+          # Validate source directory exists
+          if [ ! -d "$src" ]; then
+            echo "Source directory $src not found!"
+            exit 1
+          fi
+
           mkdir -p "tmp-sync"
           cp -r "$src" "tmp-sync/"
 
           # Ensure destination folder exists
           mkdir -p "$dest"
 
-          if ! diff -qr "tmp-sync/${{ matrix.folder }}" "$dest" > /dev/null; then
+          # Check for differences
+          if diff -qr "tmp-sync/${{ matrix.folder }}" "$dest" > /dev/null 2>&1; then
+            echo "✅ No changes in ${{ matrix.folder }}"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
             echo "🔁 Changes found in ${{ matrix.folder }}"
             rm -rf "$dest"/*
             cp -r "tmp-sync/${{ matrix.folder }}"/* "$dest/"
             echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "✅ No changes in ${{ matrix.folder }}"
-            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Upload updated folder
         if: steps.check.outputs.changed == 'true'
@@ -86,10 +104,32 @@ jobs:
           name: synced-${{ matrix.folder }}
           path: ${{ env.DEST_BASE }}/${{ matrix.folder }}
 
-  finalize:
-    needs: [setup, sync]
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -rf upstream tmp-sync
+
+  check_changes:
+    needs: sync
     runs-on: ubuntu-latest
-    if: contains(needs.sync.*.outputs.changed, 'true')
+    outputs:
+      any_changes: ${{ steps.check_matrix_outputs.outputs.any_changes }}
+    steps:
+      - id: check_matrix_outputs
+        run: |
+          # Find if any matrix job reported changes
+          changes="${{ needs.sync.outputs.changed }}"
+          # Check if string 'true' appears anywhere in the output
+          if [[ "$changes" == *"true"* ]]; then
+            echo "any_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "any_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+  finalize:
+    needs: [setup, sync, check_changes]
+    runs-on: ubuntu-latest
+    if: needs.check_changes.outputs.any_changes == 'true'
     steps:
       - uses: actions/checkout@v4
 
@@ -97,6 +137,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: synced-*
+          merge-multiple: true
           path: kubernetes/apps/kubeflow-system/platform/manifests
 
       - name: Save updated upstream ref
@@ -105,21 +146,36 @@ jobs:
       - name: Generate changelog
         id: changelog
         run: |
-          git clone https://github.com/kubeflow/manifests.git full-upstream
+          set -e
+          git clone --depth=100 https://github.com/kubeflow/manifests.git full-upstream
           cd full-upstream
-          git fetch --tags
+
           from="${{ needs.setup.outputs.previous_ref }}"
           to="${{ needs.setup.outputs.upstream_ref }}"
+
+          # Fetch tags to ensure they're available
+          git fetch --tags
+
+          # Generate changelog with error handling
           if [[ "$from" == "unknown" ]]; then
-            log=$(git log -n 20 --oneline "$to")
+            echo "No previous ref known, showing recent commits"
+            log=$(git log -n 20 --oneline "$to" 2>/dev/null || echo "Unable to retrieve commit history.")
           else
-            log=$(git log --oneline "$from..$to" || echo "No changelog available.")
+            log=$(git log --oneline "$from..$to" 2>/dev/null || echo "No changelog available or unable to generate diff.")
           fi
+
+          cd ..
+          # Save changelog to env variable for PR description
           echo "CHANGELOG<<EOF" >> $GITHUB_ENV
           echo "$log" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
-      - name: Commit and push
+      - name: Cleanup upstream repo
+        if: always()
+        run: rm -rf full-upstream
+
+      - name: Create branch and commit changes
+        id: commit
         run: |
           git config user.email "${BOT_APP_ID}+bot-goyangi[bot]@users.noreply.github.com"
           git config user.name "bot-goyangi[bot]"
@@ -128,7 +184,7 @@ jobs:
           git add kubernetes/apps/kubeflow-system/platform/manifests .last-upstream-ref
           git commit -m "chore: sync Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}"
           git push origin "$BRANCH"
-          echo "BRANCH_NAME=$BRANCH" >> $GITHUB_ENV
+          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
       - name: Get diff summary
         id: diff
@@ -139,12 +195,10 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
 
       - name: Create Pull Request
-        id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Update Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}
-          branch: ${{ env.BRANCH_NAME }}
+          branch: ${{ env.BRANCH }}
           title: "Sync Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}"
           body: |
             ## 📦 Synced Kubeflow Manifests
@@ -164,4 +218,3 @@ jobs:
             ```
             ${{ env.DIFF }}
             ```
-
