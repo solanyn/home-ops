@@ -38,7 +38,6 @@ spec:
             env:
               BASE_URL: https://miniflux.goyangi.cloud
               CREATE_ADMIN: "1"
-              # DEBUG: "1"
               LOG_DATE_TIME: "1"
               METRICS_ALLOWED_NETWORKS: 10.42.0.0/16
               METRICS_COLLECTOR: "1"
@@ -46,6 +45,8 @@ spec:
               POLLING_FREQUENCY: "15"
               PORT: &port 80
               RUN_MIGRATIONS: "1"
+              CLEANUP_ARCHIVE_READ_DAYS: 3
+              CLEANUP_ARCHIVE_UNREAD_DAYS: 3
             envFrom: *envFrom
             probes:
               liveness: &probes
