@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       upstream_ref:
-        description: 'Kubeflow tag or branch to sync (leave blank to auto-detect latest tag)'
+        description: 'Kubeflow tag or branch to sync (leave blank to master)'
         required: false
-        default: 'v1.10.0'
+        default: 'master'
 
 permissions:
   contents: write
@@ -57,20 +57,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Clone upstream
-        run: |
-          git clone --depth=1 --branch "${{ needs.setup.outputs.upstream_ref }}" https://github.com/kubeflow/manifests.git upstream
-          if [ $? -ne 0 ]; then
-            echo "Failed to clone upstream repository"
-            exit 1
-          fi
+      - name: Clone upstream kubeflow/manifests
+        uses: GuillaumeFalourd/clone-github-repo-action@main
+        with:
+          owner: kubeflow
+          repository: manifests
+          branch: master
+          depth: 1
 
       - name: Check and sync folder
         id: check
         run: |
           set -e # Exit immediately if a command fails
 
-          src="upstream/${{ matrix.folder }}"
+          src="manifests/${{ matrix.folder }}"
           dest="${DEST_BASE}/${{ matrix.folder }}"
 
           # Validate source directory exists
@@ -98,7 +98,7 @@ jobs:
       - name: Cleanup
         if: always()
         run: |
-          rm -rf upstream tmp-sync
+          rm -rf manifests
 
   check_changes:
     needs: sync
@@ -131,7 +131,7 @@ jobs:
         with:
           pattern: synced-*
           merge-multiple: true
-          path: kubernetes/apps/kubeflow-system/platform/manifests
+          path: kubernetes/apps/kubeflow-system/platform/manifests/upstream
 
       - name: Save updated upstream ref
         run: echo "${{ needs.setup.outputs.upstream_ref }}" > .last-upstream-ref
