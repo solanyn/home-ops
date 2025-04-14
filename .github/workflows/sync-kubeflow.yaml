@@ -80,30 +80,14 @@ jobs:
             exit 1
           fi
 
-          # Create temporary directory for processing
-          mkdir -p "tmp-sync/${{ matrix.folder }}"
-
-          # Copy files to temp directory first
-          cp -r "$src"/* "tmp-sync/${{ matrix.folder }}/"
-
           # Remove all OWNERS files
-          find "tmp-sync/${{ matrix.folder }}" -name "OWNERS" -type f -delete
+          find "${src}/${{ matrix.folder }}" -name "OWNERS" -type f -delete
 
-          # Ensure destination folder exists
+          rm -rf "${dest}/"
           mkdir -p "$dest"
 
-          # Check for differences
-          if diff -qr "tmp-sync/${{ matrix.folder }}" "$dest" > /dev/null 2>&1; then
-            echo "✅ No changes in ${{ matrix.folder }}"
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "🔁 Changes found in ${{ matrix.folder }}"
-            # Clean destination without destroying the folder structure
-            find "$dest" -mindepth 1 -delete
-            # Copy content preserving the folder structure
-            cp -r "tmp-sync/${{ matrix.folder }}"/* "$dest/"
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
+          cp -r "${src}"/* "$dest/"
+          echo "changed=true" >> $GITHUB_OUTPUT
 
       - name: Upload updated folder
         if: steps.check.outputs.changed == 'true'
