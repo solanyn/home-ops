@@ -38,8 +38,8 @@ jobs:
       - name: Get previously synced upstream ref
         id: prev
         run: |
-          if [[ -f .last-upstream-ref ]]; then
-            echo "prev=$(cat .last-upstream-ref)" >> $GITHUB_OUTPUT
+          if [[ -f kubernetes/apps/kubeflow-system/platform/manifests/.last-upstream-ref ]]; then
+            echo "prev=$(cat kubernetes/apps/kubeflow-system/platform/manifests/.last-upstream-ref)" >> $GITHUB_OUTPUT
           else
             echo "prev=unknown" >> $GITHUB_OUTPUT
           fi
@@ -124,7 +124,7 @@ jobs:
           path: kubernetes/apps/kubeflow-system/platform/manifests/upstream
 
       - name: Save updated upstream ref
-        run: echo "${{ needs.setup.outputs.upstream_ref }}" > .last-upstream-ref
+        run: echo "${{ needs.setup.outputs.upstream_ref }}" > kubernetes/apps/kubeflow-system/platform/manifests/.last-upstream-ref
 
       - name: Generate changelog
         id: changelog
@@ -178,7 +178,7 @@ jobs:
             ## 📦 Synced Kubeflow Manifests
 
             Folders synced from upstream ref: `${{ needs.setup.outputs.upstream_ref }}`
-            to `kubernetes/apps/kubeflow-system/platform/manifests`.
+            to `kubernetes/apps/kubeflow-system/platform/manifests/upstream`.
 
             🔄 **From:** `${{ needs.setup.outputs.previous_ref }}`
             🚀 **To:** `${{ needs.setup.outputs.upstream_ref }}`
