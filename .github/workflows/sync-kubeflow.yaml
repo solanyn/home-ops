@@ -194,7 +194,6 @@ jobs:
           base: main
           branch-suffix: timestamp
           branch: kubeflow-sync-${{ needs.setup.outputs.upstream_ref }}
-          labels: area/kubeflow
           title: "Sync Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}"
           reviewers: solanyn
           body: |
