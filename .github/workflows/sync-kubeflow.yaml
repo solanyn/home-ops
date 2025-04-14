@@ -47,9 +47,6 @@ jobs:
   sync:
     needs: setup
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        folder: [common, apps, experimental, example]
     outputs:
       changed: ${{ steps.check.outputs.changed }}
     env:
@@ -62,65 +59,59 @@ jobs:
         with:
           owner: kubeflow
           repository: manifests
-          branch: master
+          branch: ${{ needs.setup.outputs.upstream_ref }}
           depth: 1
 
-      - name: Check and sync folder
+      - name: Sync selected folders
         id: check
         run: |
-          set -e # Exit immediately if a command fails
+          set -e
+          folders=(common apps experimental example)
+          changed=false
 
-          src="manifests/${{ matrix.folder }}"
-          dest="${DEST_BASE}/${{ matrix.folder }}"
+          for folder in "${folders[@]}"; do
+            src="manifests/${folder}"
+            dest="${DEST_BASE}/${folder}"
 
-          # Validate source directory exists
-          if [ ! -d "$src" ]; then
-            echo "Source directory $src not found!"
-            exit 1
-          fi
+            if [ ! -d "$src" ]; then
+              echo "Source folder '$src' not found. Skipping."
+              continue
+            fi
 
-          # Remove all OWNERS files
-          find "${src}/" -name "OWNERS" -type f -delete
+            # Remove OWNERS files
+            find "$src" -name "OWNERS" -type f -delete
 
-          rm -rf "${dest}/"
-          mkdir -p "$dest"
+            # Create destination directory if it doesn't exist
+            mkdir -p "$dest"
 
-          cp -r "${src}/*" "$dest/"
-          echo "changed=true" >> $GITHUB_OUTPUT
+            # Compare and sync if changes
+            if ! diff -qr "$src" "$dest" > /dev/null; then
+              echo "🔁 Changes found in ${folder}"
+              rm -rf "$dest"/*
+              cp -r "$src/"* "$dest/"
+              changed=true
+            else
+              echo "✅ No changes in ${folder}"
+            fi
+          done
 
-      - name: Upload updated folder
+          echo "changed=$changed" >> $GITHUB_OUTPUT
+
+      - name: Upload synced folders
         if: steps.check.outputs.changed == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: synced-${{ matrix.folder }}
-          path: ${{ env.DEST_BASE }}/${{ matrix.folder }}
+          name: synced-manifests
+          path: ${{ env.DEST_BASE }}
 
       - name: Cleanup
         if: always()
-        run: |
-          rm -rf manifests
-
-  check_changes:
-    needs: sync
-    runs-on: ubuntu-latest
-    outputs:
-      any_changes: ${{ steps.check_matrix_outputs.outputs.any_changes }}
-    steps:
-      - id: check_matrix_outputs
-        run: |
-          # Find if any matrix job reported changes
-          changes="${{ needs.sync.outputs.changed }}"
-          # Check if string 'true' appears anywhere in the output
-          if [[ "$changes" == *"true"* ]]; then
-            echo "any_changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "any_changes=false" >> $GITHUB_OUTPUT
-          fi
+        run: rm -rf manifests
 
   finalize:
-    needs: [setup, sync, check_changes]
+    needs: [setup, sync]
     runs-on: ubuntu-latest
-    if: needs.check_changes.outputs.any_changes == 'true'
+    if: needs.sync.outputs.changed == 'true'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -129,8 +120,7 @@ jobs:
       - name: Download synced folders
         uses: actions/download-artifact@v4
         with:
-          pattern: synced-*
-          merge-multiple: true
+          name: synced-manifests
           path: kubernetes/apps/kubeflow-system/platform/manifests/upstream
 
       - name: Save updated upstream ref
@@ -146,10 +136,8 @@ jobs:
           from="${{ needs.setup.outputs.previous_ref }}"
           to="${{ needs.setup.outputs.upstream_ref }}"
 
-          # Fetch tags to ensure they're available
           git fetch --tags
 
-          # Generate changelog with error handling
           if [[ "$from" == "unknown" ]]; then
             echo "No previous ref known, showing recent commits"
             log=$(git log -n 20 --oneline "$to" 2>/dev/null || echo "Unable to retrieve commit history.")
@@ -158,7 +146,6 @@ jobs:
           fi
 
           cd ..
-          # Save changelog to env variable for PR description
           echo "CHANGELOG<<EOF" >> $GITHUB_ENV
           echo "$log" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
@@ -168,7 +155,7 @@ jobs:
         run: rm -rf full-upstream
 
       - name: Generate Token
-        uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5 # v2
+        uses: actions/create-github-app-token@v2
         id: app-token
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"
