@@ -189,8 +189,8 @@ jobs:
         with:
           signoff: true
           sign-commits: true
-          committer: bot-goyangi[bot] 1109230+bot-goyangi[bot]@users.noreply.github.com
-          author: bot-goyangi[bot] 1109230+bot-goyangi[bot]@users.noreply.github.com
+          committer: bot-goyangi[bot] <1109230+bot-goyangi[bot]@users.noreply.github.com>
+          author: bot-goyangi[bot] <1109230+bot-goyangi[bot]@users.noreply.github.com>
           base: main
           branch-suffix: timestamp
           branch: ${{ env.BRANCH }}
