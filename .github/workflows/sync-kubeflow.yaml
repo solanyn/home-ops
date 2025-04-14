@@ -184,32 +184,15 @@ jobs:
         if: always()
         run: rm -rf full-upstream
 
-      - name: Create branch and commit changes
-        id: commit
-        run: |
-          git config user.email "1109230+bot-goyangi[bot]@users.noreply.github.com"
-          git config user.name "bot-goyangi[bot]"
-          BRANCH="kubeflow-sync-${{ needs.setup.outputs.upstream_ref }}"
-          git checkout -b "$BRANCH"
-          git add kubernetes/apps/kubeflow-system/platform/manifests .last-upstream-ref
-          git commit --signoff -m "chore: sync Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}"
-          git push origin "$BRANCH"
-          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
-
-      - name: Get diff summary
-        id: diff
-        run: |
-          summary=$(git diff --stat HEAD~1 HEAD)
-          echo "DIFF<<EOF" >> $GITHUB_ENV
-          echo "$summary" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
+          signoff: true
           sign-commits: true
-          token: ${{ secrets.GITHUB_TOKEN }}
+          committer: bot-goyangi[bot] 1109230+bot-goyangi[bot]@users.noreply.github.com
+          author: bot-goyangi[bot] 1109230+bot-goyangi[bot]@users.noreply.github.com
           base: main
+          branch-suffix: timestamp
           branch: ${{ env.BRANCH }}
           labels: area/kubeflow
           title: "Sync Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}"
@@ -231,4 +214,4 @@ jobs:
             ## 📊 Diff Summary
             ```
             ${{ env.DIFF }}
-            ```
+
