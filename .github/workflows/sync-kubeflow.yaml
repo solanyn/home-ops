@@ -53,7 +53,7 @@ jobs:
     outputs:
       changed: ${{ steps.check.outputs.changed }}
     env:
-      DEST_BASE: kubernetes/apps/kubeflow-system/platform/manifests
+      DEST_BASE: kubernetes/apps/kubeflow-system/platform/manifests/upstream
     steps:
       - uses: actions/checkout@v4
 
@@ -80,12 +80,12 @@ jobs:
           fi
 
           # Remove all OWNERS files
-          find "${src}/${{ matrix.folder }}" -name "OWNERS" -type f -delete
+          find "${src}/" -name "OWNERS" -type f -delete
 
           rm -rf "${dest}/"
           mkdir -p "$dest"
 
-          cp -r "${src}"/* "$dest/"
+          cp -r "${src}/*" "$dest/"
           echo "changed=true" >> $GITHUB_OUTPUT
 
       - name: Upload updated folder
