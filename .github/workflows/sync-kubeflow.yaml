@@ -6,9 +6,9 @@ on:
   workflow_dispatch:
     inputs:
       upstream_ref:
-        description: 'Kubeflow tag or branch to sync (leave blank to master)'
+        description: 'Kubeflow tag or branch to sync (leave blank for latest tag)'
         required: false
-        default: 'master'
+        default: 'v1.10.0'
 
 permissions:
   contents: write
@@ -21,15 +21,23 @@ jobs:
       upstream_ref: ${{ steps.ref.outputs.ref }}
       previous_ref: ${{ steps.prev.outputs.prev }}
     steps:
-      - name: Get latest tag if none provided
-        id: ref
+      - name: Get latest tag or use provided input
+        id: resolve
         run: |
-          if [ -z "${{ github.event.inputs.upstream_ref }}" ]; then
-            latest=$(git ls-remote --tags https://github.com/kubeflow/manifests.git | grep -o 'refs/tags/.*' | sed 's|refs/tags/||' | sort -V | tail -n1)
-            echo "Auto-detected latest tag: $latest"
-            echo "ref=$latest" >> $GITHUB_OUTPUT
+          input_ref="${{ github.event.inputs.upstream_ref }}"
+
+          if [[ -z "$input_ref" ]]; then
+            echo "No tag provided. Fetching latest stable (non-rc) release tag…"
+            latest_tag=$(git ls-remote --tags https://github.com/kubeflow/manifests.git \
+              | grep 'refs/tags/v[0-9]*\.[0-9]*\.[0-9]*$' \
+              | sed 's|.*refs/tags/||' \
+              | sort -V \
+              | tail -n1)
+            echo "Detected latest tag: $latest_tag"
+            echo "ref=$latest_tag" >> $GITHUB_OUTPUT
           else
-            echo "ref=${{ github.event.inputs.upstream_ref }}" >> $GITHUB_OUTPUT
+            echo "Using user-provided ref: $input_ref"
+            echo "ref=$input_ref" >> $GITHUB_OUTPUT
           fi
 
       - name: Checkout code
@@ -123,6 +131,26 @@ jobs:
           name: synced-manifests
           path: kubernetes/apps/kubeflow-system/platform/manifests/upstream
 
+      - name: Fetch GitHub Release Notes
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.setup.outputs.upstream_ref }}"
+
+          # Try fetching release notes for the tag
+          release=$(gh release view "$tag" --repo kubeflow/manifests --json body -q .body 2>/dev/null || echo "")
+
+          if [[ -n "$release" ]]; then
+            echo "Using GitHub release notes"
+            echo "RELEASENOTES<<EOF" >> $GITHUB_ENV
+            echo "$release" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+          else
+            echo "No release found, falling back to changelog"
+            echo "RELEASENOTES=${{ env.CHANGELOG }}" >> $GITHUB_ENV
+          fi
+
       - name: Save updated upstream ref
         run: echo "${{ needs.setup.outputs.upstream_ref }}" > kubernetes/apps/kubeflow-system/platform/manifests/.last-upstream-ref
 
@@ -172,7 +200,7 @@ jobs:
           base: main
           branch-suffix: timestamp
           branch: kubeflow-sync-${{ needs.setup.outputs.upstream_ref }}
-          title: "Sync Kubeflow manifests from ${{ needs.setup.outputs.upstream_ref }}"
+          title: "feat(kubeflow): sync kubeflow/manifests from ${{ needs.setup.outputs.upstream_ref }}"
           reviewers: solanyn
           body: |
             ## 📦 Synced Kubeflow Manifests
@@ -183,12 +211,13 @@ jobs:
             🔄 **From:** `${{ needs.setup.outputs.previous_ref }}`
             🚀 **To:** `${{ needs.setup.outputs.upstream_ref }}`
 
-            ## 📜 Changelog
+            ## 📝 Release Notes / Changelog
             ```
-            ${{ env.CHANGELOG }}
+            ${{ env.RELEASENOTES }}
             ```
 
             ## 📊 Diff Summary
             ```
             ${{ env.DIFF }}
+            ```
 
