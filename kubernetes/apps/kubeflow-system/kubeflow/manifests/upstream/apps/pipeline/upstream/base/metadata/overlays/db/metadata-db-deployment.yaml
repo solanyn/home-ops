@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: db-container
-        image: mysql:8.0.3
+        image: mysql:8.4.5
         args:
         - --datadir
         - /var/lib/mysql/datadir
