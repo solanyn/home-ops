@@ -8,4 +8,4 @@ resources:
 - grafana-rolebinding.yaml
 images:
   - name: grafana/grafana
-    newTag: 5.3.4
+    newTag: 11.6.0
