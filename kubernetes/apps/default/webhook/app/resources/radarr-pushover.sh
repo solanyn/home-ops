@@ -51,8 +51,8 @@ function notify() {
         printf -v pushover_priority "%s" "low"
     fi
 
-    apprise -vv --title "${pushover_title}" --body "${pushover_msg}" \
-        "${PUSHOVER_URL}?url=${pushover_url}&url_title=${pushover_url_title}&priority=${pushover_priority}&format=markdown"
+    apprise -vv --title "${PUSHOVER_TITLE}" --body "${PUSHOVER_MESSAGE}" --input-format html \
+        "${RADARR_PUSHOVER_URL}?url=${PUSHOVER_URL}&url_title=${PUSHOVER_URL_TITLE}&priority=${PUSHOVER_PRIORITY}&format=html"
 }
 
 function main() {
