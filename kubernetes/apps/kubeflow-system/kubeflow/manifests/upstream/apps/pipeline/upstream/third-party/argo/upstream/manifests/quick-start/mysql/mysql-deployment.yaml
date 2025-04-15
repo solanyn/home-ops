@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: main
-          image: mysql:8
+          image: mysql:9
           env:
             - name: MYSQL_USER
               value: mysql
