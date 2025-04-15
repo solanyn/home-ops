@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/kubeflow-system/platform/manifests
+  path: ./kubernetes/apps/kubeflow-system/kubeflow/manifests
   prune: true
   retryInterval: 2m
   sourceRef:
