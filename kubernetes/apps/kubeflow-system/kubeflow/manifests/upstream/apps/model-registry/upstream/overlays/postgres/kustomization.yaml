@@ -26,7 +26,7 @@ generatorOptions:
 images:
 - name: postgres
   newName: postgres
-  newTag: 14.7-alpine3.17
+  newTag: 14.10-alpine3.17
 
 vars:
 - name: MLMD_DB_HOST
