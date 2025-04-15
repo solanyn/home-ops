@@ -18,7 +18,7 @@ spec:
       serviceAccountName: dex
       containers:
         - name: dex
-          image: ghcr.io/dexidp/dex:v2.35.0
+          image: ghcr.io/dexidp/dex:v2.42.1
           args:
             - dex
             - serve
