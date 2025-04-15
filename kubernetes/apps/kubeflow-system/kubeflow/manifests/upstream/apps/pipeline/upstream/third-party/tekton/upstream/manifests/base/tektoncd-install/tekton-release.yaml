@@ -2410,7 +2410,7 @@ spec:
       serviceAccountName: tekton-events-controller
       containers:
         - name: tekton-events-controller
-          image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/events:v0.53.2@sha256:0cf6f0be5319efdd8909ed8f987837d89146fd0632a744bf6d54bf83e5b13ca0
+          image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/events:v0.63.0@sha256:709181f33f41654e39a74087194c61a20e515dcc530cbb99af8c8426f4ddc266
           args: []
           volumeMounts:
             - name: config-logging
