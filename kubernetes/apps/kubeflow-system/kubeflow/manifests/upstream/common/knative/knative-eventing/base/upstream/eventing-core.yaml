@@ -993,7 +993,7 @@ spec:
       containers:
         - name: eventing-webhook
           terminationMessagePolicy: FallbackToLogsOnError
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/webhook@sha256:be90d7813786da265dbda2408742b4783e4f69e73719cb3b6e2c103d631ed721
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/webhook@sha256:75c9748b79908cf9fdf2e5d66b081a04f64432e376d387bd66b29eddd8e26eb7
           resources:
             requests:
               cpu: 100m
