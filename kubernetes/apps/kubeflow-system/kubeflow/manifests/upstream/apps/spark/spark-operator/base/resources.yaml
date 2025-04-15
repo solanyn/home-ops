@@ -23705,7 +23705,7 @@ spec:
     spec:
       containers:
       - name: spark-operator-controller
-        image: docker.io/kubeflow/spark-operator:2.1.0
+        image: docker.io/kubeflow/spark-operator:2.1.1
         imagePullPolicy: IfNotPresent
         args:
         - controller
@@ -23789,7 +23789,7 @@ spec:
     spec:
       containers:
       - name: spark-operator-webhook
-        image: docker.io/kubeflow/spark-operator:2.1.0
+        image: docker.io/kubeflow/spark-operator:2.1.1
         imagePullPolicy: IfNotPresent
         args:
         - webhook
