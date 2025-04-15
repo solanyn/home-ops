@@ -31980,7 +31980,7 @@ spec:
                   fieldPath: metadata.namespace
             - name: SECRET_NAME
               value: kserve-webhook-server-cert
-          image: kserve/kserve-controller:v0.14.1
+          image: kserve/kserve-controller:v0.15.0
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 5
