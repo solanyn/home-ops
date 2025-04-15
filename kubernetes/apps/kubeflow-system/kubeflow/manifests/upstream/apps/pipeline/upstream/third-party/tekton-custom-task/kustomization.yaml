@@ -23,7 +23,7 @@ images:
     newTag: 2.0.5
   - name: tekton-kfptask-controller
     newName: quay.io/aipipeline/tekton-kfptask-controller
-    newTag: 2.0.5
+    newTag: 2.1.0
   - name: tekton-kfptask-webhook
     newName: quay.io/aipipeline/tekton-kfptask-webhook
     newTag: 2.0.5
