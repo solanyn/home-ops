@@ -333,7 +333,7 @@ spec:
     env:
     - name: TS_SERVICE_ENVELOPE
       value: '{{.Labels.serviceEnvelope}}'
-    image: pytorch/torchserve-kfs:0.9.0
+    image: pytorch/torchserve-kfs:0.12.0
     name: kserve-container
     resources:
       limits:
