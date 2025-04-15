@@ -434,7 +434,7 @@ spec:
     - --model_dir=/mnt/models
     - --http_port=8080
     - --nthread=1
-    image: kserve/xgbserver:v0.14.1
+    image: kserve/xgbserver:v0.15.0
     name: kserve-container
     resources:
       limits:
