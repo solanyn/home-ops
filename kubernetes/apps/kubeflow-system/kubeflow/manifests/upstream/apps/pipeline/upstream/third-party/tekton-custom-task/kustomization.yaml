@@ -26,7 +26,7 @@ images:
     newTag: 2.0.5
   - name: tekton-kfptask-webhook
     newName: quay.io/aipipeline/tekton-kfptask-webhook
-    newTag: 2.0.5
+    newTag: 2.1.0
   # Deprecated controller
   # - name: kfp-v2-dev-driver-controller
   #   newName: quay.io/aipipeline/tekton-driver
