@@ -46,8 +46,8 @@ jobs:
       - name: Get previously synced upstream ref
         id: prev
         run: |
-          if [[ -f kubernetes/apps/kubeflow-system/platform/manifests/.last-upstream-ref ]]; then
-            echo "prev=$(cat kubernetes/apps/kubeflow-system/platform/manifests/.last-upstream-ref)" >> $GITHUB_OUTPUT
+          if [[ -f kubernetes/apps/kubeflow-system/kubeflow/manifests/.last-upstream-ref ]]; then
+            echo "prev=$(cat kubernetes/apps/kubeflow-system/kubeflow/manifests/.last-upstream-ref)" >> $GITHUB_OUTPUT
           else
             echo "prev=unknown" >> $GITHUB_OUTPUT
           fi
@@ -58,7 +58,7 @@ jobs:
     outputs:
       changed: ${{ steps.check.outputs.changed }}
     env:
-      DEST_BASE: kubernetes/apps/kubeflow-system/platform/manifests/upstream
+      DEST_BASE: kubernetes/apps/kubeflow-system/kubeflow/manifests/upstream
     steps:
       - uses: actions/checkout@v4
 
@@ -129,7 +129,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: synced-manifests
-          path: kubernetes/apps/kubeflow-system/platform/manifests/upstream
+          path: kubernetes/apps/kubeflow-system/kubeflow/manifests/upstream
 
       - name: Fetch GitHub Release Notes
         id: release
@@ -152,7 +152,7 @@ jobs:
           fi
 
       - name: Save updated upstream ref
-        run: echo "${{ needs.setup.outputs.upstream_ref }}" > kubernetes/apps/kubeflow-system/platform/manifests/.last-upstream-ref
+        run: echo "${{ needs.setup.outputs.upstream_ref }}" > kubernetes/apps/kubeflow-system/kubeflow/manifests/.last-upstream-ref
 
       - name: Generate changelog
         id: changelog
@@ -206,7 +206,7 @@ jobs:
             ## 📦 Synced Kubeflow Manifests
 
             Folders synced from upstream ref: `${{ needs.setup.outputs.upstream_ref }}`
-            to `kubernetes/apps/kubeflow-system/platform/manifests/upstream`.
+            to `kubernetes/apps/kubeflow-system/kubeflow/manifests/upstream`.
 
             🔄 **From:** `${{ needs.setup.outputs.previous_ref }}`
             🚀 **To:** `${{ needs.setup.outputs.upstream_ref }}`
