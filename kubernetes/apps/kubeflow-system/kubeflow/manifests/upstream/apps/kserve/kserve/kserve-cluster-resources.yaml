@@ -286,7 +286,7 @@ spec:
     - --rest_api_timeout_in_ms=60000
     command:
     - /usr/bin/tensorflow_model_server
-    image: tensorflow/serving:2.6.2
+    image: tensorflow/serving:2.18.1
     name: kserve-container
     resources:
       limits:
