@@ -32085,7 +32085,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-          image: kserve/kserve-localmodel-controller:v0.14.1
+          image: kserve/kserve-localmodel-controller:v0.15.0
           imagePullPolicy: Always
           name: manager
           resources:
