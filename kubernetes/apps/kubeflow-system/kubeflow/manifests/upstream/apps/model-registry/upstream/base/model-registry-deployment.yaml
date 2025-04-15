@@ -59,7 +59,7 @@ spec:
           # * .cloudbuild.yaml and .release.cloudbuild.yaml
           # * manifests/kustomize/base/metadata/base/model-registry-deployment.yaml
           # * test/tag_for_hosted.sh
-          image: gcr.io/tfx-oss-public/ml_metadata_store_server:1.14.0
+          image: gcr.io/tfx-oss-public/ml_metadata_store_server:1.17.0
           env:
           - name: DBCONFIG_USER
             valueFrom:
