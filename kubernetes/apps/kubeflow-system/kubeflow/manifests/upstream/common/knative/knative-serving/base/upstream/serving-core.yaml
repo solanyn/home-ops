@@ -8679,7 +8679,7 @@ spec:
       serviceAccountName: controller
       containers:
         - name: webhook
-          image: gcr.io/knative-releases/knative.dev/serving/cmd/webhook@sha256:d42e2f83c9018779465860fdc67ce6ada3eac8ba8c47c5c2127c0bb45f9b328a
+          image: gcr.io/knative-releases/knative.dev/serving/cmd/webhook@sha256:a8bfe278d9531c56c7caf152ba2998b1449912e8f10ee7ad393c27940a0c1e88
           resources:
             requests:
               cpu: 100m
