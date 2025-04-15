@@ -7,4 +7,4 @@ resources:
 images:
 - name: docker.io/bitnami/kubectl
   newName: docker.io/bitnami/kubectl
-  newTag: 1.30.4
+  newTag: 1.32.3
