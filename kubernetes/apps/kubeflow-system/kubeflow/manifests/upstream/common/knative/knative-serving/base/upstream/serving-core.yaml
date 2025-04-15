@@ -6908,7 +6908,7 @@ metadata:
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/version: "1.16.2"
 spec:
-  image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:698ef80ebc698f4d2bb93c1e85684063a0cf253a83faebcbf106cee444181d8e
+  image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:a10cd3a41198b24da590fa08b53a37e72a25eadc6762aeccc0f09b7c616944b2
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -7313,7 +7313,7 @@ metadata:
   annotations:
     knative.dev/example-checksum: "720ddb97"
 data:
-  queue-sidecar-image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:698ef80ebc698f4d2bb93c1e85684063a0cf253a83faebcbf106cee444181d8e
+  queue-sidecar-image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:a10cd3a41198b24da590fa08b53a37e72a25eadc6762aeccc0f09b7c616944b2
   _example: |-
     ################################
     #                              #
