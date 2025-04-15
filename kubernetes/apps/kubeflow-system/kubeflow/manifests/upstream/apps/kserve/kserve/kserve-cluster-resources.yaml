@@ -465,7 +465,7 @@ metadata:
   name: default
 spec:
   container:
-    image: kserve/storage-initializer:v0.14.1
+    image: kserve/storage-initializer:v0.15.0
     name: storage-initializer
     resources:
       limits:
