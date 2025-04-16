@@ -19,7 +19,7 @@ spec:
       retries: 3
   values:
     controllers:
-      maintainerr:
+      meilisearch:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
