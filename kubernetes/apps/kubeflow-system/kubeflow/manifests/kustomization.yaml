@@ -4,11 +4,11 @@ kind: Kustomization
 resources:
   - ./upstream/example
   - ./externalsecret.yaml
-transformers:
-  - patches/resource-requests-transformer.yaml
-patches:
-  - path: patches/remove-dex.yaml
-  - path: patches/external-mariadb.yaml
-  - path: patches/external-minio.yaml
-  - path: patches/oidc-pocket-id.yaml
-  - path: patches/cluster-issuer.yaml
+# transformers:
+#   - patches/resource-requests-transformer.yaml
+# patches:
+  # - path: patches/remove-dex.yaml
+  # - path: patches/external-mariadb.yaml
+  # - path: patches/external-minio.yaml
+  # - path: patches/oidc-pocket-id.yaml
+  # - path: patches/cluster-issuer.yaml
