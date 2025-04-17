@@ -32,7 +32,6 @@ resources:
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
-  - ./reactive-resume/ks.yaml
   - ./readarr/ks.yaml
   - ./readarr-ab/ks.yaml
   - ./recyclarr/ks.yaml
