@@ -33,5 +33,6 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    revision: 1.24.3
     service:
       type: ClusterIP
