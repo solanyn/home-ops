@@ -13,3 +13,6 @@ spec:
   username: kubeflow
   grantOption: true
   host: "%"
+  cleanupPolicy: Delete
+  requeueInterval: 30s
+  retryInterval: 5s
