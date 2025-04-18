@@ -10,7 +10,8 @@ spec:
     key: MARIADB_ROOT_PASSWORD
     generate: false
   storage:
-    size: 1Gi
+    size: 10Gi
+    storageClassName: openebs-hostpath
   replicas: 3
   galera:
     enabled: true
@@ -42,6 +43,7 @@ spec:
         key: MINIO_ROOT_PASSWORD
     stagingStorage:
       persistentVolumeClaim:
+        storageClassName: openebs-hostpath
         resources:
           requests:
             storage: 5Gi
