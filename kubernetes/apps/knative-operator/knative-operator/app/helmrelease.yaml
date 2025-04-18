@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: knative-operator
+  namespace: knative-operator
+spec:
+  interval: 12h
+  url: https://raw.githubusercontent.com/kromanow94/knative-operator/main
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: knative-operator
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: knative-operator
+      version: 1.12.4
+      sourceRef:
+        kind: HelmRepository
+        name: knative-operator
+        namespace: knative-operator
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
