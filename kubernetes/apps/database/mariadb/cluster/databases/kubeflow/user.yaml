@@ -9,5 +9,5 @@ spec:
   passwordSecretKeyRef:
     name: mariadb-secret
     key: MARIADB_KUBEFLOW_PASSWORD
-  maxUserConnections: 50
+  maxUserConnections: 200
   host: "%"
