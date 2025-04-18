@@ -44,24 +44,24 @@ spec:
         db:
           user:
             secretKeyRef:
-              name: kubeflow-secret
-              key: KUBEFLOW_MARIADB_USER
+              name: mlpipeline-minio-artifact
+              key: MARIADB_ROOT_USER
           password:
             secretKeyRef:
-              name: kubeflow-secret
-              key: KUBEFLOW_MARIADB_PASSWORD
+              name: mlpipeline-minio-artifact
+              key: MARIADB_ROOT_PASSWORD
           host:
             secretKeyRef:
-              name: kubeflow-secret
+              name: mlpipeline-minio-artifact
               key: KUBEFLOW_MARIADB_HOST
         objectStore:
           accessKey:
             secretKeyRef:
-              name: kubeflow-secret
+              name: mlpipeline-minio-artifact
               key: AWS_ACCESS_KEY_ID
           secretAccessKey:
             secretKeyRef:
-              name: kubeflow-secret
+              name: mlpipeline-minio-artifact
               key: AWS_SECRET_ACCESS_KEY
     katib:
       dbmanager:
@@ -69,15 +69,15 @@ spec:
           db:
             user:
               secretKeyRef:
-                name: kubeflow-secret
-                key: KUBEFLOW_MARIADB_USER
+                name: mlpipeline-minio-artifact
+                key: MARIADB_ROOT_USER
             password:
               secretKeyRef:
-                name: kubeflow-secret
-                key: KUBEFLOW_MARIADB_PASSWORD
+                name: mlpipeline-minio-artifact
+                key: MARIADB_ROOT_PASSWORD
             host:
               secretKeyRef:
-                name: kubeflow-secret
+                name: mlpipeline-minio-artifact
                 key: KUBEFLOW_MARIADB_HOST
     notebooks:
       jupyterWebApp:
@@ -90,13 +90,13 @@ spec:
         db:
           user:
             secretKeyRef:
-              name: kubeflow-secret
-              key: KUBEFLOW_MARIADB_USER
+              name: mlpipeline-minio-artifact
+              key: MARIADB_ROOT_USER
           password:
             secretKeyRef:
-              name: kubeflow-secret
-              key: KUBEFLOW_MARIADB_PASSWORD
+              name: mlpipeline-minio-artifact
+              key: MARIADB_ROOT_PASSWORD
           host:
             secretKeyRef:
-              name: kubeflow-secret
+              name: mlpipeline-minio-artifact
               key: KUBEFLOW_MARIADB_HOST
