@@ -32,9 +32,11 @@ spec:
               CRAWLER_DOWNLOAD_BANNER_IMAGE: true
               CRAWLER_ENABLE_ADBLOCKER: true
               CRAWLER_STORE_SCREENSHOT: true
+              MEILI_ADDR: http://meilisearch.default.svc.cluster.local:7700
               DATA_DIR: /data
               DISABLE_SIGNUPS: true
-              MEILI_ADDR: http://meilisearch.default.svc.cluster.local:7700
+              DISABLE_PASSWORD_AUTH: true
+              NEXTAUTH_URL: https://karakeep.goyangi.cloud
             envFrom:
               - secretRef:
                   name: karakeep-secret
