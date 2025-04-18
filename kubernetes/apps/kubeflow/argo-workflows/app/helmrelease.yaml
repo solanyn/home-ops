@@ -45,16 +45,16 @@ spec:
           maxIdleConns: 100
           maxOpenConns: 0
         mysql:
-          database: argo
-          host: mysql
+          database: kfp_pipelines
+          host: mariadb.database.svc.cluster.local
           port: 3306
           tableName: argo_workflows
           passwordSecret:
-            name: db-credentials
-            key: mysql-root-password
+            name: kubeflow-secret
+            key: KUBEFLOW_MARIADB_PASSWORD
           userNameSecret:
-            name: db-credentials
-            key: username
+            name: kubeflow-secret
+            key: KUBEFLOW_MARIADB_USER
         nodeStatusOffLoad: true
       workflowDefaults:
         spec:
@@ -118,7 +118,7 @@ spec:
             - name: main
               env:
                 - name: MINIO_SERVICE_SERVICE_HOST
-                  value: minio.kubeflow
+                  value: minio.default.svc.cluster.local
                 - name: MINIO_SERVICE_SERVICE_PORT
                   value: "9000"
 
@@ -135,13 +135,12 @@ spec:
       archiveLogs: true
       s3:
         accessKeySecret:
-          name: mlpipeline-minio-artifact
-          key: accesskey
+          name: kubeflow-secret
+          key: AWS_ACCESS_KEY_ID
         secretKeySecret:
-          name: mlpipeline-minio-artifact
-          key: secretkey
+          name: kubeflow-secret
+          key: AWS_SECRET_ACCESS_KEY
         bucket: mlpipeline
-        # endpoint: minio-service.kubeflow:9000
-        endpoint: minio.kubeflow:9000
+        endpoint: minio.default.svc.cluster.local:9000
         insecure: true
         keyFormat: artifacts/{{workflow.namespace}}/{{workflow.name}}/{{workflow.creationTimestamp.Y}}-{{workflow.creationTimestamp.m}}-{{workflow.creationTimestamp.d}}/{{pod.name}}
