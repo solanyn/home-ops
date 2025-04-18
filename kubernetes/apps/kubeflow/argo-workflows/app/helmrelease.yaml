@@ -50,10 +50,10 @@ spec:
           port: 3306
           tableName: argo_workflows
           passwordSecret:
-            name: kubeflow-secret
+            name: mlpipeline-minio-artifact
             key: MARIADB_ROOT_PASSWORD
           userNameSecret:
-            name: kubeflow-secret
+            name: mlpipeline-minio-artifact
             key: MARIADB_ROOT_USER
         nodeStatusOffLoad: true
       workflowDefaults:
@@ -135,10 +135,10 @@ spec:
       archiveLogs: true
       s3:
         accessKeySecret:
-          name: kubeflow-secret
+          name: mlpipeline-minio-artifact
           key: AWS_ACCESS_KEY_ID
         secretKeySecret:
-          name: kubeflow-secret
+          name: mlpipeline-minio-artifact
           key: AWS_SECRET_ACCESS_KEY
         bucket: mlpipeline
         endpoint: minio.default.svc.cluster.local:9000
