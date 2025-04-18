@@ -15,7 +15,7 @@ kind: Database
 metadata:
   name: kfp-metadata
 spec:
-  name: kfp-metadata
+  name: kfp_metadata
   mariaDbRef:
     name: mariadb
   characterSet: utf8
