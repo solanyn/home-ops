@@ -6,6 +6,6 @@ components:
   - ../../components/kubeflow
 resources:
   - ./argo-workflows/ks.yaml
-  # - ./kubeflow-crds/ks.yaml
+  - ./kubeflow-crds/ks.yaml
   # - ./kubeflow/ks.yaml
   # - ./profile/ks.yaml
