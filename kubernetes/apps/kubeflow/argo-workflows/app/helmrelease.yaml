@@ -51,10 +51,10 @@ spec:
           tableName: argo_workflows
           passwordSecret:
             name: kubeflow-secret
-            key: KUBEFLOW_MARIADB_PASSWORD
+            key: MARIADB_ROOT_PASSWORD
           userNameSecret:
             name: kubeflow-secret
-            key: KUBEFLOW_MARIADB_USER
+            key: MARIADB_ROOT_USER
         nodeStatusOffLoad: true
       workflowDefaults:
         spec:
