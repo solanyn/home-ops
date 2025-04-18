@@ -67,7 +67,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: &port 6246
+            port: &port 3000
     route:
       app:
         hostnames: ["{{ .Release.Name }}.goyangi.cloud"]
