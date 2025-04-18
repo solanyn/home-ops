@@ -7,7 +7,7 @@ metadata:
   namespace: kubeflow
 spec:
   interval: 12h
-  url: https://github.com/kromanow94/kubeflow-manifests.git
+  url: https://github.com/solanyn/kubeflow-manifests-helm.git
   ref:
     branch: helmcharts
   ignore: |
