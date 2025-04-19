@@ -5,6 +5,3 @@ metadata:
   name: not-used
   labels:
     istio-injection: enabled
-  annotations:
-    kustomize.toolkit.fluxcd.io/prune: disabled
-    volsync.backube/privileged-movers: "true"
