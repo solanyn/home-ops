@@ -1,0 +1,223 @@
+name: Sync Kubeflow Manifests
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Daily at 00:00 UTC
+  workflow_dispatch:
+    inputs:
+      upstream_ref:
+        description: 'Kubeflow tag or branch to sync (leave blank for latest tag)'
+        required: false
+        default: 'v1.10.0'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      upstream_ref: ${{ steps.ref.outputs.ref }}
+      previous_ref: ${{ steps.prev.outputs.prev }}
+    steps:
+      - name: Get latest tag or use provided input
+        id: resolve
+        run: |
+          input_ref="${{ github.event.inputs.upstream_ref }}"
+
+          if [[ -z "$input_ref" ]]; then
+            echo "No tag provided. Fetching latest stable (non-rc) release tag…"
+            latest_tag=$(git ls-remote --tags https://github.com/kubeflow/manifests.git \
+              | grep 'refs/tags/v[0-9]*\.[0-9]*\.[0-9]*$' \
+              | sed 's|.*refs/tags/||' \
+              | sort -V \
+              | tail -n1)
+            echo "Detected latest tag: $latest_tag"
+            echo "ref=$latest_tag" >> $GITHUB_OUTPUT
+          else
+            echo "Using user-provided ref: $input_ref"
+            echo "ref=$input_ref" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get previously synced upstream ref
+        id: prev
+        run: |
+          if [[ -f kubernetes/apps/kubeflow-system/kubeflow/manifests/.last-upstream-ref ]]; then
+            echo "prev=$(cat kubernetes/apps/kubeflow-system/kubeflow/manifests/.last-upstream-ref)" >> $GITHUB_OUTPUT
+          else
+            echo "prev=unknown" >> $GITHUB_OUTPUT
+          fi
+
+  sync:
+    needs: setup
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
+    env:
+      DEST_BASE: kubernetes/apps/kubeflow-system/kubeflow/manifests/upstream
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone upstream kubeflow/manifests
+        uses: GuillaumeFalourd/clone-github-repo-action@main
+        with:
+          owner: kubeflow
+          repository: manifests
+          branch: ${{ needs.setup.outputs.upstream_ref }}
+          depth: 1
+
+      - name: Sync selected folders
+        id: check
+        run: |
+          set -e
+          folders=(common apps experimental example)
+          changed=false
+
+          for folder in "${folders[@]}"; do
+            src="manifests/${folder}"
+            dest="${DEST_BASE}/${folder}"
+
+            if [ ! -d "$src" ]; then
+              echo "Source folder '$src' not found. Skipping."
+              continue
+            fi
+
+            # Remove OWNERS files
+            find "$src" -name "OWNERS" -type f -delete
+
+            # Create destination directory if it doesn't exist
+            mkdir -p "$dest"
+
+            # Compare and sync if changes
+            if ! diff -qr "$src" "$dest" > /dev/null; then
+              echo "🔁 Changes found in ${folder}"
+              rm -rf "$dest"/*
+              cp -r "$src/"* "$dest/"
+              changed=true
+            else
+              echo "✅ No changes in ${folder}"
+            fi
+          done
+
+          echo "changed=$changed" >> $GITHUB_OUTPUT
+
+      - name: Upload synced folders
+        if: steps.check.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: synced-manifests
+          path: ${{ env.DEST_BASE }}
+
+      - name: Cleanup
+        if: always()
+        run: rm -rf manifests
+
+  finalize:
+    needs: [setup, sync]
+    runs-on: ubuntu-latest
+    if: needs.sync.outputs.changed == 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Download synced folders
+        uses: actions/download-artifact@v4
+        with:
+          name: synced-manifests
+          path: kubernetes/apps/kubeflow-system/kubeflow/manifests/upstream
+
+      - name: Fetch GitHub Release Notes
+        id: release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${{ needs.setup.outputs.upstream_ref }}"
+
+          # Try fetching release notes for the tag
+          release=$(gh release view "$tag" --repo kubeflow/manifests --json body -q .body 2>/dev/null || echo "")
+
+          if [[ -n "$release" ]]; then
+            echo "Using GitHub release notes"
+            echo "RELEASENOTES<<EOF" >> $GITHUB_ENV
+            echo "$release" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
+          else
+            echo "No release found, falling back to changelog"
+            echo "RELEASENOTES=${{ env.CHANGELOG }}" >> $GITHUB_ENV
+          fi
+
+      - name: Save updated upstream ref
+        run: echo "${{ needs.setup.outputs.upstream_ref }}" > kubernetes/apps/kubeflow-system/kubeflow/manifests/.last-upstream-ref
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          set -e
+          git clone --depth=100 https://github.com/kubeflow/manifests.git full-upstream
+          cd full-upstream
+
+          from="${{ needs.setup.outputs.previous_ref }}"
+          to="${{ needs.setup.outputs.upstream_ref }}"
+
+          git fetch --tags
+
+          if [[ "$from" == "unknown" ]]; then
+            echo "No previous ref known, showing recent commits"
+            log=$(git log -n 20 --oneline "$to" 2>/dev/null || echo "Unable to retrieve commit history.")
+          else
+            log=$(git log --oneline "$from..$to" 2>/dev/null || echo "No changelog available or unable to generate diff.")
+          fi
+
+          cd ..
+          echo "CHANGELOG<<EOF" >> $GITHUB_ENV
+          echo "$log" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Cleanup upstream repo
+        if: always()
+        run: rm -rf full-upstream
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+          signoff: true
+          sign-commits: true
+          committer: bot-goyangi[bot] <1109230+bot-goyangi[bot]@users.noreply.github.com>
+          author: bot-goyangi[bot] <1109230+bot-goyangi[bot]@users.noreply.github.com>
+          base: main
+          branch-suffix: timestamp
+          branch: kubeflow-sync-${{ needs.setup.outputs.upstream_ref }}
+          title: "feat(kubeflow): sync kubeflow/manifests from ${{ needs.setup.outputs.upstream_ref }}"
+          reviewers: solanyn
+          body: |
+            ## 📦 Synced Kubeflow Manifests
+
+            Folders synced from upstream ref: `${{ needs.setup.outputs.upstream_ref }}`
+            to `kubernetes/apps/kubeflow-system/kubeflow/manifests/upstream`.
+
+            🔄 **From:** `${{ needs.setup.outputs.previous_ref }}`
+            🚀 **To:** `${{ needs.setup.outputs.upstream_ref }}`
+
+            ## 📝 Release Notes / Changelog
+            ```
+            ${{ env.RELEASENOTES }}
+            ```
+
+            ## 📊 Diff Summary
+            ```
+            ${{ env.DIFF }}
+            ```
+
