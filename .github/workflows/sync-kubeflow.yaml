@@ -18,12 +18,13 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
+      upstream_ref: ${{ steps.ref.outputs.ref }}
       previous_ref: ${{ steps.prev.outputs.prev }}
     steps:
       - name: Get latest tag or use provided input
         id: resolve
         run: |
-          input_ref="${{ github.event.inputs.upstream_ref.default }}"
+          input_ref="${{ github.event.inputs.upstream_ref }}"
 
           if [[ -z "$input_ref" ]]; then
             echo "No tag provided. Fetching latest stable (non-rc) release tag…"
