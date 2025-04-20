@@ -33,3 +33,4 @@ spec:
         certificateRefs:
           - kind: Secret
             name: goyangi-cloud-tls
+            namespace: kube-system
