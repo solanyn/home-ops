@@ -9,7 +9,8 @@ spec:
   hostnames: ["kubeflow.goyangi.cloud"]
   parentRefs:
     - name: istio
-      namespace: istio-system
+      namespace: kube-system
+      sectionName: https
   rules:
     - backendRefs:
         - name: istio-ingressgateway
