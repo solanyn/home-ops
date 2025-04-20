@@ -8,11 +8,6 @@ metadata:
     external-dns.alpha.kubernetes.io/target: &hostname istio.goyangi.cloud
 spec:
   gatewayClassName: istio
-  addresses:
-    - type: IPAddress
-      value: 192.168.1.161
-    - type: IPAddress
-      value: ::ffff:192.168.1.161
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
