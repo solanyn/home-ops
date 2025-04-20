@@ -342,7 +342,7 @@ metadata:
   name: cluster-local-gateway
   namespace: istio-system
 spec:
-  maxReplicas: 1
+  maxReplicas: 3
   metrics:
     - resource:
         name: cpu
