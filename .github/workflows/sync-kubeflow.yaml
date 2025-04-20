@@ -21,35 +21,45 @@ jobs:
       upstream_ref: ${{ steps.ref.outputs.ref }}
       previous_ref: ${{ steps.prev.outputs.prev }}
     steps:
-      - name: Get latest tag or use provided input
+      - name: Get latest tag or use provided input (with caching)
         id: resolve
         run: |
-          input_ref="${{ github.event.inputs.upstream_ref }}"
+          set -euo pipefail
 
-          if [[ -z "$input_ref" ]]; then
-            echo "No tag provided. Fetching latest stable (non-rc) release tag…"
-            latest_tag=$(git ls-remote --tags https://github.com/kubeflow/manifests.git \
+          input_ref="${{ github.event.inputs.upstream_ref || 'latest' }}"
+
+          # Cache git refs to avoid hitting remote multiple times
+          echo "🔄 Fetching remote refs from kubeflow/manifests…"
+          git_refs=$(git ls-remote https://github.com/kubeflow/manifests.git)
+
+          if [[ "$input_ref" == "latest" ]]; then
+            echo "No tag provided. Detecting latest stable release tag…"
+            latest_tag=$(echo "$git_refs" \
               | grep 'refs/tags/v[0-9]*\.[0-9]*\.[0-9]*$' \
               | sed 's|.*refs/tags/||' \
               | sort -V \
               | tail -n1)
-            echo "Detected latest tag: $latest_tag"
+
+            if [[ -z "$latest_tag" ]]; then
+              echo "❌ Failed to detect latest tag"
+              exit 1
+            fi
+
+            echo "✅ Detected latest tag: $latest_tag"
             echo "ref=$latest_tag" >> $GITHUB_OUTPUT
           else
-            echo "Using user-provided ref: $input_ref"
+            echo "🔍 Validating user-provided ref: $input_ref"
+
+            if echo "$git_refs" | grep -q "refs/tags/${input_ref}$"; then
+              echo "✅ Found tag: $input_ref"
+            elif echo "$git_refs" | grep -q "refs/heads/${input_ref}$"; then
+              echo "✅ Found branch: $input_ref"
+            else
+              echo "❌ Ref '$input_ref' does not exist as a tag or branch in kubeflow/manifests"
+              exit 1
+            fi
+
             echo "ref=$input_ref" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Get previously synced upstream ref
-        id: prev
-        run: |
-          if [[ -f kubernetes/apps/kubeflow-system/kubeflow/manifests/.last-upstream-ref ]]; then
-            echo "prev=$(cat kubernetes/apps/kubeflow-system/kubeflow/manifests/.last-upstream-ref)" >> $GITHUB_OUTPUT
-          else
-            echo "prev=unknown" >> $GITHUB_OUTPUT
           fi
 
   sync:
