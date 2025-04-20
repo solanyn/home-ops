@@ -15,4 +15,4 @@ spec:
     - backendRefs:
         - name: istio-ingressgateway
           namespace: istio-system
-          port: 8080
+          port: 443
