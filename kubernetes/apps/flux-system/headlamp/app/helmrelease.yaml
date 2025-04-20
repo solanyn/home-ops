@@ -51,11 +51,11 @@ spec:
       name: headlamp-admin
     clusterRoleBinding:
       create: false
-    persistentVolumeClaim:
-      enabled: true
-      accessModes: ["ReadWriteOnce"]
-      size: 1Gi
-      storageClassName: openebs-hostpath
+    # persistentVolumeClaim:
+    #   enabled: true
+    #   accessModes: ["ReadWriteOnce"]
+    #   size: 1Gi
+    #   storageClassName: openebs-hostpath
     volumeMounts:
       - mountPath: /build/plugins
         name: headlamp-plugins
