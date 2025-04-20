@@ -23,8 +23,8 @@ spec:
               cpu: '1'
               memory: 1Gi
             requests:
-              cpu: 100m
-              memory: 256Mi
+              cpu: 10m
+              memory: 100Mi
           command: ["/usr/bin/metacontroller"]
           args:
           - --zap-log-level=4
@@ -38,7 +38,7 @@ spec:
               port: 8081
               path: /readyz
           securityContext:
-            seccompProfile: 
+            seccompProfile:
               type: RuntimeDefault
             capabilities:
               drop:
