@@ -90,8 +90,8 @@ resources:
   - ../common/user-namespace/base
 
   # KServe
-  # - ../apps/kserve/kserve
-  # - ../apps/kserve/models-web-app/overlays/kubeflow
+  - ../apps/kserve/kserve
+  - ../apps/kserve/models-web-app/overlays/kubeflow
 
   # Ray is an experimental integration
   # Here is the documentation for Ray: https://docs.ray.io/en/latest/
