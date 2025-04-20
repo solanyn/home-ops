@@ -7,25 +7,25 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/target: &hostname istio.goyangi.cloud
 spec:
-  gatewayClassName: istio
+  gatewayClassName: cilium
+  addresses:
+    - type: IPAddress
+      value: 192.168.1.157
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-  addresses:
-    - value: 192.168.1.157
-      type: IPAddress
   listeners:
     - name: http
       protocol: HTTP
       port: 80
-      hostname: "*.goyangi.cloud"
+      hostname: "kubeflow.goyangi.cloud"
       allowedRoutes:
         namespaces:
           from: Same
     - name: https
       protocol: HTTPS
       port: 443
-      hostname: "*.goyangi.cloud"
+      hostname: "kubeflow.goyangi.cloud"
       allowedRoutes:
         namespaces:
           from: All
@@ -33,4 +33,3 @@ spec:
         certificateRefs:
           - kind: Secret
             name: goyangi-cloud-tls
-            namespace: kube-system
