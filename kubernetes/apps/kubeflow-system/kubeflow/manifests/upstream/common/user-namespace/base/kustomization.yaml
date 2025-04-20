@@ -6,7 +6,7 @@ resources:
 - profile-instance.yaml
 configMapGenerator:
 - envs:
-  - params.env
+  - ./params.env
   name: default-install-config
 # These vars are used for substituing in the parameters from the config map
 # into the Profiles custom resource.
