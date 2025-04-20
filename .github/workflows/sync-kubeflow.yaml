@@ -78,7 +78,6 @@ jobs:
           owner: kubeflow
           repository: manifests
           branch: ${{ needs.setup.outputs.upstream_ref }}
-          depth: 1
 
       - name: Sync selected folders
         id: check
