@@ -3634,7 +3634,7 @@ metadata:
   name: istio-ingressgateway
   namespace: istio-system
 spec:
-  maxReplicas: 5
+  maxReplicas: 1
   metrics:
   - resource:
       name: cpu
@@ -3666,7 +3666,7 @@ metadata:
   name: istiod
   namespace: istio-system
 spec:
-  maxReplicas: 5
+  maxReplicas: 1
   metrics:
   - resource:
       name: cpu
