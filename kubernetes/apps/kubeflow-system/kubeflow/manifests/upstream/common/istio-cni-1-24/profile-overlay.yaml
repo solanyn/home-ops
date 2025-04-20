@@ -22,7 +22,7 @@ spec:
         - name: ISTIO_META_ROUTER_MODE
           value: sni-dnat
         hpaSpec:
-          maxReplicas: 5
+          maxReplicas: 1
           metrics:
           - resource:
               name: cpu

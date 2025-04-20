@@ -8230,7 +8230,7 @@ metadata:
     app.kubernetes.io/version: "1.16.2"
 spec:
   minReplicas: 1
-  maxReplicas: 20
+  maxReplicas: 1
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
@@ -8616,7 +8616,7 @@ metadata:
     app.kubernetes.io/version: "1.16.2"
 spec:
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 1
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
