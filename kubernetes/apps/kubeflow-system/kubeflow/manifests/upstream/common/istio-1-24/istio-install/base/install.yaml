@@ -2480,7 +2480,7 @@ data:
               "memory": "1024Mi"
             },
             "requests": {
-              "cpu": "100m",
+              "cpu": "10m",
               "memory": "128Mi"
             }
           },
@@ -2515,7 +2515,7 @@ data:
               "memory": "1Gi"
             },
             "requests": {
-              "cpu": "100m",
+              "cpu": "10m",
               "memory": "128Mi"
             }
           },
