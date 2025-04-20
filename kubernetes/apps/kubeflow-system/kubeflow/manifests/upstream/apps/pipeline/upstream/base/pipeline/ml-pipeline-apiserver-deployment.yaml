@@ -168,6 +168,6 @@ spec:
             - ALL
         resources:
           requests:
-            cpu: 250m
-            memory: 500Mi
+            cpu: 10m
+            memory: 100Mi
       serviceAccountName: ml-pipeline

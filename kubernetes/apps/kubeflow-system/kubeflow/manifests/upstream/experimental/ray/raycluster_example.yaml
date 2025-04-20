@@ -65,7 +65,7 @@ spec:
   rayVersion: '2.44.1'
   enableInTreeAutoscaling: true
   autoscalerOptions:
-    upscalingMode: Default 
+    upscalingMode: Default
     idleTimeoutSeconds: 60
   headGroupSpec:
     rayStartParams:
@@ -101,8 +101,8 @@ spec:
               cpu: "1"
               memory: "2G"
             requests:
-              cpu: "100m"
-              memory: "2G"
+              cpu: "10m"
+              memory: "100Mi"
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -153,8 +153,8 @@ spec:
                cpu: "1"
                memory: "1G"
              requests:
-               cpu: "300m"
-               memory: "1G"
+               cpu: "10m"
+               memory: "100Mi"
             securityContext:
              allowPrivilegeEscalation: false
              capabilities:

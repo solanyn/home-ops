@@ -23,7 +23,7 @@ spec:
             - gateway
             - gcs
             - $(GCP_PROJECT_ID)
-          env:            
+          env:
             - name: GCP_PROJECT_ID
               valueFrom:
                 configMapKeyRef:
@@ -41,7 +41,7 @@ spec:
                   key: secretkey
           resources:
             requests:
-              cpu: 20m
+              cpu: 10m
               memory: 25Mi
           ports:
             - containerPort: 9000
