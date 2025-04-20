@@ -3372,6 +3372,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
+    lbipam.cilium.io/ips: 192.168.1.157, ::ffff:192.168.1.157
   labels:
     app: istio-ingressgateway
     app.kubernetes.io/instance: istio
