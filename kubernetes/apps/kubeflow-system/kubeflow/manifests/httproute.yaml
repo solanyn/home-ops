@@ -4,7 +4,7 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: kubeflow
-  namespace: kubeflow
+  namespace: istio-system
 spec:
   hostnames: ["kubeflow.goyangi.cloud"]
   parentRefs:
@@ -15,4 +15,4 @@ spec:
     - backendRefs:
         - name: istio-ingressgateway
           namespace: istio-system
-          port: 443
+          port: 8080
