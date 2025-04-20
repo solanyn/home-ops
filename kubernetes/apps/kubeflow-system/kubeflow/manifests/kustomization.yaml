@@ -4,5 +4,3 @@ kind: Kustomization
 resources:
   - ./upstream/example
   - ./externalsecret.yaml
-  - ./httproute.yaml
-  # - ./ingress.yaml
