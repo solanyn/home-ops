@@ -37,6 +37,7 @@ resources:
   - ./recyclarr/ks.yaml
   - ./romm/ks.yaml
   - ./sonarr/ks.yaml
+  - ./stash/ks.yaml
   - ./tautulli/ks.yaml
   - ./thelounge/ks.yaml
   - ./webhook/ks.yaml
