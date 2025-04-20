@@ -30,10 +30,10 @@ spec:
               TZ: Australia/Sydney
               USER: 1000
               STASH_CONFIG_FILE: /config/config.yml
-              STASH_STASH: /media/
-              STASH_GENERATED: /generated/
+              STASH_STASH: /media
+              STASH_GENERATED: /generated
               STASH_METADATA: /metadata
-              STASH_CACHE: /cache/
+              STASH_CACHE: /cache
             probes:
               liveness: &probes
                 enabled: true
