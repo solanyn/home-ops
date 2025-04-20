@@ -62,41 +62,41 @@ resources:
   # Kubeflow Istio Resources
   - ../common/istio-1-24/kubeflow-istio-resources/base
 
-# Kubeflow Pipelines
-# - ../apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user
-# Katib
-# - ../apps/katib/upstream/installs/katib-with-kubeflow
-# Central Dashboard
-# - ../apps/centraldashboard/overlays/oauth2-proxy
-# Admission Webhook
-# - ../apps/admission-webhook/upstream/overlays/cert-manager
-# Jupyter Web App
-# - ../apps/jupyter/jupyter-web-app/upstream/overlays/istio
-# Notebook Controller
-# - ../apps/jupyter/notebook-controller/upstream/overlays/kubeflow
-# Profiles + KFAM
-# - ../apps/profiles/upstream/overlays/kubeflow
-# PVC Viewer
-# - ../apps/pvcviewer-controller/upstream/base
-# Volumes Web App
-# - ../apps/volumes-web-app/upstream/overlays/istio
-# Tensorboards Controller
-# - ../apps/tensorboard/tensorboard-controller/upstream/overlays/kubeflow
-# Tensorboard Web App
-# - ../apps/tensorboard/tensorboards-web-app/upstream/overlays/istio
-# Training Operator
-# - ../apps/training-operator/upstream/overlays/kubeflow
-# User namespace
-# - ../common/user-namespace/base
+  # Kubeflow Pipelines
+  - ../apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user
+  # Katib
+  - ../apps/katib/upstream/installs/katib-with-kubeflow
+  # Central Dashboard
+  - ../apps/centraldashboard/overlays/oauth2-proxy
+  # Admission Webhook
+  - ../apps/admission-webhook/upstream/overlays/cert-manager
+  # Jupyter Web App
+  - ../apps/jupyter/jupyter-web-app/upstream/overlays/istio
+  # Notebook Controller
+  - ../apps/jupyter/notebook-controller/upstream/overlays/kubeflow
+  # Profiles + KFAM
+  - ../apps/profiles/upstream/overlays/kubeflow
+  # PVC Viewer
+  - ../apps/pvcviewer-controller/upstream/base
+  # Volumes Web App
+  - ../apps/volumes-web-app/upstream/overlays/istio
+  # Tensorboards Controller
+  - ../apps/tensorboard/tensorboard-controller/upstream/overlays/kubeflow
+  # Tensorboard Web App
+  - ../apps/tensorboard/tensorboards-web-app/upstream/overlays/istio
+  # Training Operator
+  - ../apps/training-operator/upstream/overlays/kubeflow
+  # User namespace
+  - ../common/user-namespace/base
 
-# KServe
-# - ../apps/kserve/kserve
-# - ../apps/kserve/models-web-app/overlays/kubeflow
+  # KServe
+  # - ../apps/kserve/kserve
+  # - ../apps/kserve/models-web-app/overlays/kubeflow
 
-# Ray is an experimental integration
-# Here is the documentation for Ray: https://docs.ray.io/en/latest/
-# Here is the internal documentation for Ray: - ../experimental/ray/README.md
-# - ../experimental/ray/kuberay-operator/overlays/kubeflow
+  # Ray is an experimental integration
+  # Here is the documentation for Ray: https://docs.ray.io/en/latest/
+  # Here is the internal documentation for Ray: - ../experimental/ray/README.md
+  # - ../experimental/ray/kuberay-operator/overlays/kubeflow
 
 components:
 # Pod Security Standards
