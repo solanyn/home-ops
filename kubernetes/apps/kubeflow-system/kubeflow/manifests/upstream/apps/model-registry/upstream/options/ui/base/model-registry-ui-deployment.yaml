@@ -13,7 +13,7 @@ spec:
     metadata:
       labels:
         app: model-registry-ui
-    spec: 
+    spec:
       serviceAccountName: model-registry-ui
       securityContext:
         seccompProfile:
@@ -48,8 +48,8 @@ spec:
             cpu: 500m
             memory: 2Gi
           requests:
-            cpu: 500m
-            memory: 2Gi
+            cpu: 50m
+            memory: 100Mi
         ports:
           - containerPort: 8080
         args:

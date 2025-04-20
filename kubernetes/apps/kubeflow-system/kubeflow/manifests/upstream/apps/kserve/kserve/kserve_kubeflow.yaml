@@ -32007,7 +32007,7 @@ spec:
               cpu: 100m
               memory: 300Mi
             requests:
-              cpu: 100m
+              cpu: 10m
               memory: 200Mi
           securityContext:
             allowPrivilegeEscalation: false
@@ -32093,7 +32093,7 @@ spec:
               cpu: 100m
               memory: 300Mi
             requests:
-              cpu: 100m
+              cpu: 10m
               memory: 200Mi
           securityContext:
             allowPrivilegeEscalation: false
@@ -32155,7 +32155,7 @@ spec:
               cpu: 100m
               memory: 300Mi
             requests:
-              cpu: 100m
+              cpu: 10m
               memory: 200Mi
           securityContext:
             allowPrivilegeEscalation: false

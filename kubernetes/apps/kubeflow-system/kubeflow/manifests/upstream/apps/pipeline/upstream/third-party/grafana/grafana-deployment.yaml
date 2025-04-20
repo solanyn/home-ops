@@ -52,8 +52,8 @@ spec:
             cpu: 100m
             memory: 256Mi
           requests:
-            cpu: 100m
-            memory: 256Mi
+            cpu: 10m
+            memory: 100Mi
       securityContext:
         fsGroup: 472
         runAsUser: 472
