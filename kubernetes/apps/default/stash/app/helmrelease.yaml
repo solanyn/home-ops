@@ -28,6 +28,7 @@ spec:
               tag: v0.28.1@sha256:645f6c15b079410d50d488dbeb247c92f25534094dad4e15d886e47648b897f7
             env:
               TZ: Australia/Sydney
+              USER: 1000
               STASH_STASH: /media/
               STASH_GENERATED: /generated/
               STASH_METADATA: /root/.stash
@@ -64,8 +65,8 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 0
-        runAsGroup: 0
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44]
@@ -91,25 +92,17 @@ spec:
       config:
         existingClaim: *app
         globalMounts:
-          - path: /root/.stash
+          - path: /config
+            subPath: config
+          - path: /blobs
+            subPath: blobs
       cache:
-        type: emptyDir
+        existingClaim: stash-cache
         globalMounts:
           - path: /cache
-      generated:
-        type: nfs
-        server: nas.internal
-        path: /mnt/world/media
-        globalMounts:
+            subPath: cache
           - path: /generated
-            subPath: other/stash/generated
-      blob:
-        type: nfs
-        server: nas.internal
-        path: /mnt/world/media
-        globalMounts:
-          - path: /blob
-            subPath: other/stash/blob
+            subPath: generated
       media:
         type: nfs
         server: nas.internal
