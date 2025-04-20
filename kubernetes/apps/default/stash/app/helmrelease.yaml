@@ -29,6 +29,7 @@ spec:
             env:
               TZ: Australia/Sydney
               USER: 1000
+              STASH_CONFIG_FILE: /config/config.yml
               STASH_STASH: /media/
               STASH_GENERATED: /generated/
               STASH_METADATA: /root/.stash
