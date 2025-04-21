@@ -18,9 +18,22 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      upstream_ref: ${{ steps.ref.outputs.ref }}
+      upstream_ref: ${{ steps.resolve.outputs.ref }}
       previous_ref: ${{ steps.prev.outputs.prev }}
     steps:
+      - name: Read previously synced upstream ref
+        id: prev
+        run: |
+          file_path="kubernetes/apps/kubeflow-system/kubeflow/manifests/.last-upstream-ref"
+          if [[ -f "$file_path" ]]; then
+            prev=$(cat "$file_path")
+            echo "📜 Found previous ref: $prev"
+          else
+            prev="unknown"
+            echo "⚠️ No previous ref found"
+          fi
+          echo "prev=$prev" >> $GITHUB_OUTPUT
+
       - name: Get latest tag or use provided input (with caching)
         id: resolve
         run: |
