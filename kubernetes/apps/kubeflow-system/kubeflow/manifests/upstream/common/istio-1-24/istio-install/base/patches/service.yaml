@@ -3,8 +3,5 @@ kind: Service
 metadata:
   name: istio-ingressgateway
   namespace: istio-system
-  annotations:
-    lbipam.cilium.io/ips: 192.168.1.157, ::ffff:192.168.1.157
-    external-dns.alpha.kubernetes.io/target: kubeflow.goyangi.cloud
 spec:
-  type: LoadBalancer
+  type: ClusterIP

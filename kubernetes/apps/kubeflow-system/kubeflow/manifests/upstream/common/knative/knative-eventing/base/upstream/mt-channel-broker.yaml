@@ -308,7 +308,7 @@ spec:
             initialDelaySeconds: 5
           resources:
             requests:
-              cpu: 10m
+              cpu: 100m
               memory: 100Mi
           ports:
             - containerPort: 8080
@@ -550,7 +550,7 @@ spec:
           image: gcr.io/knative-releases/knative.dev/eventing/cmd/mtchannel_broker@sha256:8700453a537ea6ca6cd78259335c36e7ad528abe539b593fc2bdf6e5ddf91ab0
           resources:
             requests:
-              cpu: 10m
+              cpu: 100m
               memory: 100Mi
           env:
             - name: SYSTEM_NAMESPACE
