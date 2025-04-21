@@ -249,7 +249,7 @@ spec:
           image: gcr.io/knative-releases/knative.dev/net-istio/cmd/controller@sha256:e70bc675f97778da144157f125b3001124ba7a5903b85dab9e77776352fea1c7
           resources:
             requests:
-              cpu: 10m
+              cpu: 30m
               memory: 40Mi
             limits:
               cpu: 300m
@@ -328,7 +328,7 @@ spec:
           image: gcr.io/knative-releases/knative.dev/net-istio/cmd/webhook@sha256:7d76a6d42d139ed53aae3ca2dfd600b1c776eb85a17af64dd1b604176a4b132a
           resources:
             requests:
-              cpu: 10m
+              cpu: 20m
               memory: 20Mi
             limits:
               cpu: 200m
