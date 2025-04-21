@@ -85,10 +85,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: test
-        run: |
-          echo "${{ needs.setup.outputs.upstream_ref }}"
-
       - name: Clone upstream kubeflow/manifests
         uses: GuillaumeFalourd/clone-github-repo-action@main
         with:
