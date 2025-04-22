@@ -1,0 +1,19 @@
+# From ./upstream/apps/pipeline/upstream/third-party/argo/base/workflow-controller-configmap-patch.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workflow-controller-configmap
+data:
+  artifactRepository: |
+    archiveLogs: true
+    s3:
+      endpoint: "minio.default.svc.cluster.local:9000"
+      bucket: "kfp-pipelines"
+      keyFormat: "artifacts/{{workflow.name}}/{{workflow.creationTimestamp.Y}}/{{workflow.creationTimestamp.m}}/{{workflow.creationTimestamp.d}}/{{pod.name}}"
+      insecure: true
+      accessKeySecret:
+        name: mlpipeline-minio-artifact
+        key: accesskey
+      secretKeySecret:
+        name: mlpipeline-minio-artifact
+        key: secretkey
