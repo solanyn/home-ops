@@ -167,6 +167,25 @@ patches:
   target:
     name: workflow-controller-configmap
 
+# katib
+- path: ./patches/katib/delete.katib-mysql.deployment.yaml
+  target:
+    name: katib-mysql
+    kind: Deployment
+    namespace: kubeflow
+
+- path: ./patches/katib/delete.katib-mysql.pvc.yaml
+  target:
+    name: katib-mysql
+    kind: PersistentVolumeClaim
+    namespace: kubeflow
+
+- path: ./patches/katib/delete.katib-mysql.service.yaml
+  target:
+    name: katib-mysql
+    kind: Service
+    namespace: kubeflow
+
 # all resources
 - path: ./patches/patch.deployment.yaml
   target:
