@@ -190,9 +190,27 @@ patches:
 - path: ./patches/patch.deployment.yaml
   target:
     kind: Deployment
+    namespace: oauth2-proxy
+- path: ./patches/patch.deployment.yaml
+  target:
+    kind: Deployment
+    namespace: istio-system
+- path: ./patches/patch.deployment.yaml
+  target:
+    kind: Deployment
+    namespace: kubeflow
+- path: ./patches/patch.deployment.yaml
+  target:
+    kind: Deployment
+    namespace: knative-serving
+- path: ./patches/patch.deployment.yaml
+  target:
+    kind: Deployment
+    namespace: knative-eventing
 - path: ./patches/patch.daemonset.yaml
   target:
     kind: DaemonSet
+    namespace: kubeflow
 
 configMapGenerator:
   - name: oauth2-proxy
