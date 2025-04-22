@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pipeline-install-config
+data:
+  appName: pipeline
+  dbType: mysql
+  mysqlHost: mariadb.database.svc.cluster.local
+  mysqlPort: "3306"
+  mlmdDb: kfp_metadata
+  cacheDb: kfp_cache
+  pipelineDb: kfp_pipelines
+  bucketName: kfp-pipelines
+  cronScheduleTimezone: "Australia/Sydney"

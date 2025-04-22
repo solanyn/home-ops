@@ -1,0 +1,41 @@
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: pocket-id-requestauthentication
+  namespace: istio-system
+spec:
+  # we only apply to the ingress-gateway because:
+  #  - there is no need to verify the same tokens at each sidecar
+  #  - having no selector will apply to the RequestAuthentication to ALL
+  #    Pods in the mesh, even ones which are not part of Kubeflow
+  selector:
+    matchLabels:
+      app: istio-ingressgateway
+
+  jwtRules:
+  - issuer: https://id.goyangi.cloud
+
+    # `forwardOriginalToken` is not strictly required to be true.
+    # there are pros and cons to each value:
+    #  - true: the original token is forwarded to the destination service
+    #          which raises the risk of the token leaking
+    #  - false: the original token is stripped from the request
+    #           which will prevent the destination service from
+    #           verifying the token (possibly with its own RequestAuthentication)
+    forwardOriginalToken: true
+
+    # This will unpack the JWTs issued by Dex or other IDPs into the expected headers.
+    # It is applied to BOTH the m2m tokens from outside the cluster (which skip
+    # oauth2-proxy because they already have a dex JWT), AND user requests which were
+    # authenticated by oauth2-proxy (which injected a dex JWT).
+    outputClaimToHeaders:
+    - header: kubeflow-userid
+      claim: email
+    - header: kubeflow-groups
+      claim: groups
+
+    # We explicitly set `fromHeaders` to ensure that the JWT is only extracted from the `Authorization` header.
+    # This is because we exclude requests that have an `Authorization` header from oauth2-proxy.
+    fromHeaders:
+    - name: Authorization
+      prefix: "Bearer "

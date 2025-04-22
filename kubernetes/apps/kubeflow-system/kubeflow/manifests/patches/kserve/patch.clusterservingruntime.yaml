@@ -1,0 +1,11 @@
+apiVersion: serving.kserve.io/v1alpha1
+kind: ClusterServingRuntime
+metadata:
+  name: not-used
+containers:
+  resources:
+    limits:
+      memory: 8Gi
+    requests:
+      cpu: 10m
+      memory: 64Mi
