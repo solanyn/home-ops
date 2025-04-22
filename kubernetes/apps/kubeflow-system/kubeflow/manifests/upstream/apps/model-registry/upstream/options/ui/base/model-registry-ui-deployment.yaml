@@ -13,7 +13,7 @@ spec:
     metadata:
       labels:
         app: model-registry-ui
-    spec:
+    spec: 
       serviceAccountName: model-registry-ui
       securityContext:
         seccompProfile:
@@ -24,10 +24,8 @@ spec:
         image: model-registry-ui
         imagePullPolicy: Always
         livenessProbe:
-          httpGet:
-            path: /healthcheck
+          tcpSocket:
             port: 8080
-            scheme: HTTP
           initialDelaySeconds: 30
           timeoutSeconds: 15
           periodSeconds: 30
@@ -35,9 +33,12 @@ spec:
           failureThreshold: 3
         readinessProbe:
           httpGet:
-            path: /healthcheck
+            path: /api/v1/healthcheck
             port: 8080
             scheme: HTTP
+            httpHeaders:
+            - name: kubeflow-userid
+              value: user@example.com
           initialDelaySeconds: 15
           timeoutSeconds: 15
           periodSeconds: 30
@@ -48,8 +49,8 @@ spec:
             cpu: 500m
             memory: 2Gi
           requests:
-            cpu: 50m
-            memory: 100Mi
+            cpu: 500m
+            memory: 2Gi
         ports:
           - containerPort: 8080
         args:

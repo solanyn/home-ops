@@ -3117,7 +3117,7 @@ spec:
           image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/resolvers:v0.53.2@sha256:6578d145acd9cd288e501023429439334de15de8bd77af132c57a1d5f982e940
           resources:
             requests:
-              cpu: 10m
+              cpu: 100m
               memory: 100Mi
             limits:
               cpu: 1000m
@@ -3340,7 +3340,7 @@ spec:
           # Resource request required for autoscaler to take any action for a metric
           resources:
             requests:
-              cpu: 10m
+              cpu: 100m
               memory: 100Mi
             limits:
               cpu: 500m

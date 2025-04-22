@@ -36,5 +36,5 @@ spec:
             - containerPort: 9000
           resources:
             requests:
-              cpu: 10m
+              cpu: 20m
               memory: 25Mi

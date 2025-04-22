@@ -16,7 +16,7 @@ spec:
         cpu: "1"
         memory: 2Gi
       requests:
-        cpu: "10m"
+        cpu: "1"
         memory: 2Gi
     securityContext:
       allowPrivilegeEscalation: false
@@ -63,7 +63,7 @@ spec:
         cpu: "1"
         memory: 2Gi
       requests:
-        cpu: "10m"
+        cpu: "1"
         memory: 2Gi
     securityContext:
       allowPrivilegeEscalation: false
@@ -106,7 +106,7 @@ spec:
         cpu: "1"
         memory: 2Gi
       requests:
-        cpu: "10m"
+        cpu: "1"
         memory: 2Gi
     securityContext:
       allowPrivilegeEscalation: false
@@ -171,7 +171,7 @@ spec:
         cpu: "1"
         memory: 2Gi
       requests:
-        cpu: "10m"
+        cpu: "1"
         memory: 2Gi
     securityContext:
       allowPrivilegeEscalation: false
@@ -209,7 +209,7 @@ spec:
         cpu: "1"
         memory: 2Gi
       requests:
-        cpu: "10m"
+        cpu: "1"
         memory: 2Gi
     securityContext:
       allowPrivilegeEscalation: false
@@ -251,7 +251,7 @@ spec:
         cpu: "1"
         memory: 2Gi
       requests:
-        cpu: "10m"
+        cpu: "1"
         memory: 2Gi
     securityContext:
       allowPrivilegeEscalation: false
@@ -293,7 +293,7 @@ spec:
         cpu: "1"
         memory: 2Gi
       requests:
-        cpu: "10m"
+        cpu: "1"
         memory: 2Gi
     securityContext:
       allowPrivilegeEscalation: false
@@ -340,7 +340,7 @@ spec:
         cpu: "1"
         memory: 2Gi
       requests:
-        cpu: "10m"
+        cpu: "1"
         memory: 2Gi
     securityContext:
       allowPrivilegeEscalation: false
@@ -383,7 +383,7 @@ spec:
         cpu: "1"
         memory: 2Gi
       requests:
-        cpu: "10m"
+        cpu: "1"
         memory: 2Gi
     securityContext:
       allowPrivilegeEscalation: false
@@ -441,7 +441,7 @@ spec:
         cpu: "1"
         memory: 2Gi
       requests:
-        cpu: "10m"
+        cpu: "1"
         memory: 2Gi
     securityContext:
       allowPrivilegeEscalation: false
@@ -472,7 +472,7 @@ spec:
         cpu: "1"
         memory: 1Gi
       requests:
-        cpu: 10m
+        cpu: 100m
         memory: 100Mi
   supportedUriFormats:
   - prefix: gs://

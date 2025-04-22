@@ -2966,7 +2966,7 @@ spec:
             port: 8000
         resources:
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 100Mi
         securityContext:
           capabilities:
@@ -3175,7 +3175,7 @@ spec:
             cpu: 2000m
             memory: 1024Mi
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 128Mi
         securityContext:
           allowPrivilegeEscalation: false
@@ -3384,8 +3384,8 @@ spec:
           timeoutSeconds: 5
         resources:
           requests:
-            cpu: 10m
-            memory: 100Mi
+            cpu: 500m
+            memory: 2048Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -3634,7 +3634,7 @@ metadata:
   name: istio-ingressgateway
   namespace: istio-system
 spec:
-  maxReplicas: 3
+  maxReplicas: 5
   metrics:
   - resource:
       name: cpu
@@ -3666,7 +3666,7 @@ metadata:
   name: istiod
   namespace: istio-system
 spec:
-  maxReplicas: 3
+  maxReplicas: 5
   metrics:
   - resource:
       name: cpu
