@@ -22,7 +22,7 @@ spec:
         - name: ISTIO_META_ROUTER_MODE
           value: sni-dnat
         hpaSpec:
-          maxReplicas: 3
+          maxReplicas: 5
           metrics:
           - resource:
               name: cpu
@@ -40,8 +40,8 @@ spec:
             cpu: 2000m
             memory: 1024Mi
           requests:
-            cpu: 10m
-            memory: 100Mi
+            cpu: 100m
+            memory: 128Mi
         service:
           type: ClusterIP
           ports:
