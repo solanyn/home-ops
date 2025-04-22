@@ -167,6 +167,21 @@ patches:
   target:
     name: workflow-controller-configmap
 
+- path: ./patches/pipelines/delete.mysql.deployment.yaml
+  target:
+    name: mysql
+    kind: Deployment
+
+- path: ./patches/pipelines/delete.mysql.service.yaml
+  target:
+    name: mysql
+    kind: Service
+
+- path: ./patches/pipelines/delete.mysql-pv-claim.pvc.yaml
+  target:
+    name: mysql-pv-claim
+    kind: PersistentVolumeClaim
+
 # katib
 - path: ./patches/katib/delete.katib-mysql.deployment.yaml
   target:
