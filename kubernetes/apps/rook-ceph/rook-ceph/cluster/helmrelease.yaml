@@ -40,7 +40,7 @@ spec:
     toolbox:
       enabled: true
       resources:
-        requests:
+        requests: &requests
           cpu: 10m
           memory: 10Mi
     cephClusterSpec:
@@ -77,6 +77,25 @@ spec:
         devicePathFilter: /dev/disk/by-id/ata-SAMSUNG_MZ7LM960HCHP-00003_.*
         config:
           osdsPerDevice: "1"
+      resources:
+        mgr:
+          <<: *requests
+        mon:
+          <<: *requests
+        osd:
+          <<: *requests
+        prepareosd:
+          <<: *requests
+        mgr-sidecar:
+          <<: *requests
+        crashcollector:
+          <<: *requests
+        logcollector:
+          <<: *requests
+        cleanup:
+          <<: *requests
+        exporter:
+          <<: *requests
     cephBlockPools:
       - name: ceph-blockpool
         spec:
