@@ -638,7 +638,7 @@ spec:
           image: gcr.io/knative-releases/knative.dev/eventing/cmd/controller@sha256:806330a39dfac379cd39a771c2e42f3a9998d0f214fe38f28bcb101c554a5a7a
           resources:
             requests:
-              cpu: 10m
+              cpu: 100m
               memory: 100Mi
           env:
             - name: SYSTEM_NAMESPACE
@@ -785,7 +785,7 @@ spec:
           terminationMessagePath: /dev/termination-log
           resources:
             requests:
-              cpu: 10m
+              cpu: 125m
               memory: 64Mi
             limits:
               cpu: 1000m
@@ -900,7 +900,7 @@ spec:
               protocol: TCP
           resources:
             requests:
-              cpu: 10m
+              cpu: 125m
               memory: 64Mi
             limits:
               cpu: 1000m
@@ -996,7 +996,7 @@ spec:
           image: gcr.io/knative-releases/knative.dev/eventing/cmd/webhook@sha256:be90d7813786da265dbda2408742b4783e4f69e73719cb3b6e2c103d631ed721
           resources:
             requests:
-              cpu: 10m
+              cpu: 100m
               memory: 50Mi
             limits:
               cpu: 200m

@@ -34,7 +34,7 @@ spec:
         - "domainmappings.serving.knative.dev"
         resources:
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 100Mi
           limits:
             cpu: 1000m

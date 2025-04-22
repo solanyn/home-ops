@@ -32,8 +32,8 @@ spec:
         name: ml-pipeline-persistenceagent
         resources:
           requests:
-            cpu: 10m
-            memory: 100Mi
+            cpu: 120m
+            memory: 500Mi
         volumeMounts:
           - mountPath: /var/run/secrets/kubeflow/tokens
             name: persistenceagent-sa-token
