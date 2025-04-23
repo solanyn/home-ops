@@ -37,7 +37,7 @@ spec:
       requests:
         cpu: 10m
         memory: 64Mi
-    revision: default
+    revision: "default"
     service:
       type: ClusterIP
     securityContext:
