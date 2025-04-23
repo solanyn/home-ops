@@ -11,6 +11,14 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/guarded
+    - ../../../../components/volsync
+  dependsOn:
+    - name: cloudnative-pg-cluster
+      namespace: database
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
   interval: 30m
   path: ./kubernetes/apps/default/mlflow/app
   prune: false
