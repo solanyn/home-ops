@@ -2,28 +2,272 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: requests
-  annotations:
-    policies.kyverno.io/title: Mutate all requests
-    policies.kyverno.io/subject: Pod
+  name: set-default-container-resources
 spec:
+  mutateExisting: true
   rules:
-    - name: mutate-requests
+    - name: set-default-resources
       match:
         any:
           - resources:
               kinds:
-                - apps/v1/Deployment
-                - apps/v1/ReplicaSets
-                - apps/v1/StatefulSets
-                - apps/v1/DaemonSets
-              namespaces: ["*"]
+                - Pod
+                - Deployment
+                - StatefulSet
+                - DaemonSet
+                - Job
+                - CronJob
       mutate:
-        patchStrategicMerge:
-          spec:
-            template:
-              containers:
-                resources:
-                  requests:
-                    cpu: 10m
-                    memory: 64Mi
+        patches:
+          - target:
+              group: ""
+              version: v1
+              kind: Pod
+              path: /spec/containers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: ""
+              version: v1
+              kind: Pod
+              path: /spec/initContainers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: ""
+              version: v1
+              kind: Pod
+              path: /spec/ephemeralContainers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: ""
+              version: v1
+              kind: Pod
+              path: /spec/containers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: ""
+              version: v1
+              kind: Pod
+              path: /spec/initContainers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: ""
+              version: v1
+              kind: Pod
+              path: /spec/ephemeralContainers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              path: /spec/template/spec/containers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              path: /spec/template/spec/initContainers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              path: /spec/template/spec/ephemeralContainers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              path: /spec/template/spec/containers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              path: /spec/template/spec/initContainers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              path: /spec/template/spec/ephemeralContainers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: apps
+              version: v1
+              kind: StatefulSet
+              path: /spec/template/spec/containers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: apps
+              version: v1
+              kind: StatefulSet
+              path: /spec/template/spec/initContainers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: apps
+              version: v1
+              kind: StatefulSet
+              path: /spec/template/spec/ephemeralContainers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: apps
+              version: v1
+              kind: StatefulSet
+              path: /spec/template/spec/containers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: apps
+              version: v1
+              kind: StatefulSet
+              path: /spec/template/spec/initContainers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: apps
+              version: v1
+              kind: StatefulSet
+              path: /spec/template/spec/ephemeralContainers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: apps
+              version: v1
+              kind: DaemonSet
+              path: /spec/template/spec/containers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: apps
+              version: v1
+              kind: DaemonSet
+              path: /spec/template/spec/initContainers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: apps
+              version: v1
+              kind: DaemonSet
+              path: /spec/template/spec/ephemeralContainers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: apps
+              version: v1
+              kind: DaemonSet
+              path: /spec/template/spec/containers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: apps
+              version: v1
+              kind: DaemonSet
+              path: /spec/template/spec/initContainers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: apps
+              version: v1
+              kind: DaemonSet
+              path: /spec/template/spec/ephemeralContainers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: batch
+              version: v1
+              kind: Job
+              path: /spec/template/spec/containers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: batch
+              version: v1
+              kind: Job
+              path: /spec/template/spec/initContainers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: batch
+              version: v1
+              kind: Job
+              path: /spec/template/spec/ephemeralContainers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: batch
+              version: v1
+              kind: Job
+              path: /spec/template/spec/containers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: batch
+              version: v1
+              kind: Job
+              path: /spec/template/spec/initContainers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: batch
+              version: v1
+              kind: Job
+              path: /spec/template/spec/ephemeralContainers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: batch
+              version: v1
+              kind: CronJob
+              path: /spec/jobTemplate/spec/template/spec/containers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: batch
+              version: v1
+              kind: CronJob
+              path: /spec/jobTemplate/spec/template/spec/initContainers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: batch
+              version: v1
+              kind: CronJob
+              path: /spec/jobTemplate/spec/template/spec/ephemeralContainers/{{element}}/resources/requests/cpu
+            patch: |-
+              "10m"
+          - target:
+              group: batch
+              version: v1
+              kind: CronJob
+              path: /spec/jobTemplate/spec/template/spec/containers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: batch
+              version: v1
+              kind: CronJob
+              path: /spec/jobTemplate/spec/template/spec/initContainers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
+          - target:
+              group: batch
+              version: v1
+              kind: CronJob
+              path: /spec/jobTemplate/spec/template/spec/ephemeralContainers/{{element}}/resources/requests/memory
+            patch: |-
+              "64Mi"
