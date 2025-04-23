@@ -33,6 +33,10 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
     revision: default
     service:
       type: ClusterIP
