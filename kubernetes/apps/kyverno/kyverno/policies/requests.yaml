@@ -4,7 +4,6 @@ kind: ClusterPolicy
 metadata:
   name: set-default-container-resources
 spec:
-  mutateExisting: true
   rules:
     - name: set-default-resources
       match:
