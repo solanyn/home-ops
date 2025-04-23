@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kyverno.io/clusterpolicy_v1.json
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: requests
+  annotations:
+    policies.kyverno.io/title: Mutate all requests
+    policies.kyverno.io/subject: Pod
+spec:
+  rules:
+    - name: mutate-requests
+      match:
+        any:
+          - resources:
+              kinds:
+                - apps/v1/Deployment
+                - apps/v1/ReplicaSets
+                - apps/v1/StatefulSets
+                - apps/v1/DaemonSets
+              namespaces: ["*"]
+      mutate:
+        patchStrategicMerge:
+          spec:
+            template:
+              containers:
+                resources:
+                  requests:
+                    cpu: 10m
+                    memory: 64Mi
