@@ -18,7 +18,7 @@ spec:
       retries: 3
   values:
     controllers:
-      pocket-id:
+      mlflow:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -42,9 +42,7 @@ spec:
               MLFLOW_EXPOSE_PROMETHEUS: true
               MLFLOW_AUTH_CONFIG_PATH: /config/auth.ini
               MLFLOW_S3_ENDPOINT_URL: http://minio.default.svc.cluster.local:9000
-            envFrom:
-              - secretRef:
-                  name: mlflow-secret
+            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: true
