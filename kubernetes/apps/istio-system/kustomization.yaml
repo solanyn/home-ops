@@ -9,3 +9,12 @@ resources:
   - ./istiod/ks.yaml
   - ./cluster-local-gateway/ks.yaml
   - ./istio-ingressgateway/ks.yaml
+patches:
+  - patch: |
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: istio-system
+        labels:
+          istio-operator-managed: Reconcile
+          istio-injection: disabled
