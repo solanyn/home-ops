@@ -1,10 +1,9 @@
----
 # yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kubeflow
-  namespace: kubeflow-system
+  name: &app cluster-local-gateway
+  namespace: &namespace istio-system
 spec:
   commonMetadata:
     labels:
@@ -13,12 +12,16 @@ spec:
     - name: istiod
       namespace: istio-system
   interval: 1h
-  path: ./kubernetes/apps/kubeflow-system/kubeflow/manifests
+  path: ./kubernetes/apps/istio-system/cluster-local-gateway/app
+  postBuild:
+    substitute:
+      APP: *app
   prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  targetNamespace: *namespace
   timeout: 5m
   wait: false
