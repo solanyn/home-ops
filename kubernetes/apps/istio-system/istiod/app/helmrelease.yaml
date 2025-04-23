@@ -37,6 +37,12 @@ spec:
       requests:
         cpu: 10m
         memory: 64Mi
+    global:
+      proxy:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
     meshConfig:
       extensionProviders:
         - name: oauth2-proxy
