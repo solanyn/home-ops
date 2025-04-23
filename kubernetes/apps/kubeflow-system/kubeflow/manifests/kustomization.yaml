@@ -48,7 +48,7 @@ resources:
   # KNative
   - ./upstream/common/knative/knative-serving/overlays/gateways
   - ./upstream/common/knative/knative-eventing/base
-  - ./upstream/common/istio-1-24/cluster-local-gateway/base
+
   # Kubeflow namespace
   - ./upstream/common/kubeflow-namespace/base
   # NetworkPolicies
