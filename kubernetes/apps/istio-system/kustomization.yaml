@@ -7,3 +7,5 @@ components:
 resources:
   - ./istio-base/ks.yaml
   - ./istiod/ks.yaml
+  - ./cluster-local-gateway/ks.yaml
+  - ./istio-ingressgateway/ks.yaml
