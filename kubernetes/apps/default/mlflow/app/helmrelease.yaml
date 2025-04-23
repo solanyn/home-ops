@@ -84,6 +84,8 @@ spec:
               - name: *app
                 port: *port
     persistence:
+      config:
+        existingClaim: *app
       auth-config:
         type: secret
         name: mlflow-secret
