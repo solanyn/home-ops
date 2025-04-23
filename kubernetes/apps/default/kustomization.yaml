@@ -27,6 +27,7 @@ resources:
   - ./meilisearch/ks.yaml
   - ./miniflux/ks.yaml
   - ./minio/ks.yaml
+  - ./mlflow/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
   - ./prowlarr/ks.yaml
