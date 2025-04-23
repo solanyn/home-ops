@@ -6,4 +6,5 @@ namespace: kubeflow-system
 components:
   - ../../components/common
 resources:
-  - ./kubeflow/ks.yaml
+  []
+  # - ./kubeflow/ks.yaml
