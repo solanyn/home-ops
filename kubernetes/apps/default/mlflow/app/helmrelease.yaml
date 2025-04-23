@@ -40,7 +40,6 @@ spec:
               MLFLOW_PORT: &port 80
               MLFLOW_WORKERS: 4
               MLFLOW_EXPOSE_PROMETHEUS: true
-              MLFLOW_AUTH_CONFIG_PATH: /config/auth.ini
               MLFLOW_S3_ENDPOINT_URL: http://minio.default.svc.cluster.local:9000
             envFrom: *envFrom
             probes:
@@ -86,10 +85,3 @@ spec:
     persistence:
       config:
         existingClaim: *app
-      auth-config:
-        type: secret
-        name: mlflow-secret
-        globalMounts:
-          - path: /config/auth.ini
-            subPath: auth.ini
-            readOnly: true
