@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app mlflow
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      pocket-id:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/solanyn/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: mlflow-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/mlflow/mlflow
+              tag: v2.20.2@sha256:3a8f8ab1c2e11bfedc72605709826c34a3ff317259f397ff9f6c0475b9dbc78f
+            env:
+              MLFLOW_ARTIFACTS_DESTINATION: s3://mlflow
+              MLFLOW_HOST: 0.0.0.0
+              MLFLOW_PORT: 80
+              MLFLOW_WORKERS: 4
+              MLFLOW_EXPOSE_PROMETHEUS: true
+              MLFLOW_AUTH_CONFIG_PATH: /config/auth.ini
+              MLFLOW_S3_ENDPOINT_URL: http://minio.default.svc.cluster.local:9000
+            envFrom:
+              - secretRef:
+                  name: mlflow-secret
+            probes:
+              liveness: &probes
+                enabled: true
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 16Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: {type: RuntimeDefault}
+        supplementalGroups: [10000]
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        className: internal
+        hosts:
+          - host: mlflow.goyangi.cloud
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      auth-config:
+        type: secret
+        name: mlflow-secret
+        globalMounts:
+          - path: /config/auth.ini
+            subPath: auth.ini
+            readOnly: true
