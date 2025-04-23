@@ -94,138 +94,112 @@ components:
   - ./upstream/experimental/security/PSS/dynamic/restricted
 
 patches:
-# istio
-- path: ./patches/istio/delete.global-deny-all.authorizationpolicy.yaml
-  target:
-    name: global-deny-all
+  # istio
+  - path: ./patches/istio/delete.global-deny-all.authorizationpolicy.yaml
+    target:
+      name: global-deny-all
 
-- path: ./patches/istio/patch.istio-sidecar-injector.configmap.yaml
-  target:
-    name: istio-sidecar-injector
+  - path: ./patches/istio/patch.istio-sidecar-injector.configmap.yaml
+    target:
+      name: istio-sidecar-injector
 
-# oauth2-proxy
-- path: ./patches/oauth2-proxy/patch.pocket-id-jwt.requestauthentication.yaml
-  target:
-    name: dex-jwt
+  # oauth2-proxy
+  - path: ./patches/oauth2-proxy/patch.pocket-id-jwt.requestauthentication.yaml
+    target:
+      name: dex-jwt
 
-# kserve
-- path: ./patches/kserve/patch.clusterservingruntime.yaml
-  target:
-    namespace: kserve
-    kind: ClusterServingRuntime
+  # kserve
+  - path: ./patches/kserve/patch.clusterservingruntime.yaml
+    target:
+      namespace: kserve
+      kind: ClusterServingRuntime
 
-- path: ./patches/kserve/patch.clusterstoragecontainer.yaml
-  target:
-    namespace: kserve
-    kind: ClusterServingRuntime
+  - path: ./patches/kserve/patch.clusterstoragecontainer.yaml
+    target:
+      namespace: kserve
+      kind: ClusterServingRuntime
 
-# Pipelines
-- path: ./patches/pipelines/patch.minio.destinationrule.yaml
-  target:
-    namespace: kubeflow
-    name: ml-pipeline-minio
+  # Pipelines
+  - path: ./patches/pipelines/patch.minio.destinationrule.yaml
+    target:
+      namespace: kubeflow
+      name: ml-pipeline-minio
 
-- path: ./patches/pipelines/patch.minio.authorizationpolicy.yaml
-  target:
-    namespace: kubeflow
-    kind: AuthorizationPolicy
-    name: minio-service
+  - path: ./patches/pipelines/patch.minio.authorizationpolicy.yaml
+    target:
+      namespace: kubeflow
+      kind: AuthorizationPolicy
+      name: minio-service
 
-- path: ./patches/pipelines/patch.ml-pipeline-mysql.destinationrule.yaml
-  target:
-    namespace: kubeflow
-    kind: DestinationRule
-    name: ml-pipeline-mysql
+  - path: ./patches/pipelines/patch.ml-pipeline-mysql.destinationrule.yaml
+    target:
+      namespace: kubeflow
+      kind: DestinationRule
+      name: ml-pipeline-mysql
 
-- path: ./patches/pipelines/patch.mysql.authorizationpolicy.yaml
-  target:
-    namespace: kubeflow
-    kind: AuthorizationPolicy
-    name: mysql
+  - path: ./patches/pipelines/patch.mysql.authorizationpolicy.yaml
+    target:
+      namespace: kubeflow
+      kind: AuthorizationPolicy
+      name: mysql
 
-- path: ./patches/pipelines/delete.minio.deployment.yaml
-  target:
-    name: minio
+  - path: ./patches/pipelines/delete.minio.deployment.yaml
+    target:
+      name: minio
 
-- path: ./patches/pipelines/delete.minio.pvc.yaml
-  target:
-    name: minio-pvc
+  - path: ./patches/pipelines/delete.minio.pvc.yaml
+    target:
+      name: minio-pvc
 
-- path: ./patches/pipelines/delete.minio.service.yaml
-  target:
-    name: minio-service
+  - path: ./patches/pipelines/delete.minio.service.yaml
+    target:
+      name: minio-service
 
-- path: ./patches/pipelines/patch.metadata-db-parameters.configmap.yaml
-  target:
-    name: metadata-db-parameters
+  - path: ./patches/pipelines/patch.metadata-db-parameters.configmap.yaml
+    target:
+      name: metadata-db-parameters
 
-- path: ./patches/pipelines/patch.pipeline-install-config.configmap.yaml
-  target:
-    name: pipeline-install-config
+  - path: ./patches/pipelines/patch.pipeline-install-config.configmap.yaml
+    target:
+      name: pipeline-install-config
 
-- path: ./patches/pipelines/patch.workflow-controller-configmap.configmap.yaml
-  target:
-    name: workflow-controller-configmap
+  - path: ./patches/pipelines/patch.workflow-controller-configmap.configmap.yaml
+    target:
+      name: workflow-controller-configmap
 
-- path: ./patches/pipelines/delete.mysql.deployment.yaml
-  target:
-    name: mysql
-    kind: Deployment
+  - path: ./patches/pipelines/delete.mysql.deployment.yaml
+    target:
+      name: mysql
+      kind: Deployment
 
-- path: ./patches/pipelines/delete.mysql.service.yaml
-  target:
-    name: mysql
-    kind: Service
+  - path: ./patches/pipelines/delete.mysql.service.yaml
+    target:
+      name: mysql
+      kind: Service
 
-- path: ./patches/pipelines/delete.mysql-pv-claim.pvc.yaml
-  target:
-    name: mysql-pv-claim
-    kind: PersistentVolumeClaim
+  - path: ./patches/pipelines/delete.mysql-pv-claim.pvc.yaml
+    target:
+      name: mysql-pv-claim
+      kind: PersistentVolumeClaim
 
-# katib
-- path: ./patches/katib/delete.katib-mysql.deployment.yaml
-  target:
-    name: katib-mysql
-    kind: Deployment
-    namespace: kubeflow
+  # katib
+  - path: ./patches/katib/delete.katib-mysql.deployment.yaml
+    target:
+      name: katib-mysql
+      kind: Deployment
+      namespace: kubeflow
 
-- path: ./patches/katib/delete.katib-mysql.pvc.yaml
-  target:
-    name: katib-mysql
-    kind: PersistentVolumeClaim
-    namespace: kubeflow
+  - path: ./patches/katib/delete.katib-mysql.pvc.yaml
+    target:
+      name: katib-mysql
+      kind: PersistentVolumeClaim
+      namespace: kubeflow
 
-- path: ./patches/katib/delete.katib-mysql.service.yaml
-  target:
-    name: katib-mysql
-    kind: Service
-    namespace: kubeflow
-
-# all resources
-- path: ./patches/patch.deployment.yaml
-  target:
-    kind: Deployment
-    namespace: oauth2-proxy
-- path: ./patches/patch.deployment.yaml
-  target:
-    kind: Deployment
-    namespace: istio-system
-- path: ./patches/patch.deployment.yaml
-  target:
-    kind: Deployment
-    namespace: kubeflow
-- path: ./patches/patch.deployment.yaml
-  target:
-    kind: Deployment
-    namespace: knative-serving
-- path: ./patches/patch.deployment.yaml
-  target:
-    kind: Deployment
-    namespace: knative-eventing
-- path: ./patches/patch.daemonset.yaml
-  target:
-    kind: DaemonSet
-    namespace: kubeflow
+  - path: ./patches/katib/delete.katib-mysql.service.yaml
+    target:
+      name: katib-mysql
+      kind: Service
+      namespace: kubeflow
 
 configMapGenerator:
   - name: oauth2-proxy
