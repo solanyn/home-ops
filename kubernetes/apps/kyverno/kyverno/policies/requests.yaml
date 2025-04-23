@@ -12,6 +12,7 @@ spec:
               kinds:
                 - Deployment
                 - StatefulSet
+                - ReplicaSet
                 - DaemonSet
                 - Job
                 - CronJob
