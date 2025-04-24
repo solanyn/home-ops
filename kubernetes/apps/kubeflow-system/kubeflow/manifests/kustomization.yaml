@@ -86,6 +86,7 @@ resources:
   - ./upstream/apps/kserve/kserve
   - ./upstream/apps/kserve/models-web-app/overlays/kubeflow
 
+  - ./profile.yaml
   - ./requestauthentication.yaml
   - ./externalsecret.yaml
   - ./httproute.yaml
