@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dex
+data:
+  config.yaml: |
+    issuer: https://id.goyangi.cloud
+    storage:
+      type: kubernetes
+      config:
+        inCluster: true
+    web:
+      http: 0.0.0.0:5556
+    logger:
+      level: "debug"
+      format: text
+    oauth2:
+      skipApprovalScreen: true
+    enablePasswordDB: false
+    staticClients:
+    - idEnv: OIDC_CLIENT_ID
+      redirectURIs: ["/oauth2/callback"]
+      name: 'Dex Login Application'
+      secretEnv: OIDC_CLIENT_SECRET
+    connectors:
+    - type: oidc
+      id: keycloak
+      name: keycloak
+      config:
+        issuer: https://id.goyangi.cloud
+        clientID: $dex-secret.clientId
+        clientSecret: $dex-secret.clientSecret
+        redirectURI: https://kubeflow.goyangi.cloud/dex
+        insecure: false
+        insecureSkipEmailVerified: true
+        userNameKey: email
+        scopes:
+          - openid
+          - profile
+          - email
+          - offline_access
