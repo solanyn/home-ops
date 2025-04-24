@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dex
+  namespace: auth
+spec:
+  template:
+    spec:
+      containers:
+        - name: dex
+          envFrom:
+            - secretRef:
+                name: dex-passwords
+                $patch: delete
