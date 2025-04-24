@@ -96,6 +96,7 @@ patches:
   # dex
   - path: ./patches/dex/delete.dex-passwords.secret.yaml
   - path: ./patches/dex/patch.dex.configmap.yaml
+  - path: ./patches/dex/patch.dex.deployment.yaml
 
   # kserve
   - path: ./patches/kserve/patch.clusterservingruntime.yaml
