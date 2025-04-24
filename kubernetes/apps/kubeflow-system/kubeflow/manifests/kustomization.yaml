@@ -196,6 +196,7 @@ configMapGenerator:
 
 secretGenerator:
   - name: oauth2-proxy
+    behavior: replace
     type: Opaque
     literals:
       - client-id=kubeflow-oidc-authservice
