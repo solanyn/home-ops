@@ -37,7 +37,6 @@ sortOptions:
 resources:
   - ./externalsecret.yaml
   - ./httproute.yaml
-  - ./requestauthentication.yaml
 
   # ClusterIssuer
   - ./upstream/common/cert-manager/kubeflow-issuer/base
