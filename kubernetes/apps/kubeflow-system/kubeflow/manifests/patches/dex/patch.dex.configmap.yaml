@@ -18,11 +18,6 @@ data:
     oauth2:
       skipApprovalScreen: true
     enablePasswordDB: false
-    staticClients:
-    - idEnv: OIDC_CLIENT_ID
-      redirectURIs: ["/oauth2/callback"]
-      name: 'Dex Login Application'
-      secretEnv: OIDC_CLIENT_SECRET
     connectors:
     - type: oidc
       id: pocket-id
