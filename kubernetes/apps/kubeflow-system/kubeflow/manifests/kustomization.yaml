@@ -41,6 +41,9 @@ resources:
   # oauth2-proxy
   - ./upstream/common/oauth2-proxy/overlays/m2m-dex-only
 
+  # Dex
+  - ./upstream/common/dex/overlays/oauth2-proxy
+
   # KNative
   - ./upstream/common/knative/knative-serving/overlays/gateways
   - ./upstream/common/knative/knative-eventing/base
@@ -196,20 +199,19 @@ patches:
       name: katib-mysql
       kind: Service
       namespace: kubeflow
-
-configMapGenerator:
-  - name: oauth2-proxy
-    namespace: oauth2-proxy
-    behavior: replace
-    files:
-      - oauth2_proxy.cfg=./resources/oauth2_proxy.cfg
-secretGenerator:
-  - name: oauth2-proxy
-    namespace: oauth2-proxy
-    behavior: replace
-    literals:
-      - client-id=replaced-by-eso
-      - client-secret=replaced-by-eso
-      - cookie-secret=replaced-by-eso
-generatorOptions:
-  disableNameSuffixHash: true
+# configMapGenerator:
+#   - name: oauth2-proxy
+#     namespace: oauth2-proxy
+#     behavior: replace
+#     files:
+#       - oauth2_proxy.cfg=./resources/oauth2_proxy.cfg
+# secretGenerator:
+#   - name: oauth2-proxy
+#     namespace: oauth2-proxy
+#     behavior: replace
+#     literals:
+#       - client-id=replaced-by-eso
+#       - client-secret=replaced-by-eso
+#       - cookie-secret=replaced-by-eso
+# generatorOptions:
+#   disableNameSuffixHash: true
