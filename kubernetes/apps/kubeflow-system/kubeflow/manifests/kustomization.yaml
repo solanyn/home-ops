@@ -102,11 +102,6 @@ patches:
     target:
       name: istio-sidecar-injector
 
-  # oauth2-proxy
-  - path: ./patches/oauth2-proxy/patch.pocket-id-jwt.requestauthentication.yaml
-    target:
-      name: dex-jwt
-
   # kserve
   - path: ./patches/kserve/patch.clusterservingruntime.yaml
     target:
