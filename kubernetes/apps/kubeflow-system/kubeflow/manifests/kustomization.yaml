@@ -95,6 +95,7 @@ components:
 patches:
   # dex
   - path: ./patches/dex/patch.dex.configmap.yaml
+  - path: ./patches/istio/patch.dex-jwt.requestauthentication.yaml
 
   # kserve
   - path: ./patches/kserve/patch.clusterservingruntime.yaml
