@@ -87,7 +87,7 @@ resources:
   - ./upstream/apps/kserve/models-web-app/overlays/kubeflow
 
   - ./externalsecret.yaml
-  - ./ingress.yaml
+  - ./httproute.yaml
 
 components:
   - ./upstream/experimental/security/PSS/dynamic/restricted
