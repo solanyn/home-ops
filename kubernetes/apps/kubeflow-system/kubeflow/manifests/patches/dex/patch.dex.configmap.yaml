@@ -25,8 +25,8 @@ data:
       secretEnv: OIDC_CLIENT_SECRET
     connectors:
     - type: oidc
-      id: keycloak
-      name: keycloak
+      id: pocket-id
+      name: Pocket ID
       config:
         issuer: https://id.goyangi.cloud
         clientID: $dex-secret.clientId
@@ -39,4 +39,3 @@ data:
           - openid
           - profile
           - email
-          - offline_access
