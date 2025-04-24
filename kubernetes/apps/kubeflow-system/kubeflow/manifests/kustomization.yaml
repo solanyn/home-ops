@@ -35,9 +35,6 @@ sortOptions:
       - ValidatingWebhookConfiguration
 
 resources:
-  - ./externalsecret.yaml
-  - ./httproute.yaml
-
   # ClusterIssuer
   - ./upstream/common/cert-manager/kubeflow-issuer/base
 
@@ -85,6 +82,9 @@ resources:
   # KServe
   - ./upstream/apps/kserve/kserve
   - ./upstream/apps/kserve/models-web-app/overlays/kubeflow
+
+  - ./externalsecret.yaml
+  - ./httproute.yaml
 
 components:
   - ./upstream/experimental/security/PSS/dynamic/restricted
