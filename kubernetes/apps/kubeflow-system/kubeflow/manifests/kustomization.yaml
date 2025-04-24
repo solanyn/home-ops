@@ -86,6 +86,7 @@ resources:
   - ./upstream/apps/kserve/kserve
   - ./upstream/apps/kserve/models-web-app/overlays/kubeflow
 
+  - ./requestauthentication.yaml
   - ./externalsecret.yaml
   - ./httproute.yaml
 
@@ -93,10 +94,6 @@ components:
   - ./upstream/experimental/security/PSS/dynamic/restricted
 
 patches:
-  # dex
-  - path: ./patches/dex/patch.dex.configmap.yaml
-  - path: ./patches/istio/patch.dex-jwt.requestauthentication.yaml
-
   # kserve
   - path: ./patches/kserve/patch.clusterservingruntime.yaml
     target:
