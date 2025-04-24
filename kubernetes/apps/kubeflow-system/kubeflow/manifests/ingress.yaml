@@ -1,3 +1,4 @@
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -6,10 +7,13 @@ metadata:
 spec:
   ingressClassName: internal
   rules:
-    - host: "kubeflow.goyangi.cloud"
-      paths:
-        - path: /
-          pathType: Prefix
-          service:
-            name: istio-ingressgateway
-            port: http2
+    - host: kubeflow.goyangi.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: istio-ingressgateway
+                port:
+                  number: 8080
