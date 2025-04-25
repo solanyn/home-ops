@@ -106,6 +106,7 @@ patches:
     target:
       name: dex-jwt
       namespace: auth
+      kind: RequestAuthentication
 
   # istio
   - path: ./patches/istio/patch.istio-sidecar-injector.configmap.yaml
