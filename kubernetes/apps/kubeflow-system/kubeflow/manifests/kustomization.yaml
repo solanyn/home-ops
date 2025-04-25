@@ -99,6 +99,9 @@ components:
 patches:
   # istio
   - path: ./patches/istio/patch.istio-sidecar-injector.configmap.yaml
+    target:
+      name: istio-sidecar-injector
+      namespace: istio-system
 
   # kserve
   - path: ./patches/kserve/patch.clusterservingruntime.yaml
