@@ -22,8 +22,8 @@ connectors:
     name: Pocket ID
     config:
       issuer: https://id.goyangi.cloud
-      clientID: $dex-pocket-id.clientId
-      clientSecret: $dex-pocket-id.clientSecret
+      clientID: $OIDC_CLIENT_ID
+      clientSecret: $OIDC_CLIENT_SECRET
       redirectURI: https://kubeflow.goyangi.cloud/dex/callback
       insecure: false
       insecureSkipEmailVerified: true
