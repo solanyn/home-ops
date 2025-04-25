@@ -35,6 +35,9 @@ sortOptions:
       - ValidatingWebhookConfiguration
 
 resources:
+  # istio overlay
+  - ./overlays/istio
+
   # ClusterIssuer
   - ./upstream/common/cert-manager/kubeflow-issuer/base
 
