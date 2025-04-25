@@ -92,7 +92,6 @@ resources:
   - ./upstream/apps/kserve/models-web-app/overlays/kubeflow
 
   - ./profile.yaml
-  - ./requestauthentication.yaml
   - ./externalsecret.yaml
   - ./httproute.yaml
 
@@ -105,8 +104,7 @@ patches:
   - path: ./patches/dex/patch.dex-jwt.requestauthentication.yaml
     target:
       name: dex-jwt
-      namespace: auth
-      kind: RequestAuthentication
+      namespace: istio-system
 
   # istio
   - path: ./patches/istio/patch.istio-sidecar-injector.configmap.yaml
