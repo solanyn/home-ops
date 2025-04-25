@@ -34,6 +34,9 @@ sortOptions:
     orderLast:
       - ValidatingWebhookConfiguration
 
+components:
+  - ./upstream/common/oauth2-proxy/components/central-dashboard/
+
 resources:
   # Istio
   - ./upstream/common/istio-1-24/istio-crds/base
@@ -45,7 +48,6 @@ resources:
 
   # oauth2-proxy
   - ./upstream/common/oauth2-proxy/overlays/m2m-dex-and-kind
-  - ./upstream/common/oauth2-proxy/components/central-dashboard/
 
   # KNative
   - ./upstream/common/knative/knative-serving/overlays/gateways
