@@ -7,6 +7,8 @@ data:
   dbType: mysql
   mysqlHost: mariadb.database.svc.cluster.local
   mysqlPort: "3306"
+  dbHost: mariadb.database.svc.cluster.local
+  dbPort: "3306"
   mlmdDb: kfp_metadata
   cacheDb: kfp_cache
   pipelineDb: kfp_pipelines
