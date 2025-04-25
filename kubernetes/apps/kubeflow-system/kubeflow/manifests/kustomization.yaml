@@ -35,8 +35,10 @@ sortOptions:
       - ValidatingWebhookConfiguration
 
 resources:
-  # istio overlay
-  - ./overlays/istio
+  # Istio
+  - ./upstream/common/istio-1-24/istio-crds/base
+  - ./upstream/common/istio-1-24/istio-namespace/base
+  - ./upstream/common/istio-1-24/istio-install/overlays/oauth2-proxy
 
   # ClusterIssuer
   - ./upstream/common/cert-manager/kubeflow-issuer/base
@@ -95,6 +97,9 @@ components:
   - ./upstream/experimental/security/PSS/dynamic/restricted
 
 patches:
+  # istio
+  - path: ./patches/istio/patch.istio-sidecar-injector.configmap.yaml
+
   # kserve
   - path: ./patches/kserve/patch.clusterservingruntime.yaml
     target:
