@@ -213,6 +213,7 @@ configMapGenerator:
       - oauth2_proxy.cfg=./resources/oauth2_proxy.cfg
   - name: dex-pocket-id
     namespace: auth
+    behavior: replace
     files:
       - config.yaml=./resources/dex/config.yaml
 
