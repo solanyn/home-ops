@@ -187,6 +187,12 @@ patches:
       kind: PersistentVolumeClaim
 
   # katib
+  - path: ./patches/katib/patch.katib-db-manager.deployment.yaml
+    target:
+      name: katib-db-manager
+      kind: Deployment
+      namespace: kubeflow
+
   - path: ./patches/katib/delete.katib-mysql.deployment.yaml
     target:
       name: katib-mysql
