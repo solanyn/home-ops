@@ -44,7 +44,8 @@ resources:
   - ./upstream/common/cert-manager/kubeflow-issuer/base
 
   # oauth2-proxy
-  - ./upstream/common/oauth2-proxy/overlays/m2m-dex-only
+  - ./upstream/common/oauth2-proxy/overlays/m2m-dex-and-kind
+  - ./upstream/common/oauth2-proxy/components/central-dashboard/
 
   # KNative
   - ./upstream/common/knative/knative-serving/overlays/gateways
