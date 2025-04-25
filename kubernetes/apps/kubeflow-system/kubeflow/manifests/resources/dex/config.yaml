@@ -1,0 +1,35 @@
+issuer: https://id.goyangi.cloud
+storage:
+  type: kubernetes
+  config:
+    inCluster: true
+web:
+  http: 0.0.0.0:5556
+logger:
+  level: "debug"
+  format: text
+oauth2:
+  skipApprovalScreen: true
+enablePasswordDB: false
+staticClients:
+  - idEnv: OIDC_CLIENT_ID
+    redirectURIs: ["/oauth2/callback"]
+    name: "Dex Login Application"
+    secretEnv: OIDC_CLIENT_SECRET
+connectors:
+  - type: oidc
+    id: pocket-id
+    name: Pocket ID
+    config:
+      issuer: https://id.goyangi.cloud
+      clientID: $dex-pocket-id.clientId
+      clientSecret: $dex-pocket-id.clientSecret
+      redirectURI: https://kubeflow.goyangi.cloud/dex/callback
+      insecure: false
+      insecureSkipEmailVerified: true
+      userNameKey: email
+      scopes:
+        - openid
+        - profile
+        - email
+        - offline_access
