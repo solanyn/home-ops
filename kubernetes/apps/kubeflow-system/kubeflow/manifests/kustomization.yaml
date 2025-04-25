@@ -41,9 +41,6 @@ resources:
   # oauth2-proxy
   - ./upstream/common/oauth2-proxy/overlays/m2m-dex-only
 
-  # Dex
-  - ./upstream/common/dex/overlays/oauth2-proxy
-
   # KNative
   - ./upstream/common/knative/knative-serving/overlays/gateways
   - ./upstream/common/knative/knative-eventing/base
