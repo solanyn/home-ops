@@ -34,9 +34,6 @@ sortOptions:
     orderLast:
       - ValidatingWebhookConfiguration
 
-components:
-  - ./upstream/common/oauth2-proxy/components/central-dashboard/
-
 resources:
   # ClusterIssuer
   - ./upstream/common/cert-manager/kubeflow-issuer/base
@@ -101,8 +98,15 @@ resources:
 
 components:
   - ./upstream/experimental/security/PSS/dynamic/restricted
+  - ./upstream/common/oauth2-proxy/components/central-dashboard/
 
 patches:
+  # dex
+  - path: ./patches/dex/patch.dex-jwt.requestauthentication.yaml
+    target:
+      name: dex-jwt
+      namespace: auth
+
   # istio
   - path: ./patches/istio/patch.istio-sidecar-injector.configmap.yaml
     target:
