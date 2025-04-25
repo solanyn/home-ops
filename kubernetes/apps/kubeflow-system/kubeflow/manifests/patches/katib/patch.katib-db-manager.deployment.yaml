@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: katib-db-manager
+  namespace: kubeflow
+spec:
+  template:
+    spec:
+      containers:
+        - command:
+            - ./katib-db-manager
+          env:
+            - name: DB_NAME
+              value: mariadb.database.svc.cluster.local
