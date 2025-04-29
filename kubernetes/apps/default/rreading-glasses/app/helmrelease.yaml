@@ -36,12 +36,12 @@ spec:
               tag: hardcover@sha256:6ac52590a6e207b0839e05663a7d8c0760da7a48b245847d8b10d3fc4ca9699f
             command: ["/main", "serve"]
             args:
-              - --upstream="hardcover.app"
-              - --hardcover-auth="$(RREADING_GLASSES_HARDCOVER_API_KEY)"
-              - --postgres-host="$(INIT_POSTGRES_HOST)"
-              - --postgres-user="$(INIT_POSTGRES_USER)"
-              - --postgres-password="$(INIT_POSTGRES_PASS)"
-              - --postgres-database="$(INIT_POSTGRES_DBNAME)"
+              - --upstream=hardcover.app
+              - --hardcover-auth=$(RREADING_GLASSES_HARDCOVER_API_KEY)
+              - --postgres-host=$(INIT_POSTGRES_HOST)
+              - --postgres-user=$(INIT_POSTGRES_USER)
+              - --postgres-password=$(INIT_POSTGRES_PASS)
+              - --postgres-database=$(INIT_POSTGRES_DBNAME)
               - --verbose
               - --port=80
             envFrom: *envFrom
