@@ -46,8 +46,9 @@ spec:
               - --port=80
             envFrom: *envFrom
             probes:
+              # TODO: application is very alpha, enable when a real health route is exposed
               liveness: &probes
-                enabled: true
+                enabled: false
                 custom: true
                 spec:
                   httpGet:
