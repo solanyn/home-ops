@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kubeflow-pvcviewer-controller
+  name: &app kubeflow-volumes
   namespace: &namespace kubeflow
 spec:
   commonMetadata:
@@ -13,7 +13,7 @@ spec:
     - name: kubeflow-gateway
       namespace: kubeflow
   interval: 1h
-  path: ./kubernetes/apps/kubeflow/pvcviewer-controller/app
+  path: ./kubernetes/apps/kubeflow/volumes/app
   prune: true
   retryInterval: 2m
   sourceRef:

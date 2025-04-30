@@ -10,12 +10,9 @@ resources:
   - ./katib/ks.yaml
   - ./centraldashboard/ks.yaml
   - ./admission-webhook/ks.yaml
-  - ./jupyter-web-app/ks.yaml
-  - ./notebook-controller/ks.yaml
-  - ./pvcviewer-controller/ks.yaml
-  - ./volumes-web-app/ks.yaml
-  - ./tensorboards-controller/ks.yaml
-  - ./tensorboards-web-app/ks.yaml
+  - ./notebooks/ks.yaml
+  - ./volumes/ks.yaml
+  - ./tensorboards/ks.yaml
   - ./training-operator/ks.yaml
   - ./spark/ks.yaml
   - ./ray/ks.yaml
