@@ -3,11 +3,3 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ../../../../../third_party/kubeflow/manifests/common/knative/knative-serving/overlays/gateways
-patches:
-  - patch: |-
-      $patch: delete
-      apiVersion: v1
-      kind: namespace
-      metadata:
-        name: knative-serving
-
