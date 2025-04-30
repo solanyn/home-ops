@@ -8,3 +8,11 @@ patchesStrategicMerge:
   - patches/patch.dex.deployment.yaml
   # removals
   - patches/removals/dex.yaml
+patches:
+  - patch: |-
+      $patch: delete
+      apiVersion: v1
+      kind: namespace
+      metadata:
+        name: auth
+
