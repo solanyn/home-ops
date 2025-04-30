@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+components:
+  - ../../components/kubeflow
+  - ../../../third_party/kubeflow/manifests/experimental/security/PSS/dynamic/restricted
+resources:
+  - ./core/ks.yaml
+  - ./pipelines/ks.yaml
+  - ./katib/ks.yaml
+  - ./centraldashboard/ks.yaml
+  - ./admission-webhook/ks.yaml
+  - ./jupyter-web-app/ks.yaml
+  - ./notebook-controller/ks.yaml
+  - ./pvcviewer-controller/ks.yaml
+  - ./volumes-web-app/ks.yaml
+  - ./tensorboards-controller/ks.yaml
+  - ./tensorboards-web-app/ks.yaml
+  - ./training-operator/ks.yaml
+  - ./spark/ks.yaml
+  - ./ray/ks.yaml

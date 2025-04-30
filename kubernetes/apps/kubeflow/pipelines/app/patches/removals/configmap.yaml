@@ -1,0 +1,12 @@
+---
+$patch: delete
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pipeline-install-config
+---
+$patch: delete
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workflow-controller-configmap
