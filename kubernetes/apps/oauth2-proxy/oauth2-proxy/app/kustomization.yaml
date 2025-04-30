@@ -6,7 +6,6 @@ resources:
   - ../../../../../third_party/kubeflow/manifests/common/oauth2-proxy/overlays/m2m-dex-and-kind
 patchesStrategicMerge:
   - patches/patch.oauth2-proxy.deployment.yaml
-  - configmap.yaml
 patches:
   - target:
       kind: Deployment
@@ -20,3 +19,7 @@ patches:
           metadata:
             annotations:
               reloader.stakater.com/auto: "true"
+  - target:
+      kind: ConfigMap
+      name: oauth2-proxy
+    path: configmap.yaml
