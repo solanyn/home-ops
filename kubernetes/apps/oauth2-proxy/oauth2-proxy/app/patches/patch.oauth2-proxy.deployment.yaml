@@ -48,7 +48,5 @@ spec:
               readOnly: true
       volumes:
         - name: oauth2-proxy-config
-          configMap:
-            $patch: delete
           secret:
             name: oauth2-proxy-config-secret
