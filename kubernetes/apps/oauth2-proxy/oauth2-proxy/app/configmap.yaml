@@ -18,7 +18,7 @@ spec:
   data:
     oauth2-proxy.cfg: |
       provider = "oidc"
-      oidc_issuer_url = "http://kubeflow.goyangi.cloud/dex"
+      oidc_issuer_url = "http://dex.auth.svc.cluster.local:5556"
       scope = "profile email groups openid"
       email_domains = [ "*" ]
 
@@ -55,8 +55,8 @@ spec:
       # service, this is optional.
       skip_oidc_discovery = false
       login_url = "https://kubeflow.goyangi.cloud/dex/auth"
-      redeem_url = "https://kubeflow.goyangi.cloud/dex/token"
-      oidc_jwks_url = "https://kubeflow.goyangi.cloud/dex/keys"
+      redeem_url = "http://dex.auth.svc.cluster.local:5556/token"
+      oidc_jwks_url = "http://dex.auth.svc.cluster.local:5556/keys"
 
       # if `false`, a sign-in page is displayed before starting the login flow
       # prevents background requests starting their own login flow on token expiry,
