@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: metadata-db-parameters
-data:
-  MYSQL_DATABASE: kfp_metadata
-  MYSQL_PORT: "3306"
-  MYSQL_ALLOW_EMPTY_PASSWORD: true
-  MLMD_DB_HOST: mariadb.database.svc.cluster.local

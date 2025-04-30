@@ -24,7 +24,7 @@ jobs:
       - name: Read previously synced upstream ref
         id: prev
         run: |
-          file_path="kubernetes/apps/kubeflow-system/kubeflow/manifests/.last-upstream-ref"
+          file_path="third_party/kubeflow/manifests/.last-upstream-ref"
           if [[ -f "$file_path" ]]; then
             prev=$(cat "$file_path")
             echo "📜 Found previous ref: $prev"
@@ -81,7 +81,7 @@ jobs:
     outputs:
       changed: ${{ steps.check.outputs.changed }}
     env:
-      DEST_BASE: kubernetes/apps/kubeflow-system/kubeflow/manifests/upstream
+      DEST_BASE: third_party/kubeflow/manifests/
     steps:
       - uses: actions/checkout@v4
 
@@ -152,7 +152,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: synced-manifests
-          path: kubernetes/apps/kubeflow-system/kubeflow/manifests/upstream
+          path: third_party/kubeflow/manifests
 
       - name: Fetch GitHub Release Notes
         id: release
@@ -175,7 +175,7 @@ jobs:
           fi
 
       - name: Save updated upstream ref
-        run: echo "${{ needs.setup.outputs.upstream_ref }}" > kubernetes/apps/kubeflow-system/kubeflow/manifests/.last-upstream-ref
+        run: echo "${{ needs.setup.outputs.upstream_ref }}" > third_party/kubeflow/manifests/.last-upstream-ref
 
       - name: Generate changelog
         id: changelog
@@ -229,7 +229,7 @@ jobs:
             ## 📦 Synced Kubeflow Manifests
 
             Folders synced from upstream ref: `${{ needs.setup.outputs.upstream_ref }}`
-            to `kubernetes/apps/kubeflow-system/kubeflow/manifests/upstream`.
+            to `third_party/kubeflow/manifests`.
 
             🔄 **From:** `${{ needs.setup.outputs.previous_ref }}`
             🚀 **To:** `${{ needs.setup.outputs.upstream_ref }}`
