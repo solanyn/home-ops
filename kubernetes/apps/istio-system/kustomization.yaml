@@ -6,5 +6,5 @@ components:
   - ../../components/istio
 resources:
   - ./istio-base/ks.yaml
-  - ./istio/ks.yaml
+  - ./istiod/ks.yaml
   - ./cluster-local-gateway/ks.yaml
