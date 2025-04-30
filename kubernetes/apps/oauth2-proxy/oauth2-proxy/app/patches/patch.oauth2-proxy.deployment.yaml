@@ -46,5 +46,5 @@ spec:
               readOnly: true
       volumes:
         - name: oauth2-proxy-config
-          secret:
-            secretName: oauth2-proxy-secret
+          configMap:
+            name: oauth2-proxy
