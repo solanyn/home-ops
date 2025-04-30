@@ -6,6 +6,20 @@ resources:
   - ../../../../../third_party/kubeflow/manifests/common/oauth2-proxy/overlays/m2m-dex-and-kind
 patchesStrategicMerge:
   - patches/patch.oauth2-proxy.deployment.yaml
+configMapGenerator:
+  - name: oauth2-proxy
+    behavior: replace
+    files:
+      - oauth2-proxy.cfg=./resources/oauth2-proxy.cfg
+  - name: oauth2-proxy-parameters
+    behavior: replace
+    literals:
+      - FORCE_HTTPS=true
+      - ALLOW_SELF_SIGNED_ISSUER=false
+      - ENABLE_M2M_TOKENS=true
+      - EXTRA_JWT_ISSUERS=https://kubernetes.default.svc.cluster.local=https://kubernetes.default.svc.cluster.local
+generatorOptions:
+  disableNameSuffixHash: true
 patches:
   - target:
       kind: Deployment
@@ -19,7 +33,3 @@ patches:
           metadata:
             annotations:
               reloader.stakater.com/auto: "true"
-  - target:
-      kind: ConfigMap
-      name: oauth2-proxy
-    path: configmap.yaml
