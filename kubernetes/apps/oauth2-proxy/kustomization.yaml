@@ -1,7 +1,9 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: oauth2-proxy
 components:
   - ../../components/common
 resources:
   - ./oauth2-proxy/ks.yaml
+
