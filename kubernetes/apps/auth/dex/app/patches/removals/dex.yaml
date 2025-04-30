@@ -1,0 +1,12 @@
+---
+$patch: delete
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dex-passwords
+---
+$patch: delete
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dex

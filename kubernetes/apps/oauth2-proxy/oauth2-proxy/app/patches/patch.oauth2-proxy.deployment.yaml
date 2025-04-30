@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oauth2-proxy
+spec:
+  replicas: 1
+  template:
+    metadata:
+      annotations:
+        reloader.stakater.com/auto: "true"
+    spec:
+      containers:
+        - name: oauth2-proxy
+          env:
+            - name: OAUTH2_PROXY_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: kubeflow-secret
+                  key: KUBEFLOW_OIDC_CLIENT_SECRET
+            - name: OAUTH2_PROXY_COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: kubeflow-secret
+                  key: KUBEFLOW_OAUTH2_COOKIE_SECRET
+          command:
+            - "oauth2-proxy"
+            - "--config=/etc/oauth2-proxy/oauth2-proxy.cfg"
+          ports:
+            - name: http
+              containerPort: 4180
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            httpGet:
+              path: /ping
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+          volumeMounts:
+            - name: oauth2-proxy-config
+              mountPath: /etc/oauth2-proxy/oauth2-proxy.cfg
+              subPath: oauth2-proxy.cfg
+              readOnly: true
+      volumes:
+        - name: oauth2-proxy-config
+          secret:
+            secretName: oauth2-proxy-secret
