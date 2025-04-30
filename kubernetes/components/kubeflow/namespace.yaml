@@ -5,10 +5,3 @@ metadata:
   labels:
     control-plane: kubeflow
     istio-injection: enabled
-    # https://github.com/kubeflow/manifests/blob/master/experimental/security/PSS/dynamic/restricted/namespace-labels.yaml
-    katib.kubeflow.org/metrics-collector-injection: "enabled"
-    serving.kubeflow.org/inferenceservice: "enabled"
-    pipelines.kubeflow.org/enabled: "true"
-    app.kubernetes.io/part-of: "kubeflow-profile"
-    pod-security.kubernetes.io/enforce: "restricted"
-
