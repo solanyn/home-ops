@@ -6,12 +6,11 @@ metadata:
 spec:
   hostnames:
     - kubeflow.goyangi.cloud
+  parentRefs:
+    - name: internal
+      namespace: kube-system
+      sectionName: https
   rules:
-    - parentRefs:
-        - name: internal
-          namespace: kube-system
-          sectionName: https
-      rules:
-        - backendRefs:
-            - name: istio-ingressgateway
-              port: 80
+    - backendRefs:
+        - name: istio-ingressgateway
+          port: 80
