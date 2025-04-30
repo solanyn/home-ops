@@ -14,7 +14,5 @@ spec:
           envFrom: []
       volumes:
         - name: config
-          $patch: delete
-        - name: config
           secret:
             secretName: dex-secret
