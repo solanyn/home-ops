@@ -40,7 +40,7 @@ images:
   - name: ghcr.io/kubeflow/kfp-persistence-agent
     newTag: 2.4.1
   - name: ghcr.io/kubeflow/kfp-scheduled-workflow-controller
-    newTag: 2.4.1
+    newTag: 2.5.0
   - name: ghcr.io/kubeflow/kfp-frontend
     newTag: 2.4.1
   - name: ghcr.io/kubeflow/kfp-viewer-crd-controller
