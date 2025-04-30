@@ -42,5 +42,6 @@ spec:
               port: http
       volumes:
         - name: oauth2-proxy-config
+          $patch: replace
           secret:
             name: oauth2-proxy-config-secret
