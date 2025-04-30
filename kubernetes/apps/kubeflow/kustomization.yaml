@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: kubeflow
 components:
   - ../../components/kubeflow
-  - ../../../third_party/kubeflow/manifests/experimental/security/PSS/dynamic/restricted
 resources:
   - ./core/ks.yaml
   - ./pipelines/ks.yaml
