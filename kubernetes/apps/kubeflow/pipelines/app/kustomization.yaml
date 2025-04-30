@@ -16,6 +16,11 @@ patchesStrategicMerge:
   # removals
   - patches/removals/mysql.yaml
   - patches/removals/minio.yaml
+configMapGenerator:
+  - name: ml-pipeline-ui-configmap
+    behavior: merge
+    files:
+      - resources/viewer-pod-template.json
 patches:
   - target:
       kind: Deployment
