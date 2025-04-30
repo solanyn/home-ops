@@ -16,6 +16,49 @@ patchesStrategicMerge:
   # removals
   - patches/removals/mysql.yaml
   - patches/removals/minio.yaml
+configMapGenerator:
+  - name: pipeline-install-config
+    behavior: replace
+    literals:
+      - warning=
+        # Legacy
+      - dbHost=mariadb.database.svc.cluster.local
+      - dbPort=3306
+        # App Config
+      - appName=pipeline
+      - cronScheduleTimezone=Australia/Sydney
+        # Workflow Image Config
+      - launcherImage=ghcr.io/kubeflow/kfp-launcher:2.4.1
+      - driverImage=ghcr.io/kubeflow/kfp-driver:2.4.1
+        # Cache Config
+      - cacheImage=registry.k8s.io/busybox
+        # Bucket Config
+      - bucketName=kfp-pipelines
+      - bucketRegion=us-east-1
+        # Object Store Config
+      - bucketHost=minio.default.svc.cluster.local
+      - bucketSecure=false
+      - bucketPort=9000
+        # MySQL Config
+      - dbType=mysql
+      - mysqlHost=mariadb.database.svc.cluster.local
+      - mysqlPort=3306
+      - mlmdDb=kfp_metadata
+      - cacheDb=kfp_cache
+      - pipelineDb=kfp_pipelines
+        # UserID Config
+      - USERID_HEADER=kubeflow-userid
+      - USERID_PREFIX=
+  - name: workflow-controller-configmap
+    behavior: replace
+    files:
+      - artifactRepository=./resources/artefactRepository.yaml
+  - name: ml-pipeline-ui-configmap
+    behavior: replace
+    files:
+      - viewer-pod-template.json=./resources/viewer-pod-template.json
+generatorOptions:
+  disableNameSuffixHash: true
 patches:
   - target:
       kind: Deployment
