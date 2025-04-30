@@ -25,9 +25,9 @@ spec:
             - name: KUBEFLOW_USERID_HEADER
               value: null
               valueFrom:
-                configMapKeyRef:
-                  name: pipeline-install-config
-                  key: USERID_HEADER
+                secretKeyRef:
+                  name: kubeflow-secret
+                  key: KUBEFLOW_USERID_HEADER
             - name: KUBEFLOW_USERID_PREFIX
               value: null
               valueFrom:
