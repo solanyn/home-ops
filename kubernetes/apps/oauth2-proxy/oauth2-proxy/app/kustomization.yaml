@@ -7,10 +7,6 @@ resources:
 patchesStrategicMerge:
   - patches/patch.oauth2-proxy.deployment.yaml
 configMapGenerator:
-  - name: oauth2-proxy
-    behavior: replace
-    files:
-      - oauth2-proxy.cfg=./resources/oauth2-proxy.cfg
   - name: oauth2-proxy-parameters
     behavior: replace
     literals:
