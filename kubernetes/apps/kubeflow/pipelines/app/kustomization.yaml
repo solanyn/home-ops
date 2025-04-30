@@ -5,7 +5,7 @@ resources:
   - ../../../../../third_party/kubeflow/manifests/apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user
 patchesStrategicMerge:
   - patches/patch.cache-server.deployment.yaml
-  - patches/patch.metadata-grpc.deployment.yaml
+  - patches/patch.metadata-grpc-deployment.deployment.yaml
   - patches/patch.ml-pipeline-persistenceagent.deployment.yaml
   - patches/patch.ml-pipeline-ui.deployment.yaml
   - patches/patch.ml-pipeline.deployment.yaml
