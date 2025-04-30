@@ -15,12 +15,12 @@ spec:
             - name: OAUTH2_PROXY_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: kubeflow-secret
+                  name: oauth2-proxy-secret
                   key: KUBEFLOW_OIDC_CLIENT_SECRET
             - name: OAUTH2_PROXY_COOKIE_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: kubeflow-secret
+                  name: oauth2-proxy-secret
                   key: KUBEFLOW_OAUTH2_PROXY_COOKIE_SECRET
           command:
             - "oauth2-proxy"
