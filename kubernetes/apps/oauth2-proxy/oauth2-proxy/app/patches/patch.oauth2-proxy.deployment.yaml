@@ -41,11 +41,11 @@ spec:
               path: /ready
               port: http
           volumeMounts:
-            - name: oauth2-proxy-config-secret
+            - name: oauth2-proxy-config
               mountPath: /etc/oauth2-proxy/oauth2-proxy.cfg
               subPath: oauth2-proxy.cfg
               readOnly: true
       volumes:
         - name: oauth2-proxy-config
           secret:
-            name: oauth2-proxy
+            name: oauth2-proxy-config-secret
