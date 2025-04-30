@@ -15,7 +15,7 @@ patchesStrategicMerge:
   - patches/removals/minio.yaml
 configMapGenerator:
   - name: pipeline-install-config
-    behavior: replace
+    behavior: merge
     literals:
       - warning=
         # Legacy
