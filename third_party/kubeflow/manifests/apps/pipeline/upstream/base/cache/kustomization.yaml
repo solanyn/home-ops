@@ -10,4 +10,4 @@ commonLabels:
   app: cache-server
 images:
   - name: ghcr.io/kubeflow/kfp-cache-server
-    newTag: 2.4.1
+    newTag: 2.5.0
