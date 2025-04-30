@@ -15,4 +15,4 @@ patches:
         template:
           metadata:
             annotations:
-              reloader.stakater.com/auto: true
+              reloader.stakater.com/auto: "true"
