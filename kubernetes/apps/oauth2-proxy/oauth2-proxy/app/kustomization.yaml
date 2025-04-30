@@ -8,3 +8,10 @@ patchesStrategicMerge:
   - patches/patch.oauth2-proxy.deployment.yaml
   # removals
   - patches/removals/oauth2-proxy.yaml
+patches:
+  - patch: |-
+      $patch: delete
+      apiVersion: v1
+      kind: namespace
+      metadata:
+        name: oauth2-proxy
