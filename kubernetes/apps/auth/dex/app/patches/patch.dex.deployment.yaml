@@ -14,5 +14,6 @@ spec:
           envFrom: []
       volumes:
         - name: config
+          configMap: {}
           secret:
             secretName: dex-secret
