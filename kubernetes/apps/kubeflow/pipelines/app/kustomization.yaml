@@ -4,6 +4,9 @@ kind: Kustomization
 resources:
   - ../../../../../third_party/kubeflow/manifests/apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user
 patchesStrategicMerge:
+  # NOTE: must be patched to replace existing configmaps
+  # Placed in app directory for visibility
+  - ./configmap.yaml
   - patches/patch.cache-server.deployment.yaml
   - patches/patch.metadata-grpc-deployment.deployment.yaml
   - patches/patch.ml-pipeline-persistenceagent.deployment.yaml
