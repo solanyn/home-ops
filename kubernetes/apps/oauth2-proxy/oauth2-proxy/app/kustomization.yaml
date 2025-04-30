@@ -2,7 +2,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./externalsecret.yaml
+  - ./configmap.yaml
   - ../../../../../third_party/kubeflow/manifests/common/oauth2-proxy/overlays/m2m-dex-and-kind
 patchesStrategicMerge:
   - patches/patch.oauth2-proxy.deployment.yaml
