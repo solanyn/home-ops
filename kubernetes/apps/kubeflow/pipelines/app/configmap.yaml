@@ -16,6 +16,7 @@ data:
   bucketName: kfp-pipelines
   cronScheduleTimezone: "Australia/Sydney"
   USERID_HEADER: kubeflow-userid
+  USERID_PREFIX: ""
 ---
 apiVersion: v1
 kind: ConfigMap
