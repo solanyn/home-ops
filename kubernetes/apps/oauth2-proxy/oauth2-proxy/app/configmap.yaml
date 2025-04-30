@@ -53,8 +53,8 @@ spec:
       # installation. This address is usually not available through the Web Browser.
       # If you have a setup where dex has it's url as other than the in-cluster
       # service, this is optional.
-      skip_oidc_discovery = true
-      login_url = "http://dex.auth.svc.cluster.local:5556/auth"
+      skip_oidc_discovery = false
+      login_url = "https://kubeflow.goyangi.cloud/dex"
       redeem_url = "http://dex.auth.svc.cluster.local:5556/token"
       oidc_jwks_url = "http://dex.auth.svc.cluster.local:5556/keys"
 
@@ -95,7 +95,3 @@ spec:
       code_challenge_method = "S256"
 
       redirect_url = "https://kubeflow.goyangi.cloud/oauth2/callback"
-      relative_redirect_url = false
-
-      skip_jwt_bearer_tokens = true
-      insecure_oidc_skip_nonce = false
