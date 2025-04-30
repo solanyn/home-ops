@@ -12,12 +12,9 @@ spec:
       containers:
         - name: dex
           envFrom: []
-          $patch: delete
-          volumeMounts:
-            - mountPath: /etc/dex/cfg
-              name: config
-              readOnly: true
       volumes:
+        - name: config
+          $patch: delete
         - name: config
           secret:
             secretName: dex-secret
