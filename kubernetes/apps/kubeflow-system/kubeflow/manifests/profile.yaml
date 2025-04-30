@@ -1,9 +1,0 @@
----
-apiVersion: kubeflow.org/v1beta1
-kind: Profile
-metadata:
-  name: kubeflow-andrew-goyangi-cloud
-spec:
-  owner:
-    kind: User
-    name: andrew@goyangi.cloud

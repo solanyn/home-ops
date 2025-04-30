@@ -1,6 +1,0 @@
-apiVersion: "networking.istio.io/v1alpha3"
-kind: DestinationRule
-metadata:
-  name: ml-pipeline-minio
-spec:
-  host: minio.default.svc.cluster.local
