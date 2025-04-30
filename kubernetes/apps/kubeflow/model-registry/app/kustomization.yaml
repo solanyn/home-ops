@@ -10,3 +10,17 @@ resources:
   - ../../../../../third_party/kubeflow/manifests/apps/model-registry/upstream/base/
 patchesStrategicMerge:
   - patches/patch.model-registry.deployment.yaml
+patches:
+  - target:
+      kind: Deployment
+    patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: this-is-ignored
+      spec:
+        template:
+          metadata:
+            annotations:
+              reloader.stakater.com/auto: true
+

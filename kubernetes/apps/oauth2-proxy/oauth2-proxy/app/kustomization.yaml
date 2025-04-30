@@ -9,3 +9,16 @@ patchesStrategicMerge:
   - patches/patch.oauth2-proxy.deployment.yaml
   # removals
   - patches/removals/oauth2-proxy.yaml
+patches:
+  - target:
+      kind: Deployment
+    patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: this-is-ignored
+      spec:
+        template:
+          metadata:
+            annotations:
+              reloader.stakater.com/auto: true
