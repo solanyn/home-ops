@@ -5,9 +5,9 @@ metadata:
   name: oauth2-proxy-parameters
 spec:
   data:
-    FORCE_HTTPS: true
-    ALLOW_SELF_SIGNED_ISSUER: false
-    ENABLE_M2M_TOKENS: true
+    FORCE_HTTPS: "true"
+    ALLOW_SELF_SIGNED_ISSUER: "false"
+    ENABLE_M2M_TOKENS: "true"
     EXTRA_JWT_ISSUERS: https://kubernetes.default.svc.cluster.local=https://kubernetes.default.svc.cluster.local
 ---
 apiVersion: v1
