@@ -13,7 +13,7 @@ data:
   cronScheduleTimezone: "Australia/Sydney"
   # Workflow Image Config
   launcherImage: ghcr.io/kubeflow/kfp-launcher:2.4.1
-  driverImage: ghcr.io/kubeflow/kfp-driver:2.4.1
+  driverImage: ghcr.io/kubeflow/kfp-driver:2.5.0
   # Cache Config
   cacheImage: registry.k8s.io/busybox
   # Bucket Config
