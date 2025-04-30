@@ -1,3 +1,15 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: oauth2-proxy-parameters
+spec:
+  data:
+    FORCE_HTTPS: false
+    ALLOW_SELF_SIGNED_ISSUER: false
+    ENABLE_M2M_TOKENS: true
+    EXTRA_JWT_ISSUERS: https://kubernetes.default.svc.cluster.local=https://kubernetes.default.svc.cluster.local
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -84,4 +96,3 @@ spec:
 
       redirect_url = "https://kubeflow.goyangi.cloud/oauth2/callback"
       relative_redirect_url = false
-
