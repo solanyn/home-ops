@@ -6,6 +6,7 @@ components:
   - ../../components/kubeflow
 resources:
   - ./core/ks.yaml
+  - ./profiles/ks.yaml
   - ./pipelines/ks.yaml
   - ./katib/ks.yaml
   - ./centraldashboard/ks.yaml
