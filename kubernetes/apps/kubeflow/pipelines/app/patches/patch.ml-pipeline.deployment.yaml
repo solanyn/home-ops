@@ -101,9 +101,9 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: kubeflow-secret
-                  key: KUBEFLOW_ACCESS_KEY_ID
+                  key: KUBEFLOW_PIPELINES_ACCESS_KEY_ID
             - name: OBJECTSTORECONFIG_SECRETACCESSKEY
               valueFrom:
                 secretKeyRef:
                   name: kubeflow-secret
-                  key: KUBEFLOW_SECRET_ACCESS_KEY
+                  key: KUBEFLOW_PIPELINES_SECRET_ACCESS_KEY
