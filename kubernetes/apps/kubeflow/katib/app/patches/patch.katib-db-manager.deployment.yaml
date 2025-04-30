@@ -10,6 +10,7 @@ spec:
         - name: katib-db-manager
           env:
             - name: DB_NAME
+              value: ""
               valueFrom:
                 secretKeyRef:
                   name: kubeflow-secret
