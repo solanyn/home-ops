@@ -21,7 +21,7 @@ data:
   bucketRegion: "us-east-1"
   # Object Store Config
   bucketHost: minio.default.svc.cluster.local
-  bucketSecure: false
+  bucketSecure: "false"
   bucketPort: "9000"
   # MySQL Config
   dbType: mysql
