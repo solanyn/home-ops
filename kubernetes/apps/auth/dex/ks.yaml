@@ -10,6 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
+    - name: oauth2-proxy
+      namespace: oauth2-proxy
     - name: istiod
       namespace: istio-system
   interval: 1h

@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: kubeflow-gateway
+    - name: kubeflow-kserve
       namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/model-registry/app
