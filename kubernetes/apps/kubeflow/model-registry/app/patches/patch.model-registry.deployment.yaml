@@ -13,10 +13,10 @@ spec:
         - name: rest-container
           # Remove existing environment variables
           env:
-          - $patch: replace
+            - $patch: replace
           envFrom:
-          - configMapRef:
-              name: model-registry-configmap
+            - configMapRef:
+                name: model-registry-configmap
           args:
             - --hostname=0.0.0.0
             - --port=$(MODEL_REGISTRY_REST_SERVICE_PORT)
@@ -25,15 +25,27 @@ spec:
         - name: grpc-container
           # Remove existing environment variables
           env:
-          - $patch: replace
+            - $patch: replace
           envFrom:
-          - secretRef:
-              name: model-registry-db-secrets
-          - configMapRef:
-              name: model-registry-configmap
-          args: ["--grpc_port=$(MODEL_REGISTRY_GRPC_SERVICE_PORT)",
-                 "--mysql_config_host=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_HOST)",
-                 "--mysql_config_database=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_DATABASE)",
-                 "--mysql_config_port=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_PORT)",
-                 "--mysql_config_user=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_USER)",
-                 "--mysql_config_password=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_PASSWORD)"]
+            - secretRef:
+                name: kubeflow-secret
+            - configMapRef:
+                name: model-registry-configmap
+          args:
+            [
+              "--grpc_port=$(MODEL_REGISTRY_GRPC_SERVICE_PORT)",
+              "--mysql_config_host=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_HOST)",
+              "--mysql_config_database=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_DATABASE)",
+              "--mysql_config_port=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_PORT)",
+              "--mysql_config_user=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_USER)",
+              "--mysql_config_password=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_PASSWORD)",
+            ]
+        - name: grpc-container
+          # Remove existing environment variables
+          env:
+            $patch: replace
+          envFrom:
+            - configMapRef:
+                name: model-registry-configmap
+            - secretRef:
+                name: kubeflow-secret
