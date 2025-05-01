@@ -15,6 +15,7 @@ resources:
   - ./volumes/ks.yaml
   - ./tensorboards/ks.yaml
   - ./training-operator/ks.yaml
+  - ./kserve/ks.yaml
   - ./spark/ks.yaml
   - ./ray/ks.yaml
   - ./model-registry/ks.yaml
