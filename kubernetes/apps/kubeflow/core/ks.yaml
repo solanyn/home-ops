@@ -75,6 +75,11 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: istiod
+      namespace: istio-system
+    - name: dex
+      namespace: auth
   interval: 1h
   path: ./kubernetes/apps/kubeflow/core/gateway
   prune: true
@@ -117,6 +122,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: kubeflow-gateway
+      namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/core/ingress
   prune: true
