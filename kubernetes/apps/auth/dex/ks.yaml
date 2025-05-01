@@ -10,6 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
+    - name: pocket-id
+      namespace: default
     - name: oauth2-proxy
       namespace: oauth2-proxy
     - name: istiod
