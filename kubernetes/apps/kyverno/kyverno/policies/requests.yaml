@@ -31,3 +31,19 @@ spec:
                       requests:
                         cpu: 10m
                         memory: 64Mi
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kyverno.io/clusterpolicy_v1.json
+apiVersion: kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: set-default-container-resources
+spec:
+  exceptions:
+    - policyName: set-default-container-resources
+      ruleNames:
+        - set-default-resources
+  match:
+    any:
+      - selector:
+          matchLabels:
+            cnpg.io/cluster: postgres17
