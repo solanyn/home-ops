@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: dask
+  namespace: dask-system
+spec:
+  interval: 12h
+  url: https://helm.dask.org/
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dask
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: dask-kubernetes-operator
+      version: 2025.4.3
+      sourceRef:
+        kind: HelmRepository
+        name: dask
+        namespace: dask-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    nameOverride: "dask"
+    fullnameOverride: "dask"
+    nodeSelector: {}
+    metrics:
+      scheduler:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      worker:
+        enabled: true
+        podMonitor:
+          enabled: true
