@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kyverno.io/clusterpolicy_v1.json
-apiVersion: kyverno.io/v2beta1
+apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: set-default-container-resources
@@ -34,7 +34,7 @@ spec:
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kyverno.io/clusterpolicy_v1.json
 apiVersion: kyverno.io/v2beta1
-kind: PolicyExceptions
+kind: PolicyException
 metadata:
   name: set-default-container-resources
 spec:
