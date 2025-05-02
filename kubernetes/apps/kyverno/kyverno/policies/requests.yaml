@@ -14,8 +14,6 @@ spec:
                 - StatefulSet
                 - ReplicaSet
                 - DaemonSet
-                - Job
-                - CronJob
       mutate:
         patchStrategicMerge:
           spec:
