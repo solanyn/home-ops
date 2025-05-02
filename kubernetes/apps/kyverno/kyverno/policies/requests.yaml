@@ -16,9 +16,10 @@ spec:
                 - DaemonSet
       exclude:
         any:
-          - selector:
-              matchLabels:
-                cnpg.io/cluster: postgres17
+          - resources:
+              selector:
+                matchLabels:
+                  cnpg.io/cluster: postgres17
       mutate:
         patchStrategicMerge:
           spec:
