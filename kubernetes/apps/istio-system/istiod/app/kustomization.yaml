@@ -5,6 +5,7 @@ resources:
   - ../../../../../third_party/kubeflow/manifests/common/istio-1-24/istio-install/overlays/oauth2-proxy
 configMapGenerator:
   - name: istio-sidecar-injector
+    namespace: istio-system
     behavior: merge
     files:
       - values=./resources/values.json
