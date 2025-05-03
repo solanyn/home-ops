@@ -33,6 +33,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: kubeflow-profiles
+      namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/profiles/user-profiles
   prune: true
