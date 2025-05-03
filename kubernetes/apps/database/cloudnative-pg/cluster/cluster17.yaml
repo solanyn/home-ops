@@ -53,9 +53,6 @@ spec:
   bootstrap:
     recovery:
       source: &previousCluster postgres17-v1
-      # TODO: temporary restore to earlier backup
-      recoveryTarget:
-        targetTime: "2025-05-01 00:01:03.69394+00"
   # NOTE: externalClusters is needed when recovering from an EXISTING cnpg cluster
   externalClusters:
     - name: *previousCluster
