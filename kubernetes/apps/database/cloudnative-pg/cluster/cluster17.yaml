@@ -5,10 +5,10 @@ metadata:
   name: postgres17
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.4-3
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.4
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 20Gi
+    size: 50Gi
     storageClass: openebs-hostpath
   superuserSecret:
     name: cloudnative-pg-secret
