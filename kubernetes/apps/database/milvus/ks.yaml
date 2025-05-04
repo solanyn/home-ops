@@ -32,7 +32,7 @@ metadata:
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: milvus
+      app.kubernetes.io/name: &app milvus
   components:
     - ../../../../components/volsync
   dependsOn:
@@ -42,7 +42,7 @@ spec:
   path: ./kubernetes/apps/database/milvus/kafka
   postBuild:
     substitute:
-      APP: milvus
+      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
