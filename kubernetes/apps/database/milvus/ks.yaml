@@ -32,7 +32,7 @@ metadata:
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: milvus
   dependsOn:
     - name: kafka
       namespace: kafka-system
