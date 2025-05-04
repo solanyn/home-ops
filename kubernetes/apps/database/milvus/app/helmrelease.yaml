@@ -1,0 +1,201 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: milvus
+  namespace: database
+spec:
+  interval: 12h
+  url: https://zilliztech.github.io/milvus-helm/
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: milvus
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: milvus
+      version: 4.2.48
+      sourceRef:
+        kind: HelmRepository
+        name: milvus
+        namespace: database
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    fullnameOverride: milvus
+    cluster:
+      enabled: true
+    image:
+      all:
+        repository: milvusdb/milvus
+        tag: v2.5.11
+        pullPolicy: IfNotPresent
+      tools:
+        repository: milvusdb/milvus-config-tool
+        tag: v0.1.2
+        pullPolicy: IfNotPresent
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      runAsNonRoot: true
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        interval: "30s"
+        scrapeTimeout: "10s"
+        additionalLabels: {}
+    log:
+      level: "info"
+      file:
+        maxSize: 100 # MB
+        maxAge: 7 # day
+        maxBackups: 10
+      format: "json" # text/json
+
+    standalone:
+      replicas: 1 # Run standalone mode with replication disabled
+      disk:
+        enabled: true
+        size:
+          enabled: false # Enable local storage size limit
+      messageQueue: kafka
+      persistence:
+        mountPath: /var/lib/milvus
+        enabled: true
+        persistentVolumeClaim:
+          existingClaim: milvus
+          subPath: milvus
+    proxy:
+      enabled: true
+      replicas: 1
+    rootCoordinator:
+      enabled: false
+    queryCoordinator:
+      enabled: false
+    queryNode:
+      enabled: true
+      replicas: 1
+    indexNode:
+      enabled: true
+      replicas: 1
+    dataCoordinator:
+      enabled: false
+    dataNode:
+      enabled: true
+      replicas: 1
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+    mixCoordinator:
+      enabled: true
+      replicas: 1 # Run Mixture Coordinator mode with replication disabled
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+    streamingNode:
+      replicas: 1
+    attu:
+      enabled: true
+      name: attu
+      image:
+        repository: zilliz/attu
+        tag: v2.5.3
+        pullPolicy: IfNotPresent
+      service:
+        type: ClusterIP
+        port: 3000
+
+    ## Configuration values for the etcd dependency
+    ## ref: https://artifacthub.io/packages/helm/bitnami/etcd
+    ##
+
+    etcd:
+      enabled: true
+      name: etcd
+      replicaCount: 3
+      image:
+        repository: "milvusdb/etcd"
+        tag: "3.5.18-r1"
+        pullPolicy: IfNotPresent
+      service:
+        type: ClusterIP
+        port: 2379
+        peerPort: 2380
+      auth:
+        rbac:
+          enabled: false
+      # TODO: how to persist etcd?
+      persistence:
+        enabled: true
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 1Gi
+      livenessProbe:
+        enabled: true
+        timeoutSeconds: 10
+      readinessProbe:
+        enabled: true
+        periodSeconds: 20
+        timeoutSeconds: 10
+      autoCompactionMode: revision
+      autoCompactionRetention: "1000"
+      extraEnvVars:
+        - name: ETCD_QUOTA_BACKEND_BYTES
+          value: "4294967296"
+        - name: ETCD_HEARTBEAT_INTERVAL
+          value: "500"
+        - name: ETCD_ELECTION_TIMEOUT
+          value: "2500"
+    pulsar:
+      enabled: false
+    kafka:
+      enabled: false
+    woodpecker:
+      enabled: false
+    externalKafka:
+      enabled: true
+      brokerList: milvus-kafka.database.svc.cluster.local:9092
+    ###################################
+    # Text Embeddings Inference (TEI)
+    # - these configs are used to deploy TEI service
+    ###################################
+    tei:
+      enabled: true
+      name: text-embeddings-inference
+      image:
+        repository: ghcr.io/huggingface/text-embeddings-inference
+        tag: cpu-1.6
+        pullPolicy: IfNotPresent
+      service:
+        type: ClusterIP
+        port: 8080
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+      persistence:
+        enabled: true
+        mountPath: "/data"
+        persistentVolumeClaim:
+          existingClaim: milvus
+          subPath: tei
+      # TEI model configuration
+      modelId: "BAAI/bge-large-en-v1.5"
+  valuesFrom:
+    - kind: Secret
+      name: milvus-values
