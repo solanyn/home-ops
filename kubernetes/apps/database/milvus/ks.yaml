@@ -33,6 +33,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: milvus
+  components:
+    - ../../../../components/volsync
   dependsOn:
     - name: kafka
       namespace: kafka-system
