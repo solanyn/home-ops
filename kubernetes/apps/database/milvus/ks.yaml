@@ -40,6 +40,9 @@ spec:
       namespace: kafka-system
   interval: 1h
   path: ./kubernetes/apps/database/milvus/kafka
+  postBuild:
+    substitute:
+      APP: milvus
   prune: false
   sourceRef:
     kind: GitRepository
