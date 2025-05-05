@@ -39,3 +39,4 @@ spec:
         memory: 64Mi
         cpu: 10m
     generateNetworkPolicy: false
+    watchAnyNamespace: true
