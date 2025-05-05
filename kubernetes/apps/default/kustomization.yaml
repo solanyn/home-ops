@@ -27,8 +27,6 @@ resources:
   - ./meilisearch/ks.yaml
   - ./miniflux/ks.yaml
   - ./minio/ks.yaml
-  # TODO: container doesn't startup for some reason, immediate crash
-  # - ./mlflow/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
   - ./prowlarr/ks.yaml
