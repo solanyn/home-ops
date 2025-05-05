@@ -33,6 +33,8 @@ spec:
   dependsOn:
     - name: milvus
       namespace: database
+    - name: redpanda-cluster
+      namespace: kafka-system
   interval: 1h
   path: ./kubernetes/apps/database/milvus/cluster
   prune: false
