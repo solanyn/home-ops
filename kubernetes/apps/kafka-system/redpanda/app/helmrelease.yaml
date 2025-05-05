@@ -53,13 +53,6 @@ spec:
       requests:
         cpu: 10m
         memory: 64Mi
-      cpu:
-        cores: 1
-        overprovisioned: true
-      memory:
-        enable_memory_locking: false
-        container:
-          max: 2.5Gi
     storage:
       mountType: persistentVolume
       persistentVolume:
