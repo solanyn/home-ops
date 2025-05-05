@@ -20,7 +20,7 @@ spec:
           args:
             - --hostname=0.0.0.0
             - --port=$(MODEL_REGISTRY_REST_SERVICE_PORT)
-            - --mlmd-hostname=localhost
+            - --mlmd-hostname=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_HOST)
             - --mlmd-port=$(MODEL_REGISTRY_GRPC_SERVICE_PORT)
         - name: grpc-container
           # Remove existing environment variables
