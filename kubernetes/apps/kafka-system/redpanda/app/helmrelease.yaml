@@ -58,7 +58,7 @@ spec:
     storage:
       mountType: persistentVolume
       persistentVolume:
-        storageClass: ceph-block
+        storageClass: openebs-hostpath
         nameOverwrite: redpanda
     post_install_job:
       enabled: false
