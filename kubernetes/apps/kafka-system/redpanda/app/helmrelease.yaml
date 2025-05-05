@@ -61,10 +61,6 @@ spec:
         storageClass: ceph-block
         nameOverwrite: redpanda
     post_install_job:
-      enabled: true
-      resources:
-        requests:
-          cpu: 10Mi
-          memory: 64Mi
+      enabled: false
     statefulset:
       replicas: 1
