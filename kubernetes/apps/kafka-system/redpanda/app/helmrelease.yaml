@@ -1,0 +1,89 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: redpanda
+  namespace: kafka-system
+spec:
+  interval: 12h
+  url: https://charts.redpanda.com
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: redpanda
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: redpanda
+      version: 5.10.2
+      sourceRef:
+        kind: HelmRepository
+        name: redpanda
+        namespace: kafka-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    fullnameOverride: redpanda
+    podTemplate:
+      annotations:
+        reloader.stakater.com/auto: "true"
+    console:
+      enabled: true
+      configmap:
+        create: false
+      secret:
+        create: false
+      deployment:
+        create: false
+      config: {}
+    monitoring:
+      enabled: true
+      scrapeInterval: 30s
+    resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      cpu:
+        cores: 1
+        overprovisioned: true
+      memory:
+        enable_memory_locking: false
+        container:
+          max: 2.5Gi
+    storage:
+      tiered:
+        credentialsSecretRef:
+          accessKey:
+            name: redpanda-secret
+            key: AWS_ACCESS_KEY_ID
+          secretKey:
+            name: redpanda-secret
+            key: AWS_SECRET_ACCESS_KEY
+        config:
+          cloud_storage: enabled
+          cloud_storage_credentials_source: config_file
+          cloud_storage_region: us-east-1
+          cloud_storage_bucket: redpanda
+          cloud_storage_api_endpoint: minio.default.svc.cluster.local:9000
+        mountType:
+        persistentVolume:
+          storageClass: ceph-block
+          nameOverwrite: redpanda
+    post_install_job:
+      enabled: true
+      resources:
+        requests:
+          cpu: 10Mi
+          memory: 64Mi
+    statefulset:
+      replicas: 1
