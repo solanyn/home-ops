@@ -18,8 +18,8 @@ spec:
   interval: 1h
   chart:
     spec:
-      chart: redpanda
-      version: 5.10.2
+      chart: operator
+      version: 2.4.2
       sourceRef:
         kind: HelmRepository
         name: redpanda
@@ -34,33 +34,7 @@ spec:
       retries: 3
   values:
     fullnameOverride: redpanda
-    podTemplate:
-      annotations:
-        reloader.stakater.com/auto: "true"
-    console:
-      enabled: true
-      configmap:
-        create: false
-      secret:
-        create: false
-      deployment:
-        create: false
-      config: {}
-    monitoring:
-      enabled: true
-      scrapeInterval: 30s
     resources:
-      cpu:
-        cores: 10m
       requests:
         cpu: 10m
         memory: 64Mi
-    storage:
-      mountType: persistentVolume
-      persistentVolume:
-        storageClass: openebs-hostpath
-        nameOverwrite: redpanda
-    post_install_job:
-      enabled: false
-    statefulset:
-      replicas: 3
