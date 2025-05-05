@@ -15,7 +15,7 @@ spec:
       - id: 0
         selector:
           matchLabels:
-            app.kubernetes.io/name: milvus
+            "app.kubernetes.io/name": milvus
         type: persistent-claim
         class: ceph-block
         size: 1Gi
