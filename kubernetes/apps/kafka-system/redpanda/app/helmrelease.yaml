@@ -75,7 +75,7 @@ spec:
           cloud_storage_region: us-east-1
           cloud_storage_bucket: redpanda
           cloud_storage_api_endpoint: minio.default.svc.cluster.local:9000
-        mountType:
+        mountType: persistentVolume
         persistentVolume:
           storageClass: ceph-block
           nameOverwrite: redpanda
