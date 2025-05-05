@@ -61,24 +61,10 @@ spec:
         container:
           max: 2.5Gi
     storage:
-      tiered:
-        credentialsSecretRef:
-          accessKey:
-            name: redpanda-secret
-            key: AWS_ACCESS_KEY_ID
-          secretKey:
-            name: redpanda-secret
-            key: AWS_SECRET_ACCESS_KEY
-        config:
-          cloud_storage: enabled
-          cloud_storage_credentials_source: config_file
-          cloud_storage_region: us-east-1
-          cloud_storage_bucket: redpanda
-          cloud_storage_api_endpoint: minio.default.svc.cluster.local:9000
-        mountType: persistentVolume
-        persistentVolume:
-          storageClass: ceph-block
-          nameOverwrite: redpanda
+      mountType: persistentVolume
+      persistentVolume:
+        storageClass: ceph-block
+        nameOverwrite: redpanda
     post_install_job:
       enabled: true
       resources:
