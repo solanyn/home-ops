@@ -1,0 +1,28 @@
+apiVersion: milvus.io/v1beta1
+kind: Milvus
+metadata:
+  name: milvus
+spec:
+  config:
+    minio:
+      bucketName: milvus
+      useSSL: false
+  dependencies:
+    storage:
+      external: true
+      type: MinIO
+      endpoint: minio.default.svc.cluster.local:9000
+      secretRef: milvus-secret
+    etcd:
+      inCluster:
+        values:
+          replicaCount: 3
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+    msgStreamType: kafka
+    kafka:
+      external: true
+      brokerList:
+        - redpanda.kafka-system.svc.cluster.local:9093
