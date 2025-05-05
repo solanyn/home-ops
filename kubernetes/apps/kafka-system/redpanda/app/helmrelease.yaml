@@ -34,6 +34,10 @@ spec:
       retries: 3
   values:
     fullnameOverride: redpanda
+    rbac:
+      create: true
+      createAdditionalControllerCRs: true
+      createRPKBundleCRs: true
     resources:
       requests:
         cpu: 10m
