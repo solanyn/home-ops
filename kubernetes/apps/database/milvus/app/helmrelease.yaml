@@ -127,7 +127,7 @@ spec:
       enabled: false
     externalKafka:
       enabled: true
-      brokerList: milvus-kafka.database.svc.cluster.local:9092
+      brokerList: redpanda.kafka-system.svc.cluster.local:9093
     ###################################
     # Text Embeddings Inference (TEI)
     # - these configs are used to deploy TEI service
