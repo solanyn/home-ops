@@ -121,6 +121,10 @@ spec:
         storageClass: openebs-hostpath
         accessMode: ReadWriteOnce
         size: 1Gi
+    pulsarv3:
+      enabled: false
+    minio:
+      enabled: false
     pulsar:
       enabled: false
     kafka:
