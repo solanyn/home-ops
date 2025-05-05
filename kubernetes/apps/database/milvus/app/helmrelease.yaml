@@ -111,56 +111,16 @@ spec:
       replicas: 1
     attu:
       enabled: true
-      name: attu
-      image:
-        repository: zilliz/attu
-        tag: v2.5.3
-        pullPolicy: IfNotPresent
-      service:
-        type: ClusterIP
-        port: 3000
-
-    ## Configuration values for the etcd dependency
-    ## ref: https://artifacthub.io/packages/helm/bitnami/etcd
-    ##
-
     etcd:
       enabled: true
       name: etcd
       replicaCount: 3
-      image:
-        repository: "milvusdb/etcd"
-        tag: "3.5.18-r1"
-        pullPolicy: IfNotPresent
-      service:
-        type: ClusterIP
-        port: 2379
-        peerPort: 2380
-      auth:
-        rbac:
-          enabled: false
       # TODO: how to persist etcd?
       persistence:
         enabled: true
         storageClass: openebs-hostpath
         accessMode: ReadWriteOnce
         size: 1Gi
-      livenessProbe:
-        enabled: true
-        timeoutSeconds: 10
-      readinessProbe:
-        enabled: true
-        periodSeconds: 20
-        timeoutSeconds: 10
-      autoCompactionMode: revision
-      autoCompactionRetention: "1000"
-      extraEnvVars:
-        - name: ETCD_QUOTA_BACKEND_BYTES
-          value: "4294967296"
-        - name: ETCD_HEARTBEAT_INTERVAL
-          value: "500"
-        - name: ETCD_ELECTION_TIMEOUT
-          value: "2500"
     pulsar:
       enabled: false
     kafka:
