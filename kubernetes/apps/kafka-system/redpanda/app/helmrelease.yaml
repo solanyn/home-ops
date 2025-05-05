@@ -63,4 +63,4 @@ spec:
     post_install_job:
       enabled: false
     statefulset:
-      replicas: 1
+      replicas: 3
