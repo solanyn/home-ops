@@ -52,9 +52,6 @@ spec:
     resources:
       cpu:
         cores: 10m
-      memory:
-        container:
-          max: 1Gi
       requests:
         cpu: 10m
         memory: 64Mi
