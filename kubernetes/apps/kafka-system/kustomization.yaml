@@ -5,4 +5,4 @@ namespace: kafka-system
 components:
   - ../../components/common
 resources:
-  - ./kafka/ks.yaml
+  - ./redpanda/ks.yaml
