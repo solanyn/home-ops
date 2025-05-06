@@ -36,9 +36,15 @@ spec:
     fullnameOverride: redpanda
     monitoring:
       enabled: true
+    service:
+      name: redpanda
+      internal:
+        type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/target: redpanda.goyangi.cloud
+          lbipam.cilium.io/ips: 192.168.1.130, ::ffff:192.168.1.130
     external:
-      enabled: true
-      type: NodePort
+      enabled: false
     resources:
       limits:
         memory: 1Gi
