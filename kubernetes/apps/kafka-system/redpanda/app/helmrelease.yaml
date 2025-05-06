@@ -37,10 +37,7 @@ spec:
     monitoring:
       enabled: true
     external:
-      type: LoadBalancer
-      externalDns:
-        enabled: true
-      domain: goyangi.cloud
+      type: ClusterIP
     resources:
       limits:
         memory: 1Gi
