@@ -41,8 +41,7 @@ spec:
         overprivisioned: true
       memory:
         enable_memory_locking: false
-      limits:
-        memory: 1Gi
+        max: 2.5Gi
     storage:
       persistentVolume:
         enabled: true
