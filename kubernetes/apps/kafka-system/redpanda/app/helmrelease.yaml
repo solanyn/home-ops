@@ -40,12 +40,8 @@ spec:
       enabled: true
       type: LoadBalancer
       domain: goyangi.cloud
-      addresses:
-        - redpanda-0
-        - redpanda-1
-        - redpanda-2
-      annotations:
-        external-dns.alpha.kubernetes.io/endpoints-type: HostIP
+      externalDns:
+        enabled: true
     resources:
       limits:
         memory: 1Gi
