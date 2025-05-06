@@ -40,8 +40,6 @@ spec:
       enabled: true
       type: LoadBalancer
       domain: goyangi.cloud
-      annotations:
-        external-dns.alpha.kubernetes.io/endpoints-type: HostIP
       externalDns:
         enabled: true
     resources:
