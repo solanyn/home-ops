@@ -41,7 +41,7 @@ spec:
         cores: 10m
       memory:
         container:
-          max: 1Gi
+          max: 100Mi
     storage:
       persistentVolume:
         enabled: true
