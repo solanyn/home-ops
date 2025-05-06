@@ -34,9 +34,6 @@ spec:
       retries: 3
   values:
     fullnameOverride: redpanda
-    external:
-      service:
-        enabled: false
     monitoring:
       enabled: true
     resources:
