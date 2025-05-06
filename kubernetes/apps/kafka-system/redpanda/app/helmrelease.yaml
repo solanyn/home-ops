@@ -37,11 +37,8 @@ spec:
     monitoring:
       enabled: true
     resources:
-      cpu:
-        overprivisioned: true
-      memory:
-        enable_memory_locking: false
-        max: 2.5Gi
+      limits:
+        memory: 1Gi
     storage:
       persistentVolume:
         enabled: true
