@@ -37,6 +37,11 @@ spec:
     monitoring:
       enabled: true
     resources:
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      limits:
+        memory: 500Mi
       cpu:
         cores: 10m
     storage:
