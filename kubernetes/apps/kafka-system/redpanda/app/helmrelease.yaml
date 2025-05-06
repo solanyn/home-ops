@@ -46,7 +46,3 @@ spec:
         storageClass: openebs-hostpath
     post_install_job:
       enabled: false
-    tuning:
-      tune_aio_events: false
-    tests:
-      enabled: false
