@@ -36,6 +36,11 @@ spec:
     fullnameOverride: redpanda
     monitoring:
       enabled: true
+    external:
+      type: LoadBalancer
+      externalDns:
+        enabled: true
+      domain: goyangi.cloud
     resources:
       limits:
         memory: 1Gi
