@@ -25,6 +25,4 @@ spec:
     kafka:
       external: true
       brokerList:
-        - k8s-0.local:9094
-        - k8s-1.local:9094
-        - k8s-2.local:9094
+        - redpanda.kafka-system.svc.cluster.local:9093
