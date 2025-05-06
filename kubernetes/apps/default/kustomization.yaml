@@ -12,7 +12,6 @@ resources:
   - ./bazarr/ks.yaml
   - ./calibre/ks.yaml
   - ./calibre-web/ks.yaml
-  - ./chromium/ks.yaml
   - ./cross-seed/ks.yaml
   - ./emailer/ks.yaml
   - ./flaresolverr/ks.yaml
@@ -20,11 +19,9 @@ resources:
   - ./home-assistant/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
-  - ./karakeep/ks.yaml
   - ./label-studio/ks.yaml
   - ./lidarr/ks.yaml
   - ./maintainerr/ks.yaml
-  - ./meilisearch/ks.yaml
   - ./miniflux/ks.yaml
   - ./minio/ks.yaml
   - ./plex/ks.yaml
