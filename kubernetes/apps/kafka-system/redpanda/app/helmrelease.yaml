@@ -39,10 +39,6 @@ spec:
     resources:
       cpu:
         cores: 10m
-      memory:
-        container:
-          min: 50Mi
-          max: 200Mi
     storage:
       persistentVolume:
         enabled: true
