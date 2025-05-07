@@ -84,7 +84,7 @@ spec:
         serviceAccountName: default-editor
         containers:
         - name: ray-head
-          image: rayproject/ray:2.45.0-py311-cpu
+          image: rayproject/ray:2.46.0-py311-cpu
           lifecycle:
             preStop:
               exec:
@@ -132,7 +132,7 @@ spec:
           serviceAccountName: default-editor
           containers:
           - name: ray-worker
-            image: rayproject/ray:2.45.0-py311-cpu
+            image: rayproject/ray:2.46.0-py311-cpu
             lifecycle:
               preStop:
                 exec:
