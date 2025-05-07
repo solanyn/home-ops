@@ -47,6 +47,8 @@ spec:
         local_storage: true
     minio:
       enabled: false
+    externalS3:
+      enabled: true
   valuesFrom:
     - kind: Secret
       name: milvus-secret
