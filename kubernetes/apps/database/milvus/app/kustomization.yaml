@@ -3,5 +3,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  # renovate: datasource=github-releases depName=zilliztech/milvus-operator
-  - https://raw.githubusercontent.com/zilliztech/milvus-operator/v1.2.5/deploy/manifests/deployment.yaml
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml
