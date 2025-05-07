@@ -23,7 +23,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: milvus
-        namespace: milvus
+        namespace: database
   install:
     remediation:
       retries: -1
