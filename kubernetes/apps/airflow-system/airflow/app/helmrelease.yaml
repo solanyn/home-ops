@@ -37,8 +37,7 @@ spec:
     images:
       airflow:
         repository: ghcr.io/solanyn/airflow
-        digest: sha256:b3fb4c22207f5dc0e9e5a1aed6c6f47f65a540b311d05b7a418392ced2286ad6
-        pullPolicy: IfNotPresent
+        pullPolicy: Always
     airflowPodAnnotations:
       reloader.stakater.com/auto: "true"
     data:
