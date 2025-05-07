@@ -80,10 +80,10 @@ spec:
     dags:
       gitSync:
         enabled: true
-        repo: https://github.com/solanyn/airflow-pipelines
+        repo: https://github.com/solanyn/goyangi
         branch: main
         depth: 1
-        subPath: "dags"
+        subPath: "airflow"
     scheduler:
       enabled: true
     redis:
@@ -101,3 +101,4 @@ spec:
         firstName: $(AIRFLOW_ADMIN_FIRST_NAME)
         lastName: $(AIRFLOW_ADMIN_LAST_NAME)
         password: $(AIRFLOW_ADMIN_PASSWORD)
+
