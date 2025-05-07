@@ -43,8 +43,7 @@ spec:
         storageClass: openebs-hostpath
         size: 1Gi
     pulsarv3:
-      volumes:
-        local_storage: true
+      enabled: true
     minio:
       enabled: false
     externalS3:
