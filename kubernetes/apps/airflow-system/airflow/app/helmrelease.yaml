@@ -92,13 +92,6 @@ spec:
       enabled: false
     statsd:
       enabled: true
-    webserver:
-      defaultUser:
-        enabled: true
-        role: Admin
-        username: $(AIRFLOW_ADMIN_USERNAME)
-        email: $(AIRFLOW_ADMIN_EMAIL)
-        firstName: $(AIRFLOW_ADMIN_FIRST_NAME)
-        lastName: $(AIRFLOW_ADMIN_LAST_NAME)
-        password: $(AIRFLOW_ADMIN_PASSWORD)
-
+  valuesFrom:
+    - kind: Secret
+      name: airflow-secret
