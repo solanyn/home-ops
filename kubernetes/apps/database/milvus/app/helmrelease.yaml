@@ -49,6 +49,9 @@ spec:
     externalKafka:
       enabled: true
       brokerList: "lb-redpanda-0.kafka-system.svc.cluster.local:9094,lb-redpanda-1.kafka-system.svc.cluster.local:9094,lb-redpanda-2.kafka-system.svc.cluster.local:9094"
+      securityProtocol: PLAINTEXT
+      sasl:
+        mechanisms: PLAIN
     externalS3:
       enabled: true
   valuesFrom:
