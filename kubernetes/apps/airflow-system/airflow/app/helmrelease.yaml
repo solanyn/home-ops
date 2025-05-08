@@ -37,8 +37,8 @@ spec:
     images:
       airflow:
         repository: ghcr.io/solanyn/airflow
-        tag: latest
-        pullPolicy: Always
+        tag: 0.0.1
+        pullPolicy: IfNotPresent
       useDefaultImageForMigration: true
     airflowPodAnnotations:
       reloader.stakater.com/auto: "true"
