@@ -38,6 +38,7 @@ spec:
       airflow:
         repository: ghcr.io/solanyn/airflow
         tag: 0.0.1
+        digest: sha256:b2fa79bf6f0e427161c5d35a1a7054516d05dee53b3b23656ffa1b04b70d2b84
         pullPolicy: IfNotPresent
       useDefaultImageForMigration: true
     airflowPodAnnotations:
