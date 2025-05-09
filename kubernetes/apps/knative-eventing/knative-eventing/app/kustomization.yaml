@@ -4,6 +4,14 @@ kind: Kustomization
 resources:
   - ../../../../../third_party/kubeflow/manifests/common/knative/knative-eventing/base/
   - ../../../../../third_party/kubeflow/manifests/common/knative/knative-eventing/base/upstream/mt-channel-broker.yaml
+  - https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.16.3/eventing-kafka-controller.yaml
+  - https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.16.3/eventing-kafka-broker.yaml
+configMapGenerator:
+  - name: kafka-broker-config
+    literals:
+      - default.topic.partitions=10
+      - default.topic.replication.factor=3
+      - bootstrap.servers=lb-redpanda-0.kafka-system.svc.cluster.local:9094,lb-redpanda-1.kafka-system.svc.cluster.local:9094,lb-redpanda-2.kafka-system.svc.cluster.local:9094
 patches:
   - target:
       kind: Deployment
