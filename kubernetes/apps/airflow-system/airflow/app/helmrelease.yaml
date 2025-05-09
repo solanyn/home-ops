@@ -47,7 +47,7 @@ spec:
       metadataSecretName: airflow-secret
       brokerUrl: redis://redis.database.svc.cluster.local:6379
     webserverSecretKeySecretName: airflow-secret
-    executor: "CeleryExecutor"
+    executor: "CeleryExecutor,KubernetesExecutor"
     secret:
       - envName: S3_ENDPOINT_URL
         secretName: airflow-secret
