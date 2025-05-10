@@ -6,6 +6,7 @@ resources:
   - ../../../../../third_party/kubeflow/manifests/common/oauth2-proxy/components/central-dashboard
 patchesStrategicMerge:
   - patches/patch.centraldashboard-config.configmap.yaml
+  - patches/patch.centraldashboard.deployment.yaml
 patches:
   - target:
       kind: Deployment
