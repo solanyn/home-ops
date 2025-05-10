@@ -11,10 +11,7 @@ spec:
     spec:
       containers:
         - name: dex
-          envFrom:
-            - secretRef:
-                name: dex-secret
-          $patch: replace
+          envFrom: []
           volumeMounts:
             - name: config
               $patch: delete
