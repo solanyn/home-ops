@@ -6,6 +6,7 @@ resources:
   - ../../../../../third_party/kubeflow/manifests/common/oauth2-proxy/overlays/m2m-dex-and-kind
 patchesStrategicMerge:
   - patches/patch.oauth2-proxy.deployment.yaml
+  - patches/patch.dex-jwt.requestauthentication.yaml
 configMapGenerator:
   - name: oauth2-proxy-parameters
     behavior: replace
