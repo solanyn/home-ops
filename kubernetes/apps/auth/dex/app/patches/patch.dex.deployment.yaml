@@ -11,7 +11,6 @@ spec:
     spec:
       containers:
         - name: dex
-          # envFrom: []
           envFrom:
             - secretRef:
                 name: dex-secret
