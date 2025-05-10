@@ -10,9 +10,3 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: dex
----
-$patch: delete
-apiVersion: v1
-kind: Secret
-metadata:
-  name: dex-oidc-secret
