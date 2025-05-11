@@ -40,12 +40,3 @@ spec:
               "--mysql_config_user=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_USER)",
               "--mysql_config_password=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_PASSWORD)",
             ]
-        - name: grpc-container
-          # Remove existing environment variables
-          env:
-            $patch: replace
-          envFrom:
-            - configMapRef:
-                name: model-registry-configmap
-            - secretRef:
-                name: kubeflow-secret
