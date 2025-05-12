@@ -54,10 +54,6 @@ configMapGenerator:
     behavior: replace
     files:
       - viewer-pod-template.json=./resources/viewer-pod-template.json
-  - name: kfp-launcher
-    behavior: merge
-    files:
-      - providers=./resources/providers.yaml
 generatorOptions:
   disableNameSuffixHash: true
 patches:
