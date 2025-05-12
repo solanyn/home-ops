@@ -27,7 +27,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kubeflow-user-profiles
+  name: &app kubeflow-andrew
   namespace: kubeflow
 spec:
   commonMetadata:
@@ -37,7 +37,7 @@ spec:
     - name: kubeflow-profiles
       namespace: kubeflow
   interval: 1h
-  path: ./kubernetes/apps/kubeflow/profiles/user-profiles
+  path: ./kubernetes/apps/kubeflow/profiles/andrew
   prune: true
   retryInterval: 2m
   sourceRef:
