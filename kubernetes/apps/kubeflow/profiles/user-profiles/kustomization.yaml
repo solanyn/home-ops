@@ -4,3 +4,9 @@ kind: Kustomization
 resources:
   - ./profile.yaml
   - ./externalsecret.yaml
+configMapGenerator:
+  - name: kfp-launcher
+    behavior: merge
+    namespace: kubeflow-andrew-goyangi-cloud
+    files:
+      - providers=./resources/providers.yaml
