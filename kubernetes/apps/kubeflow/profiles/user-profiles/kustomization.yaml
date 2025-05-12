@@ -6,7 +6,6 @@ resources:
   - ./externalsecret.yaml
 configMapGenerator:
   - name: kfp-launcher
-    behavior: merge
     namespace: kubeflow-andrew-goyangi-cloud
     literals:
       - defaultPipelineRoot=""
