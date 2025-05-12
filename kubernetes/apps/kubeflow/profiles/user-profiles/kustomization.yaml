@@ -8,5 +8,7 @@ configMapGenerator:
   - name: kfp-launcher
     behavior: merge
     namespace: kubeflow-andrew-goyangi-cloud
+    literals:
+      - defaultPipelineRoot=""
     files:
       - providers=./resources/providers.yaml
