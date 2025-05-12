@@ -34,12 +34,6 @@ spec:
       retries: 3
   values:
     fullnameOverride: milvus
-    service:
-      type: LoadBalancer
-      port: 19530
-      annotations:
-        external-dns.alpha.kubernetes.io/hostname: milvus.goyangi.cloud
-        lbipam.cilium.io/ips: 192.168.1.134, ::ffff:192.168.1.134
     attu:
       enabled: true
     etcd:
