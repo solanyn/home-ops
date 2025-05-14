@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: blampe/rreading-glasses
-              tag: hardcover@sha256:9ee82e4479c2fa6aa152efbec1814a7fe61647e91272a89de9ddb4b52fdb3634
+              tag: hardcover@sha256:7d585ee64a419733524fd2ea20d00673d356284a0231f318d683f04c21015387
             command: ["/main", "serve"]
             args:
               - --upstream=hardcover.app
