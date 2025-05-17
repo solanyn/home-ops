@@ -47,8 +47,7 @@ spec:
     config:
       pluginsDir: /build/plugins
     serviceAccount:
-      create: false
-      name: headlamp-admin
+      headlamp-admin: {}
     clusterRoleBinding:
       create: false
     # persistentVolumeClaim:
