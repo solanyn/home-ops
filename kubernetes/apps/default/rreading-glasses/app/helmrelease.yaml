@@ -33,11 +33,11 @@ spec:
           app:
             image:
               repository: blampe/rreading-glasses
-              tag: hardcover@sha256:073b550ccfc951fdcbbfb6b31bd1a91f705bc9e3e4278a680a35f14edcdf29ab
+              tag: latest
             command: ["/main", "serve"]
             args:
-              - --upstream=hardcover.app
-              - --hardcover-auth=$(RREADING_GLASSES_HARDCOVER_API_KEY)
+              - --upstream=www.goodreads.com
+              - --cookie=$(GOODREADS_COOKIE)
               - --postgres-host=$(INIT_POSTGRES_HOST)
               - --postgres-user=$(INIT_POSTGRES_USER)
               - --postgres-password=$(INIT_POSTGRES_PASS)
