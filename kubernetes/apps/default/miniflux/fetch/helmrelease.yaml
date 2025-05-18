@@ -38,11 +38,11 @@ spec:
               apk add jq curl
 
               # Get all feed IDs
-              FEED_IDS=$(curl -u '$(ADMIN_USER):$(ADMIN_PASSWORD)' -X GET http://miniflux.default.svc.cluster.local/v1/feeds | jq -r '.[].id')
+              FEED_IDS=$(curl -u '$(ADMIN_USERNAME):$(ADMIN_PASSWORD)' -X GET http://miniflux.default.svc.cluster.local/v1/feeds | jq -r '.[].id')
 
               # Update each feed with "fetch original content" option
               for feed_id in $FEED_IDS; do
-                curl -X PUT -u '$(ADMIN_USER):$(ADMIN_PASSWORD)' -H "Content-Type: application/json" -d '{"crawler":true}' "http://miniflux.default.svc.cluster.local/v1/feeds/${feed_id}"
+                curl -X PUT -u '$(ADMIN_USERNAME):$(ADMIN_PASSWORD)' -H "Content-Type: application/json" -d '{"crawler":true}' "http://miniflux.default.svc.cluster.local/v1/feeds/${feed_id}"
               done
             envFrom:
               - secretRef:
