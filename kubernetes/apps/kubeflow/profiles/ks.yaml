@@ -27,29 +27,6 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kubeflow-andrew
-  namespace: kubeflow
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: kubeflow-profiles
-      namespace: kubeflow
-  interval: 1h
-  path: ./kubernetes/apps/kubeflow/profiles/andrew
-  prune: true
-  retryInterval: 2m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  timeout: 5m
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: &app kubeflow-users
   namespace: &namespace kubeflow
 spec:
@@ -57,7 +34,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: kubeflow-users
+    - name: kubeflow-profiles
       namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/profiles/users
