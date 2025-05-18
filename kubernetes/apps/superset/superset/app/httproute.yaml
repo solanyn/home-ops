@@ -13,5 +13,5 @@ spec:
   rules:
     - backendRefs:
         - name: superset
-          namespace: superset-system
+          namespace: superset
           port: 8088
