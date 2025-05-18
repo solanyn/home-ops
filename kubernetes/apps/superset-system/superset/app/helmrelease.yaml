@@ -57,8 +57,7 @@ spec:
       forceReload: true
       initContainers:
         - name: init-db
-          image:
-            repository: ghcr.io/home-operations/postgres-init:17
+          image: ghcr.io/home-operations/postgres-init:17
           envFrom:
             - secretRef:
                 name: superset-secret
