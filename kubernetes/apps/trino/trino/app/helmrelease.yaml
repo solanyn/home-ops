@@ -4,7 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: trino
-  namespace: trino-system
+  namespace: trino
 spec:
   interval: 12h
   url: https://trinodb.github.io/charts
@@ -23,7 +23,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: trino
-        namespace: trino-system
+        namespace: trino
   install:
     remediation:
       retries: -1
