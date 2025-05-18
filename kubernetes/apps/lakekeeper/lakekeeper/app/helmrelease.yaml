@@ -1,0 +1,71 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: lakekeeper
+  namespace: lakekeeper
+spec:
+  interval: 12h
+  url: https://lakekeeper.github.io/lakekeeper-charts/
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: lakekeeper
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: lakekeeper
+      version: 0.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: lakekeeper
+        namespace: lakekeeper
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    catalog:
+      config:
+        LAKEKEEPER__BASE_URI: https://lakekeeper.goyangi.cloud
+        LAKEKEEPER__KAFKA_CONFIG: |
+          {
+            "bootstrap.servers"="lb-redpanda-0.kafka-system.svc.cluster.local:9094,lb-redpanda-1.kafka-system.svc.cluster.local:9094,lb-redpanda-2.kafka-system.svc.cluster.local:9094",
+            "security.protocol"="PLAINTEXT",
+          }
+        bucket: lakekeeper
+        endpoint: http://minio.default.svc.cluster.local:9000
+        flavor: s3-compat
+    secretBackend:
+      type: "Postgres"
+      postgres:
+        encryptionKeySecret: &secret lakekeeper-secret
+        encryptionKeySecretKey: LAKEKEEPER_SECRET_KEY
+    postgresql:
+      enabled: false
+    externalDatabase:
+      type: postgres
+      host_read: postgres17-r.database.svc.cluster.local
+      host_write: postgres17-rw.database.svc.cluster.local
+      database: catalog
+      userSecret: *secret
+      userSecretKey: LAKEKEEPER_POSTGRES_USER
+      passwordSecret: *secret
+      passwordSecretKey: LAKEKEEPER_POSTGRES_PASSWORD
+    auth:
+      k8s:
+        enabled: true
+    authz:
+      backend: "allowall"
+      internalOpenFGA: false
+  valuesFrom:
+    - kind: Secret
+      name: lakekeeper-secret
