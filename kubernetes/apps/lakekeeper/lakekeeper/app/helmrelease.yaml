@@ -42,11 +42,7 @@ spec:
                 name: lakekeeper-secret
       config:
         LAKEKEEPER__BASE_URI: https://lakekeeper.goyangi.cloud
-        LAKEKEEPER__KAFKA_CONFIG: |
-          {
-            "bootstrap.servers"="lb-redpanda-0.kafka-system.svc.cluster.local:9094,lb-redpanda-1.kafka-system.svc.cluster.local:9094,lb-redpanda-2.kafka-system.svc.cluster.local:9094",
-            "security.protocol"="PLAINTEXT",
-          }
+        LAKEKEEPER__KAFKA_CONFIG: '{"bootstrap.servers"="lb-redpanda-0.kafka-system.svc.cluster.local:9094,lb-redpanda-1.kafka-system.svc.cluster.local:9094,lb-redpanda-2.kafka-system.svc.cluster.local:9094","security.protocol"="PLAINTEXT"}'
         bucket: lakekeeper
         endpoint: http://minio.default.svc.cluster.local:9000
         flavor: s3-compat
