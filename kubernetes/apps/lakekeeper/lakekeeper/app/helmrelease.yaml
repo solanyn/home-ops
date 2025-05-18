@@ -36,7 +36,7 @@ spec:
         containers:
           app:
             image: *image
-            command: ["serve"]
+            command: ["/home/nonroot/iceberg-catalog", "serve"]
             envFrom: *envFrom
             probes:
               liveness: &probes
