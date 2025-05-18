@@ -93,7 +93,6 @@ spec:
                     "request_token_url": None,
                     "access_token_url": "https://id.goyangi.cloud/api/oidc/token",
                     "authorize_url": "https://id.goyangi.cloud/authorize",
-                    "authorize_params": {"hd": os.getenv("OAUTH_HOME_DOMAIN", "")}
                 }
             }
         ]
