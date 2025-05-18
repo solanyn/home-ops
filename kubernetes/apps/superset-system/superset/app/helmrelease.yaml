@@ -42,6 +42,9 @@ spec:
       connections:
         redis_host: redis.database.svc.cluster.local
         redis_port: "6379"
+      initContainers: []
+    supersetWorker:
+      initContainers: []
     init:
       initContainers:
         - name: init-db
