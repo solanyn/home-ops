@@ -38,15 +38,9 @@ spec:
     bootstrapScript: |
       #!/bin/bash
 
-      # Install system-level dependencies
-      apt-get update && apt-get install -y \
-        python3-dev \
-        build-essential \
-        pkg-config
-
       # Install required Python packages
       pip install \
-        authlib \
+        pyhive \
         psycopg2-binary \
 
       # Create bootstrap file if it doesn't exist
