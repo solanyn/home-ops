@@ -4,5 +4,6 @@ kind: Kustomization
 namespace: lakekeeper
 components:
   - ../../components/common
+  - ../../components/repos/app-template
 resources:
   - ./lakekeeper/ks.yaml
