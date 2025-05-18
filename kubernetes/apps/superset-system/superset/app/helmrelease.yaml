@@ -51,12 +51,32 @@ spec:
     secretEnv:
       create: false
     envFromSecret: superset-secret
+    configOverrides:
+      celery_config: |
+        class CeleryConfig(object):
+            broker_url = f'redis://{os.environ["REDIS_HOST"]}:{os.environ["REDIS_PORT"]}/0'
+            imports = (
+                "superset.sql_lab",
+                "superset.tasks.scheduler",
+            )
+            result_backend = f'redis://{os.environ["REDIS_HOST"]}:{os.environ["REDIS_PORT"]}/0'
+            worker_prefetch_multiplier = 10
+            task_acks_late = True
+            task_annotations = {
+                "sql_lab.get_sql_results": {
+                    "rate_limit": "100/s",
+                },
+            }
+
+        CELERY_CONFIG = CeleryConfig
+        from flask_caching.backends.rediscache import RedisCache
+        RESULTS_BACKEND = RedisCache(
+            host=os.environ["REDIS_HOST"], port=os.environ["REDIS_PORT"], key_prefix='superset_results')
+
     supersetNode:
       connections:
         redis_host: redis.database.svc.cluster.local
         redis_port: "6379"
-        redis_user: ""
-        redis_password: ""
       forceReload: true
       initContainers:
         - name: init-db
