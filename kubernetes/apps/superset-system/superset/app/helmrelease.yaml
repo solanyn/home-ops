@@ -41,6 +41,7 @@ spec:
       # Install required Python packages
       pip install \
         pyhive \
+        Pillow \
         psycopg2-binary
 
       # Create bootstrap file if it doesn't exist
@@ -54,6 +55,8 @@ spec:
       connections:
         redis_host: redis.database.svc.cluster.local
         redis_port: "6379"
+        redis_user: ""
+        redis_password: ""
       forceReload: true
       initContainers:
         - name: init-db
