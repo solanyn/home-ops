@@ -55,6 +55,7 @@ spec:
       fi
     secretEnv:
       create: false
+    configFromSecret: superset-secret
     envFromSecret: superset-secret
     supersetNode:
       connections:
