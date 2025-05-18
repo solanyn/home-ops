@@ -13,5 +13,5 @@ spec:
   rules:
     - backendRefs:
         - name: trino
-          namespace: trino-system
+          namespace: trino
           port: 8080
