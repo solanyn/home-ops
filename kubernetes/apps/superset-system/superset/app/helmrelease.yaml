@@ -35,6 +35,24 @@ spec:
   values:
     fullnameOverride: superset
     runAsUser: 1000
+    bootstrapScript: |
+      #!/bin/bash
+
+      # Install system-level dependencies
+      apt-get update && apt-get install -y \
+        python3-dev \
+        build-essential \
+        pkg-config
+
+      # Install required Python packages
+      pip install \
+        authlib \
+        psycopg2-binary \
+
+      # Create bootstrap file if it doesn't exist
+      if [ ! -f ~/bootstrap ]; then
+        echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap
+      fi
     secretEnv:
       create: false
     envFromSecret: superset-secret
