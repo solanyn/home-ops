@@ -55,12 +55,12 @@ spec:
     configOverrides:
       celery_config: |
         class CeleryConfig(object):
-            broker_url = f'redis://{os.environ["REDIS_HOST"]}:{os.environ["REDIS_PORT"]}/0'
+            broker_url = f'redis://{os.getenv("REDIS_HOST", "")}:{os.getenv("REDIS_PORT", "")}/0'
             imports = (
                 "superset.sql_lab",
                 "superset.tasks.scheduler",
             )
-            result_backend = f'redis://{os.environ["REDIS_HOST"]}:{os.environ["REDIS_PORT"]}/0'
+            result_backend = f'redis://{os.getenv("REDIS_HOST", "")}:{os.getenv("REDIS_PORT", "")}/0'
             worker_prefetch_multiplier = 10
             task_acks_late = True
             task_annotations = {
@@ -72,7 +72,7 @@ spec:
         CELERY_CONFIG = CeleryConfig
         from flask_caching.backends.rediscache import RedisCache
         RESULTS_BACKEND = RedisCache(
-            host=os.environ["REDIS_HOST"], port=os.environ["REDIS_PORT"], key_prefix='superset_results')
+            host=os.getenv("REDIS_HOST", ""), port=os.getenv("REDIS_PORT", ""), key_prefix='superset_results')
       extend_timeout: |
         # Extend timeout to allow long running queries.
         SUPERSET_WEBSERVER_TIMEOUT = ...
@@ -86,10 +86,10 @@ spec:
                 "icon": "fa-openid",
                 "token_key": "access_token",
                 "remote_app": {
-                    "client_id": os.environ.get("SUPERSET_CLIENT_ID"),
-                    "client_secret": os.environ.get("SUPERSET_CLIENT_SECRET"),
+                    "client_id": os.getenv("SUPERSET_CLIENT_ID", ""),
+                    "client_secret": os.getenv("SUPERSET_CLIENT_SECRET", ""),
                     "api_base_url": "https://id.goyangi.cloud",
-                    "client_kwargs": {"scope": "email profile"},
+                    "client_kwargs": {"scope": "openid email profile"},
                     "request_token_url": None,
                     "access_token_url": "https://id.goyangi.cloud/api/oidc/token",
                     "authorize_url": "https://id.goyangi.cloud/authorize",
