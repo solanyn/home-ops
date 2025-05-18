@@ -37,11 +37,13 @@ spec:
                   key: USERID_PREFIX
 
             - name: V2_DRIVER_IMAGE
+              value: null
               valueFrom:
                 configMapKeyRef:
                   name: pipeline-install-config
                   key: driverImage
             - name: V2_LAUNCHER_IMAGE
+              value: null
               valueFrom:
                 configMapKeyRef:
                   name: pipeline-install-config
