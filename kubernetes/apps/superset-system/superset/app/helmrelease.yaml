@@ -88,11 +88,9 @@ spec:
                 "remote_app": {
                     "client_id": os.getenv("SUPERSET_CLIENT_ID", ""),
                     "client_secret": os.getenv("SUPERSET_CLIENT_SECRET", ""),
-                    "api_base_url": "https://id.goyangi.cloud",
                     "client_kwargs": {"scope": "openid email profile"},
                     "request_token_url": None,
-                    "access_token_url": "https://id.goyangi.cloud/api/oidc/token",
-                    "authorize_url": "https://id.goyangi.cloud/authorize",
+                    "server_metadata_url": "https://id.goyangi.cloud/.well-known/openid-configuration",
                 }
             }
         ]
