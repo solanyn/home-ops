@@ -72,7 +72,37 @@ spec:
         from flask_caching.backends.rediscache import RedisCache
         RESULTS_BACKEND = RedisCache(
             host=os.environ["REDIS_HOST"], port=os.environ["REDIS_PORT"], key_prefix='superset_results')
-
+        extend_timeout: |
+          # Extend timeout to allow long running queries.
+          SUPERSET_WEBSERVER_TIMEOUT = ...
+        enable_oauth: |
+          from flask_appbuilder.security.manager import (AUTH_DB, AUTH_OAUTH)
+          AUTH_TYPE = AUTH_OAUTH
+          OAUTH_PROVIDERS = [
+              {
+                  "name": "pocket-id",
+                  "whitelist": [ os.getenv("OAUTH_WHITELIST_REGEX", "") ],
+                  "icon": "fa-openid",
+                  "token_key": "access_token",
+                  "remote_app": {
+                      "client_id": os.environ.get("SUPERSET_CLIENT_ID"),
+                      "client_secret": os.environ.get("SUPERSET_CLIENT_SECRET"),
+                      "api_base_url": "https://id.goyangi.cloud",
+                      "client_kwargs": {"scope": "email profile"},
+                      "request_token_url": None,
+                      "access_token_url": "https://id.goyangi.cloud/api/oidc/token",
+                      "authorize_url": "https://id.goyangi.cloud/authorize",
+                      "authorize_params": {"hd": os.getenv("OAUTH_HOME_DOMAIN", "")}
+                  }
+              }
+          ]
+          # Map Authlib roles to superset roles
+          AUTH_ROLE_ADMIN = 'Admin'
+          AUTH_ROLE_PUBLIC = 'Public'
+          # Will allow user self registration, allowing to create Flask users from Authorized User
+          AUTH_USER_REGISTRATION = True
+          # The default user self registration role
+          AUTH_USER_REGISTRATION_ROLE = "Admin"
     supersetNode:
       connections:
         redis_host: redis.database.svc.cluster.local
