@@ -81,7 +81,7 @@ spec:
         AUTH_TYPE = AUTH_OAUTH
         OAUTH_PROVIDERS = [
             {
-                "name": "pocket-id",
+                "name": "pid",
                 "whitelist": [ os.getenv("OAUTH_WHITELIST_REGEX", "") ],
                 "icon": "fa-openid",
                 "token_key": "access_token",
