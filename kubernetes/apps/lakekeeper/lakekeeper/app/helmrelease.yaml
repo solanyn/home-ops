@@ -34,6 +34,12 @@ spec:
       retries: 3
   values:
     catalog:
+      extraInitContainers:
+        - name: init-db
+          image: ghcr.io/home-operations/postgres-init:17
+          envFrom:
+            - secretRef:
+                name: lakekeeper-secret
       config:
         LAKEKEEPER__BASE_URI: https://lakekeeper.goyangi.cloud
         LAKEKEEPER__KAFKA_CONFIG: |
