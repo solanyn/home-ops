@@ -31,7 +31,7 @@ spec:
             image: &image
               repository: quay.io/lakekeeper/catalog
               tag: latest-main
-            command: ["migrate"]
+            command: ["/home/nonroot/iceberg-catalog", "migrate"]
             envFrom: *envFrom
         containers:
           app:
