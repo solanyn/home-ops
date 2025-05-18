@@ -55,7 +55,6 @@ spec:
         redis_host: redis.database.svc.cluster.local
         redis_port: "6379"
       forceReload: true
-    init:
       initContainers:
         - name: init-db
           image:
