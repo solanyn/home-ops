@@ -82,8 +82,7 @@ spec:
         OAUTH_PROVIDERS = [
             {
                 "name": "pid",
-                "whitelist": [ os.getenv("OAUTH_WHITELIST_REGEX", "") ],
-                "icon": "fa-openid",
+                "icon": "fa-key",
                 "token_key": "access_token",
                 "remote_app": {
                     "client_id": os.getenv("SUPERSET_CLIENT_ID", ""),
