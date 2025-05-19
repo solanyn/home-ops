@@ -43,6 +43,7 @@ spec:
         authlib \
         pyhive \
         Pillow \
+        redis \
         psycopg2-binary
 
       # Create bootstrap file if it doesn't exist
@@ -53,6 +54,25 @@ spec:
       create: false
     envFromSecret: superset-secret
     configOverrides:
+      redis_config: |
+        FILTER_STATE_CACHE_CONFIG = {
+            'CACHE_TYPE': 'RedisCache',
+            'CACHE_DEFAULT_TIMEOUT': 86400,
+            'CACHE_KEY_PREFIX': 'superset_filter_cache',
+            'CACHE_REDIS_URL': 'redis://{os.getenv("REDIS_HOST", "")}:{os.getenv("REDIS_PORT", "")}/0'
+        }
+        EXPLORE_FORM_DATA_CACHE_CONFIG = {
+          **FILTER_STATE_CACHE_CONFIG,
+          'CACHE_KEY_PREFIX': 'superset_explore_cache',
+        }
+        CACHE_CONFIG = {
+          **FILTER_STATE_CACHE_CONFIG,
+          'CACHE_KEY_PREFIX': 'superset_metadata_cache',
+        }
+        DATA_CACHE_CONFIG = {
+          **FILTER_STATE_CACHE_CONFIG,
+          'CACHE_KEY_PREFIX': 'superset_data_cache',
+        }
       celery_config: |
         class CeleryConfig(object):
             broker_url = f'redis://{os.getenv("REDIS_HOST", "")}:{os.getenv("REDIS_PORT", "")}/0'
