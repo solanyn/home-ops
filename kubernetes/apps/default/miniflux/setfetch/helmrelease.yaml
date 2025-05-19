@@ -35,16 +35,13 @@ spec:
               repository: alpine
               tag: 3.21.3@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
             command: ["sh", "-c"]
-            args: >-
-              apk add jq curl
-
-              # Get all feed IDs
-              FEED_IDS=$(curl -u '$(ADMIN_USERNAME):$(ADMIN_PASSWORD)' -X GET http://miniflux.default.svc.cluster.local/v1/feeds | jq -r '.[].id')
-
-              # Update each feed with "fetch original content" option
-              for feed_id in $FEED_IDS; do
-                curl -X PUT -u '$(ADMIN_USERNAME):$(ADMIN_PASSWORD)' -H "Content-Type: application/json" -d '{"crawler":true}' "http://miniflux.default.svc.cluster.local/v1/feeds/${feed_id}"
-              done
+            args:
+              - |
+                apk add jq curl && \
+                FEED_IDS=$(curl -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -X GET http://miniflux.default.svc.cluster.local/v1/feeds | jq -r '.[].id') && \
+                for feed_id in $FEED_IDS; do \
+                  curl -X PUT -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -H "Content-Type: application/json" -d '{"crawler":true}' "http://miniflux.default.svc.cluster.local/v1/feeds/${feed_id}"; \
+                done
             envFrom:
               - secretRef:
                   name: miniflux-secret
