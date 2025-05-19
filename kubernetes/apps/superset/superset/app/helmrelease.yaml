@@ -59,7 +59,7 @@ spec:
             'CACHE_TYPE': 'RedisCache',
             'CACHE_DEFAULT_TIMEOUT': 86400,
             'CACHE_KEY_PREFIX': 'superset_filter_cache',
-            'CACHE_REDIS_URL': 'redis://{os.getenv("REDIS_HOST", "")}:{os.getenv("REDIS_PORT", "")}/0'
+            'CACHE_REDIS_URL': f'redis://{os.getenv("REDIS_HOST", "")}:{os.getenv("REDIS_PORT", "")}/0'
         }
         EXPLORE_FORM_DATA_CACHE_CONFIG = {
           **FILTER_STATE_CACHE_CONFIG,
