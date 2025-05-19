@@ -38,6 +38,14 @@ spec:
       authenticationType: "OAUTH2"
     serviceMonitor:
       enabled: true
+    catalogs:
+      iceberg: |-
+        connector.name=iceberg
+        iceberg.catalog.type=rest
+        iceberg.security=read_only
+        iceberg.rest-catalog.security=OAUTH2
+        iceberg.rest-catalog.uri=http://lakehouse.iceberg.svc.cluster.local:8181
+        iceberg.rest-catalog.warehouse=s3://iceberg
   valuesFrom:
     - kind: Secret
       name: trino-secret
