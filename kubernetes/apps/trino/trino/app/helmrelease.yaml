@@ -46,8 +46,6 @@ spec:
         iceberg.rest-catalog.security=OAUTH2
         iceberg.rest-catalog.uri=http://lakehouse.iceberg.svc.cluster.local:8181
         iceberg.rest-catalog.warehouse=s3://iceberg
-    additionalConfigProperties:
-      - http-server.process-forwarded=true
   valuesFrom:
     - kind: Secret
       name: trino-secret
