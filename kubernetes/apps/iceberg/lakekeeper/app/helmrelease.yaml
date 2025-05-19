@@ -72,6 +72,8 @@ spec:
         ports:
           http:
             port: *port
+    serviceAccount:
+      lakekeeper: {}
     route:
       app:
         hostnames: ["{{ .Release.Name }}.goyangi.cloud"]
