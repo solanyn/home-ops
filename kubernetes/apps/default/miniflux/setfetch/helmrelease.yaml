@@ -37,7 +37,7 @@ spec:
             command: ["sh", "-c"]
             args:
               - |
-                apk add jq curl && \
+                apk add --no-cache jq curl && \
                 curl -H "X-Auth-Token: $MINIFLUX_API_KEY" -X GET http://miniflux.default.svc.cluster.local/v1/feeds | jq && \
                 FEED_IDS=$(curl -H "X-Auth-Token: $MINIFLUX_API_KEY" -X GET http://miniflux.default.svc.cluster.local/v1/feeds | jq -r '.[].id') && \
                 for feed_id in $FEED_IDS; do \
