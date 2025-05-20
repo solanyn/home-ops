@@ -38,10 +38,10 @@ spec:
             args:
               - |
                 apk add jq curl && \
-                curl -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -X GET http://miniflux.default.svc.cluster.local/v1/feeds | jq && \
-                FEED_IDS=$(curl -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -X GET http://miniflux.default.svc.cluster.local/v1/feeds | jq -r '.[].id') && \
+                curl -H "X-Auth-Token: $MINIFLUX_API_KEY" -X GET http://miniflux.default.svc.cluster.local/v1/feeds | jq && \
+                FEED_IDS=$(curl -H "X-Auth-Token: $MINIFLUX_API_KEY" -X GET http://miniflux.default.svc.cluster.local/v1/feeds | jq -r '.[].id') && \
                 for feed_id in $FEED_IDS; do \
-                  curl -X PUT -u "${ADMIN_USERNAME}:${ADMIN_PASSWORD}" -H "Content-Type: application/json" -d '{"crawler":true}' "http://miniflux.default.svc.cluster.local/v1/feeds/${feed_id}"; \
+                  curl -X PUT -H "X-Auth-Token: $MINIFLUX_API_KEY" -H "Content-Type: application/json" -d '{"crawler":true}' "http://miniflux.default.svc.cluster.local/v1/feeds/${feed_id}"; \
                 done
             envFrom:
               - secretRef:
