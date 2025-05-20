@@ -76,6 +76,17 @@ spec:
               namespace: kube-system
               sectionName: https
       prometheusSpec:
+        image:
+          registry: registry.deckhouse.io
+          repository: prompp/prompp
+          tag: 2.53.2-0.2.3
+        initContainers:
+          - name: prompptool
+            image: registry.deckhouse.io/prompp/prompp:2.53.2-0.2.3
+            command:
+              - /bin/prompptool
+              - "--working-dir=/prometheus"
+              - "walvanilla"
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
@@ -89,9 +100,9 @@ spec:
         retentionSize: 50GB
         resources:
           requests:
-            cpu: 100m
+            cpu: 10m
           limits:
-            memory: 2500Mi
+            memory: 2000Mi
         storageSpec:
           volumeClaimTemplate:
             spec:
