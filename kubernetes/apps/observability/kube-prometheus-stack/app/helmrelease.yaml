@@ -85,7 +85,6 @@ spec:
             image: registry.deckhouse.io/prompp/prompp:2.53.2-0.2.3
             command:
               - /bin/prompptool
-              - "--working-dir=/prometheus"
               - "walvanilla"
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
