@@ -40,6 +40,7 @@ resources:
   - ./tautulli/ks.yaml
   - ./thelounge/ks.yaml
   - ./webhook/ks.yaml
+  - ./whisparr/ks.yaml
   - ./your-spotify/ks.yaml
   - ./zigbee/ks.yaml
   - ./zwave/ks.yaml
