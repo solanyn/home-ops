@@ -1,0 +1,75 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app excalidraw
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      excalidraw:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/wipash/excalidraw-collab
+              tag: 0.17.3@sha256:bf3f43758848a24a39aaebe89fd4037d1f9c3fe6e71c0c1ad041f7cdb10ca536
+              pullPolicy: IfNotPresent
+            env:
+              TZ: Australia/Sydney
+              COLLAB_ADDR: draw-room.goyangi.cloud
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                {
+                  drop: ["ALL"],
+                  add: ["NET_ADMIN", "NET_RAW", "NET_BROADCAST"],
+                }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+      hostNetwork: true
+    service:
+      app:
+        controller: excalidraw
+        ports:
+          http:
+            port: &port 8080
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.cloud"
+          - draw.goyangi.cloud
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: *port
