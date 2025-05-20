@@ -33,7 +33,7 @@ spec:
               COLLAB_ADDR: draw-room.goyangi.cloud
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities:
                 {
                   drop: ["ALL"],
@@ -53,7 +53,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
-      hostNetwork: true
     service:
       app:
         controller: excalidraw
@@ -73,3 +72,6 @@ spec:
           - backendRefs:
               - name: *app
                 port: *port
+    persistence:
+      tmp:
+        type: emptyDir
