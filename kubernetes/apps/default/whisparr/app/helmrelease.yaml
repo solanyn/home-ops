@@ -50,7 +50,7 @@ spec:
               WHISPARR__APP__THEME: dark
               WHISPARR__AUTH__METHOD: External
               WHISPARR__AUTH__REQUIRED: DisabledForLocalAddresses
-              WHISPARR__SERVER__PORT: &port 80
+              WHISPARR__SERVER__PORT: &port 6969
               WHISPARR__LOG_LEVEL: info
               WHISPARR__UPDATE__BRANCH: develop
               TZ: Australia/Sydney
