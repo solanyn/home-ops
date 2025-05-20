@@ -41,8 +41,8 @@ spec:
                 curl -H "X-Auth-Token: $MINIFLUX_API_KEY" -X GET http://miniflux.default.svc.cluster.local/v1/feeds | jq && \
                 FEED_IDS=$(curl -H "X-Auth-Token: $MINIFLUX_API_KEY" -X GET http://miniflux.default.svc.cluster.local/v1/feeds | jq -r '.[].id') && \
                 for feed_id in $FEED_IDS; do \
-                  echo $feed_id && \
-                  curl -X PUT -H "X-Auth-Token: $MINIFLUX_API_KEY" -H "Content-Type: application/json" -d '{"crawler":true}' "http://miniflux.default.svc.cluster.local/v1/feeds/$feed_id"; \
+                  echo ${feed_id} && \
+                  curl -X PUT -H "X-Auth-Token: $MINIFLUX_API_KEY" -H "Content-Type: application/json" -d '{"crawler":true}' "http://miniflux.default.svc.cluster.local/v1/feeds/${feed_id}"; \
                 done
             envFrom:
               - secretRef:
