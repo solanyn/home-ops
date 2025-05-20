@@ -32,13 +32,9 @@ spec:
               TZ: Australia/Sydney
               COLLAB_ADDR: draw-room.goyangi.cloud
             securityContext:
-              allowPrivilegeEscalation: false
+              allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
-              capabilities:
-                {
-                  drop: ["ALL"],
-                  add: ["NET_ADMIN", "NET_RAW", "NET_BROADCAST"],
-                }
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
