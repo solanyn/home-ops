@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: your-spotify
+  name: &app your-spotify
 spec:
   interval: 1h
   chartRef:
@@ -46,7 +46,7 @@ spec:
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
-              capabilities: { drop: [ 'ALL' ] }
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
@@ -125,4 +125,3 @@ spec:
           mongodb:
             app:
               - path: /data/db
-
