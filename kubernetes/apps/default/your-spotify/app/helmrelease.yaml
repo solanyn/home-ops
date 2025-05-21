@@ -109,14 +109,14 @@ spec:
                     type: ReplacePrefixMatch
                     replacePrefixMatch: "/"
             backendRefs:
-              - name: server
+              - identifier: server
                 port: *port
           - matches:
               - path:
                   type: PathPrefix
                   value: "/"
             backendRefs:
-              - name: web
+              - identifier: web
                 port: *webport
     persistence:
       configs:
