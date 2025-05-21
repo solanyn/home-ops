@@ -1,0 +1,96 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: ceph-node-nfsmount-diskspace-warning
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: CephNodeDiskspaceWarning
+      isRegex: false
+    - name: mountpoint
+      value: /etc/nfsmount.conf
+      isRegex: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: ceph-node-local-diskspace-warning
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: CephNodeDiskspaceWarning
+      isRegex: false
+    - name: device
+      value: /dev/sd.*
+      isRegex: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: nas-memory-high-utilization
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: NodeMemoryHighUtilization
+      isRegex: false
+    - name: instance
+      value: nas.internal:9100
+      isRegex: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+# TODO: remove when new drives or nodes run cooler
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: mounted-drive-high-temperature
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: SmartDeviceHighTemperature
+      isRegex: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+# TODO: remove when new rook disks and/or network upgrade and/or node upgrade
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: ceph-node-network-packet-drops
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: CephNodeNetworkPacketDrops
+      isRegex: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+# TODO: Remove when no more DockerHub images
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: dockerhub-rate-limit-risk
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: DockerhubRateLimitRisk
+      isRegex: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: kube-hpa-maxed-out
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: KubeHpaMaxedOut
+      isRegex: false
