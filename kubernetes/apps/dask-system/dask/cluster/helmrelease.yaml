@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: worker
-          image: ghcr.io/dask/dask:2025.5.0-py3.10@sha256:7f1d5a94864e2f3ab9b548a522c73fa682dc4701312e3a15b053ec9a6af4667f
+          image: ghcr.io/dask/dask:2025.5.1-py3.10@sha256:4645bc8aec479d613a558d19c456d4b1b1000468ed2d021128eacfa2c4f298b9
           args:
             - dask-worker
             - --name
@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
         - name: scheduler
-          image: ghcr.io/dask/dask:2025.5.0-py3.10@sha256:7f1d5a94864e2f3ab9b548a522c73fa682dc4701312e3a15b053ec9a6af4667f
+          image: ghcr.io/dask/dask:2025.5.1-py3.10@sha256:4645bc8aec479d613a558d19c456d4b1b1000468ed2d021128eacfa2c4f298b9
           args:
             - dask-scheduler
           ports:
