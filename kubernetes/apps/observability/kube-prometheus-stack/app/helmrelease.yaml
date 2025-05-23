@@ -79,7 +79,7 @@ spec:
         image:
           registry: registry.deckhouse.io
           repository: prompp/prompp
-          tag: 2.53.2-0.2.3
+          tag: 2.53.2-0.2.5
         securityContext:
           runAsGroup: 64535
           runAsNonRoot: true
