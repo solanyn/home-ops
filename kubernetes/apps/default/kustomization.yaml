@@ -8,7 +8,7 @@ components:
 resources:
   - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
-  - ./atuin/ks.yaml
+  # - ./atuin/ks.yaml
   - ./bazarr/ks.yaml
   - ./calibre/ks.yaml
   - ./calibre-web/ks.yaml
