@@ -33,16 +33,17 @@ spec:
           app:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v0.53.0@sha256:7224174546de6a378fb705f763d11b604e3031b62efdc707cf1757b1b09705f5
+              tag: v1.0.0@sha256:bb4b1debee6fa1245a36a0d8a0bd23794033028b803d7639c898bc11697f155f
             command: ["/bin/sh", "/app/scripts/docker/entrypoint.sh"]
             env:
               DB_PROVIDER: postgres
               PUID: 1000
               PGID: 1000
-              PUBLIC_APP_URL: https://id.goyangi.cloud
+              APP_URL: https://id.goyangi.cloud
               TRUST_PROXY: true
               TZ: Australia/Sydney
               UPLOAD_PATH: /data/uploads
+              PORT: &port 80
             envFrom:
               - secretRef:
                   name: pocket-id-secret
@@ -53,7 +54,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: &port 80
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -62,7 +63,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
@@ -76,7 +77,7 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: {type: RuntimeDefault}
+        seccompProfile: { type: RuntimeDefault }
         supplementalGroups: [10000]
     service:
       app:
