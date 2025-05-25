@@ -43,9 +43,7 @@ spec:
               TZ: Australia/Sydney
               UPLOAD_PATH: /data/uploads
               PORT: &port 80
-            envFrom:
-              - secretRef:
-                  name: pocket-id-secret
+            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: true
@@ -61,7 +59,7 @@ spec:
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
+              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
@@ -102,6 +100,8 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /data
+          - path: /data/keys
+            subPath: keys
           - path: /app/backend/data
             subPath: backend
       var:
