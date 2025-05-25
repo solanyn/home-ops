@@ -35,7 +35,7 @@ spec:
                 spec:
                   httpGet:
                     path: /
-                    port: *port
+                    port: &port 5690
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
