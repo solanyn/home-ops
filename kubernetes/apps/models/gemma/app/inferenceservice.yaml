@@ -8,8 +8,8 @@ spec:
       modelFormat:
         name: huggingface
       args:
-        - --model_name=gemma-3-12b-it-qat-GGUF
-        - --model_id=unsloth/gemma-3-12b-it-qat-GGUF
+        - --model_name=gemma-3-12b
+        - --model_id=unsloth/gemma-3-12b-it-GGUF
       env:
         - name: HF_TOKEN
           valueFrom:
@@ -19,4 +19,4 @@ spec:
               optional: false
       resources:
         requests:
-          memory: 8Gi
+          memory: 4Gi
