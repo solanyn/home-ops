@@ -28,19 +28,19 @@ spec:
               tag: 2025.5.1@sha256:60b140c23748de8b79d427486a406e2f6ba514ba53ba8783059852936e498a15
             env:
               TZ: "Australia/Sydney"
-            probes:
-              liveness: &probes # TODO: enable liveness check when it works
-                enabled: false
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: &port 5690
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+            # probes:
+            #   liveness: &probes
+            #     enabled: true
+            #     custom: true
+            #     spec:
+            #       httpGet:
+            #         path: /health
+            #         port: &port 5690
+            #       initialDelaySeconds: 0
+            #       periodSeconds: 10
+            #       timeoutSeconds: 1
+            #       failureThreshold: 3
+            #   readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
