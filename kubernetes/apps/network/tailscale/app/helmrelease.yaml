@@ -34,9 +34,16 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    hostname: cluster
     oauthSecretVolume:
       secret:
         secretName: &secret tailscale-secret
+    proxyConfig:
+      defaultTags: "tag:k8s"
     operatorConfig:
+      defaultTags:
+        - "tag:k8s"
       podAnnotations:
         secret.reloader.stakater.com/reload: *secret
+    apiServerProxyConfig:
+      mode: "true"
