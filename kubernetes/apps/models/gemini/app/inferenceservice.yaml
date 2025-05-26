@@ -1,0 +1,22 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: huggingface-gemma-3
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: huggingface
+      args:
+        - --model_name=gemma-3-12b-it-qat-GGUF
+        - --model_id=unsloth/gemma-3-12b-it-qat-GGUF
+      env:
+        - name: HF_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: huggingface-token-secret
+              key: HF_TOKEN
+              optional: false
+      resources:
+        requests:
+          memory: 8Gi
