@@ -36,6 +36,7 @@ resources:
   - ./recyclarr/ks.yaml
   - ./romm/ks.yaml
   - ./rreading-glasses/ks.yaml
+  - ./smtp-relay/ks.yaml
   - ./sonarr/ks.yaml
   - ./stash/ks.yaml
   - ./tautulli/ks.yaml
