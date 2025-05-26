@@ -1,0 +1,18 @@
+---
+apiVersion: tailscale.com/v1alpha1
+kind: Connector
+metadata:
+  name: app-connector
+spec:
+  appConnector:
+    routes:
+      - 192.168.1.0/24
+  hostname: cluster-ingress
+---
+apiVersion: tailscale.com/v1alpha1
+kind: Connector
+metadata:
+  name: exit-node
+spec:
+  exitNode: true
+  hostname: cluster-egress
