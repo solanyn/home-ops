@@ -6,7 +6,8 @@ metadata:
 spec:
   proxyClass: kernel-org-tun
   exitNode: true
-  hostname: cluster-connector
+  hostname: cluster
+  tailnetIPs: ["100.100.10.10"]
   subnetRouter:
     advertiseRoutes:
       - "192.168.1.0/24"
