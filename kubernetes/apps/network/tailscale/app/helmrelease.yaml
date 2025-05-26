@@ -1,0 +1,42 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: tailscale
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.84.0
+  url: oci://ghcr.io/home-operations/charts-mirror/tailscale-operator
+  verify:
+    provider: cosign
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tailscale
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: tailscale
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    oauthSecretVolume:
+      secret:
+        secretName: &secret tailscale-secret
+    operatorConfig:
+      podAnnotations:
+        secret.reloader.stakater.com/reload: *secret
