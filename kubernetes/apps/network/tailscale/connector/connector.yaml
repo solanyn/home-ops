@@ -2,17 +2,12 @@
 apiVersion: tailscale.com/v1alpha1
 kind: Connector
 metadata:
-  name: app-connector
+  name: cluster-connector
 spec:
-  appConnector:
-    routes:
-      - 192.168.1.0/24
-  hostname: cluster-ingress
----
-apiVersion: tailscale.com/v1alpha1
-kind: Connector
-metadata:
-  name: exit-node
-spec:
+  proxyClass: kernel-org-tun
   exitNode: true
-  hostname: cluster-egress
+  hostname: cluster-connector
+  subnetRouter:
+    advertiseRoutes:
+      - "192.168.1.0/24"
+      - "10.42.0.0/16"
