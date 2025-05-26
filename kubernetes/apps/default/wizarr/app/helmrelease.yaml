@@ -86,3 +86,4 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /.cache/uv
+          - path: /tmp
