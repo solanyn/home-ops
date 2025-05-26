@@ -100,10 +100,6 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /data
-          - path: /data/keys
-            subPath: keys
-          - path: /app/backend/data
-            subPath: backend
       var:
         type: emptyDir
         sizeLimit: 1Gi
