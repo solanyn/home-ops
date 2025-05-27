@@ -22,6 +22,7 @@ spec:
             - --port=$(MODEL_REGISTRY_REST_SERVICE_PORT)
             - --mlmd-hostname=localhost
             - --mlmd-port=$(MODEL_REGISTRY_GRPC_SERVICE_PORT)
+            - --datastore-type=mlmd
         - name: grpc-container
           # Remove existing environment variables
           env:
@@ -34,9 +35,10 @@ spec:
           args:
             [
               "--grpc_port=$(MODEL_REGISTRY_GRPC_SERVICE_PORT)",
-              "--mysql_config_host=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_HOST)",
               "--mysql_config_database=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_DATABASE)",
+              "--mysql_config_host=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_HOST)",
               "--mysql_config_port=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_PORT)",
               "--mysql_config_user=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_USER)",
               "--mysql_config_password=$(KUBEFLOW_MODEL_REGISTRY_MYSQL_PASSWORD)",
+              "--enable_database_upgrade=true",
             ]
