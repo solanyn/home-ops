@@ -20,12 +20,14 @@ resources:
   - ./home-assistant/ks.yaml
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
+  - ./komga/ks.yaml
   - ./label-studio/ks.yaml
   - ./lidarr/ks.yaml
   - ./maintainerr/ks.yaml
   - ./miniflux/ks.yaml
   - ./minio/ks.yaml
   - ./mosquitto/ks.yaml
+  - ./mylar/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
   - ./prowlarr/ks.yaml
