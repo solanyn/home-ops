@@ -9,7 +9,7 @@ spec:
         name: huggingface
       args:
         - --model_name=gemma-3-12b
-        - --model_id=unsloth/gemma-3-12b-it-GGUF
+        - --model_id=google/gemma-3-12b-it
         - --trust_remote_code
       env:
         - name: HF_TOKEN
