@@ -10,7 +10,7 @@ spec:
       args:
         - --model_name=gemma-3-12b
         - --model_id=unsloth/gemma-3-12b-it-GGUF
-        - --trust_remote_code=true
+        - --trust_remote_code
       env:
         - name: HF_TOKEN
           valueFrom:
