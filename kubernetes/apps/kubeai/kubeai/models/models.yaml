@@ -3,10 +3,10 @@
 apiVersion: kubeai.org/v1
 kind: Model
 metadata:
-  name: faster-whisper-medium-en-cpu
+  name: faster-whisper-small-en-cpu
 spec:
   features: [SpeechToText]
-  url: hf://Systran/faster-whisper-medium.en
+  url: hf://Systran/faster-whisper-small.en
   engine: FasterWhisper
   minReplicas: 0
   resourceProfile: cpu:1
@@ -20,10 +20,10 @@ spec:
 apiVersion: kubeai.org/v1
 kind: Model
 metadata:
-  name: gemma2-2b-cpu
+  name: gemma3-4b-cpu
 spec:
   features: [TextGeneration]
-  url: ollama://gemma2:2b
+  url: ollama://gemma3:4b
   engine: OLlama
   minReplicas: 0
   resourceProfile: cpu:2
