@@ -1,0 +1,99 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: download-models
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      download-models:
+        type: job
+        job:
+          ttlSecondsAfterFinished: 10
+        containers:
+          ollama:
+            image:
+              repository: ollama/ollama
+              tag: latest
+            env:
+              OLLAMA_MODELS: "gemma3:4b"
+            command:
+              - /bin/sh
+              - -c
+              - |
+                /bin/ollama serve &
+                echo "Waiting for Ollama server to start..."
+                sleep 10
+
+                for model in $OLLAMA_MODELS; do
+                  # Replace punctuation with dash for folder name
+                  safe_name=$(echo "$model" | sed 's/[^a-zA-Z0-9]/-/g')
+                  model_path="/model/$safe_name"
+                  echo "Pulling model $model into $model_path..."
+
+                  mkdir -p "$model_path"
+                  export OLLAMA_MODELS_DIR="$model_path"
+
+                  if ! /bin/ollama pull "$model"; then
+                    echo "Failed to pull model: $model"
+                    exit 1
+                  fi
+                done
+
+                echo "Listing model directories and files:"
+                find /model -type f
+          huggingface:
+            image:
+              repository: public.ecr.aws/docker/library/python
+              tag: 3.10-slim
+            env:
+              HF_MODELS: "Systran/faster-whisper-small.en"
+            command:
+              - /bin/sh
+              - -c
+              - |
+                echo "Installing dependencies..."
+                pip install --no-cache-dir "huggingface_hub[cli]"
+
+                for model in $HF_MODELS; do
+                  # Create a safe folder name by replacing punctuation with dashes
+                  safe_name=$(echo "$model" | sed 's/[^a-zA-Z0-9]/-/g')
+                  model_path="/models/$safe_name"
+                  echo "Downloading Hugging Face model $model into $model_path"
+
+                  mkdir -p "$model_path"
+
+                  # Use huggingface-cli via Python script to download model
+                  huggingface-cli download $model --local-dir $model_path
+                done
+
+                echo "Model download complete. Listing files:"
+                find /models -type f
+        pod:
+          restartPolicy: OnFailure
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile: { type: RuntimeDefault }
+    persistence:
+      models:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/minio
+        globalMounts:
+          - path: /models
+            subPath: kubeai
