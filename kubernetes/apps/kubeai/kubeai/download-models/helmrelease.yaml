@@ -44,7 +44,7 @@ spec:
                   echo "Pulling model $model into $model_path..."
 
                   mkdir -p "$model_path"
-                  export OLLAMA_MODELS_DIR="$model_path"
+                  chown -R 1000:1000 $model_path
 
                   if ! /bin/ollama pull "$model"; then
                     echo "Failed to pull model: $model"
@@ -74,21 +74,17 @@ spec:
                   echo "Downloading Hugging Face model $model into $model_path"
 
                   mkdir -p "$model_path"
+                  chown -R 1000:1000 $model_path
 
                   # Use huggingface-cli via Python script to download model
-                  /.local/bin/huggingface-cli download $model --local-dir $model_path
+                  huggingface-cli download $model --local-dir $model_path
+
                 done
 
                 echo "Model download complete. Listing files:"
                 find /models -type f
         pod:
           restartPolicy: OnFailure
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        seccompProfile: { type: RuntimeDefault }
     persistence:
       tmp:
         type: emptyDir
