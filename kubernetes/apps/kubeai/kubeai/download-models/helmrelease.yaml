@@ -94,6 +94,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /.ollama
+          - path: /.local
       models:
         type: nfs
         server: nas.internal
