@@ -24,6 +24,27 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &app kubeai-download-models
+  namespace: &namespace kubeai
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 1h
+  path: ./kubernetes/apps/kubeai/kubeai/download-models
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &app kubeai-models
   namespace: &namespace kubeai
 spec:
@@ -32,6 +53,8 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: kubeai
+      namespace: kubeai
+    - name: kubeai-download-models
       namespace: kubeai
   interval: 1h
   path: ./kubernetes/apps/kubeai/kubeai/models
