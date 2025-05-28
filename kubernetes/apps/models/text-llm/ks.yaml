@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app gemma
+  name: &app text-llm
   namespace: &namespace models
 spec:
   commonMetadata:
@@ -15,7 +15,7 @@ spec:
     - name: huggingface-token
       namespace: models
   interval: 1h
-  path: ./kubernetes/apps/models/gemma/app
+  path: ./kubernetes/apps/models/text-llm/app
   prune: true
   retryInterval: 2m
   sourceRef:

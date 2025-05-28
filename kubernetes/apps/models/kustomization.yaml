@@ -6,4 +6,4 @@ components:
   - ../../components/common
 resources:
   - ./huggingface-token/ks.yaml
-  - ./gemma/ks.yaml
+  - ./text-llm/ks.yaml
