@@ -57,7 +57,7 @@ spec:
           huggingface:
             image:
               repository: public.ecr.aws/docker/library/python
-              tag: 3.10-slim
+              tag: 3.13-slim
             env:
               HF_MODELS: "Systran/faster-whisper-small.en"
             command:
