@@ -66,6 +66,7 @@ spec:
               - |
                 echo "Installing dependencies..."
                 pip install --no-cache-dir "huggingface_hub[cli]"
+                PATH=/.local/bin:$PATH
 
                 for model in $HF_MODELS; do
                   # Create a safe folder name by replacing punctuation with dashes
