@@ -53,7 +53,7 @@ spec:
                 done
 
                 echo "Listing model directories and files:"
-                find /model -type f
+                find /models -type f
           huggingface:
             image:
               repository: public.ecr.aws/docker/library/python
