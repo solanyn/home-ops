@@ -1,12 +1,11 @@
 ---
-# Source: models/templates/models.yaml
 apiVersion: kubeai.org/v1
 kind: Model
 metadata:
   name: faster-whisper-small-en-cpu
 spec:
   features: [SpeechToText]
-  url: hf://Systran/faster-whisper-small.en
+  url: s3://kubeai/systran-faster-whisper-small-en
   engine: FasterWhisper
   minReplicas: 0
   resourceProfile: cpu:1
@@ -16,14 +15,13 @@ spec:
     - secretRef:
         name: kubeai-secret
 ---
-# Source: models/templates/models.yaml
 apiVersion: kubeai.org/v1
 kind: Model
 metadata:
   name: gemma3-4b-cpu
 spec:
   features: [TextGeneration]
-  url: ollama://gemma3:4b
+  url: s3://kubeai/gemma3-4b
   engine: OLlama
   minReplicas: 0
   resourceProfile: cpu:2
