@@ -9,7 +9,7 @@ spec:
         name: huggingface
       args:
         - --model_name=Qwen3-8B
-        - --model_id=Qwen/Qwen3-8B
+        - --model_id=unsloth/Qwen3-8B-GGUF
         - --trust_remote_code
       env:
         - name: HF_TOKEN
