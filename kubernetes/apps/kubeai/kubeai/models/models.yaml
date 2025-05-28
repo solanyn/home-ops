@@ -1,0 +1,24 @@
+---
+# Source: models/templates/models.yaml
+apiVersion: kubeai.org/v1
+kind: Model
+metadata:
+  name: faster-whisper-medium-en-cpu
+spec:
+  features: [SpeechToText]
+  url: hf://Systran/faster-whisper-medium.en
+  engine: FasterWhisper
+  minReplicas: 0
+  resourceProfile: cpu:1
+---
+# Source: models/templates/models.yaml
+apiVersion: kubeai.org/v1
+kind: Model
+metadata:
+  name: gemma2-2b-cpu
+spec:
+  features: [TextGeneration]
+  url: ollama://gemma2:2b
+  engine: OLlama
+  minReplicas: 0
+  resourceProfile: cpu:2
