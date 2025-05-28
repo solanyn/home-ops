@@ -5,9 +5,9 @@ metadata:
   name: faster-whisper-small-en-cpu
 spec:
   features: [SpeechToText]
-  url: s3://kubeai/systran-faster-whisper-small-en
+  url: s3://kubeai/Systran-faster-whisper-small-en
   engine: FasterWhisper
-  minReplicas: 0
+  minReplicas: 1
   resourceProfile: cpu:1
   env:
     AWS_ENDPOINT_URL: http://minio.default.svc.cluster.local:9000
@@ -23,7 +23,7 @@ spec:
   features: [TextGeneration]
   url: s3://kubeai/gemma3-4b
   engine: OLlama
-  minReplicas: 0
+  minReplicas: 1
   resourceProfile: cpu:2
   env:
     AWS_ENDPOINT_URL: http://minio.default.svc.cluster.local:9000
