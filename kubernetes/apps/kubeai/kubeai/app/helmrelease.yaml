@@ -36,7 +36,6 @@ spec:
     secrets:
       huggingface:
         create: false
-        name: kubeai-secret
     metrics:
       prometheusOperator:
         vLLMPodMonitor:

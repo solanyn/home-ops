@@ -10,6 +10,11 @@ spec:
   engine: FasterWhisper
   minReplicas: 0
   resourceProfile: cpu:1
+  env:
+    AWS_ENDPOINT_URL: http://minio.default.svc.cluster.local:9000
+  envFrom:
+    - secretRef:
+        name: kubeai-secret
 ---
 # Source: models/templates/models.yaml
 apiVersion: kubeai.org/v1
@@ -22,3 +27,8 @@ spec:
   engine: OLlama
   minReplicas: 0
   resourceProfile: cpu:2
+  env:
+    AWS_ENDPOINT_URL: http://minio.default.svc.cluster.local:9000
+  envFrom:
+    - secretRef:
+        name: kubeai-secret
