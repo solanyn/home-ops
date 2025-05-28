@@ -40,7 +40,7 @@ spec:
                 for model in $OLLAMA_MODELS; do
                   # Replace punctuation with dash for folder name
                   safe_name=$(echo "$model" | sed 's/[^a-zA-Z0-9]/-/g')
-                  model_path="/model/$safe_name"
+                  model_path="/models/$safe_name"
                   echo "Pulling model $model into $model_path..."
 
                   mkdir -p "$model_path"
