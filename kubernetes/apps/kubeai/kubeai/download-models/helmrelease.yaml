@@ -76,7 +76,7 @@ spec:
                   mkdir -p "$model_path"
 
                   # Use huggingface-cli via Python script to download model
-                  huggingface-cli download $model --local-dir $model_path
+                  /.local/bin/huggingface-cli download $model --local-dir $model_path
                 done
 
                 echo "Model download complete. Listing files:"
