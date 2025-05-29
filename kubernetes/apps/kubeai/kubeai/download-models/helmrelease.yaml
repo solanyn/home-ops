@@ -20,8 +20,6 @@ spec:
     controllers:
       download-models:
         type: job
-        job:
-          ttlSecondsAfterFinished: 10
         containers:
           ollama:
             image:
