@@ -35,6 +35,9 @@ spec:
                 echo "Waiting for Ollama server to start..."
                 sleep 10
 
+                mkdir -p /.ollama/models
+                chown -R 1000:1000 /.ollama/models
+
                 for model in $OLLAMA_MODELS; do
                   if ! /bin/ollama pull "$model"; then
                     echo "Failed to pull model: $model"
