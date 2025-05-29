@@ -21,7 +21,7 @@ metadata:
   name: gemma3-4b-cpu
 spec:
   features: [TextGeneration]
-  url: s3://kubeai/gemma3-4b
+  url: s3://kubeai/ollama
   engine: OLlama
   minReplicas: 1
   resourceProfile: cpu:2
