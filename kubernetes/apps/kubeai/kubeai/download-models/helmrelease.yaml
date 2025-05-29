@@ -36,14 +36,6 @@ spec:
                 sleep 10
 
                 for model in $OLLAMA_MODELS; do
-                  # Replace punctuation with dash for folder name
-                  safe_name=$(echo "$model" | sed 's/[^a-zA-Z0-9]/-/g')
-                  model_path="/models/$safe_name"
-                  echo "Pulling model $model into $model_path..."
-
-                  mkdir -p "$model_path"
-                  chown -R 1000:1000 $model_path
-
                   if ! /bin/ollama pull "$model"; then
                     echo "Failed to pull model: $model"
                     exit 1
@@ -51,7 +43,7 @@ spec:
                 done
 
                 echo "Listing model directories and files:"
-                find /models -type f
+                find /.ollama -type f
           huggingface:
             image:
               repository: public.ecr.aws/docker/library/python
@@ -88,7 +80,6 @@ spec:
       tmp:
         type: emptyDir
         globalMounts:
-          - path: /.ollama
           - path: /.local
       models:
         type: nfs
@@ -97,3 +88,5 @@ spec:
         globalMounts:
           - path: /models
             subPath: kubeai
+          - path: /.ollama
+            subPath: kubeai/ollama
