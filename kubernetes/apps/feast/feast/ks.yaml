@@ -3,19 +3,20 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app redpanda
-  namespace: &namespace kafka-system
+  name: &app feast
+  namespace: &namespace feast
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/kafka-system/redpanda/app
-  prune: false
+  path: ./kubernetes/apps/feast/feast/app
+  prune: true
+  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
   timeout: 5m
-  wait: true
+  wait: false
