@@ -6,5 +6,7 @@ resources:
   - ./helmrelease.yaml
 configMapGenerator:
   - name: models
+    files:
+      - ./resources/models.yaml
 generatorOptions:
   disableNameSuffixHash: true
