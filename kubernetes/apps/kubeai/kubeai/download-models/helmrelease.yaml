@@ -52,17 +52,13 @@ spec:
                 find /.ollama -type f
           huggingface:
             image:
-              repository: public.ecr.aws/docker/library/python
+              repository: ghcr.io/astral-sh/uv
               tag: 3.13-slim
             envFrom: *envFrom
             command:
               - /bin/sh
               - -c
               - |
-                echo "Installing dependencies..."
-                pip install --no-cache-dir "huggingface_hub[cli]"
-                PATH=/.local/bin:$PATH
-
                 for model in $HF_MODELS; do
                   # Create a safe folder name by replacing punctuation with dashes
                   safe_name=$(echo "$model" | sed 's/[^a-zA-Z0-9]/-/g')
@@ -73,8 +69,7 @@ spec:
                   chown -R 1000:1000 $model_path
 
                   # Use huggingface-cli via Python script to download model
-                  huggingface-cli download $model --local-dir $model_path
-
+                  uv tool run --from "huggingface-hub[cli]" huggingface-cli download $model --local-dir $model_path
                 done
 
                 echo "Model download complete. Listing files:"
