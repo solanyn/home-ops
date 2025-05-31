@@ -50,7 +50,6 @@ spec:
       enabled: true
       host: pulsar-proxy.kafka.svc.cluster.local
       port: 6650
-      namespace: kafka
     externalS3:
       enabled: true
   valuesFrom:
