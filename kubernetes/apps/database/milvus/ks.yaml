@@ -9,6 +9,11 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: minio
+      namespace: default
+    - name: pulsar
+      namespace: kafka
   interval: 1h
   path: ./kubernetes/apps/database/milvus/app
   prune: false
