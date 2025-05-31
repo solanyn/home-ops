@@ -3,81 +3,20 @@ kind: Secret
 metadata:
   name: qbtools-config-secret
 stringData:
-  config.yaml: |
-    trackers:
-      - name: myanonamouse
-        urls: ["myanonamouse.net"]
-        required_seed_ratio: 1.01
-        required_seed_days: 3.1
-      - name: avistaz
-        urls: ["avistaz.to"]
-        required_seed_ratio: 1.01
-        required_seed_days: 14.1
-      - name: privatehd
-        urls: ["privatehd.to"]
-        required_seed_ratio: 1
-        required_seed_days: 14.1
-      - name: cinemaz
-        urls: ["cinemaz.to"]
-        required_seed_ratio: 1.01
-        required_seed_days: 14.1
-      - name: exoticaz
-        urls: ["exoticaz.to"]
-        required_seed_ratio: 1.01
-        required_seed_days: 14.1
-      - name: animetorrents
-        urls: ["animetorrents.me"]
-        required_seed_ratio: 20
-        required_seed_days: 10000
-      - name: hawke.uno
-        urls: ["hawke.uno"]
-        required_seed_ratio: 2.01
-        required_seed_days: 5.1
-      - name: orpheus
-        urls: ["opsfet.ch"]
-        required_seed_ratio: 20
-        required_seed_days: 10000
-      - name: milkie
-        urls: ["milkie.cc"]
-        required_seed_ratio: 0.01
-        required_seed_days: 0.1
-      - name: digitalcore.club
-        urls: ["digitalcore.club"]
-        required_seed_ratio: 1.01
-        required_seed_days: 5.1
-      - name: torrentleech.org
-        urls: ["torrentleech.org", "tleechreload.org"]
-        required_seed_ratio: 1.01
-        required_seed_days: 7.1
-      - name: seedpool.org
-        urls: ["seedpool.org"]
-        required_seed_ratio: 1.01
-        required_seed_days: 3.1
-      - name: sportscult.org
-        urls: ["sportscult.org"]
-        required_seed_ratio: 2.01
-        required_seed_days: 7.1
-      - name: lst.gg
-        urls: ["lst.gg"]
-        required_seed_ratio: 0
-        required_seed_days: 3.1
-      - name: oldtoons.world
-        urls: ["oldtoons.world"]
-        required_seed_ratio: 1.01
-        required_seed_days: 2.1
-      - name: happyfappy
-        urls: ["happyfappy.org"]
-        required_seed_ratio: 1.01
-        required_seed_days: 7.1
-      - name: ianon
-        urls: ["ianon.app"]
-        required_seed_ratio: 1.01
-        required_seed_days: 30.1
-      - name: fearnopeer
-        urls: ["fearnopeer.com"]
-        required_seed_ratio: 1.01
-        required_seed_days: 14.1
-      - name: blutopia
-        urls: ["blutopia.cc", "blutopia.xyz"]
-        required_seed_ratio: 0
-        required_seed_days: 14.1
+  config.yaml: ENC[AES256_GCM,data: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,iv:BqUE+biRfh0cPaYaiT5BPH+nd8Z+TUbfbuBPubFE9Rw=,tag:CcZ5Y9vkf/9PjgGWByb60Q==,type:str]
+sops:
+  age:
+    - recipient: age1yq7xwc03yg7gp2ew9k3jehrz6ctlmuwsffypwvskvl27e26frqmqa5d7de
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBrZTFZbDByTlNSQ3hhUEIz
+        MWx3LzRmd3BsY2NCMjF5RTJGeUhhRE13UGpvCmhEZmt1QXI0MkdRNG80K0w3RWhh
+        TzJQekcwbSt1QTAxYjhZY2RsZmRQU1UKLS0tIEtxRW5LRmtSeFhVWDRyVHM1QlRH
+        a21EYVhUM3FZUHJaMUw2T2orVENUUUUKMkKjHxunjU9+XHmCtYwj3dBYf+9vsgLb
+        DvghFJNls8CoXvF2wf5Q8xr3lemTLgLZGZf2VwnKAjoi5Ur1tw0Dng==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-05-31T08:06:55Z"
+  mac: ENC[AES256_GCM,data:WM9+elxsH+CcYf0U7Y24BJQ1o8AhPoPYEiowpQrbicPGUap686OOTzMI0xvn0I9qSpnvQu/PuM55UN2hDX9bJWqWa34pqhTg5pKe5vRsS5ich8u1BsdiE8PHE6ZaAe3Qio8Gn9qFrxCFRUhCOXGPVSuOc0kpdRF55ClUDP7Tanc=,iv:UM94ZuwGmn/JGtfKqok0r2DdXDWt5CDHzfXnUHupvoE=,tag:GMWmEaGRhTf3WsZwQYhM/A==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  mac_only_encrypted: true
+  version: 3.10.2
