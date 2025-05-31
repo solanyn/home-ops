@@ -96,6 +96,9 @@ spec:
     persistence:
       tmp:
         type: emptyDir
+        globalMounts:
+          - path: /tmp
+          - path: /.cache
       config:
         existingClaim: *app
         globalMounts:
@@ -103,15 +106,13 @@ spec:
             subPath: config
           - path: /blobs
             subPath: blobs
+          - path: /generated
+            subPath: generated
       cache:
         existingClaim: stash-cache
         globalMounts:
           - path: /cache
             subPath: cache
-          - path: /generated
-            subPath: generated
-          - path: /.cache
-            subPath: uv
       media:
         type: nfs
         server: nas.internal
