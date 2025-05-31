@@ -5,8 +5,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: models
-    files:
-      - ./resources/models.yaml
+  - name: download-models
+    env: ./resources/models.env
 generatorOptions:
   disableNameSuffixHash: true

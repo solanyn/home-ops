@@ -27,7 +27,7 @@ spec:
               tag: latest
             envFrom: &envFrom
               - configMapRef:
-                  name: models
+                  name: download-models
             command:
               - /bin/sh
               - -c
