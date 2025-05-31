@@ -28,6 +28,8 @@ spec:
             envFrom: &envFrom
               - configMapRef:
                   name: download-models
+              - secretRef:
+                  name: kubeai-secret
             command:
               - /bin/sh
               - -c
