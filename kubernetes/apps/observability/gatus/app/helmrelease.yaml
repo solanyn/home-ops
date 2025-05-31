@@ -45,9 +45,8 @@ spec:
             resources: &resources
               requests:
                 cpu: 10m
-                memory: 128Mi
               limits:
-                memory: 256Mi
+                memory: 128Mi
         containers:
           app:
             image:
@@ -103,7 +102,9 @@ spec:
             scrapeTimeout: 10s
     route:
       app:
-        hostnames: ["status.goyangi.cloud"]
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.cloud"
+          - status.goyangi.cloud
         parentRefs:
           - name: external
             namespace: kube-system
