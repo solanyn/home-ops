@@ -52,9 +52,10 @@ spec:
       requests:
         cpu: 10m
         memory: 64Mi
-      useSingleCommonVolume: true
-      common:
-        name: pulsar
+      journal:
+        storageClassName: openebs-hostpath
+        size: 1Gi
+      ledgers:
         storageClassName: openebs-hostpath
         size: 1Gi
     autorecovery:
