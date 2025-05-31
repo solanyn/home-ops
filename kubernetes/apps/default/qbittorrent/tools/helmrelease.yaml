@@ -64,8 +64,6 @@ spec:
                 "prune",
                 "--exclude-category",
                 "manual",
-                "--exclude-tag",
-                "added:1d",
                 "--include-tag",
                 "unregistered",
                 "--with-data",
@@ -85,6 +83,10 @@ spec:
                 "readarr-ab",
                 "--exclude-category",
                 "readarr",
+                "--include-category",
+                "hit-and-run",
+                "--include-category",
+                "other",
                 "--exclude-tag",
                 "added:1d",
                 "--include-tag",
@@ -116,22 +118,6 @@ spec:
           app:
             !!merge <<: *container
             args: ["reannounce", "--process-seeding"]
-      limiter:
-        containers:
-          app:
-            <<: *container
-            args:
-              [
-                "limiter",
-                "--max-line-speed-mbps",
-                "100",
-                "--max-percent",
-                "0.9",
-                "--limit-percent",
-                "0.45",
-                "--interval",
-                "5",
-              ]
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
