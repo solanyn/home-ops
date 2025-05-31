@@ -53,7 +53,7 @@ spec:
           huggingface:
             image:
               repository: ghcr.io/astral-sh/uv
-              tag: 3.13-slim
+              tag: python3.13-alpine
             envFrom: *envFrom
             command:
               - /bin/sh
