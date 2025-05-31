@@ -44,6 +44,8 @@ spec:
           reloader.stakater.com/auto: "true"
       server:
         appAnnotations: *annotations
+        storageSize: 1Gi
+        storageClassName: openebs-hostpath
     bookkeeper:
       appAnnotations: *annotations
       replicaCount: 3
@@ -53,7 +55,7 @@ spec:
       useSingleCommonVolume: true
       common:
         name: pulsar
-        local_storage: true
+        storageClassName: openebs-hostpath
         size: 1Gi
     autorecovery:
       appAnnotations: *annotations
@@ -72,6 +74,10 @@ spec:
       appAnnotations: *annotations
     pulsar_manager:
       appAnnotations: *annotations
+      volumes:
+        persistence: true
+        data:
+          storageClassName: openebs-hostpath
       initContainers:
         - name: init-db
           image: ghcr.io/home-operations/postgres-init:17
