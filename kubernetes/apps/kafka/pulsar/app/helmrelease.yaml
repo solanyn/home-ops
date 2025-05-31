@@ -1,0 +1,85 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: pulsar
+  namespace: kafka
+spec:
+  interval: 12h
+  url: https://pulsar.apache.org/charts
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pulsar
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: pulsar
+      version: 4.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: pulsar
+        namespace: kafka
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    components:
+      zookeeper: false
+      oxia: true
+      functions: true
+      pulsar_manager: true
+    oxia:
+      coordinator:
+        appAnnotations: &annotations
+          reloader.stakater.com/auto: "true"
+      server:
+        appAnnotations: *annotations
+    bookkeeper:
+      bookie:
+        appAnnotations: *annotations
+        replicaCount: 3
+      requests:
+        cpu: 10m
+        memory: 64Mi
+      useSingleCommonVolume: true
+      # common:
+      #   name: pulsar
+      #   local_storage: false
+      #   selector:
+      #     matchLabels:
+      #       app: pulsar
+    autorecovery:
+      appAnnotations: *annotations
+    broker:
+      replicaCount: 1
+      appAnnotations: *annotations
+      storageOffload:
+        driver: aws-s3
+        serviceEndpoint: http://minio.default.svc.cluster.local:9000
+        bucket: pulsar
+        secret: pulsar-secret
+    proxy:
+      replicaCount: 1
+      appAnnotations: *annotations
+    toolset:
+      appAnnotations: *annotations
+    pulsar_manager:
+      appAnnotations: *annotations
+      initContainers:
+        - name: init-db
+          image: ghcr.io/home-operations/postgres-init:17
+          envFrom:
+            - secretRef:
+                name: pulsar-secret
+    victoria-metrics-k8s-stack:
+      enabled: false
