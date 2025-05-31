@@ -51,12 +51,10 @@ spec:
         cpu: 10m
         memory: 64Mi
       useSingleCommonVolume: true
-      # common:
-      #   name: pulsar
-      #   local_storage: false
-      #   selector:
-      #     matchLabels:
-      #       app: pulsar
+      common:
+        name: pulsar
+        local_storage: true
+        size: 5Gi
     autorecovery:
       appAnnotations: *annotations
     broker:
