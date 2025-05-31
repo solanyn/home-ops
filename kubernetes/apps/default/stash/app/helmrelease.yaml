@@ -95,6 +95,8 @@ spec:
             subPath: cache
           - path: /generated
             subPath: generated
+          - path: /.cache/uv
+            subPath: uv
       media:
         type: nfs
         server: nas.internal
