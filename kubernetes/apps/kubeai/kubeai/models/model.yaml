@@ -11,9 +11,6 @@ spec:
   resourceProfile: cpu:1
   env:
     AWS_ENDPOINT_URL: http://minio.default.svc.cluster.local:9000
-  envFrom:
-    - secretRef:
-        name: kubeai-secret
 ---
 apiVersion: kubeai.org/v1
 kind: Model
@@ -27,6 +24,3 @@ spec:
   resourceProfile: cpu:1
   env:
     AWS_ENDPOINT_URL: http://minio.default.svc.cluster.local:9000
-  envFrom:
-    - secretRef:
-        name: kubeai-secret
