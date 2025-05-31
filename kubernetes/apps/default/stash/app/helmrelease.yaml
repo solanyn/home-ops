@@ -26,13 +26,19 @@ spec:
             image:
               repository: stashapp/stash
               tag: v0.28.1@sha256:645f6c15b079410d50d488dbeb247c92f25534094dad4e15d886e47648b897f7
-            command: ["python -m venv /config/.venv"]
+            command:
+              - /bin/sh
+              - "-c"
+              - python -m venv /config/.venv
         containers:
           app:
             image:
               repository: stashapp/stash
               tag: v0.28.1@sha256:645f6c15b079410d50d488dbeb247c92f25534094dad4e15d886e47648b897f7
-            command: ["source /config/.venv/bin/activate && stash"]
+            command:
+              - /bin/sh
+              - "-c"
+              - source /config/.venv/bin/activate && stash
             env:
               TZ: Australia/Sydney
               USER: 1000
