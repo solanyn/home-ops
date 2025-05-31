@@ -59,6 +59,8 @@ spec:
               - /bin/sh
               - -c
               - |
+                set -Eeuxo pipefail
+
                 uv tool run --from "huggingface-hub[cli]" huggingface-cli login --token
                 for model in $HF_MODELS; do
                   safe_name=$(echo "$model" | sed 's/[^a-zA-Z0-9]/-/g')
