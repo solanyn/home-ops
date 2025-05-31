@@ -10,3 +10,4 @@ resources:
   - ./dragonfly/ks.yaml
   - ./mariadb/ks.yaml
   - ./milvus/ks.yaml
+  - ./vitess/ks.yaml
