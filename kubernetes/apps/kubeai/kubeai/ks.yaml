@@ -54,7 +54,7 @@ spec:
   dependsOn:
     - name: kubeai
       namespace: kubeai
-    - name: kubeai-download-models
+    - name: download-models
       namespace: kubeai
   interval: 1h
   path: ./kubernetes/apps/kubeai/kubeai/models
