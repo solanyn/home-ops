@@ -21,7 +21,6 @@ resources:
   - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./label-studio/ks.yaml
-  - ./lidarr/ks.yaml
   - ./maintainerr/ks.yaml
   - ./miniflux/ks.yaml
   - ./minio/ks.yaml
@@ -32,7 +31,6 @@ resources:
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
   - ./readarr/ks.yaml
-  - ./readarr-ab/ks.yaml
   - ./recyclarr/ks.yaml
   - ./romm/ks.yaml
   - ./rreading-glasses/ks.yaml
