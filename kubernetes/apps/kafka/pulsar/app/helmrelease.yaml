@@ -52,12 +52,12 @@ spec:
       requests:
         cpu: 10m
         memory: 64Mi
-      journal:
-        storageClassName: openebs-hostpath
-        size: 1Gi
-      ledgers:
-        storageClassName: openebs-hostpath
-        size: 1Gi
+      volumes:
+        useSingleCommonVolume: true
+        common:
+          name: common
+          storageClassName: openebs-hostpath
+          size: 1Gi
     autorecovery:
       appAnnotations: *annotations
     broker:
