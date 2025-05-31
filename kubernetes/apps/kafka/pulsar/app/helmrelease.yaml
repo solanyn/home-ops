@@ -57,7 +57,7 @@ spec:
         common:
           name: common
           storageClassName: openebs-hostpath
-          size: 1Gi
+          size: 5Gi
     autorecovery:
       appAnnotations: *annotations
     broker:
