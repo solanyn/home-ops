@@ -25,8 +25,9 @@ spec:
             image:
               repository: ollama/ollama
               tag: latest
-            env:
-              OLLAMA_MODELS: ""
+            envFrom: &envFrom
+              - configMapRef:
+                  name: models
             command:
               - /bin/sh
               - -c
@@ -51,8 +52,7 @@ spec:
             image:
               repository: public.ecr.aws/docker/library/python
               tag: 3.13-slim
-            env:
-              HF_MODELS: "Systran/faster-whisper-small.en google/gemma-3-4b-it"
+            envFrom: *envFrom
             command:
               - /bin/sh
               - -c
