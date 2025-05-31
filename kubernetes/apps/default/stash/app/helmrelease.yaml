@@ -95,7 +95,7 @@ spec:
             subPath: cache
           - path: /generated
             subPath: generated
-          - path: /.cache/uv
+          - path: /.cache
             subPath: uv
       media:
         type: nfs
