@@ -54,7 +54,7 @@ spec:
       common:
         name: pulsar
         local_storage: true
-        size: 5Gi
+        size: 1Gi
     autorecovery:
       appAnnotations: *annotations
     broker:
