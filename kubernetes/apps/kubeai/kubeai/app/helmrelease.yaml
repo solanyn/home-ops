@@ -34,10 +34,6 @@ spec:
       retries: 3
   values:
     secrets:
-      alibaba:
-        create: false
-      gcp:
-        create: false
       aws:
         create: false
         name: kubeai-secret
