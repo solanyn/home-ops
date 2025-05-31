@@ -5,9 +5,3 @@ kind: Kustomization
 resources:
   # renovate: datasource=github-releases depName=vitessio/vitess
   - https://raw.githubusercontent.com/vitessio/vitess/refs/tags/v22.0.0/examples/operator/operator.yaml
-patches:
-  - target:
-      kind: "*"
-    patch: |
-      metadata:
-        namespace: database
