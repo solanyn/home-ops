@@ -11,6 +11,6 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: pulsar-manager
+        - name: pulsar-pulsar-manager-admin
           namespace: kafka
-          port: 8080
+          port: 7750

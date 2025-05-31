@@ -5,5 +5,4 @@ namespace: kafka
 components:
   - ../../components/common
 resources:
-  - ./redpanda/ks.yaml
   - ./pulsar/ks.yaml
