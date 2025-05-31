@@ -45,9 +45,8 @@ spec:
       server:
         appAnnotations: *annotations
     bookkeeper:
-      bookie:
-        appAnnotations: *annotations
-        replicaCount: 3
+      appAnnotations: *annotations
+      replicaCount: 3
       requests:
         cpu: 10m
         memory: 64Mi
