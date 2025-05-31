@@ -75,6 +75,8 @@ spec:
       appAnnotations: *annotations
     pulsar_manager:
       appAnnotations: *annotations
+      configData:
+        URL: "jdbc:postgresql://postgres17-rw.database.svc.cluster.local:5432/pulsar"
       volumes:
         persistence: true
         data:
