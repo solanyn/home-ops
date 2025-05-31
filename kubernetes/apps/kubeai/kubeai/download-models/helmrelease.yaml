@@ -26,7 +26,7 @@ spec:
               repository: ollama/ollama
               tag: latest
             env:
-              OLLAMA_MODELS: "gemma3:4b"
+              OLLAMA_MODELS: ""
             command:
               - /bin/sh
               - -c
@@ -52,7 +52,7 @@ spec:
               repository: public.ecr.aws/docker/library/python
               tag: 3.13-slim
             env:
-              HF_MODELS: "Systran/faster-whisper-small.en"
+              HF_MODELS: "Systran/faster-whisper-small.en google/gemma-3-4b-it"
             command:
               - /bin/sh
               - -c
