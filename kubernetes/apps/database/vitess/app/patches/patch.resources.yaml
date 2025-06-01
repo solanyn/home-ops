@@ -1,0 +1,33 @@
+$patch: delete
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vitess-operator
+  namespace: example
+---
+$patch: delete
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: vitess-operator-backup-storage
+  namespace: example
+---
+$patch: delete
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: vitess-operator-backup-storage
+  namespace: example
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: vitess-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: vitess-operator
+subjects:
+  - kind: ServiceAccount
+    name: vitess-operator
+    namespace: database
