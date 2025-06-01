@@ -82,11 +82,9 @@ spec:
             port: &port 8096
     route:
       app:
-        hostnames:
-          - "{{ .Release.Name }}.goyangi.io"
-          - jellyfin.goyangi.io
+        hostnames: ["{{ .Release.Name }}.goyangi.io"]
         parentRefs:
-          - name: external
+          - name: internal
             namespace: kube-system
             sectionName: https
         rules:
