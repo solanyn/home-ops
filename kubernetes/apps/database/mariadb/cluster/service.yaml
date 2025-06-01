@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: mariadb-lb
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: mariadb.goyangi.cloud
+    external-dns.alpha.kubernetes.io/hostname: mariadb.goyangi.io
     lbipam.cilium.io/ips: 192.168.1.135, ::ffff:192.168.1.135
 spec:
   type: LoadBalancer

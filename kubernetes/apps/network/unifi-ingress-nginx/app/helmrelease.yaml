@@ -36,7 +36,7 @@ spec:
       replicaCount: 1
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: &hostname internal.ingress.goyangi.cloud
+          external-dns.alpha.kubernetes.io/hostname: &hostname internal.ingress.goyangi.io
           lbipam.cilium.io/ips: 192.168.1.151, ::ffff:192.168.1.151
       ingressClassResource:
         name: internal
@@ -75,7 +75,7 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: kube-system/goyangi-cloud-tls
+        default-ssl-certificate: kube-system/goyangi-io-tls
         publish-status-address: *hostname
       terminationGracePeriodSeconds: 120
       publishService:

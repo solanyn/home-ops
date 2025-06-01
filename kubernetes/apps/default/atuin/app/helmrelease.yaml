@@ -72,7 +72,7 @@ spec:
             port: *port
     route:
       app:
-        hostnames: ["sh.goyangi.cloud"]
+        hostnames: ["sh.goyangi.io"]
         parentRefs:
           - name: internal
             namespace: kube-system

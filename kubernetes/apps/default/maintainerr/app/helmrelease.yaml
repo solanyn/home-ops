@@ -61,7 +61,7 @@ spec:
             port: &port 6246
     route:
       app:
-        hostnames: ["maintainerr.goyangi.cloud"]
+        hostnames: ["maintainerr.goyangi.io"]
         parentRefs:
           - name: internal
             namespace: kube-system

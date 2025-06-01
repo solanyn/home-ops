@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: postgres17-lb
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: postgres17.goyangi.cloud
+    external-dns.alpha.kubernetes.io/hostname: postgres17.goyangi.io
     lbipam.cilium.io/ips: 192.168.1.125, ::ffff:192.168.1.125
 spec:
   type: LoadBalancer

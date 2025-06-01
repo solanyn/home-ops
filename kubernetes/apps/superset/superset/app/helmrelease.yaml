@@ -109,7 +109,7 @@ spec:
                     "client_secret": os.getenv("SUPERSET_CLIENT_SECRET", ""),
                     "client_kwargs": {"scope": "openid email profile"},
                     "request_token_url": None,
-                    "server_metadata_url": "https://id.goyangi.cloud/.well-known/openid-configuration",
+                    "server_metadata_url": "https://id.goyangi.io/.well-known/openid-configuration",
                 }
             }
         ]

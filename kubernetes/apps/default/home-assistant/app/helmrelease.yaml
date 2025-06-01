@@ -62,8 +62,8 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.goyangi.cloud"
-          - hass.goyangi.cloud
+          - "{{ .Release.Name }}.goyangi.io"
+          - hass.goyangi.io
         parentRefs:
           - name: external
             namespace: kube-system

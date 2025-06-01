@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kochhaus-schemas.solanyn.dev/dragonflydb.io/dragonfly_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/dragonflydb.io/dragonfly_v1alpha1.json
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
@@ -29,7 +29,7 @@ spec:
     type: LoadBalancer
     annotations:
       lbipam.cilium.io/ips: 192.168.1.131, ::ffff:192.168.1.131
-      external-dns.alpha.kubernetes.io/hostname: redis.goyangi.cloud
+      external-dns.alpha.kubernetes.io/hostname: redis.goyangi.io
   topologySpreadConstraints:
     - maxSkew: 1
       topologyKey: "kubernetes.io/hostname"

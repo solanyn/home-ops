@@ -68,7 +68,7 @@ spec:
     sources: ["gateway-httproute", "service", "ingress"]
     txtOwnerId: main
     txtPrefix: k8s.main.
-    domainFilters: ["goyangi.cloud"]
+    domainFilters: ["goyangi.io"]
     serviceMonitor:
       enabled: true
     podAnnotations:

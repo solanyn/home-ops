@@ -29,8 +29,8 @@ spec:
               tag: 1.13.1@sha256:552f1577b38fdd2d9e1a52a5f945c5471f57feaed9684c7b88abc9640c4a2fac
             env:
               TIMEZONE: Australia/Sydney
-              API_ENDPOINT: &endpoint https://spotify.goyangi.cloud/api
-              CLIENT_ENDPOINT: https://spotify.goyangi.cloud
+              API_ENDPOINT: &endpoint https://spotify.goyangi.io/api
+              CLIENT_ENDPOINT: https://spotify.goyangi.io
               MONGO_ENDPOINT: mongodb://your-spotify-mongodb:27017/your_spotify # mongo sucks
               PORT: &port 8080
             envFrom:
@@ -91,8 +91,8 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.goyangi.cloud"
-          - spotify.goyangi.cloud
+          - "{{ .Release.Name }}.goyangi.io"
+          - spotify.goyangi.io
         parentRefs:
           - name: external
             namespace: kube-system

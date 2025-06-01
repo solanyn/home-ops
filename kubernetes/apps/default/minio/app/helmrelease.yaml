@@ -27,12 +27,12 @@ spec:
               repository: quay.io/minio/minio
               tag: RELEASE.2024-09-22T00-33-43Z@sha256:7d80fd232a2f7108aa6f133fcfe5fade3f1626d92d31ae1318076e7aa61928a2
             env:
-              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.goyangi.cloud,https://s3.goyangi.cloud
-              MINIO_BROWSER_REDIRECT_URL: https://minio.goyangi.cloud
+              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.goyangi.io,https://s3.goyangi.io
+              MINIO_BROWSER_REDIRECT_URL: https://minio.goyangi.io
               MINIO_PROMETHEUS_JOB_ID: minio
-              MINIO_PROMETHEUS_URL: https://prometheus.goyangi.cloud
+              MINIO_PROMETHEUS_URL: https://prometheus.goyangi.io
               MINIO_PROMETHEUS_AUTH_TYPE: public
-              MINIO_SERVER_URL: https://s3.goyangi.cloud
+              MINIO_SERVER_URL: https://s3.goyangi.io
               MINIO_STORAGE_CLASS_RRS: EC:0
               MINIO_STORAGE_CLASS_STANDARD: EC:0
               MINIO_UPDATE: "off"
@@ -90,7 +90,7 @@ spec:
             scrapeTimeout: 10s
     route:
       app:
-        hostnames: ["minio.goyangi.cloud"]
+        hostnames: ["minio.goyangi.io"]
         parentRefs:
           - name: internal
             namespace: kube-system
@@ -100,7 +100,7 @@ spec:
               - identifier: app
                 port: 9001
       s3:
-        hostnames: ["s3.goyangi.cloud"]
+        hostnames: ["s3.goyangi.io"]
         parentRefs:
           - name: internal
             namespace: kube-system
