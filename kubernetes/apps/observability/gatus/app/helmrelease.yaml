@@ -51,7 +51,9 @@ spec:
               GATUS_DELAY_START_SECONDS: 5
               GATUS_LOG_LEVEL: DEBUG
               WEB_PORT: &port 80
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: gatus-secret
             probes:
               liveness: &probes
                 enabled: true
