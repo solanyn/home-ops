@@ -38,7 +38,7 @@ spec:
               DB_PROVIDER: postgres
               PUID: 1000
               PGID: 1000
-              APP_URL: https://id.goyangi.cloud
+              APP_URL: https://id.goyangi.io
               TRUST_PROXY: true
               TZ: Australia/Sydney
               UPLOAD_PATH: /data/uploads
@@ -85,8 +85,8 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.goyangi.cloud"
-          - id.goyangi.cloud
+          - "{{ .Release.Name }}.goyangi.io"
+          - id.goyangi.io
         parentRefs:
           - name: external
             namespace: kube-system
