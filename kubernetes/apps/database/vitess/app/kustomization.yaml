@@ -5,3 +5,14 @@ kind: Kustomization
 resources:
   # renovate: datasource=github-releases depName=vitessio/vitess
   - https://raw.githubusercontent.com/vitessio/vitess/refs/tags/v22.0.0/examples/operator/operator.yaml
+transformers:
+  - |-
+    apiVersion: builtin
+    kind: NamespaceTransformer
+    metadata:
+      name: unused
+      namespace: database
+    setRoleBindingSubjects: allServiceAccounts
+    fieldSpecs:
+    - path: metadata/name
+      kind: Namespace
