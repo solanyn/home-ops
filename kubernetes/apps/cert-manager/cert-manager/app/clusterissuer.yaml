@@ -17,4 +17,3 @@ spec:
         selector:
           dnsZones:
             - goyangi.io
-            - solanyn.dev
