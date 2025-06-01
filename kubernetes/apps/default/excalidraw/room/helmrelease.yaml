@@ -58,8 +58,8 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.goyangi.cloud"
-          - draw-room.goyangi.cloud
+          - "{{ .Release.Name }}.goyangi.io"
+          - draw-room.goyangi.io
         parentRefs:
           - name: internal
             namespace: kube-system

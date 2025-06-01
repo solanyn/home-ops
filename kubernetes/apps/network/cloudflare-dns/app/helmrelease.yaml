@@ -56,7 +56,7 @@ spec:
     sources: ["crd", "gateway-httproute", "ingress"]
     txtOwnerId: default
     txtPrefix: k8s.
-    domainFilters: ["goyangi.cloud", "solanyn.dev"]
+    domainFilters: ["goyangi.io"]
     serviceMonitor:
       enabled: true
     podAnnotations:

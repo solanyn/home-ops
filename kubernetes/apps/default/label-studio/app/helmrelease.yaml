@@ -36,7 +36,7 @@ spec:
               repository: heartexlabs/label-studio
               tag: 1.18.0@sha256:cff1c92a94669d4837c6c42ffdcabcb19f5d2adf6f1208a690ff0c6b53e021ff
             env:
-              CSRF_TRUSTED_ORIGINS: "https://label-studio.goyangi.cloud"
+              CSRF_TRUSTED_ORIGINS: "https://label-studio.goyangi.io"
               EXPERIMENTAL_FEATURES: 1
               SSRF_PROTECTION_ENABLED: "true"
             envFrom: *envFrom
@@ -79,7 +79,7 @@ spec:
             port: *port
     route:
       app:
-        hostnames: ["label-studio.goyangi.cloud"]
+        hostnames: ["label-studio.goyangi.io"]
         parentRefs:
           - name: internal
             namespace: kube-system

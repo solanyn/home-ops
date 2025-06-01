@@ -16,5 +16,5 @@ spec:
               key: CLOUDFLARE_DNS_TOKEN
         selector:
           dnsZones:
-            - goyangi.cloud
+            - goyangi.io
             - solanyn.dev

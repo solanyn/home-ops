@@ -2,11 +2,11 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: goyangi-cloud
+  name: goyangi-io
 spec:
-  secretName: goyangi-cloud-tls
+  secretName: goyangi-io-tls
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
-  commonName: goyangi.cloud
-  dnsNames: ["goyangi.cloud", "*.goyangi.cloud", "solanyn.dev", "*.solanyn.dev"]
+  commonName: goyangi.io
+  dnsNames: ["goyangi.io", "*.goyangi.io"]

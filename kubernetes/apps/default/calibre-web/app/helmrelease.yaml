@@ -67,7 +67,7 @@ spec:
       app:
         className: internal
         hosts:
-          - host: "{{ .Release.Name }}.goyangi.cloud"
+          - host: "{{ .Release.Name }}.goyangi.io"
             paths:
               - path: /
                 pathType: Prefix

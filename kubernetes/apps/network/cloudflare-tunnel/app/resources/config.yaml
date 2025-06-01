@@ -1,13 +1,9 @@
 originRequest:
-  originServerName: "external.goyangi.cloud"
+  originServerName: "external.goyangi.io"
 
 ingress:
-  - hostname: "goyangi.cloud"
+  - hostname: "goyangi.io"
     service: &svc https://cilium-gateway-external.kube-system.svc.cluster.local
-  - hostname: "*.goyangi.cloud"
-    service: *svc
-  - hostname: "solanyn.dev"
-    service: *svc
-  - hostname: "*.solanyn.dev"
+  - hostname: "*.goyangi.io"
     service: *svc
   - service: http_status:404

@@ -81,8 +81,8 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.goyangi.cloud"
-          - requests.goyangi.cloud
+          - "{{ .Release.Name }}.goyangi.io"
+          - requests.goyangi.io
         parentRefs:
           - name: external
             namespace: kube-system
