@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/keda/nfs-scaler
   interval: 1h
   path: ./kubernetes/apps/default/minio/app
   postBuild:
