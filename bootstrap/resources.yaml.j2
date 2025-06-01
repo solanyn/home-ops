@@ -25,12 +25,12 @@ stringData:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: goyangi-cloud-tls
+  name: goyangi-io-tls
   namespace: kube-system
   annotations:
-    cert-manager.io/alt-names: '*.goyangi.cloud,goyangi.cloud'
-    cert-manager.io/certificate-name: goyangi-cloud
-    cert-manager.io/common-name: goyangi.cloud
+    cert-manager.io/alt-names: '*.goyangi.io,goyangi.io'
+    cert-manager.io/certificate-name: goyangi-io
+    cert-manager.io/common-name: goyangi.io
     cert-manager.io/ip-sans: ""
     cert-manager.io/issuer-group: ""
     cert-manager.io/issuer-kind: ClusterIssuer
@@ -40,8 +40,8 @@ metadata:
     controller.cert-manager.io/fao: "true"
 type: kubernetes.io/tls
 data:
-  tls.crt: op://kubernetes/goyangi-cloud-tls/tls.crt
-  tls.key: op://kubernetes/goyangi-cloud-tls/tls.key
+  tls.crt: op://kubernetes/goyangi-io-tls/tls.crt
+  tls.key: op://kubernetes/goyangi-io-tls/tls.key
 ---
  apiVersion: v1
  kind: Secret

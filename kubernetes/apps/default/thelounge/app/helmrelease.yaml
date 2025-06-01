@@ -52,7 +52,7 @@ spec:
             port: &port 9000
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.goyangi.cloud"]
+        hostnames: ["{{ .Release.Name }}.goyangi.io"]
         parentRefs:
           - name: internal
             namespace: kube-system

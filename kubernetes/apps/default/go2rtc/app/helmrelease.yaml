@@ -62,7 +62,7 @@ spec:
         controller: go2rtc
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: go2rtc-streams.goyangi.cloud
+          external-dns.alpha.kubernetes.io/hostname: go2rtc-streams.goyangi.io
           lbipam.cilium.io/ips: 192.168.1.124, ::ffff:192.168.1.124
         ports:
           http:
@@ -78,7 +78,7 @@ spec:
             protocol: UDP
     route:
       app:
-        hostnames: ["go2rtc.goyangi.cloud"]
+        hostnames: ["go2rtc.goyangi.io"]
         parentRefs:
           - name: internal
             namespace: kube-system

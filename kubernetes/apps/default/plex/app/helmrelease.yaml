@@ -28,7 +28,7 @@ spec:
               tag: 1.41.7.9823@sha256:86e83ad4b671c4326e4f2b4520aced967c60efdf1aaa77191aad6d2ee4148d59
             env:
               TZ: Australia/Sydney
-              PLEX_ADVERTISE_URL: https://plex.goyangi.cloud:443,http://192.168.1.128:32400
+              PLEX_ADVERTISE_URL: https://plex.goyangi.io:443,http://192.168.1.128:32400
               PLEX_NO_AUTH_NETWORKS: 192.168.1.0/24
             probes:
               liveness: &probes
@@ -79,7 +79,7 @@ spec:
             port: &port 32400
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.goyangi.cloud"]
+        hostnames: ["{{ .Release.Name }}.goyangi.io"]
         parentRefs:
           - name: external
             namespace: kube-system

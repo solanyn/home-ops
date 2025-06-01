@@ -36,7 +36,7 @@ spec:
               repository: ghcr.io/miniflux/miniflux
               tag: 2.2.9-distroless@sha256:d385f4678376ad1e20971b8e4018153423926423128cc66b3268b71901948a7b
             env:
-              BASE_URL: https://miniflux.goyangi.cloud
+              BASE_URL: https://miniflux.goyangi.io
               CREATE_ADMIN: "1"
               LOG_DATE_TIME: "1"
               METRICS_ALLOWED_NETWORKS: 10.42.0.0/16
@@ -94,7 +94,7 @@ spec:
             scrapeTimeout: 10s
     route:
       app:
-        hostnames: ["miniflux.goyangi.cloud"]
+        hostnames: ["miniflux.goyangi.io"]
         parentRefs:
           - name: internal
             namespace: kube-system

@@ -30,7 +30,7 @@ spec:
               pullPolicy: IfNotPresent
             env:
               TZ: Australia/Sydney
-              COLLAB_ADDR: draw-room.goyangi.cloud
+              COLLAB_ADDR: draw-room.goyangi.io
             securityContext:
               allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
@@ -54,8 +54,8 @@ spec:
     route:
       app:
         hostnames:
-          - "{{ .Release.Name }}.goyangi.cloud"
-          - draw.goyangi.cloud
+          - "{{ .Release.Name }}.goyangi.io"
+          - draw.goyangi.io
         parentRefs:
           - name: internal
             namespace: kube-system

@@ -4,7 +4,7 @@ metadata:
   name: milvus
 spec:
   hostnames:
-    - milvus.goyangi.cloud
+    - milvus.goyangi.io
   parentRefs:
     - name: internal
       namespace: kube-system

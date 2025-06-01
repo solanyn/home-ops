@@ -5,7 +5,7 @@ kind: Gateway
 metadata:
   name: internal
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname internal.goyangi.cloud
+    external-dns.alpha.kubernetes.io/target: &hostname internal.goyangi.io
 spec:
   gatewayClassName: cilium
   addresses:
@@ -20,18 +20,18 @@ spec:
     - name: http
       protocol: HTTP
       port: 80
-      hostname: "*.goyangi.cloud"
+      hostname: "*.goyangi.io"
       allowedRoutes:
         namespaces:
           from: Same
     - name: https
       protocol: HTTPS
       port: 443
-      hostname: "*.goyangi.cloud"
+      hostname: "*.goyangi.io"
       allowedRoutes:
         namespaces:
           from: All
       tls:
         certificateRefs:
           - kind: Secret
-            name: goyangi-cloud-tls
+            name: goyangi-io-tls

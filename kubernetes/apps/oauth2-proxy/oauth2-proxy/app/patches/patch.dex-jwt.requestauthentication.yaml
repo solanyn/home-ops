@@ -8,7 +8,7 @@ spec:
     matchLabels:
       app: istio-ingressgateway
   jwtRules:
-    - issuer: https://kubeflow.goyangi.cloud/dex
+    - issuer: https://kubeflow.goyangi.io/dex
       forwardOriginalToken: true
       outputClaimToHeaders:
         - header: kubeflow-userid
