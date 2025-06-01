@@ -6,7 +6,6 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
   # - ./atuin/ks.yaml
   - ./bazarr/ks.yaml
