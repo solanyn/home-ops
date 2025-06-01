@@ -38,7 +38,7 @@ spec:
               DB_PROVIDER: postgres
               PUID: 1000
               PGID: 1000
-              APP_URL: https://id.goyangi.io
+              APP_URL: https://id.goyangi.cloud
               TRUST_PROXY: true
               TZ: Australia/Sydney
               UPLOAD_PATH: /data/uploads
