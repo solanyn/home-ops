@@ -44,7 +44,6 @@ spec:
               UPLOAD_PATH: /data/uploads
               UI_CONFIG_DISABLED: true
               PORT: &port 80
-              EMAIL_ONE_TIME_ACCESS_AS_ADMIN_ENABLED: true
             envFrom: *envFrom
             probes:
               liveness: &probes
