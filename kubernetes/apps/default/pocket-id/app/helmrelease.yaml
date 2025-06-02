@@ -42,6 +42,7 @@ spec:
               TRUST_PROXY: true
               TZ: Australia/Sydney
               UPLOAD_PATH: /data/uploads
+              UI_CONFIG_DISABLED: true
               PORT: &port 80
             envFrom: *envFrom
             probes:
