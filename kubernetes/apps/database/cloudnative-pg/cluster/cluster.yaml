@@ -1,0 +1,58 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres17
+spec:
+  instances: 3
+  imageName: ghcr.io/solanyn/cnpg:17-0.103.0-ferretdb-2.2.0-0.4.2
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 50Gi
+    storageClass: openebs-hostpath
+  superuserSecret:
+    name: cloudnative-pg-secret
+  enableSuperuserAccess: true
+  postgresql:
+    shared_preload_libraries:
+      - pg_cron
+      - pg_documentdb_core
+      - pg_documentdb
+      - vchord.so
+    parameters:
+      cron.database_name: "postgres"
+      max_connections: "400"
+      shared_buffers: 256MB
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  resources:
+    requests:
+      cpu: 10m
+      memory: 256Mi
+    limits:
+      hugepages-2Mi: 2Gi # Requires sysctl set on the host
+      memory: 4Gi
+  monitoring:
+    enablePodMonitor: true
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: minio
+        serverName: postgres17-v3
+  bootstrap:
+    initdb:
+      postInitSQL:
+        - CREATE EXTENSION IF NOT EXISTS documentdb CASCADE;
+        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
+    recovery:
+      source: &previousCluster postgres17-v2
+  # NOTE: externalClusters is needed when recovering from an EXISTING cnpg cluster
+  externalClusters:
+    - name: *previousCluster
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: minio
+          serverName: *previousCluster
