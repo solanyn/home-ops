@@ -57,10 +57,6 @@ spec:
   # NOTE: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
   bootstrap:
-    initdb:
-      postInitSQL:
-        - CREATE EXTENSION IF NOT EXISTS documentdb CASCADE;
-        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
     recovery:
       source: &previousCluster postgres17-v1
   # NOTE: externalClusters is needed when recovering from an EXISTING cnpg cluster
