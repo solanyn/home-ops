@@ -35,7 +35,7 @@ spec:
         replicas: 1
         resources:
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 256Mi
           limits:
             memory: 256Mi
@@ -49,7 +49,7 @@ spec:
       limits:
         memory: 128Mi
       requests:
-        cpu: 100m
+        cpu: 10m
         memory: 128Mi
   vtadmin:
     rbac:
@@ -65,13 +65,13 @@ spec:
       limits:
         memory: 128Mi
       requests:
-        cpu: 100m
+        cpu: 10m
         memory: 128Mi
     webResources:
       limits:
         memory: 128Mi
       requests:
-        cpu: 100m
+        cpu: 10m
         memory: 128Mi
 
   keyspaces:
@@ -83,7 +83,7 @@ spec:
           limits:
             memory: 128Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 128Mi
         extraFlags:
           instance-poll-time: 1s
@@ -105,17 +105,18 @@ spec:
                       limits:
                         memory: 256Mi
                       requests:
-                        cpu: 100m
+                        cpu: 10m
                         memory: 256Mi
                   mysqld:
                     resources:
                       limits:
                         memory: 1024Mi
                       requests:
-                        cpu: 100m
+                        cpu: 10m
                         memory: 512Mi
                   dataVolumeClaimTemplate:
                     accessModes: ["ReadWriteOnce"]
+                    storageClassName: openebs-hostpath
                     resources:
                       requests:
                         storage: 10Gi
