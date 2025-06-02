@@ -5,19 +5,17 @@ metadata:
   name: vitess-operator
   namespace: example
 ---
-$patch: delete
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: vitess-operator-backup-storage
-  namespace: example
+  namespace: database
 ---
-$patch: delete
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: vitess-operator-backup-storage
-  namespace: example
+  namespace: database
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
