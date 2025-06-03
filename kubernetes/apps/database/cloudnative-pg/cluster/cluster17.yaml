@@ -12,6 +12,8 @@ spec:
     storageClass: openebs-hostpath
   superuserSecret:
     name: cloudnative-pg-secret
+  postgresUID: 999
+  postgresGID: 999
   enableSuperuserAccess: true
   postgresql:
     shared_preload_libraries:
