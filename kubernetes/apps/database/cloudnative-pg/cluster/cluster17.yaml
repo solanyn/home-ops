@@ -14,13 +14,7 @@ spec:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
   postgresql:
-    shared_preload_libraries:
-      - pg_cron
-      - pg_documentdb_core
-      - pg_documentdb
-      - vchord.so
     parameters:
-      cron.database_name: "postgres"
       max_connections: "400"
       shared_buffers: 256MB
   nodeMaintenanceWindow:
