@@ -16,6 +16,14 @@ kind: RoleBinding
 metadata:
   name: vitess-operator-backup-storage
   namespace: database
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: vitess-operator-backup-storage
+subjects:
+  - kind: ServiceAccount
+    name: vitess-operator
+    namespace: database
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
