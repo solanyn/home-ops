@@ -5,12 +5,14 @@ metadata:
   name: vitess-operator
   namespace: example
 ---
+$patch: merge
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: vitess-operator-backup-storage
   namespace: database
 ---
+$patch: merge
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -25,6 +27,7 @@ subjects:
     name: vitess-operator
     namespace: database
 ---
+$patch: merge
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
