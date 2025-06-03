@@ -5,7 +5,7 @@ metadata:
   name: postgres17
 spec:
   instances: 3
-  imageName: ghcr.io/solanyn/cnpg:17-0.103.0-ferretdb-2.2.0-0.4.2
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.5
   primaryUpdateStrategy: unsupervised
   storage:
     size: 50Gi
@@ -40,7 +40,7 @@ spec:
       endpointURL: http://minio.default.svc.cluster.local:9000
       # Note: serverName version needs to be incremented
       # when recovering from an existing cnpg cluster
-      serverName: &currentCluster postgres17-v2
+      serverName: &currentCluster postgres17-v3
       s3Credentials:
         accessKeyId:
           name: cloudnative-pg-secret
@@ -52,7 +52,7 @@ spec:
   # cluster when recovering from an existing cnpg cluster
   bootstrap:
     recovery:
-      source: &previousCluster postgres17-v1
+      source: &previousCluster postgres17-v2
   # NOTE: externalClusters is needed when recovering from an EXISTING cnpg cluster
   externalClusters:
     - name: *previousCluster
