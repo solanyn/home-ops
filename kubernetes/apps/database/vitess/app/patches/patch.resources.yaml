@@ -11,7 +11,6 @@ metadata:
   name: vitess-operator-backup-storage
   namespace: database
 ---
-$patch: merge
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -26,7 +25,6 @@ subjects:
     name: vitess-operator
     namespace: database
 ---
-$patch: merge
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -39,3 +37,15 @@ subjects:
   - kind: ServiceAccount
     name: vitess-operator
     namespace: database
+---
+kind: Deployment
+metadata:
+  name: vitess-operator
+spec:
+  template:
+    spec:
+      containers:
+        - name: vitess-operator
+          env:
+            - name: WATCH_NAMESPACE
+              value: "database"
