@@ -17,7 +17,7 @@ spec:
             path: /mnt/world/vitess
     schedules:
       - name: "mysql"
-        schedule: "*/2 * * * *"
+        schedule: "@daily"
         resources:
           limits:
             memory: 1024Mi
