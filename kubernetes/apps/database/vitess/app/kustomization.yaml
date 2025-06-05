@@ -54,8 +54,8 @@ patches:
         path: /metadata/namespace
         value: database
       - op: replace
-        path: /spec/template/spec/containers/0/env/0
+        path: /spec/template/spec/containers/0/env/0/value
         value: database
       - op: replace
-        path: /spec/template/spec/containers/0/env/2
+        path: /spec/template/spec/containers/0/env/2/value
         value: database
