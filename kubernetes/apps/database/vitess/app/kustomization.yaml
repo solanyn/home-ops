@@ -50,6 +50,9 @@ patches:
       kind: Deployment
       name: vitess-operator
     patch: |-
+      - op: add
+        path: /spec/metadata/namespace
+        value: database
       - op: replace
         path: /spec/template/spec/containers/0/env/0
         value: database
