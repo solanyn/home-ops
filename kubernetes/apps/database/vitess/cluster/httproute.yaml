@@ -1,0 +1,52 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: vtctld
+spec:
+  hostnames:
+    - vtctld.goyangi.io
+  parentRefs:
+    - name: internal
+      namespace: kube-system
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: vtctld
+          port: 15000
+        - name: vtctld
+          port: 15999
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: vtgate
+spec:
+  hostnames:
+    - vtgate.goyangi.io
+  parentRefs:
+    - name: internal
+      namespace: kube-system
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: vtgate
+          port: 3306
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: vtadmin
+spec:
+  hostnames:
+    - vtadmin.goyangi.io
+  parentRefs:
+    - name: internal
+      namespace: kube-system
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: vtadmin
+          port: 15000
+        - name: vtadmin
+          port: 15001
