@@ -3,7 +3,7 @@
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: ${APP}
+  name: zwave
 spec:
   advanced:
     restoreToOriginalReplicaCount: true
@@ -13,11 +13,11 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: ${APP}
+    name: zwave
   triggers:
     - type: prometheus
       metadata:
         serverAddress: http://prometheus-operated.observability.svc.cluster.local:9090
-        query: probe_success{instance=~".+:2049"}
+        query: probe_success{instance=~"zwave-controller.+"}
         threshold: "1"
         ignoreNullValues: "0"
