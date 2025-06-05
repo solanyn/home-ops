@@ -12,9 +12,9 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: vtctld
+        - name: mysql-vtctld
           port: 15000
-        - name: vtctld
+        - name: mysql-vtctld
           port: 15999
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -30,7 +30,7 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: vtgate
+        - name: mysql-vtgate
           port: 3306
 ---
 apiVersion: gateway.networking.k8s.io/v1
@@ -46,7 +46,7 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: vtadmin
+        - name: mysql-vtadmin
           port: 15000
-        - name: vtadmin
+        - name: mysql-vtadmin
           port: 15001
