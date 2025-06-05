@@ -59,3 +59,5 @@ patches:
       - op: replace
         path: /spec/template/spec/containers/0/env/2/value
         value: database
+      - op: remove
+        path: /spec/template/spec/containers/0/env/2/valueFrom
