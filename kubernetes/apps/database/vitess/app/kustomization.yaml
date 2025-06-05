@@ -15,6 +15,14 @@ patches:
         path: /metadata/namespace
         value: database
   - target:
+      kind: ServiceAccount
+      name: vitess-operator
+    patch: |
+      $patch: delete
+      kind: ServiceAccount
+      metadata:
+        name: vitess-operator
+  - target:
       kind: Role
       name: vitess-operator-backup-storage
     patch: |-
