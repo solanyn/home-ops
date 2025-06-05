@@ -51,7 +51,7 @@ patches:
       name: vitess-operator
     patch: |-
       - op: add
-        path: /spec/metadata/namespace
+        path: /metadata/namespace
         value: database
       - op: replace
         path: /spec/template/spec/containers/0/env/0
