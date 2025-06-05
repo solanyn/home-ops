@@ -13,10 +13,10 @@ spec:
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
+    - name: keda
+      namespace: observability
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/default/zwave/app
   postBuild:
