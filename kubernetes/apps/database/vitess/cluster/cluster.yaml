@@ -3,13 +3,43 @@ kind: VitessCluster
 metadata:
   name: mysql
 spec:
+  globalLockserver:
+    etcd:
+      dataVolumeClaimTemplate:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: openebs-hostpath
   backup:
     engine: xtrabackup
     locations:
       - volume:
-          hostPath:
-            path: /tmp
-            type: Directory
+          nfs:
+            server: nas.internal
+            path: /mnt/world/vitess
+    schedules:
+      - name: "mysql"
+        schedule: "*/2 * * * *"
+        resources:
+          limits:
+            memory: 1024Mi
+        successfulJobsHistoryLimit: 2
+        failedJobsHistoryLimit: 3
+        jobTimeoutMinute: 5
+        strategies:
+          - name: mysql_80-x
+            keyspace: "mysql"
+            shard: "80-"
+          - name: mysql_x-80
+            keyspace: "mysql"
+            shard: "-80"
+  images:
+    vtctld: vitess/lite:latest
+    vtadmin: vitess/vtadmin:latest
+    vtgate: vitess/lite:latest
+    vttablet: vitess/lite:latest
+    vtbackup: vitess/lite:latest
+    vtorc: vitess/lite:latest
+    mysqld:
+      mysql80Compatible: vitess/lite:latest
     mysqldExporter: prom/mysqld-exporter:v0.14.0
   cells:
     - name: zone1
@@ -50,7 +80,7 @@ spec:
         memory: 128Mi
 
   keyspaces:
-    - name: commerce
+    - name: mysql
       durabilityPolicy: none
       turndownPolicy: Immediate
       vitessOrchestrator:
