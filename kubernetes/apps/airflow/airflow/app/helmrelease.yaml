@@ -76,8 +76,8 @@ spec:
       useHelmHooks: false
       applyCustomEnv: false
     migrateDatabaseJob:
-      useHelmHooks: false
-      applyCustomEnv: false
+      useHelmHooks: true
+      applyCustomEnv: true
     dags:
       gitSync:
         enabled: true
