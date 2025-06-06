@@ -10,6 +10,8 @@ endpoints:
       query-name: "${GATUS_SUBDOMAIN:=${APP}}.goyangi.io"
       query-type: A
     conditions:
-      - "len([BODY]) == 0"
+      # TODO: for some reason coredns resolves internal ingress cnameAdd commentMore actions
+      # - "len([BODY]) == 0"
+      - "[BODY] == pat(192.168.*)"
     alerts:
       - type: pushover
