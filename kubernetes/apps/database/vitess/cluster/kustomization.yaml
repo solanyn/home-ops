@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./cluster.yaml
+  - ./service.yaml
   - ./httproute.yaml
 secretGenerator:
   - name: vitess-init-db
