@@ -5,4 +5,5 @@ namespace: airflow
 components:
   - ../../components/common
 resources:
-  - ./airflow/ks.yaml
+  []
+  # - ./airflow/ks.yaml
