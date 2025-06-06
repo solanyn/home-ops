@@ -83,3 +83,5 @@ spec:
         globalMounts:
           - path: /data/database
           - path: /home/wizarruser
+      tmp:
+        type: emptyDir
