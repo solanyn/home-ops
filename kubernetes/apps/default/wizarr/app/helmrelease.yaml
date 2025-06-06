@@ -82,8 +82,4 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: /data/database
-      tmp:
-        type: emptyDir
-        globalMounts:
-          - path: /.cache/uv
-          - path: /tmp
+          - path: /home/wizarruser
