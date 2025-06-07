@@ -1,0 +1,98 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: airflow
+  namespace: airflow
+spec:
+  interval: 12h
+  url: https://airflow.apache.org
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: airflow
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: airflow
+      version: 1.16.0
+      sourceRef:
+        kind: HelmRepository
+        name: airflow
+        namespace: airflow
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    useStandardNaming: true
+    images:
+      airflow:
+        repository: ghcr.io/solanyn/airflow
+        tag: 3.0.1
+        digest: sha256:79219515305564b38a65476165d6172eaf569f5caa870acbeaa49c2e9e907906
+        pullPolicy: IfNotPresent
+      useDefaultImageForMigration: true
+    airflowPodAnnotations:
+      reloader.stakater.com/auto: "true"
+    data:
+      metadataSecretName: airflow-secret
+      brokerUrl: redis://redis.storage.svc.cluster.local:6379
+    webserverSecretKeySecretName: airflow-secret
+    executor: "CeleryExecutor,KubernetesExecutor"
+    secret:
+      - envName: S3_ENDPOINT_URL
+        secretName: airflow-secret
+        secretKey: S3_ENDPOINT_URL
+      - envName: AWS_ACCESS_KEY_ID
+        secretName: airflow-secret
+        secretKey: AWS_ACCESS_KEY_ID
+      - envName: AWS_SECRET_ACCESS_KEY
+        secretName: airflow-secret
+        secretKey: AWS_SECRET_ACCESS_KEY
+      - envName: PUSHOVER_API_TOKEN
+        secretName: airflow-secret
+        secretKey: PUSHOVER_API_TOKEN
+      - envName: PUSHOVER_USER_KEY
+        secretName: airflow-secret
+        secretKey: PUSHOVER_USER_KEY
+    extraEnvFrom: |
+      - secretRef:
+          name: airflow-secret
+    createUserJob:
+      extraInitContainers:
+        - name: init-db
+          image: ghcr.io/home-operations/postgres-init:17
+          envFrom: &envFrom
+            - secretRef:
+                name: airflow-secret
+      useHelmHooks: false
+      applyCustomEnv: false
+    migrateDatabaseJob:
+      useHelmHooks: false
+      applyCustomEnv: false
+    dags:
+      gitSync:
+        enabled: true
+        repo: https://github.com/solanyn/goyangi
+        branch: main
+        depth: 1
+        subPath: "airflow"
+    scheduler:
+      enabled: true
+    redis:
+      enabled: false
+    postgresql:
+      enabled: false
+    statsd:
+      enabled: true
+  valuesFrom:
+    - kind: Secret
+      name: airflow-secret

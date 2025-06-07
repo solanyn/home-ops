@@ -16,7 +16,7 @@ spec:
     - name: volsync
       namespace: volsync-system
     - name: cloudnative-pg-cluster
-      namespace: database
+      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/pocket-id/app
   postBuild:
