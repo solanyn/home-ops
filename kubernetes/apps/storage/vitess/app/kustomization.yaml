@@ -22,43 +22,43 @@ patches:
     patch: |-
       - op: replace
         path: /metadata/namespace
-        value: database
+        value: storage
   - target:
       kind: RoleBinding
       name: vitess-operator-backup-storage
     patch: |-
       - op: replace
         path: /metadata/namespace
-        value: database
+        value: storage
       - op: replace
         path: /subjects/0/namespace
-        value: database
+        value: storage
   - target:
       kind: ClusterRoleBinding
       name: vitess-operator
     patch: |-
       - op: replace
         path: /subjects/0/namespace
-        value: database
+        value: storage
   - target:
       kind: ClusterRoleBinding
       name: vitess-operator
     patch: |-
       - op: replace
         path: /subjects/0/namespace
-        value: database
+        value: storage
   - target:
       kind: Deployment
       name: vitess-operator
     patch: |-
       - op: add
         path: /metadata/namespace
-        value: database
+        value: storage
       - op: replace
         path: /spec/template/spec/containers/0/env/0/value
-        value: database
+        value: storage
       - op: replace
         path: /spec/template/spec/containers/0/env/2/value
-        value: database
+        value: storage
       - op: remove
         path: /spec/template/spec/containers/0/env/2/valueFrom
