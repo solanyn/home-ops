@@ -65,6 +65,8 @@ spec:
               limits:
                 cpu: 500m
                 memory: 128Mi
+        serviceAccount:
+          identifier: *app
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
