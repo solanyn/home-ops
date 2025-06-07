@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/dragonflydb.io/dragonfly_v1alpha1.json
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  name: dragonfly-cluster
+spec:
+  image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.30.3@sha256:29d44a25a9e6937672f1c12e28c9f481f3d3c0441001ee56ed274a72f50593b7
+  replicas: 3
+  env:
+    - name: MAX_MEMORY
+      valueFrom:
+        resourceFieldRef:
+          resource: limits.memory
+          divisor: 1Mi
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: dragonfly-secret
+          key: AWS_ACCESS_KEY_ID
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: dragonfly-secret
+          key: AWS_SECRET_ACCESS_KEY
+    - name: AWS_DEFAULT_REGION
+      value: "us-east-1"
+    - name: DFLY_s3_endpoint
+      value: "minio.storage.svc.cluster.local:9000"
+    - name: DFLY_s3_use_https
+      value: "false"
+  args:
+    - --maxmemory=$(MAX_MEMORY)Mi
+    - --proactor_threads=2
+    - --cluster_mode=emulated
+    - --lock_on_hashtags
+  resources:
+    requests:
+      cpu: 10m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
+  serviceSpec:
+    name: redis
+    type: LoadBalancer
+    annotations:
+      lbipam.cilium.io/ips: 192.168.1.131, ::ffff:192.168.1.131
+      external-dns.alpha.kubernetes.io/hostname: redis.goyangi.io
+  snapshot:
+    cron: "0 * * * *"
+    dir: "s3://dragonflydb"
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: "kubernetes.io/hostname"
+      whenUnsatisfiable: "DoNotSchedule"
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/part-of: dragonfly

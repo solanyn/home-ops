@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: serving
+components:
+  - ../../components/common
+resources:
+  # - ./airflow/ks.yaml
+  - ./dask/ks.yaml
+  - ./superset/ks.yaml
+  - ./trino/ks.yaml

@@ -1,0 +1,29 @@
+---
+apiVersion: kubeai.org/v1
+kind: Model
+metadata:
+  name: faster-whisper-small-en-cpu
+spec:
+  features: [SpeechToText]
+  url: s3://kubeai/Systran-faster-whisper-small-en
+  engine: FasterWhisper
+  minReplicas: 1
+  resourceProfile: cpu:1
+  env:
+    AWS_ENDPOINT_URL: http://minio.storage.svc.cluster.local:9000
+---
+apiVersion: kubeai.org/v1
+kind: Model
+metadata:
+  name: gemma3-4b-cpu
+spec:
+  features: [TextGeneration]
+  url: ollama://gemma3:4b
+  engine: OLlama
+  # TODO: runai_streamer not supported?
+  # url: s3://kubeai/google-gemma-3-4b-it
+  # engine: VLLM
+  minReplicas: 1
+  resourceProfile: cpu:1
+  # env:
+  #   AWS_ENDPOINT_URL: http://minio.storage.svc.cluster.local:9000
