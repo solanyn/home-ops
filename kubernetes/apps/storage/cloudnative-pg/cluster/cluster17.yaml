@@ -21,7 +21,7 @@ spec:
       - pg_documentdb
       - timescaledb
     parameters:
-      cron.database_name: "postgres"
+      # cron.database_name: "postgres"
       max_connections: "400"
       shared_buffers: 256MB
   nodeMaintenanceWindow:
