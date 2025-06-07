@@ -7,4 +7,5 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./feast/ks.yaml
+  - ./github-mcp/ks.yaml
   - ./kubeai/ks.yaml
