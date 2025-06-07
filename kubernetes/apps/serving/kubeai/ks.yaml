@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/kubeai/kubeai/app
+  path: ./kubernetes/apps/serving/kubeai/app
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -31,7 +31,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/kubeai/kubeai/download-models
+  path: ./kubernetes/apps/serving/kubeai/download-models
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -57,7 +57,7 @@ spec:
     - name: download-models
       namespace: kubeai
   interval: 1h
-  path: ./kubernetes/apps/kubeai/kubeai/models
+  path: ./kubernetes/apps/serving/kubeai/models
   prune: true
   retryInterval: 2m
   sourceRef:

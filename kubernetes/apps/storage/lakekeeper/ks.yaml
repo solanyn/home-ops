@@ -18,7 +18,7 @@ spec:
       name: lakekeeper
       namespace: *namespace
   interval: 1h
-  path: ./kubernetes/apps/iceberg/lakekeeper/app
+  path: ./kubernetes/apps/storage/lakekeeper/app
   prune: true
   retryInterval: 2m
   sourceRef:

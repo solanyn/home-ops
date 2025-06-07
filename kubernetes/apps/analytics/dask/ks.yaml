@@ -4,13 +4,13 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app dask
-  namespace: &namespace analytics-system
+  namespace: &namespace analytics
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/dask-system/dask/app
+  path: ./kubernetes/apps/analytics/dask/app
   prune: false
   sourceRef:
     kind: GitRepository
@@ -25,7 +25,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app dask-cluster
-  namespace: &namespace analytics-system
+  namespace: &namespace analytics
 spec:
   commonMetadata:
     labels:
@@ -36,7 +36,7 @@ spec:
     - name: dask
       namespace: analytics
   interval: 1h
-  path: ./kubernetes/apps/dask-system/dask/cluster
+  path: ./kubernetes/apps/analytics/dask/cluster
   postBuild:
     substitute:
       APP: *app
