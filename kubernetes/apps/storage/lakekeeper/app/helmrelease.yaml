@@ -97,7 +97,8 @@ spec:
         iceberg-lakekeeper-token-review:
           type: ClusterRoleBinding
           roleRef:
-            identifier: "system:auth-delegator"
+            name: system:auth-delegator
+            kind: ClusterRole
           subjects:
             - identifier: lakekeeper
     route:
