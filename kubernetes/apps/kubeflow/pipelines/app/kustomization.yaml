@@ -19,7 +19,7 @@ configMapGenerator:
     literals:
       - warning=
         # Legacy
-      - dbHost=mariadb.database.svc.cluster.local
+      - dbHost=mariadb.storage.svc.cluster.local
       - dbPort=3306
         # App Config
       - appName=pipeline
@@ -33,12 +33,12 @@ configMapGenerator:
       - bucketName=kfp-pipelines
       - bucketRegion=us-east-1
         # Object Store Config
-      - bucketHost=minio.default.svc.cluster.local
+      - bucketHost=minio.storage.svc.cluster.local
       - bucketSecure=false
       - bucketPort=9000
         # MySQL Config
       - dbType=mysql
-      - mysqlHost=mariadb.database.svc.cluster.local
+      - mysqlHost=mariadb.storage.svc.cluster.local
       - mysqlPort=3306
       - mlmdDb=kfp_metadata
       - cacheDb=kfp_cache

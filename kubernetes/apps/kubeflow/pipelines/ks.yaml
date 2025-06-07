@@ -11,9 +11,9 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: minio
-      namespace: default
+      namespace: storage
     - name: mariadb
-      namespace: database
+      namespace: storage
     - name: kubeflow-gateway
       namespace: kubeflow
   interval: 1h

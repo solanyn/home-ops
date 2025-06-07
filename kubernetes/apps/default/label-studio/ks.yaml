@@ -13,9 +13,9 @@ spec:
     - ../../../../components/gatus/guarded
   dependsOn:
     - name: cloudnative-pg-cluster
-      namespace: database
+      namespace: storage
     - name: minio
-      namespace: default
+      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/label-studio/app
   prune: false

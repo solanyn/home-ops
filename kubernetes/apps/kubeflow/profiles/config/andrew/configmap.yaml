@@ -8,7 +8,7 @@ data:
   providers.yaml: |
     minio:
       default:
-        endpoint: "minio.default.svc.cluster.local:9000"
+        endpoint: "minio.storage.svc.cluster.local:9000"
         bucket: "kfp-pipelines"
         keyFormat: "artifacts/{{workflow.name}}/{{workflow.creationTimestamp.Y}}/{{workflow.creationTimestamp.m}}/{{workflow.creationTimestamp.d}}/{{pod.name}}"
         insecure: true

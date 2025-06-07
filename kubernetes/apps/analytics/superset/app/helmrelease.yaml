@@ -1,0 +1,140 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: superset
+  namespace: analytics
+spec:
+  interval: 12h
+  url: http://apache.github.io/superset/
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: superset
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: superset
+      version: 0.14.2
+      sourceRef:
+        kind: HelmRepository
+        name: superset
+        namespace: analytics
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    fullnameOverride: superset
+    runAsUser: 1000
+    bootstrapScript: |
+      #!/bin/bash
+
+      # Install required Python packages
+      pip install \
+        authlib \
+        pyhive \
+        Pillow \
+        redis \
+        psycopg2-binary
+
+      # Create bootstrap file if it doesn't exist
+      if [ ! -f ~/bootstrap ]; then
+        echo "Running Superset with uid {{ .Values.runAsUser }}" > ~/bootstrap
+      fi
+    secretEnv:
+      create: false
+    envFromSecret: superset-secret
+    configOverrides:
+      redis_config: |
+        FILTER_STATE_CACHE_CONFIG = {
+            'CACHE_TYPE': 'RedisCache',
+            'CACHE_DEFAULT_TIMEOUT': 86400,
+            'CACHE_KEY_PREFIX': 'superset_filter_cache',
+            'CACHE_REDIS_URL': f'redis://{os.getenv("REDIS_HOST", "")}:{os.getenv("REDIS_PORT", "")}/0'
+        }
+        EXPLORE_FORM_DATA_CACHE_CONFIG = {
+          **FILTER_STATE_CACHE_CONFIG,
+          'CACHE_KEY_PREFIX': 'superset_explore_cache',
+        }
+        CACHE_CONFIG = {
+          **FILTER_STATE_CACHE_CONFIG,
+          'CACHE_KEY_PREFIX': 'superset_metadata_cache',
+        }
+        DATA_CACHE_CONFIG = {
+          **FILTER_STATE_CACHE_CONFIG,
+          'CACHE_KEY_PREFIX': 'superset_data_cache',
+        }
+      celery_config: |
+        class CeleryConfig(object):
+            broker_url = f'redis://{os.getenv("REDIS_HOST", "")}:{os.getenv("REDIS_PORT", "")}/0'
+            imports = (
+                "superset.sql_lab",
+                "superset.tasks.scheduler",
+            )
+            result_backend = f'redis://{os.getenv("REDIS_HOST", "")}:{os.getenv("REDIS_PORT", "")}/0'
+            worker_prefetch_multiplier = 10
+            task_acks_late = True
+            task_annotations = {
+                "sql_lab.get_sql_results": {
+                    "rate_limit": "100/s",
+                },
+            }
+
+        CELERY_CONFIG = CeleryConfig
+        from flask_caching.backends.rediscache import RedisCache
+        RESULTS_BACKEND = RedisCache(
+            host=os.getenv("REDIS_HOST", ""), port=os.getenv("REDIS_PORT", ""), key_prefix='superset_results')
+      extend_timeout: |
+        # Extend timeout to allow long running queries.
+        SUPERSET_WEBSERVER_TIMEOUT = ...
+      enable_oauth: |
+        from flask_appbuilder.security.manager import (AUTH_DB, AUTH_OAUTH)
+        AUTH_TYPE = AUTH_OAUTH
+        OAUTH_PROVIDERS = [
+            {
+                "name": "pid",
+                "icon": "fa-key",
+                "token_key": "access_token",
+                "remote_app": {
+                    "client_id": os.getenv("SUPERSET_CLIENT_ID", ""),
+                    "client_secret": os.getenv("SUPERSET_CLIENT_SECRET", ""),
+                    "client_kwargs": {"scope": "openid email profile"},
+                    "request_token_url": None,
+                    "server_metadata_url": "https://id.goyangi.io/.well-known/openid-configuration",
+                }
+            }
+        ]
+        # Map Authlib roles to superset roles
+        AUTH_ROLE_ADMIN = 'Admin'
+        AUTH_ROLE_PUBLIC = 'Public'
+        # Will allow user self registration, allowing to create Flask users from Authorized User
+        AUTH_USER_REGISTRATION = True
+        # The default user self registration role
+        AUTH_USER_REGISTRATION_ROLE = "Admin"
+    supersetNode:
+      connections:
+        redis_host: redis.storage.svc.cluster.local
+        redis_port: "6379"
+      forceReload: true
+      initContainers:
+        - name: init-db
+          image: ghcr.io/home-operations/postgres-init:17
+          envFrom:
+            - secretRef:
+                name: superset-secret
+    postgresql:
+      enabled: false
+    redis:
+      enabled: false
+  valuesFrom:
+    - kind: Secret
+      name: superset-secret

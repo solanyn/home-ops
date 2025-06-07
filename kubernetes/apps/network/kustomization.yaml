@@ -11,6 +11,7 @@ resources:
   - ./unifi-ingress-nginx/ks.yaml
   # NOTE: Try multus for IoT VLAN bridging when managed switch, allows hass on VLAN to mDNS cast and as host network
   # - ./multus/ks.yaml
+  - ./smtp-relay/ks.yaml
   - ./tailscale/ks.yaml
   - ./cloudflare-tunnel/ks.yaml
   - ./cloudflare-dns/ks.yaml
