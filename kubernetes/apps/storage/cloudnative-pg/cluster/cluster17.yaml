@@ -5,7 +5,7 @@ metadata:
   name: postgres17
 spec:
   instances: 3
-  imageName: ghcr.io/cloudnative-pg/postgresql:17.5
+  imageName: ghcr.io/solanyn/cnpg:17
   primaryUpdateStrategy: unsupervised
   storage:
     size: 50Gi
@@ -14,7 +14,14 @@ spec:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
   postgresql:
+    shared_preload_libraries:
+      - vchord.so
+      - pg_cron
+      - pg_documentdb_core
+      - pg_documentdb
+      - timescaledb
     parameters:
+      cron.database_name: "postgres"
       max_connections: "400"
       shared_buffers: 256MB
   nodeMaintenanceWindow:
