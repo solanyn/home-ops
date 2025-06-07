@@ -74,6 +74,32 @@ spec:
             port: *port
     serviceAccount:
       lakekeeper: {}
+    rbac:
+      roles:
+        lakekeeper:
+          type: Role
+          rules:
+            - apiGroups:
+                - batch
+              resources:
+                - jobs
+              verbs:
+                - get
+                - list
+                - watch
+      bindings:
+        lakekeeper:
+          type: RoleBinding
+          roleRef:
+            identifier: lakekeeper
+          subjects:
+            - identifier: lakekeeper
+        iceberg:lakekeeper-token-review:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: system:auth-delegator
+          subjects:
+            - identifier: lakekeeper
     route:
       app:
         hostnames: ["{{ .Release.Name }}.goyangi.io"]
