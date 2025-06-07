@@ -15,7 +15,7 @@ spec:
   components:
     - ../../../../components/gatus/guarded
   interval: 1h
-  path: ./kubernetes/apps/airflow/airflow/app
+  path: ./kubernetes/apps/analytics/airflow/app
   postBuild:
     substitute:
       APP: *app

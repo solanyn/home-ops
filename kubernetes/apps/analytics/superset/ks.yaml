@@ -20,7 +20,7 @@ spec:
       name: superset
       namespace: *namespace
   interval: 1h
-  path: ./kubernetes/apps/superset/superset/app
+  path: ./kubernetes/apps/analytics/superset/app
   prune: true
   retryInterval: 2m
   sourceRef:
