@@ -62,37 +62,37 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 2Gi
-      make-buckets:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          app:
+          create-buckets:
             image:
               repository: busybox
               tag: 1.37.0
-            command: ["sh", "/scripts/create_dirs.sh"]
+            command: ["sh", "/scripts/create-dirs.sh"]
             env:
               INTERVAL_SECONDS: 300
               BUCKETS: |
-                bps
-                cloudnative-pg
-                dragonflydb
-                feast iceberg
-                kfp-pipelines
-                kubeai
-                label-studio
-                mariadb
-                milvus
-                open-webui
-                pulsar
-                tldr
-                trino
-                tsw
-                vitess
+                /minio/bps
+                /minio/cloudnative-pg
+                /minio/dragonflydb
+                /minio/feast
+                /minio/iceberg
+                /minio/kfp-pipelines
+                /minio/kubeai
+                /minio/label-studio
+                /minio/mariadb
+                /minio/milvus
+                /minio/open-webui
+                /minio/pulsar
+                /minio/tldr
+                /minio/trino
+                /minio/tsw
+                /minio/vitess
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+            resources:
+              limits:
+                memory: 128Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -148,6 +148,7 @@ spec:
       scripts:
         type: configMap
         name: minio-configmap
+        defaultMode: 0775
         globalMounts:
           - path: /scripts/create-dirs.sh
             subPath: create-dirs.sh

@@ -4,7 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: airflow
-  namespace: airflow
+  namespace: analytics
 spec:
   interval: 12h
   url: https://airflow.apache.org
@@ -22,7 +22,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: airflow
-        namespace: airflow
+        namespace: analytics
   install:
     remediation:
       retries: -1

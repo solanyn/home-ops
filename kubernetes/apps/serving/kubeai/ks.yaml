@@ -53,9 +53,9 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: kubeai
-      namespace: kubeai
+      namespace: serving
     - name: download-models
-      namespace: kubeai
+      namespace: serving
   interval: 1h
   path: ./kubernetes/apps/serving/kubeai/models
   prune: true

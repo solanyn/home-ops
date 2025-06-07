@@ -43,7 +43,7 @@ spec:
   healthCheckExprs:
     - apiVersion: dragonflies.dragonflydb.io
       kind: dragonflies
-      failed: status.conditions.filter(e, e.type == 'Phase').all(e, e.status == 'ready')
+      failed: status.conditions.filter(e, e.type == 'Phase').all(e, e.status != 'ready')
       current: status.conditions.filter(e, e.type == 'Phase').all(e, e.status == 'ready')
   interval: 1h
   path: ./kubernetes/apps/storage/dragonfly/cluster
