@@ -62,11 +62,7 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 2Gi
-      make-buckets:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          app:
+          create-buckets:
             image:
               repository: busybox
               tag: 1.37.0
@@ -94,6 +90,9 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+            resources:
+              limits:
+                memory: 128Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
