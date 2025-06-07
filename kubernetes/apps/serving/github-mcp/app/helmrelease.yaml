@@ -19,7 +19,7 @@ spec:
       retries: 3
   values:
     controllers:
-      github-mcp-server:
+      github-mcp:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -48,4 +48,4 @@ spec:
             port: 8000
     persistence:
       config:
-        existingClaim: github-mcp
+        existingClaim: *app
