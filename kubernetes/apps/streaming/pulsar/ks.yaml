@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/kafka/pulsar/app
+  path: ./kubernetes/apps/streaming/pulsar/app
   prune: false
   sourceRef:
     kind: GitRepository

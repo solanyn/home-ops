@@ -12,7 +12,7 @@ spec:
   components:
     - ../../../../components/keda/nfs-scaler
   interval: 1h
-  path: ./kubernetes/apps/default/minio/app
+  path: ./kubernetes/apps/storage/minio/app
   postBuild:
     substitute:
       APP: *app

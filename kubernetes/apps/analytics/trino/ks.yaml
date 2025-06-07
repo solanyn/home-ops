@@ -18,7 +18,7 @@ spec:
       name: trino
       namespace: *namespace
   interval: 1h
-  path: ./kubernetes/apps/trino/trino/app
+  path: ./kubernetes/apps/analytics/trino/app
   prune: true
   retryInterval: 2m
   sourceRef:
