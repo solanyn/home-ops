@@ -74,21 +74,22 @@ spec:
             env:
               INTERVAL_SECONDS: 300
               BUCKETS: |
-                bps
-                cloudnative-pg
-                dragonflydb
-                feast iceberg
-                kfp-pipelines
-                kubeai
-                label-studio
-                mariadb
-                milvus
-                open-webui
-                pulsar
-                tldr
-                trino
-                tsw
-                vitess
+                /minio/bps
+                /minio/cloudnative-pg
+                /minio/dragonflydb
+                /minio/feast
+                /minio/iceberg
+                /minio/kfp-pipelines
+                /minio/kubeai
+                /minio/label-studio
+                /minio/mariadb
+                /minio/milvus
+                /minio/open-webui
+                /minio/pulsar
+                /minio/tldr
+                /minio/trino
+                /minio/tsw
+                /minio/vitess
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
