@@ -70,7 +70,7 @@ spec:
             image:
               repository: busybox
               tag: 1.37.0
-            command: ["sh", "/scripts/create_dirs.sh"]
+            command: ["sh", "/scripts/create-dirs.sh"]
             env:
               INTERVAL_SECONDS: 300
               BUCKETS: |
