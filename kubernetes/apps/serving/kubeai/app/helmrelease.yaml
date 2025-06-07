@@ -4,7 +4,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: kubeai
-  namespace: kubeai
+  namespace: serving
 spec:
   interval: 12h
   url: https://www.kubeai.org
@@ -23,7 +23,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: kubeai
-        namespace: kubeai
+        namespace: serving
   install:
     remediation:
       retries: -1
