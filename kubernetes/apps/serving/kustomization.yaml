@@ -4,6 +4,8 @@ kind: Kustomization
 namespace: serving
 components:
   - ../../components/common
+  - ../../components/repos/app-template
 resources:
   - ./feast/ks.yaml
+  - ./github-mcp/ks.yaml
   - ./kubeai/ks.yaml
