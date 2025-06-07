@@ -5,5 +5,7 @@ kind: Kustomization
 namespace: auth
 components:
   - ../../components/common
+  - ../../components/repos/app-template
 resources:
   - ./dex/ks.yaml
+  - ./pocket-id/ks.yaml
