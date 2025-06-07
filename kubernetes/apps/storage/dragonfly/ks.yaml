@@ -1,0 +1,58 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app dragonfly
+  namespace: &namespace storage
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 1h
+  path: ./kubernetes/apps/storage/dragonfly/app
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app dragonfly-cluster
+  namespace: &namespace storage
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: dragonfly
+      namespace: storage
+    - name: minio
+      namespace: storage
+  healthChecks:
+    - apiVersion: dragonflies.dragonflydb.io
+      kind: dragonflies
+      name: dragonfly-cluster
+  healthCheckExprs:
+    - apiVersion: dragonflies.dragonflydb.io
+      kind: dragonflies
+      failed: status.conditions.filter(e, e.type == 'Phase').all(e, e.status == 'ready')
+      current: status.conditions.filter(e, e.type == 'Phase').all(e, e.status == 'ready')
+  interval: 1h
+  path: ./kubernetes/apps/storage/dragonfly/cluster
+  prune: true
+  retryInterval: 2m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb-gatus-ep
+  labels:
+    gatus.io/enabled: "true"
+data:
+  config.yaml: |
+    endpoints:
+      - name: mariadb
+        group: infrastructure
+        url: tcp://mariadb.storage.svc.cluster.local:3306
+        interval: 1m
+        ui:
+          hide-url: true
+          hide-hostname: true
+        conditions:
+          - "[CONNECTED] == true"
+        alerts:
+          - type: pushover
