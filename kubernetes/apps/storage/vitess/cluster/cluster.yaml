@@ -8,29 +8,29 @@ spec:
       dataVolumeClaimTemplate:
         accessModes: ["ReadWriteOnce"]
         storageClassName: openebs-hostpath
-  # backup:
-  #   engine: xtrabackup
-  #   locations:
-  #     - volume:
-  #         nfs:
-  #           server: nas.internal
-  #           path: /mnt/world/vitess
-  #   schedules:
-  #     - name: "mysql"
-  #       schedule: "@daily"
-  #       resources:
-  #         limits:
-  #           memory: 1024Mi
-  #       successfulJobsHistoryLimit: 2
-  #       failedJobsHistoryLimit: 3
-  #       jobTimeoutMinute: 5
-  #       strategies:
-  #         - name: mysql_80-x
-  #           keyspace: "mysql"
-  #           shard: "80-"
-  #         - name: mysql_x-80
-  #           keyspace: "mysql"
-  #           shard: "-80"
+  backup:
+    engine: xtrabackup
+    locations:
+      - volume:
+          nfs:
+            server: nas.internal
+            path: /mnt/world/vitess
+    schedules:
+      - name: "mysql"
+        schedule: "@daily"
+        resources:
+          limits:
+            memory: 1Gi
+        successfulJobsHistoryLimit: 2
+        failedJobsHistoryLimit: 3
+        jobTimeoutMinute: 5
+        strategies:
+          - name: mysql_80-x
+            keyspace: "mysql"
+            shard: "80-"
+          - name: mysql_x-80
+            keyspace: "mysql"
+            shard: "-80"
   images:
     vtctld: vitess/lite:latest
     vtadmin: vitess/vtadmin:latest
@@ -78,9 +78,8 @@ spec:
     webResources:
       limits:
         memory: 128Mi
-
   keyspaces:
-    - name: mysql
+    - name: kfp-pipelines
       durabilityPolicy: none
       turndownPolicy: Immediate
       vitessOrchestrator:
@@ -94,12 +93,12 @@ spec:
             parts: 1
             shardTemplate:
               databaseInitScriptSecret:
-                name: vitess-init-db
+                name: vitess-secret
                 key: init_db.sql
               tabletPools:
                 - cell: zone1
                   type: replica
-                  replicas: 2
+                  replicas: 1
                   vttablet:
                     extraFlags:
                       db-charset: utf8mb4
@@ -115,6 +114,150 @@ spec:
                     storageClassName: openebs-hostpath
                     resources:
                       requests:
-                        storage: 10Gi
+                        storage: 1Gi
+    - name: kfp-cache
+      durabilityPolicy: none
+      turndownPolicy: Immediate
+      vitessOrchestrator:
+        resources:
+          limits:
+            memory: 128Mi
+        extraFlags:
+          instance-poll-time: 1s
+      partitionings:
+        - equal:
+            parts: 1
+            shardTemplate:
+              databaseInitScriptSecret:
+                name: vitess-secret
+                key: init_db.sql
+              tabletPools:
+                - cell: zone1
+                  type: replica
+                  replicas: 1
+                  vttablet:
+                    extraFlags:
+                      db-charset: utf8mb4
+                    resources:
+                      limits:
+                        memory: 256Mi
+                  mysqld:
+                    resources:
+                      limits:
+                        memory: 1024Mi
+                  dataVolumeClaimTemplate:
+                    accessModes: ["ReadWriteOnce"]
+                    storageClassName: openebs-hostpath
+                    resources:
+                      requests:
+                        storage: 1Gi
+    - name: kfp-metadata
+      durabilityPolicy: none
+      turndownPolicy: Immediate
+      vitessOrchestrator:
+        resources:
+          limits:
+            memory: 128Mi
+        extraFlags:
+          instance-poll-time: 1s
+      partitionings:
+        - equal:
+            parts: 1
+            shardTemplate:
+              databaseInitScriptSecret:
+                name: vitess-secret
+                key: init_db.sql
+              tabletPools:
+                - cell: zone1
+                  type: replica
+                  replicas: 1
+                  vttablet:
+                    extraFlags:
+                      db-charset: utf8mb4
+                    resources:
+                      limits:
+                        memory: 256Mi
+                  mysqld:
+                    resources:
+                      limits:
+                        memory: 1024Mi
+                  dataVolumeClaimTemplate:
+                    accessModes: ["ReadWriteOnce"]
+                    storageClassName: openebs-hostpath
+                    resources:
+                      requests:
+                        storage: 1Gi
+    - name: katib
+      durabilityPolicy: none
+      turndownPolicy: Immediate
+      vitessOrchestrator:
+        resources:
+          limits:
+            memory: 128Mi
+        extraFlags:
+          instance-poll-time: 1s
+      partitionings:
+        - equal:
+            parts: 1
+            shardTemplate:
+              databaseInitScriptSecret:
+                name: vitess-secret
+                key: init_db.sql
+              tabletPools:
+                - cell: zone1
+                  type: replica
+                  replicas: 1
+                  vttablet:
+                    extraFlags:
+                      db-charset: utf8mb4
+                    resources:
+                      limits:
+                        memory: 256Mi
+                  mysqld:
+                    resources:
+                      limits:
+                        memory: 1024Mi
+                  dataVolumeClaimTemplate:
+                    accessModes: ["ReadWriteOnce"]
+                    storageClassName: openebs-hostpath
+                    resources:
+                      requests:
+                        storage: 1Gi
+    - name: model-registry
+      durabilityPolicy: none
+      turndownPolicy: Immediate
+      vitessOrchestrator:
+        resources:
+          limits:
+            memory: 128Mi
+        extraFlags:
+          instance-poll-time: 1s
+      partitionings:
+        - equal:
+            parts: 1
+            shardTemplate:
+              databaseInitScriptSecret:
+                name: vitess-secret
+                key: init_db.sql
+              tabletPools:
+                - cell: zone1
+                  type: replica
+                  replicas: 1
+                  vttablet:
+                    extraFlags:
+                      db-charset: utf8mb4
+                    resources:
+                      limits:
+                        memory: 256Mi
+                  mysqld:
+                    resources:
+                      limits:
+                        memory: 1024Mi
+                  dataVolumeClaimTemplate:
+                    accessModes: ["ReadWriteOnce"]
+                    storageClassName: openebs-hostpath
+                    resources:
+                      requests:
+                        storage: 1Gi
   updateStrategy:
     type: Immediate
