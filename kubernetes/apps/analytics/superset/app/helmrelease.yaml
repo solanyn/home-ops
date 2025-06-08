@@ -95,6 +95,7 @@ spec:
             host=os.getenv("REDIS_HOST", ""), port=os.getenv("REDIS_PORT", ""), key_prefix='superset_results')
       enable_oauth: |
         from flask_appbuilder.security.manager import (AUTH_DB, AUTH_OAUTH)
+        ENABLE_PROXY_FIX = True
         AUTH_TYPE = AUTH_OAUTH
         OAUTH_PROVIDERS = [
             {
