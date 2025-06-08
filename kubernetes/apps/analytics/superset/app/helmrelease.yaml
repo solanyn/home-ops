@@ -93,9 +93,6 @@ spec:
         from flask_caching.backends.rediscache import RedisCache
         RESULTS_BACKEND = RedisCache(
             host=os.getenv("REDIS_HOST", ""), port=os.getenv("REDIS_PORT", ""), key_prefix='superset_results')
-      extend_timeout: |
-        # Extend timeout to allow long running queries.
-        SUPERSET_WEBSERVER_TIMEOUT = ...
       enable_oauth: |
         from flask_appbuilder.security.manager import (AUTH_DB, AUTH_OAUTH)
         AUTH_TYPE = AUTH_OAUTH
