@@ -1,8 +1,9 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app thelounge
+  name: thelounge
 spec:
   interval: 1h
   chartRef:
@@ -14,7 +15,6 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   values:
     controllers:
@@ -25,31 +25,36 @@ spec:
           app:
             image:
               repository: ghcr.io/thelounge/thelounge
-              tag: 4.4.3
+              tag: 4.4.3@sha256:c2aa0916203b298ffaf3a36c4eb60ef73c1006448d430e218d37840472e84e50
             env:
               THELOUNGE_HOME: /config
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             probes:
               liveness:
                 enabled: true
               readiness:
                 enabled: true
-              startup:
-                enabled: true
-                spec:
-                  failureThreshold: 30
-                  periodSeconds: 5
             resources:
               requests:
                 cpu: 10m
-                memory: 256M
               limits:
-                memory: 512M
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
+        controller: thelounge
         ports:
           http:
-            port: &port 9000
+            port: 9000
     route:
       app:
         hostnames: ["{{ .Release.Name }}.goyangi.io"]
@@ -60,9 +65,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: *port
+                port: 9000
     persistence:
       config:
-        existingClaim: *app
-        globalMounts:
-          - path: /config
+        existingClaim: thelounge
