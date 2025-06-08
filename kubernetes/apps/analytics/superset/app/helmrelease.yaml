@@ -93,11 +93,9 @@ spec:
         from flask_caching.backends.rediscache import RedisCache
         RESULTS_BACKEND = RedisCache(
             host=os.getenv("REDIS_HOST", ""), port=os.getenv("REDIS_PORT", ""), key_prefix='superset_results')
-      extend_timeout: |
-        # Extend timeout to allow long running queries.
-        SUPERSET_WEBSERVER_TIMEOUT = ...
       enable_oauth: |
         from flask_appbuilder.security.manager import (AUTH_DB, AUTH_OAUTH)
+        ENABLE_PROXY_FIX = True
         AUTH_TYPE = AUTH_OAUTH
         OAUTH_PROVIDERS = [
             {
@@ -108,6 +106,10 @@ spec:
                     "client_id": os.getenv("SUPERSET_CLIENT_ID", ""),
                     "client_secret": os.getenv("SUPERSET_CLIENT_SECRET", ""),
                     "client_kwargs": {"scope": "openid email profile"},
+                    "jwks_uri": "https://id.goyangi.io/.well-known/jwks.json",
+                    "api_base_url": "https://id.goyangi.io",
+                    "access_token_url": "https://id.goyangi.io/api/oidc/token",
+                    "authorize_url": "https://id.goyangi.io/authorize",
                     "request_token_url": None,
                     "server_metadata_url": "https://id.goyangi.io/.well-known/openid-configuration",
                 }
