@@ -26,6 +26,7 @@ model_list:
       output_cost_per_token: 0.000015
       max_tokens: 200000
     aliases: [general_anthropic_3.7-sonnet, vision_anthropic_3.7-sonnet]
+    tags: ["anthropic", "paid"]
   - model_name: "Anthropic: claude-4-sonnet"
     provider: anthropic
     litellm_params:
@@ -38,6 +39,7 @@ model_list:
       output_cost_per_token: 0.000015
       max_tokens: 200000
     aliases: [general_anthropic_4_sonnet, vision_anthropic_4_sonnet]
+    tags: ["anthropic", "paid"]
   - model_name: "Anthropic: claude-4-opus"
     provider: anthropic
     litellm_params:
@@ -61,6 +63,7 @@ model_list:
       output_cost_per_token: 4e-7
       max_tokens: 1048576
     aliases: [general_gemini, vision_gemini]
+    tags: ["vertex-ai", "paid", "sponsored"]
   - model_name: "OpenAI: text-embedding-3-small"
     provider: openai
     litellm_params:
@@ -73,6 +76,7 @@ model_list:
       input_cost_per_token: 0.00000002
       capabilities: [vision, chat]
     aliases: [embedding_openai]
+    tags: ["openai", "paid"]
   - model_name: "OpenAI: gpt-4.1-mini"
     provider: openai
     litellm_params:
@@ -85,6 +89,7 @@ model_list:
       output_cost_per_token: 0.0000016
       max_tokens: 1047576
     aliases: [gpt-4.1, general_openai, vision_openai]
+    tags: ["openai", "paid"]
   - model_name: "OpenAI: gpt-4o"
     provider: openai
     litellm_params:
@@ -97,6 +102,7 @@ model_list:
       output_cost_per_token: 0.0000015
       max_tokens: 128000
     aliases: [general_openai_4o, vision_openai_4o]
+    tags: ["openai", "paid"]
   - model_name: "OpenAI: Whisper-1"
     provider: openai
     litellm_params:
@@ -107,6 +113,7 @@ model_list:
       mode: completion
       input_cost_per_token: 0.000000006
     aliases: [general_openai_4o, vision_openai_4o, whisper-1]
+    tags: ["openai", "paid"]
   - model_name: "TogetherAI: Qwen2.5-Coder-32B-Instruct"
     provider: togetherai
     litellm_params:
@@ -119,6 +126,7 @@ model_list:
       output_cost_per_token: 0.0000008
       max_tokens: 16384
     aliases: [code_fallback_together]
+    tags: ["togetherai", "free"]
   - model_name: "Groq: Meta llama3-70b-8192"
     provider: groq
     litellm_params:
@@ -132,6 +140,7 @@ model_list:
       output_cost_per_token: 0.00000079
       max_tokens: 32768
     aliases: [code_fallback_groq]
+    tags: ["groq", "free"]
 model_groups:
   code_pipeline:
     - code_fallback_groq
