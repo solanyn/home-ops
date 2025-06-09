@@ -64,7 +64,7 @@ spec:
         memory: 128Mi
   vtadmin:
     rbac:
-      name: vitess-rbac
+      name: vitess-secret
       key: rbac.yaml
     cells:
       - zone1
