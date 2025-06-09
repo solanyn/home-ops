@@ -50,16 +50,15 @@ model_list:
       output_cost_per_token: 0.000075
       max_tokens: 200000
     aliases: [general_anthropic_4_opus, vision_anthropic_4_opus]
-  - model_name: "Google: Gemini 2.5 Pro Preview 05-06"
-    provider: google
+  - model_name: "Google: Gemini 2.0 Flash"
+    provider: vertex_ai
     litellm_params:
-      model: gemini/gemini-2.5-pro-preview-05-06
-    api_key: ${GOOGLE_API_KEY}
+      model: gemini-2.0-flash
     model_info:
-      id: gemini-2.5-pro-preview-05-06
+      id: gemini-2.0-flash
       mode: completion
-      input_cost_per_token: 0.00000250
-      output_cost_per_token: 0.00000500
+      input_cost_per_token: 1e-7
+      output_cost_per_token: 4e-7
       max_tokens: 1048576
     aliases: [general_gemini, vision_gemini]
   - model_name: "OpenAI: text-embedding-3-small"
