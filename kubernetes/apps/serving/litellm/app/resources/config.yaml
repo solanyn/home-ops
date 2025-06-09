@@ -8,6 +8,8 @@ general_settings:
   background_health_checks: false
   health_check_interval: 300
   store_model_in_db: true
+  redis_host: os.environ/REDIS_HOST
+  redis_port: os.environ/REDIS_PORT
 litellm_settings:
   proxy_server: true
   request_timeout: 600
@@ -21,8 +23,8 @@ litellm_settings:
   cache: true
   cache_params:
     type: redis
-    host: redis.storage.svc.cluster.local
-    port: 6379
+    host: os.environ/REDIS_HOST
+    port: os.environ/REDIS_PORT
     redis_semantic_cache_embedding_model: text-embedding-3-small # the model should be defined on the model_list
     redis_semantic_cache_index_name: litellm_cache
     similarity_threshold: 0.98 # similarity threshold for semantic cache
