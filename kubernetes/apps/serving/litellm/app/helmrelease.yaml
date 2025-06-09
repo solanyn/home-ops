@@ -36,7 +36,7 @@ spec:
               tag: main-v1.72.2.rc@sha256:5bbd017fd640fd007e7b998bc5ee0c2f69a1c59882546c64df400feeafadbc37
             env:
               TZ: Australia/Sydney
-              DEFAULT_GOOGLE_APPLICATION_CREDENTIALS: /vertex/credentials.json
+              GOOGLE_APPLICATION_CREDENTIALS: /vertex/credentials.json
               DEFAULT_VERTEX_LOCATION: australia-southeast1
               USE_PRISMA_MIGRATE: "True"
               LITELLM_LOG: "DEBUG"
