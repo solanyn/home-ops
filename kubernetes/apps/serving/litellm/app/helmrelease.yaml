@@ -126,8 +126,8 @@ spec:
         type: secret
         name: litellm-secret
         globalMounts:
-          - path: /keys/vertex-ai-service-account.json
-            subPath: vertex-ai-service-account.json
+          - path: /vertex/credentials.json
+            subPath: credentials.json
             readOnly: true
       cache:
         type: emptyDir

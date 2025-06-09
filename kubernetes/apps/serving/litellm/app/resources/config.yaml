@@ -31,8 +31,10 @@ litellm_settings:
       ["acompletion", "atext_completion", "aembedding", "atranscription"]
     mode: default_on
     ttl: 600 # ttl for caching
+default_vertex_config:
   vertex_project: "${VERTEX_PROJECT}"
   vertex_location: "australia-southeast1"
+  vertex_credentials: /vertex/credentials.json
 router:
   - destination: vision_openai
     if:
