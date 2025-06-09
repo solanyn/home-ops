@@ -42,15 +42,16 @@ router:
         - "diagram"
 router_settings:
   fallbacks:
-    - vision_openai: # ✅ Single key
-        - vision_anthropic
+    - vision_openai:
+        - vision_anthropic_4_opus
+        - vision_anthropic_4_sonnet
+        - vision_anthropic_3.7_sonnet
         - vision_gemini
-        - vision_xai
-        - vision_bedrock
     - general_openai:
-        - general_anthropic
+        - general_anthropic_4_opus
+        - vision_anthropic_4_sonnet
+        - vision_anthropic_3.7_sonnet
         - general_gemini
-        - general_xai
     - code_fallback_together:
         - code_fallback_groq
     - code_fallback_groq:
