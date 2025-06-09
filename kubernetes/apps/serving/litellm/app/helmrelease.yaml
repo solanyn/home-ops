@@ -32,14 +32,14 @@ spec:
           migrations:
             image:
               repository: ghcr.io/berriai/litellm-non_root
-              tag: main-v1.72.2.rc:@sha256:5bbd017fd640fd007e7b998bc5ee0c2f69a1c59882546c64df400feeafadbc37
+              tag: main-v1.72.2.rc@sha256:5bbd017fd640fd007e7b998bc5ee0c2f69a1c59882546c64df400feeafadbc37
             command: ["python", "litellm/proxy/prisma_migration.py"]
             envFrom: *envFrom
         containers:
           app:
             image:
               repository: ghcr.io/berriai/litellm-non_root
-              tag: main-v1.72.2.rc:@sha256:5bbd017fd640fd007e7b998bc5ee0c2f69a1c59882546c64df400feeafadbc37
+              tag: main-v1.72.2.rc@sha256:5bbd017fd640fd007e7b998bc5ee0c2f69a1c59882546c64df400feeafadbc37
             env:
               TZ: Australia/Sydney
               LITELLM_LOG: "DEBUG"
