@@ -29,10 +29,16 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: litellm-secret
+          migrations:
+            image:
+              repository: ghcr.io/berriai/litellm-non_root
+              tag: main-v1.72.2.rc:@sha256:5bbd017fd640fd007e7b998bc5ee0c2f69a1c59882546c64df400feeafadbc37
+            command: ["python", "litellm/proxy/prisma_migration.py"]
+            envFrom: *envFrom
         containers:
           app:
             image:
-              repository: ghcr.io/berriai/litellm-database
+              repository: ghcr.io/berriai/litellm-non_root
               tag: main-v1.72.2.rc:@sha256:5bbd017fd640fd007e7b998bc5ee0c2f69a1c59882546c64df400feeafadbc37
             env:
               TZ: Australia/Sydney
@@ -124,8 +130,3 @@ spec:
             subPath: npm
           - path: /tmp
             subPath: tmp
-      prisma-client:
-        type: emptyDir
-        globalMounts:
-          - path: /usr/local/lib/python3.13/site-packages/prisma
-            subPath: prisma
