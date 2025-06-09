@@ -43,6 +43,8 @@ spec:
               LITELLM_MODE: "production"
               LITELLM_DONT_SHOW_FEEDBACK_BOX: "True"
               LITELLM_MIGRATION_DIR: "/migrations"
+              REDIS_HOST: redis.storage.svc.cluster.local
+              REDIS_PORT: 6379
               PROMETHEUS_URL: "http://prometheus-kube-prometheus-prometheus.observability.svc.cluster.local:9090"
             envFrom: *envFrom
             args:
