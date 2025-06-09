@@ -42,7 +42,8 @@ spec:
               tag: main-v1.72.2.rc@sha256:5bbd017fd640fd007e7b998bc5ee0c2f69a1c59882546c64df400feeafadbc37
             env:
               TZ: Australia/Sydney
-              GOOGLE_APPLICATION_CREDENTIALS: /keys/vertex-ai-service-account.json
+              DEFAULT_GOOGLE_APPLICATION_CREDENTIALS: /vertex/credentials.json
+              DEFAULT_VERTEX_LOCATION: australia-southeast1
               LITELLM_LOG: "DEBUG"
               LITELLM_MODE: "production"
               LITELLM_DONT_SHOW_FEEDBACK_BOX: "True"
