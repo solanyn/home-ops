@@ -110,7 +110,7 @@ spec:
                     "access_token_url": "https://id.goyangi.io/api/oidc/token",
                     "authorize_url": "https://id.goyangi.io/authorize",
                     "request_token_url": None,
-        "redirect_url": "https://airflow.goyangi.io/oauth/callback",
+                    "redirect_url": "https://airflow.goyangi.io/oauth/callback",
                 }
             }
         ]
