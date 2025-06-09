@@ -29,12 +29,6 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: litellm-secret
-          migrations:
-            image:
-              repository: ghcr.io/berriai/litellm-non_root
-              tag: main-v1.72.2.rc@sha256:5bbd017fd640fd007e7b998bc5ee0c2f69a1c59882546c64df400feeafadbc37
-            command: ["python", "litellm/proxy/prisma_migration.py"]
-            envFrom: *envFrom
         containers:
           app:
             image:
@@ -44,9 +38,11 @@ spec:
               TZ: Australia/Sydney
               DEFAULT_GOOGLE_APPLICATION_CREDENTIALS: /vertex/credentials.json
               DEFAULT_VERTEX_LOCATION: australia-southeast1
+              USE_PRISMA_MIGRATE: "True"
               LITELLM_LOG: "DEBUG"
               LITELLM_MODE: "production"
               LITELLM_DONT_SHOW_FEEDBACK_BOX: "True"
+              LITELLM_MIGRATION_DIR: "/migrations"
               PROMETHEUS_URL: "http://prometheus-kube-prometheus-prometheus.observability.svc.cluster.local:9090"
             envFrom: *envFrom
             args:
@@ -139,3 +135,5 @@ spec:
             subPath: npm
           - path: /tmp
             subPath: tmp
+          - path: /migrations
+            subPath: migrations
