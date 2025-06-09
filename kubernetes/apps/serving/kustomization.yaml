@@ -8,4 +8,4 @@ components:
 resources:
   - ./feast/ks.yaml
   - ./kubeai/ks.yaml
-  - ./litellm
+  - ./litellm/ks.yaml
