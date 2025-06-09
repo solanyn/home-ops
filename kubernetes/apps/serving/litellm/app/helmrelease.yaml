@@ -122,6 +122,13 @@ spec:
           - path: /app/model_config.yaml
             subPath: model_config.yaml
             readOnly: true
+      keys:
+        type: secret
+        name: litellm-secret
+        globalMounts:
+          - path: /keys/vertex-ai-service-account.json
+            subPath: vertex-ai-service-account.json
+            readOnly: true
       cache:
         type: emptyDir
         globalMounts:
