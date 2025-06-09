@@ -8,29 +8,29 @@ spec:
       dataVolumeClaimTemplate:
         accessModes: ["ReadWriteOnce"]
         storageClassName: openebs-hostpath
-  backup:
-    engine: xtrabackup
-    locations:
-      - volume:
-          nfs:
-            server: nas.internal
-            path: /mnt/world/vitess
-    schedules:
-      - name: "mysql"
-        schedule: "@daily"
-        resources:
-          limits:
-            memory: 1Gi
-        successfulJobsHistoryLimit: 2
-        failedJobsHistoryLimit: 3
-        jobTimeoutMinute: 5
-        strategies:
-          - name: mysql_80-x
-            keyspace: "mysql"
-            shard: "80-"
-          - name: mysql_x-80
-            keyspace: "mysql"
-            shard: "-80"
+  # backup:
+  #   engine: xtrabackup
+  #   locations:
+  #     - volume:
+  #         nfs:
+  #           server: nas.internal
+  #           path: /mnt/world/vitess
+  #   schedules:
+  #     - name: "mysql"
+  #       schedule: "@daily"
+  #       resources:
+  #         limits:
+  #           memory: 1Gi
+  #       successfulJobsHistoryLimit: 2
+  #       failedJobsHistoryLimit: 3
+  #       jobTimeoutMinute: 5
+  #       strategies:
+  #         - name: mysql_80-x
+  #           keyspace: "mysql"
+  #           shard: "80-"
+  #         - name: mysql_x-80
+  #           keyspace: "mysql"
+  #           shard: "-80"
   images:
     vtctld: vitess/lite:latest
     vtadmin: vitess/vtadmin:latest
