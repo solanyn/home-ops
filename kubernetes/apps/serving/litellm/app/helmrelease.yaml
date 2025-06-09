@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/berriai/litellm-non_root
-              tag: main-dev@sha256:a99873064065edef568d9dcb038fefa9eb9887cbc02c93415b1e762349c24855
+              tag: main-v1.72.2.rc:@sha256:5bbd017fd640fd007e7b998bc5ee0c2f69a1c59882546c64df400feeafadbc37
             env:
               TZ: Australia/Sydney
               LITELLM_LOG: "DEBUG"
@@ -129,4 +129,4 @@ spec:
         globalMounts:
           - path: /usr/local/lib/python3.13/site-packages/prisma
             subPath: prisma
-  
+
