@@ -10,3 +10,4 @@ resources:
   - ./feast/ks.yaml
   - ./kubeai/ks.yaml
   - ./litellm/ks.yaml
+  - ./open-webui/ks.yaml
