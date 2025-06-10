@@ -11,6 +11,6 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: pulsar-pulsar-manager
+        - name: pulsar-pulsar-manager-admin
           namespace: streaming
-          port: 9527
+          port: 7750
