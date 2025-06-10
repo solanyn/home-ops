@@ -37,7 +37,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: milvus
-      namespace: streaming
+      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/storage/milvus/backup
   prune: false
