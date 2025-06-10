@@ -53,15 +53,4 @@ spec:
     podAnnotations:
       reloader.stakater.com/auto: "true"
     open-webui:
-      enabled: true
-      extraEnvFrom:
-        - secretRef:
-            name: kubeai-secret
-      extraInitContainers:
-        - name: init-db
-          image: ghcr.io/home-operations/postgres-init:17
-          envFrom:
-            - secretRef:
-                name: kubeai-secret
-      podAnnotations:
-        reloader.stakater.com/auto: "true"
+      enabled: false
