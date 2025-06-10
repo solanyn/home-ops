@@ -12,5 +12,5 @@ spec:
   rules:
     - backendRefs:
         - name: pulsar-pulsar-manager
-          namespace: kafka
+          namespace: streaming
           port: 9527
