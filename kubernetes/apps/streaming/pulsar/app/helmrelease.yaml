@@ -37,7 +37,7 @@ spec:
       zookeeper: false
       oxia: true
       functions: true
-      pulsar_manager: false
+      pulsar_manager: true
     oxia:
       coordinator:
         appAnnotations: &annotations

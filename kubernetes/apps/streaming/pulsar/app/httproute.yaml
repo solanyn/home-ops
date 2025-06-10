@@ -11,6 +11,6 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: pulsar-proxy
+        - name: pulsar-manager
           namespace: streaming
-          port: 80
+          port: 9527
