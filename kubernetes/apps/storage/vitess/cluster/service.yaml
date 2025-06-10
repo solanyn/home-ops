@@ -34,25 +34,3 @@ spec:
   selector:
     planetscale.com/cluster: mysql
     planetscale.com/component: vtctld
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql-vtgate
-spec:
-  ports:
-    - name: web
-      port: 15000
-      protocol: TCP
-      targetPort: web
-    - name: grpc
-      port: 15999
-      protocol: TCP
-      targetPort: grpc
-    - name: mysql
-      port: 3306
-      protocol: TCP
-      targetPort: mysql
-  selector:
-    planetscale.com/cluster: mysql
-    planetscale.com/component: vtgate
