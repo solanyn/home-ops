@@ -1,0 +1,123 @@
+---
+use_default_settings: true
+
+server:
+  limiter: true
+  image_proxy: true
+  method: GET # https://github.com/searxng/searxng/pull/3619
+  public_instance: false
+
+search:
+  autocomplete: google
+  favicon_resolver: duckduckgo
+  default_lang: en-AU
+  languages:
+    - en-AU
+    - en-CA
+    - en-GB
+    - en-NZ
+    - en-US
+  formats:
+    - html
+    - json
+
+general:
+  instance_name: goyangi search
+  enable_metrics: true
+  open_metrics: ${SEARXNG_OPEN_METRICS_SECRET}
+
+ui:
+  default_theme: simple
+  infinite_scroll: true
+  query_in_title: true
+  results_on_new_tab: true
+  static_use_hash: true
+  theme_args:
+    simple_style: auto
+  default_locale: en
+
+categories_as_tabs:
+  general:
+  images:
+  videos:
+  map:
+
+enabled_plugins:
+  - Basic Calculator
+  - Hash plugin
+  - Hostnames plugin
+  - Open Access DOI rewrite
+  - Self Informations
+  - Tracker URL remover
+  - Unit converter plugin
+
+hostnames:
+  high_priority:
+    - (.*)\/blog\/(.*)
+    - (.*\.)?wikipedia.org$
+    - (.*\.)?github.com$
+    - (.*\.)?reddit.com$
+    - (.*\.)?docker.com$
+    - (.*\.)?archlinux.org$
+    - (.*\.)?stackoverflow.com$
+    - (.*\.)?askubuntu.com$
+    - (.*\.)?superuser.com$
+
+engines:
+  - name: wikipedia
+    engine: wikipedia
+    shortcut: wp
+    display_type: ["infobox"]
+    categories: [general]
+
+  - name: docker hub
+    engine: docker_hub
+    shortcut: dh
+    categories: [it, packages]
+
+  - name: encyclosearch
+    engine: json_engine
+    shortcut: es
+    categories: general
+    paging: true
+    search_url: https://encyclosearch.org/encyclosphere/search?q={query}&page={pageno}&resultsPerPage=15
+    results_query: Results
+    url_query: SourceURL
+    title_query: Title
+    content_query: Description
+    disabled: false
+    about:
+      website: https://encyclosearch.org
+      official_api_documentation: https://encyclosearch.org/docs/#/rest-api
+      use_official_api: true
+      require_api_key: false
+      results: JSON
+
+  - name: github
+    engine: github
+    shortcut: gh
+
+  - name: goodreads
+    engine: goodreads
+    shortcut: good
+    timeout: 4.0
+    disabled: false
+
+  - name: google
+    engine: google
+    shortcut: g
+    parameters:
+      - hl: en
+      - gl: au
+      - cr: countryAU
+      - tbs: ctr:countryAU
+
+  - name: google images
+    engine: google_images
+    shortcut: gi
+
+  - name: reddit
+    engine: reddit
+    shortcut: re
+    page_size: 25
+    disabled: false
