@@ -1,0 +1,10 @@
+apiVersion: resource.streamnative.io/v1alpha1
+kind: PulsarNamespace
+metadata:
+  name: home-ops-gt7
+spec:
+  name: home-ops/gt7
+  connectionRef:
+    name: pulsar-connection
+  topicAutoCreationConfig:
+    allow: false
