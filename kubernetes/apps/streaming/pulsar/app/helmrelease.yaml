@@ -71,6 +71,11 @@ spec:
     proxy:
       replicaCount: 1
       appAnnotations: *annotations
+      service:
+        type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: pulsar.goyangi.io
+          lbipam.cilium.io/ips: 192.168.1.132, ::ffff:192.168.1.132
     toolset:
       appAnnotations: *annotations
     pulsar_manager:
