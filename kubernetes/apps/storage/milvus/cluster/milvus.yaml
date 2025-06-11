@@ -34,6 +34,10 @@ spec:
       inCluster:
         values:
           replicaCount: 3
+          persistence:
+            enabled: true
+            storageClass: openebs-hostpath
+            size: 1Gi
           resources:
             requests:
               cpu: 10m
