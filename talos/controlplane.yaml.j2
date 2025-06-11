@@ -31,13 +31,20 @@ machine:
     diskSelector:
       model: SAMSUNG MZVLQ256HAJD-000H1
     extraKernelArgs:
-      - apparmor=0
-      - init_on_alloc=0
-      - init_on_free=0
-      - mitigations=off
-      - security=none
-      - talos.auditd.disabled=1
-      - selinux=0
+      - -init_on_alloc                      # Less security, faster puter
+      - -init_on_free                       # Less security, faster puter
+      - -selinux                            # Less security, faster puter
+      - apparmor=0                          # Less security, faster puter
+      - i915.enable_guc=3                   # Meteor Lake CPU / iGPU
+      - init_on_alloc=0                     # Less security, faster puter
+      - init_on_free=0                      # Less security, faster puter
+      - intel_iommu=on                      # PCI Passthrough
+      - iommu=pt                            # PCI Passthrough
+      - mitigations=off                     # Less security, faster puter
+      - module_blacklist=igc                # Disable onboard NIC
+      - security=none                       # Less security, faster puter
+      - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
+      - talos.auditd.disabled=1             # Less security, faster puter
     # i915-ucode, intel-ucode, mei
     wipe: false
   files:
@@ -57,19 +64,21 @@ machine:
         nconnect=16
         noatime=True
   sysctls:
-    fs.inotify.max_user_watches: 1048576
-    fs.inotify.max_user_instances: 8192
-    net.core.default_qdisc: fq
-    net.core.rmem_max: 67108864
-    net.core.wmem_max: 67108864
-    net.ipv4.tcp_congestion_control: bbr
-    net.ipv4.tcp_fastopen: 3
-    net.ipv4.tcp_mtu_probing: 1
-    net.ipv4.tcp_rmem: 4096 87380 33554432
-    net.ipv4.tcp_wmem: 4096 65536 33554432
-    net.ipv4.tcp_window_scaling: 1
-    user.max_user_namespaces: 11255
-    vm.nr_hugepages: 1024
+    fs.inotify.max_user_watches: 1048576   # Watchdog
+    fs.inotify.max_user_instances: 8192    # Watchdog
+    net.core.default_qdisc: fq             # 10Gb/s
+    net.core.rmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+    net.core.wmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+    net.ipv4.tcp_congestion_control: bbr   # 10Gb/s
+    net.ipv4.tcp_fastopen: 3               # Send and accept data in the opening SYN packet
+    net.ipv4.tcp_mtu_probing: 1            # 10Gb/s | Jumbo frames
+    net.ipv4.tcp_rmem: 4096 87380 33554432 # 10Gb/s
+    net.ipv4.tcp_wmem: 4096 65536 33554432 # 10Gb/s
+    net.ipv4.tcp_window_scaling: 1         # 10Gb/s
+    sunrpc.tcp_slot_table_entries: 128     # 10Gb/s | NFS
+    sunrpc.tcp_max_slot_table_entries: 128 # 10Gb/s | NFS
+    user.max_user_namespaces: 11255        # User Namespaces
+    vm.nr_hugepages: 1024                  # PostgreSQL
   features:
     rbac: true
     stableHostname: true
