@@ -22,7 +22,7 @@ spec:
       version: 1.17.0
       sourceRef:
         kind: HelmRepository
-        name: pxc-db
+        name: pxc-cluster
         namespace: storage
   install:
     remediation:
