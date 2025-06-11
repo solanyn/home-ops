@@ -82,18 +82,22 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: qbittorrent
+        forceRename: *app
+        ports:
+          http:
+            port: *port
+      bittorrent:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 192.168.1.122, ::ffff:192.168.1.122
+        externalTrafficPolicy: Local
         ports:
-          http:
-            primary: true
-            port: *port
-          bittorrent:
-            enabled: true
+          bittorrent-tcp:
             port: *torrentPort
             protocol: TCP
+          bittorrent-udp:
+            port: *torrentPort
+            protocol: UDP
     route:
       app:
         hostnames:
