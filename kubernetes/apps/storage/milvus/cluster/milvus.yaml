@@ -34,6 +34,7 @@ spec:
       inCluster:
         values:
           replicaCount: 3
+          autoCompactionMode: periodic
           persistence:
             enabled: true
             storageClass: openebs-hostpath
