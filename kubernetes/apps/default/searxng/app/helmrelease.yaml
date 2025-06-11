@@ -103,7 +103,9 @@ spec:
                 key: SEARXNG_OPEN_METRICS_SECRET
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
+          - search.goyangi.io
         parentRefs:
           - name: internal
             namespace: kube-system
