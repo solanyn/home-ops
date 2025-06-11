@@ -12,4 +12,3 @@ resources:
   - ./mariadb/ks.yaml
   - ./milvus/ks.yaml
   - ./minio/ks.yaml
-  - ./vitess/ks.yaml
