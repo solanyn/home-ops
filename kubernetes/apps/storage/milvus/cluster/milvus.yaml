@@ -3,7 +3,30 @@ kind: Milvus
 metadata:
   name: milvus
 spec:
+  mode: cluster
+  config:
+    bucketName: milvus
+  components:
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+    proxy:
+      replicas: 1
+    rootCoord:
+      replicas: 1
+    indexCoord:
+      replicas: 1
+    dataCoord:
+      replicas: 1
+    queryCoord:
+      replicas: 1
+    indexNode:
+      replicas: 1
+    dataNode:
+      replicas: 1
+    queryNode:
+      replicas: 1
   dependencies:
+    msgStreamType: pulsar
     pulsar:
       external: true
       endpoints: ["pulsar-proxy.streaming.svc.cluster.local:6650"]
