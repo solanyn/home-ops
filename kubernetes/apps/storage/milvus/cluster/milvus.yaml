@@ -6,7 +6,7 @@ spec:
   dependencies:
     pulsar:
       external: true
-      endpoints: pulsar-proxy.streaming.svc.cluster.local:6650
+      endpoints: ["pulsar-proxy.streaming.svc.cluster.local:6650"]
     etcd:
       inCluster:
         values:
