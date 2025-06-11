@@ -32,3 +32,5 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
+  values:
+    fullnameOverride: pulsar-resources-operator
