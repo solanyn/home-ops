@@ -40,6 +40,6 @@ spec:
               memory: 64Mi
     storage:
       external: true
-      type: MinIO
+      type: S3
       endpoint: minio.storage.svc.cluster.local:9000
       secretRef: milvus-secret
