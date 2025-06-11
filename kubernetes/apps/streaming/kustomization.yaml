@@ -7,3 +7,4 @@ components:
 resources:
   - ./flink/ks.yaml
   - ./pulsar/ks.yaml
+  - ./pulsar-resources/ks.yaml
