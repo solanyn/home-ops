@@ -85,3 +85,6 @@ spec:
           - path: /home/wizarruser
       tmp:
         type: emptyDir
+        globalMounts:
+          - path: /tmp
+          - path: /.cache
