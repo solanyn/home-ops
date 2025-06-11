@@ -1,0 +1,22 @@
+apiVersion: milvus.io/v1beta1
+kind: Milvus
+metadata:
+  name: milvus
+spec:
+  dependencies:
+    pulsar:
+      external: true
+      endpoints: pulsar-proxy.streaming.svc.cluster.local:6650
+    etcd:
+      inCluster:
+        values:
+          replicaCount: 3
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+    storage:
+      external: true
+      type: MinIO
+      endpoint: minio.storage.svc.cluster.local:9000
+      secretRef: milvus-secret

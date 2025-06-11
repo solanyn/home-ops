@@ -11,5 +11,5 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: milvus-attu
-          port: 3000
+        - name: milvus-proxy
+          port: 9091

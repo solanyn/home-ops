@@ -29,7 +29,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app milvus-backup
+  name: &app milvus-cluster
   namespace: &namespace storage
 spec:
   commonMetadata:
@@ -37,6 +37,30 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: milvus
+      namespace: storage
+  interval: 1h
+  path: ./kubernetes/apps/storage/milvus/cluster
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app milvus-backup
+  namespace: &namespace storage
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: milvus-cluster
       namespace: storage
   interval: 1h
   path: ./kubernetes/apps/storage/milvus/backup
