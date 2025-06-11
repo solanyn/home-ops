@@ -26,10 +26,6 @@ spec:
             image:
               repository: quay.io/docling-project/docling-serve
               tag: v0.13.0@sha256:c1d1001496ec1f2b0e384d375d0d66598f0fda9845dcd3749457c57d9db14fbf
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
             probes:
               liveness: &probes
                 enabled: true
@@ -43,15 +39,6 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
-        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: *app
