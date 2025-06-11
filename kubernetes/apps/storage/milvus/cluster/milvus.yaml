@@ -29,7 +29,7 @@ spec:
     msgStreamType: pulsar
     pulsar:
       external: true
-      endpoints: ["pulsar-proxy.streaming.svc.cluster.local:6650"]
+      endpoint: pulsar-proxy.streaming.svc.cluster.local:6650
     etcd:
       inCluster:
         values:
