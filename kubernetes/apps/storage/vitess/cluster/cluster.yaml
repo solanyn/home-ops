@@ -3,10 +3,6 @@ kind: VitessCluster
 metadata:
   name: mysql
 spec:
-  gatewayService:
-    annotations:
-      external-dns.alpha.kubernetes.io/hostname: mysql.goyangi.io
-      lbipam.cilium.io/ips: 192.168.1.127, ::ffff:192.168.1.127
   globalLockserver:
     etcd:
       dataVolumeClaimTemplate:
