@@ -35,7 +35,7 @@ spec:
       namespace: storage
     - name: minio
       namespace: storage
-    - name: pulsar
+    - name: pulsar-cluster
       namespace: streaming
   interval: 1h
   path: ./kubernetes/apps/storage/milvus/cluster
