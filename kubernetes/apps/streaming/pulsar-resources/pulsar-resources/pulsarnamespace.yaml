@@ -6,5 +6,3 @@ spec:
   name: home-ops/gt7
   connectionRef:
     name: pulsar-connection
-  topicAutoCreationConfig:
-    allow: false
