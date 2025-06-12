@@ -71,10 +71,8 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: atuin
         ports:
           http:
-            primary: true
             port: *port
     route:
       app:

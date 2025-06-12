@@ -33,7 +33,6 @@ spec:
                 memory: 10Mi
     service:
       app:
-        controller: *app
         ports:
           http:
             port: 8191

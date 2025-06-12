@@ -68,7 +68,6 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: lakekeeper
         ports:
           http:
             port: *port

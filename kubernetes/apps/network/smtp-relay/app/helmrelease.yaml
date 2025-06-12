@@ -55,7 +55,6 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: smtp-relay
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: smtp-relay.goyangi.io
@@ -68,7 +67,6 @@ spec:
             port: *port
     serviceMonitor:
       app:
-        serviceName: smtp-relay
         endpoints:
           - port: http
             scheme: http

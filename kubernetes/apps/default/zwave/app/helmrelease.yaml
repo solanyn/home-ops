@@ -62,7 +62,6 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: zwave
         ports:
           http:
             port: *port
