@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: milvus-configmap
+  - name: milvus-backup-configmap
     files:
       - config.yaml=./resources/config.yaml
 generatorOptions:
