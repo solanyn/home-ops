@@ -3,7 +3,7 @@ kind: PulsarTopic
 metadata:
   name: telemetry-raw
 spec:
-  name: persistent://home-ops/gt7/telemetry-raw
+  name: non-persistent://home-ops/gt7/telemetry-raw
   connectionRef:
     name: pulsar-connection
 ---
@@ -12,7 +12,7 @@ kind: PulsarTopic
 metadata:
   name: telemetry-parsed
 spec:
-  name: persistent://home-ops/gt7/telemetry-parsed
+  name: non-persistent://home-ops/gt7/telemetry-parsed
   connectionRef:
     name: pulsar-connection
 ---
@@ -21,6 +21,6 @@ kind: PulsarTopic
 metadata:
   name: telemetry-events
 spec:
-  name: persistent://home-ops/gt7/telemetry-events
+  name: non-persistent://home-ops/gt7/telemetry-events
   connectionRef:
     name: pulsar-connection
