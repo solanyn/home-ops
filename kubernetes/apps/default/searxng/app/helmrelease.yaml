@@ -81,13 +81,11 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: searxng
         ports:
           http:
             port: *httpPort
     serviceMonitor:
       app:
-        serviceName: searxng
         endpoints:
           - port: http
             scheme: http

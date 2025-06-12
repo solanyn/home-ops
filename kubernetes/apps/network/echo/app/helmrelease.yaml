@@ -60,13 +60,11 @@ spec:
         seccompProfile: {type: RuntimeDefault}
     service:
       app:
-        controller: echo
         ports:
           http:
             port: *port
     serviceMonitor:
       app:
-        serviceName: echo
         endpoints:
           - port: http
     route:

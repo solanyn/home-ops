@@ -83,13 +83,11 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: gatus
         ports:
           http:
             port: *port
     serviceMonitor:
       app:
-        serviceName: gatus
         endpoints:
           - port: http
             interval: 1m
