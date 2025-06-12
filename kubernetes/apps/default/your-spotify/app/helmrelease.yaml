@@ -82,6 +82,7 @@ spec:
           http:
             port: &webport 3000
       mongodb:
+        controller: mongodb
         ports:
           http:
             port: 27017
