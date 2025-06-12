@@ -59,14 +59,12 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: go2rtc
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: go2rtc-streams.goyangi.io
           lbipam.cilium.io/ips: 192.168.1.124, ::ffff:192.168.1.124
         ports:
           http:
-            primary: true
             port: *port
           rtsp:
             port: 554

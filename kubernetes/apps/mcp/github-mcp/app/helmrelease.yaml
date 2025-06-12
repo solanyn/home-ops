@@ -40,10 +40,8 @@ spec:
                 memory: 512Mi
     service:
       app:
-        controller: *app
         ports:
           http:
-            primary: true
             port: 8000
     persistence:
       config:

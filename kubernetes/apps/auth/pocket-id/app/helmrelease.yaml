@@ -82,7 +82,6 @@ spec:
         supplementalGroups: [10000]
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port

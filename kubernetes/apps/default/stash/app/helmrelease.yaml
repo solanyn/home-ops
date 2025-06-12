@@ -82,7 +82,6 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: stash
         ports:
           http:
             port: &port 9999

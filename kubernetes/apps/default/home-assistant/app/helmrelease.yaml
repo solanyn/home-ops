@@ -55,7 +55,6 @@ spec:
       hostNetwork: true
     service:
       app:
-        controller: home-assistant
         ports:
           http:
             port: &port 8123
