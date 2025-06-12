@@ -74,7 +74,6 @@ spec:
         runAsGroup: 1000
     service:
       app:
-        controller: *app
         ports:
           http:
             port: *port
@@ -84,7 +83,6 @@ spec:
       dragonfly-operator: {}
     serviceMonitor:
       app:
-        serviceName: *app
         endpoints:
           - port: metrics
             scheme: http

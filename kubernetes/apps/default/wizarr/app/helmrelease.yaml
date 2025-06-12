@@ -60,7 +60,6 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: wizarr
         ports:
           http:
             port: *port
