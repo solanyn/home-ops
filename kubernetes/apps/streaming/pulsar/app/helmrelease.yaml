@@ -37,7 +37,6 @@ spec:
       zookeeper: false
       oxia: true
       functions: true
-      pulsar_manager: true
     oxia:
       coordinator:
         appAnnotations: &annotations
@@ -78,21 +77,5 @@ spec:
           lbipam.cilium.io/ips: 192.168.1.132, ::ffff:192.168.1.132
     toolset:
       appAnnotations: *annotations
-    pulsar_manager:
-      appAnnotations: *annotations
-      configData:
-        URL: "jdbc:postgresql://postgres17-rw.storage.svc.cluster.local:5432/pulsar_manager"
-      volumes:
-        persistence: true
-        data:
-          storageClassName: openebs-hostpath
-      admin:
-        existingSecret: pulsar-secret
-      initContainers:
-        - name: init-db
-          image: ghcr.io/home-operations/postgres-init:17
-          envFrom:
-            - secretRef:
-                name: pulsar-secret
     victoria-metrics-k8s-stack:
       enabled: false
