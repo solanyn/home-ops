@@ -50,7 +50,13 @@ spec:
     haproxy:
       enabled: false
     proxysql:
-      enabled: false
+      enabled: true
+      size: 3
+      resources: {}
+      persistence:
+        enabled: true
+        storageClass: openebs-hostpath
+        size: 1Gi
     logcollector:
       resources: {}
     users:
