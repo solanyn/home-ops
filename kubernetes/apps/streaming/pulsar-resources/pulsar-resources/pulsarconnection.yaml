@@ -3,6 +3,6 @@ kind: PulsarConnection
 metadata:
   name: pulsar-connection
 spec:
-  adminServiceURL: http://pulsar-proxy.streaming.svc.cluster.local:80
-  brokerServiceURL: pulsar://pulsar-proxy.streaming.svc.cluster.local:6650
+  adminServiceURL: http://pulsar-cluster-proxy.streaming.svc.cluster.local:80
+  brokerServiceURL: pulsar://pulsar-cluster-proxy.streaming.svc.cluster.local:6650
   clusterName: pulsar-cluster
