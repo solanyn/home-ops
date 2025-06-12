@@ -30,14 +30,14 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/szinn/atuin
-              tag: v18.6.1-sqlite-5@sha256:192389b6b6da30fbf81c6fee8f978a7262d8683657056cf021983481b41162c5
+              repository: ghcr.io/atuinsh/atuin
+              tag: v18.6.1@sha256:869a85bcc169ae9a3ea65dcf32a99dae982d28d8562172e2712d3313d7349203
             env:
               ATUIN_PORT: &port 80
               ATUIN_OPEN_REGISTRATION: "true"
               TZ: Australia/Sydney
             envFrom: *envFrom
-            command: ["atuin", "server", "start"]
+            command: ["server", "start"]
             probes:
               liveness: &probes
                 enabled: true
