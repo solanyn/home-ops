@@ -79,6 +79,8 @@ spec:
             port: *port
           metrics:
             port: 8080
+    serviceAccount:
+      dragonfly-operator: {}
     serviceMonitor:
       app:
         endpoints:
