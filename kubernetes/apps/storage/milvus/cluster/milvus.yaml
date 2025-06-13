@@ -31,18 +31,8 @@ spec:
       external: true
       endpoint: pulsar-proxy.streaming.svc.cluster.local:6650
     etcd:
-      inCluster:
-        values:
-          replicaCount: 3
-          autoCompactionMode: periodic
-          persistence:
-            enabled: true
-            storageClass: openebs-hostpath
-            size: 1Gi
-          resources:
-            requests:
-              cpu: 10m
-              memory: 64Mi
+      external: true
+      endpoints: ["etcd-cluster.storage.cluster.local:2379"]
     storage:
       external: true
       type: S3
