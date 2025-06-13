@@ -72,10 +72,7 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: *port
+
     persistence:
       database:
         existingClaim: *app
