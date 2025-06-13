@@ -44,10 +44,10 @@ spec:
               VECTOR_DB: milvus
               MILVUS_URI: milvus.storage.svc.cluster.local:17530
               MILVUS_DB: open-webui
-              # ENABLE_WEB_SEARCH: "true"
-              # WEB_SEARCH_TRUST_ENV: "true"
-              # WEB_SEARCH_ENGINE: searxng
-              # SEARXNG_QUERY_URL: http://searxng.default.svc.cluster.local
+              ENABLE_WEB_SEARCH: "true"
+              WEB_SEARCH_TRUST_ENV: "true"
+              WEB_SEARCH_ENGINE: searxng
+              SEARXNG_QUERY_URL: http://searxng.default.svc.cluster.local
               ENABLE_IMAGE_GENERATION: "true"
             envFrom:
               - secretRef:
