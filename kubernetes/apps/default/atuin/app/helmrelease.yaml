@@ -35,6 +35,7 @@ spec:
             env:
               ATUIN_PORT: &port 80
               ATUIN_OPEN_REGISTRATION: "true"
+              RUST_LOG: debug
               TZ: Australia/Sydney
             envFrom: *envFrom
             command: ["atuin", "server", "start"]
