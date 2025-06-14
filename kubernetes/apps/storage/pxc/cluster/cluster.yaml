@@ -12,6 +12,7 @@ spec:
     apply: disabled
     schedule: "0 0 * * *"
   pxc:
+    image: percona/percona-xtradb-cluster:8.4.3-3.1
     size: 3
     configuration: |
       [mysqld]
