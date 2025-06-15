@@ -48,6 +48,9 @@ spec:
         sync_binlog                     = 1
         gtid_mode                       = ON
         enforce_gtid_consistency        = true
+    volumeSpec:
+      persistentVolumeClaim:
+        storageClassName: openebs-hostpath
     autoRecovery: true
     expose:
       enabled: true
