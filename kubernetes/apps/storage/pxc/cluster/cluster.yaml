@@ -51,6 +51,9 @@ spec:
     volumeSpec:
       persistentVolumeClaim:
         storageClassName: openebs-hostpath
+        resources:
+          requests:
+            storage: 1Gi
     autoRecovery: true
     expose:
       enabled: true
