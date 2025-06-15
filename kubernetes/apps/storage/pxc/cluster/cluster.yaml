@@ -45,7 +45,6 @@ spec:
         innodb_temp_data_file_path      = ibtmp1:12M:autoextend:max:5G
         log_slave_updates               = 1
         log_bin                         = /var/lib/mysql/mysql-bin.log
-        expire_logs_days                = 4
         sync_binlog                     = 1
         gtid_mode                       = ON
         enforce_gtid_consistency        = true
