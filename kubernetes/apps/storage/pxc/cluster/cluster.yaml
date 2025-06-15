@@ -51,6 +51,7 @@ spec:
     volumeSpec:
       persistentVolumeClaim:
         storageClassName: openebs-hostpath
+        accessModes: ["ReadWriteOnce"]
         resources:
           requests:
             storage: 1Gi
