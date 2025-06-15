@@ -82,10 +82,10 @@ spec:
                 /minio/milvus
                 /minio/open-webui
                 /minio/pulsar
+                /minio/pxc
                 /minio/tldr
                 /minio/trino
                 /minio/tsw
-                /minio/vitess
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
