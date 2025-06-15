@@ -10,9 +10,11 @@ spec:
     proxySize: true
   upgradeOptions:
     apply: disabled
-    schedule: "0 0 * * *"
+  initContainer:
+    resources: {}
   pxc:
     image: percona/percona-xtradb-cluster:8.4.4
+    resources: {}
     size: 3
     configuration: |
       [mysqld]
@@ -59,13 +61,13 @@ spec:
     expose:
       enabled: true
       type: ClusterIP
-    resources: {}
     persistence:
       storageClass: openebs-hostpath
       size: 10Gi
       clusterSecretName: pxc-secret
   haproxy:
     enabled: true
+    resources: {}
     size: 1
     image: percona/percona-xtradb-cluster-operator:1.17.0-haproxy
     exposePrimary:
