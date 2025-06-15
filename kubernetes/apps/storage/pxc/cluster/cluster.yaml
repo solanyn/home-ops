@@ -22,7 +22,6 @@ spec:
         wsrep_debug                     = 0
         wsrep_provider_options          = "gcache.size=1G; gcache.recover=yes"
         default_storage_engine          = InnoDB
-        character-set-client-handshake  = FALSE
         character-set-server            = utf8mb4
         collation-server                = utf8mb4_unicode_ci
         binlog_format                   = ROW
