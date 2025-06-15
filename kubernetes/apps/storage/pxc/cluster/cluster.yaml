@@ -69,7 +69,7 @@ spec:
     enabled: true
     resources: {}
     size: 1
-    image: percona/percona-xtradb-cluster-operator:1.17.0-haproxy
+    image: percona/haproxy:2.8.14
     exposePrimary:
       type: LoadBalancer
       annotations:
