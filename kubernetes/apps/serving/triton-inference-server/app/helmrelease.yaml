@@ -47,15 +47,14 @@ spec:
             port: *httpPort
           grpc:
             port: 8001
-    route:
+    serviceMonitor:
       app:
-        hostnames:
-          - "{{ .Release.Name }}.goyangi.io"
-          - triton.goygani.io
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
     persistence:
       models:
         type: nfs
