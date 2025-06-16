@@ -69,10 +69,33 @@ spec:
             namespace: kube-system
             sectionName: https
     persistence:
-      cache:
+      cas:
         type: persistentVolumeClaim
         storageClass: openebs-hostpath
         accessMode: ReadWriteOnce
         size: 1Gi
-        globalMounts:
-          - /root/.cache/nativelink
+        advancedMounts:
+          cas:
+            app:
+              - path: /root/.cache/nativelink
+              - path: /tmp
+      scheduler:
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        advancedMounts:
+          scheduler:
+            app:
+              - path: /root/.cache/nativelink
+              - path: /tmp
+      executor:
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        advancedMounts:
+          executor:
+            app:
+              - path: /root/.cache/nativelink
+              - path: /tmp
