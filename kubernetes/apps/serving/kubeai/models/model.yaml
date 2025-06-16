@@ -15,10 +15,10 @@ spec:
 apiVersion: kubeai.org/v1
 kind: Model
 metadata:
-  name: gemma3-4b-cpu
+  name: gemma3-27b-cpu
 spec:
   features: [TextGeneration]
-  url: ollama://gemma3:4b
+  url: hf.co/unsloth/gemma-3-27b-it-GGUF:Q4_K_M
   engine: OLlama
   # TODO: runai_streamer not supported?
   # url: s3://kubeai/google-gemma-3-4b-it
