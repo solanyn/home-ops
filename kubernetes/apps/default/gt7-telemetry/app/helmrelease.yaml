@@ -32,6 +32,19 @@ spec:
               PULSAR_SERVICE_URL: pulsar://pulsar-cluster-proxy.streaming.svc.cluster.local:6650
               PULSAR_TOPIC: non-persistent://home-ops/gt7/telemetry
               HTTP_PORT: &port 80
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
