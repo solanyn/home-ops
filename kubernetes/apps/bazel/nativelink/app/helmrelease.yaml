@@ -58,6 +58,7 @@ spec:
             resources: {}
     service:
       scheduler:
+        controller: scheduler
         ports:
           http:
             port: 50052
