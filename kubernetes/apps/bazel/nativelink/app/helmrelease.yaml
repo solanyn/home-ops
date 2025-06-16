@@ -43,7 +43,7 @@ spec:
             env:
               CAS_ENDPOINT: nativelink-cas.bazel.svc.cluster.local
             resources: {}
-      executor::
+      executor:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
