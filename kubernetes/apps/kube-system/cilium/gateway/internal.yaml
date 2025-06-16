@@ -24,8 +24,26 @@ spec:
       allowedRoutes:
         namespaces:
           from: Same
+    - name: grpc
+      protocol: GRPC
+      port: 50051
+      hostname: "*.goyangi.io"
+      allowedRoutes:
+        namespaces:
+          from: Same
     - name: https
       protocol: HTTPS
+      port: 443
+      hostname: "*.goyangi.io"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: goyangi-io-tls
+    - name: grpcs
+      protocol: GRPCS
       port: 443
       hostname: "*.goyangi.io"
       allowedRoutes:
