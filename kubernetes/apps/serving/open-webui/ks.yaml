@@ -24,7 +24,7 @@ spec:
       name: open-webui
       namespace: *namespace
   interval: 1h
-  path: ./kubernetes/apps/storage/lakekeeper/app
+  path: ./kubernetes/apps/serving/open-webui/app
   prune: true
   retryInterval: 2m
   sourceRef:
