@@ -70,7 +70,9 @@ spec:
             sectionName: https
     persistence:
       cache:
-        type: emptyDir
-        sizeLimit: 1Gi
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 1Gi
         globalMounts:
           - /root/.cache/nativelink
