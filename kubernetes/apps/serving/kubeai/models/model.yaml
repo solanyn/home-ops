@@ -15,15 +15,39 @@ spec:
 apiVersion: kubeai.org/v1
 kind: Model
 metadata:
-  name: gemma3-27b-cpu
+  name: gemma3-12b-cpu
 spec:
   features: [TextGeneration]
-  url: hf://unsloth/gemma-3-27b-it-GGUF:Q4_K_M
+  url: hf://unsloth/gemma-3-27b-it-unsloth-bnb-4bit
   engine: OLlama
-  # TODO: runai_streamer not supported?
-  # url: s3://kubeai/google-gemma-3-4b-it
-  # engine: VLLM
   minReplicas: 1
   resourceProfile: cpu:1
-  # env:
-  #   AWS_ENDPOINT_URL: http://minio.storage.svc.cluster.local:9000
+---
+apiVersion: kubeai.org/v1
+kind: Model
+metadata:
+  name: devstral-cpu
+spec:
+  features: [TextGeneration]
+  url: hf://unsloth/Devstral-Small-2505-unsloth-bnb-4bit
+  engine: OLlama
+  minReplicas: 1
+  resourceProfile: cpu:1
+---
+apiVersion: kubeai.org/v1
+kind: Model
+metadata:
+  name: qwen2.5-coder-1.5b-cpu
+spec:
+  features: [TextGeneration]
+  url: hf://Qwen/Qwen2.5-Coder-1.5B-Instruct
+  engine: VLLM
+  args:
+    - --max-model-len=2048
+    - --max-num-seqs=16
+    - --quantization=fp8
+    - --kv-cache-dtype=fp8
+  env:
+    VLLM_ATTENTION_BACKEND: FLASHINFER
+  minReplicas: 1
+  resourceProfile: cpu:1
