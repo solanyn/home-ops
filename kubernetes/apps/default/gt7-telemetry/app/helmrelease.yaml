@@ -29,7 +29,7 @@ spec:
               tag: 2025.06.6@sha256:09c65f4401e6927eed61e3f9502edf9464a54b4f30d80e917b0647ff6679adbe
             env:
               PS5_IP_ADDRESS: 192.168.1.184
-              PULSAR_SERVICE_URL: pulsar://pulsar-proxy.streaming.svc.cluster.local:6650
+              PULSAR_SERVICE_URL: pulsar://pulsar-cluster-proxy.streaming.svc.cluster.local:6650
               PULSAR_TOPIC: non-persistent://home-ops/gt7/telemetry
               HTTP_PORT: &port 80
             securityContext:
