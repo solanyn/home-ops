@@ -46,7 +46,7 @@ spec:
           http:
             port: *httpPort
           grpc:
-            port: *grpcPort
+            port: 8001
     route:
       app:
         hostnames:
