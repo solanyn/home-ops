@@ -85,6 +85,7 @@ spec:
                 /minio/pxc
                 /minio/tldr
                 /minio/trino
+                /minio/triton
                 /minio/tsw
             securityContext:
               allowPrivilegeEscalation: false
