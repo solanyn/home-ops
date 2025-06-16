@@ -67,7 +67,7 @@ spec:
     enabled: true
     resources: {}
     size: 1
-    image: percona/haproxy:2.8.14
+    image: percona/haproxy:2.8.15
     exposePrimary:
       type: LoadBalancer
       annotations:
