@@ -27,7 +27,7 @@ spec:
             image:
               repository: trace_machina/nativelink
               tag: latest
-            command: nativelink /root/local-storage-cas.json5
+            command: ["nativelink", "/root/local-storage-cas.json5"]
             env:
               RUST_LOG: warn
             resources: {}
@@ -39,7 +39,7 @@ spec:
             image:
               repository: trace_machina/nativelink
               tag: latest
-            command: nativelink /root/scheduler.json5
+            command: ["nativelink", "/root/.cache/scheduler.json5"]
             env:
               CAS_ENDPOINT: nativelink-cas.bazel.svc.cluster.local
             resources: {}
@@ -51,7 +51,7 @@ spec:
             image:
               repository: trace_machina/nativelink
               tag: latest
-            command: nativelink /root/worker.json5
+            command: ["nativelink", "/root/.cache/worker.json5"]
             env:
               CAS_ENDPOINT: nativelink-cas.bazel.svc.cluster.local
               SCHEDULER_ENDPOINT: nativelink-scheduler.bazel.svc.cluster.local
@@ -63,39 +63,9 @@ spec:
             port: 50052
     route:
       scheduler:
+        kind: GRPCRoute
         hostnames: ["{{ .Release.Name }}.goyangi.io"]
         parentRefs:
           - name: internal
             namespace: kube-system
             sectionName: https
-    persistence:
-      cas:
-        type: persistentVolumeClaim
-        storageClass: openebs-hostpath
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        advancedMounts:
-          cas:
-            app:
-              - path: /root/.cache/nativelink
-              - path: /tmp
-      scheduler:
-        type: persistentVolumeClaim
-        storageClass: openebs-hostpath
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        advancedMounts:
-          scheduler:
-            app:
-              - path: /root/.cache/nativelink
-              - path: /tmp
-      executor:
-        type: persistentVolumeClaim
-        storageClass: openebs-hostpath
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        advancedMounts:
-          executor:
-            app:
-              - path: /root/.cache/nativelink
-              - path: /tmp
