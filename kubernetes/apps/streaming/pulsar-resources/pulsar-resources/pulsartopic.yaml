@@ -1,26 +1,8 @@
 apiVersion: resource.streamnative.io/v1alpha1
 kind: PulsarTopic
 metadata:
-  name: telemetry-raw
+  name: telemetry
 spec:
-  name: non-persistent://home-ops/gt7/telemetry-raw
-  connectionRef:
-    name: pulsar-connection
----
-apiVersion: resource.streamnative.io/v1alpha1
-kind: PulsarTopic
-metadata:
-  name: telemetry-parsed
-spec:
-  name: non-persistent://home-ops/gt7/telemetry-parsed
-  connectionRef:
-    name: pulsar-connection
----
-apiVersion: resource.streamnative.io/v1alpha1
-kind: PulsarTopic
-metadata:
-  name: telemetry-events
-spec:
-  name: non-persistent://home-ops/gt7/telemetry-events
+  name: non-persistent://home-ops/gt7/telemetry
   connectionRef:
     name: pulsar-connection
