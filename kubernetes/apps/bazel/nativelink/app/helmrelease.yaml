@@ -27,7 +27,7 @@ spec:
             image:
               repository: ghcr.io/tracemachina/nativelink
               tag: v0.6.0
-            command: ["nativelink", "/root/local-storage-cas.json5"]
+            command: ["nativelink", "/config/cas.json5"]
             env:
               RUST_LOG: info
             resources: {}
@@ -39,8 +39,9 @@ spec:
             image:
               repository: ghcr.io/tracemachina/nativelink
               tag: v0.6.0
-            command: ["nativelink", "/root/.cache/scheduler.json5"]
+            command: ["nativelink", "/config/scheduler.json5"]
             env:
+              RUST_LOG: info
               CAS_ENDPOINT: nativelink-cas.bazel.svc.cluster.local
             resources: {}
       executor:
@@ -51,8 +52,9 @@ spec:
             image:
               repository: ghcr.io/tracemachina/nativelink
               tag: v0.6.0
-            command: ["nativelink", "/root/.cache/worker.json5"]
+            command: ["nativelink", "/config/worker.json5"]
             env:
+              RUST_LOG: info
               CAS_ENDPOINT: nativelink-cas.bazel.svc.cluster.local
               SCHEDULER_ENDPOINT: nativelink-scheduler.bazel.svc.cluster.local
             resources: {}
@@ -65,8 +67,23 @@ spec:
     route:
       scheduler:
         kind: GRPCRoute
-        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
+          - rbe.goyangi.io
         parentRefs:
           - name: internal
             namespace: kube-system
-            sectionName: https
+            sectionName: grpc
+    persistence:
+      config:
+        type: configMap
+        name: nativelink-configmap
+        globalMounts:
+          - path: /config
+            readOnly: true
+      tmp:
+        type: emptyDir
+      nfs:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/bazel
