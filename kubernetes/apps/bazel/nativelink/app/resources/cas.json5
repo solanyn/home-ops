@@ -1,6 +1,7 @@
 {
-  "stores": {
-    "AC_FAST_SLOW_STORE": {
+  "stores": [
+    {
+      "name": "AC_FAST_SLOW_STORE",
       "fast_slow": {
         "fast": {
           "size_partitioning": {
@@ -27,7 +28,8 @@
         }
       }
     },
-    "AC_STORE": {
+    {
+      "name": "AC_STORE",
       "completeness_checking": {
         "backend": {
           "ref_store": {
@@ -41,7 +43,8 @@
         }
       }
     },
-    "cas_FAST_SLOW_STORE": {
+    {
+      "name": "cas_FAST_SLOW_STORE",
       "verify": {
         "backend": {
           "fast_slow": {
@@ -92,12 +95,13 @@
               }
             }
           }
-        }
-      },
-      "verify_size": true,
-      "hash_verification_function": "sha256"
+        },
+        "verify_size": true,
+        "hash_verification_function": "sha256"
+      }
     },
-    "cas_STORE": {
+    {
+      "name": "cas_STORE",
       "existence_cache": {
         "backend": {
           "ref_store": {
@@ -110,14 +114,15 @@
         }
       }
     },
-    "BEP_STORE": {
+    {
+      "name": "BEP_STORE",
       "redis_store": {
         "addresses": [
           "${BEP_REDIS_STORE_URL:-redis://redis.storage.svc.cluser.local:6379/2}"
         ]
       }
     }
-  },
+  ],
   "servers": [
     {
       "listener": {
