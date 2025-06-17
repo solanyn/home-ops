@@ -1,7 +1,7 @@
 apiVersion: milvus.io/v1beta1
 kind: Milvus
 metadata:
-  name: milvus
+  name: milvus-cluster
 spec:
   mode: cluster
   config:
