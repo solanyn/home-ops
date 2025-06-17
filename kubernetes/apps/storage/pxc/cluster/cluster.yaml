@@ -94,7 +94,7 @@ spec:
       withGrantOption: true
       passwordSecretRef:
         name: pxc-secret
-        key: MYSQL_KUBEFLOW_PASSWORD
+        key: KUBEFLOW_MYSQL_PASSWORD
   backup:
     enabled: true
     image: percona/percona-xtradb-cluster-operator:1.17.0-pxc8.4-backup-pxb8.4.0
