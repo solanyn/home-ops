@@ -41,9 +41,9 @@ spec:
               OPENID_REDIRECT_URI: "https://open-webui.goyangi.io/oauth/oidc/callback"
               PORT: &port 80
               WEBUI_URL: http://0.0.0.0:3000
-              VECTOR_DB: milvus
-              MILVUS_URI: milvus.storage.svc.cluster.local:17530
-              MILVUS_DB: open-webui
+              # VECTOR_DB: milvus
+              # MILVUS_URI: milvus.storage.svc.cluster.local:17530
+              # MILVUS_DB: open-webui
               ENABLE_WEB_SEARCH: "true"
               WEB_SEARCH_TRUST_ENV: "true"
               WEB_SEARCH_ENGINE: searxng
