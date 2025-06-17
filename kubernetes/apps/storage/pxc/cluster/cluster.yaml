@@ -81,20 +81,6 @@ spec:
     enabled: false
   logcollector:
     resources: {}
-  users:
-    - name: kubeflow
-      dbs:
-        - model_registry
-        - katib
-        - kfp_pipelines
-        - kfp_cache
-        - kfp_metadata
-      hosts: ["*"]
-      grants: ["*"]
-      withGrantOption: true
-      passwordSecretRef:
-        name: pxc-secret
-        key: KUBEFLOW_MYSQL_PASSWORD
   backup:
     enabled: true
     image: percona/percona-xtradb-cluster-operator:1.17.0-pxc8.4-backup-pxb8.4.0
