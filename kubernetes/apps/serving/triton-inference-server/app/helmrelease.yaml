@@ -33,7 +33,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/health/ready
+                    path: /v2/health/ready
                     port: &httpPort 8000
                   initialDelaySeconds: 0
                   periodSeconds: 10
