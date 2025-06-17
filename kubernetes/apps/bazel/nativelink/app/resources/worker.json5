@@ -60,21 +60,6 @@
           cpu_count: {
             query_cmd: "nproc",
           },
-          OSFamily: {
-            values: [
-              "",
-            ],
-          },
-          "container-image": {
-            values: [
-              "",
-            ],
-          },
-          "lre-rs": {
-            values: [
-              "",
-            ],
-          },
           ISA: {
             values: [
               "x86-64",
