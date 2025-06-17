@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: quay.io/docling-project/docling-serve
-              tag: v0.14.0@sha256:ac7f97c9dabf2aaa3e786061cfe0162214baa525f66453133a08c424b2a320d1
+              tag: v0.15.0@sha256:8769e58d61b717b71885e614313dbd6dfb69fb5fd5c7ac74175b33b6412a31a1
             probes:
               liveness: &probes
                 enabled: true
