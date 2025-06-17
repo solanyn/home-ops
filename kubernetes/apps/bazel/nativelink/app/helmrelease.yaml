@@ -26,10 +26,10 @@ spec:
           app:
             image:
               repository: ghcr.io/tracemachina/nativelink
-              tag: sha256-d6c159f3863ed6adc8f058fa20ad97095497767c182c7e3fbcc777bd9631ab48.sig
+              tag: cds0ziw42dr4b9wxd50gk633lpkk6fk
             command: ["nativelink", "/root/local-storage-cas.json5"]
             env:
-              RUST_LOG: warn
+              RUST_LOG: info
             resources: {}
       scheduler:
         annotations:
@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: ghcr.io/tracemachina/nativelink
-              tag: sha256-d6c159f3863ed6adc8f058fa20ad97095497767c182c7e3fbcc777bd9631ab48.sig
+              tag: cds0ziw42dr4b9wxd50gk633lpkk6fki
             command: ["nativelink", "/root/.cache/scheduler.json5"]
             env:
               CAS_ENDPOINT: nativelink-cas.bazel.svc.cluster.local
@@ -50,7 +50,7 @@ spec:
           app:
             image:
               repository: ghcr.io/tracemachina/nativelink
-              tag: sha256-d6c159f3863ed6adc8f058fa20ad97095497767c182c7e3fbcc777bd9631ab48.sig
+              tag: cds0ziw42dr4b9wxd50gk633lpkk6fk
             command: ["nativelink", "/root/.cache/worker.json5"]
             env:
               CAS_ENDPOINT: nativelink-cas.bazel.svc.cluster.local
