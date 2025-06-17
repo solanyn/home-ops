@@ -47,10 +47,12 @@ spec:
             port: *httpPort
           grpc:
             port: 8001
+          metrics:
+            port: 8002
     serviceMonitor:
       app:
         endpoints:
-          - port: 8002
+          - port: metrics
             scheme: http
             path: /metrics
             interval: 1m
