@@ -26,7 +26,7 @@ spec:
             image:
               repository: nvcr.io/nvidia/tritonserver
               tag: 25.05-py3
-            args: ["--model-repository=/models"]
+            args: ["tritonserver", "--model-repository=/models"]
             probes:
               liveness: &probes
                 enabled: true
