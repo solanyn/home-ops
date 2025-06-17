@@ -35,6 +35,6 @@ spec:
       endpoints: ["etcd-cluster.storage.cluster.local:2379"]
     storage:
       external: true
-      type: S3
+      type: MinIO
       endpoint: minio.storage.svc.cluster.local:9000
       secretRef: milvus-secret
