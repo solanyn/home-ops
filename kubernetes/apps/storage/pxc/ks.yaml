@@ -35,6 +35,15 @@ spec:
       namespace: storage
     - name: minio
       namespace: storage
+  healthChecks:
+    - apiVersion: pxc.percona.com
+      kind: PerconaXtraDBCluster
+      name: pxc-cluster
+  healthCheckExprs:
+    - apiVersion: pxc.percona.com
+      kind: PerconaXtraDBCluster
+      failed: status.conditions.filter(e, e.type == 'Status').all(e, e.status != 'ready')
+      current: status.conditions.filter(e, e.type == 'Status').all(e, e.status == 'ready')
   interval: 1h
   path: ./kubernetes/apps/storage/pxc/cluster
   prune: true
