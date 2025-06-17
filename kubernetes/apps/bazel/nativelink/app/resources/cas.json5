@@ -93,11 +93,11 @@
                   }
                 }
               }
-            }
-          },
-          "verify_size": true,
-          "hash_verification_function": "sha256"
-        }
+            },
+          }
+        },
+        "verify_size": true,
+        "hash_verification_function": "sha256"
       }
     },
     {
