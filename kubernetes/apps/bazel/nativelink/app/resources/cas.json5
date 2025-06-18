@@ -1,5 +1,4 @@
 {
-  "servers": [],
   "stores": [
     {
       "name": "AC_FAST_SLOW_STORE",
@@ -121,6 +120,50 @@
         "addresses": [
           "${BEP_REDIS_STORE_URL:-redis://redis.storage.svc.cluser.local:6379/2}"
         ]
+      }
+    }
+  ],
+  "servers": [
+    {
+      "listener": {
+        "http": {
+          "socket_address": "0.0.0.0:50051",
+          "compression": {
+            "send_compression_algorithm": "gzip",
+            "accepted_compression_algorithms": [
+              "gzip"
+            ]
+          },
+          "advanced_http": {
+            "experimental_http2_keep_alive_timeout": 1200
+          }
+        }
+      },
+      "services": {
+        "cas": [{
+          "instance_name": "main",
+          "cas_store": "cas_STORE"
+        }],
+        "ac": [{
+          "instance_name": "main",
+          "ac_store": "AC_STORE"
+        }],
+        "capabilities": [],
+        "bytestream": {
+          "cas_stores": {
+            "main": "cas_STORE"
+          }
+        }
+      }
+    },
+    {
+      "listener": {
+        "http": {
+          "socket_address": "0.0.0.0:50061"
+        }
+      },
+      "services": {
+        "health": {}
       }
     }
   ]
