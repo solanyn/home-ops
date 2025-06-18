@@ -47,12 +47,18 @@ spec:
       executor:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          nativelink-worker-init:
+            image:
+              repository: ghcr.io/tracemachina/nativelink-worker-init
+              tag: v0.6.0
+            args: ["/shared/nativelink"]
         containers:
           app:
             image:
               repository: ghcr.io/tracemachina/nativelink-worker-lre-cc
               tag: v0.6.0
-            command: ["nativelink", "/config/worker.json5"]
+            command: ["/shared/nativelink", "/config/worker.json5"]
             env:
               RUST_LOG: info
               CAS_ENDPOINT: nativelink-cas.bazel.svc.cluster.local
@@ -84,6 +90,11 @@ spec:
             namespace: kube-system
             sectionName: grpc
     persistence:
+      shared:
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        size: 100Mi
+        accessMode: ReadWriteOnce
       config:
         type: configMap
         name: nativelink-configmap
