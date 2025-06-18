@@ -1,5 +1,30 @@
 {
-  "stores": [],
+  "stores": [
+    {
+      name: "cas_STORE",
+      grpc: {
+        instance_name: "cas_STORE",
+        endpoints: [
+          {
+            address: "grpc://${CAS_ENDPOINT:-127.0.0.1}:50051",
+          },
+        ],
+        store_type: "cas",
+      },
+    },
+    {
+      name: "AC_STORE",
+      grpc: {
+        instance_name: "AC_STORE",
+        endpoints: [
+          {
+            address: "grpc://${CAS_ENDPOINT:-127.0.0.1}:50051",
+          },
+        ],
+        store_type: "ac",
+      },
+    }
+  ],
   "schedulers": [
     {
       "name": "MAIN_SCHEDULER",
