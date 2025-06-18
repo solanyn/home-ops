@@ -141,10 +141,14 @@
       },
       "services": {
         "cas": {
-          "cas_store": "cas_STORE"
+          "main": {
+            "cas_store": "cas_STORE"
+          }
         },
         "ac": {
-          "ac_store": "AC_STORE"
+          "main": {
+            "ac_store": "AC_STORE"
+          }
         },
         "capabilities": [],
         "bytestream": {
