@@ -50,7 +50,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/tracemachina/nativelink
+              repository: ghcr.io/tracemachina/nativelink-worker-lre-cc
               tag: v0.6.0
             command: ["nativelink", "/config/worker.json5"]
             env:
