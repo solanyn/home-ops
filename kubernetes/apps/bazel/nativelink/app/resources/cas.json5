@@ -150,7 +150,6 @@
             "ac_store": "AC_STORE"
           }
         },
-        "capabilities": [],
         "bytestream": {
           "cas_stores": {
             "main": "cas_STORE"
