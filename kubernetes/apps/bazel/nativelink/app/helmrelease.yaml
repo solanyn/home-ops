@@ -58,6 +58,15 @@ spec:
               CAS_ENDPOINT: nativelink-cas.bazel.svc.cluster.local
               SCHEDULER_ENDPOINT: nativelink-scheduler.bazel.svc.cluster.local
             resources: {}
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+        supplementalGroups: [10000]
     service:
       scheduler:
         controller: scheduler
