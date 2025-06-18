@@ -1,4 +1,5 @@
 {
+  "servers": [],
   "stores": [
     {
       "name": "AC_FAST_SLOW_STORE",

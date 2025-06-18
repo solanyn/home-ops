@@ -1,4 +1,5 @@
 {
+  "stores": [],
   "schedulers": [
     {
       "name": "MAIN_SCHEDULER",
