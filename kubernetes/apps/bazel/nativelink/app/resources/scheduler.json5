@@ -42,30 +42,34 @@
         }
       },
       "services": {
-        "cas": [{
-          "instance_name": "main",
-          "cas_store": "cas_STORE"
-        }],
-        "ac": [{
-          "instance_name": "main",
-          "ac_store": "AC_STORE"
-        }],
-        "capabilities": [{
-          "instance_name": "main",
-          "remote_execution": {
-            "scheduler": "MAIN_SCHEDULER"
+        "cas": {
+          "main": {
+            "cas_store": "cas_STORE"
           }
-        }],
+        },
+        "ac": {
+          "main": {
+            "ac_store": "AC_STORE"
+          }
+        },
+        "capabilities": {
+          "main": {
+            "remote_execution": {
+              "scheduler": "MAIN_SCHEDULER"
+            }
+          }
+        },
         "bytestream": {
           "cas_stores": {
             "main": "cas_STORE"
           }
         },
-        "execution": [{
-          "instance_name": "main",
-          "cas_store": "cas_STORE",
-          "scheduler": "MAIN_SCHEDULER"
-        }]
+        "execution": {
+          "main": {
+            "cas_store": "cas_STORE",
+            "scheduler": "MAIN_SCHEDULER"
+          }
+        }
       }
     },
     {
