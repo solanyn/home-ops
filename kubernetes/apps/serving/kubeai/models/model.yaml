@@ -15,10 +15,10 @@ spec:
 apiVersion: kubeai.org/v1
 kind: Model
 metadata:
-  name: gemma3-12b-cpu
+  name: gemma3-4b-cpu
 spec:
   features: [TextGeneration]
-  url: hf://unsloth/gemma-3-12b-it-unsloth-bnb-4bit
+  url: hf://unsloth/gemma-3-4b-it-unsloth-bnb-4bit
   engine: OLlama
   minReplicas: 1
   resourceProfile: cpu:1
