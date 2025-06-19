@@ -18,7 +18,7 @@ metadata:
   name: gemma3-12b-cpu
 spec:
   features: [TextGeneration]
-  url: hf://unsloth/gemma-3-27b-it-unsloth-bnb-4bit
+  url: hf://unsloth/gemma-3-12b-it-unsloth-bnb-4bit
   engine: OLlama
   minReplicas: 1
   resourceProfile: cpu:1
