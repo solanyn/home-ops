@@ -164,7 +164,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - identifier: app
+              - identifier: scheduler
                 port: *schedulerPort
     persistence:
       config:
@@ -200,7 +200,7 @@ spec:
       bb:
         type: emptyDir
         advancedMounts:
-          worker:
-            app:
+          worker-ubuntu22-04:
+            worker:
               - path: /bb
                 readOnly: true
