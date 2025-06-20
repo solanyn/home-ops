@@ -8,7 +8,7 @@ configMapGenerator:
   - name: buildbarn-configmap
     files:
       - browser.jsonnet=./resources/browser.jsonnet
-      - common.jsonnet=./resources/common.jsonnet
+      - common.libsonnet=./resources/common.libsonnet
       - frontend.jsonnet=./resources/frontend.jsonnet
       - runner-ubuntu22-04.jsonnet=./resources/runner-ubuntu22-04.jsonnet
       - scheduler.jsonnet=./resources/scheduler.jsonnet
