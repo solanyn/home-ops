@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./helmrelease.yaml
+configMapGenerator:
+  - name: buildbarn-configmap
+    files:
+      - browser.jsonnet=./resources/browser.jsonnet
+      - common.jsonnet=./resources/common.jsonnet
+      - frontend.jsonnet=./resources/frontend.jsonnet
+      - runner-ubuntu22-04.jsonnet=./resources/runner-ubuntu22-04.jsonnet
+      - scheduler.jsonnet=./resources/scheduler.jsonnet
+      - storage.jsonnet=./resources/storage.jsonnet
+      - runner-ubuntu22-04.jsonnet=./resources/worker-ubuntu22-04.jsonnet
+generatorOptions:
+  disableNameSuffixHash: true
