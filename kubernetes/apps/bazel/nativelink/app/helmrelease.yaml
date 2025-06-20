@@ -147,6 +147,6 @@ spec:
                 readOnly: true
           cas-scheduler:
             app:
-              - path: /config/config.json5
+              - path: /config/cas-scheduler.json5
                 subPath: cas-scheduler.json5
                 readOnly: true
