@@ -182,8 +182,7 @@ spec:
         advancedMounts:
           worker-ubuntu22-04:
             worker:
-              - path: /worker/build
-              - path: /worker/cache
+              - path: /worker
       bb:
         type: emptyDir
         globalMounts:
