@@ -93,7 +93,7 @@ spec:
           metrics:
             port: 50071
     serviceMonitor:
-      app:
+      cas-scheduler:
         endpoints:
           - port: worker-api
             path: /metrics
