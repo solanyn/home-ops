@@ -62,6 +62,11 @@ spec:
       worker-ubuntu22-04:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          bb-runner-installer:
+            image:
+              repository: ghcr.io/buildbarn/bb-runner-installer
+              tag: 20250411T124310Z-1c726bd
         containers:
           worker:
             image:
@@ -181,8 +186,5 @@ spec:
               - path: /worker/cache
       bb:
         type: emptyDir
-        advancedMounts:
-          worker-ubuntu22-04:
-            worker:
-              - path: /bb
-                readOnly: true
+        globalMounts:
+          - path: /bb
