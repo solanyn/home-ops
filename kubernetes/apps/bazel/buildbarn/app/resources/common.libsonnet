@@ -4,11 +4,11 @@
       sharding: {
         shards: {
           "0": {
-            backend: { grpc: { address: 'storage-0.storage.buildbarn:8981' } },
+            backend: { grpc: { address: 'storage-0.storage.bazel.svc.cluster.local:8981' } },
             weight: 1,
           },
           "1": {
-            backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
+            backend: { grpc: { address: 'storage-1.storage.bazel.svc.cluster.local:8981' } },
             weight: 1,
           },
         },
@@ -20,11 +20,11 @@
           sharding: {
             shards: {
               "0": {
-                backend: { grpc: { address: 'storage-0.storage.buildbarn:8981' } },
+                backend: { grpc: { address: 'storage-0.storage.bazel.svc.cluster.local:8981' } },
                 weight: 1,
               },
               "1": {
-                backend: { grpc: { address: 'storage-1.storage.buildbarn:8981' } },
+                backend: { grpc: { address: 'storage-1.storage.bazel.svc.cluster.local:8981' } },
                 weight: 1,
               },
             },
@@ -34,7 +34,7 @@
       },
     },
   },
-  browserUrl: 'http://bb-browser.example.com:80',
+  browserUrl: 'https://buildbarn.goyangi.io',
   maximumMessageSizeBytes: 2 * 1024 * 1024,
   global: {
     diagnosticsHttpServer: {
