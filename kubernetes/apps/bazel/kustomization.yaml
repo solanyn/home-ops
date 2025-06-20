@@ -8,3 +8,4 @@ components:
   - ../../components/repos/app-template
 resources:
   - ./buildbarn/ks.yaml
+  - ./nativelink/ks.yaml
