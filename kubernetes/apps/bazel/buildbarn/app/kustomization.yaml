@@ -13,6 +13,6 @@ configMapGenerator:
       - runner-ubuntu22-04.jsonnet=./resources/runner-ubuntu22-04.jsonnet
       - scheduler.jsonnet=./resources/scheduler.jsonnet
       - storage.jsonnet=./resources/storage.jsonnet
-      - runner-ubuntu22-04.jsonnet=./resources/worker-ubuntu22-04.jsonnet
+      - worker-ubuntu22-04.jsonnet=./resources/worker-ubuntu22-04.jsonnet
 generatorOptions:
   disableNameSuffixHash: true
