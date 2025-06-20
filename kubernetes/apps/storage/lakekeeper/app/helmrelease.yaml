@@ -31,12 +31,12 @@ spec:
             image: &image
               repository: quay.io/lakekeeper/catalog
               tag: latest-main
-            command: ["/home/nonroot/iceberg-catalog", "migrate"]
+            args: ["migrate"]
             envFrom: *envFrom
         containers:
           app:
             image: *image
-            command: ["/home/nonroot/iceberg-catalog", "serve"]
+            args: ["serve"]
             envFrom: *envFrom
             probes:
               liveness: &probes
@@ -80,4 +80,3 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-
