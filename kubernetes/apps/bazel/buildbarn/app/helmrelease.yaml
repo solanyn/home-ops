@@ -52,15 +52,6 @@ spec:
       storage:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init:
-            image:
-              repository: public.ecr.aws/docker/library/busybox
-              tag: 1.37.0@sha256:f85340bf132ae937d2c2a763b8335c9bab35d6e8293f70f606b9c6178d84f42b
-            command:
-              - sh
-              - -c
-              - mkdir -m 0700 -p /storage-cas/persistent_state /storage-ac/persistent_state
         containers:
           app:
             image:
@@ -71,15 +62,6 @@ spec:
       worker-ubuntu22-04:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init:
-            image:
-              repository: public.ecr.aws/docker/library/busybox
-              tag: 1.37.0@sha256:f85340bf132ae937d2c2a763b8335c9bab35d6e8293f70f606b9c6178d84f42b
-            command:
-              - sh
-              - -c
-              - mkdir -pm 0777 /worker/build && mkdir -pm 0700 /worker/cache && chmod 0777 /worker
         containers:
           worker:
             image:
@@ -196,6 +178,7 @@ spec:
           worker-ubuntu22-04:
             app:
               - path: /worker/build
+              - path: /worker/cache
       bb:
         type: emptyDir
         advancedMounts:
