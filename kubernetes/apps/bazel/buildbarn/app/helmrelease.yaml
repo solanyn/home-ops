@@ -50,7 +50,6 @@ spec:
             args: ["/config/scheduler.jsonnet"]
             resources: {}
       storage:
-        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -181,7 +180,7 @@ spec:
         advancedMounts:
           storage:
             app:
-              - path: /storage-ac
+              - path: /storage-ac/persistent_state
       cas:
         type: persistentVolumeClaim
         storageClass: openebs-hostpath
@@ -190,13 +189,13 @@ spec:
         advancedMounts:
           storage:
             app:
-              - path: /storage-cas
+              - path: /storage-cas/persistent_state
       worker:
         type: emptyDir
         advancedMounts:
           worker-ubuntu22-04:
             app:
-              - path: /worker
+              - path: /worker/build
       bb:
         type: emptyDir
         advancedMounts:
