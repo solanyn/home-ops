@@ -179,8 +179,12 @@ spec:
               - path: /storage-cas/persistent_state
       worker:
         type: emptyDir
-        globalMounts:
-          - path: /worker
+        advancedMounts:
+          worker-ubuntu22-04:
+            worker:
+              - path: /worker/build
+              - path: /worker/cache
+              - path: /worker
       bb:
         type: emptyDir
         globalMounts:
