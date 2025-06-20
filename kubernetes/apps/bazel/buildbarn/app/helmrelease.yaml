@@ -194,7 +194,7 @@ spec:
       worker:
         type: emptyDir
         advancedMounts:
-          worker:
+          worker-ubuntu22-04:
             app:
               - path: /worker
       bb:
