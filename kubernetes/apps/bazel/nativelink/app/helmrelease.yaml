@@ -93,11 +93,17 @@ spec:
           metrics:
             port: 50071
     serviceMonitor:
-      cas-scheduler:
+      scheduler:
+        service:
+          name: scheduler
         endpoints:
           - port: worker-api
             path: /metrics
             interval: 30s
+      worker:
+        service:
+          name: worker
+        endpoints:
           - port: metrics
             path: /metrics
             interval: 30s
