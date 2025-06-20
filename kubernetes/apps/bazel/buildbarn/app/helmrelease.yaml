@@ -176,9 +176,8 @@ spec:
         type: emptyDir
         advancedMounts:
           worker-ubuntu22-04:
-            app:
-              - path: /worker/build
-              - path: /worker/cache
+            worker:
+              - path: /worker
       bb:
         type: emptyDir
         advancedMounts:
