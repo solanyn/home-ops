@@ -104,6 +104,18 @@ spec:
                 /config/runner-ubuntu22-04.jsonnet,
               ]
             resources: {}
+            probes:
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - test
+                      - -S
+                      - /worker/runner
+                  initialDelaySeconds: 5
+                  periodSeconds: 2
     # defaultPodOptions:
     #   securityContext:
     #     runAsNonRoot: true
@@ -190,6 +202,8 @@ spec:
         advancedMounts:
           worker-ubuntu22-04:
             worker:
+              - path: /worker
+            runner:
               - path: /worker
       bb:
         type: emptyDir
