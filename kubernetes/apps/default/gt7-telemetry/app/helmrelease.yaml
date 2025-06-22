@@ -65,9 +65,8 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 192.168.1.150, ::ffff:192.168.1.150
         ports:
           http:
             port: *port
+          udp:
+            port: 33740
