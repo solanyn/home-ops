@@ -104,18 +104,6 @@ spec:
                 /config/runner-ubuntu22-04.jsonnet,
               ]
             resources: {}
-            probes:
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command:
-                      - test
-                      - -S
-                      - /worker/runner
-                  initialDelaySeconds: 5
-                  periodSeconds: 2
     # defaultPodOptions:
     #   securityContext:
     #     runAsNonRoot: true
