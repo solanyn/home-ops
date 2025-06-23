@@ -189,6 +189,8 @@ spec:
         type: emptyDir
         advancedMounts:
           worker-ubuntu22-04:
+            init:
+              - path: /worker
             worker:
               - path: /worker
             runner:
