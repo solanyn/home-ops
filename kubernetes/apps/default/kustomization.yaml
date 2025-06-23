@@ -19,6 +19,7 @@ resources:
   - ./home-assistant/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./label-studio/ks.yaml
+  - ./maintainerr/ks.yaml
   - ./miniflux/ks.yaml
   - ./mosquitto/ks.yaml
   - ./plex/ks.yaml
