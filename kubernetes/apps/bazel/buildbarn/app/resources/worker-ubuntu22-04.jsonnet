@@ -4,7 +4,7 @@ local common = import 'common.libsonnet';
   blobstore: common.blobstore,
   browserUrl: common.browserUrl,
   maximumMessageSizeBytes: common.maximumMessageSizeBytes,
-  scheduler: { address: 'scheduler:8983' },
+  scheduler: { address: 'buildbarn-scheduler:8983' },
   global: common.global {
     setUmask: { umask: 0 },
   },
