@@ -1,8 +1,0 @@
-apiVersion: resource.streamnative.io/v1alpha1
-kind: PulsarConnection
-metadata:
-  name: pulsar-connection
-spec:
-  adminServiceURL: http://pulsar-cluster-proxy.streaming.svc.cluster.local:80
-  brokerServiceURL: pulsar://pulsar-cluster-proxy.streaming.svc.cluster.local:6650
-  clusterName: pulsar-cluster
