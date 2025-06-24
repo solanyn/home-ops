@@ -103,8 +103,8 @@ spec:
                     })
                   }"
                 }
-      pod:
-        restartPolicy: OnFailure
+        pod:
+          restartPolicy: OnFailure
       maintenance:
         type: cronjob
         cronjob:
