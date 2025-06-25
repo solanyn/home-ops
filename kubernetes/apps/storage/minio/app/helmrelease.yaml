@@ -74,6 +74,7 @@ spec:
                 /minio/cloudnative-pg
                 /minio/dragonflydb
                 /minio/feast
+                /minio/github-actions-cache
                 /minio/iceberg
                 /minio/kfp-pipelines
                 /minio/kubeai
