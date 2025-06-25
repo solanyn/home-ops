@@ -39,6 +39,7 @@ spec:
               TEMP_DIR: /tmp
               API_BASE_URL: "https://{{ .Release.Name }}.goyangi.io"
               STORAGE_DRIVER: s3
+              STORAGE_S3_BUCKET: github-actions-cache
               DB_DRIVER: postgres
               ENABLE_DIRECT_DOWNLOADS: true
               CACHE_CLEANUP_OLDER_THAN_DAYS: 30
