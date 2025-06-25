@@ -27,8 +27,8 @@ spec:
           schedule: "@hourly"
           timeZone: &timeZone Australia/Sydney
           concurrencyPolicy: Forbid
-          # successfulJobsHistory: 1
-          # failedJobsHistory: 1
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
         containers:
           tag: &container
             image:
@@ -38,9 +38,9 @@ spec:
               - sh
               - -c
               - |
-                curl -sS -X POST "$STASH_URL" \
+                curl -sS -X POST "$$STASH_URL" \
                   -H "Content-Type: application/json" \
-                  -d "$GRAPHQL_QUERY"
+                  -d "$$GRAPHQL_QUERY"
             env:
               STASH_URL: http://stash.default.svc.cluster.local:9999/graphql
               GRAPHQL_QUERY: |
