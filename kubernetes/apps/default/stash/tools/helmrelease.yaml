@@ -27,8 +27,8 @@ spec:
           schedule: "@hourly"
           timeZone: &timeZone Australia/Sydney
           concurrencyPolicy: Forbid
-          successfulJobsHistory: 1
-          failedJobsHistory: 1
+          # successfulJobsHistory: 1
+          # failedJobsHistory: 1
         containers:
           tag: &container
             image:
