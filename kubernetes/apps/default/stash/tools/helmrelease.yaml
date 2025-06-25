@@ -38,26 +38,12 @@ spec:
               - sh
               - -c
               - |
-                curl -sS -X POST "$$STASH_URL" \
+                QUERY=$(cat /queries/scan.graphql | tr '\n' ' ' | sed 's/"/\\"/g')
+                curl -sS -X POST "$STASH_URL" \
                   -H "Content-Type: application/json" \
-                  -d "$$GRAPHQL_QUERY"
+                  -d "{\"query\": \"$QUERY\"}"
             env:
               STASH_URL: http://stash.default.svc.cluster.local:9999/graphql
-              GRAPHQL_QUERY: |
-                {
-                  "query": "mutation {
-                    metadataScan(input: {
-                      paths: [\"/media\"],
-                      scanGenerateCovers: true,
-                      scanGeneratePreviews: true,
-                      scanGenerateImagePreviews: true,
-                      scanGenerateSprites: true,
-                      scanGeneratePhashes: true,
-                      scanGenerateThumbnails: true,
-                      scanGenerateClipPreviews: true
-                    })
-                  }"
-                }
             securityContext:
               allowPrivilegeEscalation: true
               readOnlyRootFilesystem: true
@@ -68,43 +54,34 @@ spec:
                 memory: 64Mi
           identify:
             !!merge <<: *container
-            env:
-              GRAPHQL_QUERY: |
-                {
-                  "query": "mutation {
-                    metadataIdentify(input: {
-                      sources: [\"stashdb\", \"fansdb\"],
-                      options: {
-                        fieldOptions: [
-                          { field: \"name\", strategy: \"MERGE\", createMissing: true },
-                          { field: \"image\", strategy: \"MERGE\", createMissing: true },
-                          { field: \"performers\", strategy: \"MERGE\", createMissing: true },
-                          { field: \"studios\", strategy: \"MERGE\", createMissing: true },
-                          { field: \"tags\", strategy: \"MERGE\", createMissing: true }
-                        ],
-                        setCoverImage: true,
-                        setOrganized: true,
-                        includeMalePerformers: false
-                      }
-                    })
-                  }"
-                }
+            command:
+              - sh
+              - -c
+              - |
+                QUERY=$(cat /queries/identify.graphql | tr '\n' ' ' | sed 's/"/\\"/g')
+                curl -sS -X POST "$STASH_URL" \
+                  -H "Content-Type: application/json" \
+                  -d "{\"query\": \"$QUERY\"}"
           autotag:
             !!merge <<: *container
-            env:
-              GRAPHQL_QUERY: |
-                {
-                  "query": "mutation {
-                    metadataAutoTag(input: {
-                      paths: [\"/media\"],
-                      performers: [\"*\"],
-                      studios: [\"*\"],
-                      tags: [\"*\"]
-                    })
-                  }"
-                }
+            command:
+              - sh
+              - -c
+              - |
+                QUERY=$(cat /queries/autotag.graphql | tr '\n' ' ' | sed 's/"/\\"/g')
+                curl -sS -X POST "$STASH_URL" \
+                  -H "Content-Type: application/json" \
+                  -d "{\"query\": \"$QUERY\"}"
         pod:
           restartPolicy: OnFailure
+
+    persistence:
+      queries:
+        type: configMap
+        name: stash-configmap
+        globalMounts:
+          - path: /queries
+            readOnly: true
       maintenance:
         type: cronjob
         cronjob:
@@ -114,43 +91,40 @@ spec:
         containers:
           clean-database:
             !!merge <<: *container
-            env:
-              GRAPHQL_QUERY: |
-                {
-                  "query": "mutation {
-                    metadataAutoTag(input: {
-                      paths: [\"/media\"],
-                      performers: [\"*\"],
-                      studios: [\"*\"],
-                      tags: [\"*\"]
-                    })
-                  }"
-                }
+            command:
+              - sh
+              - -c
+              - |
+                QUERY=$(cat /queries/autotag.graphql | tr '\n' ' ' | sed 's/"/\\"/g')
+                curl -sS -X POST "$STASH_URL" \
+                  -H "Content-Type: application/json" \
+                  -d "{\"query\": \"$QUERY\"}"
           clean-generated:
             !!merge <<: *container
-            env:
-              GRAPHQL_QUERY: |
-                {
-                  "query": "mutation {
-                    metadataCleanGenerated(input: {
-                      blobFiles: true,
-                      sprites: true,
-                      screenshots: true,
-                      transcodes: true,
-                      markers: true,
-                      imageThumbnails: true,
-                      dryRun: false
-                    })
-                  }"
-                }
+            command:
+              - sh
+              - -c
+              - |
+                QUERY=$(cat /queries/clean-generated.graphql | tr '\n' ' ' | sed 's/"/\\"/g')
+                curl -sS -X POST "$STASH_URL" \
+                  -H "Content-Type: application/json" \
+                  -d "{\"query\": \"$QUERY\"}"
           optimise-database:
             !!merge <<: *container
-            env:
-              GRAPHQL_QUERY: |
-                {
-                  "query": "mutation {
-                    optimiseDatabase
-                  }"
-                }
+            command:
+              - sh
+              - -c
+              - |
+                QUERY=$(cat /queries/optimise-database.graphql | tr '\n' ' ' | sed 's/"/\\"/g')
+                curl -sS -X POST "$STASH_URL" \
+                  -H "Content-Type: application/json" \
+                  -d "{\"query\": \"$QUERY\"}"
         pod:
           restartPolicy: OnFailure
+    persistence:
+      queries:
+        type: configMap
+        name: stash-configmap
+        globalMounts:
+          - path: /queries
+            readOnly: true
