@@ -37,7 +37,7 @@ spec:
             env:
               NITRO_PORT: &port 3000
               TEMP_DIR: /tmp
-              API_BASE_URL: "{{ .Release.Name }}.goyangi.io"
+              API_BASE_URL: "https://{{ .Release.Name }}.goyangi.io"
               STORAGE_DRIVER: s3
               DB_DRIVER: postgres
               ENABLE_DIRECT_DOWNLOADS: true
