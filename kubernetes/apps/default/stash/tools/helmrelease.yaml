@@ -59,7 +59,7 @@ spec:
                   }"
                 }
             securityContext:
-              allowPrivilegeEscalation: false
+              allowPrivilegeEscalation: true
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
@@ -154,9 +154,3 @@ spec:
                 }
         pod:
           restartPolicy: OnFailure
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        seccompProfile: { type: RuntimeDefault }
