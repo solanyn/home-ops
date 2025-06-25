@@ -74,14 +74,6 @@ spec:
                   -d "{\"query\": \"$QUERY\"}"
         pod:
           restartPolicy: OnFailure
-
-    persistence:
-      queries:
-        type: configMap
-        name: stash-configmap
-        globalMounts:
-          - path: /queries
-            readOnly: true
       maintenance:
         type: cronjob
         cronjob:
