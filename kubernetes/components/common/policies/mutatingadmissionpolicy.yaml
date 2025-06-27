@@ -15,11 +15,11 @@ spec:
         expression: |
           let containerPatches = has(object.spec.template.spec.containers) ?
             object.spec.template.spec.containers.indices().map(i,
-              '{"op": "add", "path": "/spec/template/spec/containers/' + string(i) + '/resources", "value": {"requests": {"cpu": "10m", "memory": "64Mi"}, "limits": {"cpu": "10m", "memory": "64Mi"}}}'
+              '{"op": "add", "path": "/spec/template/spec/containers/' + string(i) + '/resources", "value": {"requests": {"cpu": "10m", "memory": "64Mi"}}}'
             ) : [];
           let initContainerPatches = has(object.spec.template.spec.initContainers) ?
             object.spec.template.spec.initContainers.indices().map(i,
-              '{"op": "add", "path": "/spec/template/spec/initContainers/' + string(i) + '/resources", "value": {"requests": {"cpu": "10m", "memory": "64Mi"}, "limits": {"cpu": "10m", "memory": "64Mi"}}}'
+              '{"op": "add", "path": "/spec/template/spec/initContainers/' + string(i) + '/resources", "value": {"requests": {"cpu": "10m", "memory": "64Mi"}}}'
             ) : [];
           let allPatches = containerPatches + initContainerPatches;
           "[" + allPatches.join(",") + "]"
