@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kyverno.io/clusterpolicy_v1.json
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: set-default-container-resources
+spec:
+  rules:
+    - name: set-default-resources
+      match:
+        any:
+          - resources:
+              kinds:
+                - Deployment
+                - StatefulSet
+                - ReplicaSet
+                - DaemonSet
+      exclude:
+        any:
+          - resources:
+              selector:
+                matchLabels:
+                  cnpg.io/cluster: postgres17
+      mutate:
+        patchStrategicMerge:
+          spec:
+            template:
+              spec:
+                initContainers:
+                  - (name): "*"
+                    resources:
+                      requests:
+                        cpu: 10m
+                        memory: 64Mi
+                containers:
+                  - (name): "*"
+                    resources:
+                      requests:
+                        cpu: 10m
+                        memory: 64Mi
