@@ -84,3 +84,4 @@ spec:
         globalMounts:
           - path: /tmp
           - path: /.cache
+          - path: /data/.venv
