@@ -35,7 +35,7 @@ spec:
       namespace: storage
     - name: minio
       namespace: storage
-    - name: pulsar-cluster
+    - name: kafka-cluster
       namespace: streaming
   healthChecks:
     - apiVersion: milvus.io
