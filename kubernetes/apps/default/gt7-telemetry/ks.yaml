@@ -10,9 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: pulsar-cluster
-      namespace: streaming
-    - name: pulsar-resources
+    - name: kafka-cluster
       namespace: streaming
   interval: 1h
   path: ./kubernetes/apps/default/gt7-telemetry/app
