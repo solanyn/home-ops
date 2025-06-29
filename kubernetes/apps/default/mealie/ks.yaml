@@ -10,11 +10,14 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/gatus/guarded
+    - ../../../../components/volsync
   dependsOn:
     - name: pocket-id
       namespace: auth
     - name: cloudnative-pg-cluster
       namespace: storage
+    - name: volsync
+      namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/default/mealie/app
   postBuild:

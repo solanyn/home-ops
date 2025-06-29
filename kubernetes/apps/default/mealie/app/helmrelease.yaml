@@ -85,3 +85,8 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
+    persistence:
+      data:
+        existingClaim: mealie
+        globalMounts:
+          - path: /app/data
