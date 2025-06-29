@@ -19,6 +19,7 @@ resources:
   - ./jellyseerr/ks.yaml
   - ./label-studio/ks.yaml
   - ./maintainerr/ks.yaml
+  - ./mealie/ks.yaml
   - ./miniflux/ks.yaml
   - ./mosquitto/ks.yaml
   - ./plex/ks.yaml
