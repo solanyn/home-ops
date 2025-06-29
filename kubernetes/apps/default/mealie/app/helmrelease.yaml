@@ -90,3 +90,6 @@ spec:
         existingClaim: mealie
         globalMounts:
           - path: /app/data
+            subPath: data
+          - path: /nltk_data
+            subPath: nltk
