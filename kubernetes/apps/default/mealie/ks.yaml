@@ -17,6 +17,9 @@ spec:
       namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/mealie/app
+  postBuild:
+    substitute:
+      APP: *app
   prune: true
   retryInterval: 2m
   sourceRef:
