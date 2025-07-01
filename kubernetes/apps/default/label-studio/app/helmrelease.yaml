@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: heartexlabs/label-studio
-              tag: 1.19.0@sha256:60fd8002d80050956509a8bdcf2ce2f487cccd7647161fc6527265983a066b03
+              tag: 1.20.0@sha256:f4481a772b19c6fe0a4577228cc51134deeaaddd463ea96692680c02c04debcc
             env:
               CSRF_TRUSTED_ORIGINS: "https://label-studio.goyangi.io"
               EXPERIMENTAL_FEATURES: 1
