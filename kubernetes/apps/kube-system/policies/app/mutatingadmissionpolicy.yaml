@@ -1,0 +1,50 @@
+---
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: MutatingAdmissionPolicyBinding
+metadata:
+  name: pod-requests
+spec:
+  policyName: pod-requests
+---
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: MutatingAdmissionPolicy
+metadata:
+  name: pod-requests
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+  mutations:
+    - resourceMutation:
+        operations: ["CREATE"]
+        pathTests:
+          - path: "/spec/containers"
+            condition: "MustExist"
+        forEachMutation:
+          listPath: "/spec/containers"
+          parameters:
+            mutations:
+              - op: "replace"
+                pathExpression: "self.resources.requests.cpu"
+                value: "10m"
+              - op: "replace"
+                pathExpression: "self.resources.requests.memory"
+                value: "64Mi"
+    - resourceMutation:
+        operations: ["CREATE"]
+        pathTests:
+          - path: "/spec/initContainers"
+            condition: "MustExist"
+        forEachMutation:
+          listPath: "/spec/initContainers"
+          parameters:
+            mutations:
+              - op: "replace"
+                pathExpression: "self.resources.requests.cpu"
+                value: "10m"
+              - op: "replace"
+                pathExpression: "self.resources.requests.memory"
+                value: "64Mi"
