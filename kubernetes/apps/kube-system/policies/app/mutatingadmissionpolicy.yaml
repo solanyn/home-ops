@@ -19,8 +19,7 @@ spec:
         resources: ["pods"]
   reinvocationPolicy: IfNeeded
   mutations:
-    - patchType: JSONPatch
-      resourceMutation:
+    - resourceMutation:
         operations: ["CREATE"]
         pathTests:
           - path: "/spec/containers"
@@ -35,8 +34,7 @@ spec:
               - op: "replace"
                 pathExpression: "self.resources.requests.memory"
                 value: "64Mi"
-    - patchType: JSONPatch
-      resourceMutation:
+    - resourceMutation:
         operations: ["CREATE"]
         pathTests:
           - path: "/spec/initContainers"
