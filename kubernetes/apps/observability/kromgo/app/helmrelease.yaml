@@ -20,7 +20,6 @@ spec:
   values:
     controllers:
       kromgo:
-        replicas: 2
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
