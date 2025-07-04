@@ -77,6 +77,7 @@ spec:
       database:
         existingClaim: *app
         globalMounts:
+          - path: /data/.venv
           - path: /data/database
           - path: /home/wizarruser
       tmp:
