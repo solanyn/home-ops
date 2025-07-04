@@ -119,7 +119,7 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: frontend.buildbarn.goyangi.io
-          lbipam.cilium.io/ips: 192.168.1.133, ::ffff:192.168.1.133
+          lbipam.cilium.io/ips: 192.168.1.133
         ports:
           grpc:
             port: 8980

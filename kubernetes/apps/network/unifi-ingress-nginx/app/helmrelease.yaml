@@ -37,7 +37,7 @@ spec:
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: &hostname internal.ingress.goyangi.io
-          lbipam.cilium.io/ips: 192.168.1.151, ::ffff:192.168.1.151
+          lbipam.cilium.io/ips: 192.168.1.151
       ingressClassResource:
         name: internal
         default: true
