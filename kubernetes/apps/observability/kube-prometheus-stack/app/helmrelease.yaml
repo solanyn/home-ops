@@ -79,7 +79,7 @@ spec:
         image:
           registry: registry.deckhouse.io
           repository: prompp/prompp
-          tag: 2.53.2-0.2.6
+          tag: 2.53.2-0.3.3
         securityContext:
           runAsGroup: 64535
           runAsNonRoot: true
@@ -87,7 +87,7 @@ spec:
           fsGroup: 64535
         initContainers:
           - name: convert-wal
-            image: registry.deckhouse.io/prompp/prompp:2.53.2-0.2.3
+            image: registry.deckhouse.io/prompp/prompp:2.53.2-0.3.3
             command:
               - /bin/prompptool
               - "--working-dir=/prometheus"
