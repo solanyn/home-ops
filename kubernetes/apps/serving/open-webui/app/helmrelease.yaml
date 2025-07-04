@@ -25,66 +25,41 @@ spec:
           app:
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: main@sha256:07d6e7b14d315f63410699c2f0015d942fba6cbf6117f3c930b82601f728148b
+              tag: v0.6.15@sha256:fda936056184035a71a9ad5ff3721530ff061f16bc3907efb33a3201
             env:
-              DATA_DIR: /config
               ENABLE_SIGNUP: "false"
               ENABLE_LOGIN_FORM: "false"
               ENABLE_OAUTH_SIGNUP: "true"
               ENABLE_OPENAI_API: "true"
               CORS_ALLOW_ORIGIN: "https://open-webui.goyangi.io"
               DEFAULT_USER_ROLE: user
-              OPENAI_API_BASE_URLS: https://kubeai.goyangi.io,https://litellm.goyangi.io
+              OPENAI_API_BASE_URLS: https://kubeai.goyangi.io
               OAUTH_PROVIDER_NAME: "Pocket ID"
               OFFLINE_MODE: "true"
               OPENID_PROVIDER_URL: "https://id.goyangi.io/.well-known/openid-configuration"
               OPENID_REDIRECT_URI: "https://open-webui.goyangi.io/oauth/oidc/callback"
-              PORT: &port 80
+              PORT: &port "80"
               WEBUI_URL: http://0.0.0.0:3000
               # VECTOR_DB: milvus
               # MILVUS_URI: milvus.storage.svc.cluster.local:17530
               # MILVUS_DB: open-webui
-              ENABLE_WEB_SEARCH: "true"
-              WEB_SEARCH_TRUST_ENV: "true"
+              ENABLE_RAG_WEB_SEARCH: true
+              ENABLE_WEB_SEARCH: true
+              WEB_SEARCH_TRUST_ENV: true
               WEB_SEARCH_ENGINE: searxng
-              SEARXNG_QUERY_URL: http://searxng.default.svc.cluster.local
-              ENABLE_IMAGE_GENERATION: "true"
+              RAG_WEB_SEARCH_ENGINE: searxng
+              SEARXNG_QUERY_URL: http://searxng.default.svc.cluster.local/search?q=<query>
+              ENABLE_IMAGE_GENERATION: true
+              WEBSOCKET_MANAGER: redis
+              WEBSOCKET_REDIS_URL: redis://redis.storage.svc.cluster.local:6379
             envFrom:
               - secretRef:
                   name: open-webui-secret
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
-        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         ports:
           http:
             port: *port
-          search:
-            port: 3000
     route:
       app:
         hostnames: ["{{ .Release.Name }}.goyangi.io"]
@@ -94,4 +69,6 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: open-webui
+        existingClaim: *port
+        globalMounts:
+          - path: /app/backend/data
