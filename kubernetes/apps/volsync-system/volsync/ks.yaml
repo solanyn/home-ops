@@ -10,12 +10,17 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
+    - name: keda
+      namespace: observability
     - name: openebs
       namespace: openebs-system
     - name: snapshot-controller
       namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/volsync-system/volsync/app
+  postBuild:
+    substitute:
+      APP: *app
   prune: true
   retryInterval: 2m
   sourceRef:
