@@ -35,3 +35,4 @@ spec:
   values:
     fullnameOverride: pxc-operator
     resources: {}
+    disableTelemetry: true
