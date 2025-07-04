@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
 apiVersion: monitoring.giantswarm.io/v1alpha1
 kind: Silence
 metadata:
@@ -9,12 +9,10 @@ spec:
   matchers:
     - name: alertname
       value: CephNodeDiskspaceWarning
-      isRegex: false
     - name: mountpoint
       value: /etc/nfsmount.conf
-      isRegex: false
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
 apiVersion: monitoring.giantswarm.io/v1alpha1
 kind: Silence
 metadata:
@@ -24,12 +22,10 @@ spec:
   matchers:
     - name: alertname
       value: CephNodeDiskspaceWarning
-      isRegex: false
     - name: device
       value: /dev/sd.*
-      isRegex: true
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
 apiVersion: monitoring.giantswarm.io/v1alpha1
 kind: Silence
 metadata:
@@ -39,12 +35,10 @@ spec:
   matchers:
     - name: alertname
       value: NodeMemoryHighUtilization
-      isRegex: false
     - name: instance
       value: nas.internal:9100
-      isRegex: false
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
 # TODO: remove when new drives or nodes run cooler
 apiVersion: monitoring.giantswarm.io/v1alpha1
 kind: Silence
@@ -55,9 +49,8 @@ spec:
   matchers:
     - name: alertname
       value: SmartDeviceHighTemperature
-      isRegex: false
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
 # TODO: remove when new rook disks and/or network upgrade and/or node upgrade
 apiVersion: monitoring.giantswarm.io/v1alpha1
 kind: Silence
@@ -68,9 +61,8 @@ spec:
   matchers:
     - name: alertname
       value: CephNodeNetworkPacketDrops
-      isRegex: false
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
 # TODO: Remove when no more DockerHub images
 apiVersion: monitoring.giantswarm.io/v1alpha1
 kind: Silence
@@ -81,9 +73,8 @@ spec:
   matchers:
     - name: alertname
       value: DockerhubRateLimitRisk
-      isRegex: false
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.giantswarm.io/silence_v1alpha1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
 apiVersion: monitoring.giantswarm.io/v1alpha1
 kind: Silence
 metadata:
@@ -93,4 +84,3 @@ spec:
   matchers:
     - name: alertname
       value: KubeHpaMaxedOut
-      isRegex: false
