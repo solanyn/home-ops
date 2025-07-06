@@ -10,6 +10,7 @@ spec:
       args:
         - --model_name=gemma3
         - --model_id=google/gemma-3-4b-it
+        - --max_model_len=30832
       envFrom:
         - secretRef:
             name: kserve-secret
