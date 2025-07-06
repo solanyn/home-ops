@@ -3,7 +3,7 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
-  name: envoy
+  name: external
 spec:
   telemetry:
     metrics:
@@ -17,11 +17,4 @@ spec:
     type: Kubernetes
     kubernetes:
       envoyDeployment:
-        replicas: 2
-        container:
-          resources:
-            requests:
-              cpu: 10m
-              memory: 64Mi
-      envoyService:
-        externalTrafficPolicy: Cluster
+        replicas: 1
