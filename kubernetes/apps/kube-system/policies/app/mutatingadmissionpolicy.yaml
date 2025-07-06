@@ -23,31 +23,35 @@ spec:
     - patchType: JSONPatch
       jsonPatch:
         expression: |
-          object.spec.containers.map((c, i) => [
+          object.spec.containers.map(container, 
             JSONPatch{
               op: "add",
-              path: "/spec/containers/" + i + "/resources/requests/cpu",
+              path: "/spec/containers/" + string(object.spec.containers.indexOf(container)) + "/resources/requests/cpu",
               value: "10m"
-            },
+            }
+          ) +
+          object.spec.containers.map(container, 
             JSONPatch{
-              op: "add",
-              path: "/spec/containers/" + i + "/resources/requests/memory",
+              op: "add", 
+              path: "/spec/containers/" + string(object.spec.containers.indexOf(container)) + "/resources/requests/memory",
               value: "64Mi"
             }
-          ]).flatten()
+          )
     - patchType: JSONPatch
       jsonPatch:
         expression: |
-          object.spec.initContainers != null ?
-            object.spec.initContainers.map((c, i) => [
+          has(object.spec.initContainers) ?
+            object.spec.initContainers.map(container,
               JSONPatch{
                 op: "add",
-                path: "/spec/initContainers/" + i + "/resources/requests/cpu",
+                path: "/spec/initContainers/" + string(object.spec.initContainers.indexOf(container)) + "/resources/requests/cpu", 
                 value: "10m"
-              },
+              }
+            ) +
+            object.spec.initContainers.map(container,
               JSONPatch{
                 op: "add",
-                path: "/spec/initContainers/" + i + "/resources/requests/memory",
+                path: "/spec/initContainers/" + string(object.spec.initContainers.indexOf(container)) + "/resources/requests/memory",
                 value: "64Mi"
               }
-            ]).flatten() : []
+            ) : []
