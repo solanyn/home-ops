@@ -94,7 +94,7 @@ spec:
       data:
         existingClaim: *app
         globalMounts:
-          - path: /data
+          - path: /app/data
       var:
         type: emptyDir
         sizeLimit: 1Gi
