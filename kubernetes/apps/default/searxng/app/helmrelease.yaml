@@ -108,7 +108,6 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-
     persistence:
       config:
         type: configMap

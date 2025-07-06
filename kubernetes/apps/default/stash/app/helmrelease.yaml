@@ -75,7 +75,6 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-
     persistence:
       tmp:
         type: emptyDir

@@ -71,7 +71,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
@@ -85,7 +85,7 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [10000]
-        seccompProfile: {type: RuntimeDefault}
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         ports:
@@ -98,7 +98,6 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-
     persistence:
       config:
         existingClaim: readarr
