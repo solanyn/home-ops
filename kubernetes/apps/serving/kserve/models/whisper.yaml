@@ -9,7 +9,8 @@ spec:
         name: huggingface
       args:
         - --model_name=whisper
-        - --model_id=Systran/faster-whisper-medium.en
+        - --model_id=openai/whisper-small
+        - --task transcription
       envFrom:
         - secretRef:
             name: kserve-secret
