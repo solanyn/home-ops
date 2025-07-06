@@ -58,7 +58,7 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-        seccompProfile: {type: RuntimeDefault}
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         ports:
@@ -71,7 +71,6 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-
     persistence:
       config:
         existingClaim: calibre
