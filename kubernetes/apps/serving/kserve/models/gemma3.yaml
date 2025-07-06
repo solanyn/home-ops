@@ -9,7 +9,7 @@ spec:
         name: huggingface
       args:
         - --model_name=gemma3
-        - --model_id=unsloth/gemma-3-12b-it-GGUF
+        - --model_id=google/gemma-3-4b-it
       envFrom:
         - secretRef:
             name: kserve-secret
