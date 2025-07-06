@@ -12,7 +12,6 @@ resources:
   - ./calibre/ks.yaml
   - ./calibre-web/ks.yaml
   - ./cross-seed/ks.yaml
-  - ./emailer/ks.yaml
   - ./flaresolverr/ks.yaml
   # - ./gt7-telemetry/ks.yaml
   - ./home-assistant/ks.yaml
