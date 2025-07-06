@@ -1,0 +1,20 @@
+kind: InferenceService
+metadata:
+  name: gemma3
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: huggingface
+      args:
+        - --model_name=gemma3
+        - --model_id=unsloth/gemma-3-12b-it-GGUF
+      envFrom:
+        - secretRef:
+            name: kserve-secret
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          memory: 12Gi
