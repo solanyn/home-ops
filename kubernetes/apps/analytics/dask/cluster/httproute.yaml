@@ -12,6 +12,6 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: dask-cluster
+        - name: dask-cluster-scheduler
           namespace: analytics
           port: 8787
