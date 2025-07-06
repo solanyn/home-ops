@@ -37,3 +37,12 @@ spec:
         rbac:
           cluster: true
       replicas: 2
+    config:
+      envoy-gateway:
+        gateway:
+          controllerName: gateway.envoyproxy.io/gatewayclass-controller
+        backendTlsConfig:
+          clientCertificateRef: goyangi-io-tls
+      logging:
+        level:
+          default: debug
