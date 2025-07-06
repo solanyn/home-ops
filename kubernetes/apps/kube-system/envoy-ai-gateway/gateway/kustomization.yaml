@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./gateway.yaml
+configMapGenerator:
+  - name: envoy-gateway-config
+    files:
+      - envoy-gateway.yaml=./resources/envoy-gateway.yaml
+generatorOptions:
+  disableNameSuffixHash: true
