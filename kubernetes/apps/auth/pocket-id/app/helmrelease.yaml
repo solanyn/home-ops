@@ -36,8 +36,6 @@ spec:
               tag: v1.5.0@sha256:37c92ec26cb4f425f0485147d22fa0e9780b29e3d467a4e855e7353a62c110c0
             env:
               DB_PROVIDER: postgres
-              PUID: 1000
-              PGID: 1000
               APP_URL: https://id.goyangi.io
               TRUST_PROXY: true
               TZ: Australia/Sydney
@@ -77,9 +75,7 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
-        supplementalGroups: [10000]
+        fsGroupChangePolicy: Always
     service:
       app:
         ports:
@@ -94,12 +90,11 @@ spec:
           - name: internal
             namespace: kube-system
             sectionName: https
-
     persistence:
       data:
         existingClaim: *app
         globalMounts:
-          - path: /app/data
+          - path: /data
       var:
         type: emptyDir
         sizeLimit: 1Gi
