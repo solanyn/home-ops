@@ -6,6 +6,11 @@ spec:
   mode: cluster
   config:
     bucketName: milvus
+    kafka:
+      securityProtocol: PLAINTEXT
+      saslMechanisms: PLAIN
+      saslUsername: ""
+      saslPassword: ""
   components:
     podAnnotations:
       reloader.stakater.com/auto: "true"
@@ -26,10 +31,13 @@ spec:
     queryNode:
       replicas: 1
   dependencies:
-    msgStreamType: pulsar
-    pulsar:
+    msgStreamType: kafka
+    kafka:
       external: true
-      endpoint: pulsar-proxy.streaming.svc.cluster.local:6650
+      brokerList:
+        - kafka-cluster-0.streaming.svc.cluster.local:9092
+        - kafka-cluster-1.streaming.svc.cluster.local:9092
+        - kafka-cluster-2.streaming.svc.cluster.local:9092
     etcd:
       external: true
       endpoints: ["etcd-cluster.storage.cluster.local:2379"]
