@@ -9,6 +9,5 @@ resources:
   - ./docling/ks.yaml
   - ./feast/ks.yaml
   - ./kserve/ks.yaml
-  - ./kubeai/ks.yaml
   - ./open-webui/ks.yaml
   - ./triton-inference-server/ks.yaml
