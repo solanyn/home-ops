@@ -6,3 +6,4 @@ resources:
   - ./externalsecret.yaml
   - ./gemma3
   - ./whisper
+  - ./referencegrant.yaml
