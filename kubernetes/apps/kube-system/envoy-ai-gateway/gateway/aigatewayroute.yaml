@@ -1,7 +1,7 @@
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: AIGatewayRoute
 metadata:
-  name: envoy-ai-gateway
+  name: internal-kserve
 spec:
   schema:
     name: OpenAI
@@ -16,7 +16,7 @@ spec:
               name: x-ai-eg-model
               value: gemma3
       backendRefs:
-        - name: envoy-ai-gateway-kserve
+        - name: gemma3-predictor
           weight: 100
     - matches:
         - headers:
@@ -24,7 +24,7 @@ spec:
               name: x-ai-eg-model
               value: whisper
       backendRefs:
-        - name: envoy-ai-gateway-kserve
+        - name: whisper-predictor
           weight: 100
   llmRequestCosts:
     - metadataKey: llm_input_token

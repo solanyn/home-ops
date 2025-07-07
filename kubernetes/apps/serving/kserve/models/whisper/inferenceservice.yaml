@@ -10,13 +10,11 @@ spec:
       args:
         - --model_name=whisper
         - --model_id=openai/whisper-small
-        - --task transcription
       envFrom:
         - secretRef:
-            name: kserve-secret
+            name: kserve-models-secret
       resources:
         requests:
           cpu: 10m
-          memory: 64Mi
         limits:
           memory: 6Gi
