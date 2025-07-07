@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: docker.io/kserve/huggingfaceserver
-              tag: v0.15.2@sha256:1cf8f509a69a802940b144454c0d1b9288b9434144b3c351a1cb52fc011df40e
+              tag: v0.15.2@sha256:b5735d09128f1bf9d7e9ab1124333ac4912cadbd94dbde57e49047a92f6bb501
             command: ["lmcache_experimental_server"]
             args: ["0.0.0.0", "80"]
             probes:
