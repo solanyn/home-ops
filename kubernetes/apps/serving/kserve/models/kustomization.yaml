@@ -6,4 +6,3 @@ resources:
   - ./externalsecret.yaml
   - ./gemma3
   - ./whisper
-  - ./iris
