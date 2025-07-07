@@ -24,6 +24,5 @@ patches:
       kind: ConfigMap
       metadata:
         name: config-domain
-      $patch: replace
       data:
         goyangi.io:
