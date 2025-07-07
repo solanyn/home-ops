@@ -16,3 +16,8 @@ patches:
           metadata:
             annotations:
               reloader.stakater.com/auto: "true"
+configMapGenerator:
+  - name: config-domain
+    behavior: replace
+    literals:
+      - goyangi.io=
