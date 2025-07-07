@@ -1,0 +1,19 @@
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIServiceBackend
+metadata:
+  name: kserve-whisper
+spec:
+  schema:
+    name: OpenAI
+  backendRef:
+    name: whisper
+    namespace: serving
+    kind: Service
+    group: ""
+    port: 80
+  timeouts:
+    request: 60s
+  backendSecurityPolicyRef:
+    name: kserve-apikey
+    kind: BackendSecurityPolicy
+    group: aigateway.envoyproxy.io
