@@ -1,0 +1,35 @@
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIGatewayRoute
+metadata:
+  name: envoy-ai-gateway
+spec:
+  schema:
+    name: OpenAI
+  targetRefs:
+    - name: internal
+      kind: Gateway
+      group: gateway.networking.k8s.io
+  rules:
+    - matches:
+        - headers:
+            - type: Exact
+              name: x-ai-eg-model
+              value: gemma3
+      backendRefs:
+        - name: envoy-ai-gateway-kserve
+          weight: 100
+    - matches:
+        - headers:
+            - type: Exact
+              name: x-ai-eg-model
+              value: whisper
+      backendRefs:
+        - name: envoy-ai-gateway-kserve
+          weight: 100
+  llmRequestCosts:
+    - metadataKey: llm_input_token
+      type: InputToken
+    - metadataKey: llm_output_token
+      type: OutputToken
+    - metadataKey: llm_total_token
+      type: TotalToken

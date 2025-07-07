@@ -1,0 +1,10 @@
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: BackendSecurityPolicy
+metadata:
+  name: envoy-ai-gateway-kserve-apikey
+spec:
+  type: APIKey
+  apiKey:
+    secretRef:
+      name: kserve-models-secret
+      namespace: serving
