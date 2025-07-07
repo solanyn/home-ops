@@ -6,7 +6,7 @@ spec:
   schema:
     name: OpenAI
   targetRefs:
-    - name: internal
+    - name: ai-gateway-internal
       kind: Gateway
       group: gateway.networking.k8s.io
   rules:
