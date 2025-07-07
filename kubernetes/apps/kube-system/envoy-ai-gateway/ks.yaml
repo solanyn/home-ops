@@ -60,6 +60,8 @@ spec:
       namespace: kube-system
     - name: envoy-ai-gateway
       namespace: kube-system
+    - name: envoy-gateway
+      namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/kube-system/envoy-ai-gateway/gateway
   prune: true

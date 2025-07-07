@@ -1,7 +1,7 @@
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: BackendSecurityPolicy
 metadata:
-  name: envoy-ai-gateway-kserve-apikey
+  name: kserve-apikey
 spec:
   type: APIKey
   apiKey:

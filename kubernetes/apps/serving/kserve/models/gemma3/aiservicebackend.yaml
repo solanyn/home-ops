@@ -1,0 +1,19 @@
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIServiceBackend
+metadata:
+  name: kserve-gemma3
+spec:
+  schema:
+    name: OpenAI
+  backendRef:
+    name: gemma3
+    namespace: serving
+    kind: Service
+    group: ""
+    port: 80
+  timeouts:
+    request: 60s
+  backendSecurityPolicyRef:
+    name: envoy-ai-gateway-kserve-apikey
+    kind: BackendSecurityPolicy
+    group: aigateway.envoyproxy.io
