@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./aigatewayroute.yaml
   - ./backendsecuritypolicy.yaml
+  - ./aiservicebackendlist.yaml
 configMapGenerator:
   - name: envoy-gateway-config
     files:
