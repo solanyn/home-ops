@@ -6,7 +6,7 @@ spec:
   from:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      namespace: serving
+      namespace: kube-system
   to:
     - group: ""
       kind: Service
