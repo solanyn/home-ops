@@ -8,6 +8,9 @@ metadata:
     external-dns.alpha.kubernetes.io/target: &hostname external.goyangi.io
 spec:
   gatewayClassName: envoy
+  addresses:
+    - type: IPAddress
+      value: 192.168.1.126
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
