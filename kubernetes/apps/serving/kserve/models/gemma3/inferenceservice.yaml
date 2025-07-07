@@ -11,6 +11,22 @@ spec:
         - --model_name=gemma3
         - --model_id=google/gemma-3-4b-it
         - --max_model_len=30832
+        - --kv-transfer-config
+        - '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
+        - --enable-chunked-prefill
+      env:
+        - name: LMCACHE_USE_EXPERIMENTAL
+          value: "True"
+        - name: LMCACHE_REMOTE_URL
+          value: redis://redis.storage.svc.cluster.local:6379
+        - name: LMCACHE_REMOTE_SERDE
+          value: naive
+        - name: LMCACHE_LOCAL_CPU
+          value: "True"
+        - name: LMCACHE_CHUNK_SIZE
+          value: "256"
+        - name: LMCACHE_MAX_LOCAL_CPU_SIZE
+          value: "2.0"
       envFrom:
         - secretRef:
             name: kserve-models-secret
