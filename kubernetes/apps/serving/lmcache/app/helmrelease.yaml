@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: docker.io/kserve/huggingfaceserver
-              tag: v0.15.2-gpu@sha256:e70a314fa47d1e4369d15ec7f59e721de90d79a1e36131041224c03802eaea0a
+              tag: v0.15.2-gpu@sha256:6bc7310a7829f311b766ef557f018cbdad306a6b448da88db75ee6e5c7f43169
             command: ["lmcache_experimental_server"]
             args: ["0.0.0.0", "80"]
             probes:
