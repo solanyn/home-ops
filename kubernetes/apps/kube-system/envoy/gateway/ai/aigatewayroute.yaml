@@ -14,18 +14,26 @@ spec:
         - headers:
             - type: Exact
               name: x-ai-eg-model
-              value: gemma3
+              value: qwen3
       backendRefs:
-        - name: gemma3-predictor
+        - name: qwen3-predictor
           weight: 100
-    - matches:
-        - headers:
-            - type: Exact
-              name: x-ai-eg-model
-              value: whisper
-      backendRefs:
-        - name: whisper-predictor
-          weight: 100
+    # - matches:
+    #     - headers:
+    #         - type: Exact
+    #           name: x-ai-eg-model
+    #           value: gemma3
+    #   backendRefs:
+    #     - name: gemma3-predictor
+    #       weight: 100
+    # - matches:
+    #     - headers:
+    #         - type: Exact
+    #           name: x-ai-eg-model
+    #           value: whisper
+    #   backendRefs:
+    #     - name: whisper-predictor
+    #       weight: 100
   llmRequestCosts:
     - metadataKey: llm_input_token
       type: InputToken
