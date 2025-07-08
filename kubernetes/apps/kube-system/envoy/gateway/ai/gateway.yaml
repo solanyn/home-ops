@@ -3,11 +3,11 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: aigateway
+  name: ai
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname aigateway.goyangi.io
+    external-dns.alpha.kubernetes.io/target: &hostname ai.goyangi.io
 spec:
-  gatewayClassName: envoy-ai-gateway
+  gatewayClassName: ai
   addresses:
     - type: IPAddress
       value: 192.168.1.120

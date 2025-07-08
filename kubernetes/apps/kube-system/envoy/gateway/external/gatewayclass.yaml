@@ -3,11 +3,11 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
 metadata:
-  name: envoy
+  name: external
 spec:
   controllerName: gateway.envoyproxy.io/gatewayclass-controller
   parametersRef:
     group: gateway.envoyproxy.io
     kind: EnvoyProxy
-    name: envoy
+    name: external
     namespace: kube-system
