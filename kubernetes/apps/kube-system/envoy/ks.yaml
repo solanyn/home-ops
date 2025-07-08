@@ -34,10 +34,10 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
-    - name: envoy-ai-gateway-crds
-      namespace: kube-system
-    - name: envoy-ai-gateway
-      namespace: kube-system
+    # - name: envoy-ai-gateway-crds
+    #   namespace: kube-system
+    # - name: envoy-ai-gateway
+    #   namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/kube-system/envoy/gateway
   prune: true
