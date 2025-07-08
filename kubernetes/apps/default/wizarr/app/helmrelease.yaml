@@ -28,6 +28,8 @@ spec:
               tag: 2025.7.1@sha256:1bcdec58638cf8e40cb255ad697d0f13b39330974619454cc435558b11fabf12
             env:
               TZ: "Australia/Sydney"
+              PUID: 1000
+              PGID: 1000
             probes:
               liveness: &probes
                 enabled: false
@@ -56,7 +58,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
@@ -72,17 +73,12 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https
-
     persistence:
       database:
         existingClaim: *app
         globalMounts:
-          - path: /data
-          - path: /data/.venv
           - path: /data/database
-          - path: /home/wizarruser
       tmp:
         type: emptyDir
         globalMounts:
-          - path: /tmp
           - path: /.cache
