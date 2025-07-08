@@ -6,7 +6,7 @@ resources:
   - ./certificate.yaml
   - ./external
   - ./internal
-  - ./ai
+  # - ./ai
   - ./redirect.yaml
   - ./pushsecret.yaml
   - ./servicemonitor.yaml
