@@ -12,7 +12,7 @@ resources:
   - ./coredns/ks.yaml
   - ./descheduler/ks.yaml
   - ./envoy/ks.yaml
-  - ./envoy-ai-gateway/ks.yaml
+  # - ./envoy-ai-gateway/ks.yaml
   - ./generic-device-plugin/ks.yaml
   - ./intel-device-plugin-operator/ks.yaml
   - ./metrics-server/ks.yaml
