@@ -9,9 +9,3 @@ resources:
   - ./aigatewayroute.yaml
   - ./backendsecuritypolicy.yaml
   - ./aiservicebackendlist.yaml
-configMapGenerator:
-  - name: envoy-gateway-config
-    files:
-      - envoy-gateway.yaml=./resources/envoy-gateway.yaml
-generatorOptions:
-  disableNameSuffixHash: true
