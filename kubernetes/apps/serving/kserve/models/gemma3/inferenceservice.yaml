@@ -9,8 +9,7 @@ spec:
         name: huggingface
       args:
         - --model_name=gemma3
-        - --model_id=google/gemma-3-4b-it
-        - --max_model_len=30832
+        - --model_id=google/gemma-3-1b-it
         - --kv-transfer-config
         - '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
         - --enable-chunked-prefill
