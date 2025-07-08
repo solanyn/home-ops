@@ -9,5 +9,4 @@ resources:
   - ./docling/ks.yaml
   - ./feast/ks.yaml
   - ./kserve/ks.yaml
-  - ./lmcache/ks.yaml
   - ./open-webui/ks.yaml
