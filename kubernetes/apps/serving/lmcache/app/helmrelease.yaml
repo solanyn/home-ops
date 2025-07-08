@@ -27,7 +27,7 @@ spec:
               repository: docker.io/kserve/huggingfaceserver
               tag: v0.15.2-gpu@sha256:6bc7310a7829f311b766ef557f018cbdad306a6b448da88db75ee6e5c7f43169
             command: ["lmcache_experimental_server"]
-            args: ["0.0.0.0", "80"]
+            args: ["0.0.0.0", "8080"]
             probes:
               liveness: &probes
                 enabled: true
@@ -35,7 +35,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: &port 80
+                    port: &port 8080
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
