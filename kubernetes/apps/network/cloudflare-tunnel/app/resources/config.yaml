@@ -3,7 +3,7 @@ originRequest:
 
 ingress:
   - hostname: "goyangi.io"
-    service: &svc https://cilium-gateway-external.kube-system.svc.cluster.local
+    service: &svc https://envoy-kube-system-external.kube-system.svc.cluster.local
   - hostname: "*.goyangi.io"
     service: *svc
   - service: http_status:404
