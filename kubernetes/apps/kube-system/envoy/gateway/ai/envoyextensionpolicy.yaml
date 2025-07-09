@@ -20,5 +20,4 @@ spec:
         responseHeaderMode: SEND
         requestBodyMode: NONE
         responseBodyMode: NONE
-      failureModeAllow: false
       messageTimeout: 5s
