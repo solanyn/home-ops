@@ -8,3 +8,4 @@ resources:
   - ./gateway.yaml
   - ./backendsecuritypolicy.yaml
   - ./aiservicebackendlist.yaml
+  - ./envoyextensionpolicy.yaml
