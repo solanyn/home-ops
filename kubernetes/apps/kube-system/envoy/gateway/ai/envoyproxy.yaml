@@ -13,16 +13,6 @@ spec:
   logging:
     level:
       default: debug
-  extensionManager:
-    hooks:
-      xdsTranslator:
-        post:
-          - VirtualHost
-          - Translation
-    service:
-      fqdn:
-        hostname: ai-gateway-controller.envoy-ai-gateway-system.svc.cluster.local
-        port: 1063
   provider:
     type: Kubernetes
     kubernetes:
