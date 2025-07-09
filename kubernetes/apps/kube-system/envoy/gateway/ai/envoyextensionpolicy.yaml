@@ -16,8 +16,6 @@ spec:
           namespace: envoy-ai-gateway-system
           port: 1063
       processingMode:
-        requestHeaderMode: SEND
-        responseHeaderMode: SEND
-        requestBodyMode: NONE
-        responseBodyMode: NONE
+        request: {}
+        response: {}
       messageTimeout: 5s
