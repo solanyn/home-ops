@@ -18,3 +18,5 @@ spec:
     kubernetes:
       envoyDeployment:
         replicas: 1
+      envoyService:
+        name: envoy-external
