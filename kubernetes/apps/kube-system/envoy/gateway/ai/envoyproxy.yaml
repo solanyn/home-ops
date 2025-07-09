@@ -14,13 +14,6 @@ spec:
     level:
       default: debug
   extensionManager:
-    policy:
-      default: Deny
-    resources:
-    - group: "gateway.envoyproxy.io"
-      version: "v1alpha1"
-      kind: "Backend"
-      scope: "Namespaced"
     hooks:
       xdsTranslator:
         post:
