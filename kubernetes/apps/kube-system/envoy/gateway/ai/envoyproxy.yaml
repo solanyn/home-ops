@@ -13,28 +13,14 @@ spec:
   logging:
     level:
       default: debug
-  provider:
-    type: Kubernetes
-    kubernetes:
-      envoyDeployment:
-        replicas: 1
-      envoyService:
-        name: envoy-ai
-      rateLimitDeployment:
-        patch:
-          type: StrategicMerge
-          value:
-            spec:
-              template:
-                spec:
-                  containers:
-                    - imagePullPolicy: IfNotPresent
-                      name: envoy-ratelimit
-                      image: docker.io/envoyproxy/ratelimit:60d8e81b
-  extensionApis:
-    enableEnvoyPatchPolicy: true
-    enableBackend: true
   extensionManager:
+    policy:
+      default: Deny
+    resources:
+    - group: "gateway.envoyproxy.io"
+      version: "v1alpha1"
+      kind: "Backend"
+      scope: "Namespaced"
     hooks:
       xdsTranslator:
         post:
@@ -44,8 +30,18 @@ spec:
       fqdn:
         hostname: ai-gateway-controller.envoy-ai-gateway-system.svc.cluster.local
         port: 1063
-  rateLimit:
-    backend:
-      type: Redis
-      redis:
-        url: redis.storage.svc.cluster.local:6379
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyDeployment:
+        replicas: 1
+      envoyService:
+        name: envoy-ai
+      rateLimit:
+        deploy:
+          image: docker.io/envoyproxy/ratelimit:60d8e81b
+          imagePullPolicy: IfNotPresent
+        backend:
+          type: Redis
+          redis:
+            url: redis.storage.svc.cluster.local:6379
