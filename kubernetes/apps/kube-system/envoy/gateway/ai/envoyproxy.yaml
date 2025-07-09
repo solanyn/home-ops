@@ -20,3 +20,32 @@ spec:
         replicas: 1
       envoyService:
         name: envoy-ai
+      rateLimitDeployment:
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              template:
+                spec:
+                  containers:
+                    - imagePullPolicy: IfNotPresent
+                      name: envoy-ratelimit
+                      image: docker.io/envoyproxy/ratelimit:60d8e81b
+  extensionApis:
+    enableEnvoyPatchPolicy: true
+    enableBackend: true
+  extensionManager:
+    hooks:
+      xdsTranslator:
+        post:
+          - VirtualHost
+          - Translation
+    service:
+      fqdn:
+        hostname: ai-gateway-controller.envoy-ai-gateway-system.svc.cluster.local
+        port: 1063
+  rateLimit:
+    backend:
+      type: Redis
+      redis:
+        url: redis.storage.svc.cluster.local:6379
