@@ -113,6 +113,9 @@
     "cni": {
       "enabled": false,
       "provider": "default"
+    },
+    "env": {
+      "PILOT_ENABLE_GATEWAY_API": "true"
     }
   },
   "revision": "",
