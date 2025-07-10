@@ -12,7 +12,7 @@ spec:
     drainTimeout: 300s
   logging:
     level:
-      default: debug
+      default: info
   provider:
     type: Kubernetes
     kubernetes:
