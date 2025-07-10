@@ -6,7 +6,7 @@ spec:
   schema:
     name: OpenAI
   targetRefs:
-    - name: ai-gateway-internal
+    - name: ai
       kind: Gateway
       group: gateway.networking.k8s.io
   rules:
@@ -14,18 +14,10 @@ spec:
         - headers:
             - type: Exact
               name: x-ai-eg-model
-              value: qwen3
+              value: smollm
       backendRefs:
-        - name: qwen3-predictor
+        - name: smollm-predictor
           weight: 100
-    # - matches:
-    #     - headers:
-    #         - type: Exact
-    #           name: x-ai-eg-model
-    #           value: gemma3
-    #   backendRefs:
-    #     - name: gemma3-predictor
-    #       weight: 100
     # - matches:
     #     - headers:
     #         - type: Exact
