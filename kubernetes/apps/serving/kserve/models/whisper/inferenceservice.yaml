@@ -14,6 +14,8 @@ spec:
         - '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
         - --enable-chunked-prefill
       env:
+        - name: KSERVE_OPENAI_ROUTE_PREFIX
+          value: ""
         - name: LMCACHE_USE_EXPERIMENTAL
           value: "True"
         - name: LMCACHE_REMOTE_URL
