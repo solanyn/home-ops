@@ -1,15 +1,15 @@
 apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
-  name: llama3
+  name: smollm
 spec:
   predictor:
     model:
       modelFormat:
         name: huggingface
       args:
-        - --model_name=llama3
-        - --model_id=meta-llama/Llama-3.2-1B-Instruct
+        - --model_name=smollm
+        - --model_id=HuggingFaceTB/SmolLM-1.7B-Instruct
         - --kv-transfer-config
         - '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
         - --enable-chunked-prefill
