@@ -20,11 +20,3 @@ spec:
         replicas: 1
       envoyService:
         name: envoy-ai
-      rateLimit:
-        deploy:
-          image: docker.io/envoyproxy/ratelimit:60d8e81b
-          imagePullPolicy: IfNotPresent
-        backend:
-          type: Redis
-          redis:
-            url: redis.storage.svc.cluster.local:6379
