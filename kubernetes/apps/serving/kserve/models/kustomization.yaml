@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./aigatewayroute.yaml
   - ./externalsecret.yaml
-  # - ./gemma3
-  # - ./whisper
-  - ./qwen3
+  - ./whisper
+  - ./smollm
   - ./referencegrant.yaml
