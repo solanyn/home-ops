@@ -33,5 +33,3 @@ spec:
         requests:
           cpu: 10m
           memory: 64Mi
-        limits:
-          memory: 6Gi
