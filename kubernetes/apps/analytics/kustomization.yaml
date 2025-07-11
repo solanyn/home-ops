@@ -5,7 +5,7 @@ namespace: analytics
 components:
   - ../../components/common
 resources:
-  # - ./airflow/ks.yaml
+  - ./airflow/ks.yaml
   - ./dask/ks.yaml
   - ./superset/ks.yaml
   - ./trino/ks.yaml
