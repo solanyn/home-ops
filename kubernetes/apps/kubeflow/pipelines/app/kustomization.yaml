@@ -19,7 +19,7 @@ configMapGenerator:
     literals:
       - warning=
         # Legacy
-      - dbHost=mariadb.storage.svc.cluster.local
+      - dbHost=pxc-cluster-haproxy.storage.svc.cluster.local
       - dbPort=3306
         # App Config
       - appName=pipeline
@@ -38,7 +38,7 @@ configMapGenerator:
       - bucketPort=9000
         # MySQL Config
       - dbType=mysql
-      - mysqlHost=mariadb.storage.svc.cluster.local
+      - mysqlHost=pxc-cluster-haproxy.storage.svc.cluster.local
       - mysqlPort=3306
       - mlmdDb=kfp_metadata
       - cacheDb=kfp_cache
