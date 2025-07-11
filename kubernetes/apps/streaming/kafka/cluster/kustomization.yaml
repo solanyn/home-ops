@@ -5,3 +5,4 @@ resources:
   - ./cluster.yaml
   - ./nodepool.yaml
   - ./topics.yaml
+  - ./service.yaml
