@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kubeflow-init-db
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: mysql-init
+          image: ghcr.io/solanyn/mysql-init:8
+          envFrom:
+            - secretRef:
+                name: kubeflow-secret
+      backoffLimit: 3
+  completionMode: NonIndexed
+  suspend: false
