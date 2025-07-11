@@ -14,9 +14,9 @@ spec:
         - headers:
             - type: Exact
               name: x-ai-eg-model
-              value: qwen3
+              value: gemma2
       backendRefs:
-        - name: qwen3-predictor
+        - name: gemma2-predictor
           weight: 100
     - matches:
         - headers:
