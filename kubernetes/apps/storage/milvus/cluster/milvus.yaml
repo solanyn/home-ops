@@ -38,7 +38,7 @@ spec:
         - kafka-cluster-kafka-bootstrap.streaming.svc.cluster.local:9092
     etcd:
       external: true
-      endpoints: ["etcd-cluster.storage.cluster.local:2379"]
+      endpoints: ["etcd-cluster.storage.svc.cluster.local:2379"]
     storage:
       external: true
       type: MinIO
