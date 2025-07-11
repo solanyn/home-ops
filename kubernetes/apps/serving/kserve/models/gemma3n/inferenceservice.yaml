@@ -4,10 +4,8 @@ metadata:
   name: gemma3n
 spec:
   predictor:
-    pod:
-      containers:
-        image: docker.io/kserve/huggingfaceserver:latest@sha256:751dfd3421ca42b607b986537704cc0efd8a14c1c277e6e67b91db21489bdb11
     model:
+      image: docker.io/kserve/huggingfaceserver:latest@sha256:751dfd3421ca42b607b986537704cc0efd8a14c1c277e6e67b91db21489bdb11
       modelFormat:
         name: huggingface
       args:
