@@ -12,6 +12,6 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: airflow-webserver
+        - name: airflow-api-server
           namespace: analytics
           port: 8080
