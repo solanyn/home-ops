@@ -35,9 +35,7 @@ spec:
     kafka:
       external: true
       brokerList:
-        - kafka-cluster-0.streaming.svc.cluster.local:9092
-        - kafka-cluster-1.streaming.svc.cluster.local:9092
-        - kafka-cluster-2.streaming.svc.cluster.local:9092
+        - kafka-cluster-kafka-bootstrap.streaming.svc.cluster.local:9092
     etcd:
       external: true
       endpoints: ["etcd-cluster.storage.cluster.local:2379"]
