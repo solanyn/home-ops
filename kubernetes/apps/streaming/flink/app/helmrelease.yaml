@@ -7,7 +7,7 @@ metadata:
   namespace: streaming
 spec:
   interval: 12h
-  url: https://downloads.apache.org/flink/flink-kubernetes-operator-1.12.0/
+  url: https://downloads.apache.org/flink/flink-kubernetes-operator-1.12.1/
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
