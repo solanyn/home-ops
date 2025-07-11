@@ -1,7 +1,7 @@
 apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
-  name: gemma3n
+  name: qwen3
 spec:
   predictor:
     model:
@@ -9,8 +9,8 @@ spec:
       modelFormat:
         name: huggingface
       args:
-        - --model_name=gemma3n
-        - --model_id=google/gemma-3n-E4B-it
+        - --model_name=qwen3
+        - --model_id=Qwen/Qwen3-4B
         - --backend=huggingface
         - --kv-transfer-config
         - '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
