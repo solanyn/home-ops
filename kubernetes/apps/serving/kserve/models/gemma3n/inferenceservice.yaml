@@ -1,15 +1,19 @@
 apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
-  name: gemma2
+  name: gemma3n
 spec:
   predictor:
+    pod:
+      containers:
+        image: docker.io/kserve/huggingfaceserver:latest@sha256:751dfd3421ca42b607b986537704cc0efd8a14c1c277e6e67b91db21489bdb11
     model:
       modelFormat:
         name: huggingface
       args:
-        - --model_name=gemma2
-        - --model_id=google/gemma-2-2b-it
+        - --model_name=gemma3n
+        - --model_id=google/gemma-3n-E4B-it
+        - --backend=huggingface
         - --kv-transfer-config
         - '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
         - --enable-chunked-prefill
