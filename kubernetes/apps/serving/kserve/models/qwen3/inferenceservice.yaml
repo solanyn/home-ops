@@ -10,7 +10,7 @@ spec:
         name: huggingface
       args:
         - --model_name=qwen3
-        - --model_id=Qwen/Qwen3-4B
+        - --model_id=Qwen/Qwen3-1.7B
         - --backend=huggingface
         - --kv-transfer-config
         - '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
