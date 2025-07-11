@@ -1,15 +1,15 @@
 apiVersion: serving.kserve.io/v1beta1
 kind: InferenceService
 metadata:
-  name: smollm
+  name: gemma3n
 spec:
   predictor:
     model:
       modelFormat:
         name: huggingface
       args:
-        - --model_name=smollm
-        - --model_id=HuggingFaceTB/SmolLM3-3B
+        - --model_name=gemma3n
+        - --model_id=google/gemma-3n-E4B-it
         - --kv-transfer-config
         - '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
         - --enable-chunked-prefill
