@@ -9,7 +9,7 @@ spec:
         name: huggingface
       args:
         - --model_name=smollm
-        - --model_id=HuggingFaceTB/SmolLM-1.7B-Instruct
+        - --model_id=HuggingFaceTB/SmolLM3-3B
         - --kv-transfer-config
         - '{"kv_connector":"LMCacheConnectorV1", "kv_role":"kv_both"}'
         - --enable-chunked-prefill
