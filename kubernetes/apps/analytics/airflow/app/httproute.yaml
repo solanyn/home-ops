@@ -13,5 +13,5 @@ spec:
   rules:
     - backendRefs:
         - name: airflow-webserver
-          namespace: airflow-system
+          namespace: analytics
           port: 8080
