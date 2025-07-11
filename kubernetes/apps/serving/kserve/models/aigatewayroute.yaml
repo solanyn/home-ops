@@ -14,18 +14,18 @@ spec:
         - headers:
             - type: Exact
               name: x-ai-eg-model
-              value: smollm
+              value: gemma2
       backendRefs:
-        - name: smollm-predictor
+        - name: gemma2-predictor
           weight: 100
-    # - matches:
-    #     - headers:
-    #         - type: Exact
-    #           name: x-ai-eg-model
-    #           value: whisper
-    #   backendRefs:
-    #     - name: whisper-predictor
-    #       weight: 100
+    - matches:
+        - headers:
+            - type: Exact
+              name: x-ai-eg-model
+              value: whisper
+      backendRefs:
+        - name: whisper-predictor
+          weight: 100
   llmRequestCosts:
     - metadataKey: llm_input_token
       type: InputToken
