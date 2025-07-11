@@ -6,5 +6,5 @@ resources:
   - ./aigatewayroute.yaml
   - ./externalsecret.yaml
   - ./whisper
-  - ./gemma3n
+  - ./qwen3
   - ./referencegrant.yaml
