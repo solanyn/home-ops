@@ -104,10 +104,10 @@ spec:
                 /config/runner-ubuntu22-04.jsonnet,
               ]
             resources: {}
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 65534
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
     service:
       browser:
         controller: browser
