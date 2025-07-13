@@ -42,36 +42,81 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4a1/512.gif" alt="💡" width="20" height="20"> Overview
 
-This is a mono repository for my home infrastructure and Kubernetes cluster. I practise using Infrastructure as Code (IaC) and GitOps using tools like [Kubernetes](https://kubernetes.io/), [Flux](https://github.com/fluxcd/flux2), [Renovate](https://github.com/renovatebot/renovate), and [GitHub Actions](https://github.com/features/actions).
+This repository shows a production Kubernetes cluster running on bare metal with ML/MLOps tooling, data engineering platforms and automated operations.
+
+- Infrastructure as Code (IaC) with declarative configuration management
+- GitOps deployment workflows with automated reconciliation
+- Modern security with encrypted secrets and zero-trust networking
+- Production observability with comprehensive monitoring and alerting
+- Automated operations including dependency management and backup orchestration
 
 ---
 
-## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f331/512.gif" alt="🌱" width="20" height="20"> Kubernetes
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f331/512.gif" alt="🌱" width="20" height="20"> Architecture
 
-My Kubernetes cluster is deployed with [Talos](https://www.talos.dev). This is a semi-hyper-converged cluster, workloads and block storage are sharing the same available resources on my nodes while I have a separate server with ZFS for NFS/SMB shares, bulk file storage and backups.
+The cluster runs on [Talos Linux](https://www.talos.dev), a security-hardened operating system designed for Kubernetes:
 
-There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/cluster-template) if you want to try and follow along with some of the practices I use here.
+- Bare metal deployment with immutable infrastructure
+- Semi-hyper-converged architecture combining compute and storage resources
+- Distributed storage using Rook-Ceph for persistent volumes
+- Networking with Cilium CNI, BGP load balancing and Kubernetes Gateway API
+- AI gateway integration with Envoy proxy for model routing
+- GitOps automation with FluxCD and dependency management
 
-### Core Components
+There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/cluster-template) if you want to follow along with some of the practices used here.
 
-- [actions-runner-controller](https://github.com/actions/actions-runner-controller): Self-hosted Github runners.
-- [cert-manager](https://github.com/cert-manager/cert-manager): Creates SSL certificates for services in my cluster.
-- [cilium](https://github.com/cilium/cilium): Internal Kubernetes container networking interface.
-- [cloudflared](https://github.com/cloudflare/cloudflared): Enables Cloudflare secure access to certain ingresses.
-- [external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically syncs ingress DNS records to a DNS provider.
-- [external-secrets](https://github.com/external-secrets/external-secrets): Managed Kubernetes secrets using [1Password Connect](https://github.com/1Password/connect).
-- [rook](https://github.com/rook/rook): Distributed block storage for peristent storage.
-- [sops](https://github.com/getsops/sops): Managed secrets for Kubernetes and Terraform which are commited to Git.
-- [spegel](https://github.com/spegel-org/spegel): Stateless cluster local OCI registry mirror.
-- [volsync](https://github.com/backube/volsync): Backup and recovery of persistent volume claims.
+### ML/MLOps Platform
 
-### GitOps
+- [kubeflow](https://github.com/kubeflow/kubeflow): Complete ML platform with pipelines, notebooks, model serving and experiment tracking
+- [kserve](https://github.com/kserve/kserve): Production model serving with autoscaling, multi-framework support and Envoy AI Gateway integration
+- [ray](https://github.com/ray-project/ray): Distributed computing for ML workloads and hyperparameter tuning
+- [feast](https://github.com/feast-dev/feast): Feature store for ML feature management and serving
+- [label-studio](https://github.com/heartexlabs/label-studio): Data annotation platform for ML dataset preparation
+- [milvus](https://github.com/milvus-io/milvus): Vector database for similarity search and AI applications
 
-[Flux](https://github.com/fluxcd/flux2) watches the clusters in my [kubernetes](./kubernetes/) folder (see Directories below) and makes the changes to my clusters based on the state of my Git repository.
+### Analytics & Data Engineering
 
-The way Flux works for me here is it will recursively search the `kubernetes/apps` folder until it finds the most top level `kustomization.yaml` per directory and then apply all the resources listed in it. That aforementioned `kustomization.yaml` will generally only have a namespace resource and one or many Flux kustomizations (`ks.yaml`). Under the control of those Flux kustomizations there will be a `HelmRelease` or other resources related to the application which will be applied.
+- [airflow](https://github.com/apache/airflow): Workflow orchestration for data pipelines and ETL processes
+- [spark](https://github.com/apache/spark): Big data processing engine for large-scale analytics
+- [dask](https://github.com/dask/dask): Parallel computing library for scalable data science
+- [trino](https://github.com/trinodb/trino): Distributed SQL engine for analytics across data sources
+- [superset](https://github.com/apache/superset): Data visualisation and business intelligence platform
+- [kafka](https://github.com/apache/kafka): Event streaming platform for real-time data processing
+- [flink](https://github.com/apache/flink): Stream processing for real-time analytics and ML inference
 
-[Renovate](https://github.com/renovatebot/renovate) watches my **entire** repository looking for dependency updates, when they are found a PR is automatically created. When some PRs are merged Flux applies the changes to my cluster.
+### Infrastructure Components
+
+- [envoy](https://github.com/envoyproxy/envoy): API gateway with Kubernetes Gateway API implementation and AI model routing
+- [rook](https://github.com/rook/rook): Cloud-native distributed storage with Ceph orchestration
+- [volsync](https://github.com/backube/volsync): Automated backup orchestration with cross-cluster replication
+- [spegel](https://github.com/spegel-org/spegel): Performance optimisation with distributed OCI registry mirror
+- [external-dns](https://github.com/kubernetes-sigs/external-dns): Multi-zone DNS automation with split-horizon configuration
+
+### Security & Compliance
+
+- [cert-manager](https://github.com/cert-manager/cert-manager): Automated TLS certificate lifecycle management
+- [external-secrets](https://github.com/external-secrets/external-secrets): Centralised secret management with [1Password Connect](https://github.com/1Password/connect) integration
+- [sops](https://github.com/getsops/sops): Git-committed encrypted secrets for declarative secret management
+- [cilium](https://github.com/cilium/cilium): Zero-trust networking with eBPF-based security policies
+
+### DevOps & Development Infrastructure
+
+- [actions-runner-controller](https://github.com/actions/actions-runner-controller): Self-hosted CI/CD runners for secure pipeline execution
+- [buildbarn](https://github.com/buildbarn/bb-deployments): Distributed build system with remote execution and caching
+- [cloudflared](https://github.com/cloudflare/cloudflared): Zero-trust access tunnels for secure ingress
+- [keda](https://github.com/kedacore/keda): Event-driven autoscaling for Kubernetes workloads
+- [kyverno](https://github.com/kyverno/kyverno): Policy management for security and governance enforcement
+
+### GitOps Implementation
+
+[Flux](https://github.com/fluxcd/flux2) provides declarative cluster management through Git-based state reconciliation:
+
+- Hierarchical resource organisation with dependency-aware deployment ordering
+- Multi-tenant namespace isolation with RBAC boundary enforcement
+- Automated reconciliation with drift detection and self-healing capabilities
+- Release management through Git-based promotion workflows
+
+[Renovate](https://github.com/renovatebot/renovate) provides automated dependency management across the entire repository, creating pull requests for updates and enabling continuous security patching when changes are merged.
 
 ### Directories
 
@@ -84,9 +129,9 @@ This Git repository contains the following directories under [Kubernetes](./kube
 └── 📁 flux           # flux system configuration
 ```
 
-### Flux Workflow
+### Dependency Management
 
-This is a high-level look how Flux deploys my applications with dependencies. In most cases a `HelmRelease` will depend on other `HelmRelease`'s, in other cases a `Kustomization` will depend on other `Kustomization`'s, and in rare situations an app can depend on a `HelmRelease` and a `Kustomization`. The example below shows that `atuin` won't be deployed or upgrade until the `rook-ceph-cluster` Helm release is installed or in a healthy state.
+Applications deploy in dependency order based on infrastructure requirements, preventing race conditions.
 
 ```mermaid
 graph TD
@@ -99,36 +144,43 @@ graph TD
 
 ---
 
-## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f636_200d_1f32b_fe0f/512.gif" alt="😶" width="20" height="20"> Cloud Dependencies
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f636_200d_1f32b_fe0f/512.gif" alt="😶" width="20" height="20"> Hybrid Cloud Strategy
 
-While I self-host infrastructure and workloads where I can, I rely on cloud services for key parts of my setup.
+The setup maximises self-hosted infrastructure whilst using cloud services where appropriate.
 
-| Service                                         | Use                                                               | Cost (AUD)           |
-|-------------------------------------------------|-------------------------------------------------------------------|----------------|
-| [1Password](https://1password.com/)             | Secrets with [External Secrets](https://external-secrets.io/)     | ~$50/yr        |
-| [Cloudflare](https://www.cloudflare.com/)       | Domains and S3                                                     | ~$30/yr        |
-| [GitHub](https://github.com/)                   | Hosting this repository and continuous integration/deployments    | Free           |
-| [Pushover](https://pushover.net/)               | Kubernetes Alerts and application notifications                   | $5 OTP         |
-| [healthchecks.io](https://healthchecks.io/)               | Monitoring internet connectivity and external facing applications                   | Free         |
-|                                                 |                                                                   | Total: ~$7/mo |
+| Service                                     | Use                                                               | Cost (AUD)    |
+| ------------------------------------------- | ----------------------------------------------------------------- | ------------- |
+| [1Password](https://1password.com/)         | Secrets with [External Secrets](https://external-secrets.io/)     | ~$50/yr       |
+| [Cloudflare](https://www.cloudflare.com/)   | Domains and S3                                                    | ~$30/yr       |
+| [GitHub](https://github.com/)               | Hosting this repository and continuous integration/deployments    | Free          |
+| [Pushover](https://pushover.net/)           | Kubernetes Alerts and application notifications                   | $5 OTP        |
+| [healthchecks.io](https://healthchecks.io/) | Monitoring internet connectivity and external facing applications | Free          |
+|                                             |                                                                   | Total: ~$7/mo |
 
 ---
 
-## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f30e/512.gif" alt="🌎" width="20" height="20"> DNS
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f30e/512.gif" alt="🌎" width="20" height="20"> DNS Architecture
 
-In my cluster there are two instances of [ExternalDNS](https://github.com/kubernetes-sigs/external-dns) running. One for syncing private DNS records to my `Unifi UXG Ultra` using [ExternalDNS webhook provider for UniFi](https://github.com/kashalls/external-dns-unifi-webhook), while another instance syncs public DNS to `Cloudflare`. This setup is managed by creating ingresses with two specific classes: `internal` for private DNS and `external` for public DNS. The `external-dns` instances then syncs the DNS records to their respective platforms accordingly for split-horizon DNS.
+The cluster implements automated split-horizon DNS across multiple zones:
+
+- Internal zone management via UniFi controller integration using webhook providers
+- Public DNS automation with Cloudflare API integration
+- Traffic segmentation through ingress class-based routing (`internal`/`external`)
+- Zero-touch operations with automatic record lifecycle management
+
+This pattern enables secure service exposure whilst maintaining internal network isolation.
 
 ---
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2699_fe0f/512.gif" alt="⚙" width="20" height="20"> Hardware
 
-| Device                       | OS Disk | Data Disk                  | Memory  | OS            | Function                |
-|------------------------------|--------------|---------------------------------|------|---------------|-------------------------|
-| Dell Optiplex 7050     | Samsung PM991 256GB      |  Samsung PM863 960GB | 32GB | Talos         | Kubernetes              |
-| Dell Optiplex 7060     | Samsung PM991 256GB      |  Samsung PM863 960GB | 32GB | Talos         | Kubernetes              |
-| Dell Optiplex 7060     | Samsung PM991 256GB      |  Samsung PM863 960GB | 32GB | Talos         | Kubernetes              |
-| NAS (Repurposed PC)            | 512GB      | 1x12TB ZFS     | 16GB | TrueNAS SCALE | NFS + Backup Server     |
-| UniFi UCG Ultra                | -            | -                              | -    | -             | Router            |
+| Device              | OS Disk             | Data Disk           | Memory | OS            | Function            |
+| ------------------- | ------------------- | ------------------- | ------ | ------------- | ------------------- |
+| Dell Optiplex 7050  | Samsung PM991 256GB | Samsung PM863 960GB | 32GB   | Talos         | Kubernetes          |
+| Dell Optiplex 7060  | Samsung PM991 256GB | Samsung PM863 960GB | 32GB   | Talos         | Kubernetes          |
+| Dell Optiplex 7060  | Samsung PM991 256GB | Samsung PM863 960GB | 32GB   | Talos         | Kubernetes          |
+| NAS (Repurposed PC) | 512GB               | 1x12TB ZFS          | 16GB   | TrueNAS SCALE | NFS + Backup Server |
+| UniFi UCG Ultra     | -                   | -                   | -      | -             | Router              |
 
 ---
 

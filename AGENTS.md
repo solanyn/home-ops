@@ -1,78 +1,187 @@
 # AGENTS.md
 
-This file provides guidance for AI agents when working with code in this repository.
+Use British English except in code. Use American English in code and manifests. Do not use Oxford commas.
 
-Follow conventional commits and never attribute agents in commit messages. Keep commit messages informative only.
+Follow conventional commits. Never attribute agents in commit messages. Avoid unnecessary comments and emojis.
 
-Read `.agents/*.md` for reference to specific scenarios.
+Use GitOps. Do not edit resources directly. Make changes to the repo, commit and push, then run `flux reconcile ks cluster-apps --with-source`.
 
-## Project Architecture
+Read `.agents/*.md` for specific scenarios.
 
-This is a **single cluster Kubernetes GitOps repository** managed with **FluxCD v2**. The architecture follows a hierarchical pattern: namespace → application, with encrypted secrets using SOPS and Age encryption.
+## Commits
 
-### Key Directory Structure
+- Use imperative tone: `Add provisioning flowchart`
+- Keep messages under 50 characters
+- Use conventional commits: `docs:`, `infra:`, `feat:`, `fix:`, `chore:`
+- Include context when needed:
 
-- `.agents/` - Additional instructions for agents
+```
+infra: Configure mysql_native_password for ML Metadata
+
+Update authentication policy for MLMD compatibility.
+```
+
+## Architecture
+
+Single cluster Kubernetes GitOps repository with FluxCD v2. Hierarchical pattern: namespace → application. Encrypted secrets using SOPS and Age.
+
+### Directories
+
+- `.agents/` - Agent instructions
 - `kubernetes/` - Cluster manifests
-- `.taskfiles/` - Task automation definitions
+- `.taskfiles/` - Task automation
 - `talos/` - Talos Linux configuration
-- `third_party` - Manifests synced from upstream (for `flux-local` CI checks)
+- `third_party/` - Upstream manifests (flux-local CI)
 
-### Application Deployment Pattern
+### Application Patterns
 
-Each application follows this standardized structure:
+#### Standard Structure
 
 ```
 apps/<namespace>/<app-name>/
 ├── app/                    # Application resources
-│   ├── helmrelease.yaml    # Main Helm chart definition
-│   ├── kustomization.yaml  # Resource aggregation
-│   ├── externalsecret.yaml # Secrets from 1Password
-│   └── pvc.yaml            # Additional storage
-└── ks.yaml                 # Flux Kustomization
+│   ├── helmrelease.yaml    # Helm chart deployment
+│   ├── kustomization.yaml  # Resource aggregation (always present)
+│   ├── externalsecret.yaml # 1Password secrets (when needed)
+│   ├── pvc.yaml           # Persistent storage (when needed)
+│   ├── httproute.yaml     # Gateway API routing (web apps)
+│   └── monitoring.yaml    # gatus.yaml, lokirule.yaml, prometheusrule.yaml
+├── cluster/               # Infrastructure resources (databases only)
+│   ├── resource.yaml      # Cluster, backup, service definitions
+│   └── kustomization.yaml
+└── ks.yaml                # Flux Kustomization (always present)
 ```
 
-Some apps have additional resources like `cluster` for operator and resource deployments.
+#### Creating New Applications
 
-## Development Commands
+1. **Choose namespace** based on application type:
 
-### Task (using `task` command)
+    - `default` - General applications, home automation
+    - `analytics` - Data engineering (Airflow, Superset)
+    - `storage` - Databases and storage systems
+    - `kubeflow` - ML platform components
+    - `observability` - Monitoring tools
 
-**Kubernetes Operations:**
+2. **Create ks.yaml** with standard pattern:
+
+```yaml
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+    name: &app app-name
+    namespace: flux-system
+spec:
+    targetNamespace: target-namespace
+    commonMetadata:
+        labels:
+            app.kubernetes.io/name: *app
+    interval: 1h
+    timeout: 5m
+    path: ./kubernetes/apps/namespace/app-name/app
+    prune: true
+    sourceRef:
+        kind: GitRepository
+        name: home-ops
+    dependsOn:
+        - name: dependency-name # Include if needed
+    postBuild:
+        substitute:
+            APP: *app
+```
+
+3. **Create app/kustomization.yaml**:
+
+```yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: target-namespace
+resources:
+    - helmrelease.yaml
+    - externalsecret.yaml # If needed
+    - pvc.yaml # If needed
+    - httproute.yaml # If web app
+components:
+    - ../../../../components/gatus/guarded # For monitoring
+    - ../../../../components/volsync # For backups
+```
+
+4. **Create helmrelease.yaml** with standard fields:
+
+```yaml
+spec:
+    interval: 1h
+    install:
+        remediation:
+            retries: -1
+    upgrade:
+        cleanupOnFail: true
+        remediation:
+            retries: 3
+    postRenderers:
+        - kustomize:
+              patches:
+                  - target:
+                        kind: Deployment
+                    patch: |
+                        - op: add
+                          path: /spec/template/metadata/annotations/reloader.stakater.com~1auto
+                          value: "true"
+```
+
+5. **Add to namespace kustomization.yaml**:
+
+```yaml
+resources:
+    - app-name/ks.yaml
+```
+
+#### Storage Patterns
+
+- **PVC**: Use `storageClassName: ceph-block` or `openebs-hostpath`
+- **VolSync**: Add component for automatic backups
+- **Access modes**: Typically `["ReadWriteOnce"]`
+
+#### Networking Patterns
+
+- **HTTPRoute**: Use `internal` gateway for web interfaces
+- **Hostnames**: `app.domain.tld` pattern
+- **Services**: `app.namespace.svc.cluster.local` for internal access
+
+#### Security Patterns
+
+- **ExternalSecret**: Reference `onepassword` ClusterSecretStore
+- **Target secret**: Name as `app-secret`
+- **SOPS**: Use `.sops.yaml` suffix for encrypted configs
+
+## Commands
 
 ```bash
-task k8s:browse-pvc         # Mount PVC to temp container [CLUSTER=cluster-0] [NS=default] [CLAIM=required]
-task k8s:delete-failed-pods # Delete all failed pods
+task k8s:browse-pvc         # Mount PVC to temp container
+task k8s:delete-failed-pods # Delete failed pods
+task externalsecrets:*      # External Secrets operations
+task rook:*                 # Rook-Ceph operations
+task volsync:*              # VolSync operations
 ```
 
-**Other Task Categories:**
+## Security
 
-```bash
-task externalsecrets:*   # External Secrets operations
-task rook:*             # Rook-Ceph storage operations
-task volsync:*          # VolSync backup operations
-```
+- SOPS encryption with Age keys
+- External Secrets Operator for 1Password injection
+- Never commit unencrypted secrets
 
-## Security and Secrets
+## GitOps
 
-- **SOPS encryption:** All secrets encrypted at rest with Age keys
-- **External Secrets Operator:** Runtime secret injection from 1Password
-- **Never commit unencrypted secrets or sensitive data**
+1. FluxCD syncs changes automatically
+2. Hierarchical reconciliation with dependencies
+3. PR validation with kubeconform and linting
+4. Renovate automation for updates
 
-## GitOps Workflow
+## Technologies
 
-1. **FluxCD** automatically syncs changes from this repository
-2. **Hierarchical reconciliation** with dependency management
-3. **Pull request validation** with kubeconform and linting
-4. **Renovate automation** for dependency updates
+**Core:** FluxCD v2, Talos Linux, Cilium CNI, Envoy Gateway
 
-## Key Technologies
+**ML/Data:** Kubeflow, KServe, Ray, Airflow, Kafka, Flink, Milvus
 
-- **FluxCD v2** - GitOps engine with OCI repositories
-- **Talos Linux** - Kubernetes OS
-- **Cilium CNI** - Networking with BGP and Gateway API
-- **Rook-Ceph** - Distributed storage
-- **OpenEBS** - Host storage storage class
-- **VolSync** - PV backup/recovery
-- **External Secrets Operator** - Secret management
-- **cert-manager** - TLS automation
+**Storage:** Rook-Ceph, OpenEBS, VolSync
+
+**Operations:** External Secrets, cert-manager
