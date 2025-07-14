@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/containers/mlflow
-              tag: 3.1.1@sha256:c964f3877346de3585601d6c7c4365f76155b406d8513eb44f22be3fc1335652
+              tag: 3.1.1@sha256:f9e61132bed69af11b3769019f2e83554b6d3a3c34142c2c29e99ec166c5c3fe
             env:
               MLFLOW_DEFAULT_ARTIFACT_ROOT: s3://mlflow/artifacts
               MLFLOW_HOST: 0.0.0.0
@@ -103,3 +103,4 @@ spec:
         sizeLimit: 1Gi
         globalMounts:
           - path: /config
+
