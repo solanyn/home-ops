@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+kind: HelmRelease
+metadata:
+  name: &app cloudflare-ddns
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      cloudflare-ddns:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/larivierec/cloudflare-ddns
+              tag: v1.0.11@sha256:115705c30de462fff364e1c1c366dea5e880713af5aa55d2fe97f62baf6923b1
+            args:
+              - --zone-name
+              - goyangi.io
+              - --record-name
+              - ipv4.goyangi.io
+              - --provider
+              - random
+            env:
+              ACCOUNT_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: cloudflare-ddns-secret
+                    key: CLOUDFLARE_ACCOUNT_TOKEN
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health/alive
+                    port: &healthPort 8080
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health/ready
+                    port: *healthPort
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: &port 9000
+          health:
+            port: *healthPort
+    serviceMonitor:
+      app:
+        serviceName: *app
+        endpoints:
+          - port: health
+            scheme: http
+            path: /metrics
+            interval: 30s
+            scrapeTimeout: 30s
+    route:
+      app:
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
+          - ddns.goyangi.io
+        rules:
+          - backendRefs:
+              - port: *port
+                name: *app
