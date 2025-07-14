@@ -20,6 +20,7 @@ resources:
   - ./maintainerr/ks.yaml
   - ./mealie/ks.yaml
   - ./miniflux/ks.yaml
+  - ./mlflow/ks.yaml
   - ./mosquitto/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
