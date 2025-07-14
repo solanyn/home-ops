@@ -10,7 +10,6 @@ resources:
   - ./dragonfly/ks.yaml
   - ./etcd/ks.yaml
   - ./lakekeeper/ks.yaml
-  - ./mariadb/ks.yaml
   - ./milvus/ks.yaml
   - ./minio/ks.yaml
   - ./pxc/ks.yaml
