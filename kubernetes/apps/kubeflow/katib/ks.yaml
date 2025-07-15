@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: mariadb
+    - name: pxc-cluster
       namespace: storage
     - name: kubeflow-gateway
       namespace: kubeflow

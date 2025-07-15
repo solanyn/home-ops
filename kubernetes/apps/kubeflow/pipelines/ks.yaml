@@ -12,7 +12,7 @@ spec:
   dependsOn:
     - name: minio
       namespace: storage
-    - name: mariadb
+    - name: pxc-cluster
       namespace: storage
     - name: kubeflow-gateway
       namespace: kubeflow
