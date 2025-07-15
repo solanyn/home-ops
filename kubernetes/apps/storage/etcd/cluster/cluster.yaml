@@ -4,7 +4,7 @@ kind: EtcdCluster
 metadata:
   name: etcd-cluster
 spec:
-  replicas: 1
+  replicas: 3
   options:
     election-timeout: "1000"
     max-wals: "5"
