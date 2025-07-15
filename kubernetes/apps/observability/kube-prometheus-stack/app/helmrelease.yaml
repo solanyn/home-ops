@@ -97,8 +97,8 @@ spec:
         ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
-        retention: 14d
-        retentionSize: 50GB
+        retention: 7d
+        retentionSize: 25GB
         resources:
           requests:
             cpu: 10m
@@ -107,10 +107,10 @@ spec:
         storageSpec:
           volumeClaimTemplate:
             spec:
-              storageClassName: openebs-hostpath
+              storageClassName: ceph-block
               resources:
                 requests:
-                  storage: 50Gi
+                  storage: 25Gi
     prometheus-node-exporter:
       fullnameOverride: node-exporter
       prometheus:
