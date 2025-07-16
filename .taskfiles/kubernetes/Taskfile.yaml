@@ -60,3 +60,25 @@ tasks:
       - flux -n actions-runner-system reconcile hr home-ops-runner
     preconditions:
       - which flux helm
+
+  backup-cnpg-cluster:
+    desc: Backup cloudnative-pg cluster and wait for completion [NS=storage] [CLUSTER=postgres17]
+    cmds:
+      - kubectl cnpg backup {{.CLUSTER}} -n {{.NS}}
+      - kubectl wait --for=condition=complete --timeout=300s backups.postgresql.cnpg.io -l cnpg.io/cluster={{.CLUSTER}} -n {{.NS}}
+    vars:
+      NS: '{{.NS | default "storage"}}'
+      CLUSTER: '{{.CLUSTER | default "postgres17"}}'
+    preconditions:
+      - kubectl krew list | grep cnpg
+      - which kubectl
+
+  hibernate-cnpg-cluster:
+    desc: Hibernate cloudnative-pg cluster [NS=storage] [CLUSTER=postgres17]
+    cmd: kubectl cnpg hibernate on --force {{.CLUSTER}} -n {{.NS}}
+    vars:
+      NS: '{{.NS | default "storage"}}'
+      CLUSTER: '{{.CLUSTER | default "postgres17"}}'
+    preconditions:
+      - kubectl krew list | grep cnpg
+      - which kubectl
