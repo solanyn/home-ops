@@ -77,7 +77,7 @@ spec:
       persistence:
         enabled: true
         storageClass: ceph-block
-        size: 25Gi
+        size: 10Gi
     gateway:
       replicas: 0
     backend:
