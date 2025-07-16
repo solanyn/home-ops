@@ -79,6 +79,7 @@ tasks:
   reset-cluster:
     desc: Reset Talos across the whole cluster
     prompt: Reset the Talos cluster ... continue?
+    deps: [kubernetes:backup-cnpg-cluster, kubernetes:hibernate-cnpg-cluster]
     cmd: talosctl reset --nodes {{.NODES}} --graceful=false
     vars:
       NODES:
