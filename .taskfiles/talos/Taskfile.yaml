@@ -2,6 +2,9 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: '3'
 
+includes:
+  k: ../kubernetes
+
 tasks:
 
   apply-node:
@@ -77,11 +80,15 @@ tasks:
       - which talosctl
 
   reset-cluster:
-    desc: Reset Talos across the whole cluster
+    desc: Reset Talos across the whole cluster [SKIP_BACKUP=false] [SKIP_HIBERNATE=false]
     prompt: Reset the Talos cluster ... continue?
-    deps: [kubernetes:backup-cnpg-cluster, kubernetes:hibernate-cnpg-cluster]
-    cmd: talosctl reset --nodes {{.NODES}} --graceful=false
+    cmds:
+      - '{{if ne .SKIP_BACKUP "true"}}task k:backup-cnpg-cluster{{end}}'
+      - '{{if ne .SKIP_HIBERNATE "true"}}task k:hibernate-cnpg-cluster{{end}}'
+      - talosctl reset --nodes {{.NODES}} --graceful=false
     vars:
+      SKIP_BACKUP: '{{.SKIP_BACKUP | default "false"}}'
+      SKIP_HIBERNATE: '{{.SKIP_HIBERNATE | default "false"}}'
       NODES:
         sh: talosctl config info --output json | jq --exit-status --join-output '[.nodes[]] | join(",")'
     preconditions:
