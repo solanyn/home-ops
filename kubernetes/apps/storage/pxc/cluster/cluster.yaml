@@ -24,7 +24,7 @@ spec:
         default_storage_engine          = InnoDB
         character-set-server            = utf8mb4
         collation-server                = utf8mb4_unicode_ci
-        authentication_policy           = mysql_native_password,caching_sha2_password,
+        authentication_policy           = mysql_native_password,caching_sha2_password
         mysql_native_password           = ON
         binlog_format                   = ROW
         pxc_strict_mode                 = DISABLED
