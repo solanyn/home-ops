@@ -18,4 +18,5 @@ resources:
   - ./reloader/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./spegel/ks.yaml
+  - ./tgp-operator/ks.yaml
   - ./vertical-pod-autoscaler/ks.yaml
