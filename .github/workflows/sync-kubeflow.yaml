@@ -212,7 +212,7 @@ jobs:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
-      - name: Create Pull Request
+      - name: Create or Update Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
           token: "${{ steps.app-token.outputs.token }}"
@@ -221,8 +221,8 @@ jobs:
           committer: bot-goyangi[bot] <1109230+bot-goyangi[bot]@users.noreply.github.com>
           author: bot-goyangi[bot] <1109230+bot-goyangi[bot]@users.noreply.github.com>
           base: main
-          branch-suffix: timestamp
           branch: kubeflow-sync-${{ needs.setup.outputs.upstream_ref }}
+          delete-branch: true
           title: "feat(kubeflow): sync kubeflow/manifests from ${{ needs.setup.outputs.upstream_ref }}"
           reviewers: solanyn
           body: |
