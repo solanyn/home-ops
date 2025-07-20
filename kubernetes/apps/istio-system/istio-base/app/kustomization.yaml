@@ -2,4 +2,4 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../../../../../third_party/kubeflow/manifests/common/istio-1-24/istio-crds/base
+  - ../../../../../third_party/kubeflow/manifests/common/istio/istio-crds/base

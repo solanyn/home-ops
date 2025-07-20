@@ -154,9 +154,9 @@ make the following changes to the `example/kustomization.yaml` file:
 * use `oauth2-proxy` overlay for istio-install
   ```
   # from
-  - ../common/istio-1-24/istio-install/base
+  - ../common/istio/istio-install/base
   # to
-  - ../common/istio-1-24/istio-install/overlays/oauth2-proxy
+  - ../common/istio/istio-install/overlays/oauth2-proxy
   ```
 * change `OIDC Authservice` to `oauth2-proxy for OIDC` and use overlay for m2m
   bearer tokens with self-signed in-cluster issuer
@@ -175,9 +175,9 @@ make the following changes to the `example/kustomization.yaml` file:
 * change Central Dashboard overlay to use oauth2-proxy for logout
   ```
   # from
-  - ../apps/centraldashboard/upstream/overlays/kserve
+  - ../applications/centraldashboard/upstream/overlays/kserve
   # to
-  - ../apps/centraldashboard/manuel-patches/overlays/oauth2-proxy
+  - ../applications/centraldashboard/manuel-patches/overlays/oauth2-proxy
   ```
 
 All those changes combined can be done with this single command:
@@ -189,12 +189,12 @@ index c1a85789..4a50440c 100644
 +++ b/example/kustomization.yaml
 @@ -38,11 +38,11 @@ resources:
  # Istio
- - ../common/istio-1-24/istio-crds/base
- - ../common/istio-1-24/istio-namespace/base
--- ../common/istio-1-24/istio-install/base
+ - ../common/istio/istio-crds/base
+ - ../common/istio/istio-namespace/base
+-- ../common/istio/istio-install/base
 -# OIDC Authservice
 -- ../common//oidc-authservice/base
-+- ../common/istio-1-24/istio-install/overlays/oauth2-proxy
++- ../common/istio/istio-install/overlays/oauth2-proxy
 +# oauth2-proxy for OIDC
 +- ../common/oauth2-proxy/overlays/m2m-dex-and-kind
  # Dex
@@ -205,12 +205,12 @@ index c1a85789..4a50440c 100644
  - ../common/knative/knative-eventing/base
 @@ -60,7 +60,7 @@ resources:
  # Katib
- - ../apps/katib/upstream/installs/katib-with-kubeflow
+ - ../applications/katib/upstream/installs/katib-with-kubeflow
  # Central Dashboard
--- ../apps/centraldashboard/upstream/overlays/kserve
-+- ../apps/centraldashboard/overlays
+-- ../applications/centraldashboard/upstream/overlays/kserve
++- ../applications/centraldashboard/overlays
  # Admission Webhook
- - ../apps/admission-webhook/upstream/overlays/cert-manager
+ - ../applications/admission-webhook/upstream/overlays/cert-manager
  # Jupyter Web App
 EOF
 ```
