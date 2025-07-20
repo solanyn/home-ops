@@ -17,8 +17,8 @@ spec:
     metadata:
       labels:
         katib.kubeflow.org/component: postgres
-        sidecar.istio.io/inject: "false"
       annotations:
+        sidecar.istio.io/inject: "false"
     spec:
       containers:
         - name: katib-postgres

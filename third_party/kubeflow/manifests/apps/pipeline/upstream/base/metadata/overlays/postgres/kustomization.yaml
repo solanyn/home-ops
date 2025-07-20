@@ -12,13 +12,13 @@ patches:
 - path: patches/metadata-grpc-deployment.yaml
 
 configMapGenerator:
-- envs:
+- name: metadata-postgres-db-parameters
+  envs:
   - params.env
-  name: metadata-postgres-db-parameters
 secretGenerator:
-- envs:
+- name: metadata-postgres-db-secrets
+  envs:
   - secrets.env
-  name: metadata-postgres-db-secrets
 generatorOptions:
   disableNameSuffixHash: true
 
@@ -28,10 +28,10 @@ images:
   newTag: 14.7-alpine3.17
 
 vars:
-- fieldref:
-    fieldPath: metadata.name
-  name: MLMD_DB_HOST
+- name: MLMD_DB_HOST
   objref:
-    apiVersion: v1
     kind: Service
     name: metadata-postgres-db
+    apiVersion: v1
+  fieldref:
+    fieldpath: metadata.name

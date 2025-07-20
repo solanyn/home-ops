@@ -2,8 +2,6 @@ apiVersion: sparkoperator.k8s.io/v1beta2
 kind: SparkApplication
 metadata:
   name: spark-pi-python
-  labels:
-    sidecar.istio.io/inject: "false"
 spec:
   type: Python
   pythonVersion: "3"
@@ -16,8 +14,8 @@ spec:
     cores: 1
     memory: 512m
     serviceAccount: default-editor
-    labels:
-      sidecar.istio.io/inject: "false"
+    annotations:
+      "sidecar.istio.io/inject": "false"
     securityContext:
       capabilities:
         drop:
@@ -32,8 +30,8 @@ spec:
     instances: 1
     cores: 1
     memory: 512m
-    labels:
-      sidecar.istio.io.inject: "false"
+    annotations:
+      "sidecar.istio.io/inject": "false"
     securityContext:
       capabilities:
         drop:

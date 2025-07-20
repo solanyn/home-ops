@@ -7,4 +7,3 @@ patches:
 - path: patches/cert-manager-labels.yaml
 - path: patches/auth-labels.yaml
 - path: patches/oauth2-proxy-labels.yaml
-- path: patches/knative-serving-labels.yaml
