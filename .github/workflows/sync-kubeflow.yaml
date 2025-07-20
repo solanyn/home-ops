@@ -8,7 +8,6 @@ on:
       upstream_ref:
         description: "Kubeflow tag or branch to sync (leave blank for latest tag)"
         required: false
-        default: "v1.10.0"
 
 permissions:
   contents: write
