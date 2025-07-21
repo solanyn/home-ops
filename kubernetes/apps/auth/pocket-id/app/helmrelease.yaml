@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v1.6.3@sha256:4e34d0a43b30362c39e490ba83fd7738a0f48bf132c4df59de12c5dae2703251
+              tag: v1.6.4@sha256:da768baa319f23d6815d048d0d49ce4aacd9eea15ad46d48a5c01ca15fbde392
             env:
               DB_PROVIDER: postgres
               APP_URL: https://id.goyangi.io
