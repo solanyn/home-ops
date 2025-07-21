@@ -5,7 +5,7 @@ metadata:
 spec:
   predictor:
     model:
-      image: docker.io/kserve/huggingfaceserver:latest@sha256:263a28ecb0d94b24dd8039a48c594933167f474adca334ae091c35cf4ca54805
+      image: docker.io/kserve/huggingfaceserver:latest@sha256:aea11869cbd239caaaee1257181b7f250e92cd5218ef659996ea311ca08ebd2f
       modelFormat:
         name: huggingface
       args:
