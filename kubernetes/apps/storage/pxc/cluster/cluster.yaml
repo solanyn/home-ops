@@ -24,9 +24,7 @@ spec:
         default_storage_engine          = InnoDB
         character-set-server            = utf8mb4
         collation-server                = utf8mb4_unicode_ci
-        authentication_policy           = mysql_native_password,caching_sha2_password
         mysql_native_password           = ON
-        binlog_format                   = ROW
         pxc_strict_mode                 = DISABLED
         sql_mode                        = "STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION"
         interactive_timeout             = 300
@@ -35,17 +33,14 @@ spec:
         innodb_flush_log_at_trx_commit  = 0
         innodb_flush_method             = O_DIRECT
         innodb_file_per_table           = 1
-        innodb_log_file_size            = 512M
         innodb_autoinc_lock_mode        = 2
         innodb_buffer_pool_instances    = 8
         innodb_stats_on_metadata        = OFF
         skip_name_resolve               = 1
         max_allowed_packet              = 128M
         wsrep_auto_increment_control    = OFF
-        wsrep_slave_threads             = 1
         explicit_defaults_for_timestamp = 1
         innodb_temp_data_file_path      = ibtmp1:12M:autoextend:max:5G
-        log_slave_updates               = 1
         log_bin                         = /var/lib/mysql/mysql-bin.log
         sync_binlog                     = 1
         gtid_mode                       = ON
@@ -61,10 +56,6 @@ spec:
     expose:
       enabled: true
       type: ClusterIP
-    persistence:
-      storageClass: openebs-hostpath
-      size: 10Gi
-      clusterSecretName: pxc-secret
   haproxy:
     enabled: true
     resources: {}
@@ -78,13 +69,11 @@ spec:
     exposeReplicas:
       enabled: true
       onlyReaders: true
-      serviceType: ClusterIP
   proxysql:
     enabled: false
   logcollector:
     resources: {}
   backup:
-    enabled: true
     image: percona/percona-xtradb-cluster-operator:1.17.0-pxc8.4-backup-pxb8.4.0
     allowParallel: true
     pitr:
