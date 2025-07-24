@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/mlflow
-              tag: 3.1.3@sha256:df2f7e7c70dd9d30b05e2dfabc005cb4a6f716a979f892c15e62a3b5586f2641
+              tag: 3.1.4@sha256:0c72634c0bde6781d13f68187b8304a38cee7c676810ae0dced610ca69fe42bc
             env:
               MLFLOW_DEFAULT_ARTIFACT_ROOT: s3://mlflow/artifacts
               MLFLOW_HOST: 0.0.0.0
