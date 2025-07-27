@@ -36,6 +36,8 @@ spec:
   bootstrap:
     recovery:
       source: source
+      recoveryTarget:
+        backupID: latest
   externalClusters:
     - name: source
       plugin:
