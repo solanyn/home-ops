@@ -27,4 +27,4 @@ spec:
       - claim: email
         header: kubeflow-userid
       - claim: groups
-        header: kubeflow-group
+        header: kubeflow-groups
