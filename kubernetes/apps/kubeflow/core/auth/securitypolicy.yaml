@@ -12,7 +12,8 @@ spec:
   oidc:
     provider:
       issuer: https://id.goyangi.io
-    clientID: 7162a455-eda2-4143-8b00-869fc1e66387
+    clientIDRef:
+      name: kubeflow-secret
     clientSecret:
       name: kubeflow-secret
     redirectURL: https://kubeflow.goyangi.io/oauth2/callback
@@ -22,9 +23,12 @@ spec:
       - profile
       - email
       - offline_access
-    # Map OIDC claims to headers that Kubeflow expects
-    claimToHeaders:
-      - claim: email
-        header: kubeflow-userid
-      - claim: groups
-        header: kubeflow-groups
+    jwt:
+      providers:
+        - name: pocket-id
+          issuer: https://id.goyangi.io
+          claimToHeaders:
+            - claim: email
+              header: kubeflow-userid
+            - claim: groups
+              header: kubeflow-groups
