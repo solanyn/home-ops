@@ -40,7 +40,7 @@ spec:
     - name: cloudnative-pg
       namespace: *namespace
   interval: 1h
-  path: ./kubernetes/apps/databases/cloudnative-pg/barman-cloud
+  path: ./kubernetes/apps/storage/cloudnative-pg/barman-cloud
   postBuild:
     substitute:
       # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar
