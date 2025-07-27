@@ -169,6 +169,8 @@ spec:
   dependsOn:
     - name: kubeflow-gateway
       namespace: kubeflow
+    - name: kubeflow-config
+      namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/core/auth
   prune: true
