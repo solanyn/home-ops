@@ -68,6 +68,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg
       namespace: storage
+    - name: cloudnative-pg-barman-cloud
+      namespace: storage
     - name: minio
       namespace: storage
   healthChecks:
