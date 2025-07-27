@@ -27,6 +27,11 @@ spec:
     providers:
       - name: pocket-id
         issuer: https://id.goyangi.io
+        remoteJWKS:
+          - kind: Service
+            name: pocket-id
+            namespace: default
+            port: 80
         claimToHeaders:
           - claim: email
             header: kubeflow-userid
