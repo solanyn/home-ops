@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: kubeflow
 components:
   - ../../components/kubeflow
+  - ../../components/repos/app-template
 resources:
   - ./core/ks.yaml
   - ./profiles/ks.yaml
