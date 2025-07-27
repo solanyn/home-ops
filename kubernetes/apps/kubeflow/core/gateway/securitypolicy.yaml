@@ -23,12 +23,12 @@ spec:
       - profile
       - email
       - offline_access
-    jwt:
-      providers:
-        - name: pocket-id
-          issuer: https://id.goyangi.io
-          claimToHeaders:
-            - claim: email
-              header: kubeflow-userid
-            - claim: groups
-              header: kubeflow-groups
+  jwt:
+    providers:
+      - name: pocket-id
+        issuer: https://id.goyangi.io
+        claimToHeaders:
+          - claim: email
+            header: kubeflow-userid
+          - claim: groups
+            header: kubeflow-groups
