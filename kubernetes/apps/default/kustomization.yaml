@@ -9,7 +9,7 @@ resources:
   - ./atuin/ks.yaml
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
-  # - ./calibre/ks.yaml
+  - ./calibre/ks.yaml
   # - ./calibre-web/ks.yaml
   - ./cross-seed/ks.yaml
   - ./flaresolverr/ks.yaml
