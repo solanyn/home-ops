@@ -120,6 +120,8 @@ spec:
           - path: /config/.qbt.toml
             subPath: .qbt.toml
             readOnly: true
+      ui:
+        type: emptyDir
       media:
         type: nfs
         server: nas.internal
