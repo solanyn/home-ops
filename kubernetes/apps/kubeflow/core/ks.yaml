@@ -78,8 +78,6 @@ spec:
   dependsOn:
     - name: istiod
       namespace: istio-system
-    - name: dex
-      namespace: auth
   interval: 1h
   path: ./kubernetes/apps/kubeflow/core/gateway
   prune: true
