@@ -127,7 +127,7 @@ spec:
         server: nas.internal
         path: /mnt/world/media
         globalMounts:
-          - path: /media/Downloads/qbittorrent
+          - path: /media/downloads/qbittorrent
             subPath: downloads/qbittorrent
       tmp:
         type: emptyDir
