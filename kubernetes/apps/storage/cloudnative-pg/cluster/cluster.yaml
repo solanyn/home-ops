@@ -37,7 +37,7 @@ spec:
     recovery:
       source: source
       recoveryTarget:
-        backupID: latest
+        backupID: "20250727T070851"
   externalClusters:
     - name: source
       plugin:
