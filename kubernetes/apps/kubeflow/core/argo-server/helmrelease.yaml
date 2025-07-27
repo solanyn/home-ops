@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: quay.io/argoproj/argocli
-              tag: v3.5.14
+              tag: v3.7.0
             args:
               - server
               - --configmap=argo-server-configmap
