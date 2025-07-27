@@ -2,20 +2,19 @@ apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
   name: kubeflow-oidc
-  namespace: kubeflow
+  namespace: istio-system
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
       name: kubeflow
-      namespace: istio-system
   oidc:
     provider:
       issuer: https://id.goyangi.io
     clientIDRef:
-      name: kubeflow-secret
+      name: kubeflow-auth-secret
     clientSecret:
-      name: kubeflow-secret
+      name: kubeflow-auth-secret
     redirectURL: https://kubeflow.goyangi.io/oauth2/callback
     logoutPath: /oauth2/logout
     scopes:
