@@ -42,9 +42,6 @@ spec:
               FIRST_TIME_USER_MODAL: false
               NEW_VERSION_MODAL: false
               ARGO_BASE_HREF: ""
-            envFrom:
-              - secretRef:
-                  name: argo-server-secret
             ports:
               - name: http
                 containerPort: 2746
