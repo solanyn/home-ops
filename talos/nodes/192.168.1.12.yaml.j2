@@ -10,13 +10,5 @@ machine:
         dhcp: true
         vip:
           ip: 192.168.1.120
-      - interface: wg0
-        wireguard:
-          privateKey: op://kubernetes/wireguard/WIREGUARD_PRIVATE_KEY
-          peers:
-            - publicKey: op://kubernetes/wireguard/WIREGUARD_PUBLIC_KEY
-              endpoint: 192.168.1.1:51820
-              allowedIPs:
-                - 192.168.80.0/24
   install:
     image: factory.talos.dev/metal-installer/039535a70c3bd1667c355eca78571267704e55c8a24785033d183b8f26e39d82:{{ ENV.TALOS_VERSION }}
