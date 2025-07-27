@@ -1,9 +1,9 @@
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./cluster17.yaml
-  - ./gatus.yaml
-  - ./scheduledbackup.yaml
+  - ./cluster.yaml
+  - ./externalsecret.yaml
+  - ./objectstore.yaml
   - ./prometheusrule.yaml
-  - ./service.yaml
+  - ./scheduledbackup.yaml
