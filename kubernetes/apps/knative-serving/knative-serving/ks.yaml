@@ -9,9 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: dex
-      namespace: auth
   interval: 1h
   path: ./kubernetes/apps/knative-serving/knative-serving/app
   prune: true

@@ -13,7 +13,7 @@ spec:
     - ../../../../components/volsync
   dependsOn:
     - name: pocket-id
-      namespace: auth
+      namespace: default
     - name: cloudnative-pg-cluster
       namespace: storage
     - name: volsync
