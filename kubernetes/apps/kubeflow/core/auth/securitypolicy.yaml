@@ -1,0 +1,30 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: kubeflow-oidc
+  namespace: kubeflow
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: kubeflow
+      namespace: istio-system
+  oidc:
+    provider:
+      issuer: https://id.goyangi.io
+    clientID: 7162a455-eda2-4143-8b00-869fc1e66387
+    clientSecret:
+      name: kubeflow-secret
+    redirectURL: https://kubeflow.goyangi.io/oauth2/callback
+    logoutPath: /oauth2/logout
+    scopes:
+      - openid
+      - profile
+      - email
+      - offline_access
+    # Map OIDC claims to headers that Kubeflow expects
+    claimToHeaders:
+      - claim: email
+        header: kubeflow-userid
+      - claim: groups
+        header: kubeflow-group
