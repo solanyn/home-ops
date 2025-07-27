@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tqm-secret
+stringData:
+  config.yaml: |
+    clients:
+      qb:
+        download_path: /media/downloads/torrents/complete
+        enabled: true
+        filter: default
+        type: qbittorrent
+        url: http://qbittorrent.media.svc.cluster.local
+
+    filters:
+      default:
+        MapHardlinksFor:
+          - retag
+
+        ignore:
+          - IsTrackerDown()
+          - Downloaded == false && !IsUnregistered()
+          - SeedingHours < 26 && !IsUnregistered()
+
+        remove:
+          - IsUnregistered()
+          - (
+              HasAnyTag(
+                "site:at",
+                "site:avz",
+                "site:cmz",
+                "site:exz",
+                "site:fnp",
+                "site:lst",
+                "site:ot",
+                "site:phd",
+                "site:sp",
+                "site:sc",
+                "site:tl",
+                "site:ulcv"
+              ) &&
+              Ratio > 3.0
+            )
+          - (
+              HasAnyTag(
+                "site:at",
+                "site:avz",
+                "site:bp",
+                "site:cmz",
+                "site:exz",
+                "site:fnp",
+                "site:fpz",
+                "site:hdt",
+                "site:hf",
+                "site:lst",
+                "site:mlk",
+                "site:ot",
+                "site:phd",
+                "site:sp",
+                "site:sc",
+                "site:tl",
+                "site:ulcx"
+              ) &&
+              SeedingDays > 24
+            )
+          - HasAnyTag("not-linked") && SeedingDays > 24
+
+        tag:
+          - { name: added:1d,     mode: full, update: ['AddedDays < 7'] }
+          - { name: added:7d,     mode: full, update: ['AddedDays >= 7 && AddedDays < 14'] }
+          - { name: added:14d,    mode: full, update: ['AddedDays >= 14 && AddedDays < 30'] }
+          - { name: added:30d,    mode: full, update: ['AddedDays >= 30 && AddedDays < 180'] }
+          - { name: added:180d,   mode: full, update: ['AddedDays >= 180'] }
+          - { name: not-linked,   mode: full, update: ['HardlinkedOutsideClient == false && Label in ["sonarr", "radarr"]'] }
+          - { name: site:at, mode: full, update: ['TrackerName == "animetorrents.me"'] }
+          - { name: site:avz, mode: full, update: ['TrackerName == "avistaz.to"'] }
+          - { name: site:bp, mode: full, update: ['TrackerName == "bitporn.eu"'] }
+          - { name: site:cmz, mode: full, update: ['TrackerName == "cinemaz.to"'] }
+          - { name: site:dc, mode: full, update: ['TrackerName == "digitalcore.club"'] }
+          - { name: site:exz, mode: full, update: ['TrackerName == "exoticaz.to"'] }
+          - { name: site:fnp, mode: full, update: ['TrackerName == "fearnopeer.com"'] }
+          - { name: site:fpz, mode: full, update: ['TrackerName == "fappaizuri.me"'] }
+          - { name: site:hdt, mode: full, update: ['TrackerName in ["hd-torrents.org", "hdts.ru"]'] }
+          - { name: site:hf, mode: full, update: ['TrackerName == "happyfappy.org"'] }
+          - { name: site:huno, mode: full, update: ['TrackerName == "hawke.uno"'] }
+          - { name: site:lst, mode: full, update: ['TrackerName == "lst.gg"'] }
+          - { name: site:mam, mode: full, update: ['TrackerName == "myanonamouse.net"'] }
+          - { name: site:mlk, mode: full, update: ['TrackerName == "milkie.cc"'] }
+          - { name: site:ops, mode: full, update: ['TrackerName == "opsfet.ch"'] }
+          - { name: site:ot, mode: full, update: ['TrackerName == "oldtoons.world"'] }
+          - { name: site:phd, mode: full, update: ['TrackerName == "privatehd.to"'] }
+          - { name: site:sp, mode: full, update: ['TrackerName == "seedpool.org"'] }
+          - { name: site:sc, mode: full, update: ['TrackerName == "sportscult.org"'] }
+          - { name: site:tl, mode: full, update: ['TrackerName in ["torrentleech.org", "tleechreload.org"]'] }
+          - { name: site:ulcx, mode: full, update: ['TrackerName == "upload.cx"'] }
+          - { name: tracker-down, mode: full, update: ["IsTrackerDown()"] }
+          - { name: unregistered, mode: full, update: ["IsUnregistered()"] }
