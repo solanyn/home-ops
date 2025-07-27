@@ -6,12 +6,10 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
+  - ./cloudflare-ddns/ks.yaml
+  - ./cloudflare-dns/ks.yaml
+  - ./cloudflare-tunnel/ks.yaml
   - ./echo/ks.yaml
-  - ./unifi-dns/ks.yaml
-  # NOTE: Try multus for IoT VLAN bridging when managed switch, allows hass on VLAN to mDNS cast and as host network
-  # - ./multus/ks.yaml
   - ./smtp-relay/ks.yaml
   - ./tailscale/ks.yaml
-  - ./cloudflare-tunnel/ks.yaml
-  - ./cloudflare-dns/ks.yaml
-  - ./cloudflare-ddns/ks.yaml
+  - ./unifi-dns/ks.yaml
