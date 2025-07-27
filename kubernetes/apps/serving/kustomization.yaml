@@ -6,7 +6,5 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
-  - ./docling/ks.yaml
   - ./feast/ks.yaml
-  - ./kserve/ks.yaml
   - ./open-webui/ks.yaml
