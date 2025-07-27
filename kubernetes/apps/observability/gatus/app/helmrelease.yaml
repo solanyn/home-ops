@@ -24,8 +24,8 @@ spec:
         initContainers:
           init-config:
             image:
-              repository: ghcr.io/kiwigrid/k8s-sidecar
-              tag: 1.30.7@sha256:318ca0734fe454e41584fe47421a07fd98eeef2721c5c0d4def2c4f0258e034b
+              repository: ghcr.io/home-operations/k8s-sidecar
+              tag: 1.30.7@sha256:3b6444d91c6e69a9e07c5e55419452d967d18c833d88b36277dc2021b708f621
             env:
               FOLDER: /config
               LABEL: gatus.io/enabled
