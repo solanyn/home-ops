@@ -24,6 +24,8 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      VOLSYNC_STORAGECLASS: ceph-blockpool
+      VOLSYNC_ACCESSMODES: ReadWriteMany
   prune: true
   retryInterval: 2m
   sourceRef:
