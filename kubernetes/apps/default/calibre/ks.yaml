@@ -13,8 +13,8 @@ spec:
     - ../../../../components/keda/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
-    # - name: calibre-web
-    #   namespace: default
+    - name: calibre-web
+      namespace: default
     - name: volsync
       namespace: volsync-system
     - name: rook-ceph-cluster
@@ -24,8 +24,8 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_STORAGECLASS: ceph-filesystem
-      VOLSYNC_ACCESSMODES: ReadWriteMany
+      # VOLSYNC_STORAGECLASS: ceph-filesystem
+      # VOLSYNC_ACCESSMODES: ReadWriteMany
   prune: true
   retryInterval: 2m
   sourceRef:
