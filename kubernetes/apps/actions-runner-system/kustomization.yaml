@@ -5,7 +5,5 @@ kind: Kustomization
 namespace: actions-runner-system
 components:
   - ../../components/common
-  - ../../components/repos/app-template
 resources:
   - ./actions-runner-controller/ks.yaml
-  - ./github-actions-cache/ks.yaml
