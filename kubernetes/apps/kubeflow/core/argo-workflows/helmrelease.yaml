@@ -44,7 +44,7 @@ spec:
       clusterWorkflowTemplates:
         enabled: true
       extraArgs:
-        - --auth-mode=server
+        - --auth-mode=client
         - --secure=false
     useDefaultArtifactRepo: false
     useStaticCredentials: false
