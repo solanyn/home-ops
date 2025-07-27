@@ -37,7 +37,7 @@ spec:
     recovery:
       source: source
       recoveryTarget:
-        backupID: "20250727T070851"
+        backupID: "20250727T000002"
         targetImmediate: true
   externalClusters:
     - name: source
