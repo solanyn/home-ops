@@ -10,7 +10,7 @@ resources:
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
   - ./calibre/ks.yaml
-  # - ./calibre-web/ks.yaml
+  - ./calibre-web/ks.yaml
   - ./cross-seed/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./home-assistant/ks.yaml
