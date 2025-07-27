@@ -15,7 +15,6 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   values:
     controllers:
@@ -55,9 +54,9 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                memory: 256Mi
+                cpu: 10m
               limits:
-                memory: 32Gi
+                memory: 18Gi
           vuetorrent:
             image:
               repository: registry.k8s.io/git-sync/git-sync
@@ -70,9 +69,6 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 128Mi
-              limits:
-                memory: 8Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -108,19 +104,28 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
+    configMaps:
+      config:
+        data:
+          .qbt.toml: |
+            [qbittorrent]
+            addr = "http://localhost:80"
     persistence:
       config:
         existingClaim: qbittorrent
-      ui:
-        type: emptyDir
-        sizeLimit: 100Mi
+      config-file:
+        type: configMap
+        name: qbittorrent
+        globalMounts:
+          - path: /config/.qbt.toml
+            subPath: .qbt.toml
+            readOnly: true
       media:
         type: nfs
         server: nas.internal
         path: /mnt/world/media
         globalMounts:
-          - path: /media/downloads/torrents
-            subPath: downloads/torrents
+          - path: /media/Downloads/qbittorrent
+            subPath: downloads/qbittorrent
       tmp:
         type: emptyDir
-        sizeLimit: 1Gi
