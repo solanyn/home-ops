@@ -1,0 +1,10 @@
+namespace: kubeflow
+sso:
+  issuer: https://id.goyangi.io
+  clientId: ${ARGO_SSO_CLIENT_ID}
+  redirectUrl: https://argo-server.goyangi.io/oauth2/callback
+  scopes:
+    - openid
+    - profile
+    - email
+    - groups
