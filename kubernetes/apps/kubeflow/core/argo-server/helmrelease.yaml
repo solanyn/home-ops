@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: argo-server
+  name: &app argo-server
 spec:
   interval: 1h
   chartRef:
@@ -28,7 +28,7 @@ spec:
               tag: v3.5.14
             args:
               - server
-              - --configmap=argo-server-configmap
+              - --configmap=argo-server-config
               - --auth-mode=sso
             env:
               IN_CLUSTER: true
@@ -42,6 +42,11 @@ spec:
               FIRST_TIME_USER_MODAL: false
               NEW_VERSION_MODAL: false
               ARGO_BASE_HREF: ""
+              ARGO_SSO_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: kubeflow-auth-secret
+                    key: client-id
             ports:
               - name: http
                 containerPort: 2746
@@ -80,6 +85,8 @@ spec:
         ports:
           http:
             port: 2746
+    serviceAccount:
+      identifier: *app
     route:
       app:
         hostnames: ["{{ .Release.Name }}.goyangi.io"]
