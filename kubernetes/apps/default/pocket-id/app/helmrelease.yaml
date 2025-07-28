@@ -92,9 +92,6 @@ spec:
             sectionName: https
     persistence:
       data:
-        existingClaim: *app
+        type: emptyDir
         globalMounts:
           - path: /app/data
-      var:
-        type: emptyDir
-        sizeLimit: 1Gi
