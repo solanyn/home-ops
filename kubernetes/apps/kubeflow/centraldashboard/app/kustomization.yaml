@@ -5,7 +5,6 @@ resources:
   - ../../../../../third_party/kubeflow/manifests/apps/centraldashboard/upstream/overlays/istio
 patchesStrategicMerge:
   - patches/patch.centraldashboard-config.configmap.yaml
-  - patches/patch.centraldashboard.deployment.yaml
 patches:
   - target:
       kind: Deployment
