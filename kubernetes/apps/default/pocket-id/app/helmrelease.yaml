@@ -39,8 +39,11 @@ spec:
               APP_URL: https://id.goyangi.io
               TRUST_PROXY: true
               TZ: Australia/Sydney
-              UPLOAD_PATH: /app/data/uploads
               UI_CONFIG_DISABLED: true
+              UPDATE_CHECK_DISABLED: "true"
+              SESSION_DURATION: 1440
+              KEYS_STORAGE: database
+              EMAILS_VERIFIED: true
               PORT: &port 80
               EMAIL_LOGIN_NOTIFICATION_ENABLED: true
               EMAIL_ONE_TIME_ACCESS_AS_ADMIN_ENABLED: true
