@@ -42,11 +42,6 @@ spec:
               FIRST_TIME_USER_MODAL: false
               NEW_VERSION_MODAL: false
               ARGO_BASE_HREF: ""
-              ARGO_SSO_CLIENT_ID:
-                valueFrom:
-                  secretKeyRef:
-                    name: kubeflow-auth-secret
-                    key: client-id
             ports:
               - name: http
                 containerPort: 2746

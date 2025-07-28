@@ -1,7 +1,12 @@
 namespace: kubeflow
 sso:
   issuer: https://id.goyangi.io
-  clientId: ${ARGO_SSO_CLIENT_ID}
+  clientId:
+    name: kubeflow-auth-secret
+    key: client-id
+  clientSecret:
+    name: kubeflow-auth-secret
+    key: client-secret
   redirectUrl: https://argo-server.goyangi.io/oauth2/callback
   scopes:
     - openid
