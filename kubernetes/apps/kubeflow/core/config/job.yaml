@@ -3,15 +3,15 @@ kind: Job
 metadata:
   name: kubeflow-init-db
 spec:
+  backoffLimit: 3
+  completionMode: NonIndexed
+  suspend: false
   template:
     spec:
       restartPolicy: OnFailure
       containers:
         - name: mysql-init
-          image: ghcr.io/solanyn/mysql-init:8
+          image: ghcr.io/solanyn/mysql-init:8.0@sha256:7d6c553f5d7861fe96e9ddea9dae042bdf21d3dfed76072c5e077fb7c8d6acb6
           envFrom:
             - secretRef:
                 name: kubeflow-secret
-      backoffLimit: 3
-  completionMode: NonIndexed
-  suspend: false
