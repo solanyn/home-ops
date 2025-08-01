@@ -2,7 +2,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ../../../../../third_party/kubeflow/manifests/apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user
+  - ../../../../../third_party/kubeflow/manifests/apps/pipeline/upstream/env/cert-manager/platform-agnostic-multi-user-k8s-native
 patchesStrategicMerge:
   - patches/patch.cache-server.deployment.yaml
   - patches/patch.metadata-grpc-deployment.deployment.yaml
@@ -42,14 +42,9 @@ configMapGenerator:
       - mysqlPort=3306
       - mlmdDb=kfp_metadata
       - cacheDb=kfp_cache
-      - pipelineDb=kfp_pipelines
         # UserID Config
       - USERID_HEADER=kubeflow-userid
       - USERID_PREFIX=
-  - name: workflow-controller-configmap
-    behavior: replace
-    files:
-      - artifactRepository=./resources/artifactRepository.yaml
   - name: ml-pipeline-ui-configmap
     behavior: replace
     files:
