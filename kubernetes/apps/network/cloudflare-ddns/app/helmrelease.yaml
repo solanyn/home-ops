@@ -69,7 +69,7 @@ spec:
         controller: "{{ .Release.Name }}"
         ports:
           http:
-            port: &port 9000
+            port: 9000
           health:
             port: *healthPort
     serviceMonitor:
@@ -83,14 +83,10 @@ spec:
             scrapeTimeout: 30s
     route:
       app:
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
+          - ddns.goyangi.io
         parentRefs:
           - name: internal
             namespace: kube-system
             sectionName: https
-        hostnames:
-          - "{{ .Release.Name }}.goyangi.io"
-          - ddns.goyangi.io
-        rules:
-          - backendRefs:
-              - port: *port
-                name: *app
