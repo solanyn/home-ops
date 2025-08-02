@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app lakekeeper
+  name: lakekeeper
 spec:
   interval: 1h
   chartRef:
@@ -26,7 +26,7 @@ spec:
               tag: 17
             envFrom: &envFrom
               - secretRef:
-                  name: lakekeeper-secret
+                  name: "{{ .Release.Name }}-secret"
           migrate:
             image: &image
               repository: quay.io/lakekeeper/catalog
@@ -58,7 +58,7 @@ spec:
               seccompProfile:
                 type: RuntimeDefault
         serviceAccount:
-          identifier: *app
+          identifier: "{{ .Release.Name }}"
     defaultPodOptions:
       automountServiceAccountToken: true
       securityContext:

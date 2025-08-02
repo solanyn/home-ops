@@ -38,7 +38,7 @@ spec:
               TZ: Australia/Sydney
               SEARXNG_BASE_URL: https://search.goyangi.io
               SEARXNG_URL: https://search.goyangi.io
-              SEARXNG_PORT: &httpPort 8080
+              SEARXNG_PORT: &port 8080
               UWSGI_WORKERS: &cpu
                 valueFrom:
                   resourceFieldRef:
@@ -47,7 +47,7 @@ spec:
               UWSGI_THREADS: *cpu
             envFrom:
               - secretRef:
-                  name: searxng-secret
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
@@ -55,7 +55,7 @@ spec:
                 spec:
                   httpGet:
                     path: /healthz
-                    port: &port 8080
+                    port: *port
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
@@ -83,7 +83,7 @@ spec:
       app:
         ports:
           http:
-            port: *httpPort
+            port: *port
     serviceMonitor:
       app:
         endpoints:

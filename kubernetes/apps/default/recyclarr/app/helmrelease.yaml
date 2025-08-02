@@ -36,7 +36,7 @@ spec:
               TZ: *timeZone
             envFrom:
               - secretRef:
-                  name: recyclarr-secret
+                  name: "{{ .Release.Name }}-secret"
             args: ["sync"]
             securityContext:
               allowPrivilegeEscalation: false
@@ -57,20 +57,22 @@ spec:
         seccompProfile: {type: RuntimeDefault}
     persistence:
       config:
-        existingClaim: recyclarr
+        existingClaim: "{{ .Release.Name }}"
       config-file:
         type: configMap
-        name: recyclarr-configmap
+        name: "{{ .Release.Name }}-configmap"
         globalMounts:
           - path: /config/recyclarr.yml
             subPath: recyclarr.yml
             readOnly: true
-      config-logs:
+      tmpfs:
         type: emptyDir
-        sizeLimit: 100Mi
-        globalMounts:
-          - path: /config/logs
-      config-repositories:
-        type: emptyDir
-        globalMounts:
-          - path: /config/repositories
+        advancedMounts:
+          recyclarr:
+            app:
+              - path: /config/logs
+                subPath: logs
+              - path: /config/repositories
+                subPath: repositories
+              - path: /tmp
+                subPath: tmp

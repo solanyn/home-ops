@@ -28,7 +28,7 @@ spec:
               tag: 17
             envFrom: &envFrom
               - secretRef:
-                  name: radarr-secret
+                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -89,7 +89,7 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: radarr
+        existingClaim: "{{ .Release.Name }}"
       tmp:
         type: emptyDir
         sizeLimit: 1Gi

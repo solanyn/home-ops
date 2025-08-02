@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app your-spotify
+  name: your-spotify
 spec:
   interval: 1h
   chartRef:
@@ -35,7 +35,7 @@ spec:
               PORT: &port 8080
             envFrom:
               - secretRef:
-                  name: your-spotify-secret
+                  name: "{{ .Release.Name }}-secret"
             probes: &probes
               liveness:
                 enabled: true
@@ -120,7 +120,7 @@ spec:
                 port: *webport
     persistence:
       configs:
-        existingClaim: *app
+        existingClaim: "{{ .Release.Name }}"
         advancedMounts:
           mongodb:
             app:

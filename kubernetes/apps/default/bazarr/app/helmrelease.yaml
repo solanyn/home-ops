@@ -96,7 +96,7 @@ spec:
         globalMounts:
           - path: /config/cache
       config:
-        existingClaim: bazarr
+        existingClaim: "{{ .Release.Name }}"
       log:
         type: emptyDir
         sizeLimit: 100Mi
