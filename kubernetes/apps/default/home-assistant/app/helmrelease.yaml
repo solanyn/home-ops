@@ -73,11 +73,11 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: home-assistant
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /config
       config-cache:
-        existingClaim: home-assistant-cache
+        existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /config/.venv
       config-logs:

@@ -38,7 +38,7 @@ spec:
               tag: 17
             envFrom: &envFrom
               - secretRef:
-                  name: readarr-secret
+                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -99,11 +99,11 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: readarr
+        existingClaim: "{{ .Release.Name }}"
       # NOTE: While ENV variable config is not available
       config-file:
         type: secret
-        name: readarr-secret
+        name: "{{ .Release.Name }}-secret"
         globalMounts:
           - path: /secret/config.xml
             subPath: config.xml

@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app cloudflare-ddns
+  name: cloudflare-ddns
 spec:
   interval: 1h
   chartRef:
@@ -37,7 +37,7 @@ spec:
               ACCOUNT_TOKEN:
                 valueFrom:
                   secretKeyRef:
-                    name: cloudflare-ddns-secret
+                    name: "{{ .Release.Name }}-secret"
                     key: CLOUDFLARE_ACCOUNT_TOKEN
             securityContext:
               allowPrivilegeEscalation: false
@@ -66,7 +66,7 @@ spec:
                 memory: 128Mi
     service:
       app:
-        controller: *app
+        controller: "{{ .Release.Name }}"
         ports:
           http:
             port: &port 9000
@@ -74,7 +74,7 @@ spec:
             port: *healthPort
     serviceMonitor:
       app:
-        serviceName: *app
+        serviceName: "{{ .Release.Name }}"
         endpoints:
           - port: health
             scheme: http

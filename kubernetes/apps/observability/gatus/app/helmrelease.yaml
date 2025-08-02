@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app gatus
+  name: gatus
 spec:
   interval: 1h
   chartRef:
@@ -125,7 +125,7 @@ spec:
         sizeLimit: 1Gi
       config-file:
         type: configMap
-        name: gatus-configmap
+        name: "{{ .Release.Name }}-configmap"
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml

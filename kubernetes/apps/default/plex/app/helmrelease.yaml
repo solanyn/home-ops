@@ -99,25 +99,11 @@ spec:
                 port: *port
     persistence:
       config:
-        existingClaim: plex
-        # TODO: If setting up Plex for the first time, you'll want to add the globalMounts section
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server
-      # Separate PVC for cache to avoid backing up cache files
+        existingClaim: "{{ .Release.Name }}"
       config-cache:
-        existingClaim: plex-cache
+        existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /config/Library/Application Support/Plex Media Server/Cache
-      config-logs:
-        type: emptyDir
-        sizeLimit: 100Mi
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Logs
-      tmp:
-        type: emptyDir
-        sizeLimit: 1Gi
-      transcode:
-        type: emptyDir
       media:
         type: nfs
         server: nas.internal
@@ -125,3 +111,14 @@ spec:
         globalMounts:
           - path: /media
             readOnly: true
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          plex:
+            app:
+              - path: /config/Library/Application Support/Plex Media Server/Logs
+                subPath: logs
+              - path: /transcode
+                subPath: transcode
+              - path: /tmp
+                subPath: tmp
