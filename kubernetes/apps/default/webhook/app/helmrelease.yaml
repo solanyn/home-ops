@@ -32,7 +32,7 @@ spec:
               TZ: Australia/Sydney
             envFrom:
               - secretRef:
-                  name: webhook-secret
+                  name: "{{ .Release.Name }}-secret"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -64,7 +64,7 @@ spec:
     persistence:
       config:
         type: configMap
-        name: webhook-configmap
+        name: "{{ .Release.Name }}-configmap"
         defaultMode: 0775
         globalMounts:
           - readOnly: true

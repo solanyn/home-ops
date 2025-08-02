@@ -67,4 +67,4 @@ spec:
                 port: 9000
     persistence:
       config:
-        existingClaim: thelounge
+        existingClaim: "{{ .Release.Name }}"

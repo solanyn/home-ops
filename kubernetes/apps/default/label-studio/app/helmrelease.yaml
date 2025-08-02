@@ -29,7 +29,7 @@ spec:
               tag: 17
             envFrom: &envFrom
               - secretRef:
-                  name: label-studio-secret
+                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:

@@ -28,7 +28,7 @@ spec:
               tag: 17
             envFrom: &envFrom
               - secretRef:
-                  name: sonarr-secret
+                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -89,7 +89,7 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: sonarr
+        existingClaim: "{{ .Release.Name }}"
       tmp:
         type: emptyDir
         sizeLimit: 1Gi

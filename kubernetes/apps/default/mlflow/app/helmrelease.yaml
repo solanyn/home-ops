@@ -28,7 +28,7 @@ spec:
               tag: 17
             envFrom: &envFrom
               - secretRef:
-                  name: mlflow-secret
+                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -89,7 +89,7 @@ spec:
             port: 5000
     route:
       app:
-        hostnames: ["mlflow.goyangi.io"]
+        hostnames: ["{{ .Release.Name }}.goyangi.io"]
         parentRefs:
           - name: internal
             namespace: kube-system

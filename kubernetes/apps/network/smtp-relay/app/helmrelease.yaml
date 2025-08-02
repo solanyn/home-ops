@@ -34,7 +34,7 @@ spec:
               DEBUG: "yes"
             envFrom:
               - secretRef:
-                  name: smtp-relay-secret
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness:
                 enabled: true
@@ -57,7 +57,7 @@ spec:
       app:
         type: LoadBalancer
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: smtp-relay.goyangi.io
+          external-dns.alpha.kubernetes.io/hostname: "{{ .Release.Name }}.goyangi.io"
           lbipam.cilium.io/ips: 192.168.1.123
         ports:
           http:
@@ -76,7 +76,7 @@ spec:
     persistence:
       config:
         type: configMap
-        name: smtp-relay-configmap
+        name: "{{ .Release.Name }}-configmap"
         globalMounts:
           - path: /data/maddy.conf
             subPath: maddy.conf

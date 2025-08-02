@@ -47,7 +47,7 @@ spec:
                 spec:
                   httpGet:
                     path: /minio/health/live
-                    port: &port 9000
+                    port: 9000
                   initialDelaySeconds: 30
                   periodSeconds: 30
                   timeoutSeconds: 10
@@ -74,19 +74,14 @@ spec:
                 /minio/cloudnative-pg
                 /minio/dragonflydb
                 /minio/feast
-                /minio/github-actions-cache
                 /minio/iceberg
                 /minio/kfp-pipelines
-                /minio/kubeai
                 /minio/label-studio
-                /minio/mariadb
                 /minio/milvus
                 /minio/open-webui
-                /minio/pulsar
                 /minio/pxc
                 /minio/tldr
                 /minio/trino
-                /minio/triton
                 /minio/tsw
             securityContext:
               allowPrivilegeEscalation: false
@@ -120,7 +115,7 @@ spec:
             scrapeTimeout: 10s
     route:
       app:
-        hostnames: ["minio.goyangi.io"]
+        hostnames: ["{{ .Release.Name }}.goyangi.io"]
         parentRefs:
           - name: internal
             namespace: kube-system
@@ -143,7 +138,7 @@ spec:
         path: /mnt/world/minio
       scripts:
         type: configMap
-        name: minio-configmap
+        name: "{{ .Release.Name }}-configmap"
         defaultMode: 0775
         globalMounts:
           - path: /scripts/create-dirs.sh
