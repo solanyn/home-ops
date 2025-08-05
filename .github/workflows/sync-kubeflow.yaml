@@ -148,7 +148,7 @@ jobs:
           ref: main
 
       - name: Download synced folders
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: synced-manifests
           path: third_party/kubeflow/manifests
