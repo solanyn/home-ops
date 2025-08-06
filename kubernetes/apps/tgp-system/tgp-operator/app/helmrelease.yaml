@@ -46,6 +46,8 @@ spec:
           credentialsRef:
             name: tgp-operator-secret
             key: GOOGLE_APPLICATION_CREDENTIALS_JSON
+      talos:
+        image: "ghcr.io/siderolabs/talos:v1.10.5"
       tailscale:
         tags:
           - "tag:k8s"
@@ -54,7 +56,5 @@ spec:
         acceptRoutes: true
         oauthCredentialsRef:
           name: tgp-operator-secret
-          key: client-id
-        oauthSecretRef:
-          name: tgp-operator-secret
-          key: client-secret
+          clientIdKey: client-id
+          clientSecretKey: client-secret
