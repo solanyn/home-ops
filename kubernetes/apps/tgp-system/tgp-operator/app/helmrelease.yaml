@@ -47,7 +47,7 @@ spec:
             name: tgp-operator-secret
             key: GOOGLE_APPLICATION_CREDENTIALS_JSON
       talos:
-        image: "ghcr.io/siderolabs/talos:v1.10.5"
+        image: "ghcr.io/siderolabs/talos:v1.10.6"
       tailscale:
         tags:
           - "tag:k8s"
