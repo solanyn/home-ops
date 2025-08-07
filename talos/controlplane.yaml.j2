@@ -33,22 +33,7 @@ machine:
   install:
     diskSelector:
       model: SAMSUNG MZVLQ256HAJD-000H1
-    extraKernelArgs:
-      - -init_on_alloc                      # Less security, faster puter
-      - -init_on_free                       # Less security, faster puter
-      - -selinux                            # Less security, faster puter
-      - apparmor=0                          # Less security, faster puter
-      - i915.enable_guc=3                   # Meteor Lake CPU / iGPU
-      - init_on_alloc=0                     # Less security, faster puter
-      - init_on_free=0                      # Less security, faster puter
-      - intel_iommu=on                      # PCI Passthrough
-      - iommu=pt                            # PCI Passthrough
-      - mitigations=off                     # Less security, faster puter
-      - module_blacklist=igc                # Disable onboard NIC
-      - security=none                       # Less security, faster puter
-      - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
-      - talos.auditd.disabled=1             # Less security, faster puter
-    # i915-ucode, intel-ucode, mei
+    image: factory.talos.dev/metal-installer/039535a70c3bd1667c355eca78571267704e55c8a24785033d183b8f26e39d82:v1.11.0-beta.1
     wipe: false
   files:
     # Spegel
@@ -189,3 +174,11 @@ cluster:
     advertisedSubnets:
       - 192.168.1.0/24
   allowSchedulingOnControlPlanes: true
+# ---
+# apiVersion: v1alpha1
+# kind: UserVolumeConfig
+# name: local-hostpath
+# provisioning:
+#   diskSelector:
+#     match: disk.model == "Corsair MP600 MICRO" && !system_disk
+#   minSize: 1TB

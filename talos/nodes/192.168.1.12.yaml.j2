@@ -1,3 +1,5 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.11/website/content/v1.11/schemas/config.schema.json
 machine:
   type: controlplane
   network:
@@ -10,5 +12,3 @@ machine:
         dhcp: true
         vip:
           ip: 192.168.1.120
-  install:
-    image: factory.talos.dev/metal-installer/039535a70c3bd1667c355eca78571267704e55c8a24785033d183b8f26e39d82:v1.11.0-beta.1
