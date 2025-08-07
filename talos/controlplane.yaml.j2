@@ -120,8 +120,6 @@ cluster:
     key: op://kubernetes/talos/CLUSTER_AGGREGATORCA_KEY
   serviceAccount:
     key: op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
-  discovery:
-    enabled: false
   apiServer:
     image: registry.k8s.io/kube-apiserver:{{ ENV.KUBERNETES_VERSION }}
     extraArgs:
