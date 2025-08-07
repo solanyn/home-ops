@@ -1,5 +1,6 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.10/website/content/v1.10/schemas/config.schema.json
 version: v1alpha1
-debug: false
 persist: true
 machine:
   token: op://kubernetes/talos/MACHINE_TOKEN
@@ -12,6 +13,8 @@ machine:
   kubelet:
     image: ghcr.io/siderolabs/kubelet:{{ ENV.KUBERNETES_VERSION }}
     extraConfig:
+      featureGates:
+        ImageVolume: true
       maxPods: 2000
       serializeImagePulls: false
     extraMounts:
@@ -136,7 +139,7 @@ cluster:
     image: registry.k8s.io/kube-apiserver:{{ ENV.KUBERNETES_VERSION }}
     extraArgs:
       enable-aggregator-routing: true
-      feature-gates: MutatingAdmissionPolicy=true
+      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
       runtime-config: admissionregistration.k8s.io/v1alpha1=true
     certSANs:
       - 127.0.0.1
