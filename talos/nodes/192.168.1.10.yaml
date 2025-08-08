@@ -4,7 +4,7 @@ machine:
   install:
     diskSelector:
       model: SAMSUNG MZVLQ256HAJD-000H1
-    image: factory.talos.dev/metal-installer/039535a70c3bd1667c355eca78571267704e55c8a24785033d183b8f26e39d82:v1.11.0-beta.1
+    image: factory.talos.dev/metal-installer/e229284abd3c5ce9711acd20daf4ff70eb2455f9bc285c0390a1501196c5046d:v1.11.0-beta.1
   network:
     hostname: k8s-0
     interfaces:

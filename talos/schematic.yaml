@@ -17,3 +17,4 @@ customization:
       - siderolabs/i915
       - siderolabs/intel-ucode
       - siderolabs/mei
+      - siderolabs/tailscale
