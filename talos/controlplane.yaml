@@ -174,3 +174,10 @@ cluster:
   serviceAccount:
     key: op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
   token: op://kubernetes/talos/CLUSTER_TOKEN
+---
+apiVersion: v1alpha1
+kind: ExtensionServiceConfig
+name: tailscale
+environment:
+  - TS_AUTHKEY=op://kubernetes/tailscale/TAILSCALE_CLIENT_SECRET?ephemeral=false
+  - TS_EXTRA_ARGS=--advertise-tags=tag:talos-nodes
