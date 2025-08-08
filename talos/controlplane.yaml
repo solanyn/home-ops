@@ -27,6 +27,9 @@ machine:
       enabled: true
       resolveMemberNames: true
       forwardKubeDNSToHost: false
+  network:
+    kubespan:
+      enabled: true
   files:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
@@ -124,9 +127,8 @@ cluster:
     enabled: true
     registries:
       kubernetes:
-        disabled: false
-      service:
-        disabled: false
+        disabled: true
+      service: {}
   etcd:
     advertisedSubnets:
       - 192.168.1.0/24
@@ -140,8 +142,6 @@ cluster:
     cni:
       name: none
     dnsDomain: cluster.local
-    kubespan:
-      enabled: true
     podSubnets:
       - 10.42.0.0/16
     serviceSubnets:
