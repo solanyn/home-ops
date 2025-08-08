@@ -1,0 +1,167 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.11/website/content/v1.11/schemas/config.schema.json
+version: v1alpha1
+machine:
+  ca:
+    crt: op://kubernetes/talos/MACHINE_CA_CRT
+    key: op://kubernetes/talos/MACHINE_CA_KEY
+  certSANs:
+    - 127.0.0.1
+    - 192.168.1.120
+  features:
+    rbac: true
+    stableHostname: true
+    kubernetesTalosAPIAccess:
+      enabled: true
+      allowedRoles:
+        - os:admin
+      allowedKubernetesNamespaces:
+        - actions-runner-system
+        - system-upgrade
+    apidCheckExtKeyUsage: true
+    diskQuotaSupport: true
+    kubePrism:
+      enabled: true
+      port: 7445
+    hostDNS:
+      enabled: true
+      resolveMemberNames: true
+      forwardKubeDNSToHost: false
+  files:
+    - op: create
+      path: /etc/cri/conf.d/20-customization.part
+      content: |
+        [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+        [plugins."io.containerd.cri.v1.runtime"]
+          device_ownership_from_security_context = true
+    - op: overwrite
+      path: /etc/nfsmount.conf
+      permissions: 0o644
+      content: |
+        [ NFSMount_Global_Options ]
+        nfsvers=4.2
+        hard=True
+        nconnect=16
+        noatime=True
+  install:
+    wipe: false
+  kernel:
+    modules:
+      - name: nbd
+  kubelet:
+    defaultRuntimeSeccompProfileEnabled: true
+    disableManifestsDirectory: true
+    extraConfig:
+      featureGates:
+        ImageVolume: true
+      maxPods: 2000
+      serializeImagePulls: false
+    extraMounts:
+      - destination: /var/mnt/local-hostpath
+        type: bind
+        source: /var/mnt/local-hostpath
+        options:
+          - bind
+          - rshared
+          - rw
+    image: ghcr.io/siderolabs/kubelet:v1.33.3
+    nodeIP:
+      validSubnets:
+        - 192.168.1.0/24
+  nodeLabels:
+    topology.kubernetes.io/region: main
+  sysctls:
+    fs.inotify.max_user_watches: 1048576   # Watchdog
+    fs.inotify.max_user_instances: 8192    # Watchdog
+    net.core.default_qdisc: fq             # 10Gb/s
+    net.core.rmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+    net.core.wmem_max: 67108864            # 10Gb/s | Cloudflared / QUIC
+    net.ipv4.tcp_congestion_control: bbr   # 10Gb/s
+    net.ipv4.tcp_fastopen: 3               # Send and accept data in the opening SYN packet
+    net.ipv4.tcp_mtu_probing: 1            # 10Gb/s | Jumbo frames
+    net.ipv4.tcp_rmem: 4096 87380 33554432 # 10Gb/s
+    net.ipv4.tcp_wmem: 4096 65536 33554432 # 10Gb/s
+    net.ipv4.tcp_window_scaling: 1         # 10Gb/s
+    sunrpc.tcp_slot_table_entries: 128     # 10Gb/s | NFS
+    sunrpc.tcp_max_slot_table_entries: 128 # 10Gb/s | NFS
+    user.max_user_namespaces: 11255        # User Namespaces
+    vm.nr_hugepages: 1024                  # PostgreSQL
+  token: op://kubernetes/talos/MACHINE_TOKEN
+cluster:
+  aggregatorCA:
+    crt: op://kubernetes/talos/CLUSTER_AGGREGATORCA_CRT
+    key: op://kubernetes/talos/CLUSTER_AGGREGATORCA_KEY
+  allowSchedulingOnControlPlanes: true
+  apiServer:
+    auditPolicy:
+      apiVersion: audit.k8s.io/v1
+      kind: Policy
+      rules:
+        - level: Metadata
+    certSANs:
+      - 127.0.0.1
+      - 192.168.1.120
+    disablePodSecurityPolicy: true
+    extraArgs:
+      enable-aggregator-routing: "true"
+      feature-gates: ImageVolume=true,MutatingAdmissionPolicy=true
+      runtime-config: admissionregistration.k8s.io/v1alpha1=true
+    image: registry.k8s.io/kube-apiserver:v1.33.3
+  ca:
+    crt: op://kubernetes/talos/CLUSTER_CA_CRT
+    key: op://kubernetes/talos/CLUSTER_CA_KEY
+  clusterName: main
+  controlPlane:
+    endpoint: https://192.168.1.120:6443
+  controllerManager:
+    image: registry.k8s.io/kube-controller-manager:v1.33.3
+    extraArgs:
+      bind-address: 0.0.0.0
+  coreDNS:
+    disabled: true
+  etcd:
+    advertisedSubnets:
+      - 192.168.1.0/24
+    ca:
+      crt: op://kubernetes/talos/CLUSTER_ETCD_CA_CRT
+      key: op://kubernetes/talos/CLUSTER_ETCD_CA_KEY
+    extraArgs:
+      listen-metrics-urls: http://0.0.0.0:2381
+  id: op://kubernetes/talos/CLUSTER_ID
+  network:
+    cni:
+      name: none
+    dnsDomain: cluster.local
+    podSubnets:
+      - 10.42.0.0/16
+    serviceSubnets:
+      - 10.43.0.0/16
+  proxy:
+    disabled: true
+  scheduler:
+    config:
+      apiVersion: kubescheduler.config.k8s.io/v1
+      kind: KubeSchedulerConfiguration
+      profiles:
+        - schedulerName: default-scheduler
+          plugins:
+            score:
+              disabled:
+                - name: ImageLocality
+          pluginConfig:
+            - name: PodTopologySpread
+              args:
+                defaultingType: List
+                defaultConstraints:
+                  - maxSkew: 1
+                    topologyKey: kubernetes.io/hostname
+                    whenUnsatisfiable: ScheduleAnyway
+    extraArgs:
+      bind-address: 0.0.0.0
+    image: registry.k8s.io/kube-scheduler:v1.33.3
+  secret: op://kubernetes/talos/CLUSTER_SECRET
+  secretboxEncryptionSecret: op://kubernetes/talos/CLUSTER_SECRETBOXENCRYPTION_SECRET
+  serviceAccount:
+    key: op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
+  token: op://kubernetes/talos/CLUSTER_TOKEN
