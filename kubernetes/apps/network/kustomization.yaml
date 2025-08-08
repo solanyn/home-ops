@@ -11,5 +11,4 @@ resources:
   - ./cloudflare-tunnel/ks.yaml
   - ./echo/ks.yaml
   - ./smtp-relay/ks.yaml
-  - ./tailscale/ks.yaml
   - ./unifi-dns/ks.yaml
