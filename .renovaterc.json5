@@ -20,12 +20,12 @@
   "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
   "ignorePaths": ["**/*.sops.*", "**/resources/**", "third_party/kubeflow/manifests/**"],
   "flux": {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"]
+    managerFilePatterns: ["/\\.yaml$/"]
   },
   "helm-values": {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"]
+    managerFilePatterns: ["/\\.yaml$/"]
   },
   "kubernetes": {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"]
+    managerFilePatterns: ["/\\.yaml$/"]
   }
 }

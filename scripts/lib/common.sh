@@ -103,7 +103,6 @@ function check_cli() {
     log debug "Deps are installed" "deps=${deps[*]}"
 }
 
-# Render a template using minijinja and inject secrets using op
 function render_template() {
     local -r file="${1}"
     local output
@@ -112,7 +111,7 @@ function render_template() {
         log error "File does not exist" "file=${file}"
     fi
 
-    if ! output=$(minijinja-cli "${file}" | op inject 2>/dev/null) || [[ -z "${output}" ]]; then
+    if ! output=$(op inject --in-file "${file}" 2>/dev/null) || [[ -z "${output}" ]]; then
         log error "Failed to render config" "file=${file}"
     fi
 
