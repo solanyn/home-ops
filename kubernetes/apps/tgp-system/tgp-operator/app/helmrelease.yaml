@@ -9,7 +9,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.1.26
+    tag: 0.1.28
   url: oci://ghcr.io/solanyn/charts/tgp-operator
   verify:
     provider: cosign
@@ -47,14 +47,12 @@ spec:
             name: tgp-operator-secret
             key: GOOGLE_APPLICATION_CREDENTIALS_JSON
       talos:
-        image: "ghcr.io/siderolabs/talos:v1.11.0-beta.1"
-      tailscale:
-        tags:
-          - "tag:k8s"
-          - "tag:cloud"
-        ephemeral: true
-        acceptRoutes: true
-        oauthCredentialsRef:
-          name: tgp-operator-secret
-          clientIdKey: client-id
-          clientSecretKey: client-secret
+        version: "v1.11.0-beta.1"
+        extensions:
+          - "siderolabs/nvidia-container-toolkit-production"
+          - "siderolabs/nvidia-fabricmanager-production"
+          - "siderolabs/amdgpu"
+          - "siderolabs/tailscale"
+          - "siderolabs/amd-ucode"
+          - "siderolabs/intel-ucode"
+          - "siderolabs/i915-ucode"
