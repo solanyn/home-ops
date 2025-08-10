@@ -59,6 +59,22 @@ function apply_talos_config() {
 
         log info "Talos node configuration applied successfully" "node=${node}"
     done
+
+    # Apply extension service configurations
+    local extensions_file="${ROOT_DIR}/talos/extensions.yaml"
+    if [[ -f "${extensions_file}" ]]; then
+        log debug "Applying Talos extension service configurations"
+        
+        if ! extension_config=$(bash "${ROOT_DIR}/scripts/render-extension-config.sh" "${extensions_file}") || [[ -z "${extension_config}" ]]; then
+            exit 1
+        fi
+
+        if ! output=$(echo "${extension_config}" | talosctl patch mc --patch @/dev/stdin 2>&1); then
+            log error "Failed to apply extension service configurations" "output=${output}"
+        fi
+
+        log info "Extension service configurations applied successfully"
+    fi
 }
 
 # Bootstrap Talos on a controller node
