@@ -44,12 +44,6 @@ machine:
         hard=True
         nconnect=16
         noatime=True
-    - op: create
-      path: /var/etc/tailscale/auth.env
-      content: |
-        TS_AUTHKEY=op://kubernetes/tailscale/TAILSCALE_CLIENT_SECRET
-        TS_EXTRA_ARGS=--advertise-routes=192.168.1.120/32 --advertise-tags=tag:talos-nodes
-      permissions: 0600
   install:
     wipe: false
   kernel:
