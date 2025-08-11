@@ -82,7 +82,7 @@ jobs:
     env:
       DEST_BASE: third_party/kubeflow/manifests/
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Clone upstream kubeflow/manifests
         uses: GuillaumeFalourd/clone-github-repo-action@main
@@ -143,7 +143,7 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.sync.outputs.changed == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: main
 
