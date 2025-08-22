@@ -7,11 +7,15 @@ components:
   - ../../components/common
   - ../../components/repos/app-template
 resources:
+  - ./certificates/ks.yaml
   - ./csi-driver-nfs/ks.yaml
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
   - ./descheduler/ks.yaml
   - ./envoy/ks.yaml
+  - ./envoy-ai-gateway/ks.yaml
+  - ./envoy-ai-gateway-crds/ks.yaml
+  - ./gateway-api-crds/ks.yaml
   - ./intel-device-plugin-operator/ks.yaml
   - ./metrics-server/ks.yaml
   - ./reloader/ks.yaml
