@@ -4,7 +4,6 @@ apiVersion: admissionregistration.k8s.io/v1alpha1
 kind: MutatingAdmissionPolicyBinding
 metadata:
   name: volsync-mover-jitter
-  namespace: volsync-system
 spec:
   policyName: volsync-mover-jitter
 ---
@@ -22,10 +21,12 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["jobs"]
   matchConditions:
-    - name: has-name
-      expression: object.metadata.name.startsWith("volsync-src-")
-    - name: has-labels
-      expression: object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
+    - name: has-volsync-job-name-prefix
+      expression: >
+        object.metadata.name.startsWith("volsync-src-")
+    - name: has-volsync-created-by-labels
+      expression: >
+        object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
   failurePolicy: Fail
   reinvocationPolicy: IfNeeded
   mutations:
@@ -41,9 +42,9 @@ spec:
               op: "add", path: "/spec/template/spec/initContainers/-",
               value: Object.spec.template.spec.initContainers{
                 name: "jitter",
-                image: "public.ecr.aws/docker/library/busybox:1.37.0@sha256:f85340bf132ae937d2c2a763b8335c9bab35d6e8293f70f606b9c6178d84f42b",
+                image: "ghcr.io/home-operations/busybox:1.37.0@sha256:026ed7273270ec08f6902b4ae8334c23b473e5394bec3bbbdbfe580c710d50bc",
                 imagePullPolicy: "IfNotPresent",
-                command: ["sh", "-c", "sleep $(shuf -i 0-60 -n 1)"]
+                command: ["sh", "-c", "sleep $(shuf -i 0-30 -n 1)"]
               }
             }
           ]
@@ -69,14 +70,15 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["jobs"]
   matchConditions:
-    - name: has-name
-      expression: object.metadata.name.startsWith("volsync-")
-    - name: has-labels
-      expression: object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
-    - name: volume-not-present
+    - name: has-volsync-job-name-prefix
+      expression: >
+        object.metadata.name.startsWith("volsync-")
+    - name: has-volsync-created-by-labels
+      expression: >
+        object.metadata.labels["app.kubernetes.io/created-by"] == "volsync"
+    - name: repository-volume-does-not-exist
       expression: >
         !object.spec.template.spec.volumes.exists(item, item.name == "repository")
-
   failurePolicy: Fail
   reinvocationPolicy: IfNeeded
   mutations:
@@ -97,7 +99,7 @@ spec:
                 name: "repository",
                 nfs: Object.spec.template.spec.volumes.nfs{
                   server: "nas.internal",
-                  path: "/mnt/world/backups"
+                  path: "/mnt/world/volsynckopia"
                 }
               }
             }
