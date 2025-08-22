@@ -86,7 +86,7 @@ spec:
             readOnly: true
       repository:
         type: nfs
-        server: expanse.internal
+        server: nas.internal
         path: /mnt/world/volsynckopia
         globalMounts:
           - path: /repository
