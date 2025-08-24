@@ -8,7 +8,7 @@ machine:
     {% endif %}
   certSANs:
     - 127.0.0.1
-    - 192.168.42.120
+    - 192.168.1.120
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -48,13 +48,11 @@ machine:
         nconnect=16
         noatime=True
   install:
-    image: factory.talos.dev/metal-installer/05b4a47a70bc97786ed83d200567dcc8a13f731b164537ba59d5397d668851fa:v1.11.0-rc.0
+    image: factory.talos.dev/metal-installer/e229284abd3c5ce9711acd20daf4ff70eb2455f9bc285c0390a1501196c5046d:v1.11.0-rc.0
     wipe: false
   kernel:
     modules:
       - name: nbd
-      - name: thunderbolt
-      - name: thunderbolt_net
   kubelet:
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
@@ -65,7 +63,7 @@ machine:
     image: ghcr.io/siderolabs/kubelet:v1.33.4
     nodeIP:
       validSubnets:
-        - 192.168.42.0/24
+        - 192.168.1.0/24
   nodeLabels:
     topology.kubernetes.io/region: main
   sysctls:
@@ -96,7 +94,7 @@ cluster:
     {% endif %}
   clusterName: main
   controlPlane:
-    endpoint: https://192.168.42.120:6443
+    endpoint: https://192.168.1.120:6443
   id: op://kubernetes/talos/CLUSTER_ID
   network:
     cni:
@@ -121,7 +119,7 @@ cluster:
         - level: Metadata
     certSANs:
       - 127.0.0.1
-      - 192.168.42.120
+      - 192.168.1.120
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
@@ -136,7 +134,7 @@ cluster:
     disabled: true
   etcd:
     advertisedSubnets:
-      - 192.168.42.0/24
+      - 192.168.1.0/24
     ca:
       crt: op://kubernetes/talos/CLUSTER_ETCD_CA_CRT
       key: op://kubernetes/talos/CLUSTER_ETCD_CA_KEY
