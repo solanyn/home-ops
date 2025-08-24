@@ -83,3 +83,4 @@ spec:
         globalMounts:
           - path: /.cache
           - path: /tmp
+          - path: /etc/wizarr/wizard_steps
