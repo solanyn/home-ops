@@ -18,4 +18,9 @@ machine:
     intel.feature.node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/zone: m
   type: controlplane
+---
+apiVersion: v1alpha1
+kind: WatchdogTimerConfig
+device: /dev/watchdog0
+timeout: 5m
 
