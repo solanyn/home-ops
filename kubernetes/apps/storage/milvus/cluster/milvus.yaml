@@ -37,8 +37,8 @@ spec:
       brokerList:
         - kafka-cluster-kafka-bootstrap.streaming.svc.cluster.local:9092
     etcd:
-      external: true
-      endpoints: ["etcd-cluster.storage.svc.cluster.local:2379"]
+      use:
+        embed: true
     storage:
       external: true
       type: MinIO
