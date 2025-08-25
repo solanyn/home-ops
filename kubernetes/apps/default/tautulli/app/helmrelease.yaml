@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -14,7 +15,6 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   values:
     controllers:
@@ -28,7 +28,11 @@ spec:
               tag: 2.15.3@sha256:3e0eaca8c082ebe121a0ae9125bea1b4e2d177fca34ac8df4ec14a28e62f63a4
             env:
               TZ: Australia/Sydney
-              TAUTULLI__PORT: &port 80
+              TAUTULLI_HTTP_BASE_URL: https://tautulli.goyangi.io
+              TAUTULLI_HTTP_PORT: &port 80
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
@@ -58,7 +62,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         ports:
@@ -74,13 +77,16 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-      cache:
+      config-cache:
         existingClaim: "{{ .Release.Name }}-cache"
         globalMounts:
           - path: /config/cache
-      logs:
+      tmpfs:
         type: emptyDir
-        globalMounts:
-          - path: /config/logs
-      tmp:
-        type: emptyDir
+        advancedMounts:
+          tautulli:
+            app:
+              - path: /config/logs
+                subPath: logs
+              - path: /tmp
+                subPath: tmp
