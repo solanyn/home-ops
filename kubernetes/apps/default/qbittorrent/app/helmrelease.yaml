@@ -65,7 +65,7 @@ spec:
               GITSYNC_REPO: https://github.com/VueTorrent/VueTorrent
               GITSYNC_REF: latest-release
               GITSYNC_PERIOD: 24h
-              GITSYNC_ROOT: /ui
+              GITSYNC_ROOT: /config
             resources:
               requests:
                 cpu: 10m
