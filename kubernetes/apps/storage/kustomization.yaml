@@ -8,7 +8,6 @@ components:
 resources:
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
-  - ./etcd/ks.yaml
   - ./lakekeeper/ks.yaml
   - ./milvus/ks.yaml
   - ./minio/ks.yaml
