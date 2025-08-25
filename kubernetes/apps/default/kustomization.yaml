@@ -20,6 +20,7 @@ resources:
   - ./miniflux/ks.yaml
   - ./mlflow/ks.yaml
   - ./mosquitto/ks.yaml
+  - ./open-webui/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
   - ./prowlarr/ks.yaml
