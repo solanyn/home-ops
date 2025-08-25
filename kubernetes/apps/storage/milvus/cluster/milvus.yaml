@@ -42,5 +42,5 @@ spec:
     storage:
       external: true
       type: MinIO
-      endpoint: http://minio.storage.svc.cluster.local:9000
+      endpoint: minio.storage.svc.cluster.local:9000
       secretRef: milvus-secret
