@@ -6,17 +6,19 @@ components:
   - ../../components/kubeflow
   - ../../components/repos/app-template
 resources:
-  - ./core/ks.yaml
-  - ./profiles/ks.yaml
-  - ./pipelines/ks.yaml
-  - ./katib/ks.yaml
-  - ./centraldashboard/ks.yaml
   - ./admission-webhook/ks.yaml
+  - ./centraldashboard/ks.yaml
+  - ./core/ks.yaml
+  - ./dex/ks.yaml
+  - ./katib/ks.yaml
+  - ./kserve/ks.yaml
+  - ./model-registry/ks.yaml
   - ./notebooks/ks.yaml
-  - ./volumes/ks.yaml
+  - ./oauth2-proxy/ks.yaml
+  - ./pipelines/ks.yaml
+  - ./profiles/ks.yaml
+  - ./ray/ks.yaml
+  - ./spark/ks.yaml
   - ./tensorboards/ks.yaml
   - ./training-operator/ks.yaml
-  - ./kserve/ks.yaml
-  - ./spark/ks.yaml
-  - ./ray/ks.yaml
-  - ./model-registry/ks.yaml
+  - ./volumes/ks.yaml
