@@ -14,8 +14,6 @@ spec:
   dependsOn:
     - name: searxng
       namespace: default
-    - name: milvus
-      namespace: storage
     - name: cloudnative-pg-cluster
       namespace: storage
   healthChecks:
