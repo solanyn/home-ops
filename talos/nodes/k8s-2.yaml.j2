@@ -1,10 +1,6 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.11/website/content/v1.11/schemas/config.schema.json
 machine:
-  install:
-    diskSelector:
-      model: SAMSUNG MZVLQ256HAJD-000H1
-    image: factory.talos.dev/metal-installer/e229284abd3c5ce9711acd20daf4ff70eb2455f9bc285c0390a1501196c5046d:v1.11.0-rc.0
   network:
     hostname: k8s-2
     interfaces:
@@ -16,19 +12,5 @@ machine:
         vip:
           ip: 192.168.1.120
   nodeLabels:
-    intel.feature.node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/zone: m
   type: controlplane
----
-apiVersion: v1alpha1
-kind: WatchdogTimerConfig
-device: /dev/watchdog0
-timeout: 5m
----
-apiVersion: v1alpha1
-kind: ExtensionServiceConfig
-name: tailscale
-environment:
-  - TS_AUTHKEY=op://kubernetes/tailscale/TAILSCALE_CLIENT_SECRET
-  - TS_EXTRA_ARGS=--advertise-routes=192.168.1.120/32 --advertise-tags=tag:talos-nodes
-
