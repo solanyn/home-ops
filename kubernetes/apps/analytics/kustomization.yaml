@@ -6,5 +6,4 @@ components:
   - ../../components/common
 resources:
   - ./dask/ks.yaml
-  - ./superset/ks.yaml
   - ./trino/ks.yaml
