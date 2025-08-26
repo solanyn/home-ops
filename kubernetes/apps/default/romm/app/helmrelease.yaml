@@ -99,7 +99,7 @@ spec:
         server: nas.internal
         path: /mnt/world/media/games
         globalMounts:
-          - path: /config/library
+          - path: /romm/library
       tmpfs:
         type: emptyDir
         advancedMounts:
