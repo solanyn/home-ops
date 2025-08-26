@@ -67,7 +67,6 @@ spec:
             args:
               - orphan
               - qb
-              - --dry-run
         pod:
           restartPolicy: Never
     defaultPodOptions:
