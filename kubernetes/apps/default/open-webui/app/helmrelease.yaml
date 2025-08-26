@@ -21,6 +21,14 @@ spec:
       open-webui:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -40,9 +48,6 @@ spec:
               OPENID_REDIRECT_URI: "https://open-webui.goyangi.io/oauth/oidc/callback"
               PORT: &port "80"
               WEBUI_URL: http://0.0.0.0:3000
-              # VECTOR_DB: milvus
-              # MILVUS_URI: milvus.storage.svc.cluster.local:17530
-              # MILVUS_DB: open-webui
               ENABLE_RAG_WEB_SEARCH: true
               ENABLE_WEB_SEARCH: true
               WEB_SEARCH_TRUST_ENV: true
@@ -52,9 +57,7 @@ spec:
               ENABLE_IMAGE_GENERATION: true
               WEBSOCKET_MANAGER: redis
               WEBSOCKET_REDIS_URL: redis://redis.storage.svc.cluster.local:6379
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+            envFrom: *envFrom
     service:
       app:
         ports:
