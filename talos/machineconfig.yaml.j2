@@ -48,6 +48,8 @@ machine:
         nconnect=16
         noatime=True
   install:
+    diskSelector:
+      model: SAMSUNG MZVLQ256HAJD-000H1
     image: factory.talos.dev/metal-installer/e229284abd3c5ce9711acd20daf4ff70eb2455f9bc285c0390a1501196c5046d:v1.11.0-rc.0
     wipe: false
   kernel:
@@ -66,6 +68,7 @@ machine:
       validSubnets:
         - 192.168.1.0/24
   nodeLabels:
+    intel.feature.node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: main
   sysctls:
     fs.inotify.max_user_instances: "8192"
@@ -168,3 +171,16 @@ cluster:
   serviceAccount:
     key: op://kubernetes/talos/CLUSTER_SERVICEACCOUNT_KEY
   {% endif %}
+---
+apiVersion: v1alpha1
+kind: WatchdogTimerConfig
+device: /dev/watchdog0
+timeout: 5m
+---
+apiVersion: v1alpha1
+kind: ExtensionServiceConfig
+name: tailscale
+environment:
+  - TS_AUTHKEY=op://kubernetes/tailscale/TAILSCALE_CLIENT_SECRET
+  - TS_EXTRA_ARGS=--advertise-routes=192.168.1.120/32 --advertise-tags=tag:talos-nodes
+
