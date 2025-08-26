@@ -40,7 +40,6 @@ spec:
               HASHEOUS_API_ENABLED: true
               PLAYMATCH_API_ENABLED: true
               ROMM_DB_DRIVER: postgresql
-              ROMM_BASE_PATH: /config
               ROMM_BASE_URL: https://romm.goyangi.io
               DISABLE_DOWNLOAD_ENDPOINT_AUTH: true
               TZ: Australia/Sydney
@@ -80,13 +79,33 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: "{{ .Release.Name }}"
-      tmp:
-        type: emptyDir
-        sizeLimit: 1Gi
+        type: configMap
+        name: romm-configmap
+        globalMounts:
+          - path: /romm/config/config.yml
+            subPath: config.yml
+            readOnly: true
+      data:
+        existingClaim: *app
+        advancedMounts:
+          romm:
+            app:
+              - path: /romm/resources
+                subPath: resources
+              - path: /romm/assets
+                subPath: assets
       media:
         type: nfs
         server: nas.internal
         path: /mnt/world/media/games
         globalMounts:
           - path: /config/library
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          romm:
+            app:
+              - path: /romm/config
+                subPath: config
+              - path: /tmp
+                subPath: tmp
