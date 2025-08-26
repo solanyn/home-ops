@@ -11,18 +11,15 @@ spec:
   oidc:
     provider:
       issuer: https://id.goyangi.io
-    # clientIDRef:
-    #   name: kubeflow-auth-secret
     clientID: 7162a455-eda2-4143-8b00-869fc1e66387
     clientSecret:
       name: kubeflow-auth-secret
     redirectURL: https://kubeflow.goyangi.io/oauth2/callback
-    logoutPath: /oauth2/logout
+    logoutPath: /oauth2/sign_out
     scopes:
       - openid
       - profile
       - email
-      - offline_access
   jwt:
     providers:
       - name: pocket-id
