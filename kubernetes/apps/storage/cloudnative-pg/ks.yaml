@@ -85,8 +85,8 @@ spec:
   path: ./kubernetes/apps/storage/cloudnative-pg/cluster
   postBuild:
     substitute:
-      # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
-      POSTGRESQL_VERSION: 17.6-bookworm
+      # renovate: datasource=docker depName=ghcr.io/tensorchord/cloudnative-vectorchord
+      CLOUDNATIVE_VECTORCHORD_VERSION: 17.5-0.5.0
   prune: true
   retryInterval: 2m
   sourceRef:
