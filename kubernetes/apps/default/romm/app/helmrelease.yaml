@@ -35,6 +35,8 @@ spec:
               repository: ghcr.io/rommapp/romm
               tag: 4.1.5@sha256:fdd5ef2db8690d883704ac75efd001a5e64b447117e7aafc514be202c7d3c13c
             env:
+              ENABLE_SCHEDULED_RESCAN: true
+              SCHEDULED_RESCAN_CRON: "0 3 * * *"
               HASHEOUS_API_ENABLED: true
               PLAYMATCH_API_ENABLED: true
               ROMM_DB_DRIVER: postgresql
@@ -48,14 +50,14 @@ spec:
                 enabled: true
               readiness: *probes
             securityContext:
-              allowPrivilegeEscalation: true
+              allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 1Gi
+                memory: 3Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
