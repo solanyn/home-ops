@@ -37,6 +37,7 @@ spec:
             env:
               ROMM_DB_DRIVER: postgresql
               ROMM_BASE_PATH: /config
+              ROMM_BASE_URL: https://romm.goyangi.io
               DISABLE_DOWNLOAD_ENDPOINT_AUTH: true
               TZ: Australia/Sydney
             envFrom: *envFrom
