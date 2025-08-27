@@ -3,7 +3,7 @@ exclude:
   roms:
     single_file:
       extensions: []
-      names: []
+      names: [".DS_Store"]
     multi_file:
       names: []
       parts:
