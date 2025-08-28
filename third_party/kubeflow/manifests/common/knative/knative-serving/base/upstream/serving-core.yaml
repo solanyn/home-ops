@@ -8422,7 +8422,7 @@ spec:
       serviceAccountName: controller
       containers:
         - name: autoscaler
-          image: gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler@sha256:59c2e7ad52cea17bedfc2aca9b9e33060bb34f04d35fd71fe61147bcbdb881e4
+          image: gcr.io/knative-releases/knative.dev/serving/cmd/autoscaler@sha256:128532d99e3b203e52dd4aea707dde5c42a078eac1f2c151dc6c61e39848633a
           resources:
             requests:
               cpu: 100m
