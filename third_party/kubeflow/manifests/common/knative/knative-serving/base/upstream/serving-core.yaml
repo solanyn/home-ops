@@ -6908,7 +6908,7 @@ metadata:
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/version: "1.16.2"
 spec:
-  image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:698ef80ebc698f4d2bb93c1e85684063a0cf253a83faebcbf106cee444181d8e
+  image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:884b895a5dc521aacd5af6abae26e49fd77474bbad4bea82dca0f20e8bc972b4
 ---
 apiVersion: v1
 kind: ConfigMap
