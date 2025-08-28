@@ -725,7 +725,7 @@ spec:
       containers:
         - name: job-sink
           terminationMessagePolicy: FallbackToLogsOnError
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/jobsink@sha256:3e5270924afeeccc8dfe31142a1c7f7e3ec3489df11b4c81f69f352a788ad207
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/jobsink@sha256:b31af2b20c5023d7cff3fbe2ef3cc8e6941b301fe0965467d1a2890d828e4f8e
           env:
             - name: SYSTEM_NAMESPACE
               valueFrom:
