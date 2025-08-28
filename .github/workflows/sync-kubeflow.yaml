@@ -82,7 +82,7 @@ jobs:
     env:
       DEST_BASE: third_party/kubeflow/manifests/
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
 
       - name: Clone upstream kubeflow/manifests
         uses: GuillaumeFalourd/clone-github-repo-action@main
@@ -129,7 +129,7 @@ jobs:
 
       - name: Upload synced folders
         if: steps.check.outputs.changed == 'true'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: synced-manifests
           path: ${{ env.DEST_BASE }}
@@ -143,12 +143,12 @@ jobs:
     runs-on: ubuntu-latest
     if: needs.sync.outputs.changed == 'true'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
         with:
           ref: main
 
       - name: Download synced folders
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
           name: synced-manifests
           path: third_party/kubeflow/manifests
@@ -205,14 +205,14 @@ jobs:
         run: rm -rf full-upstream
 
       - name: Generate Token
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b # v2
         id: app-token
         with:
           app-id: "${{ secrets.BOT_APP_ID }}"
           private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
       - name: Create or Update Pull Request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e # v7
         with:
           token: "${{ steps.app-token.outputs.token }}"
           signoff: true
