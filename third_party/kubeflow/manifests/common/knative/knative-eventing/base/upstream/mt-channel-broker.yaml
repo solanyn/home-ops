@@ -412,7 +412,7 @@ spec:
       containers:
         - name: ingress
           terminationMessagePolicy: FallbackToLogsOnError
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/broker/ingress@sha256:fc52f7e445fbf3512ed08003c5cba0b3e4d59fb1308271fa9dc1ce910f3ec71d
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/broker/ingress@sha256:15c40a7e55cb7f927d54bf6c4b4ee1651451e8835271c68ff2d0b55e0aeb9b2f
           readinessProbe:
             failureThreshold: 3
             httpGet:
