@@ -8293,7 +8293,7 @@ spec:
       serviceAccountName: activator
       containers:
         - name: activator
-          image: gcr.io/knative-releases/knative.dev/serving/cmd/activator@sha256:cc39d40985f7b37ba384a857d194a24ac5eae7e204aac4ed9bf4ebfd8d62e721
+          image: gcr.io/knative-releases/knative.dev/serving/cmd/activator@sha256:ba09fa782f2d196c87b7610895d86c1319f9b4590add90a67dbcb32b0b4ae6c5
           resources:
             requests:
               cpu: 300m
