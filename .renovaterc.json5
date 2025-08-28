@@ -3,11 +3,7 @@
   "extends": [
     "config:recommended",
     "docker:enableMajor",
-    ":automergeBranch",
-    ":disableRateLimiting",
-    ":dependencyDashboard",
-    ":semanticCommits",
-    ":timezone(Australia/Sydney)",
+    "helpers:pinGitHubActionDigests",
     "github>solanyn/home-ops//.renovate/autoMerge.json5",
     "github>solanyn/home-ops//.renovate/customManagers.json5",
     "github>solanyn/home-ops//.renovate/grafanaDashboards.json5",
@@ -15,17 +11,25 @@
     "github>solanyn/home-ops//.renovate/labels.json5",
     "github>solanyn/home-ops//.renovate/semanticCommits.json5",
     "github>solanyn/home-ops//.renovate/talosFactory.json5",
+    ":automergeBranch",
+    ":disableRateLimiting",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":timezone(Australia/Sydney)",
   ],
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
-  "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
-  "ignorePaths": ["**/*.sops.*", "**/resources/**", "third_party/kubeflow/manifests/**"],
-  "flux": {
-    managerFilePatterns: ["/\\.yaml$/"]
+  suppressNotifications: [
+    "prEditedNotification",
+    "prIgnoreNotification",
+  ],
+  ignorePaths: [
+    "**/*.sops.*",
+    "**/resources/**",
+  ],
+  flux: {
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
-  "helm-values": {
-    managerFilePatterns: ["/\\.yaml$/"]
+  kubernetes: {
+    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
   },
-  "kubernetes": {
-    managerFilePatterns: ["/\\.yaml$/"]
-  }
 }
