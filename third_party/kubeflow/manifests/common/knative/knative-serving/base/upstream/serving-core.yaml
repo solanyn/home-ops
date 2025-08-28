@@ -8530,7 +8530,7 @@ spec:
       serviceAccountName: controller
       containers:
         - name: controller
-          image: gcr.io/knative-releases/knative.dev/serving/cmd/controller@sha256:0e47362d044f8eac84595ed0a9fdf22e5dd5a07cc7a5df74e93eb5ad17ad4827
+          image: gcr.io/knative-releases/knative.dev/serving/cmd/controller@sha256:528430729686a645b8ddd36313f0abded36b98924a4483a09cfd4da17fc642b1
           resources:
             requests:
               cpu: 100m
