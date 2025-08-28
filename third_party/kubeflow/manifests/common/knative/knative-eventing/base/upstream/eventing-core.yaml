@@ -866,7 +866,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: dispatcher
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/mtping@sha256:1ccb821e1a4edf4cb6b35449e1ec9d03c9098d9a19361a06c0e8f6fc6dd2117a
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/mtping@sha256:fc921f0c85771ff0363e68232e95e805ef6212c86ec6efacb75eeec56b5689f0
           env:
             - name: SYSTEM_NAMESPACE
               value: ''
