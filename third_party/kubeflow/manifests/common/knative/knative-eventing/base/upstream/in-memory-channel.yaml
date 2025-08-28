@@ -310,7 +310,7 @@ spec:
       enableServiceLinks: false
       containers:
         - name: dispatcher
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_dispatcher@sha256:185f51cd8fa39e598b86463ee04a843560db40bbb235c1611e4579ebebfe9133
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/in_memory/channel_dispatcher@sha256:4f5f2d186a53a7ac0a2462071849a80e1c50ac7c4d322f5052650ce75894e1e9
           readinessProbe:
             failureThreshold: 3
             httpGet:
