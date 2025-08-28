@@ -635,7 +635,7 @@ spec:
       containers:
         - name: eventing-controller
           terminationMessagePolicy: FallbackToLogsOnError
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/controller@sha256:806330a39dfac379cd39a771c2e42f3a9998d0f214fe38f28bcb101c554a5a7a
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/controller@sha256:6eb391f7ffb7a9876ae9e04ab1421ea0a66f9190a06db9d27988220b05efd193
           resources:
             requests:
               cpu: 100m
