@@ -286,7 +286,7 @@ spec:
       containers:
         - name: filter
           terminationMessagePolicy: FallbackToLogsOnError
-          image: gcr.io/knative-releases/knative.dev/eventing/cmd/broker/filter@sha256:71879b9320951fd245e3f0251f3dd4d77b8171e48de12daba2cad9617c4355d1
+          image: gcr.io/knative-releases/knative.dev/eventing/cmd/broker/filter@sha256:528a4ca43f211404ae17aa9f9004bb1b48413f31674ba1f53b0166b260f54484
           readinessProbe:
             failureThreshold: 3
             httpGet:
