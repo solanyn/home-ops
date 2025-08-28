@@ -325,7 +325,7 @@ spec:
       serviceAccountName: controller
       containers:
         - name: webhook
-          image: gcr.io/knative-releases/knative.dev/net-istio/cmd/webhook@sha256:7d76a6d42d139ed53aae3ca2dfd600b1c776eb85a17af64dd1b604176a4b132a
+          image: gcr.io/knative-releases/knative.dev/net-istio/cmd/webhook@sha256:a78a105139722ba3dbc6264f25af2eb5e274cc18ba82c11c34e4f1394eba42ac
           resources:
             requests:
               cpu: 20m
