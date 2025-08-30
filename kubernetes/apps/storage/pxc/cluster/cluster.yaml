@@ -65,7 +65,7 @@ spec:
       type: LoadBalancer
       annotations:
         external-dns.alpha.kubernetes.io/hostname: mysql.goyangi.io
-        lbipam.cilium.io/ips: 192.168.1.127
+        lbipam.cilium.io/ips: 192.168.42.127
     exposeReplicas:
       enabled: true
       onlyReaders: true

@@ -44,7 +44,7 @@ spec:
     name: redis
     type: LoadBalancer
     annotations:
-      lbipam.cilium.io/ips: 192.168.1.131
+      lbipam.cilium.io/ips: 192.168.42.131
       external-dns.alpha.kubernetes.io/hostname: redis.goyangi.io
   snapshot:
     cron: "0 * * * *"
