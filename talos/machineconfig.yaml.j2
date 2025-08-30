@@ -8,7 +8,7 @@ machine:
     {% endif %}
   certSANs:
     - 127.0.0.1
-    - 192.168.1.120
+    - 192.168.42.120
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -66,7 +66,7 @@ machine:
     image: ghcr.io/siderolabs/kubelet:v1.34.0
     nodeIP:
       validSubnets:
-        - 192.168.1.0/24
+        - 192.168.42.0/24
   nodeLabels:
     intel.feature.node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: main
@@ -98,7 +98,7 @@ cluster:
     {% endif %}
   clusterName: main
   controlPlane:
-    endpoint: https://192.168.1.120:6443
+    endpoint: https://192.168.42.120:6443
   id: op://kubernetes/talos/CLUSTER_ID
   network:
     cni:
@@ -123,7 +123,7 @@ cluster:
         - level: Metadata
     certSANs:
       - 127.0.0.1
-      - 192.168.1.120
+      - 192.168.42.120
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
@@ -138,7 +138,7 @@ cluster:
     disabled: true
   etcd:
     advertisedSubnets:
-      - 192.168.1.0/24
+      - 192.168.42.0/24
     ca:
       crt: op://kubernetes/talos/CLUSTER_ETCD_CA_CRT
       key: op://kubernetes/talos/CLUSTER_ETCD_CA_KEY
@@ -183,5 +183,5 @@ kind: ExtensionServiceConfig
 name: tailscale
 environment:
   - TS_AUTHKEY=op://kubernetes/tailscale/TAILSCALE_CLIENT_SECRET
-  - TS_EXTRA_ARGS=--advertise-routes=192.168.1.120/32 --advertise-tags=tag:talos-nodes
+  - TS_EXTRA_ARGS=--advertise-routes=192.168.42.120/32 --advertise-tags=tag:talos-nodes
 
