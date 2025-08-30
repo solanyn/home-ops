@@ -10,11 +10,11 @@ spec:
   gatewayClassName: external
   addresses:
     - type: IPAddress
-      value: 192.168.1.126
+      value: 192.168.42.126
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      lbipam.cilium.io/ips: 192.168.1.126
+      lbipam.cilium.io/ips: 192.168.42.126
   listeners:
     - name: http
       protocol: HTTP

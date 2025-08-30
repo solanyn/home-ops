@@ -29,7 +29,7 @@ spec:
               tag: 2025.8.3@sha256:7ef14f513e487add292b43306cccb4f1cd9dbcbd5eaf85d6438f98b197f930a4
             env:
               TZ: Australia/Sydney
-              HASS_HTTP_TRUSTED_PROXY_1: 192.168.1.0/24
+              HASS_HTTP_TRUSTED_PROXY_1: 192.168.10.0/24
               HASS_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
             envFrom:
               - secretRef:
@@ -61,7 +61,8 @@ spec:
       app:
         ports:
           http:
-            port: &port 8123
+            appProtocol: kubernetes.io/ws
+            port: 8123
     route:
       app:
         hostnames:
