@@ -1,0 +1,19 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
+  name: gcp-australia-southeast1
+spec:
+  endpoints:
+    - fqdn:
+        hostname: australia-southeast1-aiplatform.googleapis.com
+        port: 443
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
+  name: gcp-australia-southeast2
+spec:
+  endpoints:
+    - fqdn:
+        hostname: australia-southeast2-aiplatform.googleapis.com
+        port: 443

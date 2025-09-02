@@ -1,0 +1,30 @@
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: BackendSecurityPolicy
+metadata:
+  name: kserve-apikey
+spec:
+  type: APIKey
+  apiKey:
+    secretRef:
+      name: kserve-models-secret
+      namespace: serving
+---
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: BackendSecurityPolicy
+metadata:
+  name: gcp-credentials
+spec:
+  targetRefs:
+    - group: aigateway.envoyproxy.io
+      kind: AIServiceBackend
+      name: gcp
+    - group: aigateway.envoyproxy.io
+      kind: AIServiceBackend
+      name: gcp-anthropic
+  type: GCPCredentials
+  gcpCredentials:
+    projectName: ${GOOGLE_PROJECT_NAME}
+    region: ${GOOGLE_REGION}
+    credentialsFile:
+      secretRef:
+        name: ai-gateway-secret

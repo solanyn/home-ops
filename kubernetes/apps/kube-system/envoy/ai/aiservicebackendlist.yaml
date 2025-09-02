@@ -42,3 +42,32 @@ items:
   #       name: envoy-ai-gateway-kserve-apikey
   #       kind: BackendSecurityPolicy
   #       group: aigateway.envoyproxy.io
+---
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIServiceBackendList
+metadata:
+  name: gcp
+items:
+  - apiVersion: aigateway.envoyproxy.io/v1alpha1
+    kind: AIServiceBackend
+    metadata:
+      name: gcp-anthropic
+    spec:
+      schema:
+        name: GCPAnthropic
+        version: vertex-2023-10-16
+      backendRef:
+        name: gcp-australia-southeast1
+        kind: Backend
+        group: gateway.envoyproxy.io
+  - apiVersion: aigateway.envoyproxy.io/v1alpha1
+    kind: AIServiceBackend
+    metadata:
+      name: gcp
+    spec:
+      schema:
+        name: GCPVertexAI
+      backendRef:
+        name: gcp-australia-southeast1
+        kind: Backend
+        group: gateway.envoyproxy.io
