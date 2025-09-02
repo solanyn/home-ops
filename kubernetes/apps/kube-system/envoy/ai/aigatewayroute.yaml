@@ -1,0 +1,71 @@
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIGatewayRoute
+metadata:
+  name: gemini-2.5-pro
+spec:
+  parentRefs:
+    - name: envoy-ai-gateway-basic
+      kind: Gateway
+      group: gateway.networking.k8s.io
+  rules:
+    - matches:
+        - headers:
+            - type: Exact
+              name: x-ai-eg-model
+              value: gemini-2.5-pro
+      backendRefs:
+        - name: gcp
+---
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIGatewayRoute
+metadata:
+  name: claude-4-sonnet
+spec:
+  parentRefs:
+    - name: envoy-ai-gateway-basic
+      kind: Gateway
+      group: gateway.networking.k8s.io
+  rules:
+    - matches:
+        - headers:
+            - type: Exact
+              name: x-ai-eg-model
+              value: claude-opus-4-1@20250805
+      backendRefs:
+        - name: gcp-anthropic
+---
+# apiVersion: aigateway.envoyproxy.io/v1alpha1
+# kind: AIGatewayRoute
+# metadata:
+#   name: internal-kserve
+# spec:
+#   schema:
+#     name: OpenAI
+#   targetRefs:
+#     - name: ai
+#       kind: Gateway
+#       group: gateway.networking.k8s.io
+#   rules:
+#     - matches:
+#         - headers:
+#             - type: Exact
+#               name: x-ai-eg-model
+#               value: qwen3
+#       backendRefs:
+#         - name: smollm-predictor
+#           weight: 100
+#     - matches:
+#         - headers:
+#             - type: Exact
+#               name: x-ai-eg-model
+#               value: whisper
+#       backendRefs:
+#         - name: whisper-predictor
+#           weight: 100
+#   llmRequestCosts:
+#     - metadataKey: llm_input_token
+#       type: InputToken
+#     - metadataKey: llm_output_token
+#       type: OutputToken
+#     - metadataKey: llm_total_token
+#       type: TotalToken

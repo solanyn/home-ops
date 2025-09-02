@@ -1,0 +1,26 @@
+---
+apiVersion: gateway.networking.k8s.io/v1alpha3
+kind: BackendTLSPolicy
+metadata:
+  name: gcp-australia-southeast1-tls
+spec:
+  targetRefs:
+    - group: "gateway.envoyproxy.io"
+      kind: Backend
+      name: gcp-australia-southeast1
+  validation:
+    wellKnownCACertificates: "System"
+    hostname: australia-southeast1-aiplatform.googleapis.com
+---
+apiVersion: gateway.networking.k8s.io/v1alpha3
+kind: BackendTLSPolicy
+metadata:
+  name: gcp-australia-southeast2-tls
+spec:
+  targetRefs:
+    - group: "gateway.envoyproxy.io"
+      kind: Backend
+      name: gcp-australia-southeast2
+  validation:
+    wellKnownCACertificates: "System"
+    hostname: australia-southeast2-aiplatform.googleapis.com
