@@ -1,14 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: dask
-  namespace: analytics
-spec:
-  interval: 12h
-  url: https://helm.dask.org/
----
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
