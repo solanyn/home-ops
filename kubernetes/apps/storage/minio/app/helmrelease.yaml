@@ -7,7 +7,7 @@ spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: app-template
+    name: minio
   install:
     remediation:
       retries: -1
