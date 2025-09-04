@@ -1,15 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.solanyn.dev/source.toolkit.fluxcd.io/helmrepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: kafka
-  namespace: streaming
-spec:
-  type: oci
-  interval: 12h
-  url: oci://quay.io/strimzi-helm
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
