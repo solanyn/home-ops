@@ -57,18 +57,6 @@ spec:
                 cpu: 10m
               limits:
                 memory: 18Gi
-          vuetorrent:
-            image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.4.3@sha256:ee0dda4203f56848f09b41650447353edf69ab0e4319254cd854adab3074dd2e
-            env:
-              GITSYNC_REPO: https://github.com/VueTorrent/VueTorrent
-              GITSYNC_REF: latest-release
-              GITSYNC_PERIOD: 24h
-              GITSYNC_ROOT: /ui
-            resources:
-              requests:
-                cpu: 10m
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
