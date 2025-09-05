@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: kubeflow
 components:
   - ../../components/kubeflow
-  - ../../components/repos/app-template
 resources:
   - ./admission-webhook/ks.yaml
   - ./centraldashboard/ks.yaml
