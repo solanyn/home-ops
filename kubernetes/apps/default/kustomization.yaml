@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: default
 components:
   - ../../components/common
-  - ../../components/repos/app-template
 resources:
   - ./atuin/ks.yaml
   - ./autobrr/ks.yaml
