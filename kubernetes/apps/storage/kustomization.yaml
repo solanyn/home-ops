@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: storage
 components:
   - ../../components/common
-  - ../../components/repos/app-template
 resources:
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
