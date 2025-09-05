@@ -65,7 +65,8 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            # port: *port
+            port: 80
     serviceMonitor:
       app:
         endpoints:
