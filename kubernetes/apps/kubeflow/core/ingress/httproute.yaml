@@ -7,7 +7,7 @@ spec:
   hostnames:
     - kubeflow.goyangi.io
   parentRefs:
-    - name: internal
+    - name: envoy-internal
       namespace: network
       sectionName: https
   rules:

@@ -236,7 +236,7 @@ spec:
         enabled: true
         hostnames: ["{{ .Release.Name }}.goyangi.io"]
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: network
             sectionName: https
     persistence:

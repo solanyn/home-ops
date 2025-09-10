@@ -70,7 +70,7 @@ spec:
           - "{{ .Release.Name }}.goyangi.io"
           - join.goyangi.io
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: network
             sectionName: https
     persistence:
