@@ -25,7 +25,7 @@ spec:
           enabled: true
           hostnames: ["alertmanager.goyangi.io"]
           parentRefs:
-            - name: internal
+            - name: envoy-internal
               namespace: network
               sectionName: https
       alertmanagerSpec:
@@ -53,7 +53,7 @@ spec:
           enabled: true
           hostnames: ["prometheus.goyangi.io"]
           parentRefs:
-            - name: internal
+            - name: envoy-internal
               namespace: network
               sectionName: https
       prometheusSpec:

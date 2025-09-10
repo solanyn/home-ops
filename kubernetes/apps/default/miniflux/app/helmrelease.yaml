@@ -94,6 +94,6 @@ spec:
       app:
         hostnames: ["miniflux.goyangi.io"]
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: network
             sectionName: https
