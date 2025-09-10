@@ -27,5 +27,4 @@ spec:
     region: "${REGION}"
     credentialsFile:
       secretRef:
-        - kind: Secret
-          name: envoy-ai-gateway-gcp-credentials-secret
+        name: envoy-ai-gateway-gcp-credentials-secret
