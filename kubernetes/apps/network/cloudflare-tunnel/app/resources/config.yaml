@@ -1,9 +1,11 @@
-originRequest:
-  originServerName: "external.goyangi.io"
-
+---
 ingress:
-  - hostname: "goyangi.io"
-    service: &svc https://envoy-external.kube-system.svc.cluster.local
+  - hostname: goyangi.io
+    originRequest:
+      originServerName: goyangi.io
+    service: https://envoy-external.network.svc.cluster.local:443
   - hostname: "*.goyangi.io"
-    service: *svc
+    originRequest:
+      originServerName: external.goyangi.io
+    service: https://envoy-external.network.svc.cluster.local:443
   - service: http_status:404

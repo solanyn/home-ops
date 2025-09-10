@@ -1,9 +1,16 @@
 set quiet := true
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
+kubernetes_dir := justfile_dir() + '/kubernetes'
+
 [private]
 default:
     just -l kube
+
+[doc('Apply local Flux Kustomization')]
+apply-ks namespace *args:
+    flux-local build ks --all-namespaces --path "{{ kubernetes_dir }}/apps/{{ namespace }}" {{ args }} \
+        | kubectl apply --server-side --field-manager kustomize-controller -f -
 
 [doc('Browse a PVC')]
 browse-pvc namespace claim:
@@ -11,7 +18,8 @@ browse-pvc namespace claim:
 
 [doc('Open a shell on a node')]
 node-shell node:
-    kubectl node-shell -n kube-system --image mirror.gcr.io/alpine:latest -x {{ node }}
+    kubectl debug node/{{ node }} -n default -it --image="mirror.gcr.io/alpine:latest" --profile sysadmin
+    kubectl delete pod -n default -l app.kubernetes.io/managed-by=kubectl-debug
 
 [doc('Prune pods in Failed, Pending, or Succeeded state')]
 prune-pods:
