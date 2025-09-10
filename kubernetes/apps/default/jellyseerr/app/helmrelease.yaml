@@ -82,7 +82,7 @@ spec:
           - requests.goyangi.io
         parentRefs:
           - name: external
-            namespace: kube-system
+            namespace: network
             sectionName: https
     persistence:
       config:

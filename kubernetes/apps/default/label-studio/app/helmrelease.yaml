@@ -81,7 +81,7 @@ spec:
         hostnames: ["label-studio.goyangi.io"]
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
     persistence:
       data:
