@@ -85,6 +85,6 @@ spec:
           - "{{ .Release.Name }}.goyangi.io"
           - ddns.goyangi.io
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: network
             sectionName: https

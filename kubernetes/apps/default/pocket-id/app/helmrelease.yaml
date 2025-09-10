@@ -93,7 +93,7 @@ spec:
           - "{{ .Release.Name }}.goyangi.io"
           - id.goyangi.io
         parentRefs:
-          - name: external
+          - name: envoy-external
             namespace: network
             sectionName: https
     persistence:

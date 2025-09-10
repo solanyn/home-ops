@@ -85,7 +85,7 @@ spec:
           - "{{ .Release.Name }}.goyangi.io"
           - qb.goyangi.io
         parentRefs:
-          - name: internal
+          - name: envoy-internal
             namespace: network
             sectionName: https
         rules:
