@@ -86,7 +86,7 @@ spec:
           - qb.goyangi.io
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

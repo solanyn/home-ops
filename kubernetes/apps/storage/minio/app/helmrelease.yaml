@@ -118,7 +118,7 @@ spec:
         hostnames: ["{{ .Release.Name }}.goyangi.io"]
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:
@@ -128,7 +128,7 @@ spec:
         hostnames: ["s3.goyangi.io"]
         parentRefs:
           - name: internal
-            namespace: kube-system
+            namespace: network
             sectionName: https
 
     persistence:
