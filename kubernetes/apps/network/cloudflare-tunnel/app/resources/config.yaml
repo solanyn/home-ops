@@ -1,9 +1,5 @@
 ---
 ingress:
-  - hostname: goyangi.io
-    originRequest:
-      originServerName: goyangi.io
-    service: https://envoy-external.network.svc.cluster.local:443
   - hostname: "*.goyangi.io"
     originRequest:
       originServerName: external.goyangi.io
