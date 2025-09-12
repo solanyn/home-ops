@@ -33,7 +33,7 @@ spec:
           tag: &container
             image:
               repository: quay.io/curl/curl
-              tag: 8.15.0
+              tag: 8.16.0
             command:
               - sh
               - -c
