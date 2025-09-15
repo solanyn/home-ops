@@ -11,6 +11,7 @@ resources:
   - ./calibre/ks.yaml
   - ./calibre-web/ks.yaml
   - ./cross-seed/ks.yaml
+  - ./dbi/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./ghost/ks.yaml
   - ./home-assistant/ks.yaml
