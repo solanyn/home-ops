@@ -46,6 +46,7 @@ spec:
     annotations:
       lbipam.cilium.io/ips: 192.168.42.131
       external-dns.alpha.kubernetes.io/hostname: redis.goyangi.io
+    externalTrafficPolicy: Local
   snapshot:
     cron: "0 * * * *"
     dir: "s3://dragonflydb"
