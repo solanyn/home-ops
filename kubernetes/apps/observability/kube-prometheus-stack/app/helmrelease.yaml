@@ -15,7 +15,6 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   values:
     cleanPrometheusOperatorObjectNames: true
@@ -23,7 +22,8 @@ spec:
       route:
         main:
           enabled: true
-          hostnames: ["alertmanager.goyangi.io"]
+          hostnames:
+            - alertmanager.goyangi.io
           parentRefs:
             - name: envoy-internal
               namespace: network
@@ -51,28 +51,23 @@ spec:
       route:
         main:
           enabled: true
-          hostnames: ["prometheus.goyangi.io"]
+          hostnames:
+            - prometheus.goyangi.io
           parentRefs:
             - name: envoy-internal
               namespace: network
               sectionName: https
       prometheusSpec:
+        externalUrl: https://prometheus.goyangi.io
         image:
-          registry: registry.deckhouse.io
+          registry: docker.io
           repository: prompp/prompp
           tag: 2.53.2-0.4.0
         securityContext:
-          runAsGroup: 64535
           runAsNonRoot: true
           runAsUser: 64535
+          runAsGroup: 64535
           fsGroup: 64535
-        initContainers:
-          - name: convert-wal
-            image: registry.deckhouse.io/prompp/prompp:2.53.2-0.4.0
-            command:
-              - /bin/prompptool
-              - "--working-dir=/prometheus"
-              - "walvanilla"
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
@@ -101,7 +96,8 @@ spec:
             - action: replace
               regex: (.*)
               replacement: $1
-              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
               targetLabel: kubernetes_node
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
@@ -116,7 +112,8 @@ spec:
             - action: replace
               regex: (.*)
               replacement: $1
-              sourceLabels: ["__meta_kubernetes_pod_node_name"]
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
               targetLabel: kubernetes_node
     grafana:
       enabled: false
@@ -129,7 +126,7 @@ spec:
               - alert: DockerhubRateLimitRisk
                 annotations:
                   summary: Kubernetes cluster Dockerhub rate limit risk
-                expr: count(time() - container_last_seen{image=~"(docker.io).*",container!=""} < 30) > 25
+                expr: count(time() - container_last_seen{image=~"(docker.io).*",container!=""} < 30) > 100
                 labels:
                   severity: critical
       oom-rules:
