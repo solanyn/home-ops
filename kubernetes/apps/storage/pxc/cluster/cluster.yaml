@@ -66,7 +66,7 @@ spec:
       annotations:
         external-dns.alpha.kubernetes.io/hostname: mysql.goyangi.io
         lbipam.cilium.io/ips: 192.168.42.127
-      externalTrafficPolicy: Local
+      externalTrafficPolicy: Cluster
     exposeReplicas:
       enabled: true
       onlyReaders: true
