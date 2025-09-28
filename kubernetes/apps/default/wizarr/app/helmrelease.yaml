@@ -82,5 +82,3 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /.cache
-          - path: /tmp
-          - path: /etc/wizarr/wizard_steps
