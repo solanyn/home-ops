@@ -29,11 +29,6 @@ releases:
     chart: oci://docker.io/envoyproxy/gateway-helm
     version: 1.5.1
 
-  - name: envoy-ai-gateway
-    namespace: network
-    chart: oci://docker.io/envoyproxy/ai-gateway-crds-helm
-    version: 0.3.0
-
   - name: keda
     namespace: observability
     chart: oci://ghcr.io/home-operations/charts-mirror/keda
