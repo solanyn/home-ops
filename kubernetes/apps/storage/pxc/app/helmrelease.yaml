@@ -14,14 +14,6 @@ spec:
         kind: HelmRepository
         name: pxc
         namespace: storage
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     fullnameOverride: pxc-operator
     resources: {}

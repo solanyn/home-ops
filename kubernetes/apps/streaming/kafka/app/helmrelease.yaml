@@ -14,14 +14,6 @@ spec:
         kind: HelmRepository
         name: kafka
         namespace: streaming
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     generateNetworkPolicy: false
     watchAnyNamespace: true

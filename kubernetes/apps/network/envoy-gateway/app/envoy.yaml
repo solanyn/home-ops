@@ -114,6 +114,8 @@ spec:
   targetSelectors:
     - group: gateway.networking.k8s.io
       kind: Gateway
+  connection:
+    bufferLimit: 1Mi
   compression:
     - type: Brotli
     - type: Gzip

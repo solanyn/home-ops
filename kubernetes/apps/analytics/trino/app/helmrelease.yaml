@@ -14,14 +14,6 @@ spec:
         kind: HelmRepository
         name: trino
         namespace: analytics
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     server:
       workers: 1
