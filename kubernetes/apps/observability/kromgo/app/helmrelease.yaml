@@ -62,6 +62,9 @@ spec:
             port: *healthPort
     route:
       app:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 404"]
         hostnames: ["{{ .Release.Name }}.goyangi.io"]
         parentRefs:
           - name: envoy-external

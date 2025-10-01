@@ -16,9 +16,6 @@ spec:
       namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/rreading-glasses/app
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
   retryInterval: 2m
   sourceRef:

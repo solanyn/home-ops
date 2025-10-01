@@ -11,7 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/defaults
- - ../../../../components/gatus/guarded
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -19,9 +18,7 @@ spec:
   path: ./kubernetes/apps/observability/kube-prometheus-stack/app
   postBuild:
     substitute:
-      APP: kube-prometheus-stack
-      GATUS_SUBDOMAIN: prometheus
-  prune: true
+      APP: kube-prometheus-stack  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
