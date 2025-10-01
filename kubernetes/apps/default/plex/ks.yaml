@@ -11,7 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/defaults
-    - ../../../../components/gatus/external
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
@@ -25,9 +24,7 @@ spec:
   path: ./kubernetes/apps/default/plex/app
   postBuild:
     substitute:
-      APP: *app
-      GATUS_PATH: /web/index.html
-      VOLSYNC_CACHE_CAPACITY: 25Gi
+      APP: *app      VOLSYNC_CACHE_CAPACITY: 25Gi
       VOLSYNC_CAPACITY: 50Gi
   prune: true
   retryInterval: 2m

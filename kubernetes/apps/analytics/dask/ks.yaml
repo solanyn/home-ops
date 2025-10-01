@@ -32,7 +32,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/defaults
- - ../../../../components/gatus/guarded
   dependsOn:
     - name: dask
       namespace: analytics
@@ -40,9 +39,7 @@ spec:
   path: ./kubernetes/apps/analytics/dask/cluster
   postBuild:
     substitute:
-      APP: *app
-      GATUS_SUBDOMAIN: dask
-  prune: false
+      APP: *app  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system

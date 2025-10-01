@@ -13,9 +13,6 @@ spec:
     - ../../../../components/defaults
   interval: 1h
   path: ./kubernetes/apps/storage/minio/app
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
   retryInterval: 2m
   sourceRef:
