@@ -37,7 +37,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/defaults
- - ../../../../components/gatus/guarded
   dependsOn:
     - name: rook-ceph
       namespace: *namespace
@@ -61,9 +60,7 @@ spec:
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
   postBuild:
     substitute:
-      APP: *app
-      GATUS_SUBDOMAIN: rook
-  prune: true
+      APP: *app  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

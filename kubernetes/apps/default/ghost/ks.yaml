@@ -11,7 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/defaults
-    - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
@@ -20,9 +19,7 @@ spec:
   path: ./kubernetes/apps/default/ghost/app
   postBuild:
     substitute:
-      APP: *app
-      GATUS_SUBDOMAIN: blog
-      VOLSYNC_CAPACITY: 1Gi
+      APP: *app      VOLSYNC_CAPACITY: 1Gi
   prune: true
   retryInterval: 2m
   sourceRef:

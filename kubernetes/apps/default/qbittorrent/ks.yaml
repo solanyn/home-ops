@@ -11,7 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/defaults
-    - ../../../../components/gatus/guarded
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
@@ -21,9 +20,7 @@ spec:
   path: ./kubernetes/apps/default/qbittorrent/app
   postBuild:
     substitute:
-      APP: *app
-      GATUS_SUBDOMAIN: qb
-      VOLSYNC_CAPACITY: 2Gi
+      APP: *app      VOLSYNC_CAPACITY: 2Gi
   prune: true
   retryInterval: 2m
   sourceRef:

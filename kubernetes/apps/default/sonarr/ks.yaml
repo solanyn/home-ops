@@ -11,7 +11,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/defaults
-    - ../../../../components/gatus/guarded
     - ../../../../components/nfs-scaler
   dependsOn:
     - name: cloudnative-pg-cluster
@@ -20,9 +19,6 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/sonarr/app
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
   retryInterval: 2m
   sourceRef:

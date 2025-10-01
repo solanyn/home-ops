@@ -10,7 +10,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/defaults
-    - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   dependsOn:
     - name: pocket-id
@@ -21,9 +20,6 @@ spec:
       namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/default/mealie/app
-  postBuild:
-    substitute:
-      APP: *app
   prune: true
   retryInterval: 2m
   sourceRef:

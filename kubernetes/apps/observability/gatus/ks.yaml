@@ -15,9 +15,7 @@ spec:
   path: ./kubernetes/apps/observability/gatus/app
   postBuild:
     substitute:
-      APP: *app
-      GATUS_SUBDOMAIN: status
-  prune: true
+      APP: *app  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
