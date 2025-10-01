@@ -78,7 +78,7 @@ metadata:
     external-dns.alpha.kubernetes.io/hostname: k8s.goyangi.io
 spec:
   type: LoadBalancer
-  externalTrafficPolicy: Local
+  externalTrafficPolicy: Cluster
   selector:
     k8s-app: kube-apiserver
     tier: control-plane
