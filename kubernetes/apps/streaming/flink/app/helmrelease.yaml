@@ -14,13 +14,5 @@ spec:
         kind: HelmRepository
         name: flink
         namespace: streaming
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     fullnameOverride: flink
