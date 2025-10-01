@@ -90,6 +90,23 @@ machine:
     sunrpc.tcp_slot_table_entries: "128"
     user.max_user_namespaces: "11255"
     vm.nr_hugepages: "1024"
+  network:
+    interfaces:
+      - interface: bond0
+        bond:
+          deviceSelectors:
+            - hardwareAddr: "*"
+          mode: active-backup
+        dhcp: true
+        vip:
+          ip: 192.168.42.120
+        vlans:
+          - # IOT
+            vlanId: 70
+            dhcp: false
+          - # VPN
+            vlanId: 90
+            dhcp: false
   token: op://kubernetes/talos/MACHINE_TOKEN
 cluster:
   ca:
