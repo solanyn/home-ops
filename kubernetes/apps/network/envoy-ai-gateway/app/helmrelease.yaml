@@ -9,11 +9,3 @@ spec:
   chartRef:
     kind: OCIRepository
     name: envoy-ai-gateway
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3

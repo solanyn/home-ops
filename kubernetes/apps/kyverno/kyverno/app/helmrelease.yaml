@@ -14,14 +14,6 @@ spec:
         kind: HelmRepository
         name: kyverno
         namespace: kyverno
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     crds:
       install: true

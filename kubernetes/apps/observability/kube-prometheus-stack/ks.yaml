@@ -10,7 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/guarded
+    - ../../../../components/defaults
+ - ../../../../components/gatus/guarded
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph

@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   interval: 1h
   path: ./kubernetes/apps/knative-serving/knative-serving/app
   prune: true
@@ -30,6 +32,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: knative-serving
       namespace: knative-serving

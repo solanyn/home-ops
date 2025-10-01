@@ -10,7 +10,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    - ../../../../components/gatus/guarded
+    - ../../../../components/defaults
+ - ../../../../components/gatus/guarded
   interval: 1h
   path: ./kubernetes/apps/default/webhook/app
   postBuild:

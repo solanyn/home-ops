@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: kubeflow-gateway
       namespace: kubeflow
@@ -33,6 +35,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: kubeflow-profiles
       namespace: kubeflow
@@ -57,6 +61,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: kubeflow-users
       namespace: kubeflow

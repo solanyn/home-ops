@@ -9,6 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: envoy-gateway
       namespace: network
@@ -34,6 +36,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/defaults
   dependsOn:
     - name: envoy-ai-gateway
       namespace: network

@@ -13,14 +13,6 @@ spec:
         kind: HelmRepository
         name: dask
         namespace: analytics
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     nameOverride: "dask"
     fullnameOverride: "dask"

@@ -9,14 +9,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: gha-runner-scale-set-controller
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     fullnameOverride: *name
     replicaCount: 1
