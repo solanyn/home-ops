@@ -59,7 +59,7 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: "{{ .Release.Name }}.goyangi.io"
           lbipam.cilium.io/ips: 192.168.42.123
-        externalTrafficPolicy: Cluster
+        externalTrafficPolicy: Local
         ports:
           http:
             primary: true
