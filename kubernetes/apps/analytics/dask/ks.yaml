@@ -39,7 +39,8 @@ spec:
   path: ./kubernetes/apps/analytics/dask/cluster
   postBuild:
     substitute:
-      APP: *app  prune: false
+      APP: *app
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
