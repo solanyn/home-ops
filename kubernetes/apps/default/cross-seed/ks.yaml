@@ -19,6 +19,7 @@ spec:
   postBuild:
     substitute:
       VOLSYNC_CAPACITY: 5Gi
+      APP: cross-seed
   prune: true
   retryInterval: 2m
   sourceRef:

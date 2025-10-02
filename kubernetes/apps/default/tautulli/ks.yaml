@@ -22,6 +22,7 @@ spec:
   postBuild:
     substitute:
       VOLSYNC_CAPACITY: 5Gi
+      APP: tautulli
   prune: true
   retryInterval: 2m
   sourceRef:

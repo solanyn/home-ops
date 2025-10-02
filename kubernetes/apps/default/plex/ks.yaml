@@ -25,6 +25,7 @@ spec:
     substitute:
       VOLSYNC_CACHE_CAPACITY: 25Gi
       VOLSYNC_CAPACITY: 50Gi
+      APP: plex
   prune: true
   retryInterval: 2m
   sourceRef:

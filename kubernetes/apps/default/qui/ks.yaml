@@ -20,6 +20,7 @@ spec:
   postBuild:
     substitute:
       VOLSYNC_CAPACITY: 2Gi
+      APP: qui
   prune: true
   retryInterval: 2m
   sourceRef:

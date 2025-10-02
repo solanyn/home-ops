@@ -24,6 +24,7 @@ spec:
   postBuild:
     substitute:
       VOLSYNC_CAPACITY: 5Gi
+      APP: jellyseerr
   prune: true
   retryInterval: 2m
   sourceRef:

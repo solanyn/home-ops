@@ -29,3 +29,6 @@ spec:
   targetNamespace: default
   timeout: 5m
   wait: false
+  postBuild:
+    substitute:
+      APP: calibre
