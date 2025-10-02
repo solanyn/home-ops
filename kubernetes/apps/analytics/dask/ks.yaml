@@ -20,31 +20,27 @@ spec:
   timeout: 5m
   wait: true
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app dask-cluster
-  namespace: &namespace analytics
+  name: dask-cluster
+  namespace: analytics
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: dask-cluster
   components:
-    - ../../../../components/defaults
+  - ../../../../components/defaults
   dependsOn:
-    - name: dask
-      namespace: analytics
+  - name: dask
+    namespace: analytics
   interval: 1h
   path: ./kubernetes/apps/analytics/dask/cluster
-  postBuild:
-    substitute:
-      APP: *app
   prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
+  targetNamespace: analytics
   timeout: 5m
   wait: true

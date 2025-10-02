@@ -1,25 +1,23 @@
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cross-seed
-  namespace: &namespace default
+  name: cross-seed
+  namespace: default
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: cross-seed
   components:
-    - ../../../../components/defaults
-    - ../../../../components/nfs-scaler
-    - ../../../../components/volsync
+  - ../../../../components/defaults
+  - ../../../../components/nfs-scaler
+  - ../../../../components/volsync
   dependsOn:
-    - name: volsync
-      namespace: volsync-system
+  - name: volsync
+    namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/default/cross-seed/app
   postBuild:
     substitute:
-      APP: *app
       VOLSYNC_CAPACITY: 5Gi
   prune: true
   retryInterval: 2m
@@ -27,6 +25,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
+  targetNamespace: default
   timeout: 5m
   wait: false
