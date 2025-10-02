@@ -4,5 +4,11 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 components:
   - ../namespace
-resources:
-  - ./namespace.yaml
+patches:
+  - target:
+      kind: Namespace
+      name: not-used
+    patch: |-
+      - op: replace
+        path: /metadata/labels/istio-injection
+        value: enabled
