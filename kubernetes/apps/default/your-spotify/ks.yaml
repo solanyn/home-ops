@@ -19,7 +19,8 @@ spec:
   path: ./kubernetes/apps/default/your-spotify/app
   postBuild:
     substitute:
-      APP: *app  prune: true
+      APP: *app
+  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

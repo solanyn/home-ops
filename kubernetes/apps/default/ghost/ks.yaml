@@ -19,7 +19,8 @@ spec:
   path: ./kubernetes/apps/default/ghost/app
   postBuild:
     substitute:
-      APP: *app      VOLSYNC_CAPACITY: 1Gi
+      APP: *app
+      VOLSYNC_CAPACITY: 1Gi
   prune: true
   retryInterval: 2m
   sourceRef:
