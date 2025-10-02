@@ -18,6 +18,7 @@ spec:
   postBuild:
     substitute:
       VOLSYNC_CAPACITY: 5Gi
+      APP: atuin
   prune: true
   retryInterval: 2m
   sourceRef:

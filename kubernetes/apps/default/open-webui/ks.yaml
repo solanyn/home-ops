@@ -26,6 +26,7 @@ spec:
   postBuild:
     substitute:
       VOLSYNC_CAPACITY: 1Gi
+      APP: open-webui
   prune: true
   retryInterval: 2m
   sourceRef:

@@ -23,6 +23,7 @@ spec:
   postBuild:
     substitute:
       VOLSYNC_CAPACITY: 5Gi
+      APP: home-assistant
   prune: true
   retryInterval: 2m
   sourceRef:
