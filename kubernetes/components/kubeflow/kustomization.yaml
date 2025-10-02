@@ -2,5 +2,16 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
-resources:
-  - ./namespace.yaml
+components:
+  - ../namespace
+patches:
+  - target:
+      kind: Namespace
+      name: not-used
+    patch: |-
+      - op: add
+        path: /metadata/labels/control-plane
+        value: kubeflow
+      - op: replace
+        path: /metadata/labels/istio-injection
+        value: enabled
