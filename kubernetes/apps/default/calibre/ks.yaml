@@ -1,37 +1,31 @@
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app calibre
-  namespace: &namespace default
+  name: calibre
+  namespace: default
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: calibre
   components:
-    - ../../../../components/defaults
-    - ../../../../components/nfs-scaler
-    - ../../../../components/volsync
+  - ../../../../components/defaults
+  - ../../../../components/nfs-scaler
+  - ../../../../components/volsync
   dependsOn:
-    - name: calibre-web
-      namespace: default
-    - name: volsync
-      namespace: volsync-system
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+  - name: calibre-web
+    namespace: default
+  - name: volsync
+    namespace: volsync-system
+  - name: rook-ceph-cluster
+    namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/calibre/app
-  postBuild:
-    substitute:
-      APP: *app
-      # VOLSYNC_STORAGECLASS: ceph-filesystem
-      # VOLSYNC_ACCESSMODES: ReadWriteMany
   prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
+  targetNamespace: default
   timeout: 5m
   wait: false
