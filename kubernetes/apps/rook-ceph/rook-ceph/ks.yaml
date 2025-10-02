@@ -60,7 +60,8 @@ spec:
   path: ./kubernetes/apps/rook-ceph/rook-ceph/cluster
   postBuild:
     substitute:
-      APP: *app  prune: true
+      APP: *app
+  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository

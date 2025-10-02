@@ -18,7 +18,8 @@ spec:
   path: ./kubernetes/apps/default/pocket-id/app
   postBuild:
     substitute:
-      APP: *app  prune: true
+      APP: *app
+  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
