@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: mirror.gcr.io/library/ghost
-              tag: 6.0.9
+              tag: 6.1.0
             env:
               database__client: sqlite3
               database__connection__filename: /var/lib/ghost/content/data/ghost.db
