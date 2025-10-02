@@ -19,6 +19,9 @@ spec:
       namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/readarr/app
+  postBuild:
+    substitute:
+      APP: readarr
   prune: true
   retryInterval: 2m
   sourceRef:
