@@ -22,7 +22,8 @@ spec:
   path: ./kubernetes/apps/default/qbittorrent/app
   postBuild:
     substitute:
-      APP: *app      VOLSYNC_CAPACITY: 2Gi
+      APP: *app
+      VOLSYNC_CAPACITY: 2Gi
   prune: true
   retryInterval: 2m
   sourceRef:
