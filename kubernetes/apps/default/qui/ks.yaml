@@ -1,26 +1,24 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app qui
-  namespace: &namespace default
+  name: qui
+  namespace: default
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: qui
   components:
-    - ../../../../components/defaults
-    - ../../../../components/nfs-scaler
-    - ../../../../components/volsync
+  - ../../../../components/defaults
+  - ../../../../components/nfs-scaler
+  - ../../../../components/volsync
   dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
+  - name: rook-ceph-cluster
+    namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/qui/app
   postBuild:
     substitute:
-      APP: *app
       VOLSYNC_CAPACITY: 2Gi
   prune: true
   retryInterval: 2m
@@ -28,6 +26,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
+  targetNamespace: default
   timeout: 5m
   wait: false
