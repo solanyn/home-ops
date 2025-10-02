@@ -16,6 +16,9 @@ spec:
       namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/autobrr/app
+  postBuild:
+    substitute:
+      APP: autobrr
   prune: true
   retryInterval: 2m
   sourceRef:
