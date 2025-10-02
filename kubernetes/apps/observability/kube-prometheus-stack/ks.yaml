@@ -18,7 +18,8 @@ spec:
   path: ./kubernetes/apps/observability/kube-prometheus-stack/app
   postBuild:
     substitute:
-      APP: kube-prometheus-stack  prune: true
+      APP: kube-prometheus-stack
+  prune: true
   retryInterval: 2m
   sourceRef:
     kind: GitRepository
