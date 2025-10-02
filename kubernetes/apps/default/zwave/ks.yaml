@@ -20,6 +20,7 @@ spec:
   postBuild:
     substitute:
       VOLSYNC_CAPACITY: 1Gi
+      APP: zwave
   prune: true
   retryInterval: 2m
   sourceRef:
