@@ -19,6 +19,9 @@ spec:
       namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/sonarr/app
+  postBuild:
+    substitute:
+      APP: sonarr
   prune: true
   retryInterval: 2m
   sourceRef:
