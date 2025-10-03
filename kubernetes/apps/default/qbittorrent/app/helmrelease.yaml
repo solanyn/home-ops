@@ -14,22 +14,6 @@ spec:
       qbittorrent:
         annotations:
           reloader.stakater.com/auto: "true"
-        defaultPodOptions:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |-
-              [{
-                "name": "vpn",
-                "namespace": "kube-system",
-                "ips": ["192.168.90.10/24"],
-                "mac": "32:0b:d8:1f:b6:e4"
-              }]
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-            seccompProfile: { type: RuntimeDefault }
         containers:
           app:
             image:
@@ -73,6 +57,7 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         ports:
