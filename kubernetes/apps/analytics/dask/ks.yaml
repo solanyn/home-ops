@@ -29,8 +29,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: dask-cluster
-  components:
-  - ../../../../components/defaults
   dependsOn:
   - name: dask
     namespace: analytics

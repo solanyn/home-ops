@@ -7,9 +7,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: mealie
-  components:
-  - ../../../../components/defaults
-  - ../../../../components/volsync
   dependsOn:
   - name: pocket-id
     namespace: default

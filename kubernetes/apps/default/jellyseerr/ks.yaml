@@ -8,10 +8,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: jellyseerr
-  components:
-  - ../../../../components/defaults
-  - ../../../../components/nfs-scaler
-  - ../../../../components/volsync
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage

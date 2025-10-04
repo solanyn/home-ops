@@ -34,8 +34,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: rook-ceph-cluster
-  components:
-  - ../../../../components/defaults
   dependsOn:
   - name: rook-ceph
     namespace: rook-ceph

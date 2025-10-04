@@ -8,9 +8,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: your-spotify
-  components:
-  - ../../../../components/defaults
-  - ../../../../components/volsync
   dependsOn:
   - name: volsync
     namespace: volsync-system
