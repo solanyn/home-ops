@@ -7,5 +7,5 @@ metadata:
 spec:
   chartRef:
     kind: OCIRepository
-  interval: 1h
     name: envoy-ai-gateway
+  interval: 1h
