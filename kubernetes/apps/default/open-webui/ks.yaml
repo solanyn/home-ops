@@ -8,9 +8,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: open-webui
-  components:
-  - ../../../../components/defaults
-  - ../../../../components/volsync
   dependsOn:
   - name: searxng
     namespace: default

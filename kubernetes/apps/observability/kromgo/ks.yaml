@@ -8,8 +8,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: kromgo
-  components:
-  - ../../../../components/defaults
   interval: 1h
   path: ./kubernetes/apps/observability/kromgo/app
   prune: true
