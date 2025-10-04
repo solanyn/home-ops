@@ -1,9 +1,10 @@
+---
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: knative-serving
-components:
-  - ../../components/namespace
+components: null
+replacements:
+- path: ../../components/replacements/ks.yaml  - ../../components/namespace
 resources:
-  - ./knative-serving/ks.yaml
-
+- ./knative-serving/ks.yaml
