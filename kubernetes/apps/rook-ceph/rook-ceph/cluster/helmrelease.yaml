@@ -9,17 +9,12 @@ spec:
     kind: OCIRepository
     name: rook-ceph-cluster
   interval: 1h
-  timeout: 15m
   values:
     monitoring:
       enabled: true
       createPrometheusRules: true
     toolbox:
       enabled: true
-      resources:
-        requests: &requests
-          cpu: 10m
-          memory: 10Mi
     route:
       dashboard:
         annotations:
