@@ -38,6 +38,43 @@ spec:
             namespace: network
             sectionName: https
     cephClusterSpec:
+      resources:
+        mgr:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        mon:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        osd:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        prepareosd:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        mgr-sidecar:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        crashcollector:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        logcollector:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        cleanup:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+        exporter:
+          requests:
+            cpu: 10m
+            memory: 10Mi
       cephConfig:
         global:
           bdev_enable_discard: "true" # quote
