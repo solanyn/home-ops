@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: rreading-glasses
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: rreading-glasses
+  interval: 1h
   values:
     controllers:
       rreading-glasses:

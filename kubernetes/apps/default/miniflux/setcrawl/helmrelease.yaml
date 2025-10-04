@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: miniflux-setcrawl
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: miniflux
+  interval: 1h
   dependsOn:
     - name: miniflux
       namespace: default

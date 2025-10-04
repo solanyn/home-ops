@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: ghost
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: ghost
+  interval: 1h
   values:
     controllers:
       ghost:

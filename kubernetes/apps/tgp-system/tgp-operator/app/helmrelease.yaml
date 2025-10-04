@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: tgp-operator
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: tgp-operator
+  interval: 1h
   values:
     config:
       providers:

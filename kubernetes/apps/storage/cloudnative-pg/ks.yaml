@@ -16,13 +16,11 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/storage/cloudnative-pg/app
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
   wait: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -46,13 +44,11 @@ spec:
       # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar
       SIDECAR_IMAGE_VERSION: v0.7.0
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
   wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -88,11 +84,9 @@ spec:
       # renovate: datasource=docker depName=ghcr.io/tensorchord/cloudnative-vectorchord
       CLOUDNATIVE_VECTORCHORD_VERSION: 17.5-0.5.0
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
   wait: true

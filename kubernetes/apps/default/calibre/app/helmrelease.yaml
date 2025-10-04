@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: calibre
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: calibre
+  interval: 1h
   values:
     controllers:
       calibre:

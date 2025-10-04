@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: lakekeeper
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: lakekeeper
+  interval: 1h
   values:
     controllers:
       lakekeeper:

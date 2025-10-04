@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: searxng
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: searxng
+  interval: 1h
   values:
     controllers:
       searxng:

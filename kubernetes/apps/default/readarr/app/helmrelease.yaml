@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: readarr
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: readarr
+  interval: 1h
   values:
     controllers:
       readarr:
