@@ -7,9 +7,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: atuin
-  components:
-  - ../../../../components/defaults
-  - ../../../../components/volsync
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage

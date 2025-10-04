@@ -7,9 +7,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: recyclarr
-  components:
-  - ../../../../components/defaults
-  - ../../../../components/volsync
   dependsOn:
   - name: rook-ceph-cluster
     namespace: rook-ceph
