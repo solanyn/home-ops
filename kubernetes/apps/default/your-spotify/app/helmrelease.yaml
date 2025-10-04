@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: your-spotify
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: your-spotify
+  interval: 1h
   values:
     controllers:
       server:

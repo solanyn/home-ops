@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: autobrr
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: atuin
+  interval: 1h
   values:
     controllers:
       autobrr:

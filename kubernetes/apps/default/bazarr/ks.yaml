@@ -19,11 +19,9 @@ spec:
       VOLSYNC_CAPACITY: 1Gi
       APP: bazarr
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: default
-  timeout: 5m
   wait: false

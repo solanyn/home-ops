@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: stash-tools
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: stash
+  interval: 1h
   dependsOn:
     - name: stash
       namespace: default

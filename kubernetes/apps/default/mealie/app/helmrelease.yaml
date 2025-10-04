@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: mealie
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: mealie
+  interval: 1h
   values:
     controllers:
       mealie:

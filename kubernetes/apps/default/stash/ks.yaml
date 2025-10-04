@@ -18,13 +18,11 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/default/stash/app
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: default
-  timeout: 5m
   wait: false
   postBuild:
     substitute:
@@ -46,11 +44,9 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/default/stash/tools
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
   wait: false
