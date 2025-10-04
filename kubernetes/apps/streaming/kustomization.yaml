@@ -1,9 +1,11 @@
+---
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: streaming
-components:
-  - ../../components/namespace
+components: null
+replacements:
+- path: ../../components/replacements/ks.yaml  - ../../components/namespace
 resources:
-  - ./flink/ks.yaml
-  - ./kafka/ks.yaml
+- ./flink/ks.yaml
+- ./kafka/ks.yaml
