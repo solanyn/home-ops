@@ -3,15 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kubeflow-profiles
-  namespace: &namespace kubeflow
+  name: kubeflow-profiles
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: kubeflow-gateway
-      namespace: kubeflow
+  - name: kubeflow-gateway
+    namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/profiles/app
   prune: true
@@ -19,21 +15,15 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kubeflow-users
-  namespace: &namespace kubeflow
+  name: kubeflow-users
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: kubeflow-profiles
-      namespace: kubeflow
+  - name: kubeflow-profiles
+    namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/profiles/users
   prune: true
@@ -41,21 +31,15 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kubeflow-user-config
-  namespace: kubeflow
+  name: kubeflow-user-config
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: kubeflow-users
-      namespace: kubeflow
+  - name: kubeflow-users
+    namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/profiles/config
   prune: true

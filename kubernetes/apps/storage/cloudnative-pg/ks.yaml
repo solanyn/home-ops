@@ -2,17 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cloudnative-pg
-  namespace: &namespace storage
+  name: cloudnative-pg
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2
-      kind: HelmRelease
-      name: *app
-      namespace: *namespace
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: cloudnative-pg
+    namespace: storage
   interval: 1h
   path: ./kubernetes/apps/storage/cloudnative-pg/app
   prune: true
@@ -20,73 +16,59 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cloudnative-pg-barman-cloud
-  namespace: &namespace storage
+  name: cloudnative-pg-barman-cloud
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: cert-manager
-      namespace: cert-manager
-    - name: cloudnative-pg
-      namespace: *namespace
+  - name: cert-manager
+    namespace: cert-manager
+  - name: cloudnative-pg
+    namespace: storage
   interval: 1h
   path: ./kubernetes/apps/storage/cloudnative-pg/barman-cloud
   postBuild:
     substitute:
-      # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/plugin-barman-cloud-sidecar
       SIDECAR_IMAGE_VERSION: v0.7.0
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: true
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cloudnative-pg-cluster
-  namespace: &namespace storage
+  name: cloudnative-pg-cluster
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: cloudnative-pg
-      namespace: storage
-    - name: cloudnative-pg-barman-cloud
-      namespace: storage
-    - name: minio
-      namespace: storage
+  - name: cloudnative-pg
+    namespace: storage
+  - name: cloudnative-pg-barman-cloud
+    namespace: storage
+  - name: minio
+    namespace: storage
   healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: postgres
+  - apiVersion: postgresql.cnpg.io/v1
+    kind: Cluster
+    name: postgres
   healthCheckExprs:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
-      current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
+  - apiVersion: postgresql.cnpg.io/v1
+    kind: Cluster
+    failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
+    current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
   interval: 1h
   path: ./kubernetes/apps/storage/cloudnative-pg/cluster
   postBuild:
     substitute:
-      # renovate: datasource=docker depName=ghcr.io/tensorchord/cloudnative-vectorchord
       CLOUDNATIVE_VECTORCHORD_VERSION: 17.5-0.5.0
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: true

@@ -2,15 +2,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app miniflux
-  namespace: &namespace default
+  name: miniflux
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: cloudnative-pg-cluster
-      namespace: storage
+  - name: cloudnative-pg-cluster
+    namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/miniflux/app
   prune: true
@@ -18,22 +14,16 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: false
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app miniflux-setcrawl
-  namespace: &namespace default
+  name: miniflux-setcrawl
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: miniflux
-      namespace: default
+  - name: miniflux
+    namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/miniflux/setcrawl
   prune: true
@@ -41,5 +31,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: false

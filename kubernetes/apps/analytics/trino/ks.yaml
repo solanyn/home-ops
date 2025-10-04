@@ -3,20 +3,16 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app trino
-  namespace: &namespace analytics
+  name: trino
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: minio
-      namespace: storage
+  - name: minio
+    namespace: storage
   healthChecks:
-    - apiVersion: helm.toolkit.fluxcd.io/v2
-      kind: HelmRelease
-      name: trino
-      namespace: *namespace
+  - apiVersion: helm.toolkit.fluxcd.io/v2
+    kind: HelmRelease
+    name: trino
+    namespace: analytics
   interval: 1h
   path: ./kubernetes/apps/analytics/trino/app
   prune: true
@@ -24,4 +20,3 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
