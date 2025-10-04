@@ -4,10 +4,10 @@ kind: HelmRelease
 metadata:
   name: miniflux
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: miniflux
+  interval: 1h
   values:
     controllers:
       miniflux:

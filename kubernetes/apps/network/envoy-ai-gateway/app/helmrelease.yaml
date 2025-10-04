@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: envoy-ai-gateway
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
+  interval: 1h
     name: envoy-ai-gateway

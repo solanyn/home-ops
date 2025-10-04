@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: label-studio
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: label-studio
+  interval: 1h
   values:
     controllers:
       label-studio:

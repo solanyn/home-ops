@@ -12,13 +12,11 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/storage/dragonfly/app
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
   wait: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -48,11 +46,9 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/storage/dragonfly/cluster
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   targetNamespace: *namespace
-  timeout: 5m
   wait: true

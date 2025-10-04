@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: headlamp
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: headlamp
+  interval: 1h
   values:
     podAnnotations:
       reloader.stakater.com/auto: "true"

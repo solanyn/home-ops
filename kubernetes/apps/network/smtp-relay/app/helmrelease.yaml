@@ -5,10 +5,10 @@ kind: HelmRelease
 metadata:
   name: smtp-relay
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: smtp-relay
+  interval: 1h
   values:
     controllers:
       smtp-relay:
