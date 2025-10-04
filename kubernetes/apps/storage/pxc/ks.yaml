@@ -2,12 +2,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app pxc
-  namespace: &namespace storage
+  name: pxc
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/storage/pxc/app
   prune: true
@@ -15,33 +11,27 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: true
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app pxc-cluster
-  namespace: &namespace storage
+  name: pxc-cluster
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: pxc
-      namespace: storage
-    - name: minio
-      namespace: storage
+  - name: pxc
+    namespace: storage
+  - name: minio
+    namespace: storage
   healthChecks:
-    - apiVersion: pxc.percona.com
-      kind: PerconaXtraDBCluster
-      name: pxc-cluster
+  - apiVersion: pxc.percona.com
+    kind: PerconaXtraDBCluster
+    name: pxc-cluster
   healthCheckExprs:
-    - apiVersion: pxc.percona.com
-      kind: PerconaXtraDBCluster
-      failed: status.conditions.filter(e, e.type == 'Status').all(e, e.status != 'ready')
-      current: status.conditions.filter(e, e.type == 'Status').all(e, e.status == 'ready')
+  - apiVersion: pxc.percona.com
+    kind: PerconaXtraDBCluster
+    failed: status.conditions.filter(e, e.type == 'Status').all(e, e.status != 'ready')
+    current: status.conditions.filter(e, e.type == 'Status').all(e, e.status == 'ready')
   interval: 1h
   path: ./kubernetes/apps/storage/pxc/cluster
   prune: true
@@ -49,5 +39,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: true

@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app knative-serving
-  namespace: &namespace knative-serving
+  name: knative-serving
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
   path: ./kubernetes/apps/knative-serving/knative-serving/app
   prune: true
@@ -16,21 +12,15 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app knative-serving-domain
-  namespace: &namespace knative-serving
+  name: knative-serving-domain
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: knative-serving
-      namespace: knative-serving
+  - name: knative-serving
+    namespace: knative-serving
   interval: 1h
   path: ./kubernetes/apps/knative-serving/knative-serving/domain
   prune: true
@@ -38,4 +28,3 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace

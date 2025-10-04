@@ -1,13 +1,10 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: stash
-  namespace: default
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: stash
   dependsOn:
   - name: intel-device-plugin-gpu
     namespace: kube-system
@@ -17,30 +14,24 @@ spec:
     namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/default/stash/app
+  postBuild:
+    substitute:
+      APP: stash
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: default
   wait: false
-  postBuild:
-    substitute:
-      APP: stash
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app stash-tools
-  namespace: &namespace default
+  name: stash-tools
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: stash
-      namespace: default
+  - name: stash
+    namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/stash/tools
   prune: true
@@ -48,5 +39,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: false
