@@ -3,15 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app rreading-glasses
-  namespace: &namespace default
+  name: rreading-glasses
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: cloudnative-pg-cluster
-      namespace: storage
+  - name: cloudnative-pg-cluster
+    namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/rreading-glasses/app
   prune: true
@@ -19,5 +15,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: false

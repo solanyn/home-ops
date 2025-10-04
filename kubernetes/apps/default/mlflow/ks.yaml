@@ -2,17 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app mlflow
-  namespace: &namespace default
+  name: mlflow
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: cloudnative-pg-cluster
-      namespace: storage
-    - name: minio
-      namespace: storage
+  - name: cloudnative-pg-cluster
+    namespace: storage
+  - name: minio
+    namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/mlflow/app
   prune: true
@@ -20,5 +16,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
   wait: false

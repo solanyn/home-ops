@@ -3,19 +3,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kubeflow-pipelines
-  namespace: &namespace kubeflow
+  name: kubeflow-pipelines
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: minio
-      namespace: storage
-    - name: pxc-cluster
-      namespace: storage
-    - name: kubeflow-gateway
-      namespace: kubeflow
+  - name: minio
+    namespace: storage
+  - name: pxc-cluster
+    namespace: storage
+  - name: kubeflow-gateway
+    namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/pipelines/app
   prune: true
@@ -23,4 +19,3 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace

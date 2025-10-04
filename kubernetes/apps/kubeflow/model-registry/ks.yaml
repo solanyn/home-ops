@@ -3,15 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kubeflow-model-registry
-  namespace: &namespace kubeflow
+  name: kubeflow-model-registry
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
-    - name: kubeflow-kserve
-      namespace: kubeflow
+  - name: kubeflow-kserve
+    namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/model-registry/app
   prune: true
@@ -19,4 +15,3 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
