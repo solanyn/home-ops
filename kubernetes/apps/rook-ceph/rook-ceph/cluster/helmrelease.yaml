@@ -11,9 +11,6 @@ spec:
   interval: 1h
   timeout: 15m
   values:
-    cephImage:
-      repository: quay.io/ceph/ceph
-      tag: v19.2.3
     monitoring:
       enabled: true
       createPrometheusRules: true
