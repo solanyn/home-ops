@@ -39,6 +39,8 @@ spec:
             namespace: network
             sectionName: https
     cephClusterSpec:
+      cephVersion:
+        image: quay.io/ceph/ceph:v19.2.3
       cephConfig:
         global:
           bdev_enable_discard: "true" # quote
