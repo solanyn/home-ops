@@ -5,6 +5,8 @@ kind: Kustomization
 metadata:
   name: mealie
 spec:
+  components:
+    - ../../../../components/volsync
   dependsOn:
   - name: pocket-id
     namespace: default
