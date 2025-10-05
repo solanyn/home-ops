@@ -4,10 +4,10 @@ metadata:
   name: kafka-lb
   annotations:
     external-dns.alpha.kubernetes.io/hostname: kafka.goyangi.io
-    lbipam.cilium.io/ips: 192.168.42.132
+    lbipam.cilium.io/ips: 192.168.69.132
 spec:
   type: LoadBalancer
-  externalTrafficPolicy: Cluster
+  externalTrafficPolicy: Local
   ports:
     - port: 9092
       targetPort: 9092
