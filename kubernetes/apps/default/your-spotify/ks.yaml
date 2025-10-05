@@ -8,8 +8,6 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
-  - name: volsync
-    namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/default/your-spotify/app
   postBuild:
