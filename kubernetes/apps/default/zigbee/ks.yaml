@@ -5,6 +5,8 @@ kind: Kustomization
 metadata:
   name: zigbee
 spec:
+  components:
+    - ../../../../components/volsync
   dependsOn:
   - name: mosquitto
     namespace: default
