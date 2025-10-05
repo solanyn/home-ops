@@ -74,6 +74,7 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /data/database
+          - path: /etc/wizarr
       tmp:
         type: emptyDir
         globalMounts:
