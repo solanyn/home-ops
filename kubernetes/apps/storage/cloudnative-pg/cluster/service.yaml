@@ -5,10 +5,10 @@ metadata:
   name: postgres-lb
   annotations:
     external-dns.alpha.kubernetes.io/hostname: postgres.goyangi.io
-    lbipam.cilium.io/ips: 192.168.42.125
+    lbipam.cilium.io/ips: 192.168.69.125
 spec:
   type: LoadBalancer
-  externalTrafficPolicy: Cluster
+  externalTrafficPolicy: Local
   ports:
     - name: postgres
       port: 5432
