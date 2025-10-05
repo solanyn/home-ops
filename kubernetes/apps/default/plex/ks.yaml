@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: plex
 spec:
+  components:
+    - ../../../../components/nfs-scaler
+    - ../../../../components/volsync
   dependsOn:
   - name: intel-device-plugin-gpu
     namespace: kube-system
