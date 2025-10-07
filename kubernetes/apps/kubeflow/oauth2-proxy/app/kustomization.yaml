@@ -8,6 +8,7 @@ resources:
 patchesStrategicMerge:
   - patches/patch.oauth2-proxy.deployment.yaml
   - patches/patch.dex-jwt.requestauthentication.yaml
+  - patches/patch.cluster-jwks-proxy.deployment.yaml
 configMapGenerator:
   - name: oauth2-proxy-parameters
     behavior: replace
