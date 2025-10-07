@@ -8,8 +8,6 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/knative-serving/knative-serving/app
   prune: true
-  # Override targetNamespace to allow upstream multi-namespace deployment
-  targetNamespace: null
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -26,8 +24,6 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/knative-serving/knative-serving/domain
   prune: true
-  # Override targetNamespace to allow upstream multi-namespace deployment
-  targetNamespace: null
   sourceRef:
     kind: GitRepository
     name: flux-system

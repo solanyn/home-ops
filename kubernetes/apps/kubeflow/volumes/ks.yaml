@@ -11,8 +11,6 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/kubeflow/volumes/app
   prune: true
-  # Override targetNamespace to allow upstream multi-namespace deployment
-  targetNamespace: null
   sourceRef:
     kind: GitRepository
     name: flux-system
