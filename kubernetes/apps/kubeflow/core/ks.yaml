@@ -87,4 +87,3 @@ spec:
     name: flux-system
     namespace: flux-system
   # Override targetNamespace to allow cross-namespace deployment (HTTPRoute in kubeflow, ReferenceGrant in istio-system)
-  targetNamespace: null
