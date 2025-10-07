@@ -42,6 +42,7 @@ configMapGenerator:
       - mysqlPort=3306
       - mlmdDb=kfp_metadata
       - cacheDb=kfp_cache
+      - pipelineDb=kfp_pipelines
         # UserID Config
       - USERID_HEADER=kubeflow-userid
       - USERID_PREFIX=
