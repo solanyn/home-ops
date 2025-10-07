@@ -6,8 +6,8 @@ metadata:
   name: kubeflow-cert-issuer
 spec:
   dependsOn:
-  - name: cert-manager
-    namespace: cert-manager
+    - name: cert-manager
+      namespace: cert-manager
   interval: 1h
   path: ./kubernetes/apps/kubeflow/core/issuer
   prune: true
@@ -48,8 +48,8 @@ metadata:
   name: kubeflow-gateway
 spec:
   dependsOn:
-  - name: istiod
-    namespace: istio-system
+    - name: istiod
+      namespace: istio-system
   interval: 1h
   path: ./kubernetes/apps/kubeflow/core/gateway
   prune: true
@@ -70,20 +70,3 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: kubeflow-gateway-ingress
-spec:
-  dependsOn:
-  - name: kubeflow-gateway
-    namespace: kubeflow
-  interval: 1h
-  path: ./kubernetes/apps/kubeflow/core/ingress
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  # Override targetNamespace to allow cross-namespace deployment (HTTPRoute in kubeflow, ReferenceGrant in istio-system)
