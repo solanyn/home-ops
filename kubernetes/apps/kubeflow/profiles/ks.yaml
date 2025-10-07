@@ -11,6 +11,8 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/kubeflow/profiles/app
   prune: true
+  # Override targetNamespace to allow upstream multi-namespace deployment
+  targetNamespace: null
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -27,6 +29,8 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/kubeflow/profiles/users
   prune: true
+  # Override targetNamespace to allow upstream multi-namespace deployment
+  targetNamespace: null
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -43,6 +47,8 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/kubeflow/profiles/config
   prune: true
+  # Override targetNamespace to allow upstream multi-namespace deployment
+  targetNamespace: null
   sourceRef:
     kind: GitRepository
     name: flux-system
