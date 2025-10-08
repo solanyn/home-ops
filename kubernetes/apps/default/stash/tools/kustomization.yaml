@@ -9,6 +9,7 @@ configMapGenerator:
       - scan.graphql=resources/scan.graphql
       - identify.graphql=resources/identify.graphql
       - autotag.graphql=resources/autotag.graphql
+      - clean-database.graphql=resources/clean-database.graphql
       - clean-generated.graphql=resources/clean-generated.graphql
       - optimise-database.graphql=resources/optimise-database.graphql
 generatorOptions:
