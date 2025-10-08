@@ -8,12 +8,7 @@ spec:
     spec:
       containers:
         - name: ml-pipeline-api-server
-          image: ghcr.io/kubeflow/kfp-api-server:2.14.3
-          args:
-            - --config=/config
-            - --sampleconfig=/config/sample_config.json
-            - -logtostderr=true
-            - --grpcPort=8887
+          image: ghcr.io/kubeflow/kfp-api-server:2.5.0
           readinessProbe:
             $patch: delete
           livenessProbe:
