@@ -79,7 +79,7 @@ spec:
               - sh
               - -c
               - |
-                QUERY=$(cat /queries/autotag.graphql | tr '\n' ' ' | sed 's/"/\\"/g')
+                QUERY=$(cat /queries/clean-database.graphql | tr '\n' ' ' | sed 's/"/\\"/g')
                 curl -sS -X POST "$STASH_URL" \
                   -H "Content-Type: application/json" \
                   -d "{\"query\": \"$QUERY\"}"
