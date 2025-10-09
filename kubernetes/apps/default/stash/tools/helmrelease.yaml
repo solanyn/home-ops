@@ -22,7 +22,7 @@ spec:
           successfulJobsHistory: 1
           failedJobsHistory: 1
         containers:
-          tag: &container
+          scan: &container
             image:
               repository: quay.io/curl/curl
               tag: 8.16.0
