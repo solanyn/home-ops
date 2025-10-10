@@ -6,13 +6,14 @@ metadata:
   name: stash
 spec:
   components:
+    - ../../../../components/gpu
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
-  - name: intel-device-plugin-gpu
-    namespace: kube-system
-  - name: rook-ceph-cluster
-    namespace: rook-ceph
+    - name: intel-gpu-resource-driver
+      namespace: kube-system
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/stash/app
   postBuild:
