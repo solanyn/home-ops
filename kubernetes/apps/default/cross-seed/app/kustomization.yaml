@@ -5,6 +5,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+  - ./pvc.yaml
 configMapGenerator:
   - name: cross-seed-loki-rules
     files:

@@ -51,8 +51,8 @@ spec:
           http:
             port: 80
     persistence:
-      config:
-        existingClaim: cross-seed
+      data:
+        existingClaim: "{{ .Release.Name }}"
       secret-file:
         type: secret
         name: cross-seed-secret

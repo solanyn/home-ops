@@ -7,13 +7,11 @@ metadata:
 spec:
   components:
     - ../../../../components/nfs-scaler
-    - ../../../../components/volsync
   dependsOn:
   interval: 1h
   path: ./kubernetes/apps/default/cross-seed/app
   postBuild:
     substitute:
-      VOLSYNC_CAPACITY: 5Gi
       APP: cross-seed
   prune: true
   sourceRef:
