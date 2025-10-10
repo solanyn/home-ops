@@ -51,26 +51,28 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
-        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         ports:
           http:
-            primary: true
             port: *port
           health:
             port: *healthPort
     route:
       app:
         annotations:
-          gatus.home-operations.com/enabled: "true"
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 404"]
-        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
         parentRefs:
           - name: envoy-external
             namespace: network
             sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
 
     persistence:
       config-file:
@@ -79,4 +81,3 @@ spec:
         globalMounts:
           - path: /kromgo/config.yaml
             subPath: config.yaml
-            readOnly: true
