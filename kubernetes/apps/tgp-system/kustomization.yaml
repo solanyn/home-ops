@@ -7,5 +7,5 @@ components:
   - ../../components/namespace
 replacements:
   - path: ../../components/replacements/ks.yaml
-resources:
-  - ./tgp-operator/ks.yaml
+# resources:
+#   - ./tgp-operator/ks.yaml
