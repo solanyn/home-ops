@@ -53,6 +53,8 @@ spec:
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /config
       secret-file:
         type: secret
         name: cross-seed-secret
