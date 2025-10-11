@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: zigbee
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: zigbee
   components:
     - ../../../../components/volsync
   dependsOn:

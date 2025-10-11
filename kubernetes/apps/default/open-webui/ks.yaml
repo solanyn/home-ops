@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: open-webui
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: open-webui
   components:
     - ../../../../components/volsync
   dependsOn:

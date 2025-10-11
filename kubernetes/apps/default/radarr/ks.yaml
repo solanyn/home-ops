@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: radarr
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: radarr
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage

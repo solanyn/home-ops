@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: thelounge
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: thelounge
   components:
     - ../../../../components/volsync
   dependsOn:

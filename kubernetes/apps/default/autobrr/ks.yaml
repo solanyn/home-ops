@@ -4,6 +4,10 @@ kind: Kustomization
 metadata:
   name: autobrr
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: autobrr
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage

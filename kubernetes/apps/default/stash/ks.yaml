@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: stash
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: stash
   components:
     - ../../../../components/gpu
     - ../../../../components/nfs-scaler
@@ -31,6 +35,10 @@ kind: Kustomization
 metadata:
   name: stash-tools
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: stash
   dependsOn:
   - name: stash
     namespace: default

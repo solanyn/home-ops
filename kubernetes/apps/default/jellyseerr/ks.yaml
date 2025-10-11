@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: jellyseerr
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: jellyseerr
   components:
     - ../../../../components/volsync
   dependsOn:
