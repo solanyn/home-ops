@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: zwave
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: zwave
   components:
     - ../../../../components/volsync
   dependsOn:

@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: calibre
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: calibre
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync

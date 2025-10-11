@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: wizarr
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: wizarr
   components:
     - ../../../../components/volsync
   dependsOn:

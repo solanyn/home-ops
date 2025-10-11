@@ -5,8 +5,11 @@ kind: Kustomization
 metadata:
   name: plex
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: plex
   components:
-    - ../../../../components/gpu
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:

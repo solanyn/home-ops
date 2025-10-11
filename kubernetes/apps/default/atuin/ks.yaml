@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: atuin
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: atuin
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage
