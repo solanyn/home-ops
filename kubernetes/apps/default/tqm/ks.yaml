@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: tqm
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: tqm
   dependsOn:
   - name: qbittorrent
     namespace: default

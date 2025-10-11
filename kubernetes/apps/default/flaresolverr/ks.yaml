@@ -4,6 +4,10 @@ kind: Kustomization
 metadata:
   name: flaresolverr
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: flaresolverr
   interval: 1h
   path: ./kubernetes/apps/default/flaresolverr/app
   prune: true

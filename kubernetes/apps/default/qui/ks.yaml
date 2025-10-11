@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: qui
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: qui
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync

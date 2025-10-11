@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: recyclarr
 spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: recyclarr
   components:
     - ../../../../components/volsync
   dependsOn:

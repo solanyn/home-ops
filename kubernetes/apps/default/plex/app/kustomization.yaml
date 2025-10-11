@@ -4,12 +4,4 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
-configMapGenerator:
-  - name: plex-loki-rules
-    files:
-      - plex.yaml=./lokirule.yaml
-    options:
-      labels:
-        loki_rule: "true"
-generatorOptions:
-  disableNameSuffixHash: true
+  - ./resourceclaimtemplate.yaml
