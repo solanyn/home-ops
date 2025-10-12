@@ -6,9 +6,6 @@ metadata:
   name: envoy-ai-gateway
 spec:
   targetNamespace: network
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: envoy-ai-gateway
   dependsOn:
     - name: envoy-gateway
   interval: 1h
@@ -27,9 +24,6 @@ metadata:
   name: envoy-ai-gateway-backends
 spec:
   targetNamespace: network
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: envoy-ai-gateway-backends
   dependsOn:
     - name: envoy-ai-gateway
   interval: 1h

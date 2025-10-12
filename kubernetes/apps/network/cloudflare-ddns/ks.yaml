@@ -6,9 +6,6 @@ metadata:
   name: cloudflare-ddns
 spec:
   targetNamespace: network
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: cloudflare-ddns
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
     kind: HelmRelease

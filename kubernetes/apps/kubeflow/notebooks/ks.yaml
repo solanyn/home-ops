@@ -6,9 +6,6 @@ metadata:
   name: kubeflow-notebooks
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: notebooks
   dependsOn:
   - name: kubeflow-gateway
     namespace: kubeflow

@@ -6,9 +6,6 @@ metadata:
   name: oauth2-proxy
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: oauth2-proxy
   dependsOn:
   - name: istiod
     namespace: istio-system

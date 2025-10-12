@@ -6,9 +6,6 @@ metadata:
   name: kubeflow-model-registry
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: model-registry
   dependsOn:
   - name: kubeflow-kserve
     namespace: kubeflow

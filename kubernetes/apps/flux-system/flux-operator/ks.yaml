@@ -6,9 +6,6 @@ metadata:
   name: flux-operator
 spec:
   targetNamespace: flux-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: flux-operator
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
     kind: HelmRelease

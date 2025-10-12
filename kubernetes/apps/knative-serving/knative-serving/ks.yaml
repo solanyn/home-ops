@@ -6,9 +6,6 @@ metadata:
   name: knative-serving
 spec:
   targetNamespace: knative-serving
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: ks
   interval: 1h
   path: ./kubernetes/apps/knative-serving/knative-serving/app
   prune: true
@@ -23,9 +20,6 @@ metadata:
   name: knative-serving-domain
 spec:
   targetNamespace: knative-serving
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: ks
   dependsOn:
   - name: knative-serving
     namespace: knative-serving

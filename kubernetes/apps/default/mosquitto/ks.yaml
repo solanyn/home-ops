@@ -6,9 +6,6 @@ metadata:
   name: mosquitto
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: mosquitto
   dependsOn:
   - name: rook-ceph-cluster
     namespace: rook-ceph

@@ -6,9 +6,6 @@ metadata:
   name: tautulli
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: tautulli
   components:
     - ../../../../components/volsync
   dependsOn:

@@ -6,9 +6,6 @@ metadata:
   name: your-spotify
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: your-spotify
   components:
     - ../../../../components/volsync
   dependsOn:

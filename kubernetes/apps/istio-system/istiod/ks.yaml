@@ -6,9 +6,6 @@ metadata:
   name: istiod
 spec:
   targetNamespace: istio-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: istiod
   dependsOn:
   - name: istio-base
     namespace: istio-system

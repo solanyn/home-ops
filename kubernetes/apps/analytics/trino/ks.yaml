@@ -6,9 +6,6 @@ metadata:
   name: trino
 spec:
   targetNamespace: analytics
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: trino
   dependsOn:
   - name: minio
     namespace: storage

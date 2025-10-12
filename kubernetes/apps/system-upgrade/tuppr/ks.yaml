@@ -6,9 +6,6 @@ metadata:
   name: tuppr
 spec:
   targetNamespace: system-upgrade
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: tuppr
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
     kind: HelmRelease
@@ -28,9 +25,6 @@ metadata:
   name: tuppr-upgrades
 spec:
   targetNamespace: system-upgrade
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: tuppr
   dependsOn:
   - name: tuppr
     namespace: system-upgrade

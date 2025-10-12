@@ -6,9 +6,6 @@ metadata:
   name: home-assistant
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: home-assistant
   components:
     - ../../../../components/volsync
   dependsOn:

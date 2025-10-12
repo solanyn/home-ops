@@ -6,9 +6,6 @@ metadata:
   name: bazarr
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: bazarr
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync

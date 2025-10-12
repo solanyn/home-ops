@@ -6,9 +6,6 @@ metadata:
   name: label-studio
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: label-studio
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage

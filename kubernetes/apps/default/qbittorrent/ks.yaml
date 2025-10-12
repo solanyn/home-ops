@@ -6,9 +6,6 @@ metadata:
   name: qbittorrent
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: qbittorrent
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync

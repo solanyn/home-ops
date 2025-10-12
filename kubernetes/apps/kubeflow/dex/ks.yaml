@@ -6,9 +6,6 @@ metadata:
   name: dex
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: dex
   dependsOn:
   - name: pocket-id
     namespace: default

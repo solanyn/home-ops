@@ -6,9 +6,6 @@ metadata:
   name: kubeflow-cert-issuer
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: core
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
@@ -26,9 +23,6 @@ metadata:
   name: kubeflow-network-policies
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: core
   interval: 1h
   path: ./kubernetes/apps/kubeflow/core/networkpolicies
   prune: true
@@ -43,9 +37,6 @@ metadata:
   name: kubeflow-roles
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: core
   interval: 1h
   path: ./kubernetes/apps/kubeflow/core/roles
   prune: true
@@ -60,9 +51,6 @@ metadata:
   name: kubeflow-gateway
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: core
   dependsOn:
     - name: istiod
       namespace: istio-system
@@ -80,9 +68,6 @@ metadata:
   name: kubeflow-config
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: core
   interval: 1h
   path: ./kubernetes/apps/kubeflow/core/config
   prune: true

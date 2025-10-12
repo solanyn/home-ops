@@ -6,9 +6,6 @@ metadata:
   name: kubeflow-admission-webhook
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: admission-webhook
   dependsOn:
   - name: kubeflow-gateway
     namespace: kubeflow

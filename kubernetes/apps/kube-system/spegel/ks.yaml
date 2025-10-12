@@ -6,9 +6,6 @@ metadata:
   name: spegel
 spec:
   targetNamespace: kube-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: spegel
   interval: 1h
   path: ./kubernetes/apps/kube-system/spegel/app
   prune: true

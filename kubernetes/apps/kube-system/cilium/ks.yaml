@@ -6,9 +6,6 @@ metadata:
   name: cilium
 spec:
   targetNamespace: kube-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: cilium
   interval: 1h
   path: ./kubernetes/apps/kube-system/cilium/app
   prune: true

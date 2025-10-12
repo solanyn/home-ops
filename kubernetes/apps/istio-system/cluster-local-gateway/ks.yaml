@@ -6,9 +6,6 @@ metadata:
   name: cluster-local-gateway
 spec:
   targetNamespace: istio-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: cluster-local-gateway
   dependsOn:
   - name: istiod
     namespace: istio-system
