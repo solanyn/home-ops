@@ -37,7 +37,7 @@ spec:
             env:
               STASH_URL: http://stash.default.svc.cluster.local:9999/graphql
             securityContext:
-              allowPrivilegeEscalation: true
+              allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
