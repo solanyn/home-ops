@@ -16,7 +16,7 @@ spec:
       scan:
         type: cronjob
         cronjob: &cronJobSpec
-          schedule: "@hourly"
+          schedule: "*/10 * * * *"
           timeZone: &timeZone Australia/Sydney
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
@@ -70,7 +70,7 @@ spec:
         type: cronjob
         cronjob:
           !!merge <<: *cronJobSpec
-          schedule: "@daily"
+          schedule: "@hourly"
           suspend: false
         containers:
           clean-database:
