@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: kyverno
 spec:
+  targetNamespace: kyverno
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: ks
   interval: 1h
   path: ./kubernetes/apps/kyverno/kyverno/app
   prune: true
@@ -19,6 +23,10 @@ kind: Kustomization
 metadata:
   name: kyverno-policies
 spec:
+  targetNamespace: kyverno
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: ks
   dependsOn:
   - name: kyverno
     namespace: kyverno
