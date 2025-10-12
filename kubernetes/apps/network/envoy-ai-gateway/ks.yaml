@@ -5,9 +5,12 @@ kind: Kustomization
 metadata:
   name: envoy-ai-gateway
 spec:
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: envoy-ai-gateway
   dependsOn:
-  - name: envoy-gateway
-    namespace: network
+    - name: envoy-gateway
   interval: 1h
   path: ./kubernetes/apps/network/envoy-ai-gateway/app
   prune: true
@@ -17,20 +20,24 @@ spec:
     namespace: flux-system
   wait: false
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: envoy-ai-gateway-backends
 spec:
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: envoy-ai-gateway-backends
   dependsOn:
-  - name: envoy-ai-gateway
-    namespace: network
+    - name: envoy-ai-gateway
   interval: 1h
   path: ./kubernetes/apps/network/envoy-ai-gateway/backends
   postBuild:
     substituteFrom:
-    - kind: Secret
-      name: envoy-ai-gateway-secret
+      - kind: Secret
+        name: envoy-ai-gateway-secret
   prune: true
   sourceRef:
     kind: GitRepository

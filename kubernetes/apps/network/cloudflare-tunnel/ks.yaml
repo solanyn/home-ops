@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: cloudflare-tunnel
 spec:
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: cloudflare-tunnel
   interval: 1h
   path: ./kubernetes/apps/network/cloudflare-tunnel/app
   postBuild:
