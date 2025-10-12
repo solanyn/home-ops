@@ -5,9 +5,12 @@ kind: Kustomization
 metadata:
   name: envoy-gateway
 spec:
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: envoy-gateway
   dependsOn:
   - name: certificates-import
-    namespace: network
   interval: 1h
   path: ./kubernetes/apps/network/envoy-gateway/app
   prune: true

@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: unifi-dns
 spec:
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: unifi-dns
   interval: 1h
   path: ./kubernetes/apps/network/unifi-dns/app
   prune: true
