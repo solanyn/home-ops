@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: kubeflow-katib
 spec:
+  targetNamespace: kubeflow
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: katib
   dependsOn:
   - name: pxc-cluster
     namespace: storage

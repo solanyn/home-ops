@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: kromgo
 spec:
+  targetNamespace: observability
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: kromgo
   interval: 1h
   path: ./kubernetes/apps/observability/kromgo/app
   prune: true

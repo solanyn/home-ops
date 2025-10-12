@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: keda
 spec:
+  targetNamespace: observability
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: keda
   interval: 1h
   path: ./kubernetes/apps/observability/keda/app
   prune: true

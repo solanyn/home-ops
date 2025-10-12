@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: onepassword
 spec:
+  targetNamespace: external-secrets
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: onepassword
   dependsOn:
   - name: external-secrets
     namespace: external-secrets

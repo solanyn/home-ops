@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: fluent-bit
 spec:
+  targetNamespace: observability
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: fluent-bit
   interval: 1h
   path: ./kubernetes/apps/observability/fluent-bit/app
   prune: true

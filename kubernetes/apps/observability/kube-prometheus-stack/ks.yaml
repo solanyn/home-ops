@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: kube-prometheus-stack
 spec:
+  targetNamespace: observability
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: kube-prometheus-stack
   dependsOn:
   - name: rook-ceph-cluster
     namespace: rook-ceph

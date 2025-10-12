@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: feast
 spec:
+  targetNamespace: serving
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: feast
   interval: 1h
   path: ./kubernetes/apps/serving/feast/app
   prune: true

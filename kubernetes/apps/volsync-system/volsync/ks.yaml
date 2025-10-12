@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: volsync
 spec:
+  targetNamespace: volsync-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: volsync
   dependsOn:
   - name: openebs
     namespace: openebs-system
@@ -28,6 +32,10 @@ kind: Kustomization
 metadata:
   name: volsync-maintenance
 spec:
+  targetNamespace: volsync-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: volsync
   dependsOn:
   - name: volsync
     namespace: volsync-system

@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: dragonfly
 spec:
+  targetNamespace: storage
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: dragonfly
   interval: 1h
   path: ./kubernetes/apps/storage/dragonfly/app
   prune: true
@@ -19,6 +23,10 @@ kind: Kustomization
 metadata:
   name: dragonfly-cluster
 spec:
+  targetNamespace: storage
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: dragonfly
   dependsOn:
   - name: dragonfly
     namespace: storage
