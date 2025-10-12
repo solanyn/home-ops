@@ -6,9 +6,6 @@ metadata:
   name: dask
 spec:
   targetNamespace: analytics
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: dask
   interval: 1h
   path: ./kubernetes/apps/analytics/dask/app
   prune: false
@@ -24,9 +21,6 @@ metadata:
   name: dask-cluster
 spec:
   targetNamespace: analytics
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: dask
   dependsOn:
   - name: dask
     namespace: analytics

@@ -6,9 +6,6 @@ metadata:
   name: cross-seed
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: cross-seed
   components:
     - ../../../../components/nfs-scaler
   dependsOn:

@@ -6,9 +6,6 @@ metadata:
   name: gatus
 spec:
   targetNamespace: observability
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: gatus
   interval: 1h
   path: ./kubernetes/apps/observability/gatus/app
   prune: true

@@ -6,9 +6,6 @@ metadata:
   name: rook-ceph
 spec:
   targetNamespace: rook-ceph
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: ks
   interval: 1h
   path: ./kubernetes/apps/rook-ceph/rook-ceph/app
   prune: true
@@ -25,9 +22,6 @@ metadata:
   name: rook-ceph-cluster
 spec:
   targetNamespace: rook-ceph
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: ks
   dependsOn:
     - name: rook-ceph
     - name: volsync

@@ -6,9 +6,6 @@ metadata:
   name: openebs
 spec:
   targetNamespace: openebs-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: openebs
   interval: 1h
   path: ./kubernetes/apps/openebs-system/openebs/app
   prune: true

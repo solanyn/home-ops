@@ -6,9 +6,6 @@ metadata:
   name: istio-base
 spec:
   targetNamespace: istio-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: istio-base
   interval: 1h
   path: ./kubernetes/apps/istio-system/istio-base/app
   prune: true

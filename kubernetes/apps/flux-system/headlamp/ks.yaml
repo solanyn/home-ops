@@ -6,9 +6,6 @@ metadata:
   name: headlamp
 spec:
   targetNamespace: flux-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: headlamp
   interval: 1h
   path: ./kubernetes/apps/flux-system/headlamp/app
   prune: true

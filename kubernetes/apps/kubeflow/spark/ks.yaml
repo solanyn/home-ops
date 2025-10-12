@@ -6,9 +6,6 @@ metadata:
   name: kubeflow-spark
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: spark
   dependsOn:
   - name: kubeflow-gateway
     namespace: kubeflow

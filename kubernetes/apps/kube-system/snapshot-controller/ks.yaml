@@ -7,9 +7,6 @@ metadata:
   namespace: kube-system
 spec:
   targetNamespace: kube-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: snapshot-controller
   interval: 12h
   url: https://piraeus.io/helm-charts/
 ---
@@ -19,9 +16,6 @@ metadata:
   name: snapshot-controller
 spec:
   targetNamespace: kube-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: snapshot-controller
   interval: 1h
   path: ./kubernetes/apps/kube-system/snapshot-controller/app
   prune: true

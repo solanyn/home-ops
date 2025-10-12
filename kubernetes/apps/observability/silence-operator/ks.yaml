@@ -6,9 +6,6 @@ metadata:
   name: silence-operator
 spec:
   targetNamespace: observability
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: silence-operator
   healthChecks:
   - apiVersion: helm.toolkit.fluxcd.io/v2
     kind: HelmRelease
@@ -28,9 +25,6 @@ metadata:
   name: silence-operator-silences
 spec:
   targetNamespace: observability
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: silence-operator
   dependsOn:
   - name: silence-operator
     namespace: observability

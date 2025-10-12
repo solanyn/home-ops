@@ -6,9 +6,6 @@ metadata:
   name: kubeflow-centraldashboard
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: centraldashboard
   dependsOn:
   - name: kubeflow-gateway
     namespace: kubeflow
