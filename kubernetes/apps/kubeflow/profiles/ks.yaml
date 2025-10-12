@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: kubeflow-profiles
 spec:
+  targetNamespace: kubeflow
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: profiles
   dependsOn:
   - name: kubeflow-gateway
     namespace: kubeflow
@@ -21,6 +25,10 @@ kind: Kustomization
 metadata:
   name: kubeflow-users
 spec:
+  targetNamespace: kubeflow
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: profiles
   dependsOn:
   - name: kubeflow-profiles
     namespace: kubeflow
@@ -37,6 +45,10 @@ kind: Kustomization
 metadata:
   name: kubeflow-user-config
 spec:
+  targetNamespace: kubeflow
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: profiles
   dependsOn:
   - name: kubeflow-users
     namespace: kubeflow

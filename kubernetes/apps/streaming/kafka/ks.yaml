@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: kafka
 spec:
+  targetNamespace: streaming
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: kafka
   interval: 1h
   path: ./kubernetes/apps/streaming/kafka/app
   prune: false
@@ -19,6 +23,10 @@ kind: Kustomization
 metadata:
   name: kafka-cluster
 spec:
+  targetNamespace: streaming
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: kafka
   dependsOn:
   - name: kafka
     namespace: streaming

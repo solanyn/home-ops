@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: kubeflow-volumes
 spec:
+  targetNamespace: kubeflow
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: volumes
   dependsOn:
   - name: kubeflow-gateway
     namespace: kubeflow

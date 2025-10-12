@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: kubeflow-tensorboards
 spec:
+  targetNamespace: kubeflow
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: tensorboards
   dependsOn:
   - name: kubeflow-gateway
     namespace: kubeflow

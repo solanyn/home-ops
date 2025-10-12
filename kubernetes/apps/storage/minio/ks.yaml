@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: minio
 spec:
+  targetNamespace: storage
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: minio
   interval: 1h
   path: ./kubernetes/apps/storage/minio/app
   prune: true

@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: descheduler
 spec:
+  targetNamespace: kube-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: descheduler
   interval: 1h
   path: ./kubernetes/apps/kube-system/descheduler/app
   prune: true

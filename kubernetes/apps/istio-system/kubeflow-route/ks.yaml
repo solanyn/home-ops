@@ -6,6 +6,10 @@ metadata:
   name: kubeflow-route
   namespace: flux-system
 spec:
+  targetNamespace: istio-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: kubeflow-route
   dependsOn:
     - name: istiod
       namespace: istio-system

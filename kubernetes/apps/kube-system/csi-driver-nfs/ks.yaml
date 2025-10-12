@@ -5,6 +5,10 @@ kind: Kustomization
 metadata:
   name: csi-driver-nfs
 spec:
+  targetNamespace: kube-system
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: csi-driver-nfs
   interval: 1h
   path: ./kubernetes/apps/kube-system/csi-driver-nfs/app
   prune: true
