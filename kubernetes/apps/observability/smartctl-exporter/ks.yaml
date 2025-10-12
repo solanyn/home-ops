@@ -6,9 +6,6 @@ metadata:
   name: smartctl-exporter
 spec:
   targetNamespace: observability
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: smartctl-exporter
   interval: 1h
   path: ./kubernetes/apps/observability/smartctl-exporter/app
   prune: true

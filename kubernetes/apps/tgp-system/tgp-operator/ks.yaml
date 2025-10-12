@@ -6,9 +6,6 @@ metadata:
   name: tgp-operator
 spec:
   targetNamespace: tgp-system
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: tgp-operator
   interval: 1h
   path: ./kubernetes/apps/tgp-system/tgp-operator/app
   prune: false

@@ -6,9 +6,6 @@ metadata:
   name: pocket-id
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: pocket-id
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage

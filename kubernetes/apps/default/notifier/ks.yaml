@@ -6,9 +6,6 @@ metadata:
   name: notifier
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: notifier
   interval: 1h
   path: ./kubernetes/apps/default/notifier/app
   prune: true

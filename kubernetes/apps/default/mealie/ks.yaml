@@ -6,9 +6,6 @@ metadata:
   name: mealie
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: mealie
   components:
     - ../../../../components/volsync
   dependsOn:

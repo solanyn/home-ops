@@ -6,9 +6,6 @@ metadata:
   name: kubeflow-training-operator
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: training-operator
   dependsOn:
   - name: kubeflow-gateway
     namespace: kubeflow

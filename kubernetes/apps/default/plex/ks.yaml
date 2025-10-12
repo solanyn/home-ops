@@ -6,9 +6,6 @@ metadata:
   name: plex
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: plex
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync

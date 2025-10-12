@@ -6,9 +6,6 @@ metadata:
   name: kubeflow-kserve
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: kserve
   dependsOn:
   - name: kubeflow-gateway
     namespace: kubeflow

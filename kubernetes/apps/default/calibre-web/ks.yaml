@@ -6,9 +6,6 @@ metadata:
   name: calibre-web
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: calibre-web
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync

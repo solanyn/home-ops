@@ -6,9 +6,6 @@ metadata:
   name: envoy-gateway
 spec:
   targetNamespace: network
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: envoy-gateway
   dependsOn:
   - name: certificates-import
   interval: 1h

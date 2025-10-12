@@ -6,9 +6,6 @@ metadata:
   name: kubeflow-pipelines
 spec:
   targetNamespace: kubeflow
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: pipelines
   dependsOn:
   - name: minio
     namespace: storage

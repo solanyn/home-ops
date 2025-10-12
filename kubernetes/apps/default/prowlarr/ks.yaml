@@ -6,9 +6,6 @@ metadata:
   name: prowlarr
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: prowlarr
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage

@@ -6,9 +6,6 @@ metadata:
   name: flink
 spec:
   targetNamespace: streaming
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: flink
   interval: 1h
   path: ./kubernetes/apps/streaming/flink/app
   prune: false

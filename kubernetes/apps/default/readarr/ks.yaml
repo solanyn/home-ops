@@ -6,9 +6,6 @@ metadata:
   name: readarr
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: readarr
   dependsOn:
   - name: rook-ceph-cluster
     namespace: rook-ceph

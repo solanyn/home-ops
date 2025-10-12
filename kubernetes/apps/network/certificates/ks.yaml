@@ -6,9 +6,6 @@ metadata:
   name: certificates-import
 spec:
   targetNamespace: network
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: certificates
   interval: 1h
   path: ./kubernetes/apps/network/certificates/import
   prune: true
@@ -24,9 +21,6 @@ metadata:
   name: certificates-export
 spec:
   targetNamespace: network
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: certificates
   dependsOn:
   - name: certificates-import
   interval: 1h

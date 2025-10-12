@@ -6,9 +6,6 @@ metadata:
   name: searxng
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: searxng
   interval: 1h
   path: ./kubernetes/apps/default/searxng/app
   prune: true

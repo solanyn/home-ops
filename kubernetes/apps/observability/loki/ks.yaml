@@ -6,9 +6,6 @@ metadata:
   name: loki
 spec:
   targetNamespace: observability
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: loki
   dependsOn:
   - name: rook-ceph-cluster
     namespace: rook-ceph

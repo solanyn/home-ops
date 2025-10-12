@@ -6,9 +6,6 @@ metadata:
   name: romm
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: romm
   components:
     - ../../../../components/volsync
   dependsOn:
