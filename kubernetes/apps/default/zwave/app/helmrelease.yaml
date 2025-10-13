@@ -12,6 +12,7 @@ spec:
   values:
     controllers:
       zwave:
+        type: statefulset
         containers:
           app:
             image:
