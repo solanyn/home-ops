@@ -11,6 +11,7 @@ spec:
   values:
     controllers:
       cross-seed:
+        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -37,6 +38,12 @@ spec:
                 memory: 10Mi
               limits:
                 memory: 512Mi
+        statefulset:
+          volumeClaimTemplates:
+            - name: config
+              storageClass: ceph-block
+              accessMode: ReadWriteOnce
+              size: 5Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -51,10 +58,6 @@ spec:
           http:
             port: 80
     persistence:
-      data:
-        existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /config
       secret-file:
         type: secret
         name: cross-seed-secret
