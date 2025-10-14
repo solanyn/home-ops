@@ -7,7 +7,6 @@ metadata:
 spec:
   targetNamespace: default
   components:
-    - ../../../../components/gpu
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
@@ -34,8 +33,8 @@ metadata:
 spec:
   targetNamespace: default
   dependsOn:
-  - name: stash
-    namespace: default
+    - name: stash
+      namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/stash/tools
   prune: true
