@@ -32,3 +32,5 @@ spec:
       interval: 1m
     grafanaDashboard:
       enabled: true
+      annotations:
+        grafana_folder: external-secrets
