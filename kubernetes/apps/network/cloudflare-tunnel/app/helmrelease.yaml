@@ -73,10 +73,6 @@ spec:
         data:
           config.yaml: |-
             ingress:
-              - hostname: goyangi.io
-                originRequest:
-                  originServerName: goyangi.io
-                service: https://envoy-external.{{ .Release.Namespace }}.svc.cluster.local:443
               - hostname: "*.goyangi.io"
                 originRequest:
                   http2Origin: true
