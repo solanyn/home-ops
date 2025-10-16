@@ -8,6 +8,7 @@ spec:
     spec:
       containers:
         - name: ml-pipeline-api-server
+          image: ghcr.io/kubeflow/kfp-api-server:2.5.0
           readinessProbe:
             $patch: delete
           livenessProbe:
