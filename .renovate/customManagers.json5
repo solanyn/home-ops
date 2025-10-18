@@ -18,5 +18,16 @@
       ],
       datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
     },
+    {
+      customType: "regex",
+      description: "Track Kubeflow manifests version",
+      fileMatch: ["^third_party/kubeflow/manifests/\\.last-upstream-ref$"],
+      matchStrings: [
+        "^(?<currentValue>v\\d+\\.\\d+\\.\\d+)\\s*$",
+      ],
+      datasourceTemplate: "github-releases",
+      depNameTemplate: "kubeflow/manifests",
+      versioningTemplate: "semver",
+    },
   ],
 }
