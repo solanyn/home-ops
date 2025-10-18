@@ -19,8 +19,8 @@ spec:
       chained: true
       cniBinDir: /opt/cni/bin
       cniConfDir: /etc/cni/net.d
-      cniConfFileName: 10-istio-cni.conf
       excludeNamespaces:
-        - istio-system
         - kube-system
       logLevel: info
+      repair:
+        enabled: true
