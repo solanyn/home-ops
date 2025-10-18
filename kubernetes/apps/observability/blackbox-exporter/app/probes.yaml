@@ -2,7 +2,7 @@
 kind: Probe
 apiVersion: monitoring.coreos.com/v1
 metadata:
-  name: devices
+  name: icmp
 spec:
   module: icmp
   prober:
@@ -11,12 +11,18 @@ spec:
     staticConfig:
       static:
         - nas.internal
+        - zigbee-controller.internal
+        - google-nest-cam.internal
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter
+      action: replace
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
 apiVersion: monitoring.coreos.com/v1
 kind: Probe
 metadata:
-  name: nfs
+  name: tcp
 spec:
   module: tcp_connect
   prober:
@@ -25,3 +31,7 @@ spec:
     staticConfig:
       static:
         - nas.internal:2049
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter
+      action: replace
