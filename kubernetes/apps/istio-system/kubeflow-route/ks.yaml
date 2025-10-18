@@ -8,8 +8,10 @@ metadata:
 spec:
   targetNamespace: istio-system
   dependsOn:
-    - name: istiod
+    - name: istio-ingressgateway
       namespace: istio-system
+    - name: oauth2-proxy
+      namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/istio-system/kubeflow-route/app
   prune: true

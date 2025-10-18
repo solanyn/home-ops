@@ -52,7 +52,7 @@ metadata:
 spec:
   targetNamespace: kubeflow
   dependsOn:
-    - name: istiod
+    - name: istio-ingressgateway
       namespace: istio-system
   interval: 1h
   path: ./kubernetes/apps/kubeflow/core/gateway
