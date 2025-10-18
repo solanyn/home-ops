@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: istiod
-      version: 1.26.1
+      version: 1.24.3
       sourceRef:
         kind: HelmRepository
         name: istio
@@ -18,6 +18,7 @@ spec:
     pilot:
       env:
         ENABLE_DEBUG_ON_HTTP: "false"
+        ENABLE_NATIVE_SIDECARS: "true"
         PILOT_ENABLE_GATEWAY_API: "true"
       cni:
         enabled: true

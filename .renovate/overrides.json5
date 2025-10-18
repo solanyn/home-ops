@@ -14,11 +14,11 @@
       overridePackageName: "ghcr.io/siderolabs/installer",
     },
     {
-      description: "Pin Istio to 1.26.x for Kubeflow compatibility",
+      description: "Pin Istio to 1.24.x for Kubeflow compatibility",
       matchDatasources: ["helm"],
       matchPackageNames: ["base", "istiod", "gateway", "cni"],
-      matchCurrentVersion: "1.26.1",
-      allowedVersions: "~1.26.0",
+      matchCurrentVersion: "1.24.3",
+      allowedVersions: "~1.24.0",
       matchFileNames: [
         "kubernetes/apps/istio-system/istio-base/app/helmrelease.yaml",
         "kubernetes/apps/istio-system/istiod/app/helmrelease.yaml",
