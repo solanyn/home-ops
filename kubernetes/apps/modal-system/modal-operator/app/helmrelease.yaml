@@ -5,30 +5,26 @@ kind: HelmRelease
 metadata:
   name: modal-operator
 spec:
-  chart:
-    spec:
-      chart: modal-operator
-      version: 0.0.2
-      sourceRef:
-        kind: OCIRepository
-        name: modal-operator
+  chartRef:
+    kind: OCIRepository
+    name: modal-operator
   interval: 1h
   values:
     modal:
       tokenSecret: modal-token
       defaultGpuType: "T4"
       environment: "main"
-    
+
     proxy:
       enabled: true
       replicaCount: 2
       resources: {}
-    
+
     webhook:
       enabled: true
-    
+
     metrics:
       enabled: true
       interval: 30s
-    
+
     resources: {}
