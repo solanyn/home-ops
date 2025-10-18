@@ -13,5 +13,34 @@
       matchPackageNames: ["/factory\\.talos\\.dev/"],
       overridePackageName: "ghcr.io/siderolabs/installer",
     },
+    {
+      description: "Pin Istio to 1.26.x for Kubeflow compatibility",
+      matchDatasources: ["helm"],
+      matchPackageNames: ["base", "istiod", "gateway", "cni"],
+      matchCurrentVersion: "1.26.1",
+      allowedVersions: "~1.26.0",
+      matchFileNames: [
+        "kubernetes/apps/istio-system/istio-base/app/helmrelease.yaml",
+        "kubernetes/apps/istio-system/istiod/app/helmrelease.yaml",
+        "kubernetes/apps/istio-system/istio-ingressgateway/app/helmrelease.yaml",
+        "kubernetes/apps/kube-system/istio-cni/app/helmrelease.yaml",
+      ],
+    },
+    {
+      description: "Sync Kubeflow manifests when version updates",
+      matchDatasources: ["github-releases"],
+      matchPackageNames: ["kubeflow/manifests"],
+      matchFileNames: ["third_party/kubeflow/manifests/.last-upstream-ref"],
+      commitMessageTopic: "kubeflow/manifests",
+      semanticCommitType: "feat",
+      semanticCommitScope: "kubeflow",
+      postUpgradeTasks: {
+        commands: [
+          "bash .github/scripts/sync-kubeflow.sh {{{newValue}}}",
+        ],
+        fileFilters: ["third_party/kubeflow/manifests/**"],
+        executionMode: "branch",
+      },
+    },
   ],
 }
