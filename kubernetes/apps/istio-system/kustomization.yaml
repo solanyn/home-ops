@@ -9,8 +9,9 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./cluster-local-gateway/ks.yaml
   - ./istio-base/ks.yaml
   - ./istiod/ks.yaml
+  - ./istio-ingressgateway/ks.yaml
+  - ./cluster-local-gateway/ks.yaml
   - ./kubeflow-route/ks.yaml
 
