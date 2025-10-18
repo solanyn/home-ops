@@ -4,7 +4,6 @@ kind: InferenceService
 metadata:
   name: qwen3
   annotations:
-    # Enable Modal offloading
     modal-operator.io/offload: "true"
     modal-operator.io/gpu-type: "T4"
     modal-operator.io/timeout: "3600"

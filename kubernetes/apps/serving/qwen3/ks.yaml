@@ -5,17 +5,16 @@ kind: Kustomization
 metadata:
   name: qwen3
 spec:
-  targetNamespace: kubeflow
   dependsOn:
     - name: kserve
       namespace: kubeflow
     - name: modal-operator
       namespace: modal-system
   interval: 1h
-  path: ./kubernetes/apps/kubeflow/models/qwen3
+  path: ./kubernetes/apps/serving/qwen3/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
+  targetNamespace: serving
