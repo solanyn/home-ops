@@ -11,7 +11,20 @@ configMapGenerator:
       - values=./resources/values.json
 generatorOptions:
   disableNameSuffixHash: false
+patchesStrategicMerge:
+  - patches/patch.istio-configmap.yaml
 patches:
+  - target:
+      kind: AuthorizationPolicy
+      name: istio-ingressgateway
+      namespace: istio-system
+    patch: |
+      $patch: delete
+      apiVersion: security.istio.io/v1
+      kind: AuthorizationPolicy
+      metadata:
+        name: istio-ingressgateway
+        namespace: istio-system
   - target:
       kind: Deployment
     patch: |
