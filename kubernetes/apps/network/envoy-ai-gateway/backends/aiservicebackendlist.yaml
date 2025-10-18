@@ -13,11 +13,6 @@ items:
       backendRef:
         name: qwen3
         namespace: serving
-        kind: Service
-        group: ""
-        port: 80
-      timeouts:
-        request: 600s
 ---
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: AIServiceBackendList
