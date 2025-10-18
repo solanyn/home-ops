@@ -7,8 +7,10 @@ metadata:
 spec:
   targetNamespace: istio-system
   dependsOn:
-  - name: istio-base
-    namespace: istio-system
+    - name: istio-base
+      namespace: istio-system
+    - name: istio-cni
+      namespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/istio-system/istiod/app
   prune: true
@@ -16,3 +18,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  wait: true
