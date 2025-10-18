@@ -6,7 +6,7 @@ metadata:
   name: qwen3
 spec:
   dependsOn:
-    - name: kserve
+    - name: kubeflow-kserve
       namespace: kubeflow
     - name: modal-operator
       namespace: modal-system
