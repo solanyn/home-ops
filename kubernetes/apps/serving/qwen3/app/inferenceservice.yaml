@@ -19,15 +19,6 @@ spec:
         name: huggingface
       storageUri: "hf://Qwen/Qwen3-8B-Instruct"
       runtime: kserve-vllm
-      resources:
-        requests:
-          cpu: "2"
-          memory: 16Gi
-          nvidia.com/gpu: "1"
-        limits:
-          cpu: "4"
-          memory: 32Gi
-          nvidia.com/gpu: "1"
       args:
         - --model
         - Qwen/Qwen3-8B-Instruct

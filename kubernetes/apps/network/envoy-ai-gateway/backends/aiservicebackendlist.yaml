@@ -11,13 +11,13 @@ items:
       schema:
         name: OpenAI
       backendRef:
-        name: qwen3-predictor
-        namespace: kubeflow
+        name: qwen3
+        namespace: serving
         kind: Service
         group: ""
         port: 80
       timeouts:
-        request: 120s
+        request: 600s
 ---
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: AIServiceBackendList
@@ -35,29 +35,3 @@ items:
         name: gcp-australia-southeast1
         kind: Backend
         group: gateway.envoyproxy.io
-  - apiVersion: aigateway.envoyproxy.io/v1alpha1
-    kind: AIServiceBackend
-    metadata:
-      name: gemini-2.5-flash
-    spec:
-      schema:
-        name: GCPVertexAI
-      backendRef:
-        name: gcp-australia-southeast1
-        kind: Backend
-        group: gateway.envoyproxy.io
-      config:
-        model: gemini-2.5-flash-preview-0514
-  - apiVersion: aigateway.envoyproxy.io/v1alpha1
-    kind: AIServiceBackend
-    metadata:
-      name: gemini-2.5-pro
-    spec:
-      schema:
-        name: GCPVertexAI
-      backendRef:
-        name: gcp-australia-southeast1
-        kind: Backend
-        group: gateway.envoyproxy.io
-      config:
-        model: gemini-2.5-pro-preview-0514
