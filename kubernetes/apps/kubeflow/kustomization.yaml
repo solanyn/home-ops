@@ -16,6 +16,7 @@ resources:
   - ./katib/ks.yaml
   - ./kserve/ks.yaml
   - ./model-registry/ks.yaml
+  - ./models/kustomization.yaml
   - ./notebooks/ks.yaml
   - ./oauth2-proxy/ks.yaml
   - ./pipelines/ks.yaml

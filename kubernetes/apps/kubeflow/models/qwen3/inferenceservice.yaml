@@ -1,0 +1,42 @@
+---
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: qwen3
+  annotations:
+    # Enable Modal offloading
+    modal-operator.io/offload: "true"
+    modal-operator.io/gpu-type: "T4"
+    modal-operator.io/timeout: "3600"
+spec:
+  predictor:
+    minReplicas: 0
+    maxReplicas: 1
+    scaleTarget: 0
+    scaleMetric: concurrency
+    containerConcurrency: 1
+    model:
+      modelFormat:
+        name: huggingface
+      storageUri: "hf://Qwen/Qwen3-8B-Instruct"
+      runtime: kserve-vllm
+      resources:
+        requests:
+          cpu: "2"
+          memory: 16Gi
+          nvidia.com/gpu: "1"
+        limits:
+          cpu: "4"
+          memory: 32Gi
+          nvidia.com/gpu: "1"
+      args:
+        - --model
+        - Qwen/Qwen3-8B-Instruct
+        - --dtype
+        - auto
+        - --max-model-len
+        - "4096"
+        - --gpu-memory-utilization
+        - "0.9"
+        - --served-model-name
+        - qwen3

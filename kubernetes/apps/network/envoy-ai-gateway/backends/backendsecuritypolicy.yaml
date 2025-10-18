@@ -18,9 +18,6 @@ spec:
     - group: aigateway.envoyproxy.io
       kind: AIServiceBackend
       name: gcp
-    - group: aigateway.envoyproxy.io
-      kind: AIServiceBackend
-      name: gcp-anthropic
   type: GCPCredentials
   gcpCredentials:
     projectName: "${PROJECT_NAME}"
