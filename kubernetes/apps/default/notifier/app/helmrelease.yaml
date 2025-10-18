@@ -3,15 +3,16 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: webhook
+  name: notifier
 spec:
   chartRef:
     kind: OCIRepository
-    name: webhook
+    name: notifier
   interval: 1h
   values:
     controllers:
-      webhook:
+      notifier:
+        replicas: 2
         strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
@@ -33,8 +34,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
+                memory: 64Mi
               limits:
-                memory: 256Mi
+                memory: 512Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -47,17 +49,10 @@ spec:
         ports:
           http:
             port: *port
-    route:
-      app:
-        hostnames: ["{{ .Release.Name }}.goyangi.io"]
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-            sectionName: https
     persistence:
       config:
         type: configMap
-        name: "{{ .Release.Name }}-configmap"
+        name: notifier-configmap
         defaultMode: 0775
         globalMounts:
           - readOnly: true
