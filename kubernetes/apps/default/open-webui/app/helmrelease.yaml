@@ -33,7 +33,7 @@ spec:
               ENABLE_OPENAI_API: "true"
               CORS_ALLOW_ORIGIN: "https://open-webui.goyangi.io"
               DEFAULT_USER_ROLE: user
-              OPENAI_API_BASE_URLS: http://envoy-ai.kube-system.svc.cluster.local
+              OPENAI_API_BASE_URLS: http://envoy-ai.network.svc.cluster.local
               OAUTH_PROVIDER_NAME: "Pocket ID"
               OFFLINE_MODE: "true"
               OPENID_PROVIDER_URL: "https://id.goyangi.io/.well-known/openid-configuration"
