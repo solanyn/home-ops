@@ -7,8 +7,8 @@ metadata:
 spec:
   targetNamespace: kubeflow
   dependsOn:
-  - name: kubeflow-gateway
-    namespace: kubeflow
+    - name: kubeflow-gateway
+      namespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/kserve/app
   prune: true
