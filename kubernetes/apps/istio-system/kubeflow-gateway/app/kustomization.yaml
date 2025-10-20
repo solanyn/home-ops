@@ -6,5 +6,7 @@ resources:
   - ../../../../../third_party/kubeflow/manifests/common/istio-1-24/istio-install/base/deny_all_authorizationpolicy.yaml
   - ../../../../../third_party/kubeflow/manifests/common/oauth2-proxy/components/istio-external-auth/authorizationpolicy.istio-ingressgateway-oauth2-proxy.yaml
   - ../../../../../third_party/kubeflow/manifests/common/oauth2-proxy/components/istio-external-auth/authorizationpolicy.istio-ingressgateway-require-jwt.yaml
+  - ../../../../../third_party/kubeflow/manifests/common/oauth2-proxy/components/istio-external-auth/requestauthentication.dex-jwt.yaml
+  - ../../../../../third_party/kubeflow/manifests/common/oauth2-proxy/components/istio-m2m/requestauthentication.yaml
   - ../../../../../third_party/kubeflow/manifests/common/istio-1-24/kubeflow-istio-resources/base/kf-istio-resources.yaml
   - ../../../../../third_party/kubeflow/manifests/common/istio-1-24/kubeflow-istio-resources/base/cluster-roles.yaml
