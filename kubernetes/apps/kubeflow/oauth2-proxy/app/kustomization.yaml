@@ -32,3 +32,17 @@ patches:
           metadata:
             annotations:
               reloader.stakater.com/auto: "true"
+  - target:
+      kind: VirtualService
+      name: oauth2-proxy
+    patch: |
+      - op: replace
+        path: /spec/http/0/route/0/destination/host
+        value: oauth2-proxy.kubeflow.svc.cluster.local
+  - target:
+      kind: VirtualService
+      name: dex
+    patch: |
+      - op: replace
+        path: /spec/http/0/route/0/destination/host
+        value: dex.kubeflow.svc.cluster.local
