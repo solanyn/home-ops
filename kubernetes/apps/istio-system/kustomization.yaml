@@ -13,5 +13,4 @@ resources:
   - ./istiod/ks.yaml
   - ./istio-ingressgateway/ks.yaml
   - ./cluster-local-gateway/ks.yaml
-  - ./kubeflow-route/ks.yaml
-
+  - ./kubeflow-gateway/ks.yaml
