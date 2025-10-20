@@ -14,6 +14,11 @@ spec:
         name: istio-ingressgateway
         namespace: istio-system
   interval: 1h
+  # Schema validation disabled due to overly strict schema that rejects valid values
+  install:
+    disableSchemaValidation: true
+  upgrade:
+    disableSchemaValidation: true
   values:
     name: istio-ingressgateway
     labels:
