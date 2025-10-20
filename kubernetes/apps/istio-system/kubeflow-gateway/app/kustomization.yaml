@@ -2,9 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./httproute.yaml
-  - ../../../../third_party/kubeflow/manifests/common/istio-1-24/istio-install/base/gateway_authorizationpolicy.yaml
-  - ../../../../third_party/kubeflow/manifests/common/istio-1-24/istio-install/base/deny_all_authorizationpolicy.yaml
-  - ../../../../third_party/kubeflow/manifests/common/oauth2-proxy/components/istio-external-auth/authorizationpolicy.istio-ingressgateway-oauth2-proxy.yaml
-  - ../../../../third_party/kubeflow/manifests/common/oauth2-proxy/components/istio-external-auth/authorizationpolicy.istio-ingressgateway-require-jwt.yaml
-  - ../../../../third_party/kubeflow/manifests/common/istio-1-24/kubeflow-istio-resources/base/kf-istio-resources.yaml
-  - ../../../../third_party/kubeflow/manifests/common/istio-1-24/kubeflow-istio-resources/base/cluster-roles.yaml
+  - ../../../../../third_party/kubeflow/manifests/common/istio-1-24/istio-install/base/gateway_authorizationpolicy.yaml
+  - ../../../../../third_party/kubeflow/manifests/common/istio-1-24/istio-install/base/deny_all_authorizationpolicy.yaml
+  - ../../../../../third_party/kubeflow/manifests/common/oauth2-proxy/components/istio-external-auth/authorizationpolicy.istio-ingressgateway-oauth2-proxy.yaml
+  - ../../../../../third_party/kubeflow/manifests/common/oauth2-proxy/components/istio-external-auth/authorizationpolicy.istio-ingressgateway-require-jwt.yaml
+  - ../../../../../third_party/kubeflow/manifests/common/istio-1-24/kubeflow-istio-resources/base/kf-istio-resources.yaml
+  - ../../../../../third_party/kubeflow/manifests/common/istio-1-24/kubeflow-istio-resources/base/cluster-roles.yaml
