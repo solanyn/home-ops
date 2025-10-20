@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: kubeflow-route
+  name: kubeflow-gateway
   namespace: flux-system
 spec:
   targetNamespace: istio-system
@@ -13,7 +13,7 @@ spec:
     - name: oauth2-proxy
       namespace: kubeflow
   interval: 1h
-  path: ./kubernetes/apps/istio-system/kubeflow-route/app
+  path: ./kubernetes/apps/istio-system/kubeflow-gateway/app
   prune: true
   sourceRef:
     kind: GitRepository
