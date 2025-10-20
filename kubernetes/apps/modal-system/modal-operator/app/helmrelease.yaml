@@ -11,20 +11,8 @@ spec:
   interval: 1h
   values:
     modal:
-      tokenSecret: modal-token
+      tokenSecret: modal-operator-secret
+      tokenIdKey: MODAL_TOKEN_ID
+      tokenSecretKey: MODAL_TOKEN_SECRET
       defaultGpuType: "T4"
       environment: "main"
-
-    proxy:
-      enabled: true
-      replicaCount: 2
-      resources: {}
-
-    webhook:
-      enabled: true
-
-    metrics:
-      enabled: true
-      interval: 30s
-
-    resources: {}
