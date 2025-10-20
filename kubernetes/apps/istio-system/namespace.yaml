@@ -4,6 +4,6 @@ kind: Namespace
 metadata:
   name: _
   labels:
-    istio-injection: disabled
+    istio-injection: enabled
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
