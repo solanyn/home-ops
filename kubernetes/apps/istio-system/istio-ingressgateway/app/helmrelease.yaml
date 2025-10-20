@@ -13,6 +13,9 @@ spec:
         kind: HelmRepository
         name: istio-ingressgateway
         namespace: istio-system
+      verify:
+        provider: cosign
+  disableSchemaValidation: true
   interval: 1h
   values:
     name: istio-ingressgateway
