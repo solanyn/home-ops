@@ -69,9 +69,14 @@ patches:
       kind: AuthorizationPolicy
       name: ml-pipeline-ui
     patch: |
-      - op: add
-        path: /spec/rules/0/when
+      - op: replace
+        path: /spec/rules
         value:
-          - key: request.headers[kubeflow-userid]
-            notValues:
-              - ""
+          - from:
+              - source:
+                  principals:
+                    - cluster.local/ns/istio-system/sa/istio-ingressgateway-service-account
+            when:
+              - key: request.headers[kubeflow-userid]
+                notValues:
+                  - ""
