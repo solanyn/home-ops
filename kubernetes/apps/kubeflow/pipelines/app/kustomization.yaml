@@ -66,21 +66,6 @@ patches:
             annotations:
               reloader.stakater.com/auto: "true"
   - target:
-      kind: AuthorizationPolicy
-      name: ml-pipeline-ui
-    patch: |
-      - op: replace
-        path: /spec/rules
-        value:
-          - from:
-              - source:
-                  principals:
-                    - cluster.local/ns/istio-system/sa/istio-ingressgateway-service-account
-            when:
-              - key: request.headers[kubeflow-userid]
-                values:
-                  - "*"
-  - target:
       kind: DestinationRule
       name: ml-pipeline-ui
     patch: |
