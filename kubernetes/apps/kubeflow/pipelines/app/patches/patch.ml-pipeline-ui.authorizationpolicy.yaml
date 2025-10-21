@@ -1,0 +1,12 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: ml-pipeline-ui
+  namespace: kubeflow
+spec:
+  rules:
+    - from:
+        - source:
+            principals:
+              - cluster.local/ns/istio-system/sa/istio-ingressgateway-service-account
+              - cluster.local/ns/kubeflow/sa/centraldashboard
