@@ -17,3 +17,9 @@ patches:
       - op: replace
         path: /spec/jwtRules/0/issuer
         value: https://kubeflow.goyangi.io/dex
+  - target:
+      kind: AuthorizationPolicy
+      name: istio-ingressgateway-oauth2-proxy
+    patch: |
+      - op: remove
+        path: /spec/rules/0/when
