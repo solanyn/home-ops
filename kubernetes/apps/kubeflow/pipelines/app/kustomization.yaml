@@ -8,6 +8,7 @@ patchesStrategicMerge:
   - patches/patch.metadata-grpc-deployment.deployment.yaml
   - patches/patch.ml-pipeline-persistenceagent.deployment.yaml
   - patches/patch.ml-pipeline-ui.deployment.yaml
+  - patches/patch.ml-pipeline-ui.destinationrule.yaml
   - patches/patch.ml-pipeline.deployment.yaml
   - patches/patch.kubeflow-pipelines-profile-controller.deployment.yaml
   # removals
