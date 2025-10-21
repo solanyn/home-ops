@@ -9,3 +9,11 @@ resources:
   - ../../../../../third_party/kubeflow/manifests/common/oauth2-proxy/components/istio-m2m/requestauthentication.yaml
   - ../../../../../third_party/kubeflow/manifests/common/istio-1-24/kubeflow-istio-resources/base/kf-istio-resources.yaml
   - ../../../../../third_party/kubeflow/manifests/common/istio-1-24/kubeflow-istio-resources/base/cluster-roles.yaml
+patches:
+  - target:
+      kind: RequestAuthentication
+      name: dex-jwt
+    patch: |
+      - op: replace
+        path: /spec/jwtRules/0/issuer
+        value: https://kubeflow.goyangi.io/dex
