@@ -18,7 +18,7 @@ spec:
       modelFormat:
         name: huggingface
       storageUri: "hf://Qwen/Qwen3-8B-Instruct"
-      runtime: kserve-vllm
+      runtime: kserve-huggingfaceserver
       args:
         - --model
         - Qwen/Qwen3-8B-Instruct
