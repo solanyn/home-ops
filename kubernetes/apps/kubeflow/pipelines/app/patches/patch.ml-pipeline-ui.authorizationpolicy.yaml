@@ -9,4 +9,7 @@ spec:
         - source:
             principals:
               - cluster.local/ns/istio-system/sa/istio-ingressgateway-service-account
-              - cluster.local/ns/kubeflow/sa/centraldashboard
+      when:
+        - key: request.headers[kubeflow-userid]
+          notValues:
+            - ""
