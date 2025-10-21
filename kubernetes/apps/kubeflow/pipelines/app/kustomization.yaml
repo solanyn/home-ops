@@ -8,7 +8,6 @@ patchesStrategicMerge:
   - patches/patch.metadata-grpc-deployment.deployment.yaml
   - patches/patch.ml-pipeline-persistenceagent.deployment.yaml
   - patches/patch.ml-pipeline-ui.deployment.yaml
-  - patches/patch.ml-pipeline-ui.authorizationpolicy.yaml
   - patches/patch.ml-pipeline.deployment.yaml
   - patches/patch.kubeflow-pipelines-profile-controller.deployment.yaml
   # removals
@@ -66,3 +65,13 @@ patches:
           metadata:
             annotations:
               reloader.stakater.com/auto: "true"
+  - target:
+      kind: AuthorizationPolicy
+      name: ml-pipeline-ui
+    patch: |
+      - op: add
+        path: /spec/rules/0/when
+        value:
+          - key: request.headers[kubeflow-userid]
+            notValues:
+              - ""
