@@ -8,6 +8,7 @@ patchesStrategicMerge:
   - patches/patch.dex.deployment.yaml
   # removals
   - patches/removals/dex.yaml
+  - patches/removals/namespace.yaml
 patches:
   - target:
       kind: Deployment
