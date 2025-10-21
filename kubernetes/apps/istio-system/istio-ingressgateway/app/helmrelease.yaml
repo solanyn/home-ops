@@ -24,6 +24,8 @@ spec:
     labels:
       app: istio-ingressgateway
       istio: ingressgateway
+    serviceAccount:
+      name: istio-ingressgateway-service-account
     service:
       type: ClusterIP
     securityContext:
