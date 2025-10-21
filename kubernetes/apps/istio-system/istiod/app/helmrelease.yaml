@@ -63,6 +63,9 @@ spec:
         probes: 3
         time: 10s
       trustDomain: cluster.local
+      defaultPodSecurityContext:
+        seccompProfile:
+          type: RuntimeDefault
       extensionProviders:
         - name: oauth2-proxy
           envoyExtAuthzHttp:
