@@ -78,5 +78,5 @@ patches:
                     - cluster.local/ns/istio-system/sa/istio-ingressgateway-service-account
             when:
               - key: request.headers[kubeflow-userid]
-                notValues:
-                  - ""
+                values:
+                  - "*"
