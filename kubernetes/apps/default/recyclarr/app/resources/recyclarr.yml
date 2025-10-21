@@ -1,7 +1,7 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/recyclarr/recyclarr/master/schemas/config-schema.json
 sonarr:
-  main:
+  sonarr:
     base_url: http://sonarr.default.svc.cluster.local
     api_key: !env_var SONARR_API_KEY
     delete_old_custom_formats: true
@@ -23,7 +23,7 @@ sonarr:
           - name: WEB-1080p
 
 radarr:
-  main:
+  radarr:
     base_url: http://radarr.default.svc.cluster.local
     api_key: !env_var RADARR_API_KEY
     delete_old_custom_formats: true
@@ -49,3 +49,9 @@ radarr:
           - f537cf427b64c38c8e36298f657e4828 # Scene
         assign_scores_to:
           - name: SQP-1 (2160p)
+      - trash_ids:
+          - # This release group is known for not including subs.
+            5153ec7413d9dae44e24275589b5e944 # BHDStudio
+        assign_scores_to:
+          - name: SQP-1 (2160p)
+            score: 0
