@@ -20,13 +20,13 @@ spec:
       patch:
         operation: INSERT_BEFORE
         value:
-          name: envoy.lua
+          name: envoy.filters.http.lua
           typed_config:
             "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
             inline_code: |
               function envoy_on_request(request_handle)
-                local email = request_handle:headers():get("x-auth-request-email")
-                if email then
-                  request_handle:headers():add("kubeflow-userid", email)
+                local x_auth_request_email = request_handle:headers():get("x-auth-request-email")
+                if x_auth_request_email and x_auth_request_email ~= "" then
+                  request_handle:headers():replace("kubeflow-userid", x_auth_request_email)
                 end
               end
