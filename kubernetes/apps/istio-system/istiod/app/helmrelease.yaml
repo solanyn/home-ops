@@ -86,6 +86,3 @@ spec:
               - cookie
               - x-auth-request-groups
               - x-auth-request-user
-            includeRequestHeadersInCheck:
-              - authorization
-              - cookie
