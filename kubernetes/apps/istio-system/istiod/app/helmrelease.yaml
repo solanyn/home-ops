@@ -66,6 +66,7 @@ spec:
       defaultPodSecurityContext:
         seccompProfile:
           type: RuntimeDefault
+      # ExtAuthz config from: third_party/kubeflow/manifests/common/oauth2-proxy/components/istio-external-auth-patches/patches/cm.enable-oauth2-proxy.yaml
       extensionProviders:
         - name: oauth2-proxy
           envoyExtAuthzHttp:
@@ -78,6 +79,11 @@ spec:
               - authorization
               - path
               - x-auth-request-email
+              - x-auth-request-groups
+              - x-auth-request-user
+            includeRequestHeadersInCheck:
+              - authorization
+              - cookie
               - x-auth-request-groups
               - x-auth-request-user
             includeRequestHeadersInCheck:
