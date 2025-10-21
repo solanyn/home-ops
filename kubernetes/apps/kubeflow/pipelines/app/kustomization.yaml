@@ -66,10 +66,3 @@ patches:
           metadata:
             annotations:
               reloader.stakater.com/auto: "true"
-  - target:
-      kind: DestinationRule
-      name: ml-pipeline-ui
-    patch: |
-      - op: replace
-        path: /spec/trafficPolicy/tls/mode
-        value: DISABLE
