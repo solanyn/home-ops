@@ -13,6 +13,7 @@ patchesStrategicMerge:
   # removals
   - patches/removals/mysql.yaml
   - patches/removals/minio.yaml
+  - patches/removals/ml-pipeline-ui-virtualservice.yaml
 configMapGenerator:
   - name: pipeline-install-config
     behavior: merge
