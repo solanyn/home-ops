@@ -18,3 +18,4 @@ patches:
           metadata:
             annotations:
               reloader.stakater.com/auto: "true"
+              sidecar.istio.io/inject: "true"
