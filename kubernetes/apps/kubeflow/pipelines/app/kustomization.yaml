@@ -80,3 +80,10 @@ patches:
               - key: request.headers[kubeflow-userid]
                 values:
                   - "*"
+  - target:
+      kind: DestinationRule
+      name: ml-pipeline-ui
+    patch: |
+      - op: replace
+        path: /spec/trafficPolicy/tls/mode
+        value: DISABLE
