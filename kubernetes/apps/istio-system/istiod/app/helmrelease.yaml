@@ -81,6 +81,7 @@ spec:
               - x-auth-request-email
               - x-auth-request-groups
               - x-auth-request-user
+              - kubeflow-userid
             includeRequestHeadersInCheck:
               - authorization
               - cookie
