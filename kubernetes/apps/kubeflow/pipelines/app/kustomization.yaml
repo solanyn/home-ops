@@ -8,7 +8,6 @@ patchesStrategicMerge:
   - patches/patch.metadata-grpc-deployment.deployment.yaml
   - patches/patch.ml-pipeline-persistenceagent.deployment.yaml
   - patches/patch.ml-pipeline-ui.deployment.yaml
-  - patches/patch.ml-pipeline-ui.destinationrule.yaml
   - patches/patch.ml-pipeline.deployment.yaml
   - patches/patch.kubeflow-pipelines-profile-controller.deployment.yaml
   # removals
@@ -66,3 +65,10 @@ patches:
           metadata:
             annotations:
               reloader.stakater.com/auto: "true"
+  - target:
+      kind: DestinationRule
+      name: ml-pipeline-ui
+    patch: |
+      - op: replace
+        path: /spec/trafficPolicy/tls/mode
+        value: DISABLE
