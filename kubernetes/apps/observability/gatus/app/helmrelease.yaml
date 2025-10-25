@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -19,7 +20,11 @@ spec:
             image:
               repository: ghcr.io/home-operations/gatus-sidecar
               tag: 0.0.9@sha256:31a52dd0e579c1f865b2580a4bb715d2a893deb1351fedeaba73598e9a578cbe
-            resources: &resources
+            args:
+              - --auto-httproute
+              - --enable-httproute
+              - --enable-service
+            resources:
               requests:
                 cpu: 10m
               limits:
@@ -31,13 +36,12 @@ spec:
               repository: ghcr.io/twin/gatus
               tag: v5.28.0@sha256:99d1953e9f48ca7fd7feb4417f88379bfc63d6bb7ee1f87d775e01e905f94fe6
             env:
-              TZ: Australia/Sydney
               GATUS_CONFIG_PATH: /config
-              GATUS_LOG_LEVEL: DEBUG
-              WEB_PORT: &port 80
+              GATUS_WEB_PORT: &port 80
+              TZ: Australia/Sydney
             envFrom:
               - secretRef:
-                  name: gatus-secret
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
@@ -54,8 +58,12 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            resources: *resources
+              capabilities: { add: ["NET_RAW"], drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 256Mi
         statefulset:
           volumeClaimTemplates:
             - name: config
@@ -63,13 +71,7 @@ spec:
               accessMode: ReadWriteOnce
               size: 5Gi
     defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
+      hostUsers: false
     service:
       app:
         ports:
@@ -79,8 +81,6 @@ spec:
       app:
         endpoints:
           - port: http
-            interval: 1m
-            scrapeTimeout: 10s
     route:
       app:
         annotations:
@@ -91,20 +91,28 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-            sectionName: https
-
     rbac:
       roles:
         gatus:
           type: ClusterRole
           rules:
             - apiGroups:
+                - ""
+              resources:
+                - services
+              verbs:
+                - get
+                - watch
+                - list
+            - apiGroups:
                 - gateway.networking.k8s.io
               resources:
+                - gateways
                 - httproutes
               verbs:
                 - get
                 - watch
+                - list
       bindings:
         gatus:
           type: ClusterRoleBinding
@@ -119,6 +127,7 @@ spec:
         type: configMap
         name: "{{ .Release.Name }}-configmap"
         globalMounts:
+          - path: /config/buddy.yaml
+            subPath: buddy.yaml
           - path: /config/config.yaml
             subPath: config.yaml
-            readOnly: true
