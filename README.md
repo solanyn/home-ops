@@ -73,23 +73,27 @@ There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/clu
 - [ray](https://github.com/ray-project/ray): Distributed computing for ML workloads and hyperparameter tuning
 - [feast](https://github.com/feast-dev/feast): Feature store for ML feature management and serving
 - [label-studio](https://github.com/heartexlabs/label-studio): Data annotation platform for ML dataset preparation
-- [milvus](https://github.com/milvus-io/milvus): Vector database for similarity search and AI applications
+- [mlflow](https://github.com/mlflow/mlflow): MLOps platform for experiment tracking, model registry and deployment
+- [katib](https://github.com/kubeflow/katib): Hyperparameter tuning and neural architecture search
 
 ### Analytics & Data Engineering
 
-- [airflow](https://github.com/apache/airflow): Workflow orchestration for data pipelines and ETL processes
 - [spark](https://github.com/apache/spark): Big data processing engine for large-scale analytics
 - [dask](https://github.com/dask/dask): Parallel computing library for scalable data science
 - [trino](https://github.com/trinodb/trino): Distributed SQL engine for analytics across data sources
-- [superset](https://github.com/apache/superset): Data visualisation and business intelligence platform
 - [kafka](https://github.com/apache/kafka): Event streaming platform for real-time data processing
 - [flink](https://github.com/apache/flink): Stream processing for real-time analytics and ML inference
+- [lakekeeper](https://github.com/lakekeeper/lakekeeper): Apache Iceberg REST catalog for data lakehouse operations
 
 ### Infrastructure Components
 
 - [envoy](https://github.com/envoyproxy/envoy): API gateway with Kubernetes Gateway API implementation and AI model routing
-- [rook](https://github.com/rook/rook): Cloud-native distributed storage with Ceph orchestration
+- [istio](https://github.com/istio/istio): Service mesh for traffic management, security and observability
+- [knative](https://github.com/knative/serving): Serverless workload deployment with scale-to-zero capabilities
+- [rook-ceph](https://github.com/rook/rook): Cloud-native distributed storage with Ceph orchestration
+- [openebs](https://github.com/openebs/openebs): Container-native storage with local PV provisioning
 - [volsync](https://github.com/backube/volsync): Automated backup orchestration with cross-cluster replication
+- [kopia](https://github.com/kopia/kopia): Fast and secure backup/restore with encryption and deduplication
 - [spegel](https://github.com/spegel-org/spegel): Performance optimisation with distributed OCI registry mirror
 - [external-dns](https://github.com/kubernetes-sigs/external-dns): Multi-zone DNS automation with split-horizon configuration
 
@@ -99,14 +103,33 @@ There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/clu
 - [external-secrets](https://github.com/external-secrets/external-secrets): Centralised secret management with [1Password Connect](https://github.com/1Password/connect) integration
 - [sops](https://github.com/getsops/sops): Git-committed encrypted secrets for declarative secret management
 - [cilium](https://github.com/cilium/cilium): Zero-trust networking with eBPF-based security policies
+- [oauth2-proxy](https://github.com/oauth2-proxy/oauth2-proxy): Authentication proxy for securing applications with SSO
+- [dex](https://github.com/dexidp/dex): Identity provider with OIDC and OAuth2 support
+- [kyverno](https://github.com/kyverno/kyverno): Policy management for security and governance enforcement
 
 ### DevOps & Development Infrastructure
 
 - [actions-runner-controller](https://github.com/actions/actions-runner-controller): Self-hosted CI/CD runners for secure pipeline execution
-- [buildbarn](https://github.com/buildbarn/bb-deployments): Distributed build system with remote execution and caching
 - [cloudflared](https://github.com/cloudflare/cloudflared): Zero-trust access tunnels for secure ingress
+- [headlamp](https://github.com/headlamp-k8s/headlamp): User-friendly Kubernetes web UI for cluster management
 - [keda](https://github.com/kedacore/keda): Event-driven autoscaling for Kubernetes workloads
-- [kyverno](https://github.com/kyverno/kyverno): Policy management for security and governance enforcement
+
+### Data Storage & Databases
+
+- [cloudnative-pg](https://github.com/cloudnative-pg/cloudnative-pg): PostgreSQL operator for production database workloads
+- [percona-xtradb-cluster](https://github.com/percona/percona-xtradb-cluster-operator): Highly available MySQL cluster with synchronous replication
+- [dragonfly](https://github.com/dragonflydb/dragonfly): High-performance in-memory data store compatible with Redis and Memcached
+- [minio](https://github.com/minio/minio): S3-compatible object storage for unstructured data
+
+### Observability & Monitoring
+
+- [prometheus](https://github.com/prometheus/prometheus): Metrics collection and alerting via kube-prometheus-stack
+- [grafana](https://github.com/grafana/grafana): Visualisation and dashboarding for metrics and logs
+- [victoria-logs](https://github.com/VictoriaMetrics/VictoriaMetrics): High-performance log aggregation and search
+- [fluent-bit](https://github.com/fluent/fluent-bit): Lightweight log forwarding and processing
+- [gatus](https://github.com/TwiN/gatus): Health monitoring and status page generation
+- [blackbox-exporter](https://github.com/prometheus/blackbox_exporter): External endpoint monitoring and probing
+- [kromgo](https://github.com/kashalls/kromgo): Prometheus metrics to badge service for status displays
 
 ### GitOps Implementation
 
