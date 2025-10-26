@@ -29,23 +29,23 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /cluster/status
                     port: 9333
-                  initialDelaySeconds: 10
-                  timeoutSeconds: 1
-                  periodSeconds: 10
-                  failureThreshold: 3
+                  initialDelaySeconds: 20
+                  timeoutSeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 4
               readiness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /cluster/status
                     port: 9333
                   initialDelaySeconds: 10
-                  timeoutSeconds: 1
-                  periodSeconds: 10
-                  failureThreshold: 3
+                  timeoutSeconds: 10
+                  periodSeconds: 45
+                  failureThreshold: 100
       volume:
         containers:
           app:
@@ -66,23 +66,23 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /healthz
                     port: 8080
-                  initialDelaySeconds: 10
-                  timeoutSeconds: 1
-                  periodSeconds: 10
-                  failureThreshold: 3
+                  initialDelaySeconds: 20
+                  timeoutSeconds: 30
+                  periodSeconds: 90
+                  failureThreshold: 4
               readiness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /healthz
                     port: 8080
-                  initialDelaySeconds: 10
-                  timeoutSeconds: 1
-                  periodSeconds: 10
-                  failureThreshold: 3
+                  initialDelaySeconds: 15
+                  timeoutSeconds: 30
+                  periodSeconds: 15
+                  failureThreshold: 100
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
@@ -108,10 +108,10 @@ spec:
                   httpGet:
                     path: /
                     port: 8888
-                  initialDelaySeconds: 10
-                  timeoutSeconds: 1
-                  periodSeconds: 10
-                  failureThreshold: 3
+                  initialDelaySeconds: 20
+                  timeoutSeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
               readiness:
                 enabled: true
                 custom: true
@@ -120,9 +120,9 @@ spec:
                     path: /
                     port: 8888
                   initialDelaySeconds: 10
-                  timeoutSeconds: 1
-                  periodSeconds: 10
-                  failureThreshold: 3
+                  timeoutSeconds: 10
+                  periodSeconds: 15
+                  failureThreshold: 100
       s3:
         containers:
           app:
@@ -144,23 +144,23 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /status
                     port: 8333
-                  initialDelaySeconds: 10
-                  timeoutSeconds: 1
-                  periodSeconds: 10
-                  failureThreshold: 3
+                  initialDelaySeconds: 20
+                  timeoutSeconds: 10
+                  periodSeconds: 60
+                  failureThreshold: 20
               readiness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /status
                     port: 8333
-                  initialDelaySeconds: 10
-                  timeoutSeconds: 1
-                  periodSeconds: 10
-                  failureThreshold: 3
+                  initialDelaySeconds: 15
+                  timeoutSeconds: 10
+                  periodSeconds: 15
+                  failureThreshold: 100
     service:
       master:
         controller: master
