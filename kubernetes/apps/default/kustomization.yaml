@@ -15,12 +15,12 @@ resources:
   - ./calibre-web/ks.yaml
   - ./cross-seed/ks.yaml
   - ./flaresolverr/ks.yaml
+  - ./fusion/ks.yaml
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./label-studio/ks.yaml
   - ./mealie/ks.yaml
-  - ./miniflux/ks.yaml
   - ./mlflow/ks.yaml
   - ./mosquitto/ks.yaml
   - ./open-webui/ks.yaml
