@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: seaweedfs-csi-driver
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: seaweedfs-csi-driver
+      version: 0.2.3
+      sourceRef:
+        kind: HelmRepository
+        name: seaweedfs-csi-driver
+        namespace: storage
+  values:
+    seaweedfsFiler: seaweedfs-filer.storage.svc.cluster.local:8888
+    storageClassName: seaweedfs
+    seaweedfsCsiPlugin:
+      image: chrislusf/seaweedfs-csi-driver:v1.3.2@sha256:0a06b483f6b077f0fb32e0a5519717aa9d24b228071b1a38acaca494141b778f
