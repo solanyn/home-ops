@@ -10,6 +10,9 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/storage/seaweedfs/app
   prune: true
+  postBuild:
+    substitute:
+      APP: seaweedfs
   sourceRef:
     kind: GitRepository
     name: flux-system
