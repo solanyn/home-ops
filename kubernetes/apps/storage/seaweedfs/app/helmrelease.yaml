@@ -58,7 +58,7 @@ spec:
               - filer
               - -master=seaweedfs-master:9333
               - -ip.bind=0.0.0.0
-              - -dir=/data
+              - -defaultStoreDir=/data
               - -metricsPort=8889
             probes:
               liveness:
