@@ -91,6 +91,8 @@ spec:
         ports:
           http:
             port: 9333
+          grpc:
+            port: 19333
           metrics:
             port: 9334
       volume:
@@ -98,6 +100,8 @@ spec:
         ports:
           http:
             port: 8080
+          grpc:
+            port: 18080
           metrics:
             port: 8081
       filer:
@@ -105,6 +109,8 @@ spec:
         ports:
           http:
             port: 8888
+          grpc:
+            port: 18888
           metrics:
             port: 8889
       s3:
