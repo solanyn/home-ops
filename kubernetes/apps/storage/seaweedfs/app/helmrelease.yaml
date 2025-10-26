@@ -26,8 +26,10 @@ spec:
             probes:
               liveness:
                 enabled: true
+                initialDelaySeconds: 10
               readiness:
                 enabled: true
+                initialDelaySeconds: 10
       volume:
         containers:
           app:
@@ -45,8 +47,10 @@ spec:
             probes:
               liveness:
                 enabled: true
+                initialDelaySeconds: 10
               readiness:
                 enabled: true
+                initialDelaySeconds: 10
       filer:
         containers:
           app:
@@ -63,8 +67,10 @@ spec:
             probes:
               liveness:
                 enabled: true
+                initialDelaySeconds: 10
               readiness:
                 enabled: true
+                initialDelaySeconds: 10
       s3:
         containers:
           app:
@@ -83,8 +89,10 @@ spec:
             probes:
               liveness:
                 enabled: true
+                initialDelaySeconds: 10
               readiness:
                 enabled: true
+                initialDelaySeconds: 10
     service:
       master:
         controller: master
