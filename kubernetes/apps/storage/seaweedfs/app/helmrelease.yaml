@@ -21,7 +21,7 @@ spec:
               - master
               - -defaultReplication=000
               - -ip.bind=0.0.0.0
-              - -dir=/data
+              - -mdir=/data
               - -metricsPort=9334
             probes:
               liveness:
@@ -76,7 +76,6 @@ spec:
               - s3
               - -filer=seaweedfs-filer:8888
               - -ip.bind=0.0.0.0
-              - -dir=/data
               - -metricsPort=8334
             env:
               - name: WEED_FILER_OPTIONS_RECURSIVE_DELETE
