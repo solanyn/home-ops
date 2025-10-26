@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: icloudpd
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: icloudpd
+  interval: 1h
+  values:
+    controllers:
+      icloudpd:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/icloudpd/icloudpd
+              tag: 1.32.2@sha256:eb5fad6a58dc77ffa8c87d47078df28269959726eb58ed23502d27f6c6976c94
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                icloudpd \
+                  --directory /data \
+                  --username "$ICLOUD_USERNAME" \
+                  --password "$ICLOUD_PASSWORD" \
+                  --password-provider webui \
+                  --mfa-provider webui \
+                  --watch-with-interval 3600 \
+                  --smtp-host "$SMTP_HOST" \
+                  --smtp-port 25
+            env:
+              TZ: Australia/Sydney
+              SMTP_HOST: smtp-relay.network.svc.cluster.local
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                {
+                  drop: ["ALL"],
+                  add: ["NET_ADMIN", "NET_RAW", "NET_BROADCAST"],
+                }
+            resources:
+              requests:
+                cpu: 10m
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: 8080
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      data:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/photos
+        globalMounts:
+          - path: /data
