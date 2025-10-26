@@ -17,7 +17,7 @@ resources:
   - ./flaresolverr/ks.yaml
   - ./fusion/ks.yaml
   - ./home-assistant/ks.yaml
-  - ./icloudpd/ks.yaml
+  # - ./icloudpd/ks.yaml
   - ./immich/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./label-studio/ks.yaml

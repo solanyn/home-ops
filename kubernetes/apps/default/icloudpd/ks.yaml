@@ -9,6 +9,9 @@ spec:
     - ../../../../components/nfs-scaler
   interval: 1h
   path: ./kubernetes/apps/default/icloudpd/app
+  postBuild:
+    substitute:
+      APP: icloudpd
   prune: true
   sourceRef:
     kind: GitRepository
