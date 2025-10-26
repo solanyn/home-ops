@@ -21,6 +21,8 @@ spec:
               - master
               - -defaultReplication=000
               - -ip.bind=0.0.0.0
+              - -dir=/data
+              - -metricsPort=9334
             probes:
               liveness:
                 enabled: true
@@ -39,6 +41,7 @@ spec:
               - -dir=/data
               - -ip.bind=0.0.0.0
               - -max=100
+              - -metricsPort=8081
             probes:
               liveness:
                 enabled: true
@@ -55,6 +58,8 @@ spec:
               - filer
               - -master=seaweedfs-master:9333
               - -ip.bind=0.0.0.0
+              - -dir=/data
+              - -metricsPort=8889
             probes:
               liveness:
                 enabled: true
@@ -71,6 +76,8 @@ spec:
               - s3
               - -filer=seaweedfs-filer:8888
               - -ip.bind=0.0.0.0
+              - -dir=/data
+              - -metricsPort=8334
             env:
               - name: WEED_FILER_OPTIONS_RECURSIVE_DELETE
                 value: "false"
@@ -85,21 +92,54 @@ spec:
         ports:
           http:
             port: 9333
+          metrics:
+            port: 9334
       volume:
         controller: volume
         ports:
           http:
             port: 8080
+          metrics:
+            port: 8081
       filer:
         controller: filer
         ports:
           http:
             port: 8888
+          metrics:
+            port: 8889
       s3:
         controller: s3
         ports:
           http:
             port: 8333
+          metrics:
+            port: 8334
+    serviceMonitor:
+      master:
+        enabled: true
+        serviceName: seaweedfs-master
+        endpoints:
+          - port: metrics
+            scheme: http
+      volume:
+        enabled: true
+        serviceName: seaweedfs-volume
+        endpoints:
+          - port: metrics
+            scheme: http
+      filer:
+        enabled: true
+        serviceName: seaweedfs-filer
+        endpoints:
+          - port: metrics
+            scheme: http
+      s3:
+        enabled: true
+        serviceName: seaweedfs-s3
+        endpoints:
+          - port: metrics
+            scheme: http
     route:
       filer:
         hostnames: ["{{ .Release.Name }}.goyangi.io"]
