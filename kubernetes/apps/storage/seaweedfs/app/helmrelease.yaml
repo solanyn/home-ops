@@ -26,10 +26,26 @@ spec:
             probes:
               liveness:
                 enabled: true
-                initialDelaySeconds: 10
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9333
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 1
+                  periodSeconds: 10
+                  failureThreshold: 3
               readiness:
                 enabled: true
-                initialDelaySeconds: 10
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9333
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 1
+                  periodSeconds: 10
+                  failureThreshold: 3
       volume:
         containers:
           app:
@@ -47,10 +63,26 @@ spec:
             probes:
               liveness:
                 enabled: true
-                initialDelaySeconds: 10
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8080
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 1
+                  periodSeconds: 10
+                  failureThreshold: 3
               readiness:
                 enabled: true
-                initialDelaySeconds: 10
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8080
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 1
+                  periodSeconds: 10
+                  failureThreshold: 3
             securityContext:
               runAsUser: 1000
               runAsGroup: 1000
@@ -71,10 +103,26 @@ spec:
             probes:
               liveness:
                 enabled: true
-                initialDelaySeconds: 10
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8888
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 1
+                  periodSeconds: 10
+                  failureThreshold: 3
               readiness:
                 enabled: true
-                initialDelaySeconds: 10
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8888
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 1
+                  periodSeconds: 10
+                  failureThreshold: 3
       s3:
         containers:
           app:
@@ -93,10 +141,26 @@ spec:
             probes:
               liveness:
                 enabled: true
-                initialDelaySeconds: 10
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8333
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 1
+                  periodSeconds: 10
+                  failureThreshold: 3
               readiness:
                 enabled: true
-                initialDelaySeconds: 10
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8333
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 1
+                  periodSeconds: 10
+                  failureThreshold: 3
     service:
       master:
         controller: master
