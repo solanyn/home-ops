@@ -139,17 +139,12 @@ spec:
         globalMounts:
           - path: *media
       cache:
-        type: persistentVolumeClaim
-        storageClass: openebs-hostpath
-        accessMode: ReadWriteOnce
-        size: 10Gi
+        existingClaim: immich-cache
         advancedMounts:
           ml:
             app:
               - path: /cache
-                subPath: cache
               - path: /.cache
-                subPath: dotCache
       tmpfs:
         type: emptyDir
         advancedMounts:
