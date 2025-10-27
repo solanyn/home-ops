@@ -53,7 +53,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        forceRename: *app
+        forceRename: syncthing
         primary: true
         ports:
           http:
