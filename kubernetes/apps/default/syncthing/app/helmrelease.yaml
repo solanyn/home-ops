@@ -75,7 +75,9 @@ spec:
             protocol: UDP
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
+          - sync.goyangi.io
         parentRefs:
           - name: envoy-internal
             namespace: network
