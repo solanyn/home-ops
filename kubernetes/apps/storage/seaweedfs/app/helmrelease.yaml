@@ -15,7 +15,7 @@ spec:
           app:
             image:
               repository: chrislusf/seaweedfs
-              tag: 3.71
+              tag: 3.99
             command:
               - /usr/bin/weed
               - master
@@ -51,7 +51,7 @@ spec:
           app:
             image:
               repository: chrislusf/seaweedfs
-              tag: 3.71
+              tag: 3.99
             command:
               - /usr/bin/weed
               - volume
@@ -92,7 +92,7 @@ spec:
           app:
             image:
               repository: chrislusf/seaweedfs
-              tag: 3.71
+              tag: 3.99
             command:
               - /usr/bin/weed
               - filer
@@ -128,7 +128,7 @@ spec:
           app:
             image:
               repository: chrislusf/seaweedfs
-              tag: 3.71
+              tag: 3.99
             command:
               - /usr/bin/weed
               - s3
