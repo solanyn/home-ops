@@ -6,6 +6,11 @@ metadata:
   name: pingvin-share
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/volsync
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
@@ -15,6 +20,7 @@ spec:
   path: ./kubernetes/apps/default/pingvin-share/app
   postBuild:
     substitute:
+      VOLSYNC_CAPACITY: 1Gi
       APP: pingvin-share
   prune: true
   sourceRef:
