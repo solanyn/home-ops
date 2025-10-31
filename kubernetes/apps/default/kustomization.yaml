@@ -25,7 +25,6 @@ resources:
   - ./mlflow/ks.yaml
   - ./mosquitto/ks.yaml
   - ./open-webui/ks.yaml
-  - ./pingvin-share/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
   - ./prowlarr/ks.yaml
