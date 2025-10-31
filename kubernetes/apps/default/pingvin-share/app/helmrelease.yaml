@@ -50,7 +50,7 @@ spec:
       share:
         type: nfs
         server: nas.internal
-        path: /mnt/world/media/torrents/downloads/complete/lidarr
+        path: /mnt/world/media/downloads/torrents/complete/lidarr
         globalMounts:
           - path: /share
             readOnly: true
