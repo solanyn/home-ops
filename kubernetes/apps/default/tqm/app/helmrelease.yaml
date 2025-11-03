@@ -85,4 +85,3 @@ spec:
         path: /mnt/world/media/downloads/torrents
         globalMounts:
           - path: /media/downloads/torrents
-            readOnly: true
