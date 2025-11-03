@@ -1,0 +1,25 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: copyparty-oidc
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: copyparty
+  oidc:
+    provider:
+      issuer: "https://id.goyangi.io"
+    clientID: "copyparty"
+    clientSecret:
+      name: "copyparty-secret"
+    redirectURL: "https://copyparty.${SECRET_DOMAIN}/oauth2/callback"
+    logoutPath: "/logout"
+    userClaim: "preferred_username" # sets X-IdP-User
+    groupsClaim: "groups" # sets X-IdP-Group
+    passClaimsAsHeaders:
+      - claim: "preferred_username"
+        header: "X-IdP-User"
+      - claim: "groups"
+        header: "X-IdP-Group"

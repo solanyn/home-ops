@@ -1,0 +1,81 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: copyparty
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: copyparty
+  interval: 1h
+  values:
+    controllers:
+      copyparty:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/9001/copyparty-ac
+              tag: 1.19.19@sha256:0799b3a495e4ba97304d8eeb052aafec744d871bdcbb0ad996a04c573d3ba696
+            env:
+              TZ: Australia/Sydney
+              PRTY_NO_TLS: 1
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 10Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        ports:
+          http:
+            port: 3923
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    configMaps:
+      config:
+        data:
+          config.conf: |-
+            [global]
+              e2dsa
+              e2ts
+              ansi
+              idp-h-usr: x-idp-user
+              idp-h-grp: x-idp-group
+              xff-src: 10.69.0.0/16
+            [/shared]
+              /w/shared
+              accs:
+                r: ${u}
+    persistence:
+      config-file:
+        type: configMap
+        name: copyparty-configmap
+        globalMounts:
+          - path: /cfg/config.conf
+            subPath: config.conf
+            readOnly: true
+      shared:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media/downloads/torrents/complete/shared
+        globalMounts:
+          - path: /w/shared
+            readOnly: true
