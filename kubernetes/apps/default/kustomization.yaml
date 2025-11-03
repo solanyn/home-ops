@@ -13,6 +13,7 @@ resources:
   - ./bazarr/ks.yaml
   - ./calibre/ks.yaml
   - ./calibre-web/ks.yaml
+  - ./copyparty/ks.yaml
   - ./cross-seed/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./fusion/ks.yaml
