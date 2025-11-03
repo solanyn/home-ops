@@ -16,10 +16,3 @@ spec:
       name: "copyparty-secret"
     redirectURL: "https://copyparty.${SECRET_DOMAIN}/oauth2/callback"
     logoutPath: "/logout"
-    userClaim: "preferred_username" # sets X-IdP-User
-    groupsClaim: "groups" # sets X-IdP-Group
-    passClaimsAsHeaders:
-      - claim: "preferred_username"
-        header: "X-IdP-User"
-      - claim: "groups"
-        header: "X-IdP-Group"
