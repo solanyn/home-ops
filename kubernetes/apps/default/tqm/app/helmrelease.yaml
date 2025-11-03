@@ -53,7 +53,7 @@ spec:
         cronjob:
           <<: *cronJobSpec
           schedule: 0 0 * * 0
-          suspend: true
+          suspend: false
         containers:
           app:
             <<: *container
