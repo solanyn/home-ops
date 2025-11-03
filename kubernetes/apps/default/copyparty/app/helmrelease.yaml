@@ -67,7 +67,7 @@ spec:
     persistence:
       config-file:
         type: configMap
-        name: copyparty-configmap
+        identifier: config
         globalMounts:
           - path: /cfg/config.conf
             subPath: config.conf
