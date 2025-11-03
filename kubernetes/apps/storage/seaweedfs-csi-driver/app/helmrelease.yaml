@@ -18,4 +18,4 @@ spec:
     seaweedfsFiler: seaweedfs-filer.storage.svc.cluster.local:8888
     storageClassName: seaweedfs
     seaweedfsCsiPlugin:
-      image: chrislusf/seaweedfs-csi-driver:v1.3.2@sha256:0a06b483f6b077f0fb32e0a5519717aa9d24b228071b1a38acaca494141b778f
+      image: chrislusf/seaweedfs-csi-driver:v1.3.3@sha256:72d610869c26fe92806caf6cae0d505a0c6a17dbf30ff7f831326489208de539
