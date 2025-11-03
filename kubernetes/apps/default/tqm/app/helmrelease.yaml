@@ -82,8 +82,7 @@ spec:
       media:
         type: nfs
         server: nas.internal
-        path: /mnt/world/media
+        path: /mnt/world/media/downloads/torrents
         globalMounts:
           - path: /media/downloads/torrents
-            subPath: downloads/torrents
             readOnly: true
