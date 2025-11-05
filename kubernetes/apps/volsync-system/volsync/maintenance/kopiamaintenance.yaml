@@ -7,6 +7,7 @@ metadata:
   namespace: volsync
 spec:
   enabled: true
+  activeDeadlineSeconds: 21600  # 6 hours
   trigger:
     schedule: 0 */8 * * *
   repository:
