@@ -17,8 +17,8 @@ resources:
   - ./flaresolverr/ks.yaml
   - ./fusion/ks.yaml
   - ./home-assistant/ks.yaml
-  # - ./icloudpd/ks.yaml
   - ./immich/ks.yaml
+  - ./jellyfin/ks.yaml
   - ./jellyseerr/ks.yaml
   - ./label-studio/ks.yaml
   - ./mealie/ks.yaml
@@ -37,7 +37,6 @@ resources:
   - ./rreading-glasses/ks.yaml
   - ./searxng/ks.yaml
   - ./sonarr/ks.yaml
-  - ./stash/ks.yaml
   - ./syncthing/ks.yaml
   - ./tautulli/ks.yaml
   - ./thelounge/ks.yaml
