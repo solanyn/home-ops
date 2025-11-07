@@ -1,6 +1,0 @@
-mutation {
-  metadataClean(input: {
-    paths: ["/media"],
-    dryRun: false
-  })
-}
