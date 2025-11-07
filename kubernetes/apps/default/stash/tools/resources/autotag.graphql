@@ -1,8 +1,0 @@
-mutation {
-  metadataAutoTag(input: {
-    paths: ["/media"],
-    performers: ["*"],
-    studios: ["*"],
-    tags: ["*"]
-  })
-}
