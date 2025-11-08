@@ -25,15 +25,9 @@ spec:
           app:
             image:
               repository: blampe/rreading-glasses
-              tag: latest
+              tag: hardcover
             command: ["/main", "serve"]
             args:
-              - --upstream=www.goodreads.com
-              - --cookie=$(GOODREADS_COOKIE)
-              - --postgres-host=$(INIT_POSTGRES_HOST)
-              - --postgres-user=$(INIT_POSTGRES_USER)
-              - --postgres-password=$(INIT_POSTGRES_PASS)
-              - --postgres-database=$(INIT_POSTGRES_DBNAME)
               - --verbose
               - --port=80
             envFrom: *envFrom
