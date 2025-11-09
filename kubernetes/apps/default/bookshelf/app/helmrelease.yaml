@@ -76,6 +76,8 @@ spec:
         existingClaim: bookshelf
       run:
         type: emptyDir
+        globalMounts:
+          - path: /run
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
