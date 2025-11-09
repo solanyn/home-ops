@@ -1,0 +1,12 @@
+mutation {
+  metadataScan(input: {
+    paths: ["/media"],
+    scanGenerateCovers: true,
+    scanGeneratePreviews: true,
+    scanGenerateImagePreviews: true,
+    scanGenerateSprites: true,
+    scanGeneratePhashes: true,
+    scanGenerateThumbnails: true,
+    scanGenerateClipPreviews: true
+  })
+}

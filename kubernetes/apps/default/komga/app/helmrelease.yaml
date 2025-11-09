@@ -44,8 +44,8 @@ spec:
         existingClaim: "{{ .Release.Name }}"
       media:
         type: nfs
-        server: voyager.internal
-        path: /mnt/akademiya/data
+        server: nas.internal
+        path: /mnt/world/media
         globalMounts:
           - path: /data
             subPath: media
