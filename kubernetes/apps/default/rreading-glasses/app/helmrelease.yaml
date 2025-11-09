@@ -30,6 +30,7 @@ spec:
             args:
               - --verbose
               - --port=80
+              - --hardcover-auth=$(HARDCOVER_API_KEY)
             envFrom: *envFrom
             probes:
               # TODO: application is very alpha, enable when a real health route is exposed
