@@ -93,6 +93,8 @@ spec:
         existingClaim: "{{ .Release.Name }}"
       run:
         type: emptyDir
+        globalMounts:
+          - path: /run
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
