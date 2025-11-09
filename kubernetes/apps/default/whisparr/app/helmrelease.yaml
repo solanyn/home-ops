@@ -34,6 +34,7 @@ spec:
               WHISPARR__LOG__DBENABLED: "False"
               WHISPARR__LOG__LEVEL: info
               WHISPARR__SERVER__PORT: &port 80
+              WEBUI_PORTS: *port
               TZ: Australia/Sydney
             envFrom: *envFrom
             probes:
@@ -52,7 +53,11 @@ spec:
             securityContext:
               allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"], add: ["CHOWN", "SYS_CHROOT", "SETFCAP", "SETUID", "SETGID"] }
+              capabilities:
+                {
+                  drop: ["ALL"],
+                  add: ["CHOWN", "SYS_CHROOT", "SETFCAP", "SETUID", "SETGID"],
+                }
             resources:
               requests:
                 memory: 256Mi
@@ -86,6 +91,14 @@ spec:
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
+      nginx-cache:
+        type: emptyDir
+        globalMounts:
+          - path: /var/lib/nginx
+      nginx-logs:
+        type: emptyDir
+        globalMounts:
+          - path: /var/log/nginx
       media:
         type: nfs
         server: nas.internal
