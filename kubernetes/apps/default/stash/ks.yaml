@@ -3,22 +3,19 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: st
+  name: stash
 spec:
   targetNamespace: default
-  components:
-    - ../../../../components/nfs-scaler
-    - ../../../../components/volsync
   dependsOn:
     - name: intel-gpu-resource-driver
       namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/default/st/app
+  path: ./kubernetes/apps/default/stash/app
   postBuild:
     substitute:
-      APP: st
+      APP: stash
   prune: true
   sourceRef:
     kind: GitRepository
@@ -29,14 +26,14 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: st-tools
+  name: stash-tools
 spec:
   targetNamespace: default
   dependsOn:
-    - name: st
+    - name: stash
       namespace: default
   interval: 1h
-  path: ./kubernetes/apps/default/st/tools
+  path: ./kubernetes/apps/default/stash/tools
   prune: true
   sourceRef:
     kind: GitRepository

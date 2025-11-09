@@ -2,15 +2,15 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: st
+  name: stash
 spec:
   chartRef:
     kind: OCIRepository
-    name: st
+    name: stash
   interval: 1h
   values:
     controllers:
-      st:
+      stash:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -50,7 +50,7 @@ spec:
     defaultPodOptions:
       resourceClaims:
         - name: gpu
-          resourceClaimTemplateName: st
+          resourceClaimTemplateName: stash
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -65,7 +65,7 @@ spec:
             port: 9999
     route:
       app:
-        hostnames: ["st.goyangi.io"]
+        hostnames: ["stash.goyangi.io"]
         parentRefs:
           - name: envoy-internal
             namespace: network
@@ -77,7 +77,7 @@ spec:
           - path: /tmp
           - path: /.cache
       config:
-        existingClaim: "st"
+        existingClaim: "stash"
         globalMounts:
           - path: /config
             subPath: config
@@ -86,7 +86,7 @@ spec:
           - path: /generated
             subPath: generated
       cache:
-        existingClaim: "st-cache"
+        existingClaim: "stash-cache"
         globalMounts:
           - path: /cache
             subPath: cache

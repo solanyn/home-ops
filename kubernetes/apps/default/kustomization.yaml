@@ -41,12 +41,12 @@ resources:
   - ./rreading-glasses/ks.yaml
   - ./searxng/ks.yaml
   - ./sonarr/ks.yaml
-  - ./st/ks.yaml
+  - ./stash/ks.yaml
   - ./syncthing/ks.yaml
   - ./tautulli/ks.yaml
   - ./thelounge/ks.yaml
   - ./tqm/ks.yaml
-  - ./wh/ks.yaml
+  - ./whisparr/ks.yaml
   - ./notifier/ks.yaml
   - ./wizarr/ks.yaml
   - ./your-spotify/ks.yaml
