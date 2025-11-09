@@ -42,8 +42,6 @@ spec:
               WHISPARR__AUTH__REQUIRED: DisabledForLocalAddresses
               WHISPARR__LOG__DBENABLED: "False"
               WHISPARR__LOG__LEVEL: info
-              WHISPARR__SERVER__PORT: &port 80
-              WEBUI_PORTS: *port
               TZ: Australia/Sydney
             envFrom: *envFrom
             probes:
@@ -53,7 +51,7 @@ spec:
                 spec:
                   httpGet:
                     path: /ping
-                    port: *port
+                    port: 6969
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -79,7 +77,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: 6969
     route:
       app:
         hostnames: ["{{ .Release.Name }}.goyangi.io"]
