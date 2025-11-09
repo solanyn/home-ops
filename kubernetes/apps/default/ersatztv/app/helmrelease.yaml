@@ -71,7 +71,7 @@ spec:
         server: nas.internal
         path: /mnt/world/media
         globalMounts:
-          - path: /data
+          - path: /media
             readOnly: true
       tmpfs:
         type: emptyDir
