@@ -62,7 +62,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: { drop: ["ALL"], add: ["CHOWN"] }
             resources:
               requests:
                 memory: 256Mi

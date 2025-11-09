@@ -51,7 +51,7 @@ spec:
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
+              capabilities: { drop: ["ALL"], add: ["CHOWN"] }
             resources:
               requests:
                 memory: 256Mi
