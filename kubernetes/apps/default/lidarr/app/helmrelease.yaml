@@ -96,6 +96,14 @@ spec:
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
+      nginx-cache:
+        type: emptyDir
+        globalMounts:
+          - path: /var/lib/nginx
+      nginx-logs:
+        type: emptyDir
+        globalMounts:
+          - path: /var/log/nginx
       media:
         type: nfs
         server: nas.internal
