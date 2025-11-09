@@ -21,22 +21,6 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-          init-ssl:
-            image:
-              repository: alpine
-              tag: 3.22
-            command:
-              - sh
-              - -c
-              - |
-                mkdir -p /etc/nginx/ssl
-                openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-                  -keyout /etc/nginx/ssl/lidarr.key \
-                  -out /etc/nginx/ssl/lidarr.pem \
-                  -subj "/CN=api.lidarr.audio"
-            volumeMounts:
-              - name: nginx-ssl
-                mountPath: /etc/nginx/ssl
         containers:
           app:
             image:
@@ -53,7 +37,7 @@ spec:
               TZ: Australia/Sydney
             envFrom: *envFrom
             probes:
-              liveness: &probes
+              liveness:
                 enabled: true
                 custom: true
                 spec:
@@ -64,7 +48,17 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 1
                   failureThreshold: 3
-              readiness: *probes
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -78,28 +72,35 @@ spec:
             image:
               repository: nginx
               tag: 1.29-alpine
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    scheme: HTTPS
+                    path: /
+                    port: 443
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    scheme: HTTPS
+                    path: /
+                    port: 443
+                  initialDelaySeconds: 5
+                  periodSeconds: 5
+                  timeoutSeconds: 1
+                  failureThreshold: 3
             ports:
               - name: https
                 containerPort: 443
                 protocol: TCP
-            livenessProbe:
-              httpGet:
-                scheme: HTTPS
-                path: /
-                port: 443
-              initialDelaySeconds: 10
-              periodSeconds: 10
-              timeoutSeconds: 1
-              failureThreshold: 3
-            readinessProbe:
-              httpGet:
-                scheme: HTTPS
-                path: /
-                port: 443
-              initialDelaySeconds: 5
-              periodSeconds: 5
-              timeoutSeconds: 1
-              failureThreshold: 3
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -109,18 +110,6 @@ spec:
                 memory: 32Mi
               limits:
                 memory: 128Mi
-            volumeMounts:
-              - name: nginx-config
-                mountPath: /etc/nginx/nginx.conf
-                subPath: nginx.conf
-              - name: nginx-ssl
-                mountPath: /etc/nginx/ssl
-              - name: nginx-cache
-                mountPath: /var/cache/nginx
-              - name: nginx-run
-                mountPath: /var/run
-              - name: nginx-tmp
-                mountPath: /tmp
     defaultPodOptions:
       hostAliases:
         - ip: "127.0.0.1"
@@ -161,10 +150,10 @@ spec:
         type: configMap
         name: lidarr-nginx-config
         defaultMode: 0644
-      nginx-ssl:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 10Mi
+      nginx-tls:
+        type: secret
+        name: lidarr-tls-secret
+        defaultMode: 0400
       nginx-cache:
         type: emptyDir
         sizeLimit: 100Mi
