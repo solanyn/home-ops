@@ -14,16 +14,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          change-ownership:
-            image:
-              repository: alpine
-              tag: 3.22.2@sha256:4b7ce07002c69e8f3d704a9c5d6fd3053be500b7f1c69fc0d80990c2ad8dd412
-            command: ["sh", "-c"]
-            args: >-
-              cp /secret/config.xml /config/config.xml; chown $PUID:$PGID /config/config.xml;
-            env:
-              PUID: 1000
-              PGID: 1000
           init-db:
             image:
               repository: ghcr.io/home-operations/postgres-init
@@ -81,15 +71,28 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
-    persistence:
+    configMaps:
       config:
-        existingClaim: "{{ .Release.Name }}"
+        data:
+          entrypoint.sh: |-
+            #!/usr/bin/env bash
+
+            exec \
+                /app/readarr/bin/Readarr \
+                    --nobrowser \
+                    --data=/config \
+                    "$@"
+    persistence:
       config-file:
-        type: secret
-        name: "{{ .Release.Name }}-secret"
-        globalMounts:
-          - path: /secret/config.xml
-            subPath: config.xml
+        type: configMap
+        identifier: config
+        defaultMode: 0755
+        advancedMounts:
+          bookshelf:
+            bookshelf:
+              - path: /entrypoint.sh
+                subPath: entrypoint.sh
+                readOnly: true
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
