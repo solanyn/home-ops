@@ -9,7 +9,7 @@ spec:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   interval: 1h
-  path: ./kubernetes/apps/base/media/ersatztv
+  path: ./kubernetes/apps/default/ersatztv
   postBuild:
     substitute:
       APP: *app
