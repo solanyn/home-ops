@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: st-configmap
+  - name: stash-configmap
     files:
       - scan.graphql=resources/scan.graphql
       - identify.graphql=resources/identify.graphql

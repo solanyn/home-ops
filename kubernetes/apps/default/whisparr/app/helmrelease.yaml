@@ -2,15 +2,15 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: wh
+  name: whisparr
 spec:
   chartRef:
     kind: OCIRepository
-    name: wh
+    name: whisparr
   interval: 1h
   values:
     controllers:
-      wh:
+      whisparr:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -74,14 +74,14 @@ spec:
             port: *port
     route:
       app:
-        hostnames: ["wh.goyangi.io"]
+        hostnames: ["whisparr.goyangi.io"]
         parentRefs:
           - name: envoy-internal
             namespace: network
             sectionName: https
     persistence:
       config:
-        existingClaim: "wh"
+        existingClaim: "whisparr"
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
