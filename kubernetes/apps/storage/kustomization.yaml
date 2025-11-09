@@ -14,5 +14,3 @@ resources:
   - ./lakekeeper/ks.yaml
   - ./minio/ks.yaml
   - ./pxc/ks.yaml
-  - ./seaweedfs/ks.yaml
-  - ./seaweedfs-csi-driver/ks.yaml
