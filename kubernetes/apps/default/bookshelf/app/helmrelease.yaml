@@ -38,6 +38,7 @@ spec:
             env:
               TZ: Australia/Sydney
               METADATA_URL: http://rreading-glasses.default.svc.cluster.local
+              READARR__SERVER__PORT: &port 80
             envFrom: *envFrom
             probes:
               liveness: &probes
@@ -46,7 +47,7 @@ spec:
                 spec:
                   httpGet:
                     path: /ping
-                    port: 80
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
