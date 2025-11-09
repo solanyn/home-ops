@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: stash-tools
+  name: st-tools
 spec:
   chartRef:
     kind: OCIRepository
-    name: stash
+    name: st
   interval: 1h
   dependsOn:
-    - name: stash
+    - name: st
       namespace: default
   values:
     controllers:
@@ -35,7 +35,7 @@ spec:
                   -H "Content-Type: application/json" \
                   -d "{\"query\": \"$QUERY\"}"
             env:
-              STASH_URL: http://stash.default.svc.cluster.local:9999/graphql
+              STASH_URL: http://st.default.svc.cluster.local:9999/graphql
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -108,7 +108,7 @@ spec:
     persistence:
       queries:
         type: configMap
-        name: stash-configmap
+        name: st-configmap
         globalMounts:
           - path: /queries
             readOnly: true

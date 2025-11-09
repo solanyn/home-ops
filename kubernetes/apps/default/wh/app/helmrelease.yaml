@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wh
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: wh
+  interval: 1h
+  values:
+    controllers:
+      wh:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/hotio/whisparr
+              tag: v3-3.0.1.1319@sha256:771f1e03bbf03856a7d092c69881cf5b98d958182441ab4f066980a45772e557
+            env:
+              PUID: 1000
+              PGID: 1000
+              WHISPARR__APP__INSTANCENAME: Whisparr
+              # WHISPARR__APP__THEME: dark
+              WHISPARR__AUTH__METHOD: External
+              WHISPARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              WHISPARR__LOG__DBENABLED: "False"
+              WHISPARR__LOG__LEVEL: info
+              WHISPARR__SERVER__PORT: &port 80
+              WHISPARR__UPDATE__BRANCH: develop
+              TZ: Australia/Sydney
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["wh.goyangi.io"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      config:
+        existingClaim: "wh"
+      tmp:
+        type: emptyDir
+        sizeLimit: 1Gi
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          - path: /media
