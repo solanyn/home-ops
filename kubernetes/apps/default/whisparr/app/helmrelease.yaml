@@ -27,16 +27,13 @@ spec:
               repository: ghcr.io/hotio/whisparr
               tag: v3-3.0.1.1319@sha256:771f1e03bbf03856a7d092c69881cf5b98d958182441ab4f066980a45772e557
             env:
-              PUID: 1000
-              PGID: 1000
               WHISPARR__APP__INSTANCENAME: Whisparr
-              # WHISPARR__APP__THEME: dark
+              WHISPARR__APP__THEME: dark
               WHISPARR__AUTH__METHOD: External
               WHISPARR__AUTH__REQUIRED: DisabledForLocalAddresses
               WHISPARR__LOG__DBENABLED: "False"
               WHISPARR__LOG__LEVEL: info
               WHISPARR__SERVER__PORT: &port 80
-              WHISPARR__UPDATE__BRANCH: develop
               TZ: Australia/Sydney
             envFrom: *envFrom
             probes:
@@ -62,8 +59,8 @@ spec:
                 memory: 1Gi
     defaultPodOptions:
       securityContext:
-        runAsUser: 0
-        runAsGroup: 0
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
@@ -79,9 +76,30 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
+    configMaps:
+      config:
+        data:
+          entrypoint.sh: |-
+            #!/usr/bin/env bash
+
+            exec \
+                /app/whisparr/bin/Whisparr \
+                    --nobrowser \
+                    --data=/config \
+                    "$@"
     persistence:
       config:
-        existingClaim: "whisparr"
+        existingClaim: whispar"
+      config-file:
+        type: configMap
+        identifier: config
+        defaultMode: 0755
+        advancedMounts:
+          bookshelf:
+            bookshelf:
+              - path: /entrypoint.sh
+                subPath: entrypoint.sh
+                readOnly: true
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
