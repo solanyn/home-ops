@@ -150,18 +150,35 @@ spec:
         type: configMap
         name: lidarr-nginx-config
         defaultMode: 0644
+        globalMounts:
+          - path: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+      nginx-conf-d:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 10Mi
+        globalMounts:
+          - path: /etc/nginx/conf.d
       nginx-tls:
         type: secret
         name: lidarr-tls-secret
         defaultMode: 0400
+        globalMounts:
+          - path: /etc/nginx/ssl
       nginx-cache:
         type: emptyDir
         sizeLimit: 100Mi
+        globalMounts:
+          - path: /var/cache/nginx
       nginx-run:
         type: emptyDir
         medium: Memory
         sizeLimit: 10Mi
+        globalMounts:
+          - path: /var/run
       nginx-tmp:
         type: emptyDir
         medium: Memory
         sizeLimit: 50Mi
+        globalMounts:
+          - path: /tmp
