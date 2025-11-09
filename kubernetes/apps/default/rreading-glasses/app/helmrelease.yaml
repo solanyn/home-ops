@@ -30,6 +30,10 @@ spec:
             args:
               - --verbose
               - --port=80
+              - --postgres-host=$(INIT_POSTGRES_HOST)
+              - --postgres-user=$(INIT_POSTGRES_USER)
+              - --postgres-password=$(INIT_POSTGRES_PASS)
+              - --postgres-database=$(INIT_POSTGRES_DBNAME)
               - --hardcover-auth=$(HARDCOVER_API_KEY)
             envFrom: *envFrom
             probes:
