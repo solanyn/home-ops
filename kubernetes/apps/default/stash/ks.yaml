@@ -6,6 +6,8 @@ metadata:
   name: stash
 spec:
   targetNamespace: default
+  components:
+    - ../../../components/volsync
   dependsOn:
     - name: intel-gpu-resource-driver
       namespace: kube-system
