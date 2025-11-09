@@ -23,8 +23,6 @@ spec:
             securityContext:
               runAsNonRoot: false
               runAsUser: 0
-            globalMounts:
-              - path: /run
           init-db:
             image:
               repository: ghcr.io/home-operations/postgres-init
