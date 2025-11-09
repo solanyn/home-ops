@@ -24,8 +24,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/home-operations/lidarr
-              tag: 3.0.1.4866@sha256:05b517d6d05d117745e1b0b7e047a368c348b1f538a9b114343d10564ff53ced
+              repository: blampe/lidarr
+              tag: lidarr-plugins-3.0.0.4856@sha256:62490e2abd0ff110040effcc4241916c02b2f53bec499a8b1b3c3c60e82a204c
             env:
               LIDARR__APP__INSTANCENAME: Lidarr
               LIDARR__APP__THEME: dark
@@ -68,53 +68,7 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
-          nginx:
-            image:
-              repository: nginx
-              tag: 1.29-alpine
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    scheme: HTTPS
-                    path: /
-                    port: 443
-                  initialDelaySeconds: 10
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    scheme: HTTPS
-                    path: /
-                    port: 443
-                  initialDelaySeconds: 5
-                  periodSeconds: 5
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-            ports:
-              - name: https
-                containerPort: 443
-                protocol: TCP
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            resources:
-              requests:
-                memory: 32Mi
-              limits:
-                memory: 128Mi
     defaultPodOptions:
-      hostAliases:
-        - ip: "127.0.0.1"
-          hostnames:
-            - api.lidarr.audio
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -137,6 +91,8 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
+      run:
+        type: emptyDir
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
@@ -146,39 +102,3 @@ spec:
         path: /mnt/world/media
         globalMounts:
           - path: /media
-      nginx-config:
-        type: configMap
-        name: lidarr-nginx-config
-        defaultMode: 0644
-        globalMounts:
-          - path: /etc/nginx/nginx.conf
-            subPath: nginx.conf
-      nginx-conf-d:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 10Mi
-        globalMounts:
-          - path: /etc/nginx/conf.d
-      nginx-tls:
-        type: secret
-        name: lidarr-tls-secret
-        defaultMode: 0400
-        globalMounts:
-          - path: /etc/nginx/ssl
-      nginx-cache:
-        type: emptyDir
-        sizeLimit: 100Mi
-        globalMounts:
-          - path: /var/cache/nginx
-      nginx-run:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 10Mi
-        globalMounts:
-          - path: /var/run
-      nginx-tmp:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 50Mi
-        globalMounts:
-          - path: /tmp
