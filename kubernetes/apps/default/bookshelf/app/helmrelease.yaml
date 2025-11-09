@@ -38,7 +38,14 @@ spec:
             env:
               TZ: Australia/Sydney
               METADATA_URL: http://rreading-glasses.default.svc.cluster.local
+              READARR__APP__INSTANCENAME: Bookshelf
+              READARR__APP__THEME: dark
+              READARR__AUTH__METHOD: External
+              READARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              READARR__LOG__DBENABLED: "False"
+              READARR__LOG__LEVEL: info
               READARR__SERVER__PORT: &port 80
+              READARR__UPDATE__BRANCH: develop
             envFrom: *envFrom
             probes:
               liveness: &probes
