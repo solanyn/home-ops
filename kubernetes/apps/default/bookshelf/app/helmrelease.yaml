@@ -73,7 +73,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: 80
     route:
       app:
         hostnames: ["{{ .Release.Name }}.goyangi.io"]
