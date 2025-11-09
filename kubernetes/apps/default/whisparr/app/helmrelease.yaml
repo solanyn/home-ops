@@ -27,6 +27,8 @@ spec:
               repository: ghcr.io/hotio/whisparr
               tag: v3-3.0.1.1319@sha256:771f1e03bbf03856a7d092c69881cf5b98d958182441ab4f066980a45772e557
             env:
+              PUID: 1000
+              PGID: 1000
               WHISPARR__APP__INSTANCENAME: Whisparr
               WHISPARR__APP__THEME: dark
               WHISPARR__AUTH__METHOD: External
@@ -59,9 +61,8 @@ spec:
                 memory: 1Gi
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
+        runAsUser: 0
+        runAsGroup: 0
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
