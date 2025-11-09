@@ -77,7 +77,7 @@ spec:
           nginx:
             image:
               repository: nginx
-              tag: 1.27-alpine
+              tag: 1.29-alpine
             ports:
               - name: https
                 containerPort: 443
