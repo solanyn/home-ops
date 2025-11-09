@@ -21,6 +21,22 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
+          init-ssl:
+            image:
+              repository: alpine
+              tag: 3.22
+            command:
+              - sh
+              - -c
+              - |
+                mkdir -p /etc/nginx/ssl
+                openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+                  -keyout /etc/nginx/ssl/lidarr.key \
+                  -out /etc/nginx/ssl/lidarr.pem \
+                  -subj "/CN=api.lidarr.audio"
+            volumeMounts:
+              - name: nginx-ssl
+                mountPath: /etc/nginx/ssl
         containers:
           app:
             image:
@@ -58,7 +74,58 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
+          nginx:
+            image:
+              repository: nginx
+              tag: 1.27-alpine
+            ports:
+              - name: https
+                containerPort: 443
+                protocol: TCP
+            livenessProbe:
+              httpGet:
+                scheme: HTTPS
+                path: /
+                port: 443
+              initialDelaySeconds: 10
+              periodSeconds: 10
+              timeoutSeconds: 1
+              failureThreshold: 3
+            readinessProbe:
+              httpGet:
+                scheme: HTTPS
+                path: /
+                port: 443
+              initialDelaySeconds: 5
+              periodSeconds: 5
+              timeoutSeconds: 1
+              failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+            volumeMounts:
+              - name: nginx-config
+                mountPath: /etc/nginx/nginx.conf
+                subPath: nginx.conf
+              - name: nginx-ssl
+                mountPath: /etc/nginx/ssl
+              - name: nginx-cache
+                mountPath: /var/cache/nginx
+              - name: nginx-run
+                mountPath: /var/run
+              - name: nginx-tmp
+                mountPath: /tmp
     defaultPodOptions:
+      hostAliases:
+        - ip: "127.0.0.1"
+          hostnames:
+            - api.lidarr.audio
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -90,3 +157,22 @@ spec:
         path: /mnt/world/media
         globalMounts:
           - path: /media
+      nginx-config:
+        type: configMap
+        name: lidarr-nginx-config
+        defaultMode: 0644
+      nginx-ssl:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 10Mi
+      nginx-cache:
+        type: emptyDir
+        sizeLimit: 100Mi
+      nginx-run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 10Mi
+      nginx-tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 50Mi
