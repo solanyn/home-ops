@@ -50,9 +50,9 @@ spec:
                   failureThreshold: 3
               readiness: *probes
             securityContext:
-              allowPrivilegeEscalation: false
+              allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
+              capabilities: { drop: ["ALL"], add: ["CHOWN", "SYS_CHROOT", "SETFCAP", "SETUID", "SETGID"] }
             resources:
               requests:
                 memory: 256Mi
