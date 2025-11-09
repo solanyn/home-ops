@@ -6,6 +6,8 @@ metadata:
   name: lidarr
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/volsync
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage
