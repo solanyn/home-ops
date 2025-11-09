@@ -29,6 +29,7 @@ spec:
             command: ["/usr/bin/catatonit", "--", "/entrypoint.sh"]
             env:
               TZ: Australia/Sydney
+              METADATA_URL: http://rreading-glasses.default.svc.cluster.local
             envFrom: *envFrom
             probes:
               liveness: &probes
