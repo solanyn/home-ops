@@ -57,4 +57,3 @@ spec:
         path: /mnt/world/media
         globalMounts:
           - path: /media
-            subPath: media
