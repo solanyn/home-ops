@@ -62,7 +62,7 @@ spec:
       app:
         hostnames: ["tv.goyangi.io"]
         parentRefs:
-          - name: envoy-external
+          - name: envoy-internal
             namespace: network
     persistence:
       config:
