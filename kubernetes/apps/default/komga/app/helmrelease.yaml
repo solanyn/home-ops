@@ -22,6 +22,8 @@ spec:
             env:
               TZ: Australia/Sydney
               SERVER_PORT: &port 80
+              KOMGA_OAUTH2ACCOUNTCREATION: true
+              LOGGING_FILE_NAME: /dev/stdout
             resources:
               requests:
                 cpu: 10m
@@ -42,6 +44,13 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
+      secret-file:
+        type: secret
+        name: komga-secret
+        globalMounts:
+          - path: /config/application.yml
+            subPath: application.yml
+            readOnly: true
       media:
         type: nfs
         server: nas.internal
