@@ -14,6 +14,15 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
+          chown-run:
+            image:
+              repository: busybox
+              tag: 1.37.0
+            command: ["sh", "-c"]
+            args: ["chown -R 1000:1000 /run"]
+            securityContext:
+              runAsNonRoot: false
+              runAsUser: 0
           init-db:
             image:
               repository: ghcr.io/home-operations/postgres-init
@@ -24,8 +33,8 @@ spec:
         containers:
           app:
             image:
-              repository: blampe/lidarr
-              tag: lidarr-plugins-3.0.0.4856@sha256:62490e2abd0ff110040effcc4241916c02b2f53bec499a8b1b3c3c60e82a204c
+              repository: ghcr.io/linuxserver-labs/prarr
+              tag: lidarr-plugins-3.0.0.4856@sha256:73b4c4f38ad8622c676056d0f7f67cf14a7789adaa6ace209e5ecb21272d1c57
             env:
               LIDARR__APP__INSTANCENAME: Lidarr
               LIDARR__APP__THEME: dark
@@ -60,9 +69,8 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
             securityContext:
-              allowPrivilegeEscalation: true
-              readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"], add: ["CHOWN", "SYS_CHROOT", "SETFCAP", "SETUID", "SETGID"] }
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"], add: ["CHOWN"] }
             resources:
               requests:
                 memory: 256Mi
@@ -70,9 +78,11 @@ spec:
                 memory: 1Gi
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: false
-        runAsUser: 0
-        runAsGroup: 0
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
@@ -96,14 +106,6 @@ spec:
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
-      nginx-cache:
-        type: emptyDir
-        globalMounts:
-          - path: /var/lib/nginx
-      nginx-logs:
-        type: emptyDir
-        globalMounts:
-          - path: /var/log/nginx
       media:
         type: nfs
         server: nas.internal
