@@ -9,6 +9,8 @@ spec:
       containers:
         - name: kubectl-proxy
           image: registry.k8s.io/kubectl:v1.34.2
+          securityContext:
+            runAsNonRoot: false
           resources:
             requests:
               cpu: 10m
