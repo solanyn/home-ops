@@ -97,4 +97,3 @@ spec:
         globalMounts:
           - path: /media
             subPath: games
-            readOnly: true
