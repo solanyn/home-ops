@@ -1,9 +1,25 @@
 ---
+- id: bookshelf-pushover
+  execute-command: /config/bookshelf-pushover.sh
+  pass-environment-to-command:
+    - envname: BOOKSHELF_PUSHOVER_URL
+      source: string
+      name: '{{ getenv "BOOKSHELF_PUSHOVER_URL" }}'
+    - source: entire-payload
+
 - id: jellyseerr-pushover
   execute-command: /config/jellyseerr-pushover.sh
   pass-arguments-to-command:
     - source: string
       name: '{{ getenv "JELLYSEERR_PUSHOVER_URL" }}'
+    - source: entire-payload
+
+- id: lidarr-pushover
+  execute-command: /config/lidarr-pushover.sh
+  pass-environment-to-command:
+    - envname: LIDARR_PUSHOVER_URL
+      source: string
+      name: '{{ getenv "LIDARR_PUSHOVER_URL" }}'
     - source: entire-payload
 
 - id: radarr-pushover
@@ -14,10 +30,26 @@
       name: '{{ getenv "RADARR_PUSHOVER_URL" }}'
     - source: entire-payload
 
+- id: readarr-pushover
+  execute-command: /config/readarr-pushover.sh
+  pass-environment-to-command:
+    - envname: READARR_PUSHOVER_URL
+      source: string
+      name: '{{ getenv "READARR_PUSHOVER_URL" }}'
+    - source: entire-payload
+
 - id: sonarr-pushover
   execute-command: /config/sonarr-pushover.sh
   pass-environment-to-command:
     - envname: SONARR_PUSHOVER_URL
       source: string
       name: '{{ getenv "SONARR_PUSHOVER_URL" }}'
+    - source: entire-payload
+
+- id: whisparr-pushover
+  execute-command: /config/whisparr-pushover.sh
+  pass-environment-to-command:
+    - envname: WHISPARR_PUSHOVER_URL
+      source: string
+      name: '{{ getenv "WHISPARR_PUSHOVER_URL" }}'
     - source: entire-payload

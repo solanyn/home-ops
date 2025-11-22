@@ -10,9 +10,13 @@ configMapGenerator:
   - name: notifier-configmap
     files:
       - hooks.yaml=./resources/hooks.yaml
+      - bookshelf-pushover.sh=./resources/bookshelf-pushover.sh
       - jellyseerr-pushover.sh=./resources/jellyseerr-pushover.sh
+      - lidarr-pushover.sh=./resources/lidarr-pushover.sh
       - radarr-pushover.sh=./resources/radarr-pushover.sh
+      - readarr-pushover.sh=./resources/readarr-pushover.sh
       - sonarr-pushover.sh=./resources/sonarr-pushover.sh
+      - whisparr-pushover.sh=./resources/whisparr-pushover.sh
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
