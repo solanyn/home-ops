@@ -70,6 +70,9 @@ spec:
 
                     for nsz_file in torrents_dir.rglob("*.nsz"):
                         nsp_file = ROMS_DIR / nsz_file.with_suffix(".nsp").name
+                        if nsp_file.exists():
+                            print(f"Skipping {nsz_file}, {nsp_file.name} already exists")
+                            continue
                         print(f"Converting {nsz_file} to {nsp_file}")
                         try:
                             subprocess.run(["nsz", "-D", str(nsz_file), "-o", str(ROMS_DIR)], check=True)
@@ -80,9 +83,11 @@ spec:
 
                     for nsp_file in torrents_dir.rglob("*.nsp"):
                         dest_file = ROMS_DIR / nsp_file.name
-                        if not dest_file.exists():
-                            print(f"Hardlinking {nsp_file} to {dest_file}")
-                            dest_file.hardlink_to(nsp_file)
+                        if dest_file.exists():
+                            print(f"Skipping {nsp_file}, {dest_file.name} already exists")
+                            continue
+                        print(f"Hardlinking {nsp_file} to {dest_file}")
+                        dest_file.hardlink_to(nsp_file)
 
             if __name__ == "__main__":
                 process_files()
