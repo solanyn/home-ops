@@ -24,9 +24,9 @@ spec:
           app:
             image:
               repository: ghcr.io/astral-sh/uv
-              tag: 0.5.11
+              tag: 0.9.11
             command:
-              - uv
+              - /usr/local/bin/uv
             args:
               - run
               - --with
