@@ -25,6 +25,8 @@ spec:
             image:
               repository: ghcr.io/astral-sh/uv
               tag: 0.9.11
+            env:
+              UV_CACHE_DIR: /tmp/uv-cache
             command:
               - /uv
             args:
