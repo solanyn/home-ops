@@ -42,54 +42,6 @@ spec:
               capabilities: { drop: ["ALL"] }
         pod:
           restartPolicy: Never
-      cia-converter:
-        type: cronjob
-        cronjob:
-          schedule: 0 * * * *
-          backoffLimit: 0
-          concurrencyPolicy: Forbid
-          successfulJobsHistory: 1
-          failedJobsHistory: 1
-          ttlSecondsAfterFinished: 3600
-        initContainers:
-          download-tools:
-            image:
-              repository: alpine
-              tag: 3.21
-            command:
-              - /bin/sh
-              - -c
-            args:
-              - |
-                apk add --no-cache wget unzip
-                cd /tools
-                wget -q https://github.com/shijimasoft/ctrdecrypt/releases/download/v1.1.0/ctrdecrypt-linux-x86_64.zip
-                unzip -q ctrdecrypt-linux-x86_64.zip
-                mv ctrdecrypt-linux-x86_64/ctrdecrypt .
-                wget -q https://github.com/3DSGuy/Project_CTR/releases/download/ctrtool-v1.2.0/ctrtool-v1.2.0-ubuntu_x86_64.zip
-                unzip -q ctrtool-v1.2.0-ubuntu_x86_64.zip
-                mv ctrtool-v1.2.0-ubuntu_x86_64/ctrtool .
-                wget -q https://github.com/3DSGuy/Project_CTR/releases/download/makerom-v0.18.4/makerom-v0.18.4-ubuntu_x86_64.zip
-                unzip -q makerom-v0.18.4-ubuntu_x86_64.zip
-                mv makerom-v0.18.4-ubuntu_x86_64/makerom .
-                wget -q https://github.com/ihaveamac/3DS-rom-tools/raw/master/seeddb/seeddb.bin
-                chmod +x ctrdecrypt ctrtool makerom
-                rm -rf *.zip ctrdecrypt-* ctrtool-* makerom-*
-        containers:
-          app:
-            image:
-              repository: alpine
-              tag: 3.21
-            command:
-              - /bin/sh
-              - /scripts/cia-converter.sh
-            resources: {}
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
-        pod:
-          restartPolicy: Never
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -139,77 +91,6 @@ spec:
 
             if __name__ == "__main__":
                 process_files()
-          cia-converter.sh: |
-            #!/bin/sh
-            set -e
-            
-            ROMS_DIR="/media/games/roms/3ds"
-            TOOLS_DIR="/tools"
-            
-            cd "$ROMS_DIR"
-            
-            for cia in *.cia; do
-                [ -f "$cia" ] || continue
-                [ "${cia#*decrypted}" != "$cia" ] && continue
-                
-                cutn="${cia%.cia}"
-                echo "Processing $cia"
-                
-                tmd=$("$TOOLS_DIR/ctrtool" --seeddb="$TOOLS_DIR/seeddb.bin" "$cia")
-                
-                if echo "$tmd" | grep -qi "T.*d.*00040000"; then
-                    output="${cutn}-decrypted.cci"
-                    [ -f "$output" ] && echo "Skipping $cia, $output exists" && continue
-                    
-                    echo "Type: Game"
-                    "$TOOLS_DIR/ctrdecrypt" "$cia"
-                    
-                    args="-f cia -ignoresign -target p -o ${cutn}-decfirst.cia"
-                    i=0
-                    for ncch in ${cutn}.*.ncch; do
-                        [ -f "$ncch" ] || continue
-                        args="$args -i $ncch:$i:$i"
-                        i=$((i + 1))
-                    done
-                    "$TOOLS_DIR/makerom" $args
-                    "$TOOLS_DIR/makerom" -ciatocci "${cutn}-decfirst.cia" -o "$output"
-                    rm -f "${cutn}-decfirst.cia" ${cutn}.*.ncch "$cia"
-                    
-                elif echo "$tmd" | grep -qiE "T.*d.*0004000[eE]"; then
-                    output="${cutn} (Patch)-decrypted.cia"
-                    [ -f "$output" ] && echo "Skipping $cia, $output exists" && continue
-                    
-                    echo "Type: Patch"
-                    "$TOOLS_DIR/ctrdecrypt" "$cia"
-                    
-                    args="-f cia -ignoresign -target p -o $output"
-                    i=0
-                    for ncch in ${cutn}.*.ncch; do
-                        [ -f "$ncch" ] || continue
-                        args="$args -i $ncch:$i:$i"
-                        i=$((i + 1))
-                    done
-                    "$TOOLS_DIR/makerom" $args
-                    rm -f ${cutn}.*.ncch "$cia"
-                    
-                elif echo "$tmd" | grep -qiE "T.*d.*0004008[cC]"; then
-                    output="${cutn} (DLC)-decrypted.cia"
-                    [ -f "$output" ] && echo "Skipping $cia, $output exists" && continue
-                    
-                    echo "Type: DLC"
-                    "$TOOLS_DIR/ctrdecrypt" "$cia"
-                    
-                    args="-f cia -dlc -ignoresign -target p -o $output"
-                    i=0
-                    for ncch in ${cutn}.*.ncch; do
-                        [ -f "$ncch" ] || continue
-                        args="$args -i $ncch:$i:$i"
-                        i=$((i + 1))
-                    done
-                    "$TOOLS_DIR/makerom" $args
-                    rm -f ${cutn}.*.ncch "$cia"
-                fi
-            done
     persistence:
       script:
         type: configMap
@@ -230,13 +111,5 @@ spec:
           - path: /.switch/prod.keys
             subPath: prod.keys
             readOnly: true
-      tools:
-        type: emptyDir
-        advancedMounts:
-          cia-converter:
-            download-tools:
-              - path: /tools
-            app:
-              - path: /tools
       tmp:
         type: emptyDir
