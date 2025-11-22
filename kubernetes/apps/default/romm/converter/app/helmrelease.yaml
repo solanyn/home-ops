@@ -26,7 +26,7 @@ spec:
               repository: ghcr.io/astral-sh/uv
               tag: 0.9.11
             command:
-              - uv
+              - /uv
             args:
               - run
               - --with
