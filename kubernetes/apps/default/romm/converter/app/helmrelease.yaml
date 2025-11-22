@@ -66,7 +66,9 @@ spec:
             KEYS_FILE = GAMES_DIR / "bios" / "switch" / "prod.keys"
 
             def convert_and_cleanup():
-                for nsz_file in GAMES_DIR.rglob("*.nsz"):
+                nsz_files = list(GAMES_DIR.rglob("*.nsz"))
+                
+                for nsz_file in nsz_files:
                     print(f"Converting {nsz_file}")
                     try:
                         subprocess.run(
@@ -77,6 +79,7 @@ spec:
                         print(f"Converted and removed {nsz_file}")
                     except subprocess.CalledProcessError as e:
                         print(f"Failed to convert {nsz_file}: {e}")
+                        return
                 
                 for file in GAMES_DIR.rglob("*"):
                     if file.is_file() and file.suffix not in [".nsp", ".keys"]:
