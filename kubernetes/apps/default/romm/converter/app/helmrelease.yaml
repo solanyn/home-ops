@@ -35,12 +35,7 @@ spec:
               - nsz
               - python
               - /scripts/convert.py
-            resources:
-              requests:
-                cpu: 100m
-                memory: 256Mi
-              limits:
-                memory: 2Gi
+            resources: {}
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -72,7 +67,7 @@ spec:
                 for torrents_dir in TORRENTS_DIRS:
                     if not torrents_dir.exists():
                         continue
-                    
+
                     for nsz_file in torrents_dir.rglob("*.nsz"):
                         nsp_file = ROMS_DIR / nsz_file.with_suffix(".nsp").name
                         print(f"Converting {nsz_file} to {nsp_file}")
@@ -82,7 +77,7 @@ spec:
                         except subprocess.CalledProcessError as e:
                             print(f"Failed to convert {nsz_file}: {e}")
                             return
-                    
+
                     for nsp_file in torrents_dir.rglob("*.nsp"):
                         dest_file = ROMS_DIR / nsp_file.name
                         if not dest_file.exists():
