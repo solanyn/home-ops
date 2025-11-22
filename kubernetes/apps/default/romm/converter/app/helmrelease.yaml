@@ -24,11 +24,11 @@ spec:
           app:
             image:
               repository: ghcr.io/astral-sh/uv
-              tag: 0.9.11
+              tag: python3.14-alpine
             env:
               UV_CACHE_DIR: /tmp/uv-cache
             command:
-              - /uv
+              - uv
             args:
               - run
               - --with
