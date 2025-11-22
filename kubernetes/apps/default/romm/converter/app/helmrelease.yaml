@@ -1,0 +1,96 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: romm-converter
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: romm-converter
+  interval: 1h
+  values:
+    controllers:
+      romm-converter:
+        type: cronjob
+        cronjob:
+          schedule: 0 * * * *
+          backoffLimit: 0
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+          ttlSecondsAfterFinished: 3600
+        containers:
+          app:
+            image:
+              repository: ghcr.io/astral-sh/uv
+              tag: 0.5.11
+            command:
+              - /bin/sh
+              - -c
+              - |
+                uvx --with nsz --from nsz python /scripts/convert.py
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 2Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+        pod:
+          restartPolicy: Never
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    configMaps:
+      script:
+        data:
+          convert.py: |
+            #!/usr/bin/env python3
+            import subprocess
+            from pathlib import Path
+
+            GAMES_DIR = Path("/games")
+            KEYS_FILE = GAMES_DIR / "bios" / "switch" / "prod.keys"
+
+            def convert_and_cleanup():
+                for nsz_file in GAMES_DIR.rglob("*.nsz"):
+                    print(f"Converting {nsz_file}")
+                    try:
+                        subprocess.run(
+                            ["nsz", "-D", str(nsz_file), "-o", str(nsz_file.parent), "-k", str(KEYS_FILE)],
+                            check=True
+                        )
+                        nsz_file.unlink()
+                        print(f"Converted and removed {nsz_file}")
+                    except subprocess.CalledProcessError as e:
+                        print(f"Failed to convert {nsz_file}: {e}")
+                
+                for file in GAMES_DIR.rglob("*"):
+                    if file.is_file() and file.suffix not in [".nsp", ".keys"]:
+                        print(f"Removing non-NSP file: {file}")
+                        file.unlink()
+
+            if __name__ == "__main__":
+                convert_and_cleanup()
+    persistence:
+      script:
+        type: configMap
+        identifier: script
+        globalMounts:
+          - path: /scripts
+      games:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media/games
+        globalMounts:
+          - path: /games
+      tmp:
+        type: emptyDir
