@@ -106,9 +106,9 @@ spec:
       prod-keys:
         type: nfs
         server: nas.internal
-        path: /mnt/world/media/games/bios/switch/prod.keys
+        path: /mnt/world/media/games/bios/switch/20.5.0/prod.keys
         globalMounts:
           - path: /.switch/prod.keys
-            subPath: prod.keys
+            readOnly: true
       tmp:
         type: emptyDir
