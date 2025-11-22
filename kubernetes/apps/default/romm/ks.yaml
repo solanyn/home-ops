@@ -9,15 +9,31 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
-  - name: cloudnative-pg-cluster
-    namespace: storage
-  - name: rook-ceph-cluster
-    namespace: rook-ceph
+    - name: cloudnative-pg-cluster
+      namespace: storage
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/romm/app
   postBuild:
     substitute:
       APP: romm
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: romm-tools
+spec:
+  targetNamespace: default
+  interval: 1h
+  path: ./kubernetes/apps/default/romm/tools
   prune: true
   sourceRef:
     kind: GitRepository
