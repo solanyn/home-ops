@@ -63,7 +63,6 @@ spec:
             from pathlib import Path
 
             GAMES_DIR = Path("/games")
-            KEYS_FILE = GAMES_DIR / "bios" / "switch" / "prod.keys"
 
             def convert_and_cleanup():
                 nsz_files = list(GAMES_DIR.rglob("*.nsz"))
@@ -72,7 +71,7 @@ spec:
                     print(f"Converting {nsz_file}")
                     try:
                         subprocess.run(
-                            ["nsz", "-D", str(nsz_file), "-o", str(nsz_file.parent), "-k", str(KEYS_FILE)],
+                            ["nsz", "-D", str(nsz_file)],
                             check=True
                         )
                         nsz_file.unlink()
@@ -85,6 +84,11 @@ spec:
                     if file.is_file() and file.suffix not in [".nsp", ".keys"]:
                         print(f"Removing non-NSP file: {file}")
                         file.unlink()
+                
+                for dir in sorted(GAMES_DIR.rglob("*"), key=lambda p: len(p.parts), reverse=True):
+                    if dir.is_dir() and not any(dir.iterdir()):
+                        print(f"Removing empty directory: {dir}")
+                        dir.rmdir()
 
             if __name__ == "__main__":
                 convert_and_cleanup()
@@ -100,5 +104,12 @@ spec:
         path: /mnt/world/media/games
         globalMounts:
           - path: /games
+      prod-keys:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media/games/bios/switch/prod.keys
+        globalMounts:
+          - path: /.switch/prod.keys
+            subPath: prod.keys
       tmp:
         type: emptyDir
