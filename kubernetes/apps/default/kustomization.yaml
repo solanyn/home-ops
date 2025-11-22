@@ -50,6 +50,5 @@ resources:
   - ./whisparr/ks.yaml
   - ./notifier/ks.yaml
   - ./wizarr/ks.yaml
-  - ./your-spotify/ks.yaml
   - ./zigbee/ks.yaml
   - ./zwave/ks.yaml
