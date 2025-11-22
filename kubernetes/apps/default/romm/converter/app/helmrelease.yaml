@@ -62,48 +62,47 @@ spec:
             import subprocess
             from pathlib import Path
 
-            GAMES_DIR = Path("/games")
+            TORRENTS_DIRS = [
+                Path("/media/downloads/torrents/complete/games"),
+                Path("/media/downloads/torrents/complete/switch")
+            ]
+            ROMS_DIR = Path("/media/games/roms/switch")
 
-            def convert_and_cleanup():
-                nsz_files = list(GAMES_DIR.rglob("*.nsz"))
-                
-                for nsz_file in nsz_files:
-                    print(f"Converting {nsz_file}")
-                    try:
-                        subprocess.run(
-                            ["nsz", "-D", str(nsz_file)],
-                            check=True
-                        )
-                        nsz_file.unlink()
-                        print(f"Converted and removed {nsz_file}")
-                    except subprocess.CalledProcessError as e:
-                        print(f"Failed to convert {nsz_file}: {e}")
-                        return
-                
-                for file in GAMES_DIR.rglob("*"):
-                    if file.is_file() and file.suffix not in [".nsp", ".keys"]:
-                        print(f"Removing non-NSP file: {file}")
-                        file.unlink()
-                
-                for dir in sorted(GAMES_DIR.rglob("*"), key=lambda p: len(p.parts), reverse=True):
-                    if dir.is_dir() and not any(dir.iterdir()):
-                        print(f"Removing empty directory: {dir}")
-                        dir.rmdir()
+            def process_files():
+                for torrents_dir in TORRENTS_DIRS:
+                    if not torrents_dir.exists():
+                        continue
+                    
+                    for nsz_file in torrents_dir.rglob("*.nsz"):
+                        nsp_file = ROMS_DIR / nsz_file.with_suffix(".nsp").name
+                        print(f"Converting {nsz_file} to {nsp_file}")
+                        try:
+                            subprocess.run(["nsz", "-D", str(nsz_file), "-o", str(ROMS_DIR)], check=True)
+                            print(f"Converted {nsz_file}")
+                        except subprocess.CalledProcessError as e:
+                            print(f"Failed to convert {nsz_file}: {e}")
+                            return
+                    
+                    for nsp_file in torrents_dir.rglob("*.nsp"):
+                        dest_file = ROMS_DIR / nsp_file.name
+                        if not dest_file.exists():
+                            print(f"Hardlinking {nsp_file} to {dest_file}")
+                            dest_file.hardlink_to(nsp_file)
 
             if __name__ == "__main__":
-                convert_and_cleanup()
+                process_files()
     persistence:
       script:
         type: configMap
         identifier: script
         globalMounts:
           - path: /scripts
-      games:
+      media:
         type: nfs
         server: nas.internal
-        path: /mnt/world/media/games
+        path: /mnt/world/media
         globalMounts:
-          - path: /games
+          - path: /media
       prod-keys:
         type: nfs
         server: nas.internal
