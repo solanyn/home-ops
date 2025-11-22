@@ -26,10 +26,13 @@ spec:
               repository: ghcr.io/astral-sh/uv
               tag: 0.5.11
             command:
-              - /bin/sh
-              - -c
-              - |
-                uvx --with nsz --from nsz python /scripts/convert.py
+              - uv
+            args:
+              - run
+              - --with
+              - nsz
+              - python
+              - /scripts/convert.py
             resources:
               requests:
                 cpu: 100m
