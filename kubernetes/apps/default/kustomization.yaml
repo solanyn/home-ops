@@ -38,6 +38,7 @@ resources:
   - ./readarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./romm/ks.yaml
+  - ./romm/converter/ks.yaml
   - ./rreading-glasses/ks.yaml
   - ./searxng/ks.yaml
   - ./sonarr/ks.yaml
