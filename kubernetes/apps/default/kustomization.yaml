@@ -39,6 +39,7 @@ resources:
   - ./romm/ks.yaml
   - ./rreading-glasses/ks.yaml
   - ./searxng/ks.yaml
+  - ./seerr/ks.yaml
   - ./sonarr/ks.yaml
   - ./stash/ks.yaml
   - ./syncthing/ks.yaml
