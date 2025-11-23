@@ -42,7 +42,6 @@ resources:
   - ./seerr/ks.yaml
   - ./sonarr/ks.yaml
   - ./stash/ks.yaml
-  - ./syncthing/ks.yaml
   - ./tautulli/ks.yaml
   - ./thelounge/ks.yaml
   - ./tqm/ks.yaml
