@@ -55,13 +55,32 @@ spec:
           convert.py: |
             #!/usr/bin/env python3
             import subprocess
+            import re
             from pathlib import Path
 
             TORRENTS_DIRS = [
                 Path("/media/downloads/torrents/complete/games"),
                 Path("/media/downloads/torrents/complete/switch")
             ]
-            ROMS_DIR = Path("/media/games/roms/switch")
+            BASE_DIR = Path("/media/games/roms/switch")
+            UPDATE_DIR = BASE_DIR / "update"
+            DLC_DIR = BASE_DIR / "dlc"
+
+            UPDATE_DIR.mkdir(exist_ok=True)
+            DLC_DIR.mkdir(exist_ok=True)
+
+            def get_file_type(filename):
+                """Determine if file is base game, update, or DLC"""
+                if "DLC" in filename or "dlc" in filename.lower():
+                    return "dlc"
+                
+                version_match = re.search(r'\[v(\d+)\]', filename)
+                if version_match:
+                    version = int(version_match.group(1))
+                    if version > 0:
+                        return "update"
+                
+                return "base"
 
             def process_files():
                 for torrents_dir in TORRENTS_DIRS:
@@ -69,24 +88,32 @@ spec:
                         continue
 
                     for nsz_file in torrents_dir.rglob("*.nsz"):
-                        nsp_file = ROMS_DIR / nsz_file.with_suffix(".nsp").name
+                        file_type = get_file_type(nsz_file.name)
+                        dest_dir = {"base": BASE_DIR, "update": UPDATE_DIR, "dlc": DLC_DIR}[file_type]
+                        nsp_file = dest_dir / nsz_file.with_suffix(".nsp").name
+                        
                         if nsp_file.exists():
                             print(f"Skipping {nsz_file}, {nsp_file.name} already exists")
                             continue
-                        print(f"Converting {nsz_file} to {nsp_file}")
+                        
+                        print(f"Converting {nsz_file} to {nsp_file} ({file_type})")
                         try:
-                            subprocess.run(["nsz", "-D", str(nsz_file), "-o", str(ROMS_DIR)], check=True)
+                            subprocess.run(["nsz", "-D", str(nsz_file), "-o", str(dest_dir)], check=True)
                             print(f"Converted {nsz_file}")
                         except subprocess.CalledProcessError as e:
                             print(f"Failed to convert {nsz_file}: {e}")
                             return
 
                     for nsp_file in torrents_dir.rglob("*.nsp"):
-                        dest_file = ROMS_DIR / nsp_file.name
+                        file_type = get_file_type(nsp_file.name)
+                        dest_dir = {"base": BASE_DIR, "update": UPDATE_DIR, "dlc": DLC_DIR}[file_type]
+                        dest_file = dest_dir / nsp_file.name
+                        
                         if dest_file.exists():
                             print(f"Skipping {nsp_file}, {dest_file.name} already exists")
                             continue
-                        print(f"Hardlinking {nsp_file} to {dest_file}")
+                        
+                        print(f"Hardlinking {nsp_file} to {dest_file} ({file_type})")
                         dest_file.hardlink_to(nsp_file)
 
             if __name__ == "__main__":
