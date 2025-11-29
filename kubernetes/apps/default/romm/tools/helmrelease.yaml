@@ -64,15 +64,28 @@ spec:
             ]
             BASE_DIR = Path("/media/games/roms/switch")
 
+            def normalize_filename(filename):
+                """Remove size suffix like (0.08 GB) from filename"""
+                return re.sub(r'\s*\(\d+\.\d+\s+GB\)', '', filename)
+
             def extract_game_name(filename):
-                """Extract game name from filename (everything before the title ID)"""
-                match = re.match(r'^(.+?)\s*\[[\dA-F]{16}\]', filename)
-                return match.group(1).strip() if match else filename.split('[')[0].strip()
+                """Extract base game name, removing DLC descriptions"""
+                # Remove file extension and size info
+                name = normalize_filename(filename.rsplit('.', 1)[0])
+                
+                # Check if it's DLC - has [DLC ...] before the title ID
+                dlc_match = re.search(r'^(.+?)\s*\[DLC[^\]]*\]\s*\[[\dA-F]{16}\]', name)
+                if dlc_match:
+                    return dlc_match.group(1).strip()
+                
+                # Regular game - extract everything before title ID
+                match = re.match(r'^(.+?)\s*\[[\dA-F]{16}\]', name)
+                return match.group(1).strip() if match else name.split('[')[0].strip()
 
             def get_file_info(filename):
                 """Determine game name, type, and if it's DLC"""
                 game_name = extract_game_name(filename)
-                is_dlc = "DLC" in filename or "dlc" in filename.lower()
+                is_dlc = bool(re.search(r'\[DLC[^\]]*\]', filename))
                 
                 version_match = re.search(r'\[v(\d+)\]', filename)
                 version = int(version_match.group(1)) if version_match else 0
@@ -83,6 +96,17 @@ spec:
                     return game_name, "update"
                 else:
                     return game_name, "base"
+            
+            def file_exists_normalized(dest_file):
+                """Check if file exists, ignoring size suffix differences"""
+                if dest_file.exists():
+                    return True
+                # Check for file with size suffix added/removed
+                normalized = normalize_filename(dest_file.name)
+                for existing in dest_file.parent.glob("*.nsp"):
+                    if normalize_filename(existing.name) == normalized:
+                        return True
+                return False
 
             def process_files():
                 for torrents_dir in TORRENTS_DIRS:
@@ -101,7 +125,7 @@ spec:
                             subdir.mkdir(exist_ok=True)
                             dest_file = subdir / nsz_file.with_suffix(".nsp").name
                         
-                        if dest_file.exists():
+                        if file_exists_normalized(dest_file):
                             print(f"Skipping {nsz_file}, {dest_file.name} already exists")
                             continue
                         
@@ -125,7 +149,7 @@ spec:
                             subdir.mkdir(exist_ok=True)
                             dest_file = subdir / nsp_file.name
                         
-                        if dest_file.exists():
+                        if file_exists_normalized(dest_file):
                             print(f"Skipping {nsp_file}, {dest_file.name} already exists")
                             continue
                         
