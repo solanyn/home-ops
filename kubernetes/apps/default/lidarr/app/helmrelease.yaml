@@ -33,7 +33,7 @@ spec:
         containers:
           app:
             image:
-              # renovate: extractVersion=^lidarr-plugins-(?<version>.+)$
+              # renovate: versioning=loose extractVersion=^lidarr-plugins-(?<version>.+)$
               repository: ghcr.io/linuxserver-labs/prarr
               tag: lidarr-plugins-3.0.0.4856@sha256:73b4c4f38ad8622c676056d0f7f67cf14a7789adaa6ace209e5ecb21272d1c57
             env:
