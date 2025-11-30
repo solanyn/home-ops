@@ -14,6 +14,12 @@
       overridePackageName: "ghcr.io/siderolabs/installer",
     },
     {
+      description: "Extract version from image tags with prefixes",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/linuxserver-labs/prarr", "ghcr.io/pennydreadful/bookshelf"],
+      versioning: "regex:^[a-z-]+-v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:\\.(?<build>\\d+))?$",
+    },
+    {
       description: "Pin Istio to 1.24.x for Kubeflow compatibility",
       matchDatasources: ["helm"],
       matchPackageNames: ["base", "istiod", "gateway", "cni"],
