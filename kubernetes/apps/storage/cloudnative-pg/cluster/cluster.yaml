@@ -29,6 +29,15 @@ spec:
       memory: 4Gi
   monitoring:
     enablePodMonitor: true
+  # when doing major upgrade and backup doesn't exist
+  # bootstrap:
+  #   initdb:
+  #     import:
+  #       type: monolith
+  #       databases: ["*"]
+  #       roles: ["*"]
+  #       source:
+  #         externalCluster: &previousCluster postgres17-v4
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
@@ -43,3 +52,13 @@ spec:
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters: *parameters
+    # when directly doing direct upgrades and upgrading when current postgres is already running
+    # - name: *previousCluster
+    #   connectionParameters:
+    #     host: postgres-lb.storage.svc.cluster.local
+    #     user: postgres
+    #     dbname: postgres
+    #     sslmode: require
+    #   password:
+    #     name: cloudnative-pg-secret
+    #     key: password
