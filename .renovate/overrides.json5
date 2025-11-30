@@ -14,10 +14,24 @@
       overridePackageName: "ghcr.io/siderolabs/installer",
     },
     {
-      description: "Extract version from image tags with prefixes",
+      description: "Extract version from whisparr-eros tags",
       matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/linuxserver-labs/prarr", "ghcr.io/pennydreadful/bookshelf"],
-      versioning: "regex:^[a-z-]+-v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(?:\\.(?<build>\\d+))?$",
+      matchPackageNames: ["ghcr.io/linuxserver-labs/prarr"],
+      matchCurrentValue: "/^whisparr-eros-/",
+      versioning: "regex:^whisparr-eros-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$",
+    },
+    {
+      description: "Extract version from lidarr-plugins tags",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/linuxserver-labs/prarr"],
+      matchCurrentValue: "/^lidarr-plugins-/",
+      versioning: "regex:^lidarr-plugins-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$",
+    },
+    {
+      description: "Extract version from bookshelf hardcover tags",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/pennydreadful/bookshelf"],
+      versioning: "regex:^hardcover-v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$",
     },
     {
       description: "Pin Istio to 1.24.x for Kubeflow compatibility",
