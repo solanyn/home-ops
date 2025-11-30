@@ -33,7 +33,7 @@ spec:
         containers:
           app:
             image:
-              # renovate: extractVersion=^whisparr-eros-(?<version>.+)$
+              # renovate: versioning=loose extractVersion=^whisparr-eros-(?<version>.+)$
               repository: ghcr.io/linuxserver-labs/prarr
               tag: whisparr-eros-3.0.1.1349@sha256:0e4ccc4c31abba3e67f073ceaa95d5e2b52fb04b7af3875b8b90676043ad9f48
             env:
