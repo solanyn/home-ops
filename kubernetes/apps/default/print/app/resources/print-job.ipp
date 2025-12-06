@@ -6,6 +6,6 @@
   ATTR language attributes-natural-language en
   ATTR uri printer-uri ipp://192.168.1.173/ipp/print
   ATTR name requesting-user-name root
-  ATTR mimeMediaType document-format application/pdf
+  ATTR mimeMediaType document-format image/pwg-raster
   FILE $filename
 }
