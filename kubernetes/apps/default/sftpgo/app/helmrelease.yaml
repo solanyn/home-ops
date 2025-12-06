@@ -20,7 +20,7 @@ spec:
               tag: v2.7.0
             env:
               SFTPGO_DATA_PROVIDER__DRIVER: sqlite
-              SFTPGO_COMMON__PRE_LOGIN_HOOK: /scripts/pre-login-hook.sh
+              SFTPGO_DATA_PROVIDER__PRE_LOGIN_HOOK: /scripts/pre-login-hook.sh
               SFTPGO_TELEMETRY__BIND_ADDRESS: 0.0.0.0
               SFTPGO_TELEMETRY__BIND_PORT: 8081
               SFTPGO_SFTPD__BINDINGS__0__ADDRESS: 0.0.0.0
