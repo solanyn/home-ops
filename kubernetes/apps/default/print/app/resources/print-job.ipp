@@ -9,5 +9,6 @@
   ATTR mimeMediaType document-format image/pwg-raster
   GROUP job-attributes-tag
   ATTR keyword print-color-mode color
+  ATTR enum print-quality 5
   FILE $filename
 }
