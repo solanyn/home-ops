@@ -13,14 +13,14 @@ if [ "$USER_ID" -eq 0 ]; then
   # User doesn't exist, create new user
   USERNAME=$(echo "$SFTPGO_LOGIND_USER" | jq -r '.username')
   
-  # Create user with basic permissions
+  # Create user with read-only access to media directory
   cat <<EOF
 {
   "username": "$USERNAME",
   "status": 1,
-  "home_dir": "/data/$USERNAME",
+  "home_dir": "/media",
   "permissions": {
-    "/": ["*"]
+    "/": ["list", "download"]
   },
   "filesystem": {
     "provider": 0
