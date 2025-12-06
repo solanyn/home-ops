@@ -33,7 +33,7 @@ spec:
               PRINTER_IP: 192.168.1.173
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
         pod:
           restartPolicy: OnFailure
@@ -49,8 +49,3 @@ spec:
         name: print-configmap
         globalMounts:
           - path: /config
-      tmpfs:
-        type: emptyDir
-        globalMounts:
-          - path: /var/log
-          - path: /tmp
