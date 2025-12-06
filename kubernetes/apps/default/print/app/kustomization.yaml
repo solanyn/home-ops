@@ -10,5 +10,6 @@ configMapGenerator:
     files:
       - testpage.pdf=./resources/testpage.pdf
       - print-job.ipp=./resources/print-job.ipp
+      - print.sh=./resources/print.sh
 generatorOptions:
   disableNameSuffixHash: true
