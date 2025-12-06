@@ -28,7 +28,9 @@ spec:
               - |
                 apk add --no-cache cups-client ipptool gettext && \
                 echo "Printing test page..." && \
+                echo "PRINTER_IP=${PRINTER_IP}" && \
                 envsubst '$PRINTER_IP' < /config/print-job.ipp > /tmp/print-job.ipp && \
+                cat /tmp/print-job.ipp && \
                 ipptool -f /config/testpage.pdf ipp://${PRINTER_IP}/ipp/print /tmp/print-job.ipp
             env:
               PRINTER_IP: 192.168.1.173
