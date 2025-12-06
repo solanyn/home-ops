@@ -26,14 +26,9 @@ spec:
             command: ["/bin/sh", "-c"]
             args:
               - |
-                apk add --no-cache cups-client ipptool gettext && \
+                apk add --no-cache cups-client ipptool && \
                 echo "Printing test page..." && \
-                echo "PRINTER_IP=${PRINTER_IP}" && \
-                envsubst '$PRINTER_IP' < /config/print-job.ipp > /tmp/print-job.ipp && \
-                cat /tmp/print-job.ipp && \
-                ipptool -f /config/testpage.pdf ipp://${PRINTER_IP}/ipp/print /tmp/print-job.ipp
-            env:
-              PRINTER_IP: 192.168.1.173
+                ipptool -f /config/testpage.pdf ipp://192.168.1.173/ipp/print /config/print-job.ipp
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
