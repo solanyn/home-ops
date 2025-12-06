@@ -41,6 +41,7 @@ resources:
   - ./rreading-glasses/ks.yaml
   - ./searxng/ks.yaml
   - ./seerr/ks.yaml
+  - ./sftpgo/ks.yaml
   - ./sonarr/ks.yaml
   - ./stash/ks.yaml
   - ./tautulli/ks.yaml
