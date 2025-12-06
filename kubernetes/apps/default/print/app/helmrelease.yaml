@@ -23,14 +23,7 @@ spec:
             image:
               repository: alpine
               tag: 3.23.0@sha256:51183f2cfa6320055da30872f211093f9ff1d3cf06f39a0bdb212314c5dc7375
-            command: ["/bin/sh", "-c"]
-            args:
-              - |
-                apk add --no-cache cups-client ipptool ghostscript cups-filters && \
-                echo "Converting PDF to PWG raster..." && \
-                gs -dNOPAUSE -dBATCH -sDEVICE=pwgraster -sOutputFile=/tmp/testpage.pwg /config/testpage.pdf && \
-                echo "Printing test page..." && \
-                ipptool -tv -f /tmp/testpage.pwg ipp://192.168.1.173/ipp/print /config/print-job.ipp
+            command: ["/bin/sh", "/config/print.sh"]
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
