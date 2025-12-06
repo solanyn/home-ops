@@ -18,7 +18,8 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: flux-system
+    namespace: flux-system
   postBuild:
     substitute:
       APP: *app
