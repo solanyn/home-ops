@@ -61,6 +61,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
+        forceRename: "{{ .Release.Name }}"
         controller: sftpgo
         ports:
           http:
@@ -87,7 +88,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - name: app
+              - identifier: app
                 port: 8080
     persistence:
       config:
