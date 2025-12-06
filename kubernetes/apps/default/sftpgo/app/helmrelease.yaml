@@ -31,6 +31,7 @@ spec:
               SFTPGO_HTTPD__BINDINGS__0__OIDC__SCOPES: openid,profile,email,preferred_username
               SFTPGO_HTTPD__BINDINGS__0__OIDC__USERNAME_FIELD: preferred_username
               SFTPGO_HTTPD__BINDINGS__0__OIDC__IMPLICIT_ROLES: "true"
+              SFTPGO_HTTPD__BINDINGS__0__ENABLED_LOGIN_METHODS: "2"
             envFrom:
               - secretRef:
                   name: sftpgo-secret
