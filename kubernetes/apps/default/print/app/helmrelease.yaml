@@ -49,5 +49,7 @@ spec:
         name: print-configmap
         globalMounts:
           - path: /config
-      tmp:
+      tmpfs:
         type: emptyDir
+        globalMounts:
+          - path: /var/log
