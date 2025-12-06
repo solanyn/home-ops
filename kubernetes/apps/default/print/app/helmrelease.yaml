@@ -28,7 +28,7 @@ spec:
               - |
                 apk add --no-cache cups-client && \
                 echo "Printing test page..." && \
-                lp -d ipp://${PRINTER_IP}/ipp/print /config/testpage.pdf
+                ipptool -f /config/testpage.pdf ipp://${PRINTER_IP}/ipp/print /config/print-job.ipp
             env:
               PRINTER_IP: 192.168.1.173
             securityContext:
