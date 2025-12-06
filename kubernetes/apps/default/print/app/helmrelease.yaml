@@ -26,9 +26,10 @@ spec:
             command: ["/bin/sh", "-c"]
             args:
               - |
-                apk add --no-cache cups-client ipptool && \
+                apk add --no-cache cups-client ipptool gettext && \
                 echo "Printing test page..." && \
-                ipptool -f /config/testpage.pdf ipp://${PRINTER_IP}/ipp/print /config/print-job.ipp
+                envsubst < /config/print-job.ipp > /tmp/print-job.ipp && \
+                ipptool -f /config/testpage.pdf ipp://${PRINTER_IP}/ipp/print /tmp/print-job.ipp
             env:
               PRINTER_IP: 192.168.1.173
             securityContext:
