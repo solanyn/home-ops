@@ -16,22 +16,6 @@ spec:
       envoyGateway:
         extensionApis:
           enableEnvoyPatchPolicy: true
-        extensionManager:
-          hooks:
-            xdsTranslator:
-              translation:
-                listener:
-                  includeAll: true
-                route:
-                  includeAll: true
-                cluster:
-                  includeAll: true
-                secret:
-                  includeAll: true
-              post:
-                - Translation
-                - Cluster
-                - Route
         provider:
           type: Kubernetes
           kubernetes:
