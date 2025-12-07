@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app garage
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: garage
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      garage:
+        containers:
+          app:
+            image:
+              repository: dxflrs/garage
+              tag: v2.1.0
+            env:
+              TZ: Australia/Sydney
+            envFrom:
+              - secretRef:
+                  name: garage-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: [ALL] }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: garage
+        ports:
+          s3:
+            port: &s3port 3900
+          api:
+            port: 3903
+    configMaps:
+      config:
+        data:
+          configuration.toml: |
+            metadata_dir = "/meta"
+            data_dir = "/data"
+            db_engine = "sqlite"
+            metadata_auto_snapshot_interval = "6h"
+            replication_factor = 1
+            compression_level = 2
+            rpc_bind_addr = "[::]:3901"
+            rpc_public_addr = "127.0.0.1:3901"
+
+            [s3_api]
+            s3_region = "us-east-1"
+            api_bind_addr = "[::]:3900"
+            root_domain = ".s3.goyangi.io"
+
+            [s3_web]
+            bind_addr = "[::]:3902"
+            root_domain = ".web.goyangi.io"
+
+            [admin]
+            api_bind_addr = "[::]:3903"
+    persistence:
+      config:
+        type: configMap
+        name: garage-config
+        globalMounts:
+          - path: /etc/garage.toml
+            subPath: configuration.toml
+      data:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/garage
+        globalMounts:
+          - path: /data
+      meta:
+        type: persistentVolumeClaim
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        globalMounts:
+          - path: /meta
