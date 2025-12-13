@@ -52,7 +52,7 @@ spec:
     configMaps:
       config:
         data:
-          configuration.toml: |
+          garage.toml: |
             metadata_dir = "/meta"
             data_dir = "/data"
             db_engine = "sqlite"
@@ -76,10 +76,10 @@ spec:
     persistence:
       config:
         type: configMap
-        name: garage-config
+        name: garage
         globalMounts:
           - path: /etc/garage.toml
-            subPath: configuration.toml
+            subPath: garage.toml
       data:
         type: nfs
         server: nas.internal
