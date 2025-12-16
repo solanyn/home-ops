@@ -8,7 +8,7 @@ spec:
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage
-  - name: minio
+  - name: garage
     namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/mlflow/app

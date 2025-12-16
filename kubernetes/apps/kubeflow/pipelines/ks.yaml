@@ -7,7 +7,7 @@ metadata:
 spec:
   targetNamespace: kubeflow
   dependsOn:
-  - name: minio
+  - name: garage
     namespace: storage
   - name: pxc-cluster
     namespace: storage
