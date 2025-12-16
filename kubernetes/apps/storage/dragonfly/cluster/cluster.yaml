@@ -26,7 +26,7 @@ spec:
     - name: AWS_DEFAULT_REGION
       value: "us-east-1"
     - name: DFLY_s3_endpoint
-      value: "minio.storage.svc.cluster.local:9000"
+      value: "garage.storage.svc.cluster.local:3900"
     - name: DFLY_s3_use_https
       value: "false"
   args:

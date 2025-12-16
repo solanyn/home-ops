@@ -13,22 +13,24 @@ One-time setup commands for Garage cluster initialisation.
 ### 1. Get Node ID
 
 ```bash
-kubectl exec -n storage garage-0 -- garage status
-NODE_ID=$(kubectl exec -n storage garage-0 -- garage status | grep -v "HEALTHY NODES" | grep -v "^$" | awk '{print $1}' | head -1)
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage status
+# Use the node ID from output (e.g., 950f00331b70eac7)
 ```
 
 ### 2. Configure Cluster Layout
 
 ```bash
-kubectl exec -n storage garage-0 -- garage layout assign -z dc1 -c 50G "$NODE_ID"
-kubectl exec -n storage garage-0 -- garage layout apply --version 1
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage layout assign -z dc1 -c 1G 950f00331b70eac7
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage layout apply --version 1
 ```
+
+Note: Capacity is ignored for single node deployments and can be changed when adding nodes.
 
 ### 3. Create Shared Key
 
 ```bash
-kubectl exec -n storage garage-0 -- garage key create shared-key
-kubectl exec -n storage garage-0 -- garage key info shared-key
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage key create shared-key
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage key info shared-key
 ```
 
 Store the Key ID and Secret key in 1Password under `garage` entry as:
@@ -38,19 +40,36 @@ Store the Key ID and Secret key in 1Password under `garage` entry as:
 ### 4. Create Buckets
 
 ```bash
-services="open-webui mlflow label-studio cloudnative-pg dragonfly pxc kubeflow trino"
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket create open-webui
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket allow --read --write --owner open-webui --key shared-key
 
-for service in $services; do
-  kubectl exec -n storage garage-0 -- garage bucket create "$service"
-  kubectl exec -n storage garage-0 -- garage bucket allow --read --write --owner "$service" --key shared-key
-done
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket create mlflow
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket allow --read --write --owner mlflow --key shared-key
+
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket create label-studio
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket allow --read --write --owner label-studio --key shared-key
+
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket create cloudnative-pg
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket allow --read --write --owner cloudnative-pg --key shared-key
+
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket create dragonfly
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket allow --read --write --owner dragonfly --key shared-key
+
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket create pxc
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket allow --read --write --owner pxc --key shared-key
+
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket create kubeflow
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket allow --read --write --owner kubeflow --key shared-key
+
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket create trino
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket allow --read --write --owner trino --key shared-key
 ```
 
 ### 5. Verify
 
 ```bash
-kubectl exec -n storage garage-0 -- garage bucket list
-kubectl exec -n storage garage-0 -- garage key list
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage bucket list
+kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage key list
 ```
 
 ## Notes
