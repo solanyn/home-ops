@@ -48,6 +48,14 @@ spec:
         ports:
           http:
             port: 3909
+    route:
+      app:
+        hostnames:
+          - garage.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
     persistence:
       config:
         enabled: true
