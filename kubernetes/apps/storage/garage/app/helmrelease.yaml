@@ -57,8 +57,10 @@ spec:
             data_dir = "/data"
             db_engine = "sqlite"
             metadata_auto_snapshot_interval = "6h"
+
             replication_factor = 1
             compression_level = 2
+
             rpc_bind_addr = "[::]:3901"
             rpc_public_addr = "127.0.0.1:3901"
 
@@ -66,10 +68,6 @@ spec:
             s3_region = "us-east-1"
             api_bind_addr = "[::]:3900"
             root_domain = ".s3.goyangi.io"
-
-            [s3_web]
-            bind_addr = "[::]:3902"
-            root_domain = ".pages.goyangi.io"
 
             [admin]
             api_bind_addr = "[::]:3903"
