@@ -48,3 +48,11 @@ spec:
         ports:
           http:
             port: 3909
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: garage
+        globalMounts:
+          - path: /etc/garage.toml
+            subPath: garage.toml
