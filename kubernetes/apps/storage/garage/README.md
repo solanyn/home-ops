@@ -24,37 +24,27 @@ kubectl exec -n storage garage-0 -- garage layout assign -z dc1 -c 50G "$NODE_ID
 kubectl exec -n storage garage-0 -- garage layout apply --version 1
 ```
 
-### 3. Create Admin Key
+### 3. Create Shared Key
 
 ```bash
-kubectl exec -n storage garage-0 -- garage key create admin-key
+kubectl exec -n storage garage-0 -- garage key create shared-key
+kubectl exec -n storage garage-0 -- garage key info shared-key
 ```
 
-### 4. Create Buckets and Keys
+Store the Key ID and Secret key in 1Password under `garage` entry as:
+- `GARAGE_ROOT_USER` = Key ID  
+- `GARAGE_ROOT_PASSWORD` = Secret key
 
-For each application bucket:
+### 4. Create Buckets
 
 ```bash
-BUCKET="bucket-name"
-kubectl exec -n storage garage-0 -- garage bucket create "$BUCKET"
-kubectl exec -n storage garage-0 -- garage key create "${BUCKET}-key"
-kubectl exec -n storage garage-0 -- garage bucket allow --read --write --owner "$BUCKET" --key "${BUCKET}-key"
-```
+services="open-webui mlflow label-studio cloudnative-pg dragonfly pxc kubeflow trino"
 
-Required buckets:
-- bps
-- cloudnative-pg
-- dragonflydb
-- feast
-- iceberg
-- kfp-pipelines
-- label-studio
-- milvus
-- open-webui
-- pxc
-- tldr
-- trino
-- tsw
+for service in $services; do
+  kubectl exec -n storage garage-0 -- garage bucket create "$service"
+  kubectl exec -n storage garage-0 -- garage bucket allow --read --write --owner "$service" --key shared-key
+done
+```
 
 ### 5. Verify
 
@@ -65,6 +55,6 @@ kubectl exec -n storage garage-0 -- garage key list
 
 ## Notes
 
+- All services use the same shared credentials
+- Credentials stored in 1Password `garage` entry for ExternalSecrets
 - Bootstrap is idempotent - commands can be re-run safely
-- Layout version increments with each change
-- Keys are created with full permissions on their respective buckets
