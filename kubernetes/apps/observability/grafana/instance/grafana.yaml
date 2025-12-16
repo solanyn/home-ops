@@ -61,6 +61,17 @@ spec:
             - name: grafana-data
               persistentVolumeClaim:
                 claimName: grafana-pvc
+  httpRoute:
+    spec:
+      hostnames:
+        - grafana.goyangi.io
+      parentRefs:
+        - name: envoy-internal
+          namespace: network
+      rules:
+        - backendRefs:
+            - name: grafana-service
+              port: 3000
   persistentVolumeClaim:
     spec:
       accessModes:
