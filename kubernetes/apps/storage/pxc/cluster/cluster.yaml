@@ -79,16 +79,16 @@ spec:
     allowParallel: true
     pitr:
       enabled: true
-      storageName: minio
+      storageName: garage
     storages:
-      minio:
+      garage:
         type: s3
         s3:
           bucket: pxc
-          endpointUrl: http://minio.storage.svc.cluster.local:9000
+          endpointUrl: http://garage.storage.svc.cluster.local:3900
           credentialsSecret: pxc-secret
     schedule:
       - name: daily
         schedule: "@daily"
         keep: 14
-        storageName: minio
+        storageName: garage

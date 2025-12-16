@@ -10,7 +10,7 @@
           },
           {
             "name": "S3_ENDPOINT",
-            "value": "http://minio.storage.svc.cluster.local:9000"
+            "value": "http://garage.storage.svc.cluster.local:3900"
           },
           {
             "name": "AWS_ACCESS_KEY_ID",

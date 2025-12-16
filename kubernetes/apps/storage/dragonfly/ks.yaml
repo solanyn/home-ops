@@ -24,7 +24,7 @@ spec:
   dependsOn:
   - name: dragonfly
     namespace: storage
-  - name: minio
+  - name: garage
     namespace: storage
   healthChecks:
   - apiVersion: dragonflies.dragonflydb.io

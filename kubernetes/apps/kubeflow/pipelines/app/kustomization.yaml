@@ -33,9 +33,9 @@ configMapGenerator:
       - bucketName=kfp-pipelines
       - bucketRegion=us-east-1
         # Object Store Config
-      - bucketHost=minio.storage.svc.cluster.local
+      - bucketHost=garage.storage.svc.cluster.local
       - bucketSecure=false
-      - bucketPort=9000
+      - bucketPort=3900
         # MySQL Config
       - dbType=mysql
       - mysqlHost=pxc-cluster-haproxy.storage.svc.cluster.local

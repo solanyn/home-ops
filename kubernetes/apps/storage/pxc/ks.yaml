@@ -23,7 +23,7 @@ spec:
   dependsOn:
   - name: pxc
     namespace: storage
-  - name: minio
+  - name: garage
     namespace: storage
   healthChecks:
   - apiVersion: pxc.percona.com
