@@ -116,13 +116,6 @@ spec:
           - backendRefs:
               - identifier: app
                 port: 9001
-      s3:
-        hostnames: ["s3.goyangi.io"]
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-            sectionName: https
-
     persistence:
       minio:
         type: nfs
