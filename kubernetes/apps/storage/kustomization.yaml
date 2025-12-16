@@ -13,5 +13,4 @@ resources:
   - ./dragonfly/ks.yaml
   - ./garage/ks.yaml
   - ./lakekeeper/ks.yaml
-  - ./minio/ks.yaml
   - ./pxc/ks.yaml
