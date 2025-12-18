@@ -4,6 +4,7 @@ kind: PerconaXtraDBCluster
 metadata:
   name: pxc-cluster
 spec:
+  pause: true
   crVersion: 1.17.0
   secretsName: pxc-secret
   unsafeFlags:
