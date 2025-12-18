@@ -46,6 +46,10 @@ spec:
         sync_binlog                     = 1
         gtid_mode                       = ON
         enforce_gtid_consistency        = true
+      [sst]
+      xbstream-opts=--decompress
+      [xtrabackup]
+      compress=lz4
     volumeSpec:
       persistentVolumeClaim:
         storageClassName: openebs-hostpath
