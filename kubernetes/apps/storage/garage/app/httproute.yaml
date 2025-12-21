@@ -7,7 +7,6 @@ metadata:
 spec:
   hostnames:
     - s3.goyangi.io
-    - "*.s3.goyangi.io"
   parentRefs:
     - name: envoy-internal
       namespace: network
