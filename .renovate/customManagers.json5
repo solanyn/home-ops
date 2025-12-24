@@ -20,6 +20,17 @@
     },
     {
       customType: "regex",
+      description: "Process OCI dependencies",
+      managerFilePatterns: [
+        "/\\.yaml(?:\\.j2)?$/",
+      ],
+      matchStrings: [
+        "oci://(?<depName>[^:]+):(?<currentValue>\\S+)",
+      ],
+      datasourceTemplate: "docker",
+    },
+    {
+      customType: "regex",
       description: "Track Kubeflow manifests version",
       fileMatch: ["^third_party/kubeflow/manifests/\\.last-upstream-ref$"],
       matchStrings: [
