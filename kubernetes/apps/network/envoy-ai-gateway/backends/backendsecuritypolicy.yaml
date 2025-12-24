@@ -1,16 +1,16 @@
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: BackendSecurityPolicy
 metadata:
-  name: gcp-global-credentials
+  name: gcp-us-central1-credentials
 spec:
   targetRefs:
     - group: aigateway.envoyproxy.io
       kind: AIServiceBackend
-      name: gcp-global
+      name: gcp-us-central1
   type: GCPCredentials
   gcpCredentials:
     projectName: "${PROJECT_NAME}"
-    region: global
+    region: us-central1
     credentialsFile:
       secretRef:
         name: envoy-ai-gateway-gcp-credentials-secret

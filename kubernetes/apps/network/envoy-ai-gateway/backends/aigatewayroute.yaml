@@ -1,4 +1,4 @@
-# Global region models
+# US Central region models
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: AIGatewayRoute
 metadata:
@@ -15,7 +15,7 @@ spec:
               name: x-ai-eg-model
               value: gemini-3-pro-preview
       backendRefs:
-        - name: gcp-global
+        - name: gcp-us-central1
 ---
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: AIGatewayRoute
@@ -33,7 +33,7 @@ spec:
               name: x-ai-eg-model
               value: gemini-3-pro-image-preview
       backendRefs:
-        - name: gcp-global
+        - name: gcp-us-central1
 ---
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: AIGatewayRoute
@@ -51,7 +51,7 @@ spec:
               name: x-ai-eg-model
               value: gemini-2.5-pro
       backendRefs:
-        - name: gcp-global
+        - name: gcp-us-central1
 ---
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: AIGatewayRoute
@@ -69,7 +69,7 @@ spec:
               name: x-ai-eg-model
               value: gemini-3-flash-preview
       backendRefs:
-        - name: gcp-global
+        - name: gcp-us-central1
 ---
 # Australia region model
 apiVersion: aigateway.envoyproxy.io/v1alpha1
