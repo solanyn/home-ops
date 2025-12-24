@@ -32,16 +32,21 @@ prune-pods:
 
 [doc('Snapshot VolSync PVCs')]
 snapshot:
-    kubectl get replicationsources --no-headers -A | while read -r ns name _; do \
-        kubectl -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'; \
+    #!/usr/bin/env bash
+    set -euo pipefail
+    kubectl get replicationsources --no-headers -A | while read -r ns name _; do
+        kubectl -n "$ns" patch replicationsources "$name" --type merge -p "{\"spec\":{\"trigger\":{\"manual\":\"$(date +%s)\"}}}"
     done
 
 [doc('Backup CNPG cluster')]
 cnpg-backup:
-    @echo "Triggering CNPG backup..."
-    kubectl apply -f - <<< '{"apiVersion":"postgresql.cnpg.io/v1","kind":"Backup","metadata":{"name":"backup-'"$(date +%Y%m%d%H%M)"'","namespace":"storage"},"spec":{"method":"plugin","cluster":{"name":"postgres"},"pluginConfiguration":{"name":"barman-cloud.cloudnative-pg.io"}}}'
-    @echo "Waiting for backup to complete..."
-    kubectl wait backup -n storage -l cnpg.io/cluster=postgres --for=jsonpath='{.status.phase}'=completed --timeout=600s
+    #!/usr/bin/env bash
+    set -euo pipefail
+    backup_name="backup-$(date +%Y%m%d%H%M%S)"
+    echo "Triggering CNPG backup: $backup_name"
+    kubectl apply -f - <<< '{"apiVersion":"postgresql.cnpg.io/v1","kind":"Backup","metadata":{"name":"'"$backup_name"'","namespace":"storage"},"spec":{"method":"plugin","cluster":{"name":"postgres"},"pluginConfiguration":{"name":"barman-cloud.cloudnative-pg.io"}}}'
+    echo "Waiting for backup to complete..."
+    kubectl wait backup -n storage "$backup_name" --for=jsonpath='{.status.phase}'=completed --timeout=600s
 
 [doc('Suspend CNPG cluster')]
 cnpg-suspend:
