@@ -83,7 +83,7 @@ spec:
     image: percona/percona-xtradb-cluster-operator:1.17.0-pxc8.4-backup-pxb8.4.0
     allowParallel: true
     pitr:
-      enabled: false
+      enabled: true
       storageName: garage
     storages:
       garage:
