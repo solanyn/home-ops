@@ -7,7 +7,7 @@ metadata:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
   instances: 3
-  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:${CLOUDNATIVE_VECTORCHORD_VERSION}
+  imageName: ghcr.io/cloudnative-pg/postgresql:18-standard-trixie
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
@@ -21,11 +21,19 @@ spec:
     parameters:
       max_connections: "200"
       shared_buffers: 256MB
+    extensions:
+      - name: vchord
+        image:
+          reference: ghcr.io/tensorchord/vchord-scratch:pg18-v1.0.0
+        dynamic_library_path:
+          - /usr/lib/postgresql/18/lib
+        extension_control_path:
+          - /usr/share/postgresql/18/
   resources:
     requests:
       cpu: 10m
     limits:
-      hugepages-2Mi: 1Gi # Requires sysctl set on the host
+      hugepages-2Mi: 1Gi
       memory: 4Gi
   monitoring:
     enablePodMonitor: true
@@ -43,15 +51,22 @@ spec:
       isWALArchiver: true
       parameters: &parameters
         barmanObjectName: garage
-        serverName: postgres17-v4
+        serverName: postgres18
   bootstrap:
-    recovery:
-      source: source
+    initdb:
+      import:
+        type: monolith
+        databases: ["*"]
+        roles: ["*"]
+        source:
+          externalCluster: source
   externalClusters:
     - name: source
       plugin:
         name: barman-cloud.cloudnative-pg.io
-        parameters: *parameters
+        parameters:
+          barmanObjectName: garage
+          serverName: postgres17-v4
     # when directly doing direct upgrades and upgrading when current postgres is already running
     # - name: *previousCluster
     #   connectionParameters:
