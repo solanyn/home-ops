@@ -10,7 +10,7 @@ spec:
   type: GCPCredentials
   gcpCredentials:
     projectName: "${PROJECT_NAME}"
-    region: "${REGION}"
+    region: us-central1
     credentialsFile:
       secretRef:
         name: envoy-ai-gateway-gcp-credentials-secret
