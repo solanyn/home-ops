@@ -1,7 +1,8 @@
+# Global region models
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: AIGatewayRoute
 metadata:
-  name: gemini-2.5-flash
+  name: gemini-3-pro-preview
 spec:
   parentRefs:
     - name: envoy-ai
@@ -12,9 +13,27 @@ spec:
         - headers:
             - type: Exact
               name: x-ai-eg-model
-              value: gemini-2.5-flash
+              value: gemini-3-pro-preview
       backendRefs:
-        - name: gcp
+        - name: gcp-global
+---
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIGatewayRoute
+metadata:
+  name: gemini-3-pro-image-preview
+spec:
+  parentRefs:
+    - name: envoy-ai
+      kind: Gateway
+      group: gateway.networking.k8s.io
+  rules:
+    - matches:
+        - headers:
+            - type: Exact
+              name: x-ai-eg-model
+              value: gemini-3-pro-image-preview
+      backendRefs:
+        - name: gcp-global
 ---
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: AIGatewayRoute
@@ -32,4 +51,41 @@ spec:
               name: x-ai-eg-model
               value: gemini-2.5-pro
       backendRefs:
-        - name: gcp
+        - name: gcp-global
+---
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIGatewayRoute
+metadata:
+  name: gemini-3-flash-preview
+spec:
+  parentRefs:
+    - name: envoy-ai
+      kind: Gateway
+      group: gateway.networking.k8s.io
+  rules:
+    - matches:
+        - headers:
+            - type: Exact
+              name: x-ai-eg-model
+              value: gemini-3-flash-preview
+      backendRefs:
+        - name: gcp-global
+---
+# Australia region model
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIGatewayRoute
+metadata:
+  name: gemini-2.5-flash
+spec:
+  parentRefs:
+    - name: envoy-ai
+      kind: Gateway
+      group: gateway.networking.k8s.io
+  rules:
+    - matches:
+        - headers:
+            - type: Exact
+              name: x-ai-eg-model
+              value: gemini-2.5-flash
+      backendRefs:
+        - name: gcp-australia-southeast1
