@@ -33,21 +33,3 @@ spec:
               value: gemini-2.5-pro
       backendRefs:
         - name: gcp
----
-apiVersion: aigateway.envoyproxy.io/v1alpha1
-kind: AIGatewayRoute
-metadata:
-  name: qwen3
-spec:
-  parentRefs:
-    - name: envoy-ai
-      kind: Gateway
-      group: gateway.networking.k8s.io
-  rules:
-    - matches:
-        - headers:
-            - type: Exact
-              name: x-ai-eg-model
-              value: qwen3
-      backendRefs:
-        - name: qwen3
