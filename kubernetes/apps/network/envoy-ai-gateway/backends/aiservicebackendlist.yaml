@@ -1,23 +1,6 @@
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: AIServiceBackendList
 metadata:
-  name: kserve-backends
-items:
-  - apiVersion: aigateway.envoyproxy.io/v1alpha1
-    kind: AIServiceBackend
-    metadata:
-      name: qwen3
-    spec:
-      schema:
-        name: OpenAI
-      backendRef:
-        name: qwen3
-        kind: Backend
-        group: gateway.envoyproxy.io
----
-apiVersion: aigateway.envoyproxy.io/v1alpha1
-kind: AIServiceBackendList
-metadata:
   name: gcp
 items:
   - apiVersion: aigateway.envoyproxy.io/v1alpha1
