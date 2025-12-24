@@ -1,15 +1,15 @@
 apiVersion: gateway.networking.k8s.io/v1alpha3
 kind: BackendTLSPolicy
 metadata:
-  name: gcp-global-tls
+  name: gcp-us-central1-tls
 spec:
   targetRefs:
     - group: gateway.envoyproxy.io
       kind: Backend
-      name: gcp-global
+      name: gcp-us-central1
   validation:
     wellKnownCACertificates: System
-    hostname: aiplatform.googleapis.com
+    hostname: us-central1-aiplatform.googleapis.com
 ---
 apiVersion: gateway.networking.k8s.io/v1alpha3
 kind: BackendTLSPolicy
