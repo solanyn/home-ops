@@ -53,20 +53,15 @@ spec:
         barmanObjectName: garage
         serverName: postgres18
   bootstrap:
-    initdb:
-      import:
-        type: monolith
-        databases: ["*"]
-        roles: ["*"]
-        source:
-          externalCluster: source
+    recovery:
+      source: source
   externalClusters:
     - name: source
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: garage
-          serverName: postgres17-v4
+          serverName: postgres18
     # when directly doing direct upgrades and upgrading when current postgres is already running
     # - name: *previousCluster
     #   connectionParameters:
