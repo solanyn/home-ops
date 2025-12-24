@@ -12,22 +12,17 @@ spec:
               kinds:
                 - Pod
       mutate:
-        foreach:
-          - list: spec.initContainers[]
-            patchStrategicMerge:
-              spec:
-                initContainers:
-                  - name: "{{ element.name }}"
-                    resources:
-                      requests:
-                        cpu: 10m
-                        memory: 16Mi
-          - list: spec.containers[]
-            patchStrategicMerge:
-              spec:
-                containers:
-                  - name: "{{ element.name }}"
-                    resources:
-                      requests:
-                        cpu: 10m
-                        memory: 16Mi
+        patchStrategicMerge:
+          spec:
+            containers:
+              - (name): "*"
+                resources:
+                  requests:
+                    cpu: 10m
+                    memory: 16Mi
+            initContainers:
+              - (name): "*"
+                resources:
+                  requests:
+                    cpu: 10m
+                    memory: 16Mi
