@@ -112,7 +112,7 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        devicePathFilter: /dev/disk/by-id/ata-SAMSUNG_MZ7LM960HCHP-00003_.*
+        devicePathFilter: /dev/disk/by-id/nvme-Micron_7450_MTFDKBA960TFR_.*
         config:
           osdsPerDevice: "1"
     cephBlockPools:
