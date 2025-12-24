@@ -1,0 +1,11 @@
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIServiceBackend
+metadata:
+  name: gcp
+spec:
+  schema:
+    name: GCPVertexAI
+  backendRef:
+    name: gcp-us-central1
+    kind: Backend
+    group: gateway.envoyproxy.io
