@@ -30,6 +30,7 @@ machine:
       enabled: true
     {% endif %}
     rbac: true
+    stableHostname: true
   files:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
@@ -50,7 +51,7 @@ machine:
         noatime=True
   install:
     diskSelector:
-      model: SAMSUNG MZVLQ256HAJD-000H1
+      model: SAMSUNG MZ7LM960
     image: factory.talos.dev/metal-installer/e229284abd3c5ce9711acd20daf4ff70eb2455f9bc285c0390a1501196c5046d:v1.11.1
     wipe: false
   kernel:
@@ -185,18 +186,4 @@ apiVersion: v1alpha1
 kind: WatchdogTimerConfig
 device: /dev/watchdog0
 timeout: 5m
----
-apiVersion: v1alpha1
-kind: VLANConfig
-name: net0.70
-vlanID: 70
-parent: net0
-mtu: 9000
----
-apiVersion: v1alpha1
-kind: VLANConfig
-name: net0.90
-vlanID: 90
-parent: net0
-mtu: 9000
 
