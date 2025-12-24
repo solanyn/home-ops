@@ -12,9 +12,8 @@ items:
         name: OpenAI
       backendRef:
         name: qwen3
-        namespace: serving
-        kind: Service
-        port: 80
+        kind: Backend
+        group: gateway.envoyproxy.io
 ---
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: AIServiceBackendList

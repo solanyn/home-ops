@@ -1,6 +1,16 @@
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: Backend
 metadata:
+  name: qwen3
+spec:
+  endpoints:
+    - fqdn:
+        hostname: qwen3.serving.svc.cluster.local
+        port: 80
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
   name: gcp-australia-southeast1
 spec:
   endpoints:
