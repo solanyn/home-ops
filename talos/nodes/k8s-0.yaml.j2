@@ -2,7 +2,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.11/website/content/v1.11/schemas/config.schema.json
 machine:
   network:
-    hostname: k8s-0
     interfaces:
       - deviceSelector:
           hardwareAddr: 6c:2b:59:df:10:cb
@@ -14,3 +13,7 @@ machine:
   nodeLabels:
     topology.kubernetes.io/zone: m
   type: controlplane
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: k8s-0

@@ -36,6 +36,25 @@ snapshot:
         kubectl -n "$ns" patch replicationsources "$name" --type merge -p '{"spec":{"trigger":{"manual":"$(date +%s)"}}}'; \
     done
 
+[doc('Backup CNPG cluster')]
+cnpg-backup:
+    @echo "Triggering CNPG backup..."
+    kubectl apply -f - <<< '{"apiVersion":"postgresql.cnpg.io/v1","kind":"Backup","metadata":{"name":"backup-'"$(date +%Y%m%d%H%M)"'","namespace":"storage"},"spec":{"method":"plugin","cluster":{"name":"postgres"},"pluginConfiguration":{"name":"barman-cloud.cloudnative-pg.io"}}}'
+    @echo "Waiting for backup to complete..."
+    kubectl wait backup -n storage -l cnpg.io/cluster=postgres --for=jsonpath='{.status.phase}'=completed --timeout=600s
+
+[doc('Suspend CNPG cluster')]
+cnpg-suspend:
+    kubectl annotate cluster postgres -n storage cnpg.io/hibernation=on --overwrite
+
+[doc('Resume CNPG cluster')]
+cnpg-resume:
+    kubectl annotate cluster postgres -n storage cnpg.io/hibernation-
+
+[doc('Backup and suspend: CNPG backup + suspend, VolSync snapshot')]
+backup-and-suspend: cnpg-backup cnpg-suspend snapshot
+    @echo "Backup and suspend complete. Safe to reset Talos cluster."
+
 [doc('Suspend or resume Keda ScaledObjects')]
 keda state:
     kubectl get scaledobjects --no-headers -A | while read -r ns name _; do \
