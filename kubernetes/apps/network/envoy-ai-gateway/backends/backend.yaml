@@ -4,7 +4,7 @@ metadata:
   name: gcp-us-central1
 spec:
   appProtocols:
-    - gateway.envoyproxy.io/h2c
+    - gateway.envoyproxy.io/h2
   endpoints:
     - fqdn:
         hostname: us-central1-aiplatform.googleapis.com
@@ -16,7 +16,7 @@ metadata:
   name: gcp-australia-southeast1
 spec:
   appProtocols:
-    - gateway.envoyproxy.io/h2c
+    - gateway.envoyproxy.io/h2
   endpoints:
     - fqdn:
         hostname: australia-southeast1-aiplatform.googleapis.com
