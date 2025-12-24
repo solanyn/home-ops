@@ -73,26 +73,5 @@ spec:
         certificateRefs:
           - kind: Secret
             name: goyangi-io-tls
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/envoyproxy_v1alpha1.json
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: EnvoyExtensionPolicy
-metadata:
-  name: ai-extension
-spec:
-  targetRefs:
-    - group: gateway.networking.k8s.io
-      kind: Gateway
-      name: envoy-ai
-  extProc:
-    - backendRefs:
-        - group: ""
-          kind: Service
-          name: ai-gateway-controller
-          namespace: network
-          port: 1063
-      processingMode:
-        request: {}
-        response: {}
-      messageTimeout: 5s
+
 
