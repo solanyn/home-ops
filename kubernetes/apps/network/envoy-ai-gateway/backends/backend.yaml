@@ -3,6 +3,8 @@ kind: Backend
 metadata:
   name: gcp-us-central1
 spec:
+  appProtocols:
+    - gateway.envoyproxy.io/h2c
   endpoints:
     - fqdn:
         hostname: us-central1-aiplatform.googleapis.com
@@ -13,6 +15,8 @@ kind: Backend
 metadata:
   name: gcp-australia-southeast1
 spec:
+  appProtocols:
+    - gateway.envoyproxy.io/h2c
   endpoints:
     - fqdn:
         hostname: australia-southeast1-aiplatform.googleapis.com
