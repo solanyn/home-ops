@@ -33,6 +33,7 @@ spec:
       resources:
         requests:
           cpu: 10m
+          memory: 16Mi
       serviceMonitor:
         enabled: true
     backgroundController:
@@ -49,6 +50,7 @@ spec:
       resources:
         requests:
           cpu: 10m
+          memory: 16Mi
       serviceMonitor:
         enabled: true
     reportsController:
@@ -67,9 +69,11 @@ spec:
       resources:
         requests:
           cpu: 10m
+          memory: 16Mi
     cleanupController:
       serviceMonitor:
         enabled: true
       resources:
         requests:
           cpu: 10m
+          memory: 16Mi
