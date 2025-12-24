@@ -12,3 +12,11 @@ spec:
   values:
     envoyGateway:
       namespace: network
+    # Use latest images to get fix for GCP Vertex AI path bug
+    # https://github.com/envoyproxy/ai-gateway/issues/1615
+    extProc:
+      image:
+        tag: latest
+    controller:
+      image:
+        tag: latest
