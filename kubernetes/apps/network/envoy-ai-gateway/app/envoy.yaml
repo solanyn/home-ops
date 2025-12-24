@@ -60,7 +60,6 @@ spec:
       group: gateway.envoyproxy.io
       kind: EnvoyProxy
       name: envoy-ai
-      namespace: network
   listeners:
     - name: http
       protocol: HTTP
