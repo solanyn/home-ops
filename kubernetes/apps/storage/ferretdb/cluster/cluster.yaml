@@ -36,7 +36,7 @@ spec:
       documentdb.maxUserLimit: "100"
     pg_hba:
       - host ferretdb postgres localhost trust
-      - host ferretdb ferret localhost trust
+      - host ferretdb ferretdb localhost trust
   resources:
     requests:
       cpu: 10m
@@ -54,11 +54,13 @@ spec:
   bootstrap:
     initdb:
       database: ferretdb
-      owner: ferret
+      owner: ferretdb
+      secret:
+        name: ferretdb-secret
       postInitApplicationSQL:
         - CREATE EXTENSION IF NOT EXISTS pg_cron;
         - CREATE EXTENSION IF NOT EXISTS documentdb CASCADE;
-        - GRANT documentdb_admin_role TO ferret;
+        - GRANT documentdb_admin_role TO ferretdb;
   # Recovery bootstrap - uncomment after first successful backup
   # bootstrap:
   #   recovery:
