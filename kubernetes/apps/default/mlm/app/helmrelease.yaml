@@ -39,7 +39,7 @@ spec:
         controller: mlm
         ports:
           http:
-            port: 5000
+            port: 3157
     route:
       app:
         annotations:
@@ -55,10 +55,12 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /config
-      data:
-        type: emptyDir
+      config-file:
+        type: secret
+        name: mlm-secret
         globalMounts:
-          - path: /data
+          - path: /config/config.toml
+            subPath: config.toml
       books:
         type: nfs
         server: nas.internal
