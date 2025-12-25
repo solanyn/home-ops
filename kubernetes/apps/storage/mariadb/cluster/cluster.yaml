@@ -24,16 +24,16 @@ spec:
     innodb_flush_log_at_trx_commit=1
     slow_query_log=1
     long_query_time=2
-  bootstrapFrom:
-    s3:
-      bucket: mariadb
-      endpoint: garage.storage.svc.cluster.local:3900
-      accessKeyIdSecretKeyRef:
-        name: mariadb-secret
-        key: AWS_ACCESS_KEY_ID
-      secretAccessKeySecretKeyRef:
-        name: mariadb-secret
-        key: AWS_SECRET_ACCESS_KEY
+  # bootstrapFrom:
+  #   s3:
+  #     bucket: mariadb
+  #     endpoint: garage.storage.svc.cluster.local:3900
+  #     accessKeyIdSecretKeyRef:
+  #       name: mariadb-secret
+  #       key: AWS_ACCESS_KEY_ID
+  #     secretAccessKeySecretKeyRef:
+  #       name: mariadb-secret
+  #       key: AWS_SECRET_ACCESS_KEY
   resources:
     requests:
       cpu: 10m
