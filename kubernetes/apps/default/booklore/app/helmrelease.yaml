@@ -1,0 +1,88 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: booklore
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: booklore
+  interval: 1h
+  values:
+    controllers:
+      booklore:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/booklore-app/booklore
+              tag: v1.16.0@sha256:1efc89c1ec87efa290943270a3b76130fe4dc8294177b287d4252d2aeff0ccbf
+            env:
+              TZ: Australia/Sydney
+              USER_ID: "1000"
+              GROUP_ID: "1000"
+              BOOKLORE_PORT: &port 6060
+              SWAGGER_ENABLED: "false"
+            envFrom:
+              - secretRef:
+                  name: booklore-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/enabled: "true"
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /app/data
+      books:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media/books
+        globalMounts:
+          - path: /books
+      bookdrop:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media/bookdrop
+        globalMounts:
+          - path: /bookdrop
