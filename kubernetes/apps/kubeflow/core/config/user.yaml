@@ -10,9 +10,5 @@ spec:
   passwordSecretKeyRef:
     name: kubeflow-secret
     key: KUBEFLOW_MYSQL_PASSWORD
-  passwordPlugin:
-    pluginNameSecretKeyRef:
-      name: kubeflow-secret
-      key: KUBEFLOW_MYSQL_PASSWORD_PLUGIN
   host: "%"
   maxUserConnections: 100
