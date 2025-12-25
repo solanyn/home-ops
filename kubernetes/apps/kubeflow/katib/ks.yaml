@@ -7,8 +7,8 @@ metadata:
 spec:
   targetNamespace: kubeflow
   dependsOn:
-  - name: pxc-cluster
-    namespace: storage
+  - name: kubeflow-config
+    namespace: kubeflow
   - name: kubeflow-gateway
     namespace: kubeflow
   interval: 1h
