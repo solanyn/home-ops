@@ -23,12 +23,12 @@ resources:
   - ./immich/ks.yaml
   - ./komga/ks.yaml
   - ./label-studio/ks.yaml
+  - ./librechat/ks.yaml
   - ./lidarr/ks.yaml
   - ./mealie/ks.yaml
   - ./mlflow/ks.yaml
   - ./mosquitto/ks.yaml
   - ./obsidian-couchdb/ks.yaml
-  - ./open-webui/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
   - ./print/ks.yaml

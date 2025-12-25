@@ -14,4 +14,5 @@ resources:
   - ./ferretdb/ks.yaml
   - ./garage/ks.yaml
   - ./lakekeeper/ks.yaml
+  - ./meilisearch/ks.yaml
   - ./pxc/ks.yaml
