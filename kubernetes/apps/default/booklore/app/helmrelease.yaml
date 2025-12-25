@@ -71,7 +71,7 @@ spec:
             sectionName: https
     persistence:
       data:
-        type: emptyDir
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /app/data
       books:
