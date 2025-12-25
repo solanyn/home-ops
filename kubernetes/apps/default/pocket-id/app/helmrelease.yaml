@@ -38,7 +38,7 @@ spec:
               EMAIL_LOGIN_NOTIFICATION_ENABLED: true
               EMAIL_ONE_TIME_ACCESS_AS_ADMIN_ENABLED: true
               EMAIL_API_KEY_EXPIRATION_ENABLED: true
-              SMTP_HOST: smtp-relay.network.svc.cluster.loca"
+              SMTP_HOST: smtp-relay.network.svc.cluster.local
               SMTP_PORT: 25
               SMTP_FROM: noreply@goyangi.io
               KEYS_STORAGE: database
