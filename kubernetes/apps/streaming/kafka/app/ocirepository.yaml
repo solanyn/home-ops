@@ -1,0 +1,10 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: kafka
+spec:
+  interval: 1h
+  url: oci://quay.io/strimzi-helm/strimzi-kafka-operator
+  ref:
+    tag: 0.47.0
