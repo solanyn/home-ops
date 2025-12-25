@@ -11,6 +11,7 @@ resources:
   - ./namespace.yaml
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
+  - ./ferretdb/ks.yaml
   - ./garage/ks.yaml
   - ./lakekeeper/ks.yaml
   - ./pxc/ks.yaml
