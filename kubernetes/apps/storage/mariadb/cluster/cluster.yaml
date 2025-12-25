@@ -8,8 +8,14 @@ spec:
     name: mariadb-secret
     key: MARIADB_ROOT_PASSWORD
   replicas: 3
-  galera:
+  replication:
     enabled: true
+    primary:
+      autoFailover: true
+    replica:
+      replPasswordSecretKeyRef:
+        name: mariadb-secret
+        key: MARIADB_REPL_PASSWORD
   storage:
     size: 10Gi
     storageClassName: openebs-hostpath
