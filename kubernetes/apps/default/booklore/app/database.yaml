@@ -1,0 +1,42 @@
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: User
+metadata:
+  name: booklore
+spec:
+  mariaDbRef:
+    name: mariadb
+    namespace: storage
+  passwordSecretKeyRef:
+    name: booklore-secret
+    key: BOOKLORE_DB_PASS
+  host: "%"
+  maxUserConnections: 20
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Database
+metadata:
+  name: booklore
+spec:
+  mariaDbRef:
+    name: mariadb
+    namespace: storage
+  name: booklore
+  characterSet: utf8mb4
+  collate: utf8mb4_general_ci
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Grant
+metadata:
+  name: booklore
+spec:
+  mariaDbRef:
+    name: mariadb
+    namespace: storage
+  privileges:
+    - ALL PRIVILEGES
+  database: booklore
+  table: "*"
+  username: booklore
+  host: "%"
+  grantOption: false

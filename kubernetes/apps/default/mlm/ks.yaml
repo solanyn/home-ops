@@ -3,23 +3,27 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: komga
+  name: &app mlm
 spec:
   targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
   components:
-    - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
-  path: ./kubernetes/apps/default/komga/app
-  postBuild:
-    substitute:
-      APP: komga
+  timeout: 5m
+  path: ./kubernetes/apps/default/mlm/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: false
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 1Gi
+  wait: true
