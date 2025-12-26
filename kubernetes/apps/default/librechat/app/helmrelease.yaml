@@ -78,6 +78,11 @@ spec:
               tag: v0.2.0@sha256:629ffe1497f0d1d5f07f7793846f25f0b1133bdd504a4a2dc74291b4c27a3d73
             env:
               RAG_PORT: "8000"
+              EMBEDDINGS_PROVIDER: "openai"
+              EMBEDDINGS_MODEL: "text-embedding-004"
+              OPENAI_API_KEY: "dummy"
+              OPENAI_BASE_URL: "http://envoy-ai-gateway.network.svc.cluster.local/v1"
+              OPENAI_DEFAULT_HEADERS: '{"x-ai-eg-model": "text-embedding-004"}'
             envFrom:
               - secretRef:
                   name: librechat-secret
