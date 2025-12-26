@@ -6,4 +6,4 @@ metadata:
   name: flink
 spec:
   interval: 15m
-  url: https://downloads.apache.org/flink/flink-kubernetes-operator-1.12.1/
+  url: https://downloads.apache.org/flink/flink-kubernetes-operator-1.13.0/
