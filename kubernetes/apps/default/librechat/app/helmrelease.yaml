@@ -75,7 +75,7 @@ spec:
           rag-api:
             image:
               repository: ghcr.io/danny-avila/librechat-rag-api-dev-lite
-              tag: v0.2.0@sha256:629ffe1497f0d1d5f07f7793846f25f0b1133bdd504a4a2dc74291b4c27a3d73
+              tag: v0.7.0@sha256:fca33ac6f20639642bb2f6c49f870de5434cbbf63539da6dd8852f3b204c54b5
             env:
               RAG_PORT: "8000"
               EMBEDDINGS_PROVIDER: "openai"
