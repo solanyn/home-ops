@@ -61,9 +61,9 @@ spec:
         globalMounts:
           - path: /config/config.toml
             subPath: config.toml
-      books:
+      media:
         type: nfs
         server: nas.internal
-        path: /mnt/world/media/bookdrop
+        path: /mnt/world/media
         globalMounts:
-          - path: /media/bookdrop
+          - path: /media
