@@ -40,5 +40,16 @@
       depNameTemplate: "kubeflow/manifests",
       versioningTemplate: "semver",
     },
+    {
+      customType: "regex",
+      description: "Track Flink Kubernetes Operator version in HelmRepository URL",
+      fileMatch: ["kubernetes/apps/streaming/flink/.*\\.yaml$"],
+      matchStrings: [
+        "url: https://downloads\\.apache\\.org/flink/flink-kubernetes-operator-(?<currentValue>[\\d.]+)/",
+      ],
+      datasourceTemplate: "github-releases",
+      depNameTemplate: "apache/flink-kubernetes-operator",
+      extractVersionTemplate: "^release-(?<version>.*)$",
+    },
   ],
 }
