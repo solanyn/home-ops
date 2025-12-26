@@ -122,6 +122,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /app/logs
+          - path: /app/api/logs
       uploads:
         type: emptyDir
         globalMounts:
