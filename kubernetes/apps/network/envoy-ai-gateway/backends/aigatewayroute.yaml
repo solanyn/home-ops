@@ -89,3 +89,22 @@ spec:
               value: gemini-2.5-flash
       backendRefs:
         - name: gcp-australia-southeast1
+---
+# Embedding model
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: AIGatewayRoute
+metadata:
+  name: text-embedding-004
+spec:
+  parentRefs:
+    - name: envoy-ai
+      kind: Gateway
+      group: gateway.networking.k8s.io
+  rules:
+    - matches:
+        - headers:
+            - type: Exact
+              name: x-ai-eg-model
+              value: text-embedding-004
+      backendRefs:
+        - name: gcp-us-central1
