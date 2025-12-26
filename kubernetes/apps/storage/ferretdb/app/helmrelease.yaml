@@ -19,7 +19,7 @@ spec:
           app:
             image:
               repository: ghcr.io/ferretdb/ferretdb
-              tag: 2.5.0
+              tag: 2.7.0
             envFrom:
               - secretRef:
                   name: ferretdb-secret
