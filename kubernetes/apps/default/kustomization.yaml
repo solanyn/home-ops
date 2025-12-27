@@ -21,6 +21,7 @@ resources:
   - ./go2rtc/ks.yaml
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
+  - ./kiro-openai-gateway/ks.yaml
   - ./label-studio/ks.yaml
   - ./librechat/ks.yaml
   - ./lidarr/ks.yaml
