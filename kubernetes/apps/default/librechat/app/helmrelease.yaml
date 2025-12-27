@@ -134,3 +134,9 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /app/uploads
+      dotenv:
+        type: configMap
+        name: librechat-dotenv
+        globalMounts:
+          - path: /app/.env
+            subPath: .env
