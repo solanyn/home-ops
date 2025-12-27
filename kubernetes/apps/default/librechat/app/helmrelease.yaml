@@ -120,6 +120,43 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
+    configMaps:
+      dotenv:
+        data:
+          .env: |
+            DOMAIN_CLIENT=https://librechat.goyangi.io
+            DOMAIN_SERVER=https://librechat.goyangi.io
+      librechat-yaml:
+        data:
+          librechat.yaml: |
+            version: "1.0"
+            cache: true
+            endpoints:
+              custom:
+                - name: "Gemini"
+                  apiKey: "dummy"
+                  baseURL: "http://envoy-ai-gateway.network.svc.cluster.local/v1"
+                  models:
+                    default:
+                      - "gemini-2.5-flash"
+                      - "gemini-2.5-pro"
+                      - "gemini-3-flash-preview"
+                      - "gemini-3-pro-preview"
+                  titleModel: "gemini-2.5-flash"
+                  headers:
+                    x-ai-eg-model: "${model}"
+                - name: "Claude"
+                  apiKey: "dummy"
+                  baseURL: "http://envoy-ai-gateway.network.svc.cluster.local/v1"
+                  models:
+                    default:
+                      - "claude-sonnet-4"
+                      - "claude-sonnet-4-5"
+                      - "claude-haiku-4-5"
+                      - "claude-opus-4-5"
+                  titleModel: "claude-haiku-4-5"
+                  headers:
+                    x-ai-eg-model: "${model}"
     persistence:
       config:
         type: emptyDir
@@ -136,7 +173,13 @@ spec:
           - path: /app/uploads
       dotenv:
         type: configMap
-        name: librechat-dotenv
+        identifier: dotenv
         globalMounts:
           - path: /app/.env
             subPath: .env
+      librechat-yaml:
+        type: configMap
+        identifier: librechat-yaml
+        globalMounts:
+          - path: /app/librechat.yaml
+            subPath: librechat.yaml

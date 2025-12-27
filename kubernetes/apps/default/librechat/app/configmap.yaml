@@ -1,9 +1,0 @@
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: librechat-dotenv
-data:
-  .env: |
-    DOMAIN_CLIENT=https://librechat.goyangi.io
-    DOMAIN_SERVER=https://librechat.goyangi.io
