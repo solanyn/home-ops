@@ -31,6 +31,8 @@ spec:
               HOST: "0.0.0.0"
               PORT: &port 3080
               NODE_ENV: production
+              DOMAIN_CLIENT: "https://librechat.goyangi.io"
+              DOMAIN_SERVER: "https://librechat.goyangi.io"
               CONSOLE_JSON: "true"
               DEBUG_LOGGING: "false"
               SEARCH: "true"
