@@ -11,12 +11,13 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  timeout: 5m
   path: ./kubernetes/apps/default/kiro-openai-gateway/app
+  postBuild:
+    substitute:
+      APP: *app
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
-  postBuild:
-    substitute:
-      APP: *app
+    namespace: flux-system
+  timeout: 5m
