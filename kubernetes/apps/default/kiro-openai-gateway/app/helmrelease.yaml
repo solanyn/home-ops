@@ -21,9 +21,6 @@ spec:
               tag: 1.0.7
             env:
               TZ: Australia/Sydney
-            envFrom:
-              - secretRef:
-                  name: kiro-openai-gateway-secret
             probes:
               liveness:
                 enabled: true
@@ -67,3 +64,10 @@ spec:
         ports:
           http:
             port: *port
+    persistence:
+      dotenv:
+        type: secret
+        name: kiro-openai-gateway-secret
+        globalMounts:
+          - path: /app/.env
+            subPath: .env
