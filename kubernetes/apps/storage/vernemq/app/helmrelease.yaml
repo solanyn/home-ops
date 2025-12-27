@@ -99,6 +99,7 @@ spec:
                 topologyKey: kubernetes.io/hostname
     service:
       app:
+        forceRename: vernemq
         primary: true
         type: LoadBalancer
         sessionAffinity: ClientIP # vernemq docs note that hopping between pods causes a significate data replication/sync cost
