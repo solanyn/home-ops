@@ -43,7 +43,7 @@ spec:
               SEARXNG_INSTANCE_URL: "http://searxng.default.svc.cluster.local:8080"
               ALLOW_SOCIAL_LOGIN: "true"
               ALLOW_REGISTRATION: "false"
-              OPENID_ISSUER: "https://id.goyangi.io/.well-known/openid-configuration"
+              OPENID_ISSUER: "https://id.goyangi.io"
               OPENID_CALLBACK_URL: "https://librechat.goyangi.io/oauth/openid/callback"
               OPENID_SCOPE: "openid profile email"
               OPENID_BUTTON_LABEL: "Log in with Pocket-ID"
