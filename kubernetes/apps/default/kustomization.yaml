@@ -27,7 +27,6 @@ resources:
   - ./mealie/ks.yaml
   - ./mlflow/ks.yaml
   - ./mlm/ks.yaml
-  - ./mosquitto/ks.yaml
   - ./obsidian-couchdb/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml

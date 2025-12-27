@@ -9,8 +9,8 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
-  - name: mosquitto
-    namespace: default
+  - name: vernemq
+    namespace: storage
   - name: rook-ceph-cluster
     namespace: rook-ceph
   interval: 1h
