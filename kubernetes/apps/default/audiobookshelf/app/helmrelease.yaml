@@ -78,10 +78,3 @@ spec:
         globalMounts:
           - path: /audiobooks
             readOnly: true
-      books:
-        type: nfs
-        server: nas.internal
-        path: /mnt/world/media/books
-        globalMounts:
-          - path: /books
-            readOnly: true
