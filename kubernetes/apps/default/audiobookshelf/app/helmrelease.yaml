@@ -22,6 +22,7 @@ spec:
             env:
               TZ: Australia/Sydney
               PORT: &port 80
+              METADATA_PATH: /config/metadata
             probes:
               liveness: &probes
                 enabled: true
