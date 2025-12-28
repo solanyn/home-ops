@@ -23,6 +23,9 @@ spec:
               TZ: Australia/Sydney
               PORT: &port 80
               METADATA_PATH: /config/metadata
+            envFrom:
+              - secretRef:
+                  name: audiobookshelf-secret
             probes:
               liveness: &probes
                 enabled: true
