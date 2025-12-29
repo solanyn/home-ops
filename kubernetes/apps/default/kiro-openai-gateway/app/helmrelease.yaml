@@ -1,0 +1,45 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kiro-openai-gateway
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: kiro-openai-gateway
+  interval: 1h
+  values:
+    controllers:
+      kiro-openai-gateway:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/solanyn/kiro-openai-gateway
+              tag: 2025.12.29@sha256:55560287962c296e7d2d6a96eafefad6c43d27b347474046aad6aa0b8a723a62
+            env:
+              PORT: 8080
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: kiro-openai-gateway
+        ports:
+          http:
+            port: 8080
