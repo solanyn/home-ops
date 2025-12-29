@@ -15,7 +15,7 @@ spec:
         containers:
           app:
             image:
-              repository: mcp/grafana
+              repository: ghcr.io/solanyn/grafana-mcp
               tag: latest
             env:
               GRAFANA_URL: "http://grafana.observability.svc.cluster.local:3000"
