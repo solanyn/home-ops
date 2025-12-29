@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: booktree
+spec:
+  schedule: "*/15 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: booktree
+              image: ghcr.io/solanyn/booktree:main
+              args: ["/config/config.json"]
+              volumeMounts:
+                - name: config
+                  mountPath: /config
+                  readOnly: true
+                - name: downloads
+                  mountPath: /source
+                - name: audiobooks
+                  mountPath: /media
+          volumes:
+            - name: config
+              secret:
+                secretName: booktree-secret
+            - name: downloads
+              nfs:
+                server: 192.168.1.100
+                path: /mnt/tank/media/downloads/torrents/complete/audiobooks
+            - name: audiobooks
+              nfs:
+                server: 192.168.1.100
+                path: /mnt/tank/media/audiobooks
