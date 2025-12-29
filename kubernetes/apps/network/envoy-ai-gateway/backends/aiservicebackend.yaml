@@ -33,3 +33,7 @@ spec:
     name: kiro-openai-gateway
     kind: Backend
     group: gateway.envoyproxy.io
+  backendSecurityPolicyRef:
+    name: kiro-openai-gateway
+    kind: BackendSecurityPolicy
+    group: aigateway.envoyproxy.io
