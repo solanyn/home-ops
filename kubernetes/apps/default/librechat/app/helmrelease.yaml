@@ -56,7 +56,7 @@ spec:
                       "command": "npx",
                       "args": ["-y", "@modelcontextprotocol/server-fetch"],
                       "env": {
-                        "FLUX_MCP_URL": "https://flux-operator-mcp.goyangi.io"
+                        "FLUX_MCP_URL": "http://flux-operator-mcp.flux-system.svc.cluster.local:8000"
                       }
                     },
                     "grafana": {
@@ -64,6 +64,13 @@ spec:
                       "args": ["-y", "@modelcontextprotocol/server-fetch"],
                       "env": {
                         "GRAFANA_MCP_URL": "http://grafana-mcp.observability.svc.cluster.local:8000"
+                      }
+                    },
+                    "github": {
+                      "command": "npx",
+                      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+                      "env": {
+                        "GITHUB_MCP_URL": "http://github-mcp.default.svc.cluster.local:8000"
                       }
                     }
                   }

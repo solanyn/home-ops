@@ -1,32 +1,30 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: grafana-mcp
+  name: github-mcp
 spec:
   chartRef:
     kind: OCIRepository
-    name: grafana-mcp
+    name: github-mcp
   interval: 1h
   values:
     controllers:
-      grafana-mcp:
+      github-mcp:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/grafana-mcp
+              repository: ghcr.io/github/github-mcp-server
               tag: latest
-            env:
-              GRAFANA_URL: "http://grafana.observability.svc.cluster.local:3000"
             envFrom:
               - secretRef:
-                  name: mcp-server-token
+                  name: github-mcp-secret
             args:
-              - "-t"
+              - "--transport"
               - "sse"
-              - "--address"
-              - "0.0.0.0:8000"
+              - "--port"
+              - "8000"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -47,14 +45,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
-        controller: grafana-mcp
+        controller: github-mcp
         ports:
           http:
             port: 8000
-    route:
-      app:
-        hostnames:
-          - "grafana-mcp.goyangi.io"
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
