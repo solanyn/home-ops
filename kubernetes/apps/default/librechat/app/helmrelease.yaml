@@ -48,6 +48,26 @@ spec:
               OPENID_SCOPE: "openid profile email"
               OPENID_BUTTON_LABEL: "Log in with Pocket-ID"
               OPENID_USE_END_SESSION_ENDPOINT: "true"
+              MCP_ENABLED: "true"
+              MCP_CONFIG: |
+                {
+                  "mcpServers": {
+                    "flux": {
+                      "command": "npx",
+                      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+                      "env": {
+                        "FLUX_MCP_URL": "https://flux-operator-mcp.goyangi.io"
+                      }
+                    },
+                    "grafana": {
+                      "command": "npx",
+                      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+                      "env": {
+                        "GRAFANA_MCP_URL": "http://grafana-mcp.observability.svc.cluster.local:8000"
+                      }
+                    }
+                  }
+                }
             envFrom:
               - secretRef:
                   name: librechat-secret
