@@ -28,6 +28,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: kagent-crds
+      namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/kagent/app
   postBuild:
