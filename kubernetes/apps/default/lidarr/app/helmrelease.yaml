@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/linuxserver-labs/prarr
-              tag: lidarr-plugins-3.1.1.4884@sha256:c4fdf8f488562a5294e671e657ed393f5344594fe995b81cf1ba61b2a61d59df
+              tag: lidarr-plugins-3.1.1.4901@sha256:6bae854fec06ac98ab4943f783c159a2bd546ba994aec5d0efeebc40b0c3a299
             env:
               LIDARR__APP__INSTANCENAME: Lidarr
               LIDARR__APP__THEME: dark
