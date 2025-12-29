@@ -83,7 +83,7 @@ spec:
               EMBEDDINGS_PROVIDER: "openai"
               EMBEDDINGS_MODEL: "text-embedding-004"
               OPENAI_API_KEY: "dummy"
-              OPENAI_BASE_URL: "http://envoy-ai.network.svc.cluster.local/v1"
+              OPENAI_BASE_URL: "https://ai.goyangi.io/v1"
               OPENAI_DEFAULT_HEADERS: '{"x-ai-eg-model": "text-embedding-004"}'
             envFrom:
               - secretRef:
@@ -135,7 +135,7 @@ spec:
               custom:
                 - name: "Gemini"
                   apiKey: "dummy"
-                  baseURL: "http://envoy-ai.network.svc.cluster.local/v1"
+                  baseURL: "https://ai.goyangi.io/v1"
                   models:
                     default:
                       - "gemini-2.5-flash"
