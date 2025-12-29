@@ -20,6 +20,7 @@ resources:
   - ./go2rtc/ks.yaml
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
+  - ./kiro-openai-gateway/ks.yaml
   - ./komga/ks.yaml
   - ./label-studio/ks.yaml
   - ./librechat/ks.yaml
