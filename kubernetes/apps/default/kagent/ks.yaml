@@ -1,44 +1,22 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kagent-crds
+  name: &app kagent
+  namespace: flux-system
 spec:
   targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/default/kagent/crds
-  postBuild:
-    substitute:
-      APP: *app
+  timeout: 5m
+  path: ./kubernetes/apps/default/kagent/app
   prune: true
   sourceRef:
     kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  timeout: 5m
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app kagent
-spec:
-  targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
+    name: home-ops
   dependsOn:
     - name: kagent-crds
-      namespace: default
-  interval: 1h
-  path: ./kubernetes/apps/default/kagent/app
   postBuild:
     substitute:
       APP: *app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  timeout: 5m
