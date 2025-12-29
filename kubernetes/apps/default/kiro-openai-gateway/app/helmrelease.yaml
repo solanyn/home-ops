@@ -19,6 +19,9 @@ spec:
               tag: 2025.12.29@sha256:55560287962c296e7d2d6a96eafefad6c43d27b347474046aad6aa0b8a723a62
             env:
               PORT: 8080
+            envFrom:
+              - secretRef:
+                  name: kiro-openai-gateway-secret
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
