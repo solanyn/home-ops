@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: kagent
+  name: kagent-crds
 spec:
   interval: 15m
   layerSelector:
@@ -10,4 +10,4 @@ spec:
     operation: copy
   ref:
     tag: v0.7.0
-  url: oci://ghcr.io/kagent-dev/kagent/helm/kagent
+  url: oci://ghcr.io/kagent-dev/kagent/helm/kagent-crds

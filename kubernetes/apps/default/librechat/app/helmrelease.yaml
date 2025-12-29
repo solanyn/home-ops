@@ -136,7 +136,6 @@ spec:
                 - name: "Gemini"
                   apiKey: "dummy"
                   baseURL: "https://ai.goyangi.io/v1"
-                  stream: false
                   models:
                     default:
                       - "gemini-2.5-flash"
