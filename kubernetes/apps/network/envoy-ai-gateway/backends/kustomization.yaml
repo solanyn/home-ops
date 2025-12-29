@@ -8,4 +8,3 @@ resources:
   - ./backend.yaml
   - ./backendtlspolicy.yaml
   - ./backendsecuritypolicy.yaml
-  - ./externalsecret.yaml
