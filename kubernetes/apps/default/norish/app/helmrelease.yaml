@@ -15,13 +15,13 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          postgres-init:
+          init-db:
             image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16
-            envFrom:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom: &envFrom
               - secretRef:
-                  name: norish-secret
+                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -29,9 +29,7 @@ spec:
               tag: latest
             env:
               TZ: Australia/Sydney
-            envFrom:
-              - secretRef:
-                  name: norish-secret
+            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: true
@@ -48,7 +46,7 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 256Mi
+                memory: 64Mi
               limits:
                 memory: 2Gi
           chrome:
@@ -65,7 +63,7 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 128Mi
+                memory: 64Mi
               limits:
                 memory: 512Mi
     defaultPodOptions:
