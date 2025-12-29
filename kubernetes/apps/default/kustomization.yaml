@@ -13,6 +13,7 @@ resources:
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
   - ./booklore/ks.yaml
+  - ./booktree/ks.yaml
   - ./ersatztv/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./fusion/ks.yaml
