@@ -13,37 +13,40 @@ spec:
       pocket-id:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom: &envFrom
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
         containers:
-          app:
+          pocket-id:
             image:
               repository: ghcr.io/pocket-id/pocket-id
               tag: v1.16.0-distroless@sha256:db061d34e1f6ff4aeb9b8a4a654fc95b820ad8be282c8bcf298eba8d8f0f0ecb
             env:
-              DB_PROVIDER: postgres
               APP_URL: https://id.goyangi.io
+              DB_CONNECTION_STRING: file:/data/pocket-id.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
+              EMAIL_ONE_TIME_ACCESS_AS_UNAUTHENTICATED_ENABLED: "false"
+              FILE_BACKEND: s3
+              KEYS_PATH: /data/keys
+              KEYS_STORAGE: file
+              LOG_JSON: "true"
+              METRICS_ENABLED: "true"
               PORT: &port 80
-              TRUST_PROXY: true
+              S3_BUCKET: pocket-id
+              S3_ENDPOINT: garage.storage.svc.cluster.local:3900
+              S3_FORCE_PATH_STYLE: "true"
+              TRUST_PROXY: "true"
               TZ: Australia/Sydney
+              UI_CONFIG_DISABLED: "true"
               UPDATE_CHECK_DISABLED: "true"
-              SESSION_DURATION: 1440
-              EMAILS_VERIFIED: true
-              EMAIL_LOGIN_NOTIFICATION_ENABLED: true
-              EMAIL_ONE_TIME_ACCESS_AS_ADMIN_ENABLED: true
-              EMAIL_API_KEY_EXPIRATION_ENABLED: true
+              UPLOAD_PATH: /data/uploads
+              SESSION_DURATION: "1440"
+              EMAILS_VERIFIED: "true"
+              EMAIL_LOGIN_NOTIFICATION_ENABLED: "true"
+              EMAIL_ONE_TIME_ACCESS_AS_ADMIN_ENABLED: "true"
+              EMAIL_API_KEY_EXPIRATION_ENABLED: "true"
               SMTP_HOST: smtp-relay.network.svc.cluster.local
-              SMTP_PORT: 25
+              SMTP_PORT: "25"
               SMTP_FROM: noreply@goyangi.io
-              KEYS_STORAGE: database
-              UI_CONFIG_DISABLED: true
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
@@ -59,8 +62,8 @@ spec:
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
             resources:
               requests:
                 cpu: 10m
@@ -73,12 +76,8 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-        fsGroupChangePolicy: Always
-    service:
-      app:
-        ports:
-          http:
-            port: *port
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [100]
     route:
       app:
         annotations:
@@ -92,8 +91,17 @@ spec:
           - name: envoy-external
             namespace: network
             sectionName: https
+    service:
+      pocket-id:
+        controller: pocket-id
+        ports:
+          http:
+            port: *port
     persistence:
       data:
-        type: emptyDir
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /app/data
+          - path: /data
+      var:
+        type: emptyDir
+        sizeLimit: 1Gi

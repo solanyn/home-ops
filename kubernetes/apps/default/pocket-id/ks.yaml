@@ -6,12 +6,17 @@ metadata:
   name: pocket-id
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/volsync
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/pocket-id/app
-  prune: true
+  postBuild:
+    substitute:
+      APP: pocket-id
+      VOLSYNC_CAPACITY: 1Gi
   sourceRef:
     kind: GitRepository
     name: flux-system
