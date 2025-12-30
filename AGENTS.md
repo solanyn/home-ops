@@ -29,7 +29,7 @@ Single cluster Kubernetes GitOps repository with FluxCD v2. Hierarchical pattern
 
 - `.agents/` - Agent instructions
 - `kubernetes/` - Cluster manifests
-- `.taskfiles/` - Task automation
+- `kubernetes/mod.just` - Just commands for cluster operations
 - `talos/` - Talos Linux configuration
 - `third_party/` - Upstream manifests (flux-local CI)
 
@@ -477,11 +477,12 @@ spec:
 ## Commands
 
 ```bash
-task k8s:browse-pvc         # Mount PVC to temp container
-task k8s:delete-failed-pods # Delete failed pods
-task externalsecrets:*      # External Secrets operations
-task rook:*                 # Rook-Ceph operations
-task volsync:*              # VolSync operations
+just kube browse-pvc <namespace> <claim>  # Mount PVC to temp container
+just kube prune-pods                      # Delete failed/pending/succeeded pods
+just kube sync-es                         # Sync ExternalSecrets
+just kube snapshot                        # Snapshot VolSync PVCs
+just kube cnpg-backup                     # Backup CNPG cluster
+just kube backup-and-suspend              # Full backup + suspend workflow
 ```
 
 ### 1Password CLI
