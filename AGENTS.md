@@ -57,9 +57,11 @@ apps/<namespace>/<app-name>/
 1. **Choose namespace** based on application type:
 
     - `default` - General applications, home automation
+    - `ai` - Conversational AI, agents, chat interfaces
+    - `ml` - Machine learning services, feature stores
+    - `kubeflow` - ML platform components (core)
     - `analytics` - Data engineering (Airflow, Superset)
     - `storage` - Databases and storage systems
-    - `kubeflow` - ML platform components
     - `observability` - Monitoring tools
 
 2. **Create ks.yaml** with standard pattern:
@@ -143,9 +145,22 @@ resources:
 
 #### Networking Patterns
 
-- **HTTPRoute**: Use `internal` gateway for web interfaces
+- **HTTPRoute**: Use `envoy-internal` gateway for web interfaces
 - **Hostnames**: `app.domain.tld` pattern
 - **Services**: `app.namespace.svc.cluster.local` for internal access
+- **Cross-namespace**: Update service references when moving apps between namespaces
+- **App-template route field**: Use `route:` in HelmRelease instead of separate HTTPRoute
+
+```yaml
+# In HelmRelease values:
+route:
+  app:
+    hostnames:
+      - "{{ .Release.Name }}.goyangi.io"
+    parentRefs:
+      - name: envoy-internal
+        namespace: network
+```
 
 #### Security Patterns
 
