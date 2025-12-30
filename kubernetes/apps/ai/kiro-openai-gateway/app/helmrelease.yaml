@@ -19,6 +19,7 @@ spec:
               tag: 2025.12.29@sha256:55560287962c296e7d2d6a96eafefad6c43d27b347474046aad6aa0b8a723a62
             env:
               PORT: 8080
+              KIRO_CREDS_FILE: /config/credentials.json
             envFrom:
               - secretRef:
                   name: kiro-openai-gateway-secret
@@ -40,6 +41,13 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
+    persistence:
+      credentials:
+        type: secret
+        name: kiro-openai-gateway-secret
+        globalMounts:
+          - path: /config/credentials.json
+            subPath: credentials.json
     service:
       app:
         controller: kiro-openai-gateway
