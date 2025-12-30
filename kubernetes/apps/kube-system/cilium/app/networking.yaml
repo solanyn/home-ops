@@ -8,7 +8,7 @@ spec:
   allowFirstLastIPs: "No"
   blocks:
     - cidr: 192.168.69.0/24
-    - cidr: ${IPV6_PREFIX}:69::/80
+    - cidr: fd5d:a293:f321:69::/80
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpadvertisement_v2.json
 apiVersion: cilium.io/v2
@@ -64,7 +64,7 @@ spec:
             name: l3-bgp-peer-config
         - name: unifi-v6
           peerASN: 64513
-          peerAddress: fe80::9c05:d6ff:fedf:919a
+          peerAddress: fd5d:a293:f321:42::1
           peerConfigRef:
             name: l3-bgp-peer-config
 ---
@@ -73,7 +73,7 @@ kind: Service
 metadata:
   name: kube-api
   annotations:
-    lbipam.cilium.io/ips: 192.168.69.120, ${IPV6_PREFIX}:69::120
+    lbipam.cilium.io/ips: 192.168.69.120, fd5d:a293:f321:69::120
     external-dns.alpha.kubernetes.io/hostname: k8s.goyangi.io
 spec:
   type: LoadBalancer
