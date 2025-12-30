@@ -70,7 +70,8 @@ spec:
                       "command": "npx",
                       "args": ["-y", "@modelcontextprotocol/server-fetch"],
                       "env": {
-                        "GITHUB_MCP_URL": "http://github-mcp.ai.svc.cluster.local:8000"
+                        "GITHUB_MCP_URL": "https://api.githubcopilot.com/mcp/",
+                        "GITHUB_MCP_HEADERS": "{\"Authorization\": \"Bearer ${GITHUB_TOKEN}\"}"
                       }
                     }
                   }
