@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/linuxserver-labs/prarr
-              tag: whisparr-eros-3.0.2.1887@sha256:ee2dbdf44e3076d9df58f105f6c4140897fc25f3d5ce02d7ca4901cca873746d
+              tag: whisparr-eros-3.0.2.1908@sha256:858f185556cfea7a87c41648626791b89361e367978c801f156fc046dc80b0d3
             env:
               WHISPARR__APP__INSTANCENAME: Whisparr
               WHISPARR__APP__THEME: dark
