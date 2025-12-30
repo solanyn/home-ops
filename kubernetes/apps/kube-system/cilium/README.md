@@ -5,8 +5,8 @@
 ### Subnets
 - **Nodes**: `fd5d:a293:f321:42::/64`
 - **LoadBalancer**: `fd5d:a293:f321:69::/80`
-- **Pods**: `fd5d:a293:f321:1042::/108`
-- **Services**: `fd5d:a293:f321:1043::/80`
+- **Pods**: `fc69::/108`
+- **Services**: `fc96::/108`
 
 ## UniFi BGP Configuration
 
@@ -35,8 +35,8 @@ router bgp 64513
     neighbor k8s-v6 activate
     neighbor k8s-v6 soft-reconfiguration inbound
     network fd5d:a293:f321:69::/80
-    network fd5d:a293:f321:1042::/108
-    network fd5d:a293:f321:1043::/80
+    network fc69::/108
+    network fc96::/108
   exit-address-family
 exit
 ```

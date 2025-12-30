@@ -87,6 +87,10 @@ machine:
     net.ipv4.tcp_rmem: 4096 87380 33554432
     net.ipv4.tcp_window_scaling: "1"
     net.ipv4.tcp_wmem: 4096 65536 33554432
+    net.ipv6.conf.all.accept_ra: "2"
+    net.ipv6.conf.default.accept_ra: "2"
+    net.ipv6.conf.eno1.accept_ra: "2"
+    net.ipv6.conf.eno1/70.accept_ra: "0"
     sunrpc.tcp_max_slot_table_entries: "128"
     sunrpc.tcp_slot_table_entries: "128"
     user.max_user_namespaces: "11255"
@@ -115,10 +119,10 @@ cluster:
     dnsDomain: cluster.local
     podSubnets:
       - 10.42.0.0/16
-      - fd5d:a293:f321:1042::/108
+      - fc69::/108
     serviceSubnets:
       - 10.43.0.0/16
-      - fd5d:a293:f321:1043::/80
+      - fc96::/108
   secret: op://kubernetes/talos/CLUSTER_SECRET
   token: op://kubernetes/talos/CLUSTER_TOKEN
   {% if ENV.IS_CONTROLLER %}
@@ -145,7 +149,7 @@ cluster:
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
-      node-cidr-mask-size-ipv6: "80"
+      node-cidr-mask-size-ipv6: "112"
     image: registry.k8s.io/kube-controller-manager:v1.35.0
   coreDNS:
     disabled: true
