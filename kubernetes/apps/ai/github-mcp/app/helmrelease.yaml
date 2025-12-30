@@ -21,8 +21,6 @@ spec:
               - secretRef:
                   name: github-mcp-secret
             args:
-              - "--transport"
-              - "sse"
               - "--port"
               - "8000"
             securityContext:
