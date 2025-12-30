@@ -325,6 +325,26 @@ resources:
 - **VolSync**: Add component for automatic backups
 - **Access modes**: Typically `["ReadWriteOnce"]`
 
+**Volume types:**
+```yaml
+# Persistent storage
+persistence:
+  config:
+    existingClaim: "{{ .Release.Name }}"
+  
+  # NFS mounts
+  media:
+    type: nfs
+    server: nas.internal
+    path: /mnt/world/media
+    globalMounts:
+      - path: /media
+  
+  # Temporary storage
+  tmp:
+    type: emptyDir
+```
+
 #### Networking Patterns
 
 - **HTTPRoute**: Use `envoy-internal` gateway for web interfaces
@@ -342,6 +362,21 @@ route:
     parentRefs:
       - name: envoy-internal
         namespace: network
+```
+
+**Service types:**
+```yaml
+# LoadBalancer with Cilium IPAM
+service:
+  bittorrent:
+    type: LoadBalancer
+    annotations:
+      lbipam.cilium.io/ips: 192.168.69.122
+    externalTrafficPolicy: Local
+    ports:
+      tcp:
+        port: 50469
+        protocol: TCP
 ```
 
 #### Configuration Patterns
@@ -376,6 +411,32 @@ persistence:
     globalMounts:
       - path: /app/config.toml
         subPath: config.toml
+```
+
+**Kustomize patches:**
+```yaml
+# app/kustomization.yaml
+patches:
+  - target:
+      kind: Deployment
+    patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: this-is-ignored
+      spec:
+        template:
+          metadata:
+            annotations:
+              reloader.stakater.com/auto: "true"
+```
+
+**Third-party manifests:**
+```yaml
+# app/kustomization.yaml
+resources:
+  - ../../../../../third_party/kubeflow/manifests/apps/kserve/kserve
+  - ./helmrelease.yaml
 ```
 
 #### Security Patterns
