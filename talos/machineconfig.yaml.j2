@@ -67,7 +67,7 @@ machine:
     nodeIP:
       validSubnets:
         - 192.168.42.0/24
-        - {{ IPV6_PREFIX }}:42::/64
+        - {{ ENV.IPV6_PREFIX }}:42::/64
   nodeLabels:
     node.kubernetes.io/gpu: "true"
     topology.kubernetes.io/region: main
@@ -115,10 +115,10 @@ cluster:
     dnsDomain: cluster.local
     podSubnets:
       - 10.42.0.0/16
-      - {{ IPV6_PREFIX }}:1042::/80
+      - {{ ENV.IPV6_PREFIX }}:1042::/80
     serviceSubnets:
       - 10.43.0.0/16
-      - {{ IPV6_PREFIX }}:1043::/80
+      - {{ ENV.IPV6_PREFIX }}:1043::/80
   secret: op://kubernetes/talos/CLUSTER_SECRET
   token: op://kubernetes/talos/CLUSTER_TOKEN
   {% if ENV.IS_CONTROLLER %}
