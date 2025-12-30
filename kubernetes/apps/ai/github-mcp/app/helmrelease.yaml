@@ -21,8 +21,7 @@ spec:
               - secretRef:
                   name: github-mcp-secret
             args:
-              - "--port"
-              - "8000"
+              - "stdio"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -44,6 +43,4 @@ spec:
     service:
       app:
         controller: github-mcp
-        ports:
-          http:
-            port: 8000
+        enabled: false
