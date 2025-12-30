@@ -14,7 +14,7 @@ spec:
     ipv6:
       enabled: true
     enableIPv6BIGTCP: true
-    ipv6NativeRoutingCIDR: ${IPV6_PREFIX}:1042::/80
+    ipv6NativeRoutingCIDR: fd5d:a293:f321:1042::/80
     bandwidthManager:
       enabled: true
       bbr: true
