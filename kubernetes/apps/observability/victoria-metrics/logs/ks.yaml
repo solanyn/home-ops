@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: victoria-operator
   interval: 1h
-  path: ./kubernetes/apps/observability/victoria-logs
+  path: ./kubernetes/apps/observability/victoria-metrics/logs
   prune: true
   sourceRef:
     kind: GitRepository
