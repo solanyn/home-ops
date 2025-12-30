@@ -33,6 +33,7 @@ reboot-node node:
 [doc('Render Talos config for a node')]
 render-config node:
     export IS_CONTROLLER="$(just talos machine-controller {{ node }})"; \
+    export IPV6_PREFIX="$(op item get cluster --field IPV6_PREFIX --vault kubernetes)"; \
     talosctl machineconfig patch <(just template "{{ talos_dir }}/machineconfig.yaml.j2") \
         -p @<(just template "{{ talos_dir }}/nodes/{{ node }}.yaml.j2")
 
