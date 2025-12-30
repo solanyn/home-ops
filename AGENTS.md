@@ -21,6 +21,38 @@ infra: Configure mysql_native_password for ML Metadata
 Update authentication policy for MLMD compatibility.
 ```
 
+## IPv6 Dual-Stack Configuration
+
+The cluster supports dual-stack IPv4/IPv6 networking with ULA (Unique Local Addresses) for internal communication.
+
+### IPv6 Subnets
+- **Nodes**: `fd5d:a293:f321:42::/64`
+- **LoadBalancer**: `fd5d:a293:f321:69::/80`
+- **Pods**: `fc69::/108`
+- **Services**: `fc96::/108`
+
+### Dual-Stack Services
+For services that need both IPv4 and IPv6 access:
+
+```yaml
+service:
+  app:
+    type: LoadBalancer
+    ipFamilies: [IPv4, IPv6]
+    ipFamilyPolicy: PreferDualStack
+    externalTrafficPolicy: Local
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: app.goyangi.io
+      lbipam.cilium.io/ips: 192.168.69.122,fc69::122
+```
+
+### Key Configuration Points
+- **ipFamilies**: `[IPv4, IPv6]` enables dual-stack
+- **ipFamilyPolicy**: `PreferDualStack` prefers dual-stack but falls back to single-stack
+- **lbipam.cilium.io/ips**: Comma-separated IPv4,IPv6 addresses
+- **Pods automatically get dual-stack IPs** when created after dual-stack is enabled
+- **Existing pods need recreation** to get IPv6 addresses
+
 ## Architecture
 
 Single cluster Kubernetes GitOps repository with FluxCD v2. Hierarchical pattern: namespace → application. Encrypted secrets using SOPS and Age.
@@ -378,7 +410,22 @@ route:
 
 **Service types:**
 ```yaml
-# LoadBalancer with Cilium IPAM
+# LoadBalancer with Cilium IPAM (dual-stack)
+service:
+  app:
+    type: LoadBalancer
+    ipFamilies: [IPv4, IPv6]
+    ipFamilyPolicy: PreferDualStack
+    externalTrafficPolicy: Local
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: app.goyangi.io
+      lbipam.cilium.io/ips: 192.168.69.122,fc69::122
+    ports:
+      tcp:
+        port: 50469
+        protocol: TCP
+
+# LoadBalancer with IPv4 only (legacy)
 service:
   bittorrent:
     type: LoadBalancer
