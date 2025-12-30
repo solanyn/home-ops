@@ -2,17 +2,16 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: storage
+namespace: ai
 
 components:
   - ../../components/alerts
 
 resources:
   - ./namespace.yaml
-  - ./cloudnative-pg/ks.yaml
-  - ./dragonfly/ks.yaml
-  - ./ferretdb/ks.yaml
-  - ./garage/ks.yaml
-  - ./lakekeeper/ks.yaml
-  - ./mariadb/ks.yaml
-  - ./vernemq/ks.yaml
+  - ./kagent/ks.yaml
+  - ./kiro-openai-gateway/ks.yaml
+  - ./librechat/ks.yaml
+  - ./github-mcp/ks.yaml
+  - ./meilisearch/ks.yaml
+  - ./envoy-ai-gateway/ks.yaml
