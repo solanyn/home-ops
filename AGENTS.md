@@ -67,28 +67,56 @@ apps/<namespace>/<app-name>/
 2. **Create ks.yaml** with standard pattern:
 
 ```yaml
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-    name: &app app-name
-    namespace: flux-system
+  name: app-name
 spec:
-    targetNamespace: target-namespace
-    commonMetadata:
-        labels:
-            app.kubernetes.io/name: *app
-    interval: 1h
-    timeout: 5m
-    path: ./kubernetes/apps/namespace/app-name/app
-    prune: true
-    sourceRef:
-        kind: GitRepository
-        name: home-ops
-    dependsOn:
-        - name: dependency-name # Include if needed
-    postBuild:
-        substitute:
-            APP: *app
+  interval: 1h
+  path: ./kubernetes/apps/namespace/app-name/app
+  postBuild:
+    substitute:
+      APP: app-name
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: target-namespace
+  wait: false
+  dependsOn:  # Optional - for dependencies
+    - name: dependency-name
+      namespace: flux-system
+  components:  # Optional - for VolSync backups
+    - ../../../../components/volsync
+```
+
+**For apps with CRDs (like kagent):**
+```yaml
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: app-crds
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/namespace/app-name/crds
+  prune: false  # Never prune CRDs
+  targetNamespace: target-namespace
+  wait: true    # Wait for CRDs to be ready
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: app-name
+spec:
+  dependsOn:
+    - name: app-crds
+  interval: 1h
+  path: ./kubernetes/apps/namespace/app-name/app
+  targetNamespace: target-namespace
 ```
 
 3. **Create app/kustomization.yaml**:
@@ -106,6 +134,19 @@ components:
     - ../../../../components/gatus/guarded # For monitoring
     - ../../../../components/volsync # For backups
 ```
+
+**Simplified pattern (most common):**
+```yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./ocirepository.yaml
+  - ./helmrelease.yaml
+  - ./externalsecret.yaml  # Optional
+  - ./httproute.yaml       # Optional for web apps
+```
+
+**Note**: App-level kustomizations don't need `namespace:` field - they inherit from Flux Kustomization's `targetNamespace`.
 
 4. **Create helmrelease.yaml** with standard fields:
 
