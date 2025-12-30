@@ -1,0 +1,59 @@
+---
+apiVersion: aigateway.envoyproxy.io/v1alpha1
+kind: MCPRoute
+metadata:
+  name: mcp-unified
+spec:
+  parentRefs:
+    - name: envoy-ai
+      kind: Gateway
+      group: gateway.networking.k8s.io
+  path: "/mcp"
+  backendRefs:
+    - name: flux-mcp
+      kind: Backend
+      group: gateway.envoyproxy.io
+      path: "/mcp"
+    - name: grafana-mcp
+      kind: Backend
+      group: gateway.envoyproxy.io
+      path: "/mcp"
+    - name: github-remote
+      kind: Backend
+      group: gateway.envoyproxy.io
+      path: "/mcp/x/issues/readonly"
+      securityPolicy:
+        apiKey:
+          secretRef:
+            name: envoy-ai-gateway-secret
+            key: GITHUB_TOKEN
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
+  name: flux-mcp
+spec:
+  endpoints:
+    - fqdn:
+        hostname: flux-operator-mcp.flux-system.svc.cluster.local
+        port: 8080
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
+  name: grafana-mcp
+spec:
+  endpoints:
+    - fqdn:
+        hostname: grafana-mcp.observability.svc.cluster.local
+        port: 8080
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: Backend
+metadata:
+  name: github-remote
+spec:
+  endpoints:
+    - fqdn:
+        hostname: api.githubcopilot.com
+        port: 443
