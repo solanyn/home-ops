@@ -15,5 +15,4 @@ resources:
   - ./garage/ks.yaml
   - ./lakekeeper/ks.yaml
   - ./mariadb/ks.yaml
-  - ./meilisearch/ks.yaml
   - ./vernemq/ks.yaml

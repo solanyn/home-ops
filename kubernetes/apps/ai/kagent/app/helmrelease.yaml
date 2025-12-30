@@ -1,0 +1,17 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kagent
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: kagent
+  interval: 1h
+  values:
+    providers:
+      default: openAI
+      openAI:
+        apiKey: "dummy"
+        baseURL: "https://ai.goyangi.io/v1"
+        defaultHeaders:
+          x-ai-eg-model: "gemini-3-pro-preview"
