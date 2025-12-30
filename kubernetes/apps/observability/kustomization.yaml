@@ -9,6 +9,7 @@ components:
 
 resources:
   - ./namespace.yaml
+  - ./alloy/ks.yaml
   - ./blackbox-exporter/ks.yaml
   - ./fluent-bit/ks.yaml
   - ./gatus/ks.yaml
@@ -17,7 +18,7 @@ resources:
   - ./keda/ks.yaml
   - ./kromgo/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
-  - ./victoria-logs/ks.yaml
   - ./silence-operator/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./unpoller/ks.yaml
+  - ./victoria-metrics/ks.yaml
