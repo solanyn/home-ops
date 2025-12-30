@@ -423,6 +423,45 @@ task rook:*                 # Rook-Ceph operations
 task volsync:*              # VolSync operations
 ```
 
+### 1Password CLI
+
+Use `op` CLI to verify secret values during development:
+
+```bash
+# Check if secret exists in 1Password
+op item get app-name --vault kubernetes
+
+# View specific field
+op item get app-name --field API_KEY --vault kubernetes
+
+# Test secret template values
+op item get cloudnative-pg --field DB_USER --vault kubernetes
+```
+
+## OIDC Integration
+
+Applications use Pocket ID (https://id.goyangi.io) for SSO authentication:
+
+```yaml
+# Common OIDC environment variables in ExternalSecret template:
+template:
+  data:
+    OIDC_AUTH_ENABLED: "true"
+    OIDC_CONFIGURATION_URL: https://id.goyangi.io/.well-known/openid-configuration
+    OIDC_ISSUER_URL: https://id.goyangi.io
+    OIDC_CLIENT_ID: "{{ .APP_CLIENT_ID }}"
+    OIDC_CLIENT_SECRET: "{{ .APP_CLIENT_SECRET }}"
+    OIDC_REDIRECT_URI: https://app.goyangi.io/auth/callback
+    OIDC_AUTO_REDIRECT: "true"
+    OIDC_ADMIN_GROUP: admin
+```
+
+**Application-specific patterns:**
+- **Mealie**: Uses `OIDC_SIGNUP_ENABLED`, `OIDC_REMEMBER_ME`
+- **Audiobookshelf**: Uses `OIDC_BUTTON_TEXT`, `OIDC_AUTO_LAUNCH`
+- **Grafana**: Uses `GF_AUTH_GENERIC_OAUTH_*` prefix
+- **Kubeflow**: Uses `kubeflow-oidc-authservice` client ID
+
 ## Security
 
 - SOPS encryption with Age keys
