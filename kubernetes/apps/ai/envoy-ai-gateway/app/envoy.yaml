@@ -55,7 +55,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      lbipam.cilium.io/ips: 192.168.69.130
+      lbipam.cilium.io/ips: 192.168.69.130,fd5d:a293:f321:69::130
     parametersRef:
       group: gateway.envoyproxy.io
       kind: EnvoyProxy

@@ -106,7 +106,7 @@ spec:
         externalTrafficPolicy: Local
         annotations:
           external-dns.alpha.kubernetes.io/hostname: mqtt.goyangi.io
-          lbipam.cilium.io/ips: 192.168.69.129
+          lbipam.cilium.io/ips: 192.168.69.129,fd5d:a293:f321:69::129
         ports: &ports
           mqtt:
             port: 1883

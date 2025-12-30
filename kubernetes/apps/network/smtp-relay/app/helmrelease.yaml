@@ -50,7 +50,7 @@ spec:
         type: LoadBalancer
         annotations:
           external-dns.alpha.kubernetes.io/hostname: "{{ .Release.Name }}.goyangi.io"
-          lbipam.cilium.io/ips: 192.168.69.123
+          lbipam.cilium.io/ips: 192.168.69.123,fd5d:a293:f321:69::123
         externalTrafficPolicy: Local
         ports:
           http:
