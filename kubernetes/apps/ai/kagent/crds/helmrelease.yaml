@@ -1,0 +1,10 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kagent-crds
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: kagent-crds
+  interval: 1h
+  values: {}

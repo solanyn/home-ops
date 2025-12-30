@@ -1,0 +1,61 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: envoy-ai-gateway-crds
+spec:
+  targetNamespace: ai
+  dependsOn:
+    - name: envoy-gateway
+      namespace: flux-system
+  interval: 1h
+  path: ./kubernetes/apps/ai/envoy-ai-gateway/crds
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: envoy-ai-gateway
+spec:
+  targetNamespace: ai
+  dependsOn:
+    - name: envoy-gateway
+      namespace: flux-system
+    - name: envoy-ai-gateway-crds
+  interval: 1h
+  path: ./kubernetes/apps/ai/envoy-ai-gateway/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: envoy-ai-gateway-backends
+spec:
+  targetNamespace: ai
+  dependsOn:
+    - name: envoy-ai-gateway
+  interval: 1h
+  path: ./kubernetes/apps/ai/envoy-ai-gateway/backends
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: envoy-ai-gateway-secret
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false
