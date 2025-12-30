@@ -213,27 +213,47 @@ spec:
 - OCIRepository: `chartRef: {kind: OCIRepository, name: app-name}`
 - HelmRepository: `chart: {spec: {chart: chart-name, sourceRef: {kind: HelmRepository, name: app-name}}}`
 
-4. **Create helmrelease.yaml** with standard fields:
+4. **Create helmrelease.yaml** with standard template:
 
 ```yaml
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: "{{ .Release.Name }}"
 spec:
-    interval: 1h
-    install:
-        remediation:
-            retries: -1
-    upgrade:
-        cleanupOnFail: true
-        remediation:
-            retries: 3
-    postRenderers:
-        - kustomize:
-              patches:
-                  - target:
-                        kind: Deployment
-                    patch: |
-                        - op: add
-                          path: /spec/template/metadata/annotations/reloader.stakater.com~1auto
-                          value: "true"
+  chartRef:
+    kind: OCIRepository
+    name: app-name
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      app:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/example/app
+              tag: latest
+            env:
+              TZ: Australia/Sydney
+    service:
+      app:
+        ports:
+          http:
+            port: 80
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
 ```
 
 **Database apps with init containers:**
@@ -256,7 +276,43 @@ values:
           envFrom: *envFrom  # Same secrets as init container
 ```
 
-5. **Add to namespace kustomization.yaml**:
+5. **Create PVC (if needed)**:
+
+```yaml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ .Release.Name }}"
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: ceph-block
+```
+
+6. **Create monitoring (if needed)**:
+
+```yaml
+---
+# prometheusrule.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: "{{ .Release.Name }}-rules"
+spec:
+  groups:
+    - name: "{{ .Release.Name }}.rules"
+      rules:
+        - alert: AppDown
+          expr: up{job="{{ .Release.Name }}"} == 0
+          for: 5m
+          labels:
+            severity: critical
+```
+
+7. **Add to namespace kustomization.yaml**:
 
 ```yaml
 resources:
