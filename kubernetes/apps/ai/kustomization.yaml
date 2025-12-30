@@ -15,3 +15,4 @@ resources:
   - ./github-mcp/ks.yaml
   - ./meilisearch/ks.yaml
   - ./envoy-ai-gateway/ks.yaml
+  - ./claude-code-proxy/ks.yaml
