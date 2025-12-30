@@ -2,7 +2,7 @@
 
 Use British English except in code. Use American English in code and manifests. Do not use Oxford commas.
 
-Follow conventional commits. Never attribute agents in commit messages. Avoid unnecessary comments and emojis.
+Follow conventional commits. Never attribute agents in commit messages. Avoid unnecessary comments and emojis. Do not add comments to YAML manifests.
 
 Use GitOps. Do not edit resources directly. Make changes to the repo, commit and push, then run `flux reconcile ks cluster-apps --with-source`.
 
