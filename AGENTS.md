@@ -119,6 +119,36 @@ spec:
   targetNamespace: target-namespace
 ```
 
+**Field ordering in ks.yaml:**
+```yaml
+metadata:
+  name: app-name
+spec:
+  targetNamespace: namespace     # Always first
+  components:                    # Optional - before dependsOn
+    - ../../../../components/volsync
+  dependsOn:                     # Dependencies
+    - name: cloudnative-pg-cluster
+      namespace: storage
+  interval: 1h                   # Standard fields
+  path: ./kubernetes/apps/...
+  postBuild:                     # Substitutions
+    substitute:
+      APP: app-name
+      VOLSYNC_CAPACITY: 5Gi
+  prune: true
+  sourceRef:                     # Git source
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false
+```
+
+**Common dependencies:**
+- **Database apps**: `cloudnative-pg-cluster` (namespace: storage)
+- **Storage apps**: `rook-ceph-cluster` (namespace: rook-ceph)
+- **AI apps**: May depend on model serving or gateway services
+
 3. **Create app/kustomization.yaml**:
 
 ```yaml
@@ -131,7 +161,6 @@ resources:
     - pvc.yaml # If needed
     - httproute.yaml # If web app
 components:
-    - ../../../../components/gatus/guarded # For monitoring
     - ../../../../components/volsync # For backups
 ```
 
@@ -171,6 +200,26 @@ spec:
                           value: "true"
 ```
 
+**Database apps with init containers:**
+```yaml
+values:
+  controllers:
+    app-name:
+      annotations:
+        reloader.stakater.com/auto: "true"
+      initContainers:
+        init-db:
+          image:
+            repository: ghcr.io/home-operations/postgres-init
+            tag: 18
+          envFrom: &envFrom
+            - secretRef:
+                name: "{{ .Release.Name }}-secret"
+      containers:
+        app:
+          envFrom: *envFrom  # Same secrets as init container
+```
+
 5. **Add to namespace kustomization.yaml**:
 
 ```yaml
@@ -208,6 +257,105 @@ route:
 - **ExternalSecret**: Reference `onepassword` ClusterSecretStore
 - **Target secret**: Name as `app-secret`
 - **SOPS**: Use `.sops.yaml` suffix for encrypted configs
+
+**ExternalSecret patterns:**
+
+**Standard template pattern (always use this):**
+```yaml
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: app-name
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: app-name-secret
+    creationPolicy: Owner
+    template:
+      data:
+        DATABASE_URL: "postgres://{{ .DB_USER }}:{{ .DB_PASS }}@host:5432/db"
+        API_KEY: "{{ .API_KEY }}"
+        CONFIG_FILE: |
+          server:
+            host: "{{ .HOST }}"
+            port: {{ .PORT }}
+  dataFrom:
+    - extract:
+        key: app-name
+    - extract:
+        key: shared-db  # Multiple 1Password items if needed
+```
+
+**Simple single-item template:**
+```yaml
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: app-name
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: app-name-secret
+    creationPolicy: Owner
+    template:
+      data:
+        API_KEY: "{{ .API_KEY }}"
+        DATABASE_PASSWORD: "{{ .DATABASE_PASSWORD }}"
+  dataFrom:
+    - extract:
+        key: app-name
+```
+
+**ExternalSecret patterns:**
+
+**Simple dataFrom (recommended):**
+```yaml
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: app-name
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: app-name-secret
+    creationPolicy: Owner
+  dataFrom:
+    - extract:
+        key: app-name  # 1Password item name
+```
+
+**With template for complex configs:**
+```yaml
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: app-name
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: app-name-secret
+    creationPolicy: Owner
+    template:
+      data:
+        DATABASE_URL: "postgres://{{ .DB_USER }}:{{ .DB_PASS }}@host:5432/db"
+        CONFIG_FILE: |
+          server:
+            host: "{{ .HOST }}"
+            port: {{ .PORT }}
+  dataFrom:
+    - extract:
+        key: app-name
+    - extract:
+        key: shared-db  # Multiple 1Password items
+```
 
 ## Commands
 
