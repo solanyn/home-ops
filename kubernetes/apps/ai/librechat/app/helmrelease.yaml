@@ -160,6 +160,17 @@ spec:
             cache: true
             endpoints:
               custom:
+                - name: "Claude (Kiro)"
+                  apiKey: "dummy"
+                  baseURL: "http://kiro-openai-gateway.ai.svc.cluster.local:8080/v1"
+                  models:
+                    default:
+                      - "claude-opus-4-5"
+                      - "claude-sonnet-4-5"
+                      - "claude-haiku-4-5"
+                      - "claude-sonnet-4"
+                      - "claude-3-7-sonnet-20250219"
+                  titleModel: "claude-sonnet-4-5"
                 - name: "Gemini"
                   apiKey: "dummy"
                   baseURL: "https://ai.goyangi.io/v1"
