@@ -52,26 +52,12 @@ spec:
               MCP_CONFIG: |
                 {
                   "mcpServers": {
-                    "flux": {
+                    "unified": {
                       "command": "npx",
                       "args": ["-y", "@modelcontextprotocol/server-fetch"],
                       "env": {
-                        "FLUX_MCP_URL": "http://flux-operator-mcp.flux-system.svc.cluster.local:8000"
-                      }
-                    },
-                    "grafana": {
-                      "command": "npx",
-                      "args": ["-y", "@modelcontextprotocol/server-fetch"],
-                      "env": {
-                        "GRAFANA_MCP_URL": "http://grafana-mcp.observability.svc.cluster.local:8000"
-                      }
-                    },
-                    "github": {
-                      "command": "npx",
-                      "args": ["-y", "@modelcontextprotocol/server-fetch"],
-                      "env": {
-                        "GITHUB_MCP_URL": "https://api.githubcopilot.com/mcp/",
-                        "GITHUB_MCP_HEADERS": "{\"Authorization\": \"Bearer ${GITHUB_TOKEN}\"}"
+                        "MCP_URL": "https://ai.goyangi.io/mcp",
+                        "MCP_HEADERS": "{\"x-api-key\": \"${ENVOY_AI_GATEWAY_API_KEY}\"}"
                       }
                     }
                   }

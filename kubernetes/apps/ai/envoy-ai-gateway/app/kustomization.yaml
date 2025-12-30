@@ -6,7 +6,9 @@ resources:
   - ./envoy.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./mcproute.yaml
   - ./ocirepository.yaml
   - ./podmonitor.yaml
   - ./rbac.yaml
   - ./referencegrant.yaml
+  - ./securitypolicy.yaml
