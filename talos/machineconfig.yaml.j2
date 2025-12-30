@@ -115,7 +115,7 @@ cluster:
     dnsDomain: cluster.local
     podSubnets:
       - 10.42.0.0/16
-      - fd5d:a293:f321:1042::/64
+      - fd5d:a293:f321:1042::/108
     serviceSubnets:
       - 10.43.0.0/16
       - fd5d:a293:f321:1043::/80
@@ -145,7 +145,7 @@ cluster:
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
-      node-cidr-mask-size-ipv6: "112"
+      node-cidr-mask-size-ipv6: "80"
     image: registry.k8s.io/kube-controller-manager:v1.35.0
   coreDNS:
     disabled: true
