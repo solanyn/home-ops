@@ -8,6 +8,7 @@ spec:
   allowFirstLastIPs: "No"
   blocks:
     - cidr: 192.168.69.0/24
+    - cidr: ${IPV6_PREFIX}:69::/80
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpadvertisement_v2.json
 apiVersion: cilium.io/v2
@@ -37,6 +38,11 @@ spec:
       advertisements:
         matchLabels:
           advertise: bgp
+    - afi: ipv6
+      safi: unicast
+      advertisements:
+        matchLabels:
+          advertise: bgp
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpclusterconfig_v2.json
 apiVersion: cilium.io/v2
@@ -56,16 +62,23 @@ spec:
           peerAddress: 192.168.1.1
           peerConfigRef:
             name: l3-bgp-peer-config
+        - name: unifi-v6
+          peerASN: 64513
+          peerAddress: ${IPV6_PREFIX}:42::1
+          peerConfigRef:
+            name: l3-bgp-peer-config
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: kube-api
   annotations:
-    lbipam.cilium.io/ips: 192.168.69.120
+    lbipam.cilium.io/ips: 192.168.69.120, ${IPV6_PREFIX}:69::120
     external-dns.alpha.kubernetes.io/hostname: k8s.goyangi.io
 spec:
   type: LoadBalancer
+  ipFamilies: [IPv4, IPv6]
+  ipFamilyPolicy: PreferDualStack
   externalTrafficPolicy: Local
   selector:
     k8s-app: kube-apiserver
