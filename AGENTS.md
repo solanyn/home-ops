@@ -172,10 +172,14 @@ resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
   - ./externalsecret.yaml  # Optional
+  - ./pvc.yaml             # Optional - for persistent storage
   - ./prometheusrule.yaml  # Optional for monitoring
 ```
 
-**Note**: App-level kustomizations don't need `namespace:` field - they inherit from Flux Kustomization's `targetNamespace`.
+**Note**: 
+- App-level kustomizations don't need `namespace:` field - they inherit from Flux Kustomization's `targetNamespace`
+- VolSync component is added at the **ks.yaml level**, not in app kustomization
+- PVC is only needed if the application requires persistent storage beyond what the Helm chart provides
 
 #### Repository Patterns
 
@@ -297,6 +301,8 @@ spec:
       storage: 5Gi
   storageClassName: ceph-block
 ```
+
+**Note**: Only create separate `pvc.yaml` for cache/temp storage that doesn't need backup. For critical data, use VolSync component which creates PVCs automatically and provides backup/restore capabilities.
 
 6. **Create monitoring (if needed)**:
 
@@ -545,6 +551,101 @@ GF_AUTH_GENERIC_OAUTH_TOKEN_URL: https://id.goyangi.io/api/oidc/token
 ```yaml
 KUBEFLOW_OIDC_CLIENT_ID: kubeflow-oidc-authservice
 KUBEFLOW_OIDC_CLIENT_SECRET: "{{ .KUBEFLOW_OIDC_CLIENT_SECRET }}"
+```
+
+**GitLab:**
+```yaml
+# In ExternalSecret template
+GITLAB_OIDC_CLIENT_ID: "{{ .GITLAB_OIDC_CLIENT_ID }}"
+GITLAB_OIDC_CLIENT_SECRET: "{{ .GITLAB_OIDC_CLIENT_SECRET }}"
+
+oidc-config: |
+  name: openid_connect
+  label: Pocket ID
+  args:
+    name: openid_connect
+    scope: [openid, profile, email]
+    response_type: code
+    issuer: https://id.goyangi.io
+    client_auth_method: query
+    discovery: true
+    uid_field: preferred_username
+    client_options:
+      identifier: "{{ .GITLAB_OIDC_CLIENT_ID }}"
+      secret: "{{ .GITLAB_OIDC_CLIENT_SECRET }}"
+      redirect_uri: https://gitlab.goyangi.io/users/auth/openid_connect/callback
+
+# In HelmRelease values
+appConfig:
+  omniauth:
+    enabled: true
+    autoSignInWithProvider: []
+    syncProfileFromProvider: [openid_connect]
+    allowSingleSignOn: [openid_connect]
+    allowBypassTwoFactor: [openid_connect]
+    syncProfileAttributes: [email]
+    blockAutoCreatedUsers: false
+    providers:
+      - secret: gitlab-secret
+        key: oidc-config
+```
+
+## Infrastructure Integration
+
+### SMTP Configuration
+
+Use the internal SMTP relay for email notifications:
+
+```yaml
+# In ExternalSecret template
+SMTP_HOST: smtp-relay.network.svc.cluster.local
+SMTP_PORT: "25"
+SMTP_FROM_NAME: <app-name>
+SMTP_FROM_EMAIL: noreply@goyangi.io
+SMTP_AUTH_STRATEGY: NONE
+
+# In HelmRelease values (application-specific)
+smtp:
+  enabled: true
+  address: smtp-relay.network.svc.cluster.local
+  port: 25
+  domain: goyangi.io
+  authentication: none
+  starttls_auto: false
+```
+
+### Storage Integration
+
+**Garage S3 credentials** (use existing shared credentials):
+```yaml
+# In ExternalSecret template
+S3_ACCESS_KEY: "{{ .GARAGE_ROOT_USER }}"
+S3_SECRET_KEY: "{{ .GARAGE_ROOT_PASSWORD }}"
+S3_ENDPOINT: garage.storage.svc.cluster.local:3900
+
+# In dataFrom
+dataFrom:
+  - extract:
+      key: garage
+```
+
+**Database credentials** (use existing shared credentials):
+```yaml
+# PostgreSQL
+POSTGRES_USER: "{{ .POSTGRES_USER }}"
+POSTGRES_PASSWORD: "{{ .POSTGRES_PASSWORD }}"
+POSTGRES_HOST: postgres-rw.storage.svc.cluster.local
+
+# Redis/Dragonfly
+REDIS_PASSWORD: "{{ .REDIS_PASSWORD }}"
+REDIS_HOST: dragonfly.storage.svc.cluster.local
+
+# In dataFrom
+dataFrom:
+  - extract:
+      key: cloudnative-pg
+  - extract:
+      key: dragonfly
 ```
 
 ## Security
