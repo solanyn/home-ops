@@ -115,10 +115,10 @@ cluster:
     dnsDomain: cluster.local
     podSubnets:
       - 10.42.0.0/16
-      - {{ ENV.IPV6_PREFIX }}:1042::/80
+      - fd5d:a293:f321:1042::/80
     serviceSubnets:
       - 10.43.0.0/16
-      - {{ ENV.IPV6_PREFIX }}:1043::/80
+      - fd5d:a293:f321:1043::/80
   secret: op://kubernetes/talos/CLUSTER_SECRET
   token: op://kubernetes/talos/CLUSTER_TOKEN
   {% if ENV.IS_CONTROLLER %}
