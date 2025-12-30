@@ -12,7 +12,6 @@ resources:
   - ./kagent/ks.yaml
   - ./kiro-openai-gateway/ks.yaml
   - ./librechat/ks.yaml
-  - ./github-mcp/ks.yaml
   - ./meilisearch/ks.yaml
   - ./envoy-ai-gateway/ks.yaml
   - ./claude-code-proxy/ks.yaml
