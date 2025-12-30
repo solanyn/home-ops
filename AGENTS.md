@@ -256,6 +256,12 @@ spec:
         existingClaim: "{{ .Release.Name }}"
 ```
 
+**Reference upstream documentation:**
+- **App-template**: https://bjw-s.github.io/helm-charts/docs/app-template/
+- **Container images**: Check GitHub/Docker Hub for environment variables and configuration
+- **Helm charts**: Review `values.yaml` in chart repository for available options
+- **Official docs**: Always check application's official documentation for configuration options
+
 **Database apps with init containers:**
 ```yaml
 values:
