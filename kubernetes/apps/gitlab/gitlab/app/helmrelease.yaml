@@ -140,6 +140,24 @@ spec:
     
     # GitLab components
     gitlab:
+      webservice:
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18@sha256:866f15038ed5185a2b8118821f470bb7ca0df8c4231b8e277446e681ebb1ed84
+            envFrom: &envFrom
+              - secretRef:
+                  name: gitlab-secret
+        minReplicas: 1
+        maxReplicas: 1
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+          limits:
+            memory: 2Gi
+      
       gitaly:
         persistence:
           enabled: true
@@ -165,6 +183,9 @@ spec:
       sidekiq:
         minReplicas: 1
         maxReplicas: 1
+        containers:
+          app:
+            envFrom: *envFrom
         resources:
           requests:
             cpu: 10m
