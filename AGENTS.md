@@ -243,7 +243,7 @@ spec:
           app:
             image:
               repository: ghcr.io/example/app
-              tag: latest
+              tag: latest@sha256:digest  # Use digests for security and reproducibility
             env:
               TZ: Australia/Sydney
     service:
