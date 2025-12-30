@@ -440,27 +440,44 @@ op item get cloudnative-pg --field DB_USER --vault kubernetes
 
 ## OIDC Integration
 
-Applications use Pocket ID (https://id.goyangi.io) for SSO authentication:
+Applications use Pocket ID (https://id.goyangi.io) for SSO authentication. Each application has different OIDC field names and requirements:
 
+**Mealie:**
 ```yaml
-# Common OIDC environment variables in ExternalSecret template:
-template:
-  data:
-    OIDC_AUTH_ENABLED: "true"
-    OIDC_CONFIGURATION_URL: https://id.goyangi.io/.well-known/openid-configuration
-    OIDC_ISSUER_URL: https://id.goyangi.io
-    OIDC_CLIENT_ID: "{{ .APP_CLIENT_ID }}"
-    OIDC_CLIENT_SECRET: "{{ .APP_CLIENT_SECRET }}"
-    OIDC_REDIRECT_URI: https://app.goyangi.io/auth/callback
-    OIDC_AUTO_REDIRECT: "true"
-    OIDC_ADMIN_GROUP: admin
+OIDC_AUTH_ENABLED: "True"
+OIDC_SIGNUP_ENABLED: "True"
+OIDC_CONFIGURATION_URL: https://id.goyangi.io/.well-known/openid-configuration
+OIDC_CLIENT_ID: "{{ .MEALIE_CLIENT_ID }}"
+OIDC_CLIENT_SECRET: "{{ .MEALIE_CLIENT_SECRET }}"
+OIDC_ADMIN_GROUP: admin
+OIDC_AUTO_REDIRECT: "True"
+OIDC_REMEMBER_ME: "True"
 ```
 
-**Application-specific patterns:**
-- **Mealie**: Uses `OIDC_SIGNUP_ENABLED`, `OIDC_REMEMBER_ME`
-- **Audiobookshelf**: Uses `OIDC_BUTTON_TEXT`, `OIDC_AUTO_LAUNCH`
-- **Grafana**: Uses `GF_AUTH_GENERIC_OAUTH_*` prefix
-- **Kubeflow**: Uses `kubeflow-oidc-authservice` client ID
+**Audiobookshelf:**
+```yaml
+OIDC_ISSUER_URL: "https://id.goyangi.io"
+OIDC_CLIENT_ID: "{{ .AUDIOBOOKSHELF_CLIENT_ID }}"
+OIDC_CLIENT_SECRET: "{{ .AUDIOBOOKSHELF_CLIENT_SECRET }}"
+OIDC_BUTTON_TEXT: "Login with Pocket ID"
+OIDC_AUTO_LAUNCH: "false"
+```
+
+**Grafana:**
+```yaml
+GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
+GF_AUTH_GENERIC_OAUTH_NAME: "Pocket ID"
+GF_AUTH_GENERIC_OAUTH_CLIENT_ID: "{{ .GRAFANA_CLIENT_ID }}"
+GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: "{{ .GRAFANA_CLIENT_SECRET }}"
+GF_AUTH_GENERIC_OAUTH_AUTH_URL: https://id.goyangi.io/authorize
+GF_AUTH_GENERIC_OAUTH_TOKEN_URL: https://id.goyangi.io/api/oidc/token
+```
+
+**Kubeflow:**
+```yaml
+KUBEFLOW_OIDC_CLIENT_ID: kubeflow-oidc-authservice
+KUBEFLOW_OIDC_CLIENT_SECRET: "{{ .KUBEFLOW_OIDC_CLIENT_SECRET }}"
+```
 
 ## Security
 
