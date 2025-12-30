@@ -4,7 +4,7 @@ metadata:
   name: kagent
 spec:
   parentRefs:
-    - name: internal
+    - name: envoy-internal
       namespace: network
   hostnames:
     - kagent.goyangi.io
