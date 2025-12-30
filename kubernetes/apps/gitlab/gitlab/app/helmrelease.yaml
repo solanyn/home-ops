@@ -59,19 +59,16 @@ spec:
       # Email configuration
       email:
         display_name: GitLab
-        from: gitlab@goyangi.io
+        from: noreply@goyangi.io
         reply_to: noreply@goyangi.io
       
       smtp:
         enabled: true
-        address: "{{ .SMTP_HOST }}"
-        port: 587
-        user_name: "{{ .SMTP_USER }}"
-        password:
-          secret: gitlab-secret
-          key: SMTP_PASSWORD
+        address: smtp-relay.network.svc.cluster.local
+        port: 25
         domain: goyangi.io
-        starttls_auto: true
+        authentication: none
+        starttls_auto: false
       
       # Initial root password
       initialRootPassword:
@@ -83,6 +80,18 @@ spec:
         enabled: false
       
       appConfig:
+        omniauth:
+          enabled: true
+          autoSignInWithProvider: []
+          syncProfileFromProvider: [openid_connect]
+          allowSingleSignOn: [openid_connect]
+          allowBypassTwoFactor: [openid_connect]
+          syncProfileAttributes: [email]
+          blockAutoCreatedUsers: false
+          providers:
+            - secret: gitlab-secret
+              key: oidc-config
+        
         object_store:
           enabled: true
           proxy_download: true
@@ -94,29 +103,29 @@ spec:
         lfs:
           enabled: true
           proxy_download: true
-          bucket: gitlab-lfs
+          bucket: gitlab
           connection: {}
         
         artifacts:
           enabled: true
           proxy_download: true
-          bucket: gitlab-artifacts
+          bucket: gitlab
           connection: {}
         
         uploads:
           enabled: true
           proxy_download: true
-          bucket: gitlab-uploads
+          bucket: gitlab
           connection: {}
         
         packages:
           enabled: true
           proxy_download: true
-          bucket: gitlab-packages
+          bucket: gitlab
           connection: {}
         
         backups:
-          bucket: gitlab-backups
+          bucket: gitlab
           tmpdir: /tmp
     
     # Disable built-in services
@@ -138,40 +147,48 @@ spec:
           size: 50Gi
         resources:
           requests:
-            cpu: 100m
-            memory: 1Gi
+            cpu: 10m
+            memory: 64Mi
           limits:
-            memory: 2Gi
+            memory: 512Mi
       
       webservice:
         minReplicas: 1
         maxReplicas: 1
         resources:
           requests:
-            cpu: 200m
-            memory: 2Gi
+            cpu: 10m
+            memory: 64Mi
           limits:
-            memory: 4Gi
+            memory: 2Gi
       
       sidekiq:
         minReplicas: 1
         maxReplicas: 1
         resources:
           requests:
-            cpu: 100m
-            memory: 1Gi
+            cpu: 10m
+            memory: 64Mi
           limits:
-            memory: 2Gi
+            memory: 1Gi
       
       gitlab-shell:
         minReplicas: 1
         maxReplicas: 1
         resources:
           requests:
-            cpu: 50m
-            memory: 256Mi
+            cpu: 10m
+            memory: 64Mi
           limits:
-            memory: 512Mi
+            memory: 128Mi
+      
+      gitlab-pages:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 10Mi
+          limits:
+            memory: 64Mi
     
     # Container registry
     registry:
