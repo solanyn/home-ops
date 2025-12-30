@@ -172,10 +172,46 @@ resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
   - ./externalsecret.yaml  # Optional
-  - ./httproute.yaml       # Optional for web apps
+  - ./prometheusrule.yaml  # Optional for monitoring
 ```
 
 **Note**: App-level kustomizations don't need `namespace:` field - they inherit from Flux Kustomization's `targetNamespace`.
+
+#### Repository Patterns
+
+**OCIRepository (preferred):**
+```yaml
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: app-name
+spec:
+  interval: 15m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.5.0
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+```
+
+**HelmRepository (fallback when OCI not available):**
+```yaml
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: app-name
+spec:
+  interval: 1h
+  url: https://charts.example.com/
+```
+
+**HelmRelease references:**
+- OCIRepository: `chartRef: {kind: OCIRepository, name: app-name}`
+- HelmRepository: `chart: {spec: {chart: chart-name, sourceRef: {kind: HelmRepository, name: app-name}}}`
 
 4. **Create helmrelease.yaml** with standard fields:
 
@@ -252,15 +288,47 @@ route:
         namespace: network
 ```
 
+#### Configuration Patterns
+
+**ConfigMapGenerator (for files):**
+```yaml
+# app/kustomization.yaml
+configMapGenerator:
+  - name: app-configmap
+    files:
+      - config.yaml=./resources/config.yaml
+      - script.sh=./resources/script.sh
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+```
+
+**App-template configMaps (for inline config):**
+```yaml
+# In HelmRelease values:
+configMaps:
+  config:
+    data:
+      config.toml: |-
+        [section]
+        key = "value"
+persistence:
+  config-file:
+    type: configMap
+    identifier: config
+    globalMounts:
+      - path: /app/config.toml
+        subPath: config.toml
+```
+
 #### Security Patterns
 
 - **ExternalSecret**: Reference `onepassword` ClusterSecretStore
-- **Target secret**: Name as `app-secret`
-- **SOPS**: Use `.sops.yaml` suffix for encrypted configs
+- **Target secret**: Name as `app-name-secret`
+- **Always use template**: Makes value mapping clear
 
-**ExternalSecret patterns:**
-
-**Standard template pattern (always use this):**
+**ExternalSecret template pattern (always use this):**
 ```yaml
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
@@ -277,84 +345,16 @@ spec:
       data:
         DATABASE_URL: "postgres://{{ .DB_USER }}:{{ .DB_PASS }}@host:5432/db"
         API_KEY: "{{ .API_KEY }}"
-        CONFIG_FILE: |
-          server:
-            host: "{{ .HOST }}"
-            port: {{ .PORT }}
+        # Use YAML anchors for shared values
+        INIT_POSTGRES_HOST: &dbHost postgres-rw.storage.svc.cluster.local
+        INIT_POSTGRES_USER: &dbUser "{{ .DB_USER }}"
+        INIT_POSTGRES_PASS: &dbPass "{{ .DB_PASS }}"
+        INIT_POSTGRES_DBNAME: *dbName
   dataFrom:
     - extract:
         key: app-name
     - extract:
-        key: shared-db  # Multiple 1Password items if needed
-```
-
-**Simple single-item template:**
-```yaml
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: app-name
-spec:
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: onepassword
-  target:
-    name: app-name-secret
-    creationPolicy: Owner
-    template:
-      data:
-        API_KEY: "{{ .API_KEY }}"
-        DATABASE_PASSWORD: "{{ .DATABASE_PASSWORD }}"
-  dataFrom:
-    - extract:
-        key: app-name
-```
-
-**ExternalSecret patterns:**
-
-**Simple dataFrom (recommended):**
-```yaml
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: app-name
-spec:
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: onepassword
-  target:
-    name: app-name-secret
-    creationPolicy: Owner
-  dataFrom:
-    - extract:
-        key: app-name  # 1Password item name
-```
-
-**With template for complex configs:**
-```yaml
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: app-name
-spec:
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: onepassword
-  target:
-    name: app-name-secret
-    creationPolicy: Owner
-    template:
-      data:
-        DATABASE_URL: "postgres://{{ .DB_USER }}:{{ .DB_PASS }}@host:5432/db"
-        CONFIG_FILE: |
-          server:
-            host: "{{ .HOST }}"
-            port: {{ .PORT }}
-  dataFrom:
-    - extract:
-        key: app-name
-    - extract:
-        key: shared-db  # Multiple 1Password items
+        key: cloudnative-pg  # Shared database credentials
 ```
 
 ## Commands
