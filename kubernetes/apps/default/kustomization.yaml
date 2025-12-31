@@ -10,6 +10,7 @@ resources:
   - ./namespace.yaml
   - ./atuin/ks.yaml
   - ./audiobookshelf/ks.yaml
+  - ./authentik/ks.yaml
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
   - ./booklore/ks.yaml
@@ -28,7 +29,6 @@ resources:
   - ./norish/ks.yaml
   - ./obsidian-couchdb/ks.yaml
   - ./plex/ks.yaml
-  - ./pocket-id/ks.yaml
   - ./print/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml

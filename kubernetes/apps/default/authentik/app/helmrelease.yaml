@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: authentik
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: authentik
+  interval: 15m
+  values:
+    global:
+      podAnnotations:
+        secret.reloader.stakater.com/reload: authentik-secret
+      deploymentStrategy:
+        type: RollingUpdate
+    env:
+      - name: AUTHENTIK_POSTGRESQL__NAME
+        value: authentik
+      - name: AUTHENTIK_POSTGRESQL__HOST
+        value: postgres-rw.storage.svc.cluster.local
+      - name: AUTHENTIK_POSTGRESQL__USER
+        value: "{{ .AUTHENTIK_POSTGRES_USER }}"
+      - name: AUTHENTIK_POSTGRESQL__PASSWORD
+        value: "{{ .AUTHENTIK_POSTGRES_PASS }}"
+      - name: AUTHENTIK_POSTGRESQL__SSLMODE
+        value: disable
+    envFrom:
+      - secretRef:
+          name: authentik-secret
+    server:
+      autoscaling:
+        enabled: false
+      replicas: 1
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          memory: 512Mi
+      metrics:
+        prometheus:
+          serviceMonitor:
+            enabled: true
+    worker:
+      autoscaling:
+        enabled: false
+      replicas: 1
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          memory: 512Mi
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "id.goyangi.io"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
