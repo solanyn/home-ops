@@ -13,6 +13,8 @@ Read `.agents/*.md` for specific scenarios.
 - Use imperative tone: `Add provisioning flowchart`
 - Keep messages under 50 characters
 - Use conventional commits: `docs:`, `infra:`, `feat:`, `fix:`, `chore:`
+- **Never use `git add .`** - always specify exact files to stage
+- **Only commit and push when explicitly requested by user**
 - Include context when needed:
 
 ```
