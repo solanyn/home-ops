@@ -8,6 +8,9 @@ spec:
   targetNamespace: observability
   interval: 1h
   path: ./kubernetes/apps/observability/fluent-bit/app
+  postBuild:
+    substitute:
+      APP: fluent-bit
   prune: true
   sourceRef:
     kind: GitRepository
