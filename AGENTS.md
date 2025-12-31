@@ -11,11 +11,24 @@ Read `.agents/*.md` for specific scenarios.
 ## Commits
 
 - Use imperative tone: `Add provisioning flowchart`
-- Keep messages under 50 characters
-- Use conventional commits: `docs:`, `infra:`, `feat:`, `fix:`, `chore:`
+- Keep subject line under 50 characters
+- Use conventional commits with scope tags: `feat(k8s):`, `fix(cilium):`, `chore(norish):`, `docs(readme):`
 - **Never use `git add .`** - always specify exact files to stage
 - **Only commit and push when explicitly requested by user**
-- Include context when needed:
+- Add detailed context in commit body when needed:
+
+```
+feat(k8s): add ipv6 dual-stack
+
+- enable IPv6 networking with ULA addresses for pods and services
+- configure Cilium BGP advertisement for dual-stack routing
+```
+
+```
+fix(mlmd): configure mysql_native_password for ML Metadata
+
+Update authentication policy for MLMD compatibility.
+```
 
 ```
 infra: Configure mysql_native_password for ML Metadata
