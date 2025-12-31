@@ -11,23 +11,23 @@ spec:
         - action: replace
           targetLabel: job
           replacement: node-exporter
-  staticConfig:
+  selector: {}
+  namespaceSelector:
+    any: true
+---
+# For external targets, use VMStaticScrape instead
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMStaticScrape
+metadata:
+  name: nas-external-targets
+spec:
+  jobName: nas-exporters
+  targetEndpoints:
     - targets:
         - nas.internal:9100
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/operator.victoriametrics.com/vmservicescrape_v1beta1.json
-apiVersion: operator.victoriametrics.com/v1beta1
-kind: VMServiceScrape
-metadata:
-  name: nas-smartctl-exporter
-spec:
-  endpoints:
-    - port: "9633"
-      path: /metrics
-      relabelConfigs:
-        - action: replace
-          targetLabel: job
-          replacement: smartctl-exporter
-  staticConfig:
+      labels:
+        job: node-exporter
     - targets:
         - nas.internal:9633
+      labels:
+        job: smartctl-exporter
