@@ -12,21 +12,7 @@ spec:
   values:
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
-      route:
-        main:
-          enabled: true
-          hostnames:
-            - alertmanager.goyangi.io
-          parentRefs:
-            - name: envoy-internal
-              namespace: network
-              sectionName: https
-      alertmanagerSpec:
-        alertmanagerConfiguration:
-          name: alertmanager
-          global:
-            resolveTimeout: 5m
-        externalUrl: https://alertmanager.goyangi.io
+      enabled: false
         storage:
           volumeClaimTemplate:
             spec:
