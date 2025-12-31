@@ -6,8 +6,6 @@ metadata:
   name: alloy
 spec:
   targetNamespace: observability
-  dependsOn:
-    - name: victoria-logs
   interval: 1h
   path: ./kubernetes/apps/observability/alloy/app
   prune: true
