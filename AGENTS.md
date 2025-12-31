@@ -174,7 +174,7 @@ spec:
   targetNamespace: namespace     # Always first
   components:                    # Optional - before dependsOn
     - ../../../../components/volsync
-  dependsOn:                     # Dependencies
+  dependsOn:  # Dependencies
     - name: cloudnative-pg-cluster
       namespace: storage
   interval: 1h                   # Standard fields
@@ -195,6 +195,13 @@ spec:
 - **Database apps**: `cloudnative-pg-cluster` (namespace: storage)
 - **Storage apps**: `rook-ceph-cluster` (namespace: rook-ceph)
 - **AI apps**: May depend on model serving or gateway services
+
+**Always include namespace in dependsOn:**
+```yaml
+dependsOn:
+  - name: dependency-name
+    namespace: target-namespace
+```
 
 3. **Create app/kustomization.yaml**:
 
