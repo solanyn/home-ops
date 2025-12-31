@@ -8,7 +8,7 @@ spec:
   targetNamespace: ai
   dependsOn:
     - name: envoy-gateway
-      namespace: flux-system
+      namespace: network
   interval: 1h
   path: ./kubernetes/apps/ai/envoy-ai-gateway/crds
   prune: false
@@ -27,7 +27,7 @@ spec:
   targetNamespace: ai
   dependsOn:
     - name: envoy-gateway
-      namespace: flux-system
+      namespace: network
     - name: envoy-ai-gateway-crds
   interval: 1h
   path: ./kubernetes/apps/ai/envoy-ai-gateway/app
