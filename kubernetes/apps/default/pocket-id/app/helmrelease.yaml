@@ -13,6 +13,14 @@ spec:
       pocket-id:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
         containers:
           pocket-id:
             image:
@@ -20,7 +28,7 @@ spec:
               tag: v1.16.0-distroless@sha256:db061d34e1f6ff4aeb9b8a4a654fc95b820ad8be282c8bcf298eba8d8f0f0ecb
             env:
               APP_URL: https://id.goyangi.io
-              DB_CONNECTION_STRING: file:/data/pocket-id.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
+              DB_CONNECTION_STRING: postgres://{{ .POCKET_ID_DB_USER }}:{{ .POCKET_ID_DB_PASS }}@postgres-rw.storage.svc.cluster.local:5432/pocket_id?sslmode=disable
               EMAIL_ONE_TIME_ACCESS_AS_UNAUTHENTICATED_ENABLED: "false"
               FILE_BACKEND: s3
               KEYS_PATH: /data/keys
@@ -44,9 +52,7 @@ spec:
               SMTP_HOST: smtp-relay.network.svc.cluster.local
               SMTP_PORT: "25"
               SMTP_FROM: noreply@goyangi.io
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: true

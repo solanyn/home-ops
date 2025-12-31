@@ -26,6 +26,7 @@ spec:
     - name: victoria-metrics-crds
   interval: 1h
   path: ./kubernetes/apps/observability/victoria-metrics/app
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -43,6 +44,7 @@ spec:
     - name: victoria-metrics-operator
   interval: 1h
   path: ./kubernetes/apps/observability/victoria-metrics/metrics
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
