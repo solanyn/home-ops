@@ -4,7 +4,6 @@ kind: VMAlertmanager
 metadata:
   name: victoria-metrics
 spec:
-  serviceName: victoria-alertmanager
   externalURL: https://vmalertmanager.goyangi.io
   configSelector:
     matchLabels:
