@@ -7,8 +7,6 @@ metadata:
 spec:
   targetNamespace: kubeflow
   dependsOn:
-  - name: pocket-id
-    namespace: default
   - name: oauth2-proxy
     namespace: kubeflow
   - name: istiod

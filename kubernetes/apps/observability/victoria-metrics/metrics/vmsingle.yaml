@@ -4,7 +4,6 @@ kind: VMSingle
 metadata:
   name: victoria-metrics
 spec:
-  serviceName: victoria-metrics
   extraArgs:
     maxLabelsPerTimeseries: "40"
     opentelemetry.usePrometheusNaming: "true"

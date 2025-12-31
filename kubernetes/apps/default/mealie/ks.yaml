@@ -9,8 +9,6 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
-  - name: pocket-id
-    namespace: default
   - name: cloudnative-pg-cluster
     namespace: storage
   interval: 1h
