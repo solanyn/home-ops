@@ -13,11 +13,6 @@ spec:
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
       enabled: false
-        storage:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: ceph-block
-              resources:
                 requests:
                   storage: 1Gi
     kubeEtcd:

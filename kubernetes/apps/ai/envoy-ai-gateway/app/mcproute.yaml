@@ -25,8 +25,7 @@ spec:
       securityPolicy:
         apiKey:
           secretRef:
-            name: envoy-ai-gateway-secret
-            key: GITHUB_TOKEN
+            name: envoy-ai-gateway-github-mcp-secret
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: Backend
