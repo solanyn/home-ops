@@ -45,4 +45,4 @@ spec:
     type: loki
     name: victoria-logs
     access: proxy
-    url: http://victoria-logs.observability.svc.cluster.local:9428
+    url: http://vlsingle-victoria-logs.observability.svc.cluster.local:9428
