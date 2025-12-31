@@ -9,7 +9,7 @@ spec:
     key: MARIADB_ROOT_PASSWORD
   replicas: 1
   replication:
-    enabled: true
+    enabled: false
     primary:
       autoFailover: true
     replica:
