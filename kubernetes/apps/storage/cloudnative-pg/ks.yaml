@@ -45,6 +45,26 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: cloudnative-pg-certificates
+spec:
+  targetNamespace: cert-manager
+  dependsOn:
+  - name: cert-manager
+    namespace: cert-manager
+  - name: reflector
+    namespace: kube-system
+  interval: 1h
+  path: ./kubernetes/apps/storage/cloudnative-pg/certificates
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: cloudnative-pg-cluster
 spec:
   targetNamespace: storage
@@ -52,6 +72,8 @@ spec:
   - name: cloudnative-pg
     namespace: storage
   - name: cloudnative-pg-barman-cloud
+    namespace: storage
+  - name: cloudnative-pg-certificates
     namespace: storage
   - name: garage
     namespace: storage

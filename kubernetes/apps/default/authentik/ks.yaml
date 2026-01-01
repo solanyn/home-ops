@@ -6,11 +6,16 @@ metadata:
   name: authentik
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/database
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/authentik/app
+  postBuild:
+    substitute:
+      APP: authentik
   prune: true
   sourceRef:
     kind: GitRepository
