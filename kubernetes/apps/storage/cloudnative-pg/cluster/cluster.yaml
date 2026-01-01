@@ -34,7 +34,7 @@ spec:
       isWALArchiver: true
       parameters: &parameters
         barmanObjectName: garage
-        serverName: postgres18-v1
+        serverName: postgres17-v4
   bootstrap:
     recovery:
       source: source
