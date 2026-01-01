@@ -70,7 +70,7 @@ spec:
               - "[STATUS] == 401"
         hostnames:
           - "{{ .Release.Name }}.goyangi.io"
-          - obsidian.blkh.dev
+          - obsidian.goyangi.io
         parentRefs:
           - name: envoy-external
             namespace: network
