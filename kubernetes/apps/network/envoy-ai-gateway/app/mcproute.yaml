@@ -34,7 +34,7 @@ metadata:
 spec:
   endpoints:
     - fqdn:
-        hostname: flux-operator-mcp.ai.svc.cluster.local
+        hostname: flux-operator-mcp.network.svc.cluster.local
         port: 8080
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -44,7 +44,7 @@ metadata:
 spec:
   endpoints:
     - fqdn:
-        hostname: grafana-mcp.ai.svc.cluster.local
+        hostname: grafana-mcp.network.svc.cluster.local
         port: 8080
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1

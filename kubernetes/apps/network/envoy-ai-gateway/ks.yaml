@@ -5,12 +5,12 @@ kind: Kustomization
 metadata:
   name: envoy-ai-gateway-crds
 spec:
-  targetNamespace: ai
+  targetNamespace: network
   dependsOn:
     - name: envoy-gateway
       namespace: network
   interval: 1h
-  path: ./kubernetes/apps/ai/envoy-ai-gateway/crds
+  path: ./kubernetes/apps/network/envoy-ai-gateway/crds
   prune: false
   sourceRef:
     kind: GitRepository
@@ -24,13 +24,13 @@ kind: Kustomization
 metadata:
   name: envoy-ai-gateway
 spec:
-  targetNamespace: ai
+  targetNamespace: network
   dependsOn:
     - name: envoy-gateway
       namespace: network
     - name: envoy-ai-gateway-crds
   interval: 1h
-  path: ./kubernetes/apps/ai/envoy-ai-gateway/app
+  path: ./kubernetes/apps/network/envoy-ai-gateway/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -44,11 +44,11 @@ kind: Kustomization
 metadata:
   name: envoy-ai-gateway-backends
 spec:
-  targetNamespace: ai
+  targetNamespace: network
   dependsOn:
     - name: envoy-ai-gateway
   interval: 1h
-  path: ./kubernetes/apps/ai/envoy-ai-gateway/backends
+  path: ./kubernetes/apps/network/envoy-ai-gateway/backends
   postBuild:
     substituteFrom:
       - kind: Secret

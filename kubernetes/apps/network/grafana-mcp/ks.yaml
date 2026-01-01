@@ -5,8 +5,9 @@ kind: Kustomization
 metadata:
   name: grafana-mcp
 spec:
+  targetNamespace: network
   interval: 1h
-  path: ./kubernetes/apps/ai/grafana-mcp/app
+  path: ./kubernetes/apps/network/grafana-mcp/app
   postBuild:
     substitute:
       APP: grafana-mcp
@@ -15,5 +16,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: ai
   wait: false
