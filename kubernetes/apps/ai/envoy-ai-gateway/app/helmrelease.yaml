@@ -16,15 +16,16 @@ spec:
     # https://github.com/envoyproxy/ai-gateway/issues/1615
     extProc:
       image:
-        tag: latest
+        repository: mirror.gcr.io/envoyproxy/ai-gateway-extproc
+        tag: latest@sha256:94ca027cf238c8422b68aac7713e7a8ddaf49ac92ea6d90f1ab3a079b281035c
     controller:
       image:
-        tag: latest
+        repository: mirror.gcr.io/envoyproxy/ai-gateway-controller
+        tag: latest@sha256:fc5624b4cb13c12e34d3d5219aacc28fe004c577abbb57547dc3e6561325439a
       securityContext:
         allowPrivilegeEscalation: false
         capabilities:
           drop: ["ALL"]
         runAsNonRoot: true
-        runAsUser: 65532  # nonroot user ID
         seccompProfile:
           type: RuntimeDefault

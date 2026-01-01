@@ -19,6 +19,14 @@ spec:
       clustering:
         enabled: false
       
+      extraPorts:
+        - name: otlp
+          port: 4317
+          targetPort: 4317
+        - name: otlphttp
+          port: 4318
+          targetPort: 4318
+      
       mounts:
         dockercontainers: true
         varlog: true
@@ -28,6 +36,9 @@ spec:
       
     serviceAccount:
       create: true
+    
+    serviceMonitor:
+      enabled: true
     
     # Resources
     resources:
