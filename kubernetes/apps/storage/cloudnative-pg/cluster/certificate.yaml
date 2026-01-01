@@ -7,16 +7,13 @@ metadata:
 spec:
   isCA: true
   commonName: Postgres Server CA
-  dnsNames:
-    - postgres.svc
-    - postgres.svc.cluster.local
   usages: [cert sign, crl sign]
   duration: 87660h
   privateKey:
     algorithm: ECDSA
     size: 384
   issuerRef:
-    name: selfsigned
+    name: cluster-ca
     kind: ClusterIssuer
   secretName: *name
 ---
