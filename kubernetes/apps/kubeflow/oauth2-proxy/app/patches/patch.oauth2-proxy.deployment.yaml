@@ -16,7 +16,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: oauth2-proxy-secret
-                  key: KUBEFLOW_OIDC_CLIENT_SECRET
+                  key: KUBEFLOW_CLIENT_SECRET
             - name: OAUTH2_PROXY_COOKIE_SECRET
               valueFrom:
                 secretKeyRef:
