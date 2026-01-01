@@ -35,11 +35,12 @@ spec:
       parameters: &parameters
         barmanObjectName: garage
         serverName: postgres18-v1
-  # bootstrap:
-  #   recovery:
-  #     source: source
-  #     recoveryTarget:
-  #       targetTime: "2026-01-01 00:00:00.00000+00"
+  bootstrap:
+    recovery:
+      source: source
+      recoveryTarget:
+        targetTime: "2026-01-01 00:00:00.00000+00"
+        backupID: "postgres-20260101000000"
   externalClusters:
     - name: source
       plugin:
