@@ -15,12 +15,17 @@ spec:
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
+  certificates:
+    clientCASecret: postgres-client-ca
   postgresql:
     shared_preload_libraries:
       - "vchord.so"
     parameters:
       max_connections: "200"
       shared_buffers: 256MB
+    pg_hba:
+      - hostnossl all all 10.42.0.0/16 scram-sha-256
+      - hostssl all all all cert clientcert=verify-full
     extensions:
       - name: vchord
         image:
@@ -29,6 +34,12 @@ spec:
           - /usr/lib/postgresql/18/lib
         extension_control_path:
           - /usr/share/postgresql/18/
+  managed:
+    roles:
+      - name: authentik
+        ensure: present
+        login: true
+        disablePassword: true
   resources:
     requests:
       cpu: 10m
