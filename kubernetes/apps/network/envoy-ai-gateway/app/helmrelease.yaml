@@ -21,4 +21,4 @@ spec:
     controller:
       image:
         repository: mirror.gcr.io/envoyproxy/ai-gateway-controller
-        tag: latest@sha256:fc5624b4cb13c12e34d3d5219aacc28fe004c577abbb57547dc3e6561325439a
+        tag: latest@sha256:b87da222379f272d0940006bb68103d55c88188a863594c5ae830b1e27a4bb56
