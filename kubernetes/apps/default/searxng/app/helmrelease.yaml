@@ -78,19 +78,7 @@ spec:
             port: *port
     serviceMonitor:
       app:
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 30s
-            scrapeTimeout: 5s
-            basicAuth:
-              username:
-                name: searxng-secret
-                key: SEARXNG_OPEN_METRICS_USER
-              password:
-                name: searxng-secret
-                key: SEARXNG_OPEN_METRICS_SECRET
+        enabled: false
     route:
       app:
         hostnames:
@@ -102,8 +90,8 @@ spec:
             sectionName: https
     persistence:
       config:
-        type: configMap
-        name: searxng-configmap
+        type: secret
+        name: searxng-secret
         globalMounts:
           - path: /etc/searxng/settings.yml
             subPath: settings.yml
