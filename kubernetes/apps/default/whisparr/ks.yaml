@@ -6,8 +6,8 @@ metadata:
   name: whisparr
 spec:
   targetNamespace: default
-  components:
-    - ../../../../components/envoy-gateway-oidc
+  # components:
+  #   - ../../../../components/envoy-gateway-oidc
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage
