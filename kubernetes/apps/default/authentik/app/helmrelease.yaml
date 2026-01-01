@@ -19,6 +19,7 @@ spec:
         - name: postgres-cert
           secret:
             secretName: postgres-authentik-cert
+            defaultMode: 0600
         - name: postgres-ca
           secret:
             secretName: postgres-client-ca
