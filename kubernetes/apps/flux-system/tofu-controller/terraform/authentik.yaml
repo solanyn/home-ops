@@ -21,9 +21,11 @@ spec:
         skip_region_validation      = true
         use_path_style              = true
       }
-  backendConfigsFrom:
-    - kind: Secret
-      name: tofu-controller-secret
+  runnerPodTemplate:
+    spec:
+      envFrom:
+        - secretRef:
+            name: tofu-controller-secret
   path: ./terraform/authentik
   sourceRef:
     kind: GitRepository
