@@ -23,6 +23,8 @@ spec:
     alertmanager:
       spec:
         externalURL: https://vmalertmanager.goyangi.io
+        secrets:
+          - alertmanager-secret
         storage:
           volumeClaimTemplate:
             spec:
