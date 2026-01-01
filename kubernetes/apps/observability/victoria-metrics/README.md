@@ -1,6 +1,8 @@
-# kube-prometheus-stack
+# Victoria Metrics
 
 ## NAS Deployments
+
+Deploy these on TrueNAS using Docker Compose to scrape metrics from the NAS.
 
 ### node-exporter
 
@@ -40,3 +42,16 @@ services:
     restart: always
     user: root
 ```
+
+## Alertmanager
+
+Configured via `AlertmanagerConfig` (converted to VMAlertmanagerConfig by the operator).
+
+Receivers:
+- `heartbeat` - Pings healthchecks.io on Watchdog alerts
+- `pushover` - Sends critical alerts to Pushover
+- `blackhole` - Drops InfoInhibitor alerts
+
+Required 1Password items:
+- `alertmanager` with `ALERTMANAGER_HEARTBEAT_URL`
+- `pushover` with `ALERTMANAGER_PUSHOVER_TOKEN` and `PUSHOVER_USER_KEY`
