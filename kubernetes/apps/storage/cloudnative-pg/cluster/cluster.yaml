@@ -35,9 +35,9 @@ spec:
       parameters: &parameters
         barmanObjectName: garage
         serverName: postgres18-v1
-  bootstrap:
-    recovery:
-      source: source
+  # bootstrap:
+  #   recovery:
+  #     source: source
   externalClusters:
     - name: source
       plugin:
