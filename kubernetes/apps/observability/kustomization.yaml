@@ -12,7 +12,6 @@ resources:
   - ./blackbox-exporter/ks.yaml
   - ./fluent-bit/ks.yaml
   - ./gatus/ks.yaml
-  - ./grafana-mcp/ks.yaml
   - ./grafana/ks.yaml
   - ./keda/ks.yaml
   - ./kromgo/ks.yaml
