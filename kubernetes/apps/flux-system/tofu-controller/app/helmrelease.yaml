@@ -12,8 +12,8 @@ spec:
   values:
     runner:
       image:
-        repository: ghcr.io/flux-iac/opentofu-runner
-        tag: 1.11.1-base
+        repository: ghcr.io/home-operations/opentofu-runner
+        tag: 1.11.2@sha256:705e79da19aaa01483dead1a4841ff7fdbdffbc783879d0be97a7cb0063babc2
     metrics:
       enabled: true
       serviceMonitor:
