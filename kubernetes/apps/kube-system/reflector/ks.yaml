@@ -3,19 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: authentik
+  name: reflector
 spec:
-  targetNamespace: default
-  components:
-    - ../../../../components/database
-  dependsOn:
-    - name: cloudnative-pg-cluster
-      namespace: storage
+  targetNamespace: kube-system
   interval: 1h
-  path: ./kubernetes/apps/default/authentik/app
-  postBuild:
-    substitute:
-      APP: authentik
+  path: ./kubernetes/apps/kube-system/reflector/app
   prune: true
   sourceRef:
     kind: GitRepository

@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/generators.external-secrets.io/clustergenerator_v1alpha1.json
+apiVersion: generators.external-secrets.io/v1alpha1
+kind: ClusterGenerator
+metadata:
+  name: postgres-password
+spec:
+  kind: Password
+  generator:
+    passwordSpec:
+      length: 64
+      noUpper: false
+      allowRepeat: true
