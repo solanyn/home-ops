@@ -22,11 +22,3 @@ spec:
       image:
         repository: mirror.gcr.io/envoyproxy/ai-gateway-controller
         tag: latest@sha256:fc5624b4cb13c12e34d3d5219aacc28fe004c577abbb57547dc3e6561325439a
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop: ["ALL"]
-        runAsNonRoot: true
-        runAsUser: 65532
-        seccompProfile:
-          type: RuntimeDefault
