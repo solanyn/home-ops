@@ -22,10 +22,11 @@ spec:
   backendConfigsFrom:
     - kind: Secret
       name: tofu-controller-secret
-  path: ./garage
+  path: ./terraform/garage
   sourceRef:
-    kind: OCIRepository
-    name: terraform
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
   varsFrom:
     - kind: Secret
       name: tofu-controller-secret
