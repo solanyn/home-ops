@@ -37,8 +37,6 @@ spec:
         serverName: postgres18-v1
   bootstrap:
     recovery:
-  bootstrap:
-    recovery:
       source: source
   externalClusters:
     - name: source
