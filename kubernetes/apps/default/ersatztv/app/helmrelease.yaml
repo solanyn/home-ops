@@ -59,7 +59,9 @@ spec:
             port: 8409
     route:
       app:
-        hostnames: ["tv.goyangi.io"]
+        hostnames:
+          - tv.goyangi.io
+          - "{{ .Release.Name }}.goyangi.io"
         parentRefs:
           - name: envoy-internal
             namespace: network
