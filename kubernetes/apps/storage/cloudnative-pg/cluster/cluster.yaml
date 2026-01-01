@@ -38,6 +38,7 @@ spec:
   bootstrap:
     recovery:
       source: source
+      backupID: "postgres-20260101000000"
       recoveryTarget:
         targetImmediate: true
   externalClusters:
@@ -47,4 +48,3 @@ spec:
         parameters:
           barmanObjectName: garage
           serverName: postgres17-v4
-          backupID: "postgres-20260101000000"
