@@ -25,7 +25,7 @@ spec:
         containers:
           app:
             image:
-              repository: norishapp/norish
+              repository: mirror.gcr.io/norishapp/norish
               tag: latest
             env:
               TZ: Australia/Sydney
@@ -51,7 +51,7 @@ spec:
                 memory: 2Gi
           chrome:
             image:
-              repository: zenika/alpine-chrome
+              repository: mirror.gcr.io/zenika/alpine-chrome
               tag: latest
             args:
               - "--no-sandbox"
