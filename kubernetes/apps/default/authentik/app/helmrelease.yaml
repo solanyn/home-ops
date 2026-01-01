@@ -55,6 +55,7 @@ spec:
           enabled: true
           hostnames:
             - id.goyangi.io
+            - authentik.goyangi.io
           parentRefs:
             - name: envoy-internal
               namespace: network
