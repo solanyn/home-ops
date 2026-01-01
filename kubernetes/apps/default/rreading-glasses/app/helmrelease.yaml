@@ -24,7 +24,7 @@ spec:
         containers:
           app:
             image:
-              repository: blampe/rreading-glasses
+              repository: mirror.gcr.io/blampe/rreading-glasses
               tag: hardcover
             command: ["/main", "serve"]
             args:
