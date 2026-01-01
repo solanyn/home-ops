@@ -40,7 +40,7 @@ spec:
                 - Route
           service:
             fqdn:
-              hostname: ai-gateway-controller.ai.svc.cluster.local
+              hostname: ai-gateway-controller.network.svc.cluster.local
               port: 1063
         provider:
           type: Kubernetes

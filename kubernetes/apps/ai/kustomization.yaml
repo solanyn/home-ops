@@ -13,7 +13,4 @@ resources:
   - ./kiro-openai-gateway/ks.yaml
   - ./librechat/ks.yaml
   - ./meilisearch/ks.yaml
-  - ./envoy-ai-gateway/ks.yaml
   - ./claude-code-proxy/ks.yaml
-  - ./flux-operator-mcp/ks.yaml
-  - ./grafana-mcp/ks.yaml
