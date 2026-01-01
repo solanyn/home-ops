@@ -4,4 +4,7 @@ kind: Kustomization
 resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
-  - ./vmservicescrape.yaml
+  - ./externalsecret.yaml
+  - ./alertmanagerconfig.yaml
+  - ./scrapeconfig.yaml
+  - ./vlsingle.yaml

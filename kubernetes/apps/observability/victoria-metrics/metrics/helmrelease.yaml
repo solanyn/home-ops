@@ -13,13 +13,13 @@ spec:
     - name: victoria-metrics-operator
   values:
     nameOverride: victoria-metrics-k8s-stack
-    
+
     victoria-metrics-operator:
       enabled: false
-    
+
     grafana:
       enabled: false
-    
+
     alertmanager:
       spec:
         externalURL: https://vmalertmanager.goyangi.io
@@ -30,18 +30,18 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-    
+
     vmalert:
       spec:
         extraArgs:
           enableTCP6: "true"
         externalURL: https://vmalert.goyangi.io
-    
+
     vmagent:
       spec:
         extraArgs:
           enableTCP6: "true"
-    
+
     vmsingle:
       spec:
         extraArgs:
@@ -61,7 +61,7 @@ spec:
             cpu: 100m
           limits:
             memory: 2Gi
-    
+
     prometheus-node-exporter:
       fullnameOverride: node-exporter
       vmScrape:
@@ -78,7 +78,7 @@ spec:
                   replacement: $1
                   sourceLabels: ["__meta_kubernetes_pod_node_name"]
                   targetLabel: kubernetes_node
-    
+
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
       metricLabelsAllowlist:
@@ -100,7 +100,7 @@ spec:
                   replacement: $1
                   sourceLabels: ["__meta_kubernetes_pod_node_name"]
                   targetLabel: kubernetes_node
-    
+
     defaultDashboards:
       enabled: true
       grafanaOperator:
@@ -113,7 +113,7 @@ spec:
           dashboards:
             node-exporter-full:
               enabled: false
-    
+
     additionalVictoriaMetricsMap:
       dockerhub-rules:
         groups:
@@ -145,7 +145,7 @@ spec:
                 expr: node_zfs_zpool_state{state!="online"} > 0
                 labels:
                   severity: critical
-    
+
     kubeApiServer:
       enabled: true
     kubeControllerManager:
