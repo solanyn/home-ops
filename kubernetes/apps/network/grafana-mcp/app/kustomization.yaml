@@ -4,4 +4,4 @@ namespace: observability
 resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
-  - ./serviceaccount.yaml
+  - ./grafanaserviceaccount.yaml
