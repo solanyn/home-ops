@@ -6,7 +6,7 @@ metadata:
   name: grafana-mcp
 spec:
   interval: 1h
-  path: ./kubernetes/apps/observability/grafana-mcp/app
+  path: ./kubernetes/apps/ai/grafana-mcp/app
   postBuild:
     substitute:
       APP: grafana-mcp
@@ -15,5 +15,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: observability
+  targetNamespace: ai
   wait: false
