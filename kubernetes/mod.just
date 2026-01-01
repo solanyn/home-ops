@@ -109,3 +109,42 @@ view-secret namespace secret:
 [private]
 render-local-ks ns ks:
     flux-local build ks --namespace "{{ ns }}" --path "{{ kubernetes_dir }}/flux/cluster" "{{ ks }}"
+
+[doc('Add OIDC credentials to 1Password item (creates if missing)')]
+create-oidc app:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    app="{{ app }}"
+    prefix=$(echo "$app" | tr '[:lower:]-' '[:upper:]_')
+    secret=$(openssl rand -hex 32)
+    if op item get "$app" --vault kubernetes &>/dev/null; then
+        # Set placeholder password if empty (CLI requires it for PASSWORD category)
+        if [[ -z "$(op item get "$app" --vault kubernetes --fields password 2>/dev/null)" ]]; then
+            op item edit "$app" --vault kubernetes "password= " >/dev/null
+        fi
+        op item edit "$app" --vault kubernetes \
+            "${prefix}_CLIENT_ID[text]=$app" \
+            "${prefix}_CLIENT_SECRET[password]=$secret"
+        echo "Added OIDC fields to existing item '$app'"
+    else
+        op item create --vault kubernetes --category login \
+            --title "$app" \
+            "${prefix}_CLIENT_ID[text]=$app" \
+            "${prefix}_CLIENT_SECRET[password]=$secret"
+        echo "Created new item '$app' with OIDC fields"
+    fi
+
+[doc('Sync OIDC credentials from terraform.tfvars to 1Password')]
+sync-oidc:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    tfvars="{{ justfile_dir() }}/terraform/authentik/terraform.tfvars"
+    grep -E '^[[:space:]]+[a-z0-9-]+[[:space:]]*=' "$tfvars" | sed 's/[[:space:]]*=.*//' | tr -d ' ' | while read -r app; do
+        prefix=$(echo "$app" | tr '[:lower:]-' '[:upper:]_')
+        field="${prefix}_CLIENT_SECRET"
+        if op item get "$app" --vault kubernetes --fields "$field" &>/dev/null; then
+            echo "Skipping $app - OIDC already exists"
+        else
+            just kube create-oidc "$app"
+        fi
+    done
