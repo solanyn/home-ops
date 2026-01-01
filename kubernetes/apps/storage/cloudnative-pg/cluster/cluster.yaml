@@ -7,7 +7,7 @@ metadata:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
   instances: 1
-  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:18.1-1.0.0
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17.7-1.0.0
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
@@ -36,8 +36,6 @@ spec:
   bootstrap:
     recovery:
       source: source
-      recoveryTarget:
-        backupID: "20260101172855"
   externalClusters:
     - name: source
       plugin:
