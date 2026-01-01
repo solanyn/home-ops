@@ -12,7 +12,7 @@ spec:
     - name: ferretdb
       namespace: storage
     - name: meilisearch
-      namespace: storage
+      namespace: ai
   interval: 1h
   timeout: 5m
   path: ./kubernetes/apps/ai/librechat/app
