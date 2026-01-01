@@ -17,8 +17,8 @@ spec:
         containers:
           app:
             image:
-              repository: 21hsmw/flaresolverr
-              tag: nodriver
+              repository: ghcr.io/flaresolverr/flaresolverr
+              tag: v3.4.6@sha256:a75d2507439210138d997a072cf64b8dc02e207b2b4c378def0663cf8ba77880
             resources:
               requests:
                 cpu: 15m
