@@ -29,7 +29,6 @@ spec:
         http_listen 0.0.0.0
         http_port {{ .Values.metricsPort }}
         health_check on
-      
       inputs: |-
         [INPUT]
         name tail
@@ -39,7 +38,6 @@ spec:
         tag kubernetes.*
         skip_empty_lines on
         skip_long_lines on
-      
       filters: |-
         [FILTER]
         name kubernetes
@@ -50,28 +48,24 @@ spec:
         k8s-logging.exclude on
         namespace_labels off
         annotations off
-        
         [FILTER]
         name nest
         match kubernetes.*
         operation lift
         nested_under kubernetes
         add_prefix k_
-        
         [FILTER]
         name nest
         match kubernetes.*
         operation lift
         nested_under k_labels
         add_prefix k_labels_
-        
         [FILTER]
         name modify
         match kubernetes.*
         rename k_labels_app.kubernetes.io/name app
         rename k_labels_app app
         rename k_labels_k8s-app app
-      
       customParsers: |-
         [PARSER]
         name containerd
@@ -79,7 +73,6 @@ spec:
         regex ^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<log>.*)$
         time_key time
         time_format %Y-%m-%dT%H:%M:%S.%L%z
-      
       outputs: |-
         [OUTPUT]
         name http
