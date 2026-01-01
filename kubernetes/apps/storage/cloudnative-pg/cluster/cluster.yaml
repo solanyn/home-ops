@@ -38,9 +38,8 @@ spec:
   bootstrap:
     recovery:
       source: source
-      backupID: "postgres-20260101000000"
       recoveryTarget:
-        targetImmediate: true
+        targetTime: "2026-01-01T00:00:00Z"
   externalClusters:
     - name: source
       plugin:
