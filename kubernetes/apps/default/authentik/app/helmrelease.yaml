@@ -45,7 +45,7 @@ spec:
           cpu: 10m
           memory: 64Mi
         limits:
-          memory: 512Mi
+          memory: 1Gi
       metrics:
         prometheus:
           serviceMonitor:
@@ -72,4 +72,4 @@ spec:
           cpu: 10m
           memory: 64Mi
         limits:
-          memory: 512Mi
+          memory: 1Gi
