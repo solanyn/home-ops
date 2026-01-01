@@ -15,8 +15,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/grafana-mcp
-              tag: latest
+              repository: docker.io/mcp/grafana
+              tag: latest@sha256:bd85b2644ea409ce8222088a20fd01b132047f3dcb85240bbce2b2030872a4f7
             env:
               GRAFANA_URL: "http://grafana.observability.svc.cluster.local:3000"
             envFrom:
