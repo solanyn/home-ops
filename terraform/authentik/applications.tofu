@@ -1,24 +1,21 @@
-# Start with minimal applications - add more as needed
 locals {
-  oauth_apps = [
-    "Grafana",
+  apps = [
+    "grafana",
   ]
 
   default_property_mappings = data.authentik_property_mapping_provider_scope.oauth2.ids
 }
 
 module "onepassword_application" {
-  for_each = toset(local.oauth_apps)
+  for_each = toset(local.apps)
   source   = "github.com/joryirving/terraform-1password-item"
   vault    = "Kubernetes"
-  item     = lower(each.key)
+  item     = each.key
 }
 
 locals {
   applications = {
-    Grafana = {
-      client_id         = module.onepassword_application["Grafana"].fields["GRAFANA_CLIENT_ID"]
-      client_secret     = module.onepassword_application["Grafana"].fields["GRAFANA_CLIENT_SECRET"]
+    grafana = {
       group             = "monitoring"
       icon_url          = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/png/grafana.png"
       redirect_uri      = "https://grafana.${var.CLUSTER_DOMAIN}/login/generic_oauth"
@@ -31,8 +28,8 @@ locals {
 resource "authentik_provider_oauth2" "oauth2" {
   for_each              = local.applications
   name                  = each.key
-  client_id             = each.value.client_id
-  client_secret         = each.value.client_secret
+  client_id             = module.onepassword_application[each.key].fields["${upper(replace(each.key, "-", "_"))}_CLIENT_ID"]
+  client_secret         = module.onepassword_application[each.key].fields["${upper(replace(each.key, "-", "_"))}_CLIENT_SECRET"]
   authorization_flow    = authentik_flow.provider-authorization-implicit-consent.uuid
   authentication_flow   = authentik_flow.authentication.uuid
   invalidation_flow     = authentik_flow.invalidation.uuid
