@@ -24,7 +24,7 @@ spec:
             defaultMode: 0440
         - name: postgres-ca
           secret:
-            secretName: postgres-server-ca
+            secretName: cluster-ca
             defaultMode: 0440
       volumeMounts:
         - name: postgres-cert
