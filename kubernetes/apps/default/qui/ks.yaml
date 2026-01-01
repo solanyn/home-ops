@@ -7,11 +7,12 @@ metadata:
 spec:
   targetNamespace: default
   components:
+    - ../../../../components/envoy-gateway-oidc
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
-  - name: rook-ceph-cluster
-    namespace: rook-ceph
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/qui/app
   postBuild:
