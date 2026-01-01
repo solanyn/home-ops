@@ -21,10 +21,11 @@ spec:
         - name: postgres-cert
           secret:
             secretName: postgres-authentik-cert
-            defaultMode: 0640
+            defaultMode: 0440
         - name: postgres-ca
           secret:
-            secretName: postgres-client-ca
+            secretName: postgres-server-ca
+            defaultMode: 0440
       volumeMounts:
         - name: postgres-cert
           mountPath: /var/run/secrets/postgresql
