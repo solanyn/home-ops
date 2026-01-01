@@ -16,7 +16,7 @@ spec:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
   certificates:
-    serverCASecret: postgres-server-ca
+    serverCASecret: postgres-server-cert
     serverTLSSecret: postgres-server-cert
     clientCASecret: postgres-client-ca
     replicationTLSSecret: postgres-replication-cert
