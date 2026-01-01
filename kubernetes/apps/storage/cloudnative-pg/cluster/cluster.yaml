@@ -16,7 +16,10 @@ spec:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
   certificates:
+    serverCASecret: postgres-server-ca
+    serverTLSSecret: postgres-server-cert
     clientCASecret: postgres-client-ca
+    replicationTLSSecret: postgres-replication-cert
   postgresql:
     shared_preload_libraries:
       - "vchord.so"
