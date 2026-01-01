@@ -1,13 +1,7 @@
 locals {
   authentik_groups = {
-    downloads      = { name = "Downloads" }
-    games          = { name = "Games" }
-    grafana_admins = { name = "Grafana Admins" }
-    home           = { name = "Home" }
-    infrastructure = { name = "Infrastructure" }
-    media          = { name = "Media" }
-    monitoring     = { name = "Monitoring" }
-    users          = { name = "Users" }
+    admin = { name = "Admin" }
+    users = { name = "Users" }
   }
 }
 
@@ -33,7 +27,7 @@ resource "authentik_policy_binding" "application_policy_binding" {
 resource "authentik_user" "andrew" {
   username = "andrew"
   name     = "Andrew"
-  email    = "andrew@goyangi.io"
+  email    = "andrew@${var.CLUSTER_DOMAIN}"
   groups = concat(
     [data.authentik_group.admins.id],
     values(authentik_group.default)[*].id
