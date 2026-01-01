@@ -39,7 +39,8 @@ spec:
     recovery:
       source: source
       recoveryTarget:
-        targetTime: "2026-01-01T00:00:00Z"
+        backupID: "20251230T000005"
+        targetImmediate: true
   externalClusters:
     - name: source
       plugin:
