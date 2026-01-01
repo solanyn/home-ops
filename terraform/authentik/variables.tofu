@@ -1,17 +1,20 @@
-variable "OP_CONNECT_HOST" {
-  type        = string
-  description = "OnePassword Connect URL"
-}
-
 variable "OP_CONNECT_TOKEN" {
   type        = string
-  description = "OnePassword Connect token"
+  description = "OnePassword service account token"
   sensitive   = true
-  default     = null
 }
 
 variable "CLUSTER_DOMAIN" {
   type        = string
-  description = "Domain for Authentik"
+  description = "Cluster domain"
   default     = "goyangi.io"
+}
+
+variable "applications" {
+  type = map(object({
+    group        = string
+    icon         = string
+    redirect_uri = string
+  }))
+  description = "OIDC applications to create"
 }
