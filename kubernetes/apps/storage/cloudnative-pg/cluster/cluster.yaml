@@ -35,13 +35,15 @@ spec:
       parameters: &parameters
         barmanObjectName: garage
         serverName: postgres18-v1
-  # bootstrap:
-  #   recovery:
-  #     source: source
+  bootstrap:
+    recovery:
+      source: source
+      recoveryTarget:
+        targetTime: "2026-01-01 00:00:00.00000+00"
   externalClusters:
     - name: source
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
           barmanObjectName: garage
-          serverName: postgres17-v4
+          serverName: postgres-20251230000000
