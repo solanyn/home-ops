@@ -19,11 +19,9 @@ spec:
         skip_region_validation      = true
         use_path_style              = true
       }
-  runnerPodTemplate:
-    spec:
-      envFrom:
-        - secretRef:
-            name: tofu-controller-secret
+  backendConfigsFrom:
+    - kind: Secret
+      name: tofu-controller-backend-secret
   path: ./terraform/garage
   sourceRef:
     kind: GitRepository
