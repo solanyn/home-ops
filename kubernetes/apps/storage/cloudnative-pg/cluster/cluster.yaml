@@ -37,22 +37,6 @@ spec:
       memory: 4Gi
   monitoring:
     enablePodMonitor: true
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore:
-      wal:
-        retention: 5d
-      data:
-        retention: 30d
-      destinationPath: s3://cnpg
-      s3Credentials:
-        accessKeyId:
-          name: cloudnative-pg-secret
-          key: GARAGE_ROOT_USER
-        secretAccessKey:
-          name: cloudnative-pg-secret
-          key: GARAGE_ROOT_PASSWORD
-      endpointURL: http://garage.storage.svc.cluster.local:3900
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
