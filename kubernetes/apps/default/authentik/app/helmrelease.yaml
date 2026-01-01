@@ -15,24 +15,13 @@ spec:
         secret.reloader.stakater.com/reload: authentik-secret
       deploymentStrategy:
         type: RollingUpdate
-    env:
-      - name: AUTHENTIK_POSTGRESQL__NAME
-        value: authentik
-      - name: AUTHENTIK_POSTGRESQL__HOST
-        value: postgres-rw.storage.svc.cluster.local
-      - name: AUTHENTIK_POSTGRESQL__USER
-        value: "{{ .AUTHENTIK_POSTGRES_USER }}"
-      - name: AUTHENTIK_POSTGRESQL__PASSWORD
-        value: "{{ .AUTHENTIK_POSTGRES_PASS }}"
-      - name: AUTHENTIK_POSTGRESQL__SSLMODE
-        value: disable
-    envFrom:
-      - secretRef:
-          name: authentik-secret
     server:
       autoscaling:
         enabled: false
       replicas: 1
+      envFrom:
+        - secretRef:
+            name: authentik-secret
       resources:
         requests:
           cpu: 10m
@@ -47,6 +36,9 @@ spec:
       autoscaling:
         enabled: false
       replicas: 1
+      envFrom:
+        - secretRef:
+            name: authentik-secret
       resources:
         requests:
           cpu: 10m
