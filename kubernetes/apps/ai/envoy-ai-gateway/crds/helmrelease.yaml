@@ -5,7 +5,10 @@ kind: HelmRelease
 metadata:
   name: envoy-ai-gateway-crds
 spec:
-  chartRef:
-    kind: OCIRepository
-    name: envoy-ai-gateway-crds
+  chart:
+    spec:
+      chart: manifests/charts/ai-gateway-crds-helm
+      sourceRef:
+        kind: GitRepository
+        name: envoy-ai-gateway-crds
   interval: 1h
