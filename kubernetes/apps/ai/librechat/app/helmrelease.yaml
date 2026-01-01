@@ -14,14 +14,6 @@ spec:
       librechat:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18@sha256:866f15038ed5185a2b8118821f470bb7ca0df8c4231b8e277446e681ebb1ed84
-            envFrom:
-              - secretRef:
-                  name: librechat-secret
         containers:
           app:
             image:
@@ -38,8 +30,6 @@ spec:
               SEARCH: "true"
               MEILI_NO_ANALYTICS: "true"
               USE_REDIS: "true"
-              RAG_PORT: "8000"
-              RAG_API_URL: "http://localhost:8000"
               SEARXNG_INSTANCE_URL: "http://searxng.default.svc.cluster.local:8080"
               ALLOW_SOCIAL_LOGIN: "true"
               ALLOW_REGISTRATION: "false"
@@ -84,30 +74,6 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-          rag-api:
-            image:
-              repository: ghcr.io/danny-avila/librechat-rag-api-dev-lite
-              tag: v0.7.0@sha256:fca33ac6f20639642bb2f6c49f870de5434cbbf63539da6dd8852f3b204c54b5
-            env:
-              RAG_PORT: "8000"
-              EMBEDDINGS_PROVIDER: "openai"
-              EMBEDDINGS_MODEL: "text-embedding-004"
-              OPENAI_API_KEY: "dummy"
-              OPENAI_BASE_URL: "https://ai.goyangi.io/v1"
-              OPENAI_DEFAULT_HEADERS: '{"x-ai-eg-model": "text-embedding-004"}'
-            envFrom:
-              - secretRef:
-                  name: librechat-secret
-            resources:
-              requests:
-                cpu: 10m
-                memory: 128Mi
-              limits:
-                memory: 512Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -196,3 +162,17 @@ spec:
         globalMounts:
           - path: /app/librechat.yaml
             subPath: librechat.yaml
+      postgres-certs:
+        type: secret
+        name: postgres-librechat-cert
+        advancedMounts:
+          librechat:
+            rag-api:
+              - path: /var/run/secrets/postgresql
+      postgres-ca:
+        type: secret
+        name: postgres-server-cert
+        advancedMounts:
+          librechat:
+            rag-api:
+              - path: /var/run/secrets/root-ca
