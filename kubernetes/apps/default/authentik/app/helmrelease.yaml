@@ -15,11 +15,13 @@ spec:
         secret.reloader.stakater.com/reload: authentik-secret,postgres-authentik-cert
       deploymentStrategy:
         type: RollingUpdate
+      securityContext:
+        fsGroup: 1000
       volumes:
         - name: postgres-cert
           secret:
             secretName: postgres-authentik-cert
-            defaultMode: 0600
+            defaultMode: 0640
         - name: postgres-ca
           secret:
             secretName: postgres-client-ca
