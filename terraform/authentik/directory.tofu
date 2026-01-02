@@ -16,7 +16,7 @@ resource "authentik_group" "default" {
 }
 
 resource "authentik_policy_binding" "application_policy_binding" {
-  for_each = local.applications
+  for_each = var.applications
 
   target = authentik_application.application[each.key].uuid
   group  = authentik_group.default[each.value.group].id
