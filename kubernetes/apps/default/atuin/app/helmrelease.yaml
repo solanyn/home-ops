@@ -13,14 +13,6 @@ spec:
       atuin:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom: &envFrom
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -30,9 +22,13 @@ spec:
               ATUIN_HOST: 0.0.0.0
               ATUIN_PORT: &port 80
               ATUIN_OPEN_REGISTRATION: "true"
+              ATUIN_DB_URI:
+                valueFrom:
+                  secretKeyRef:
+                    name: atuin-postgres
+                    key: atuin_POSTGRES_URL
               RUST_LOG: debug
               TZ: Australia/Sydney
-            envFrom: *envFrom
             command: ["atuin", "server", "start"]
             probes:
               liveness: &probes
@@ -81,3 +77,13 @@ spec:
     persistence:
       config:
         type: emptyDir
+      postgres-certs:
+        type: secret
+        name: postgres-atuin-cert
+        globalMounts:
+          - path: /var/run/secrets/postgresql
+      postgres-ca:
+        type: secret
+        name: postgres-server-ca
+        globalMounts:
+          - path: /var/run/secrets/root-ca
