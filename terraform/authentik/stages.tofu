@@ -60,7 +60,7 @@ resource "authentik_stage_prompt" "source-enrollment-prompt" {
 resource "authentik_stage_authenticator_webauthn" "enrollment-passkey-setup" {
   name                        = "enrollment-passkey-setup"
   user_verification           = "required"
-  authenticator_attachment    = "any"
+  authenticator_attachment    = "cross-platform"
   resident_key_requirement    = "required"
 }
 
