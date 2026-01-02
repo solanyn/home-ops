@@ -324,7 +324,17 @@ spec:
 
 Uses the `database` component which creates a CNPG Database CRD, client certificate and connection secret.
 
-1. Add component to ks.yaml:
+1. Add managed role to CNPG cluster (`kubernetes/apps/storage/cloudnative-pg/cluster/cluster.yaml`):
+```yaml
+managed:
+  roles:
+    - name: myapp
+      ensure: present
+      login: true
+      disablePassword: true  # For cert auth
+```
+
+2. Add component to ks.yaml:
 ```yaml
 spec:
   targetNamespace: default
@@ -338,7 +348,7 @@ spec:
       APP: myapp
 ```
 
-2. Mount certs and use connection secret in helmrelease.yaml:
+3. Mount certs and use connection secret in helmrelease.yaml:
 ```yaml
 values:
   controllers:
