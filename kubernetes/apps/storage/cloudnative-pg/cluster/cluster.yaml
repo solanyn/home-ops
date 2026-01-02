@@ -38,8 +38,18 @@ spec:
         extension_control_path:
           - /usr/share/postgresql/18/
   managed:
+    # TODO: Database CRD should create roles automatically
+    # https://github.com/cloudnative-pg/cloudnative-pg/issues/5341
     roles:
       - name: authentik
+        ensure: present
+        login: true
+        disablePassword: true
+      - name: atuin
+        ensure: present
+        login: true
+        disablePassword: true
+      - name: norish
         ensure: present
         login: true
         disablePassword: true
