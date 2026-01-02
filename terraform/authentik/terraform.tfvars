@@ -8,7 +8,13 @@ applications = {
   librechat      = { group = "users", icon = "librechat", redirect_uri = "/oauth/openid/callback" }
   mealie         = { group = "users", icon = "mealie", redirect_uri = "/login" }
   norish         = { group = "users", icon = "norish", redirect_uri = "/oauth/callback" }
+  prowlarr       = { group = "users", icon = "prowlarr", redirect_uri = "/oauth2/callback" }
+  qui            = { group = "users", icon = "qui", redirect_uri = "/oauth2/callback" }
+  radarr         = { group = "users", icon = "radarr", redirect_uri = "/oauth2/callback" }
   romm           = { group = "users", icon = "romm", redirect_uri = "/api/oauth/openid" }
   sftpgo         = { group = "users", icon = "sftpgo", redirect_uri = "/web/oidc/callback" }
+  sonarr         = { group = "users", icon = "sonarr", redirect_uri = "/oauth2/callback" }
+  stash          = { group = "users", icon = "stash", redirect_uri = "/oauth2/callback" }
   trino          = { group = "admin", icon = "trino", redirect_uri = "/oauth2/callback" }
+  whisparr       = { group = "users", icon = "whisparr", redirect_uri = "/oauth2/callback" }
 }
