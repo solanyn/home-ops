@@ -122,13 +122,13 @@ create-oidc app:
             op item edit "$app" --vault kubernetes "password= " >/dev/null
         fi
         op item edit "$app" --vault kubernetes \
-            "client-secret[password]=$secret"
-        echo "Added OIDC fields to existing item '$app'"
+            "client-secret[password]=$secret" >/dev/null
+        echo "Added client-secret field to '$app'"
     else
         op item create --vault kubernetes --category login \
             --title "$app" \
-            "client-secret[password]=$secret"
-        echo "Created new item '$app' with OIDC fields"
+            "client-secret[password]=$secret" >/dev/null
+        echo "Created '$app' with client-secret field"
     fi
 
 [doc('Sync OIDC credentials from terraform.tfvars to 1Password')]
@@ -136,12 +136,12 @@ sync-oidc:
     #!/usr/bin/env bash
     set -euo pipefail
     tfvars="{{ justfile_dir() }}/terraform/authentik/terraform.tfvars"
-    grep -E '^[[:space:]]+[a-z0-9-]+[[:space:]]*=' "$tfvars" | sed 's/[[:space:]]*=.*//' | tr -d ' ' | while read -r app; do
-        prefix=$(echo "$app" | tr '[:lower:]-' '[:upper:]_')
-        field="${prefix}_CLIENT_SECRET"
-        if op item get "$app" --vault kubernetes --fields "$field" &>/dev/null; then
-            echo "Skipping $app - OIDC already exists"
+    apps=$(awk '/^[[:space:]]+[a-z0-9-]+[[:space:]]*=/ {print $1}' "$tfvars")
+    for app in $apps; do
+        if op item get "$app" --vault kubernetes --fields "client-secret" &>/dev/null; then
+            echo "Skipping $app - client-secret exists"
         else
-            just kube create-oidc "$app"
+            just kube create-oidc "$app" &
         fi
     done
+    wait
