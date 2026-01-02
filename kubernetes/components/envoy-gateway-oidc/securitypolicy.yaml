@@ -13,7 +13,7 @@ spec:
       issuer: https://id.goyangi.io
     clientID: ${APP}
     clientSecret:
-      name: "${APP}-secret"
+      name: "${APP}-oidc-secret"
     refreshToken: true
     redirectURL: "https://${APP_SUBDOMAIN:-${APP}}.goyangi.io/oauth2/callback"
     logoutPath: "${LOGOUT_PATH:-/logout}"
