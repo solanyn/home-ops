@@ -2,19 +2,17 @@ locals {
   default_property_mappings = data.authentik_property_mapping_provider_scope.oauth2.ids
 }
 
-data "onepassword_item" "app" {
+module "onepassword_application" {
   for_each = var.applications
+  source   = "github.com/joryirving/terraform-1password-item"
   vault    = "kubernetes"
-  title    = each.key
+  item     = each.key
 }
 
 locals {
   app_credentials = {
     for k, v in var.applications : k => {
-      client_secret = one([
-        for f in data.onepassword_item.app[k].field : f.value
-        if f.label == "${upper(replace(k, "-", "_"))}_CLIENT_SECRET"
-      ])
+      client_secret = module.onepassword_application[k].fields["${upper(replace(k, "-", "_"))}_CLIENT_SECRET"]
     }
   }
 }

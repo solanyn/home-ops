@@ -16,12 +16,13 @@ provider "onepassword" {
   connect_token = var.OP_CONNECT_TOKEN
 }
 
-data "onepassword_item" "authentik" {
-  vault = "kubernetes"
-  title = "authentik"
+module "onepassword_authentik" {
+  source = "github.com/joryirving/terraform-1password-item"
+  vault  = "kubernetes"
+  item   = "authentik"
 }
 
 provider "authentik" {
   url   = "https://id.${var.CLUSTER_DOMAIN}"
-  token = data.onepassword_item.authentik.password
+  token = module.onepassword_authentik.fields["AUTHENTIK_TOKEN"]
 }
