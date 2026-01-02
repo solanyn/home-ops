@@ -12,13 +12,6 @@ spec:
     controllers:
       lakekeeper:
         initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom: &envFrom
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
           migrate:
             image: &image
               repository: quay.io/lakekeeper/catalog

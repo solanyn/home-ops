@@ -23,13 +23,6 @@ spec:
             securityContext:
               runAsNonRoot: false
               runAsUser: 0
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom: &envFrom
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -44,7 +37,9 @@ spec:
               LIDARR__LOG__LEVEL: info
               LIDARR__SERVER__PORT: &port 80
               TZ: Australia/Sydney
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness:
                 enabled: true

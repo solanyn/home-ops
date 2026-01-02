@@ -14,15 +14,6 @@ spec:
       immich:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18.1@sha256:866f15038ed5185a2b8118821f470bb7ca0df8c4231b8e277446e681ebb1ed84
-              pullPolicy: IfNotPresent
-            envFrom: &envFrom
-              - secretRef:
-                  name: immich-secret
         containers:
           app:
             image:
@@ -33,7 +24,9 @@ spec:
               IMMICH_TRUSTED_PROXIES: "192.168.0.0/16"
               IMMICH_MEDIA_LOCATION: &media /library
               REDIS_HOSTNAME: &redis redis.storage.svc.cluster.local
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: immich-secret
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

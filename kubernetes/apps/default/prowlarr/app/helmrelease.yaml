@@ -13,14 +13,6 @@ spec:
       prowlarr:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom: &envFrom
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -36,7 +28,9 @@ spec:
               PROWLARR__SERVER__PORT: &port 80
               PROWLARR__UPDATE__BRANCH: develop
               TZ: "Australia/Sydney"
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true

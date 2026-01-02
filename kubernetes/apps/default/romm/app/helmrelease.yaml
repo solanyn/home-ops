@@ -13,14 +13,6 @@ spec:
       romm:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom: &envFrom
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -35,7 +27,9 @@ spec:
               ROMM_BASE_URL: https://romm.goyangi.io
               DISABLE_DOWNLOAD_ENDPOINT_AUTH: true
               TZ: Australia/Sydney
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: false

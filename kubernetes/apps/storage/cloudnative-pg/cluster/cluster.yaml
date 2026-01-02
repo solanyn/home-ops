@@ -52,6 +52,48 @@ spec:
       - name: mealie
         ensure: present
         login: true
+      - name: immich
+        ensure: present
+        login: true
+      - name: mlflow
+        ensure: present
+        login: true
+      - name: prowlarr
+        ensure: present
+        login: true
+      - name: radarr
+        ensure: present
+        login: true
+      - name: autobrr
+        ensure: present
+        login: true
+      - name: label-studio
+        ensure: present
+        login: true
+      - name: romm
+        ensure: present
+        login: true
+      - name: readarr
+        ensure: present
+        login: true
+      - name: lidarr
+        ensure: present
+        login: true
+      - name: seerr
+        ensure: present
+        login: true
+      - name: whisparr
+        ensure: present
+        login: true
+      - name: sonarr
+        ensure: present
+        login: true
+      - name: rreading-glasses
+        ensure: present
+        login: true
+      - name: lakekeeper
+        ensure: present
+        login: true
   resources:
     requests:
       cpu: 10m
