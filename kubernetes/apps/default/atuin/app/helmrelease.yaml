@@ -84,6 +84,6 @@ spec:
           - path: /var/run/secrets/postgresql
       postgres-ca:
         type: secret
-        name: postgres-client-ca
+        name: cluster-ca
         globalMounts:
           - path: /var/run/secrets/root-ca
