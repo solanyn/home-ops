@@ -13,14 +13,6 @@ spec:
       rreading-glasses:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom: &envFrom
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -30,12 +22,16 @@ spec:
             args:
               - --verbose
               - --port=80
-              - --postgres-host=$(INIT_POSTGRES_HOST)
-              - --postgres-user=$(INIT_POSTGRES_USER)
-              - --postgres-password=$(INIT_POSTGRES_PASS)
-              - --postgres-database=$(INIT_POSTGRES_DBNAME)
+              - --postgres-host=$(POSTGRES_HOST)
+              - --postgres-user=$(POSTGRES_USER)
+              - --postgres-password=$(POSTGRES_PASSWORD)
+              - --postgres-database=$(POSTGRES_DATABASE)
               - --hardcover-auth=$(HARDCOVER_API_KEY)
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+              - secretRef:
+                  name: "{{ .Release.Name }}-database"
             probes:
               # TODO: application is very alpha, enable when a real health route is exposed
               liveness: &probes

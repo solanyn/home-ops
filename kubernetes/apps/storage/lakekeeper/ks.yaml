@@ -6,6 +6,8 @@ metadata:
   name: lakekeeper
 spec:
   targetNamespace: storage
+  components:
+    - ../../../../components/database
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage
