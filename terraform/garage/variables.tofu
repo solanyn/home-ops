@@ -12,5 +12,5 @@ variable "GARAGE_ADMIN_TOKEN" {
 variable "GARAGE_ADMIN_URL" {
   type        = string
   description = "Garage admin API URL"
-  default     = "s3.goyangi.io"
+  default     = "garage.storage.svc.cluster.local:3903"
 }
