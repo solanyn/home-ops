@@ -88,3 +88,13 @@ spec:
                 subPath: logs
               - path: /tmp
                 subPath: tmp
+      postgres-certs:
+        type: secret
+        name: postgres-seerr-cert
+        globalMounts:
+          - path: /var/run/secrets/postgresql
+      postgres-ca:
+        type: secret
+        name: cluster-ca
+        globalMounts:
+          - path: /var/run/secrets/root-ca

@@ -9,12 +9,15 @@ spec:
   components:
     - ../../../../components/database
   dependsOn:
-  - name: cloudnative-pg-cluster
-    namespace: storage
-  - name: garage
-    namespace: storage
+    - name: cloudnative-pg-cluster
+      namespace: storage
+    - name: garage
+      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/label-studio/app
+  postBuild:
+    substitute:
+      APP: label-studio
   prune: false
   sourceRef:
     kind: GitRepository
