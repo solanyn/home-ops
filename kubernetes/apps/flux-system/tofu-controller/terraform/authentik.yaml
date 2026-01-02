@@ -4,8 +4,6 @@ kind: Terraform
 metadata:
   name: authentik
 spec:
-  dependsOn:
-    - name: garage
   interval: 1h
   approvePlan: auto
   backendConfig:
@@ -20,6 +18,7 @@ spec:
         skip_metadata_api_check     = true
         skip_region_validation      = true
         use_path_style              = true
+        use_lockfile                = true
       }
   backendConfigsFrom:
     - kind: Secret
