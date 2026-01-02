@@ -36,7 +36,7 @@ spec:
               OPENID_ISSUER: "https://id.goyangi.io"
               OPENID_CALLBACK_URL: "/oauth/openid/callback"
               OPENID_SCOPE: "openid profile email"
-              OPENID_BUTTON_LABEL: "Log in with Pocket-ID"
+              OPENID_BUTTON_LABEL: "Log in with Authentik"
               OPENID_USE_END_SESSION_ENDPOINT: "true"
               MCP_ENABLED: "true"
               MCP_CONFIG: |
