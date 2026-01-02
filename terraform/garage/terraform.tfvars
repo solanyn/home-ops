@@ -1,13 +1,13 @@
 buckets = [
-  "cloudnative-pg",
-  "dragonflydb",
-  "gitlab",
-  "kfp-pipelines",
-  "kubeflow",
+  "open-webui",
+  "mlflow", 
   "label-studio",
-  "mariadb",
-  "mlflow",
-  "tempo-traces",
-  "terraform-state",
+  "cloudnative-pg",
+  "pxc",
+  "kubeflow",
   "trino",
+  "kfp-pipelines",
+  "dragonflydb",
+  "mariadb",
+  "ferretdb"
 ]
