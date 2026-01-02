@@ -6,7 +6,7 @@ metadata:
   name: postgres-${APP}
   namespace: storage
 spec:
-  name: ${APP}
-  owner: ${APP}
+  name: ${DATABASE_NAME:=${APP}}
+  owner: ${DATABASE_OWNER:=${APP}}
   cluster:
     name: postgres
