@@ -8,7 +8,6 @@ terraform {
 }
 
 provider "garage" {
-  host       = "http://${var.GARAGE_URL}"
-  access_key = var.AWS_ACCESS_KEY_ID
-  secret_key = var.AWS_SECRET_ACCESS_KEY
+  host  = var.GARAGE_ADMIN_URL
+  token = var.GARAGE_ADMIN_TOKEN
 }
