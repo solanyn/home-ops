@@ -9,16 +9,11 @@ data "onepassword_item" "app" {
 }
 
 locals {
-  # Extract OIDC credentials from 1Password items
   app_credentials = {
     for k, v in var.applications : k => {
-      client_id = one([
-        for f in data.onepassword_item.app[k].field : f.value
-        if f.label == "${upper(replace(k, "-", "_"))}_CLIENT_ID"
-      ])
       client_secret = one([
         for f in data.onepassword_item.app[k].field : f.value
-        if f.label == "${upper(replace(k, "-", "_"))}_CLIENT_SECRET"
+        if f.label == "client-secret"
       ])
     }
   }
@@ -27,7 +22,7 @@ locals {
 resource "authentik_provider_oauth2" "oauth2" {
   for_each              = var.applications
   name                  = each.key
-  client_id             = local.app_credentials[each.key].client_id
+  client_id             = each.key
   client_secret         = local.app_credentials[each.key].client_secret
   authorization_flow    = authentik_flow.provider-authorization-implicit-consent.uuid
   authentication_flow   = authentik_flow.authentication.uuid

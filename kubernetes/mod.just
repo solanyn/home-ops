@@ -115,7 +115,6 @@ create-oidc app:
     #!/usr/bin/env bash
     set -euo pipefail
     app="{{ app }}"
-    prefix=$(echo "$app" | tr '[:lower:]-' '[:upper:]_')
     secret=$(openssl rand -hex 32)
     if op item get "$app" --vault kubernetes &>/dev/null; then
         # Set placeholder password if empty (CLI requires it for PASSWORD category)
@@ -123,14 +122,12 @@ create-oidc app:
             op item edit "$app" --vault kubernetes "password= " >/dev/null
         fi
         op item edit "$app" --vault kubernetes \
-            "${prefix}_CLIENT_ID[text]=$app" \
-            "${prefix}_CLIENT_SECRET[password]=$secret"
+            "client-secret[password]=$secret"
         echo "Added OIDC fields to existing item '$app'"
     else
         op item create --vault kubernetes --category login \
             --title "$app" \
-            "${prefix}_CLIENT_ID[text]=$app" \
-            "${prefix}_CLIENT_SECRET[password]=$secret"
+            "client-secret[password]=$secret"
         echo "Created new item '$app' with OIDC fields"
     fi
 

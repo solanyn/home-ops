@@ -11,10 +11,9 @@ spec:
   oidc:
     provider:
       issuer: https://id.goyangi.io
-    clientIDRef:
-      name: "${APP}-oidc"
+    clientID: ${APP}
     clientSecret:
-      name: "${APP}-oidc"
+      name: "${APP}-secret"
     refreshToken: true
     redirectURL: "https://${APP_SUBDOMAIN:-${APP}}.goyangi.io/oauth2/callback"
     logoutPath: "${LOGOUT_PATH:-/logout}"
