@@ -12,5 +12,5 @@ variable "GARAGE_ADMIN_TOKEN" {
 variable "GARAGE_ADMIN_URL" {
   type        = string
   description = "Garage admin API URL"
-  default     = "admin.garage.goyangi.io"
+  default     = "garage-admin.goyangi.io"
 }
