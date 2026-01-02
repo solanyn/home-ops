@@ -52,12 +52,15 @@ spec:
       - name: mealie
         ensure: present
         login: true
+        disablePassword: true
       - name: immich
         ensure: present
         login: true
+        disablePassword: true
       - name: mlflow
         ensure: present
         login: true
+        disablePassword: true
       - name: prowlarr
         ensure: present
         login: true
@@ -67,33 +70,31 @@ spec:
       - name: autobrr
         ensure: present
         login: true
+        disablePassword: true
       - name: label-studio
         ensure: present
         login: true
       - name: romm
         ensure: present
         login: true
-      - name: readarr
-        ensure: present
-        login: true
+        disablePassword: true
       - name: lidarr
         ensure: present
         login: true
       - name: seerr
         ensure: present
         login: true
+        disablePassword: true
       - name: whisparr
         ensure: present
         login: true
       - name: sonarr
         ensure: present
         login: true
-      - name: rreading-glasses
-        ensure: present
-        login: true
       - name: lakekeeper
         ensure: present
         login: true
+        disablePassword: true
   resources:
     requests:
       cpu: 10m
