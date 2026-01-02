@@ -115,6 +115,7 @@ create-oidc app:
     #!/usr/bin/env bash
     set -euo pipefail
     app="{{ app }}"
+    prefix=$(echo "$app" | tr '[:lower:]-' '[:upper:]_')
     secret=$(openssl rand -hex 32)
     if op item get "$app" --vault kubernetes &>/dev/null; then
         # Set placeholder password if empty (CLI requires it for PASSWORD category)
@@ -122,13 +123,13 @@ create-oidc app:
             op item edit "$app" --vault kubernetes "password= " >/dev/null
         fi
         op item edit "$app" --vault kubernetes \
-            "client-secret[password]=$secret" >/dev/null
-        echo "Added client-secret field to '$app'"
+            "${prefix}_CLIENT_SECRET[password]=$secret" >/dev/null
+        echo "Added ${prefix}_CLIENT_SECRET to '$app'"
     else
         op item create --vault kubernetes --category login \
             --title "$app" \
-            "client-secret[password]=$secret" >/dev/null
-        echo "Created '$app' with client-secret field"
+            "${prefix}_CLIENT_SECRET[password]=$secret" >/dev/null
+        echo "Created '$app' with ${prefix}_CLIENT_SECRET"
     fi
 
 [doc('Sync OIDC credentials from terraform.tfvars to 1Password')]
@@ -138,8 +139,9 @@ sync-oidc:
     tfvars="{{ justfile_dir() }}/terraform/authentik/terraform.tfvars"
     apps=$(awk '/^[[:space:]]+[a-z0-9-]+[[:space:]]*=/ {print $1}' "$tfvars")
     for app in $apps; do
-        if op item get "$app" --vault kubernetes --fields "client-secret" &>/dev/null; then
-            echo "Skipping $app - client-secret exists"
+        prefix=$(echo "$app" | tr '[:lower:]-' '[:upper:]_')
+        if op item get "$app" --vault kubernetes --fields "${prefix}_CLIENT_SECRET" &>/dev/null; then
+            echo "Skipping $app - ${prefix}_CLIENT_SECRET exists"
         else
             just kube create-oidc "$app" &
         fi

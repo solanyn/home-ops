@@ -13,7 +13,7 @@ locals {
     for k, v in var.applications : k => {
       client_secret = one([
         for f in data.onepassword_item.app[k].field : f.value
-        if f.label == "client-secret"
+        if f.label == "${upper(replace(k, "-", "_"))}_CLIENT_SECRET"
       ])
     }
   }
