@@ -320,7 +320,58 @@ spec:
 - **Helm charts**: Review `values.yaml` in chart repository for available options
 - **Official docs**: Always check application's official documentation for configuration options
 
-**Database apps with init containers:**
+**Database apps with CNPG managed roles (preferred):**
+
+Uses the `database` component which creates a CNPG Database CRD, client certificate and connection secret.
+
+1. Add component to ks.yaml:
+```yaml
+spec:
+  targetNamespace: default
+  components:
+    - ../../../../components/database
+  dependsOn:
+    - name: cloudnative-pg-cluster
+      namespace: storage
+  postBuild:
+    substitute:
+      APP: myapp
+```
+
+2. Mount certs and use connection secret in helmrelease.yaml:
+```yaml
+values:
+  controllers:
+    myapp:
+      containers:
+        app:
+          env:
+            DATABASE_URL:
+              valueFrom:
+                secretKeyRef:
+                  name: myapp-postgres
+                  key: myapp_POSTGRES_URL
+  persistence:
+    postgres-certs:
+      type: secret
+      name: postgres-myapp-cert
+      globalMounts:
+        - path: /var/run/secrets/postgresql
+    postgres-ca:
+      type: secret
+      name: cluster-ca
+      globalMounts:
+        - path: /var/run/secrets/root-ca
+```
+
+The component creates:
+- `postgres-myapp-cert` - Client certificate for mTLS auth
+- `myapp-postgres` - Secret with connection details including `myapp_POSTGRES_URL`
+- CNPG Database CRD - Creates database and role in postgres cluster
+
+Connection URL format: `postgresql://myapp@postgres-rw.storage.svc.cluster.local:5432/myapp?sslmode=verify-full&sslcert=/var/run/secrets/postgresql/tls.crt&sslkey=/var/run/secrets/postgresql/tls.key&sslrootcert=/var/run/secrets/root-ca/ca.crt`
+
+**Database apps with init containers (legacy):**
 ```yaml
 values:
   controllers:
