@@ -53,11 +53,6 @@ import {
   id = "5bd077e98671c4b0"
 }
 
-import {
-  to = garage_bucket.bucket["terraform-state"]
-  id = "67f971eb711750ed"
-}
-
 resource "garage_bucket" "bucket" {
   for_each     = toset(var.buckets)
   global_alias = each.key
