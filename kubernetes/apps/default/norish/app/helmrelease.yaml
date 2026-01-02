@@ -14,14 +14,6 @@ spec:
       norish:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom: &envFrom
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -29,7 +21,14 @@ spec:
               tag: latest
             env:
               TZ: Australia/Sydney
-            envFrom: *envFrom
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: norish-postgres
+                    key: norish_POSTGRES_URL
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
@@ -96,3 +95,13 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /app/uploads
+      postgres-certs:
+        type: secret
+        name: postgres-norish-cert
+        globalMounts:
+          - path: /var/run/secrets/postgresql
+      postgres-ca:
+        type: secret
+        name: cluster-ca
+        globalMounts:
+          - path: /var/run/secrets/root-ca
