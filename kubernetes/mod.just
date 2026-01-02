@@ -102,6 +102,12 @@ sync-oci:
         kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite ocirepo "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
     done
 
+[doc('Sync Terraform resources')]
+terraform:
+    kubectl get terraform --no-headers -A | while read -r ns name _; do \
+        kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite terraform "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"; \
+    done
+
 [doc('View a secret')]
 view-secret namespace secret:
     kubectl view-secret -n {{ namespace }} {{ secret }}
