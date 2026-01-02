@@ -22,7 +22,7 @@ metadata:
   name: garage-admin
 spec:
   hostnames:
-    - admin.garage.goyangi.io
+    - garage-admin.goyangi.io
   parentRefs:
     - name: envoy-internal
       namespace: network
