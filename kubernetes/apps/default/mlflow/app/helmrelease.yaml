@@ -95,3 +95,13 @@ spec:
         sizeLimit: 1Gi
         globalMounts:
           - path: /config
+      postgres-certs:
+        type: secret
+        name: postgres-mlflow-cert
+        globalMounts:
+          - path: /var/run/secrets/postgresql
+      postgres-ca:
+        type: secret
+        name: cluster-ca
+        globalMounts:
+          - path: /var/run/secrets/root-ca

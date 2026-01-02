@@ -17,7 +17,9 @@ spec:
               repository: quay.io/lakekeeper/catalog
               tag: latest-main
             args: ["migrate"]
-            envFrom: *envFrom
+            envFrom: &envFrom
+              - secretRef:
+                  name: lakekeeper-secret
         containers:
           app:
             image: *image
@@ -63,3 +65,14 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
+    persistence:
+      postgres-certs:
+        type: secret
+        name: postgres-lakekeeper-cert
+        globalMounts:
+          - path: /var/run/secrets/postgresql
+      postgres-ca:
+        type: secret
+        name: cluster-ca
+        globalMounts:
+          - path: /var/run/secrets/root-ca
