@@ -1,15 +1,14 @@
 terraform {
   required_providers {
-    minio = {
-      source  = "aminueza/minio"
-      version = "3.12.0"
+    garage = {
+      source  = "schwitzd/garage"
+      version = "1.2.2"
     }
   }
 }
 
-provider "minio" {
-  minio_server   = var.GARAGE_URL
-  minio_user     = var.AWS_ACCESS_KEY_ID
-  minio_password = var.AWS_SECRET_ACCESS_KEY
-  minio_ssl      = false
+provider "garage" {
+  host       = "http://${var.GARAGE_URL}"
+  access_key = var.AWS_ACCESS_KEY_ID
+  secret_key = var.AWS_SECRET_ACCESS_KEY
 }
