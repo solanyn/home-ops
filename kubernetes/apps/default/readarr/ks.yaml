@@ -6,6 +6,8 @@ metadata:
   name: readarr
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/database
   dependsOn:
   - name: rook-ceph-cluster
     namespace: rook-ceph

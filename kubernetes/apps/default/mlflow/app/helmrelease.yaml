@@ -13,14 +13,6 @@ spec:
       mlflow:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom: &envFrom
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -32,7 +24,9 @@ spec:
               MLFLOW_PORT: 5000
               AWS_S3_ENDPOINT_URL: http://garage.storage.svc.cluster.local:3900
               AWS_DEFAULT_REGION: us-east-1
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness:
                 enabled: true
