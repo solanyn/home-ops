@@ -49,10 +49,6 @@ spec:
         ensure: present
         login: true
         disablePassword: true
-      - name: norish
-        ensure: present
-        login: true
-        disablePassword: true
       - name: mealie
         ensure: present
         login: true
