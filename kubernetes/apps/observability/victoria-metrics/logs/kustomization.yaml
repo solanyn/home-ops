@@ -5,3 +5,4 @@ resources:
   - ./vlsingle.yaml
   - ./grafanadashboard.yaml
   - ./grafanadatasource.yaml
+  - ./httproute.yaml

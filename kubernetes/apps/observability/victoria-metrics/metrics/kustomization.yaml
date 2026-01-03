@@ -7,3 +7,4 @@ resources:
   - ./externalsecret.yaml
   - ./alertmanagerconfig.yaml
   - ./scrapeconfig.yaml
+  - ./httproute.yaml
