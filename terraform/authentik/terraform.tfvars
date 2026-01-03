@@ -6,6 +6,7 @@ applications = {
   grafana        = { group = "admin", icon = "grafana", redirect_uri = "/login/generic_oauth" }
   headlamp       = { group = "admin", icon = "headlamp", redirect_uri = "/oidc-callback" }
   kubeflow       = { group = "admin", icon = "kubeflow", redirect_uri = "/dex/callback" }
+  lakekeeper     = { group = "admin", icon = "lakekeeper", redirect_uri = "/ui/callback" }
   librechat      = { group = "users", icon = "librechat", redirect_uri = "/oauth/openid/callback" }
   mealie         = { group = "users", icon = "mealie", redirect_uri = "/login" }
   prowlarr       = { group = "users", icon = "prowlarr", redirect_uri = "/oauth2/callback" }
