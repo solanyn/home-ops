@@ -3,6 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+<<<<<<<< HEAD:kubernetes/apps/ai/kagent/modelconfig-ks.yaml
   name: kagent-modelconfig
 spec:
   targetNamespace: ai
@@ -11,9 +12,24 @@ spec:
       namespace: flux-system
   interval: 1h
   path: ./kubernetes/apps/ai/kagent/modelconfig
+========
+  name: liqo
+spec:
+  targetNamespace: liqo-system
+  dependsOn:
+    - name: external-secrets-stores
+      namespace: flux-system
+  interval: 1h
+  path: ./kubernetes/apps/liqo-system/liqo/app
+>>>>>>>> 5586969ea (feat(liqo): add GKE worker cluster for GPU offloading):kubernetes/apps/liqo-system/liqo/ks.yaml
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+<<<<<<<< HEAD:kubernetes/apps/ai/kagent/modelconfig-ks.yaml
   wait: false
+========
+  wait: true
+
+>>>>>>>> 5586969ea (feat(liqo): add GKE worker cluster for GPU offloading):kubernetes/apps/liqo-system/liqo/ks.yaml
