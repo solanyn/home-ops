@@ -91,10 +91,6 @@ spec:
       - name: sonarr
         ensure: present
         login: true
-      - name: lakekeeper
-        ensure: present
-        login: true
-        disablePassword: true
   resources:
     requests:
       cpu: 10m
