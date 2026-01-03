@@ -2,7 +2,7 @@
 apiVersion: infra.contrib.fluxcd.io/v1alpha2
 kind: Terraform
 metadata:
-  name: garage
+  name: worker
 spec:
   interval: 12h
   approvePlan: auto
@@ -10,7 +10,7 @@ spec:
     customConfiguration: |
       backend "s3" {
         bucket                      = "terraform-state"
-        key                         = "garage/garage.tfstate"
+        key                         = "gke-worker/gke-worker.tfstate"
         region                      = "us-east-1"
         endpoints                   = { s3 = "http://garage.storage.svc.cluster.local:3900" }
         skip_credentials_validation = true
@@ -22,7 +22,7 @@ spec:
   backendConfigsFrom:
     - kind: Secret
       name: tofu-controller-backend-secret
-  path: ./terraform/garage
+  path: ./terraform/gke-worker
   sourceRef:
     kind: GitRepository
     name: flux-system

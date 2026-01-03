@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: liqo-tenant-worker
+  labels:
+    liqo.io/remote-cluster-id: worker
+    liqo.io/tenant-namespace: "true"
