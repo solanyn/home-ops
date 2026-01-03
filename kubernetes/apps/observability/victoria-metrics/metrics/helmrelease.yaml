@@ -107,11 +107,11 @@ spec:
       enabled: true
       grafanaOperator:
         enabled: true
-        instanceSelector:
-          matchLabels:
-            grafana.internal/instance: grafana
         spec:
           allowCrossNamespaceImport: true
+          instanceSelector:
+            matchLabels:
+              dashboards: grafana
 
     additionalVictoriaMetricsMap:
       dockerhub-rules:
