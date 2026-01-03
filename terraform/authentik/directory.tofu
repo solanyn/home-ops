@@ -22,14 +22,3 @@ resource "authentik_policy_binding" "application_policy_binding" {
   group  = authentik_group.default[each.value.group].id
   order  = 0
 }
-
-# Update with your details
-resource "authentik_user" "andrew" {
-  username = "andrew"
-  name     = "Andrew"
-  email    = "andrew@${var.CLUSTER_DOMAIN}"
-  groups = concat(
-    [data.authentik_group.admins.id],
-    values(authentik_group.default)[*].id
-  )
-}
