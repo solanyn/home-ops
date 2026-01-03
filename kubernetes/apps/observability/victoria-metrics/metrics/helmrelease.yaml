@@ -22,7 +22,7 @@ spec:
 
     alertmanager:
       spec:
-        externalURL: https://vmalertmanager.goyangi.io
+        externalURL: https://alertmanager.goyangi.io
         secrets:
           - alertmanager-secret
         storage:
@@ -37,7 +37,7 @@ spec:
       spec:
         extraArgs:
           enableTCP6: "true"
-        externalURL: https://vmalert.goyangi.io
+        externalURL: https://alerts.goyangi.io
 
     vmagent:
       spec:
