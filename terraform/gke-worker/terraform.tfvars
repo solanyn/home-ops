@@ -1,0 +1,1 @@
+GPU_MAX_NODES = 8
