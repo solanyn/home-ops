@@ -8,7 +8,6 @@ applications = {
   kubeflow       = { group = "admin", icon = "kubeflow", redirect_uri = "/dex/callback" }
   librechat      = { group = "users", icon = "librechat", redirect_uri = "/oauth/openid/callback" }
   mealie         = { group = "users", icon = "mealie", redirect_uri = "/login" }
-  norish         = { group = "users", icon = "norish", redirect_uri = "/oauth/callback" }
   prowlarr       = { group = "users", icon = "prowlarr", redirect_uri = "/oauth2/callback" }
   qui            = { group = "users", icon = "qui", redirect_uri = "/oauth2/callback" }
   radarr         = { group = "users", icon = "radarr", redirect_uri = "/oauth2/callback" }
