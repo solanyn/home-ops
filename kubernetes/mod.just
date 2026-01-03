@@ -153,3 +153,15 @@ sync-oidc:
         fi
     done
     wait
+
+[doc('Create Authentik invitation link')]
+invite name="invite":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    token=$(kubectl get secret -n default authentik -o jsonpath='{.data.AUTHENTIK_BOOTSTRAP_TOKEN}' | base64 -d)
+    response=$(curl -s -X POST https://id.goyangi.io/api/v3/stages/invitation/invitations/ \
+      -H "Authorization: Bearer $token" \
+      -H "Content-Type: application/json" \
+      -d '{"name": "{{ name }}", "flow": "enrollment-invitation"}')
+    invite_id=$(echo "$response" | jq -r '.pk')
+    echo "https://id.goyangi.io/if/flow/enrollment-invitation/?itoken=$invite_id"
