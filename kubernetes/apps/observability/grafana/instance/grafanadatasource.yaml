@@ -13,7 +13,7 @@ spec:
     name: victoria-metrics
     access: proxy
     isDefault: true
-    url: http://victoria-metrics.observability.svc.cluster.local:8429
+    url: http://vmsingle-victoria-metrics-k8s-stack.observability.svc.cluster.local:8428
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -30,7 +30,7 @@ spec:
     access: proxy
     jsonData:
       implementation: prometheus
-    url: http://victoria-alertmanager.observability.svc.cluster.local:9093
+    url: http://vmalertmanager-victoria-metrics-k8s-stack.observability.svc.cluster.local:9093
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
