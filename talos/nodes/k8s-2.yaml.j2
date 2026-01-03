@@ -1,23 +1,9 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/siderolabs/talos/refs/heads/release-1.11/website/content/v1.11/schemas/config.schema.json
 machine:
-  network:
-    hostname: k8s-2
-    interfaces:
-      - deviceSelector:
-          hardwareAddr: b8:85:84:a2:5d:97
-          driver: e1000e
-        mtu: 9000
-        dhcp: true
-        vip:
-          ip: 192.168.42.120
-        vlans:
-          - vlanId: 70
-            dhcp: false
-            mtu: 9000
-          - vlanId: 90
-            dhcp: false
-            mtu: 9000
+  type: controlplane
   nodeLabels:
     topology.kubernetes.io/zone: m
-  type: controlplane
+---
+apiVersion: v1alpha1
+kind: HostnameConfig
+hostname: k8s-2

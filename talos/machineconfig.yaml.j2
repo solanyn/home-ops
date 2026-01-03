@@ -6,10 +6,6 @@ machine:
     {% if ENV.IS_CONTROLLER %}
     key: op://kubernetes/talos/MACHINE_CA_KEY
     {% endif %}
-  certSANs:
-    - 127.0.0.1
-    - 192.168.42.120
-    - k8s.internal
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -30,7 +26,6 @@ machine:
       enabled: true
     {% endif %}
     rbac: true
-    stableHostname: true
   files:
     - op: create
       path: /etc/cri/conf.d/20-customization.part
@@ -52,7 +47,7 @@ machine:
   install:
     diskSelector:
       model: SAMSUNG MZ7LM960
-    image: factory.talos.dev/metal-installer/e229284abd3c5ce9711acd20daf4ff70eb2455f9bc285c0390a1501196c5046d:v1.12.0
+    image: factory.talos.dev/metal-installer/356d79295b2538bad200df7d4c7054548bcda0fbc3f23933c13bd82952b104a4:v1.12.0
     wipe: false
   kernel:
     modules:
@@ -61,7 +56,7 @@ machine:
     defaultRuntimeSeccompProfileEnabled: true
     disableManifestsDirectory: true
     extraConfig:
-      maxPods: 150
+      maxPods: 2000
       serializeImagePulls: false
     image: ghcr.io/siderolabs/kubelet:v1.35.0
     nodeIP:
@@ -85,6 +80,7 @@ machine:
     net.ipv4.tcp_fastopen: "3"
     net.ipv4.tcp_mtu_probing: "1"
     net.ipv4.tcp_rmem: 4096 87380 33554432
+    net.ipv4.tcp_slow_start_after_idle: "0"
     net.ipv4.tcp_window_scaling: "1"
     net.ipv4.tcp_wmem: 4096 65536 33554432
     net.ipv6.conf.all.accept_ra: "2"
@@ -136,10 +132,6 @@ cluster:
       kind: Policy
       rules:
         - level: Metadata
-    certSANs:
-      - 127.0.0.1
-      - 192.168.42.120
-      - k8s.internal
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
@@ -191,7 +183,46 @@ cluster:
   {% endif %}
 ---
 apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: eno1
+selector:
+  match: link.driver == "e1000e"
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: eno1
+clientIdentifier: mac
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: eno1
+mtu: 9000
+---
+apiVersion: v1alpha1
+kind: Layer2VIPConfig
+name: 192.168.42.120
+link: eno1
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: eno1.70
+vlanID: 70
+parent: eno1
+mtu: 9000
+---
+apiVersion: v1alpha1
+kind: VLANConfig
+name: eno1.90
+vlanID: 90
+parent: eno1
+mtu: 9000
+---
+apiVersion: v1alpha1
 kind: WatchdogTimerConfig
 device: /dev/watchdog0
 timeout: 5m
+---
+apiVersion: v1alpha1
+kind: OOMConfig
+triggerExpression: "false"
 
