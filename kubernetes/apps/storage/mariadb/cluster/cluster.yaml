@@ -7,9 +7,9 @@ spec:
   rootPasswordSecretKeyRef:
     name: mariadb-secret
     key: MARIADB_ROOT_PASSWORD
-  replicas: 1
+  replicas: 3
   replication:
-    enabled: false
+    enabled: true
     primary:
       autoFailover: true
     replica:
