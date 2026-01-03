@@ -33,6 +33,7 @@ spec:
               SEARXNG_INSTANCE_URL: "http://searxng.default.svc.cluster.local:8080"
               ALLOW_SOCIAL_LOGIN: "true"
               ALLOW_REGISTRATION: "false"
+              ALLOW_EMAIL_LOGIN: "false"
               OPENID_ISSUER: "https://id.goyangi.io"
               OPENID_CALLBACK_URL: "/oauth/openid/callback"
               OPENID_SCOPE: "openid profile email"
