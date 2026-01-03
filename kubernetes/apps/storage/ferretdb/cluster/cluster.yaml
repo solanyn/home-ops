@@ -2,11 +2,11 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: ferretdb-pg
+  name: ferretdb
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
-  instances: 1
+  instances: 3
   imageName: ghcr.io/ferretdb/postgres-documentdb:17-0.106.0-ferretdb-2.5.0
   primaryUpdateStrategy: unsupervised
   postgresUID: 999
