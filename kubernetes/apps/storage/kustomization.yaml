@@ -13,6 +13,5 @@ resources:
   - ./dragonfly/ks.yaml
   - ./ferretdb/ks.yaml
   - ./garage/ks.yaml
-  - ./lakekeeper/ks.yaml
   - ./mariadb/ks.yaml
   - ./vernemq/ks.yaml

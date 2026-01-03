@@ -44,7 +44,7 @@ spec:
           secret: gitlab-secret
           key: POSTGRES_PASSWORD
       redis:
-        host: dragonfly.storage.svc.cluster.local
+        host: redis.storage.svc.cluster.local
         auth:
           enabled: true
           secret: gitlab-secret
