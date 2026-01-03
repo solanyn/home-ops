@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: "{{ .Release.Name }}"
+  name: gitlab
 spec:
   chartRef:
     kind: OCIRepository
@@ -21,7 +21,6 @@ spec:
     global:
       edition: ce
       time_zone: Australia/Sydney
-      
       hosts:
         domain: goyangi.io
         https: true
@@ -31,14 +30,11 @@ spec:
           name: registry.gitlab.goyangi.io
         minio:
           name: minio.gitlab.goyangi.io
-      
       ingress:
         class: envoy-internal
         configureCertmanager: false
         tls:
           enabled: false
-      
-      # External PostgreSQL
       psql:
         host: postgres-rw.storage.svc.cluster.local
         database: gitlab
@@ -47,21 +43,16 @@ spec:
           useSecret: true
           secret: gitlab-secret
           key: POSTGRES_PASSWORD
-      
-      # External Redis
       redis:
         host: dragonfly.storage.svc.cluster.local
         auth:
           enabled: true
           secret: gitlab-secret
           key: REDIS_PASSWORD
-      
-      # Email configuration
       email:
         display_name: GitLab
         from: noreply@goyangi.io
         reply_to: noreply@goyangi.io
-      
       smtp:
         enabled: true
         address: smtp-relay.network.svc.cluster.local
@@ -69,16 +60,11 @@ spec:
         domain: goyangi.io
         authentication: none
         starttls_auto: false
-      
-      # Initial root password
       initialRootPassword:
         secret: gitlab-secret
         key: GITLAB_ROOT_PASSWORD
-      
-      # Object storage (Garage)
       minio:
         enabled: false
-      
       appConfig:
         omniauth:
           enabled: true
@@ -91,7 +77,6 @@ spec:
           providers:
             - secret: gitlab-secret
               key: oidc-config
-        
         object_store:
           enabled: true
           proxy_download: true
@@ -99,46 +84,35 @@ spec:
           connection:
             secret: gitlab-secret
             key: s3-config
-        
         lfs:
           enabled: true
           proxy_download: true
           bucket: gitlab
           connection: {}
-        
         artifacts:
           enabled: true
           proxy_download: true
           bucket: gitlab
           connection: {}
-        
         uploads:
           enabled: true
           proxy_download: true
           bucket: gitlab
           connection: {}
-        
         packages:
           enabled: true
           proxy_download: true
           bucket: gitlab
           connection: {}
-        
         backups:
           bucket: gitlab
           tmpdir: /tmp
-    
-    # Disable built-in services
     postgresql:
       install: false
-    
     redis:
       install: false
-    
     minio:
       install: false
-    
-    # GitLab components
     gitlab:
       webservice:
         initContainers:
@@ -157,7 +131,6 @@ spec:
             memory: 64Mi
           limits:
             memory: 2Gi
-      
       gitaly:
         persistence:
           enabled: true
@@ -169,7 +142,6 @@ spec:
             memory: 64Mi
           limits:
             memory: 512Mi
-      
       sidekiq:
         minReplicas: 1
         maxReplicas: 1
@@ -182,7 +154,6 @@ spec:
             memory: 64Mi
           limits:
             memory: 1Gi
-      
       gitlab-shell:
         minReplicas: 1
         maxReplicas: 1
@@ -192,7 +163,6 @@ spec:
             memory: 64Mi
           limits:
             memory: 128Mi
-      
       gitlab-pages:
         resources:
           requests:
@@ -200,26 +170,18 @@ spec:
             memory: 10Mi
           limits:
             memory: 64Mi
-    
-    # Container registry
     registry:
       enabled: true
       storage:
         secret: gitlab-secret
         key: registry-config
-    
-    # Disable optional components
     certmanager:
       install: false
-    
     nginx-ingress:
       enabled: false
-    
     prometheus:
       install: false
-    
     grafana:
       enabled: false
-    
     gitlab-runner:
       install: false
