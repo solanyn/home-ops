@@ -14,3 +14,8 @@ variable "GARAGE_ADMIN_URL" {
   description = "Garage admin API URL"
   default     = "garage-admin.goyangi.io"
 }
+
+variable "GARAGE_ROOT_ACCESS_KEY_ID" {
+  type        = string
+  description = "Garage root access key ID"
+}
