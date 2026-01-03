@@ -1,18 +1,19 @@
 ## Authentication stages
 resource "authentik_stage_identification" "authentication-identification" {
   name                      = "authentication-identification"
-  user_fields               = ["username", "email"]
+  user_fields               = []  # Empty to skip username entry
   case_insensitive_matching = false
-  show_source_labels        = true
+  show_source_labels        = false
   show_matched_user         = false
-  # No password_stage - passkey only
+  passwordless_flow         = authentik_flow.authentication.uuid
   recovery_flow             = authentik_flow.recovery.uuid
 }
 
 resource "authentik_stage_authenticator_validate" "authentication-passkey-validation" {
   name                  = "authentication-passkey-validation"
-  device_classes        = ["webauthn"]  # Only WebAuthn/passkeys
-  not_configured_action = "deny"        # Require passkey setup
+  device_classes        = ["webauthn"]
+  not_configured_action = "deny"
+  webauthn_user_verification = "required"
 }
 
 resource "authentik_stage_user_login" "authentication-login" {
