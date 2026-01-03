@@ -1,6 +1,7 @@
 applications = {
   audiobookshelf = { group = "users", icon = "audiobookshelf", redirect_uri = "/auth/openid/callback" }
   ersatztv       = { group = "users", icon = "ersatztv", redirect_uri = "/oidc/callback" }
+  flux           = { group = "admin", icon = "flux-cd", redirect_uri = "/oauth2/callback" }
   gitlab         = { group = "admin", icon = "gitlab", redirect_uri = "/users/auth/openid_connect/callback" }
   grafana        = { group = "admin", icon = "grafana", redirect_uri = "/login/generic_oauth" }
   headlamp       = { group = "admin", icon = "headlamp", redirect_uri = "/oidc-callback" }

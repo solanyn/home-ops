@@ -10,5 +10,16 @@ spec:
     name: flux-operator
   interval: 1h
   values:
+    web:
+      enabled: true
+      configSecretName: flux-operator-secret
+      httpRoute:
+        enabled: true
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        hostnames:
+          - flux.goyangi.io
     serviceMonitor:
       create: true
