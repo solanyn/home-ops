@@ -112,9 +112,7 @@ spec:
           instanceSelector:
             matchLabels:
               grafana.internal/instance: grafana
-          dashboards:
-            node-exporter-full:
-              enabled: false
+          dashboards: {}
 
     additionalVictoriaMetricsMap:
       dockerhub-rules:
