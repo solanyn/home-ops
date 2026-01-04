@@ -11,4 +11,3 @@ resources:
   - ./podmonitor.yaml
   - ./rbac.yaml
   - ./referencegrant.yaml
-  - ./securitypolicy.yaml
