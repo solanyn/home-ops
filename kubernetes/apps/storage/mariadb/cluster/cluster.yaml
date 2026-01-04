@@ -43,13 +43,13 @@ spec:
       secretAccessKeySecretKeyRef:
         name: mariadb-secret
         key: AWS_SECRET_ACCESS_KEY
-    stagingStorage:
-      persistentVolumeClaim:
-        resources:
-          requests:
-            storage: 1Gi
-        accessModes:
-          - ReadWriteOnce
+  stagingStorage:
+    persistentVolumeClaim:
+      resources:
+        requests:
+          storage: 1Gi
+      accessModes:
+        - ReadWriteOnce
   resources:
     requests:
       cpu: 10m
