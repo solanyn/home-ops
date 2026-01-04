@@ -16,10 +16,6 @@ spec:
       namespace: analytics
   interval: 1h
   path: ./kubernetes/apps/analytics/trino/app
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: trino-secret
   prune: true
   sourceRef:
     kind: GitRepository
