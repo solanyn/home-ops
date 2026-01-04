@@ -4,7 +4,7 @@ kind: Terraform
 metadata:
   name: garage
 spec:
-  interval: 1h
+  interval: 5m
   approvePlan: auto
   backendConfig:
     customConfiguration: |
