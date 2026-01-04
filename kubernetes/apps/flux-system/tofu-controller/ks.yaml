@@ -22,6 +22,15 @@ spec:
   targetNamespace: flux-system
   dependsOn:
     - name: tofu-controller
+  healthChecks:
+    - apiVersion: infra.contrib.fluxcd.io/v1alpha2
+      kind: Terraform
+      name: authentik
+      namespace: flux-system
+    - apiVersion: infra.contrib.fluxcd.io/v1alpha2
+      kind: Terraform
+      name: garage
+      namespace: flux-system
   interval: 1h
   path: ./kubernetes/apps/flux-system/tofu-controller/terraform
   prune: true
