@@ -44,6 +44,10 @@ spec:
             subPath: .env
           - path: /app/credentials.json
             subPath: credentials.json
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
     service:
       app:
         controller: kiro-openai-gateway
