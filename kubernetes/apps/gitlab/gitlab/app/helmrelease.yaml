@@ -40,7 +40,7 @@ spec:
           secret: gitlab-postgres
           key: password
       redis:
-        host: dragonfly.storage.svc.cluster.local
+        host: redis.storage.svc.cluster.local
         auth:
           enabled: false
       email:
