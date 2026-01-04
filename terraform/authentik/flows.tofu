@@ -62,8 +62,8 @@ resource "authentik_flow_stage_binding" "invalidation-flow-binding-00" {
   order  = 0
 }
 
-## Admin authentication flow (password-based)
-resource "authentik_flow" "admin" {
+## Admin backup authentication flow (password-based)
+resource "authentik_flow" "admin-backup" {
   name               = "admin-flow"
   title              = "Admin Login"
   slug               = "admin"
@@ -71,20 +71,20 @@ resource "authentik_flow" "admin" {
   policy_engine_mode = "any"
 }
 
-resource "authentik_flow_stage_binding" "admin-flow-binding-00" {
-  target = authentik_flow.admin.uuid
-  stage  = authentik_stage_identification.admin-identification.id
+resource "authentik_flow_stage_binding" "admin-backup-flow-binding-00" {
+  target = authentik_flow.admin-backup.uuid
+  stage  = authentik_stage_identification.admin-backup-identification.id
   order  = 0
 }
 
-resource "authentik_flow_stage_binding" "admin-flow-binding-10" {
-  target = authentik_flow.admin.uuid
-  stage  = authentik_stage_authenticator_validate.admin-totp.id
+resource "authentik_flow_stage_binding" "admin-backup-flow-binding-10" {
+  target = authentik_flow.admin-backup.uuid
+  stage  = authentik_stage_authenticator_validate.admin-backup-totp.id
   order  = 10
 }
 
-resource "authentik_flow_stage_binding" "admin-flow-binding-100" {
-  target = authentik_flow.admin.uuid
+resource "authentik_flow_stage_binding" "admin-backup-flow-binding-100" {
+  target = authentik_flow.admin-backup.uuid
   stage  = authentik_stage_user_login.authentication-login.id
   order  = 100
 }
