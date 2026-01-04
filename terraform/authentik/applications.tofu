@@ -34,7 +34,6 @@ resource "authentik_provider_oauth2" "oauth2" {
       url           = "https://${each.key}.${var.CLUSTER_DOMAIN}${each.value.redirect_uri}",
     }
   ]
-  post_logout_redirect_uris = ["https://${each.key}.${var.CLUSTER_DOMAIN}/"]
 }
 
 resource "authentik_application" "application" {
