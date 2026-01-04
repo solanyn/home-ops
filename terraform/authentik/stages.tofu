@@ -9,7 +9,6 @@ resource "authentik_stage_identification" "authentication-identification" {
   case_insensitive_matching = false
   show_source_labels        = false
   show_matched_user         = false
-  passwordless_flow         = authentik_flow.authentication.uuid
   recovery_flow             = authentik_flow.recovery.uuid
   sources                   = [data.authentik_source.inbuilt.uuid]
 }
@@ -17,7 +16,7 @@ resource "authentik_stage_identification" "authentication-identification" {
 resource "authentik_stage_authenticator_validate" "authentication-passkey-validation" {
   name                     = "authentication-passkey-validation"
   device_classes           = ["webauthn"]
-  not_configured_action    = "skip"
+  not_configured_action    = "deny"
   webauthn_user_verification = "preferred"
 }
 
