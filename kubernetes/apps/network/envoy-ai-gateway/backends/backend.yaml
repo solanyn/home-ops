@@ -25,5 +25,5 @@ metadata:
 spec:
   endpoints:
     - fqdn:
-        hostname: kiro-openai-gateway.ai.svc.cluster.local
+        hostname: kiro-openai-gateway.network.svc.cluster.local
         port: 8000

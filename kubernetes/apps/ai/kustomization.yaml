@@ -10,7 +10,6 @@ components:
 resources:
   - ./namespace.yaml
   - ./kagent/ks.yaml
-  - ./kiro-openai-gateway/ks.yaml
   - ./librechat/ks.yaml
   - ./meilisearch/ks.yaml
   - ./claude-code-proxy/ks.yaml
