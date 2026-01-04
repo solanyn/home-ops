@@ -31,17 +31,3 @@ spec:
     credentialsFile:
       secretRef:
         name: envoy-ai-gateway-gcp-credentials-secret
----
-apiVersion: aigateway.envoyproxy.io/v1alpha1
-kind: BackendSecurityPolicy
-metadata:
-  name: kiro-openai-gateway
-spec:
-  targetRefs:
-    - group: aigateway.envoyproxy.io
-      kind: AIServiceBackend
-      name: kiro-openai-gateway
-  type: APIKey
-  apiKey:
-    secretRef:
-      name: kiro-openai-gateway-secret
