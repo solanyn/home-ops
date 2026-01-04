@@ -9,6 +9,7 @@ resource "authentik_stage_identification" "authentication-identification" {
   case_insensitive_matching = false
   show_source_labels        = false
   show_matched_user         = true
+  passwordless_flow         = authentik_flow.passwordless.uuid
   recovery_flow             = authentik_flow.recovery.uuid
   sources                   = [data.authentik_source.inbuilt.uuid]
 }
