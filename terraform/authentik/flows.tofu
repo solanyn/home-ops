@@ -83,6 +83,12 @@ resource "authentik_flow_stage_binding" "admin-backup-flow-binding-10" {
   order  = 10
 }
 
+resource "authentik_flow_stage_binding" "admin-backup-flow-binding-20" {
+  target = authentik_flow.admin-backup.uuid
+  stage  = authentik_stage_authenticator_validate.admin-backup-totp.id
+  order  = 20
+}
+
 resource "authentik_flow_stage_binding" "admin-backup-flow-binding-100" {
   target = authentik_flow.admin-backup.uuid
   stage  = authentik_stage_user_login.authentication-login.id
