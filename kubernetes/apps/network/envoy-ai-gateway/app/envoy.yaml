@@ -30,6 +30,44 @@ spec:
         compression:
           type: Gzip
 ---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: envoy-ai
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy-ai
+  http1:
+    maxRequestBodySize: 100Mi
+  http2:
+    onInvalidMessage: TerminateStream
+  tcpKeepalive: {}
+  tls:
+    minVersion: "1.2"
+    alpnProtocols:
+      - h2
+      - http/1.1
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: envoy-ai
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy-ai
+  compression:
+    - type: Zstd
+    - type: Brotli
+    - type: Gzip
+  tcpKeepalive: {}
+  timeout:
+    http:
+      requestTimeout: 0s
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/gatewayclass_v1.json
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
