@@ -1,4 +1,5 @@
 buckets = [
+  "authentik",
   "cloudnative-pg",
   "dragonflydb",
   "ferretdb",
