@@ -17,11 +17,6 @@ spec:
             image:
               repository: ghcr.io/solanyn/kiro-openai-gateway
               tag: 1.0.8@sha256:5ba86e4539823c3424a99ae7972c71f225c823c250839151c4a21ee13c5ab5d8
-            env:
-              KIRO_CREDS_FILE: /config/credentials.json
-            envFrom:
-              - secretRef:
-                  name: kiro-openai-gateway-secret
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -45,7 +40,9 @@ spec:
         type: secret
         name: kiro-openai-gateway-secret
         globalMounts:
-          - path: /config/credentials.json
+          - path: /app/.env
+            subPath: .env
+          - path: /app/credentials.json
             subPath: credentials.json
     service:
       app:
