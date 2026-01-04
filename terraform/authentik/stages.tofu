@@ -30,23 +30,25 @@ resource "authentik_stage_user_logout" "invalidation-logout" {
   name = "invalidation-logout"
 }
 
-## Admin backup stages
-resource "authentik_stage_identification" "admin-backup-identification" {
-  name                      = "admin-backup-identification"
+## Admin stages
+resource "authentik_stage_identification" "admin-identification" {
+  name                      = "admin-identification"
   user_fields               = ["username"]
+  password_stage            = authentik_stage_password.admin-password.id
+  passwordless_flow         = authentik_flow.passwordless.uuid
   case_insensitive_matching = false
   show_source_labels        = false
   show_matched_user         = true
   sources                   = [data.authentik_source.inbuilt.uuid]
 }
 
-resource "authentik_stage_password" "admin-backup-password" {
+resource "authentik_stage_password" "admin-password" {
   name     = "admin-password"
   backends = ["authentik.core.auth.InbuiltBackend"]
 }
 
-resource "authentik_stage_authenticator_validate" "admin-backup-totp" {
-  name                  = "admin-backup-totp"
+resource "authentik_stage_authenticator_validate" "admin-totp" {
+  name                  = "admin-totp"
   device_classes        = ["totp"]
   not_configured_action = "skip"
 }
