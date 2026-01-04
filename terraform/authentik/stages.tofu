@@ -44,6 +44,12 @@ resource "authentik_stage_password" "admin-backup-password" {
   name = "admin-backup-password"
 }
 
+resource "authentik_stage_authenticator_validate" "admin-backup-totp" {
+  name                  = "admin-backup-totp"
+  device_classes        = ["totp"]
+  not_configured_action = "skip"
+}
+
 ## Recovery stages (admin-only password reset)
 resource "authentik_stage_identification" "recovery-identification" {
   name                      = "recovery-identification"
