@@ -9,5 +9,4 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./dask/ks.yaml
   - ./trino/ks.yaml
