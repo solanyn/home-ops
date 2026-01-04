@@ -5,9 +5,13 @@ kind: HelmRelease
 metadata:
   name: gitlab
 spec:
-  chartRef:
-    kind: OCIRepository
-    name: gitlab
+  chart:
+    spec:
+      chart: gitlab
+      version: 9.7.0
+      sourceRef:
+        kind: HelmRepository
+        name: gitlab
   interval: 1h
   timeout: 30m
   install:
