@@ -148,7 +148,9 @@ spec:
         maxReplicas: 1
         containers:
           app:
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: gitlab-secret
         resources:
           requests:
             cpu: 10m
