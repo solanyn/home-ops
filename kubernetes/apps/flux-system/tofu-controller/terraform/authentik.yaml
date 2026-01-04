@@ -4,7 +4,7 @@ kind: Terraform
 metadata:
   name: authentik
 spec:
-  interval: 1h
+  interval: 5m
   approvePlan: auto
   backendConfig:
     customConfiguration: |
