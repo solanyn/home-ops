@@ -1,0 +1,21 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: ${APP}-database
+spec:
+  targetNamespace: storage
+  dependsOn:
+    - name: cloudnative-pg-cluster
+      namespace: storage
+  interval: 1h
+  path: ./kubernetes/components/database/password/database
+  postBuild:
+    substitute:
+      APP: ${APP}
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
