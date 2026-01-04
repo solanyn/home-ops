@@ -23,14 +23,13 @@ spec:
         gitlab:
           name: gitlab.goyangi.io
         registry:
-          name: registry.gitlab.goyangi.io
+          name: gitlab-registry.goyangi.io
         minio:
           name: minio.gitlab.goyangi.io
       ingress:
-        class: envoy-internal
-        configureCertmanager: false
-        tls:
-          enabled: false
+        enabled: false
+      certmanager:
+        install: false
       psql:
         host: postgres-rw.storage.svc.cluster.local
         database: gitlab
@@ -45,11 +44,9 @@ spec:
           clientCertificate: tls.crt
           clientKey: tls.key
       redis:
-        host: redis.storage.svc.cluster.local
+        host: dragonfly.storage.svc.cluster.local
         auth:
-          enabled: true
-          secret: gitlab-secret
-          key: REDIS_PASSWORD
+          enabled: false
       email:
         display_name: GitLab
         from: noreply@goyangi.io
@@ -150,14 +147,7 @@ spec:
           limits:
             memory: 1Gi
       gitlab-shell:
-        minReplicas: 1
-        maxReplicas: 1
-        resources:
-          requests:
-            cpu: 10m
-            memory: 64Mi
-          limits:
-            memory: 128Mi
+        enabled: false
       gitlab-pages:
         resources:
           requests:
@@ -165,13 +155,17 @@ spec:
             memory: 10Mi
           limits:
             memory: 64Mi
+      kas:
+        minReplicas: 1
+        maxReplicas: 1
     registry:
       enabled: true
+      hpa:
+        minReplicas: 1
+        maxReplicas: 1
       storage:
         secret: gitlab-secret
         key: registry-config
-    cert-manager:
-      install: false
     nginx-ingress:
       enabled: false
     prometheus:
