@@ -16,6 +16,24 @@ spec:
       replPasswordSecretKeyRef:
         name: mariadb-secret
         key: MARIADB_REPL_PASSWORD
+      bootstrapFrom:
+        s3:
+          bucket: mariadb
+          endpoint: garage.storage.svc.cluster.local:3900
+          accessKeyIdSecretKeyRef:
+            name: mariadb-secret
+            key: AWS_ACCESS_KEY_ID
+          secretAccessKeySecretKeyRef:
+            name: mariadb-secret
+            key: AWS_SECRET_ACCESS_KEY
+        stagingStorage:
+          persistentVolumeClaim:
+            storageClassName: openebs-hostpath
+            resources:
+              requests:
+                storage: 1Gi
+            accessModes:
+              - ReadWriteOnce
   storage:
     size: 10Gi
     storageClassName: openebs-hostpath
