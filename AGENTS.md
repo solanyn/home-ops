@@ -644,7 +644,7 @@ op item get cloudnative-pg --field DB_USER --vault kubernetes
 
 ## OIDC Integration
 
-Applications use Pocket ID (https://id.goyangi.io) for SSO authentication. Each application has different OIDC field names and requirements:
+Applications use Authentik (https://id.goyangi.io) for SSO authentication. Each application has different OIDC field names and requirements:
 
 **Mealie:**
 ```yaml
@@ -663,14 +663,14 @@ OIDC_REMEMBER_ME: "True"
 OIDC_ISSUER_URL: "https://id.goyangi.io"
 OIDC_CLIENT_ID: "{{ .AUDIOBOOKSHELF_CLIENT_ID }}"
 OIDC_CLIENT_SECRET: "{{ .AUDIOBOOKSHELF_CLIENT_SECRET }}"
-OIDC_BUTTON_TEXT: "Login with Pocket ID"
+OIDC_BUTTON_TEXT: "Login with Authentik"
 OIDC_AUTO_LAUNCH: "false"
 ```
 
 **Grafana:**
 ```yaml
 GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
-GF_AUTH_GENERIC_OAUTH_NAME: "Pocket ID"
+GF_AUTH_GENERIC_OAUTH_NAME: "Authentik"
 GF_AUTH_GENERIC_OAUTH_CLIENT_ID: "{{ .GRAFANA_CLIENT_ID }}"
 GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: "{{ .GRAFANA_CLIENT_SECRET }}"
 GF_AUTH_GENERIC_OAUTH_AUTH_URL: https://id.goyangi.io/authorize
@@ -691,7 +691,7 @@ GITLAB_OIDC_CLIENT_SECRET: "{{ .GITLAB_OIDC_CLIENT_SECRET }}"
 
 oidc-config: |
   name: openid_connect
-  label: Pocket ID
+  label: Authentik
   args:
     name: openid_connect
     scope: [openid, profile, email]

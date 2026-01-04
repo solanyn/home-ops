@@ -29,8 +29,12 @@ spec:
       - http-server.process-forwarded=true
     coordinatorExtraConfig: |-
       http-server.authentication.oauth2.issuer=https://id.goyangi.io
-      http-server.authentication.oauth2.client-id="${TRINO_CLIENT_ID}"
-      http-server.authentication.oauth2.client-secret="${TRINO_CLIENT_SECRET}"
+      http-server.authentication.oauth2.client-id=${TRINO_CLIENT_ID}
+      http-server.authentication.oauth2.client-secret=${TRINO_CLIENT_SECRET}
+      http-server.authentication.oauth2.scopes=openid,profile,email
+    envFrom:
+      - secretRef:
+          name: trino-secret
     serviceMonitor:
       enabled: true
     catalogs:
@@ -44,5 +48,5 @@ spec:
       rdbms: |-
         connector.name=postgresql
         connection-url=jdbc:postgresql://postgres-rw.storage.svc.cluster.local:5432
-        connection-user="${POSTGRES_SUPER_USER}"
-        connection-password="${POSTGRES_SUPER_PASS}"
+        connection-user=${POSTGRES_SUPER_USER}
+        connection-password=${POSTGRES_SUPER_PASS}
