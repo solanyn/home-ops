@@ -7,15 +7,19 @@ metadata:
 spec:
   targetNamespace: analytics
   dependsOn:
-  - name: garage
-    namespace: storage
+    - name: garage
+      namespace: storage
   healthChecks:
-  - apiVersion: helm.toolkit.fluxcd.io/v2
-    kind: HelmRelease
-    name: trino
-    namespace: analytics
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: trino
+      namespace: analytics
   interval: 1h
   path: ./kubernetes/apps/analytics/trino/app
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: trino-secret
   prune: true
   sourceRef:
     kind: GitRepository
