@@ -36,7 +36,9 @@ spec:
         database: gitlab
         username: gitlab
         password:
-          useSecret: false
+          useSecret: true
+          secret: gitlab-secret
+          key: POSTGRES_PASSWORD
         ssl:
           secret: postgres-gitlab-cert
           serverCA: ca.crt
