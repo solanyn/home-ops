@@ -166,6 +166,7 @@ spec:
       postgres-certs:
         type: secret
         name: postgres-librechat-cert
+        defaultMode: 0400
         advancedMounts:
           librechat:
             rag-api:
@@ -173,6 +174,7 @@ spec:
       postgres-ca:
         type: secret
         name: postgres-server-cert
+        defaultMode: 0400
         advancedMounts:
           librechat:
             rag-api:
