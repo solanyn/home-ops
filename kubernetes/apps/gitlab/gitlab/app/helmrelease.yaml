@@ -30,14 +30,14 @@ spec:
         enabled: false
       certmanager:
         install: false
+    certmanager-issuer:
+      email: false
       psql:
         host: postgres-rw.storage.svc.cluster.local
         database: gitlab
         username: gitlab
         password:
-          useSecret: true
-          secret: gitlab-secret
-          key: POSTGRES_URL
+          useSecret: false
         ssl:
           secret: postgres-gitlab-cert
           serverCA: ca.crt
