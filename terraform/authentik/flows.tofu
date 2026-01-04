@@ -1,10 +1,31 @@
-## Authentication flow (passkey-only)
+## Passwordless authentication flow (usernameless)
+resource "authentik_flow" "passwordless" {
+  name               = "passwordless-flow"
+  title              = "Passwordless Login"
+  slug               = "passwordless-flow"
+  designation        = "authentication"
+  policy_engine_mode = "any"
+}
+
+resource "authentik_flow_stage_binding" "passwordless-flow-binding-00" {
+  target = authentik_flow.passwordless.uuid
+  stage  = authentik_stage_authenticator_validate.authentication-passkey-validation.id
+  order  = 0
+}
+
+resource "authentik_flow_stage_binding" "passwordless-flow-binding-100" {
+  target = authentik_flow.passwordless.uuid
+  stage  = authentik_stage_user_login.authentication-login.id
+  order  = 100
+}
+
+## Authentication flow (username + passkey)
 resource "authentik_flow" "authentication" {
   name               = "authentication-flow"
   title              = "Welcome!"
   slug               = "authentication-flow"
   designation        = "authentication"
-  policy_engine_mode = "all"
+  policy_engine_mode = "any"
 }
 
 resource "authentik_flow_stage_binding" "authentication-flow-binding-00" {
