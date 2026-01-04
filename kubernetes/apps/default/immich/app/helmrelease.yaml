@@ -150,6 +150,7 @@ spec:
       postgres-certs:
         type: secret
         name: postgres-immich-cert
+        defaultMode: 0400
         advancedMounts:
           immich:
             app:
@@ -157,6 +158,7 @@ spec:
       postgres-ca:
         type: secret
         name: cluster-ca
+        defaultMode: 0400
         advancedMounts:
           immich:
             app:

@@ -82,10 +82,12 @@ spec:
       postgres-certs:
         type: secret
         name: postgres-mealie-cert
+        defaultMode: 0400
         globalMounts:
           - path: /var/run/secrets/postgresql
       postgres-ca:
         type: secret
         name: cluster-ca
+        defaultMode: 0400
         globalMounts:
           - path: /var/run/secrets/root-ca
