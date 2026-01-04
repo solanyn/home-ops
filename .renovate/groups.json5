@@ -157,5 +157,15 @@
       },
       minimumGroupSize: 2,
     },
+    {
+      description: "Flink Kubernetes Operator Group",
+      groupName: "flink-kubernetes-operator",
+      matchDatasources: ["docker", "github-releases"],
+      matchPackageNames: ["/flink-kubernetes-operator/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
   ],
 }
