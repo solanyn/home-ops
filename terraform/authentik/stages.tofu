@@ -30,6 +30,20 @@ resource "authentik_stage_user_logout" "invalidation-logout" {
   name = "invalidation-logout"
 }
 
+## Admin backup stages
+resource "authentik_stage_identification" "admin-backup-identification" {
+  name                      = "admin-backup-identification"
+  user_fields               = ["username"]
+  case_insensitive_matching = false
+  show_source_labels        = false
+  show_matched_user         = true
+  sources                   = [data.authentik_source.inbuilt.uuid]
+}
+
+resource "authentik_stage_password" "admin-backup-password" {
+  name = "admin-backup-password"
+}
+
 ## Recovery stages (admin-only password reset)
 resource "authentik_stage_identification" "recovery-identification" {
   name                      = "recovery-identification"
