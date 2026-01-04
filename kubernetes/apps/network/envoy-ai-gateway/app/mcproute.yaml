@@ -14,10 +14,6 @@ spec:
       kind: Backend
       group: gateway.envoyproxy.io
       path: "/mcp"
-    - name: grafana-mcp
-      kind: Backend
-      group: gateway.envoyproxy.io
-      path: "/mcp"
     - name: github-remote
       kind: Backend
       group: gateway.envoyproxy.io
@@ -35,16 +31,6 @@ spec:
   endpoints:
     - fqdn:
         hostname: flux-operator-mcp.network.svc.cluster.local
-        port: 8080
----
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: Backend
-metadata:
-  name: grafana-mcp
-spec:
-  endpoints:
-    - fqdn:
-        hostname: grafana-mcp.network.svc.cluster.local
         port: 8080
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
