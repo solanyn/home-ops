@@ -9,3 +9,4 @@ spec:
   owner: ${DATABASE_OWNER:=${APP}}
   cluster:
     name: postgres
+  extensions: ${DATABASE_EXTENSIONS:=[]}

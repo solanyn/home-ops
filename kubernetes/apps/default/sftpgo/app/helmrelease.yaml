@@ -27,7 +27,7 @@ spec:
               SFTPGO_SFTPD__BINDINGS__0__PORT: 2022
               SFTPGO_HTTPD__BINDINGS__0__ADDRESS: 0.0.0.0
               SFTPGO_HTTPD__BINDINGS__0__PORT: 8080
-              SFTPGO_HTTPD__BINDINGS__0__OIDC__CONFIG_URL: https://id.goyangi.io
+              SFTPGO_HTTPD__BINDINGS__0__OIDC__CONFIG_URL: https://id.goyangi.io/application/o/sftpgo/
               SFTPGO_HTTPD__BINDINGS__0__OIDC__REDIRECT_BASE_URL: https://sftpgo.goyangi.io
               SFTPGO_HTTPD__BINDINGS__0__OIDC__SCOPES: openid,profile,email,preferred_username
               SFTPGO_HTTPD__BINDINGS__0__OIDC__USERNAME_FIELD: preferred_username

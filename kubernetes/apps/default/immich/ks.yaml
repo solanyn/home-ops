@@ -17,6 +17,10 @@ spec:
   postBuild:
     substitute:
       APP: immich
+      DATABASE_EXTENSIONS: |
+        [
+          { name: vchord }
+        ]
   prune: true
   sourceRef:
     kind: GitRepository
