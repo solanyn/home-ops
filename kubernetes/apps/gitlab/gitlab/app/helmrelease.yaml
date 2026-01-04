@@ -46,7 +46,12 @@ spec:
         password:
           useSecret: true
           secret: gitlab-secret
-          key: POSTGRES_PASSWORD
+          key: POSTGRES_URL
+        ssl:
+          secret: postgres-gitlab-cert
+          serverCA: ca.crt
+          clientCertificate: tls.crt
+          clientKey: tls.key
       redis:
         host: redis.storage.svc.cluster.local
         auth:
@@ -119,14 +124,6 @@ spec:
       install: false
     gitlab:
       webservice:
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18@sha256:866f15038ed5185a2b8118821f470bb7ca0df8c4231b8e277446e681ebb1ed84
-            envFrom: &envFrom
-              - secretRef:
-                  name: gitlab-secret
         minReplicas: 1
         maxReplicas: 1
         resources:
