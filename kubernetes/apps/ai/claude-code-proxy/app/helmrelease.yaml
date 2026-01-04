@@ -27,9 +27,10 @@ spec:
               tag: main@sha256:719c3da6f7ca4768b72a7c3660945878df68ec27bb2f6cd0110b9d8766f99451
             env:
               TZ: Australia/Sydney
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+              OPENAI_BASE_URL: https://ai.goyangi.io/v1
+              PREFERRED_PROVIDER: openai
+              BIG_MODEL: claude-opus-4-5
+              SMALL_MODEL: claude-haiku-4-5
     service:
       app:
         ports:
