@@ -39,8 +39,6 @@ spec:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: envoy-ai
-  http1:
-    maxRequestBodySize: 100Mi
   http2:
     onInvalidMessage: TerminateStream
   tcpKeepalive: {}
@@ -63,6 +61,8 @@ spec:
     - type: Zstd
     - type: Brotli
     - type: Gzip
+  requestBuffer:
+    limit: 100Mi
   tcpKeepalive: {}
   timeout:
     http:
