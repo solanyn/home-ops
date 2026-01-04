@@ -62,6 +62,33 @@ resource "authentik_flow_stage_binding" "invalidation-flow-binding-00" {
   order  = 0
 }
 
+## Admin backup authentication flow (password-based)
+resource "authentik_flow" "admin-backup" {
+  name               = "admin-backup-flow"
+  title              = "Admin Backup Login"
+  slug               = "admin-backup"
+  designation        = "authentication"
+  policy_engine_mode = "any"
+}
+
+resource "authentik_flow_stage_binding" "admin-backup-flow-binding-00" {
+  target = authentik_flow.admin-backup.uuid
+  stage  = authentik_stage_identification.admin-backup-identification.id
+  order  = 0
+}
+
+resource "authentik_flow_stage_binding" "admin-backup-flow-binding-10" {
+  target = authentik_flow.admin-backup.uuid
+  stage  = authentik_stage_password.admin-backup-password.id
+  order  = 10
+}
+
+resource "authentik_flow_stage_binding" "admin-backup-flow-binding-100" {
+  target = authentik_flow.admin-backup.uuid
+  stage  = authentik_stage_user_login.authentication-login.id
+  order  = 100
+}
+
 ## Recovery flow (admin-initiated only)
 resource "authentik_flow" "recovery" {
   name               = "recovery-flow"
