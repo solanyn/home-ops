@@ -41,7 +41,8 @@ resource "authentik_stage_identification" "admin-backup-identification" {
 }
 
 resource "authentik_stage_password" "admin-backup-password" {
-  name = "admin-backup-password"
+  name     = "admin-password"
+  backends = ["authentik.core.auth.InbuiltBackend"]
 }
 
 resource "authentik_stage_authenticator_validate" "admin-backup-totp" {
