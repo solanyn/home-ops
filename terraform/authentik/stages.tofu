@@ -5,10 +5,10 @@ data "authentik_source" "inbuilt" {
 
 resource "authentik_stage_identification" "authentication-identification" {
   name                      = "authentication-identification"
-  user_fields               = []
+  user_fields               = ["username"]
   case_insensitive_matching = false
   show_source_labels        = false
-  show_matched_user         = false
+  show_matched_user         = true
   recovery_flow             = authentik_flow.recovery.uuid
   sources                   = [data.authentik_source.inbuilt.uuid]
 }
