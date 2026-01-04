@@ -38,6 +38,7 @@ resource "authentik_brand" "home" {
   flow_authentication = authentik_flow.passwordless.uuid
   flow_invalidation   = authentik_flow.invalidation.uuid
   flow_user_settings  = authentik_flow.user-settings.uuid
+  flow_recovery       = authentik_flow.recovery.uuid
 }
 
 resource "authentik_service_connection_kubernetes" "local" {
