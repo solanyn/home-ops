@@ -7,7 +7,6 @@ metadata:
 spec:
   targetNamespace: default
   components:
-    - ../../../../components/envoy-gateway-oidc
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
