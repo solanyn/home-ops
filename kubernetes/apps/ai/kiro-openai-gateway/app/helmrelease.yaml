@@ -18,7 +18,6 @@ spec:
               repository: ghcr.io/solanyn/kiro-openai-gateway
               tag: 2025.12.29@sha256:55560287962c296e7d2d6a96eafefad6c43d27b347474046aad6aa0b8a723a62
             env:
-              PORT: 8080
               KIRO_CREDS_FILE: /config/credentials.json
             envFrom:
               - secretRef:
@@ -53,4 +52,4 @@ spec:
         controller: kiro-openai-gateway
         ports:
           http:
-            port: 8080
+            port: 8000
