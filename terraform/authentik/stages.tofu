@@ -17,7 +17,7 @@ resource "authentik_stage_identification" "authentication-identification" {
 resource "authentik_stage_authenticator_validate" "authentication-passkey-validation" {
   name                  = "authentication-passkey-validation"
   device_classes        = ["webauthn"]
-  not_configured_action = "deny"
+  not_configured_action = "skip"
   webauthn_user_verification = "required"
 }
 
