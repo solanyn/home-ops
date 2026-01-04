@@ -37,13 +37,8 @@ spec:
         username: gitlab
         password:
           useSecret: true
-          secret: gitlab-secret
-          key: POSTGRES_PASSWORD
-        ssl:
-          secret: postgres-gitlab-cert
-          serverCA: ca.crt
-          clientCertificate: tls.crt
-          clientKey: tls.key
+          secret: gitlab-postgres
+          key: password
       redis:
         host: dragonfly.storage.svc.cluster.local
         auth:
