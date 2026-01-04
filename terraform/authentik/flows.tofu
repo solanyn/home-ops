@@ -1,8 +1,8 @@
 ## Passwordless authentication flow (usernameless)
 resource "authentik_flow" "passwordless" {
-  name               = "passwordless-flow"
-  title              = "Passwordless Login"
-  slug               = "passwordless-flow"
+  name               = "passkey-flow"
+  title              = "Passkey Login"
+  slug               = "passkey"
   designation        = "authentication"
   policy_engine_mode = "any"
 }
@@ -64,9 +64,9 @@ resource "authentik_flow_stage_binding" "invalidation-flow-binding-00" {
 
 ## Admin backup authentication flow (password-based)
 resource "authentik_flow" "admin-backup" {
-  name               = "admin-backup-flow"
-  title              = "Admin Backup Login"
-  slug               = "admin-backup"
+  name               = "admin-flow"
+  title              = "Admin Login"
+  slug               = "admin"
   designation        = "authentication"
   policy_engine_mode = "any"
 }
