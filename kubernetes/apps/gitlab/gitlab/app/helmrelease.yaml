@@ -176,7 +176,7 @@ spec:
       storage:
         secret: gitlab-secret
         key: registry-config
-    certmanager:
+    cert-manager:
       install: false
     nginx-ingress:
       enabled: false
