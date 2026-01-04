@@ -94,6 +94,8 @@ spec:
       - name: gitlab
         ensure: present
         login: true
+        passwordSecret:
+          name: gitlab-postgres
   resources:
     requests:
       cpu: 10m
