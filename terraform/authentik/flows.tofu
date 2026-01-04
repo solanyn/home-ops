@@ -62,8 +62,8 @@ resource "authentik_flow_stage_binding" "invalidation-flow-binding-00" {
   order  = 0
 }
 
-## Admin backup authentication flow (password-based)
-resource "authentik_flow" "admin-backup" {
+## Admin authentication flow (password-based)
+resource "authentik_flow" "admin" {
   name               = "admin-flow"
   title              = "Admin Login"
   slug               = "admin"
@@ -71,26 +71,20 @@ resource "authentik_flow" "admin-backup" {
   policy_engine_mode = "any"
 }
 
-resource "authentik_flow_stage_binding" "admin-backup-flow-binding-00" {
-  target = authentik_flow.admin-backup.uuid
-  stage  = authentik_stage_identification.admin-backup-identification.id
+resource "authentik_flow_stage_binding" "admin-flow-binding-00" {
+  target = authentik_flow.admin.uuid
+  stage  = authentik_stage_identification.admin-identification.id
   order  = 0
 }
 
-resource "authentik_flow_stage_binding" "admin-backup-flow-binding-10" {
-  target = authentik_flow.admin-backup.uuid
-  stage  = authentik_stage_password.admin-backup-password.id
+resource "authentik_flow_stage_binding" "admin-flow-binding-10" {
+  target = authentik_flow.admin.uuid
+  stage  = authentik_stage_authenticator_validate.admin-totp.id
   order  = 10
 }
 
-resource "authentik_flow_stage_binding" "admin-backup-flow-binding-20" {
-  target = authentik_flow.admin-backup.uuid
-  stage  = authentik_stage_authenticator_validate.admin-backup-totp.id
-  order  = 20
-}
-
-resource "authentik_flow_stage_binding" "admin-backup-flow-binding-100" {
-  target = authentik_flow.admin-backup.uuid
+resource "authentik_flow_stage_binding" "admin-flow-binding-100" {
+  target = authentik_flow.admin.uuid
   stage  = authentik_stage_user_login.authentication-login.id
   order  = 100
 }
@@ -98,7 +92,7 @@ resource "authentik_flow_stage_binding" "admin-backup-flow-binding-100" {
 ## Recovery flow (admin-initiated only)
 resource "authentik_flow" "recovery" {
   name               = "recovery-flow"
-  title              = "Account recovery"
+  title              = "Set up your passkey"
   slug               = "account-recovery"
   designation        = "recovery"
   compatibility_mode = true
@@ -106,14 +100,8 @@ resource "authentik_flow" "recovery" {
 
 resource "authentik_flow_stage_binding" "recovery-flow-binding-00" {
   target = authentik_flow.recovery.uuid
-  stage  = authentik_stage_identification.recovery-identification.id
+  stage  = authentik_stage_authenticator_webauthn.enrollment-passkey-setup.id
   order  = 0
-}
-
-resource "authentik_flow_stage_binding" "recovery-flow-binding-10" {
-  target = authentik_flow.recovery.uuid
-  stage  = authentik_stage_email.recovery-email.id
-  order  = 10
 }
 
 ## Invitation enrollment flow (passkey setup)
