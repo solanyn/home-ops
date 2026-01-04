@@ -45,4 +45,3 @@ spec:
   apiKey:
     secretRef:
       name: kiro-openai-gateway-secret
-      namespace: ai
