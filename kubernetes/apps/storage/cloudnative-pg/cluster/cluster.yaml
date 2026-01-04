@@ -91,6 +91,9 @@ spec:
       - name: sonarr
         ensure: present
         login: true
+      - name: gitlab
+        ensure: present
+        login: true
   resources:
     requests:
       cpu: 10m
