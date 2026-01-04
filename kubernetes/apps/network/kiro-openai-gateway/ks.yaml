@@ -3,13 +3,13 @@ kind: Kustomization
 metadata:
   name: &app kiro-openai-gateway
 spec:
-  targetNamespace: ai
+  targetNamespace: network
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
   timeout: 5m
-  path: ./kubernetes/apps/ai/kiro-openai-gateway/app
+  path: ./kubernetes/apps/network/kiro-openai-gateway/app
   prune: true
   sourceRef:
     kind: GitRepository
