@@ -31,8 +31,6 @@ spec:
         configureCertmanager: false
       certmanager:
         install: false
-    certmanager-issuer:
-      email: false
       psql:
         host: postgres-rw.storage.svc.cluster.local
         database: gitlab
