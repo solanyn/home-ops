@@ -17,7 +17,7 @@ spec:
     - name: github-remote
       kind: Backend
       group: gateway.envoyproxy.io
-      path: "/mcp/x/issues/readonly"
+      path: "/mcp"
       securityPolicy:
         apiKey:
           secretRef:
