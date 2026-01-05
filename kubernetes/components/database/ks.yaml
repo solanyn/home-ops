@@ -13,6 +13,7 @@ spec:
   postBuild:
     substitute:
       APP: ${APP}
+      EXTENSIONS: ${EXTENSIONS:=[]}
   prune: true
   sourceRef:
     kind: GitRepository
