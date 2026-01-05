@@ -19,7 +19,10 @@ spec:
       APP: immich
       DATABASE_EXTENSIONS: |
         [
-          { name: vchord }
+          { name: vector },
+          { name: vchord },
+          { name: cube },
+          { name: earthdistance }
         ]
   prune: true
   sourceRef:
