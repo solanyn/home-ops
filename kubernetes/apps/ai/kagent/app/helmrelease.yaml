@@ -17,3 +17,64 @@ spec:
         baseURL: "https://ai.goyangi.io/v1"
         defaultHeaders:
           x-ai-eg-model: "gemini-3-pro-preview"
+    agents:
+      kgateway-agent:
+        enabled: false
+      argo-rollouts-agent:
+        enabled: false
+      cilium-debug-agent:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+      cilium-manager-agent:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+      cilium-policy-agent:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+      helm-agent:
+        enabled: false
+      istio-agent:
+        enabled: false
+      k8s-agent:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+      observability-agent:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+      promql-agent:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 64Mi
+    ui:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+    grafana-mcp:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+    querydoc:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+    kmcp:
+      enabled: false
+    controller:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
