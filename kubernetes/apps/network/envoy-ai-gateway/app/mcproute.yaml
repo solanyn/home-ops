@@ -2,7 +2,7 @@
 apiVersion: aigateway.envoyproxy.io/v1alpha1
 kind: MCPRoute
 metadata:
-  name: mcp-unified
+  name: mcp
 spec:
   parentRefs:
     - name: envoy-ai
