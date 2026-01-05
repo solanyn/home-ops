@@ -4,6 +4,8 @@ metadata:
   name: &app kiro-openai-gateway
 spec:
   targetNamespace: network
+  components:
+    - ../../../../components/volsync
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -18,3 +20,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      VOLSYNC_CAPACITY: 100Mi
