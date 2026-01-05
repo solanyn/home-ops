@@ -3,6 +3,7 @@ buckets = [
   "cloudnative-pg",
   "dragonflydb",
   "ferretdb",
+  "gitlab",
   "kubeflow",
   "kfp-pipelines",
   "label-studio",
