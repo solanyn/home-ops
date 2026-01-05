@@ -17,7 +17,7 @@ spec:
           app:
             image:
               repository: ghcr.io/github/github-mcp-server
-              tag: main@sha256:00045be27f10555bc7f4c4fc74d0ba838a0f7a09fb3dae23e643d6e711604d2b
+              tag: main@sha256:70b26a1acfe1077a47acd1f668f4b166bfc9681ba5bf7bc437d8b9f1c2c73d94
             envFrom:
               - secretRef:
                   name: github-mcp-server-secret
