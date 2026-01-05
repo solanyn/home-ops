@@ -14,7 +14,8 @@ spec:
   postBuild:
     substitute:
       APP: ${APP}
-      DATABASE_EXTENSIONS: ${DATABASE_EXTENSIONS:=[]}
+      EXTENSIONS: ${q:='}${DATABASE_EXTENSIONS}${q:='}
+      emptyArray: "[]"
   prune: true
   sourceRef:
     kind: GitRepository
