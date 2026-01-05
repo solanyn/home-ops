@@ -19,12 +19,11 @@ spec:
       APP: immich
       DATABASE_EXTENSIONS: |
         [
-          { "name": "vector" },
-          { "name": "vchord" },
-          { "name": "cube" },
-          { "name": "earthdistance" }
+          { name: vector },
+          { name: vchord },
+          { name: cube },
+          { name: earthdistance }
         ]
-      emptyArray: "[]"
   prune: true
   sourceRef:
     kind: GitRepository
