@@ -11,6 +11,8 @@ spec:
   interval: 1h
   values:
     transport: http
-    readonly: true
+    readonly: false
+    extraArgs:
+      - --mask-secrets=true
     networkPolicy:
       create: false
