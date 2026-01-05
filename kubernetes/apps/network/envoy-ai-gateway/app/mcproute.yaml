@@ -18,10 +18,6 @@ spec:
       kind: Backend
       group: gateway.envoyproxy.io
       path: "/mcp"
-      securityPolicy:
-        apiKey:
-          secretRef:
-            name: envoy-ai-gateway-github-mcp-secret
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: Backend
