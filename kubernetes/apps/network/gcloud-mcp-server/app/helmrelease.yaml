@@ -17,7 +17,7 @@ spec:
           app:
             image:
               repository: node
-              tag: 20-alpine
+              tag: 24-alpine
             command: ["npx"]
             args: ["-y", "@google-cloud/gcloud-mcp"]
             env:
