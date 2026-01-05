@@ -23,7 +23,6 @@ spec:
               TZ: Australia/Sydney
               PUID: "1000"
               PGID: "1000"
-              PASSWORD: ""
             resources:
               requests:
                 cpu: 10m
