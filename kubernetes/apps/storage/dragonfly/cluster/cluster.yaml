@@ -29,6 +29,8 @@ spec:
       value: "garage.storage.svc.cluster.local:3900"
     - name: DFLY_s3_use_https
       value: "false"
+    - name: DFLY_s3_sign_payload
+      value: "false"
   args:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
