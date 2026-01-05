@@ -17,7 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: immich
-      DATABASE_EXTENSIONS: |
+      EXTENSIONS: |
         [
           { name: vector },
           { name: vchord },
