@@ -31,7 +31,7 @@ spec:
   endpoints:
     - fqdn:
         hostname: flux-operator-mcp.network.svc.cluster.local
-        port: 8080
+        port: 9090
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: Backend
