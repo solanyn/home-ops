@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/booklore-app/booklore
-              tag: v1.16.3@sha256:c21ea5e0360fd30466edab326ba1b4d749872fc6b1fadb698819c6d164b9edcc
+              tag: v1.16.5@sha256:3b95a0c0085b6972f19075db695a118a9fe589561eec7816e4441465ae915ecd
             env:
               TZ: Australia/Sydney
               USER_ID: "1000"
