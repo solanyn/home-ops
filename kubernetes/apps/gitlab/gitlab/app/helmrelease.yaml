@@ -14,6 +14,7 @@ spec:
         name: gitlab
   interval: 1h
   values:
+    installCertmanager: false
     global:
       edition: ce
       time_zone: Australia/Sydney
