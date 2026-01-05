@@ -1,5 +1,8 @@
 locals {
-  default_property_mappings = data.authentik_property_mapping_provider_scope.oauth2.ids
+  default_property_mappings = concat(
+    data.authentik_property_mapping_provider_scope.oauth2.ids,
+    [authentik_property_mapping_provider_scope.email_verified.id]
+  )
 }
 
 module "onepassword_application" {
