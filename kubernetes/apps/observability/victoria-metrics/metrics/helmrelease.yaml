@@ -121,6 +121,13 @@ spec:
             matchLabels:
               dashboards: grafana
 
+    defaultRules:
+      create: true
+      rule:
+        spec:
+          labels:
+            namespace: observability
+
     additionalVictoriaMetricsMap:
       dockerhub-rules:
         groups:
