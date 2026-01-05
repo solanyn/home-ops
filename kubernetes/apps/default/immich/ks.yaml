@@ -17,13 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: immich
-      DATABASE_EXTENSIONS: |
-        [
-          { name: vector },
-          { name: vchord },
-          { name: cube },
-          { name: earthdistance }
-        ]
+      DATABASE_EXTENSIONS: '[{"name":"vector"},{"name":"vchord"},{"name":"cube"},{"name":"earthdistance"}]'
   prune: true
   sourceRef:
     kind: GitRepository
