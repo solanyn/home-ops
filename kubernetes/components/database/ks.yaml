@@ -13,8 +13,7 @@ spec:
   postBuild:
     substitute:
       APP: ${APP}
-      EXTENSIONS: ${q:='}${DATABASE_EXTENSIONS}${q:='}
-      emptyArray: "[]"
+      EXTENSIONS: ${DATABASE_EXTENSIONS:=${emptyArray}}
       EXTENSIONS: ${EXTENSIONS:=[]}
   prune: true
   sourceRef:
