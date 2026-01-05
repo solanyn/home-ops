@@ -17,6 +17,8 @@ spec:
             image:
               repository: ghcr.io/solanyn/kiro-openai-gateway
               tag: 1.0.8@sha256:510b7fe2eba14f20766097ce3832077db5d4661882106401e711cca282e112bf
+            env:
+              KIRO_CLI_DB_FILE: /data/kiro.db
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -36,14 +38,10 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     persistence:
-      config:
-        type: secret
-        name: kiro-openai-gateway-secret
+      data:
+        existingClaim: kiro-openai-gateway
         globalMounts:
-          - path: /app/.env
-            subPath: .env
-          - path: /app/credentials.json
-            subPath: credentials.json
+          - path: /data
       tmp:
         type: emptyDir
         globalMounts:
