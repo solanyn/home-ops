@@ -31,10 +31,12 @@ spec:
                 memory: 4Gi
     service:
       app:
+        controller: obsidian
         ports:
           http:
             port: 3000
       rest-api:
+        controller: obsidian
         ports:
           http:
             port: 27123
@@ -45,6 +47,10 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 3000
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
