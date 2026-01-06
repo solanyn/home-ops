@@ -66,11 +66,8 @@ spec:
       autoscaling:
         enabled: false
       replicas: 1
-      envFrom:
-        - secretRef:
-            name: authentik-secret
-      additionalContainers:
-        - name: blueprint-sidecar
+      initContainers:
+        - name: blueprint-sync
           image: ghcr.io/kiwigrid/k8s-sidecar:1.25.2@sha256:cb4c638ffb1fa1eb49678e0f0423564b39254533f63f4ca6a6c24260472e0c4f
           env:
             - name: LABEL
@@ -81,9 +78,14 @@ spec:
               value: "secret"
             - name: NAMESPACE
               value: "default"
+            - name: METHOD
+              value: "SLEEP"
           volumeMounts:
             - name: blueprint-oidc
               mountPath: /blueprints/custom/oidc
+      envFrom:
+        - secretRef:
+            name: authentik-secret
       resources:
         requests:
           cpu: 10m
@@ -91,9 +93,11 @@ spec:
         limits:
           memory: 1Gi
       metrics:
-        prometheus:
-          serviceMonitor:
-            enabled: true
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          labels:
+            release: victoria-metrics
       route:
         main:
           enabled: true
