@@ -42,6 +42,50 @@ spec:
           secret:
             secretName: authentik-blueprint-mealie
             optional: true
+        - name: blueprint-audiobookshelf
+          secret:
+            secretName: authentik-blueprint-audiobookshelf
+            optional: true
+        - name: blueprint-autobrr
+          secret:
+            secretName: authentik-blueprint-autobrr
+            optional: true
+        - name: blueprint-ersatztv
+          secret:
+            secretName: authentik-blueprint-ersatztv
+            optional: true
+        - name: blueprint-prowlarr
+          secret:
+            secretName: authentik-blueprint-prowlarr
+            optional: true
+        - name: blueprint-qui
+          secret:
+            secretName: authentik-blueprint-qui
+            optional: true
+        - name: blueprint-radarr
+          secret:
+            secretName: authentik-blueprint-radarr
+            optional: true
+        - name: blueprint-romm
+          secret:
+            secretName: authentik-blueprint-romm
+            optional: true
+        - name: blueprint-sftpgo
+          secret:
+            secretName: authentik-blueprint-sftpgo
+            optional: true
+        - name: blueprint-sonarr
+          secret:
+            secretName: authentik-blueprint-sonarr
+            optional: true
+        - name: blueprint-stash
+          secret:
+            secretName: authentik-blueprint-stash
+            optional: true
+        - name: blueprint-whisparr
+          secret:
+            secretName: authentik-blueprint-whisparr
+            optional: true
       volumeMounts:
         - name: postgres-cert
           mountPath: /var/run/secrets/postgresql
@@ -64,6 +108,50 @@ spec:
         - name: blueprint-mealie
           mountPath: /blueprints/custom/oidc/mealie.yaml
           subPath: mealie.yaml
+          readOnly: true
+        - name: blueprint-audiobookshelf
+          mountPath: /blueprints/custom/oidc/audiobookshelf.yaml
+          subPath: audiobookshelf.yaml
+          readOnly: true
+        - name: blueprint-autobrr
+          mountPath: /blueprints/custom/oidc/autobrr.yaml
+          subPath: autobrr.yaml
+          readOnly: true
+        - name: blueprint-ersatztv
+          mountPath: /blueprints/custom/oidc/ersatztv.yaml
+          subPath: ersatztv.yaml
+          readOnly: true
+        - name: blueprint-prowlarr
+          mountPath: /blueprints/custom/oidc/prowlarr.yaml
+          subPath: prowlarr.yaml
+          readOnly: true
+        - name: blueprint-qui
+          mountPath: /blueprints/custom/oidc/qui.yaml
+          subPath: qui.yaml
+          readOnly: true
+        - name: blueprint-radarr
+          mountPath: /blueprints/custom/oidc/radarr.yaml
+          subPath: radarr.yaml
+          readOnly: true
+        - name: blueprint-romm
+          mountPath: /blueprints/custom/oidc/romm.yaml
+          subPath: romm.yaml
+          readOnly: true
+        - name: blueprint-sftpgo
+          mountPath: /blueprints/custom/oidc/sftpgo.yaml
+          subPath: sftpgo.yaml
+          readOnly: true
+        - name: blueprint-sonarr
+          mountPath: /blueprints/custom/oidc/sonarr.yaml
+          subPath: sonarr.yaml
+          readOnly: true
+        - name: blueprint-stash
+          mountPath: /blueprints/custom/oidc/stash.yaml
+          subPath: stash.yaml
+          readOnly: true
+        - name: blueprint-whisparr
+          mountPath: /blueprints/custom/oidc/whisparr.yaml
+          subPath: whisparr.yaml
           readOnly: true
     server:
       autoscaling:
