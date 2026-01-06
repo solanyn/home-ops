@@ -38,18 +38,6 @@ spec:
         - name: blueprints-groups
           configMap:
             name: authentik-groups
-        - name: blueprints-flows
-          configMap:
-            name: authentik-flows
-        - name: blueprints-stages
-          configMap:
-            name: authentik-stages
-        - name: blueprints-system
-          configMap:
-            name: authentik-system
-        - name: blueprints-groups
-          configMap:
-            name: authentik-groups
       volumeMounts:
         - name: postgres-cert
           mountPath: /var/run/secrets/postgresql
