@@ -1,0 +1,85 @@
+version: 1
+metadata:
+  name: system
+entries:
+  # Brands
+  - model: authentik_tenants.tenant
+    identifiers:
+      domain: authentik-default
+    attrs:
+      default: false
+      branding_title: authentik
+      branding_logo: /static/dist/assets/icons/icon_left_brand.svg
+      branding_favicon: /static/dist/assets/icons/icon.png
+      flow_authentication: !Find [authentik_flows.flow, [slug, default-authentication-flow]]
+      flow_invalidation: !Find [authentik_flows.flow, [slug, default-invalidation-flow]]
+      flow_user_settings: !Find [authentik_flows.flow, [slug, default-user-settings-flow]]
+
+  - model: authentik_tenants.tenant
+    identifiers:
+      domain: goyangi.io
+    attrs:
+      default: true
+      branding_title: Home
+      branding_logo: /static/dist/assets/icons/icon_left_brand.svg
+      branding_favicon: /static/dist/assets/icons/icon.png
+      flow_authentication: !Find [authentik_flows.flow, [slug, passkey]]
+      flow_invalidation: !Find [authentik_flows.flow, [slug, invalidation-flow]]
+      flow_user_settings: !Find [authentik_flows.flow, [slug, user-settings-flow]]
+      flow_recovery: !Find [authentik_flows.flow, [slug, account-recovery]]
+
+  # Service connections
+  - model: authentik_outposts.kubernetesserviceconnection
+    identifiers:
+      name: local
+    attrs:
+      local: true
+
+  # Expression policies
+  - model: authentik_policies_expression.expressionpolicy
+    identifiers:
+      name: user-settings-authorization
+    attrs:
+      expression: |
+        from authentik.lib.config import CONFIG
+        from authentik.core.models import (
+            USER_ATTRIBUTE_CHANGE_EMAIL,
+            USER_ATTRIBUTE_CHANGE_NAME,
+            USER_ATTRIBUTE_CHANGE_USERNAME
+        )
+        prompt_data = request.context.get('prompt_data')
+
+        if not request.user.group_attributes(request.http_request).get(
+            USER_ATTRIBUTE_CHANGE_EMAIL, CONFIG.y_bool('default_user_change_email', True)
+        ):
+            if prompt_data.get('email') != request.user.email:
+                ak_message('Not allowed to change email address.')
+                return False
+
+        if not request.user.group_attributes(request.http_request).get(
+            USER_ATTRIBUTE_CHANGE_NAME, CONFIG.y_bool('default_user_change_name', True)
+        ):
+            if prompt_data.get('name') != request.user.name:
+                ak_message('Not allowed to change name.')
+                return False
+
+        if not request.user.group_attributes(request.http_request).get(
+            USER_ATTRIBUTE_CHANGE_USERNAME, CONFIG.y_bool('default_user_change_username', True)
+        ):
+            if prompt_data.get('username') != request.user.username:
+                ak_message('Not allowed to change username.')
+                return False
+
+        return True
+
+  # Custom scope mappings
+  - model: authentik_providers_oauth2.scopemapping
+    identifiers:
+      name: Email Verified Scope
+    attrs:
+      scope_name: email
+      expression: |
+        return {
+          "email": user.email,
+          "email_verified": True,
+        }

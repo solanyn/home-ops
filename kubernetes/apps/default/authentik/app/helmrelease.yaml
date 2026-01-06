@@ -26,12 +26,48 @@ spec:
           secret:
             secretName: cluster-ca
             defaultMode: 0440
+        - name: blueprints-flows
+          configMap:
+            name: authentik-flows
+        - name: blueprints-stages
+          configMap:
+            name: authentik-stages
+        - name: blueprints-system
+          configMap:
+            name: authentik-system
+        - name: blueprints-groups
+          configMap:
+            name: authentik-groups
+        - name: blueprints-flows
+          configMap:
+            name: authentik-flows
+        - name: blueprints-stages
+          configMap:
+            name: authentik-stages
+        - name: blueprints-system
+          configMap:
+            name: authentik-system
+        - name: blueprints-groups
+          configMap:
+            name: authentik-groups
       volumeMounts:
         - name: postgres-cert
           mountPath: /var/run/secrets/postgresql
           readOnly: true
         - name: postgres-ca
           mountPath: /var/run/secrets/root-ca
+          readOnly: true
+        - name: blueprints-flows
+          mountPath: /blueprints/custom/flows
+          readOnly: true
+        - name: blueprints-stages
+          mountPath: /blueprints/custom/stages
+          readOnly: true
+        - name: blueprints-system
+          mountPath: /blueprints/custom/system
+          readOnly: true
+        - name: blueprints-groups
+          mountPath: /blueprints/custom/groups
           readOnly: true
     server:
       autoscaling:
