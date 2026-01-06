@@ -22,7 +22,7 @@ spec:
           image: kiwigrid/k8s-sidecar:1.25.2
           env:
             - name: LABEL
-              value: "authentik.goyangi.io/blueprint=oidc"
+              value: "authentik/oidc=true"
             - name: FOLDER
               value: "/blueprints/custom/oidc"
             - name: RESOURCE
