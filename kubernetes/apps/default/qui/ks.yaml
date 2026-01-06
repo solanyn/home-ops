@@ -9,6 +9,7 @@ spec:
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
+    - ../../../../components/oidc/app
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -16,8 +17,10 @@ spec:
   path: ./kubernetes/apps/default/qui/app
   postBuild:
     substitute:
-      VOLSYNC_CAPACITY: 2Gi
       APP: qui
+      OIDC_GROUP: users
+      OIDC_REDIRECT_URI: /oauth2/callback
+      VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:
     kind: GitRepository
