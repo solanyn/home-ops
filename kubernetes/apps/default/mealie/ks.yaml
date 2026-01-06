@@ -9,6 +9,7 @@ spec:
   components:
     - ../../../../components/volsync
     - ../../../../components/database
+    - ../../../../components/oidc/app
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage
@@ -17,6 +18,8 @@ spec:
   postBuild:
     substitute:
       APP: mealie
+      OIDC_GROUP: users
+      OIDC_REDIRECT_URI: /login
   prune: true
   sourceRef:
     kind: GitRepository
