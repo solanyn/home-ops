@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/kiro-openai-gateway
-              tag: 1.0.8@sha256:8df5db67c8b0bfa97d3d6bca4e1a50b21491a6c80ec4eb7636737bcdd540aae8
+              tag: 1.0.8@sha256:7912779c41165a476bde07ca481d1c8c6ede4323ea26004534f2282202849cdd
             env:
               KIRO_CLI_DB_FILE: /data/kiro.db
             securityContext:
