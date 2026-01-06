@@ -15,6 +15,10 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
+            args:
+              - sse
+              - --port
+              - "3000"
             image:
               repository: ghcr.io/github/github-mcp-server
               tag: main@sha256:ddfd0d0c30a40ede8b5c1de6c182fbffd0f4efeab25c035070672cf0b164b080
