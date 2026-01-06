@@ -38,6 +38,10 @@ spec:
         - name: blueprints-groups
           configMap:
             name: authentik-groups
+        - name: blueprint-mealie
+          secret:
+            secretName: authentik-blueprint-mealie
+            optional: true
       volumeMounts:
         - name: postgres-cert
           mountPath: /var/run/secrets/postgresql
@@ -56,6 +60,10 @@ spec:
           readOnly: true
         - name: blueprints-groups
           mountPath: /blueprints/custom/groups
+          readOnly: true
+        - name: blueprint-mealie
+          mountPath: /blueprints/custom/oidc/mealie.yaml
+          subPath: mealie.yaml
           readOnly: true
     server:
       autoscaling:
