@@ -95,7 +95,7 @@ spec:
       replicas: 1
       initContainers:
         - name: blueprint-sync
-          image: ghcr.io/kiwigrid/k8s-sidecar:1.25.2@sha256:cb4c638ffb1fa1eb49678e0f0423564b39254533f63f4ca6a6c24260472e0c4f
+          image: ghcr.io/kiwigrid/k8s-sidecar:2.2.3@sha256:35a92d087d3063b7376a832b58e8f0818afd9e5e7489e7a83275d761a3c1cf0f
           env:
             - name: LABEL
               value: "authentik/oidc=true"
