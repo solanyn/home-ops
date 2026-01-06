@@ -12,6 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
+    - ../../../../components/oidc/app
   interval: 1h
   timeout: 5m
   path: ./kubernetes/apps/default/sftpgo/app
@@ -23,3 +24,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      OIDC_GROUP: users
+      OIDC_REDIRECT_URI: /web/oidc/callback

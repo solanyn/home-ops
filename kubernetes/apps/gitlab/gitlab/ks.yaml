@@ -9,6 +9,7 @@ spec:
   components:
     - ../../../../components/database/password
     - ../../../../components/volsync
+    - ../../../../components/oidc/app
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage
@@ -21,6 +22,8 @@ spec:
   postBuild:
     substitute:
       APP: gitlab
+      OIDC_GROUP: admin
+      OIDC_REDIRECT_URI: /users/auth/openid_connect/callback
       VOLSYNC_CAPACITY: 10Gi
   prune: true
   sourceRef:
