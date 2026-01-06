@@ -10,6 +10,8 @@ spec:
     name: tofu-controller
   interval: 15m
   values:
+    branchPlanner:
+      enabled: true
     runner:
       image:
         repository: ghcr.io/home-operations/opentofu-runner
