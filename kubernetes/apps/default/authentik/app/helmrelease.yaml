@@ -17,21 +17,6 @@ spec:
         type: RollingUpdate
       securityContext:
         fsGroup: 1000
-      additionalContainers:
-        - name: blueprint-sidecar
-          image: kiwigrid/k8s-sidecar:1.25.2
-          env:
-            - name: LABEL
-              value: "authentik/oidc=true"
-            - name: FOLDER
-              value: "/blueprints/custom/oidc"
-            - name: RESOURCE
-              value: "secret"
-            - name: NAMESPACE
-              value: "default"
-          volumeMounts:
-            - name: blueprint-oidc
-              mountPath: /blueprints/custom/oidc
       volumes:
         - name: postgres-cert
           secret:
@@ -84,6 +69,21 @@ spec:
       envFrom:
         - secretRef:
             name: authentik-secret
+      additionalContainers:
+        - name: blueprint-sidecar
+          image: kiwigrid/k8s-sidecar:1.25.2
+          env:
+            - name: LABEL
+              value: "authentik/oidc=true"
+            - name: FOLDER
+              value: "/blueprints/custom/oidc"
+            - name: RESOURCE
+              value: "secret"
+            - name: NAMESPACE
+              value: "default"
+          volumeMounts:
+            - name: blueprint-oidc
+              mountPath: /blueprints/custom/oidc
       resources:
         requests:
           cpu: 10m
