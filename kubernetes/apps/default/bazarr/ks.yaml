@@ -8,6 +8,7 @@ spec:
   targetNamespace: default
   components:
     - ../../../../components/nfs-scaler
+    - ../../../../components/oidc/envoy
     - ../../../../components/volsync
   dependsOn:
   - name: rook-ceph-cluster
@@ -16,8 +17,10 @@ spec:
   path: ./kubernetes/apps/default/bazarr/app
   postBuild:
     substitute:
-      VOLSYNC_CAPACITY: 1Gi
       APP: bazarr
+      OIDC_GROUP: users
+      OIDC_REDIRECT_URI: /oauth2/callback
+      VOLSYNC_CAPACITY: 1Gi
   prune: true
   sourceRef:
     kind: GitRepository

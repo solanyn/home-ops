@@ -19,6 +19,7 @@
       matchPackageNames: ["ghcr.io/linuxserver-labs/prarr"],
       matchCurrentValue: "/^whisparr-eros-/",
       versioning: "regex:^whisparr-eros-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$",
+      commitMessageTopic: "prarr",
     },
     {
       description: "Extract version from lidarr-plugins tags",

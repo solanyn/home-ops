@@ -21,8 +21,6 @@ spec:
       APP: whisparr
       OIDC_GROUP: users
       OIDC_REDIRECT_URI: /oauth2/callback
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /oauth2/callback
   prune: true
   sourceRef:
     kind: GitRepository
