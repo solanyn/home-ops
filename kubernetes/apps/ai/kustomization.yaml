@@ -12,4 +12,3 @@ resources:
   - ./kagent/ks.yaml
   - ./librechat/ks.yaml
   - ./meilisearch/ks.yaml
-  - ./claude-code-proxy/ks.yaml
