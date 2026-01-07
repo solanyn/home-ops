@@ -20,3 +20,24 @@ spec:
       compression: bzip2
       maxParallel: 8
   retentionPolicy: 14d
+---
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: r2
+spec:
+  configuration:
+    data:
+      compression: bzip2
+    destinationPath: s3://cloudnative-pg/
+    s3Credentials:
+      accessKeyId:
+        name: cloudnative-pg-secret
+        key: R2_ACCESS_KEY_ID
+      secretAccessKey:
+        name: cloudnative-pg-secret
+        key: R2_SECRET_ACCESS_KEY
+    wal:
+      compression: bzip2
+      maxParallel: 8
+  retentionPolicy: 14d
