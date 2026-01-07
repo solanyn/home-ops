@@ -211,18 +211,7 @@ parent: eno1
 mtu: 9000
 ---
 apiVersion: v1alpha1
-kind: VLANConfig
-name: eno1.90
-vlanID: 90
-parent: eno1
-mtu: 9000
----
-apiVersion: v1alpha1
 kind: WatchdogTimerConfig
 device: /dev/watchdog0
 timeout: 5m
----
-apiVersion: v1alpha1
-kind: OOMConfig
-triggerExpression: "false"
 
