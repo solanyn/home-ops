@@ -32,7 +32,6 @@ spec:
     clientID: ${APP}
     clientSecret:
       name: "${APP}-oidc-secret"
-      key: "client-secret"
     refreshToken: true
     redirectURL: "https://${APP_SUBDOMAIN:-${APP}}.goyangi.io/oauth2/callback"
     logoutPath: "${LOGOUT_PATH:-/logout}"
