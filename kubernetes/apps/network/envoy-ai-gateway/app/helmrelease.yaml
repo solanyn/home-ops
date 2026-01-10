@@ -17,7 +17,7 @@ spec:
     extProc:
       image:
         repository: mirror.gcr.io/envoyproxy/ai-gateway-extproc
-        tag: latest@sha256:55248ef9cb0e1dc18075fac0753d4ea0a3e0c4ab8ddcf45a38ac24ddff7a04f4
+        tag: latest@sha256:9ceb49d60da6251799b016f55aab6d42200a3fdf02e6e54f52162e2d359e005d
     controller:
       image:
         repository: mirror.gcr.io/envoyproxy/ai-gateway-controller
