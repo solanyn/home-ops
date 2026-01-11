@@ -14,6 +14,13 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
           chown-run:
             image:
               repository: busybox
@@ -36,9 +43,7 @@ spec:
               WHISPARR__LOG__DBENABLED: "False"
               WHISPARR__LOG__LEVEL: info
               TZ: Australia/Sydney
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: true
