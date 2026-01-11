@@ -1,0 +1,23 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: bazarr
+spec:
+  oidc:
+    clientID: bazarr
+    clientSecret:
+      name: bazarr-secret
+    logoutPath: /logout
+    provider:
+      issuer: https://id.goyangi.io/application/o/bazarr/
+    redirectURL: https://bazarr.goyangi.io/oauth2/callback
+    refreshToken: true
+    scopes:
+      - openid
+      - profile
+      - email
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: bazarr

@@ -9,7 +9,6 @@ spec:
   components:
     - ../../../../components/database
     - ../../../../components/volsync
-    - ../../../../components/oidc/app
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage
@@ -20,8 +19,6 @@ spec:
   postBuild:
     substitute:
       APP: romm
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /api/oauth/openid
   prune: true
   sourceRef:
     kind: GitRepository

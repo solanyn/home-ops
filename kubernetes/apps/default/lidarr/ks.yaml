@@ -8,7 +8,6 @@ spec:
   targetNamespace: default
   components:
     - ../../../../components/database
-    - ../../../../components/oidc/envoy
     - ../../../../components/volsync
   dependsOn:
     - name: cloudnative-pg-cluster
@@ -20,8 +19,6 @@ spec:
   postBuild:
     substitute:
       APP: lidarr
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /oauth2/callback
   prune: true
   sourceRef:
     kind: GitRepository

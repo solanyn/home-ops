@@ -8,7 +8,6 @@ spec:
   targetNamespace: default
   components:
     - ../../../../components/volsync
-    - ../../../../components/oidc/app
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -17,8 +16,6 @@ spec:
   postBuild:
     substitute:
       APP: audiobookshelf
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /auth/openid/callback
       VOLSYNC_CAPACITY: 1Gi
   prune: true
   sourceRef:
