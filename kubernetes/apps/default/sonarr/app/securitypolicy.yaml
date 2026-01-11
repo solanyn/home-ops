@@ -1,0 +1,22 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: sonarr
+spec:
+  oidc:
+    clientID: sonarr
+    clientSecret:
+      name: sonarr-secret
+    logoutPath: /logout
+    provider:
+      issuer: https://id.goyangi.io/application/o/sonarr/
+    redirectURL: https://sonarr.goyangi.io/oauth2/callback
+    refreshToken: true
+    scopes:
+      - openid
+      - profile
+      - email
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: sonarr

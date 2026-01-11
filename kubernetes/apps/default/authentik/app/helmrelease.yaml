@@ -13,21 +13,21 @@ spec:
     blueprints:
       configMaps: []
       secrets:
-        - authentik-blueprint-audiobookshelf
-        - authentik-blueprint-autobrr
-        - authentik-blueprint-bazarr
-        - authentik-blueprint-ersatztv
-        - authentik-blueprint-gitlab
-        - authentik-blueprint-lidarr
-        - authentik-blueprint-mealie
-        - authentik-blueprint-prowlarr
-        - authentik-blueprint-qui
-        - authentik-blueprint-radarr
-        - authentik-blueprint-romm
-        - authentik-blueprint-sftpgo
-        - authentik-blueprint-sonarr
-        - authentik-blueprint-stash
-        - authentik-blueprint-whisparr
+        - audiobookshelf-secret
+        - autobrr-secret
+        - bazarr-secret
+        - ersatztv-secret
+        - gitlab-secret
+        - lidarr-secret
+        - mealie-secret
+        - prowlarr-secret
+        - qui-secret
+        - radarr-secret
+        - romm-secret
+        - sftpgo-secret
+        - sonarr-secret
+        - stash-secret
+        - whisparr-secret
     global:
       podAnnotations:
         secret.reloader.stakater.com/reload: authentik-secret,postgres-authentik-cert

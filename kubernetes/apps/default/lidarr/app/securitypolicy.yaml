@@ -1,0 +1,23 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: lidarr
+spec:
+  oidc:
+    clientID: lidarr
+    clientSecret:
+      name: lidarr-secret
+    logoutPath: /logout
+    provider:
+      issuer: https://id.goyangi.io/application/o/lidarr/
+    redirectURL: https://lidarr.goyangi.io/oauth2/callback
+    refreshToken: true
+    scopes:
+      - openid
+      - profile
+      - email
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: lidarr

@@ -9,7 +9,6 @@ spec:
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
-    - ../../../../components/oidc/app
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
@@ -18,8 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: qui
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /oauth2/callback
       VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:
