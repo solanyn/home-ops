@@ -8,7 +8,6 @@ spec:
   targetNamespace: default
   components:
     - ../../../../components/volsync
-    - ../../../../components/database
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage
