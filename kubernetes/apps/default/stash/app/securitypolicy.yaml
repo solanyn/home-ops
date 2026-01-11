@@ -1,0 +1,23 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: stash
+spec:
+  oidc:
+    clientID: stash
+    clientSecret:
+      name: stash-secret
+    logoutPath: /logout
+    provider:
+      issuer: https://id.goyangi.io/application/o/stash/
+    redirectURL: https://stash.goyangi.io/oauth2/callback
+    refreshToken: true
+    scopes:
+      - openid
+      - profile
+      - email
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: stash

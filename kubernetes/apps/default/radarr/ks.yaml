@@ -8,19 +8,16 @@ spec:
   targetNamespace: default
   components:
     - ../../../../components/database
-    - ../../../../components/oidc/envoy
   dependsOn:
-  - name: cloudnative-pg-cluster
-    namespace: storage
-  - name: rook-ceph-cluster
-    namespace: rook-ceph
+    - name: cloudnative-pg-cluster
+      namespace: storage
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/radarr/app
   postBuild:
     substitute:
       APP: radarr
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /oauth2/callback
   prune: true
   sourceRef:
     kind: GitRepository
