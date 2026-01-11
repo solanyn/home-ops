@@ -14,6 +14,13 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
           chown-run:
             image:
               repository: busybox
@@ -37,9 +44,7 @@ spec:
               LIDARR__LOG__LEVEL: info
               LIDARR__SERVER__PORT: &port 80
               TZ: Australia/Sydney
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+            envFrom: *envFrom
             probes:
               liveness:
                 enabled: true
