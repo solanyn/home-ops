@@ -6,10 +6,10 @@ metadata:
 spec:
   targetNamespace: storage
   healthChecks:
-  - apiVersion: helm.toolkit.fluxcd.io/v2
-    kind: HelmRelease
-    name: cloudnative-pg
-    namespace: storage
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: cloudnative-pg
+      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/storage/cloudnative-pg/app
   prune: true
@@ -26,68 +26,15 @@ metadata:
 spec:
   targetNamespace: storage
   dependsOn:
-  - name: cert-manager
-    namespace: cert-manager
-  - name: cloudnative-pg
-    namespace: storage
+    - name: cert-manager
+      namespace: cert-manager
+    - name: cloudnative-pg
+      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/storage/cloudnative-pg/barman-cloud
   postBuild:
     substitute:
       SIDECAR_IMAGE_VERSION: v0.7.0
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cloudnative-pg-certificates
-spec:
-  targetNamespace: cert-manager
-  dependsOn:
-  - name: cert-manager
-    namespace: cert-manager
-  - name: reflector
-    namespace: kube-system
-  interval: 1h
-  path: ./kubernetes/apps/storage/cloudnative-pg/certificates
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cloudnative-pg-cluster
-spec:
-  targetNamespace: storage
-  dependsOn:
-  - name: cloudnative-pg
-    namespace: storage
-  - name: cloudnative-pg-barman-cloud
-    namespace: storage
-  - name: cloudnative-pg-certificates
-    namespace: storage
-  - name: garage
-    namespace: storage
-  healthChecks:
-  - apiVersion: postgresql.cnpg.io/v1
-    kind: Cluster
-    name: postgres
-  healthCheckExprs:
-  - apiVersion: postgresql.cnpg.io/v1
-    kind: Cluster
-    failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
-    current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
-  interval: 1h
-  path: ./kubernetes/apps/storage/cloudnative-pg/cluster
   prune: true
   sourceRef:
     kind: GitRepository
