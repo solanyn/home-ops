@@ -30,20 +30,12 @@ spec:
         - whisparr-secret
     global:
       podAnnotations:
-        secret.reloader.stakater.com/reload: authentik-secret,postgres-authentik-cert
+        secret.reloader.stakater.com/reload: authentik-secret
       deploymentStrategy:
         type: RollingUpdate
       securityContext:
         fsGroup: 1000
       volumes:
-        - name: postgres-cert
-          secret:
-            secretName: postgres-authentik-cert
-            defaultMode: 0440
-        - name: postgres-ca
-          secret:
-            secretName: cluster-ca
-            defaultMode: 0440
         - name: blueprints-flows
           configMap:
             name: authentik-flows
@@ -57,12 +49,6 @@ spec:
           configMap:
             name: authentik-groups
       volumeMounts:
-        - name: postgres-cert
-          mountPath: /var/run/secrets/postgresql
-          readOnly: true
-        - name: postgres-ca
-          mountPath: /var/run/secrets/root-ca
-          readOnly: true
         - name: blueprints-flows
           mountPath: /blueprints/custom/flows
           readOnly: true
@@ -79,9 +65,13 @@ spec:
       autoscaling:
         enabled: false
       replicas: 1
-      envFrom:
-        - secretRef:
-            name: authentik-secret
+      initContainers:
+        - name: init-db
+          image: ghcr.io/home-operations/postgres-init:18
+          envFrom: &envFrom
+            - secretRef:
+                name: authentik-secret
+      envFrom: *envFrom
       resources:
         requests:
           cpu: 10m
