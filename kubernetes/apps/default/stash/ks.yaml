@@ -8,7 +8,6 @@ spec:
   targetNamespace: default
   components:
     - ../../../../components/volsync
-    - ../../../../components/oidc/envoy
   dependsOn:
     - name: intel-gpu-resource-driver
       namespace: kube-system
@@ -19,8 +18,6 @@ spec:
   postBuild:
     substitute:
       APP: stash
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /oauth2/callback
   prune: true
   sourceRef:
     kind: GitRepository

@@ -7,7 +7,6 @@ spec:
   targetNamespace: default
   components:
     - ../../../../components/database
-    - ../../../../components/oidc/app
   dependsOn:
   - name: cloudnative-pg-cluster
     namespace: storage
@@ -16,8 +15,6 @@ spec:
   postBuild:
     substitute:
       APP: autobrr
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /oauth2/callback
   prune: true
   sourceRef:
     kind: GitRepository
