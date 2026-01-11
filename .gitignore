@@ -13,3 +13,9 @@ kubeconfig
 talosconfig
 onepassword.env
 bgp.conf
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
