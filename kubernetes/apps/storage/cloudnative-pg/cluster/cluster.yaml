@@ -15,20 +15,12 @@ spec:
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
-  certificates:
-    serverCASecret: postgres-server-cert
-    serverTLSSecret: postgres-server-cert
-    clientCASecret: postgres-client-ca
-    replicationTLSSecret: postgres-replication-cert
   postgresql:
     shared_preload_libraries:
       - "vchord.so"
     parameters:
       max_connections: "200"
       shared_buffers: 256MB
-    pg_hba:
-      - hostnossl all all 10.42.0.0/16 scram-sha-256
-      - hostssl all all all cert clientcert=verify-full
     extensions:
       - name: postgis
         ld_library_path:
@@ -53,7 +45,7 @@ spec:
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
-      parameters: &parameters
+      parameters:
         barmanObjectName: garage
         serverName: postgres18-v1
   bootstrap:

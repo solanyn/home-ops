@@ -30,6 +30,7 @@ spec:
     data:
       compression: bzip2
     destinationPath: s3://cloudnative-pg/
+    endpointURL: https://25450dc0f239d4e727e3488cfb31b5c4.r2.cloudflarestorage.com
     s3Credentials:
       accessKeyId:
         name: cloudnative-pg-secret
