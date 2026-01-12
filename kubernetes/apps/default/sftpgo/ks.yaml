@@ -12,6 +12,9 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
+  dependsOn:
+    - name: authentik
+      namespace: default
   interval: 1h
   timeout: 5m
   path: ./kubernetes/apps/default/sftpgo/app

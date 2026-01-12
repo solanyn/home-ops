@@ -8,6 +8,8 @@ spec:
   targetNamespace: default
   components:
   dependsOn:
+    - name: authentik
+      namespace: default
     - name: cloudnative-pg-cluster
       namespace: storage
     - name: rook-ceph-cluster
