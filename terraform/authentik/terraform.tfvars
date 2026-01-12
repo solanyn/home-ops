@@ -14,7 +14,7 @@ applications = {
   lidarr         = { group = "user", icon = "lidarr", redirect_uris = ["/oauth2/callback"] }
   mealie         = { group = "user", icon = "mealie", redirect_uris = ["/login"] }
   prowlarr       = { group = "user", icon = "prowlarr", redirect_uris = ["/oauth2/callback"] }
-  qui            = { group = "user", icon = "qui", redirect_uris = ["/oauth2/callback"] }
+  qui            = { group = "user", icon = "qui", redirect_uris = ["/api/auth/oidc/callback"] }
   radarr         = { group = "user", icon = "radarr", redirect_uris = ["/oauth2/callback"] }
   romm           = { group = "user", icon = "romm", redirect_uris = ["/api/oauth/openid"] }
   sftpgo         = { group = "user", icon = "sftpgo", redirect_uris = ["/web/oidc/callback"] }
