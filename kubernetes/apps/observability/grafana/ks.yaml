@@ -21,8 +21,12 @@ kind: Kustomization
 metadata:
   name: grafana-instance
 spec:
+  targetNamespace: observability
   dependsOn:
+    - name: authentik
+      namespace: default
     - name: grafana
+      namespace: observability
   interval: 1h
   path: ./kubernetes/apps/observability/grafana/instance
   prune: true
@@ -30,5 +34,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: observability
   wait: false
