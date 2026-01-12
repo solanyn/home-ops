@@ -9,6 +9,9 @@ spec:
   components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
+  dependsOn:
+    - name: authentik
+      namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/ersatztv/app
   postBuild:
