@@ -7,6 +7,8 @@ metadata:
 spec:
   targetNamespace: analytics
   dependsOn:
+    - name: authentik
+      namespace: default
     - name: garage
       namespace: storage
   healthChecks:
