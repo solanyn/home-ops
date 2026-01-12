@@ -35,7 +35,7 @@ resource "authentik_provider_oauth2" "oauth2" {
   allowed_redirect_uris = [
     for uri in each.value.redirect_uris : {
       matching_mode = "strict"
-      url           = startswith(uri, "https://") || startswith(uri, "http://") || contains(uri, ":/") ? uri : "https://${each.key}.${var.CLUSTER_DOMAIN}${uri}"
+      url           = startswith(uri, "https://") || startswith(uri, "http://") || strcontains(uri, ":/") ? uri : "https://${each.key}.${var.CLUSTER_DOMAIN}${uri}"
     }
   ]
 }
