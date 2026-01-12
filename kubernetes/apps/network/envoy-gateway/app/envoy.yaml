@@ -129,8 +129,8 @@ spec:
       brotli: {}
     - type: Gzip
       gzip: {}
-  requestBuffer:
-    limit: 100Mi
+  # requestBuffer:
+  #   limit: 100Mi
   retry:
     numRetries: 2
     retryOn:
@@ -154,6 +154,7 @@ spec:
     xForwardedFor:
       trustedCIDRs:
         - 10.42.0.0/16
+        - fc69::/108
   http2:
     onInvalidMessage: TerminateStream
   http3: {}
