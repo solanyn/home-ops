@@ -15,7 +15,7 @@ module "onepassword_application" {
 locals {
   app_credentials = {
     for k, v in var.applications : k => {
-      client_secret = module.onepassword_application[k].fields["${upper(replace(k, "-", "_"))}_CLIENT_SECRET"]
+      client_secret = try(v.public, false) ? null : module.onepassword_application[k].fields["${upper(replace(k, "-", "_"))}_CLIENT_SECRET"]
     }
   }
 }
