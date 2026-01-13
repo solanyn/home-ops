@@ -35,7 +35,7 @@ spec:
   targetNamespace: default
   dependsOn:
     - name: stash
-      namespace: flux-system
+      namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/stash/tools
   prune: true
