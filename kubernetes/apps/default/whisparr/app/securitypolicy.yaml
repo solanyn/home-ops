@@ -1,0 +1,23 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: whisparr
+spec:
+  oidc:
+    clientID: whisparr
+    clientSecret:
+      name: whisparr-secret
+    logoutPath: /logout
+    provider:
+      issuer: https://id.goyangi.io/application/o/whisparr/
+    redirectURL: https://whisparr.goyangi.io/oauth2/callback
+    refreshToken: true
+    scopes:
+      - openid
+      - profile
+      - email
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: whisparr

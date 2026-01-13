@@ -7,13 +7,13 @@ metadata:
 spec:
   targetNamespace: default
   components:
-    - ../../../../components/database
-    - ../../../../components/oidc/envoy
   dependsOn:
-  - name: cloudnative-pg-cluster
-    namespace: storage
-  - name: rook-ceph-cluster
-    namespace: rook-ceph
+    - name: authentik
+      namespace: default
+    - name: cloudnative-pg-cluster
+      namespace: storage
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/sonarr/app
   postBuild:

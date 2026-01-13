@@ -53,7 +53,7 @@ jobs:
             https://github.com/envoyproxy/ai-gateway.git /tmp/envoy-ai-gateway
           cd /tmp/envoy-ai-gateway
           git sparse-checkout set manifests/charts/ai-gateway-crds-helm
-          cp -r manifests /github/workspace/
+          cp -r manifests $GITHUB_WORKSPACE/
 
       - name: Run flux-local test
         uses: docker://ghcr.io/allenporter/flux-local:v8.1.0

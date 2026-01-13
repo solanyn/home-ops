@@ -14,6 +14,34 @@ spec:
       immich:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom: &envFrom
+              - secretRef:
+                  name: immich-secret
+          init-extensions:
+            dependsOn: init-db
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            env:
+              PGHOST: postgres-rw.storage.svc.cluster.local
+              PGUSER: postgres
+              PGPASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-secret
+                    key: INIT_POSTGRES_SUPER_PASS
+              PGDATABASE: immich
+            command: ["/bin/bash", "-c"]
+            args:
+              - |
+                psql -c "CREATE EXTENSION IF NOT EXISTS vchord CASCADE;"
+                psql -c "CREATE EXTENSION IF NOT EXISTS cube CASCADE;"
+                psql -c "CREATE EXTENSION IF NOT EXISTS earthdistance CASCADE;"
         containers:
           app:
             image:
@@ -24,9 +52,7 @@ spec:
               IMMICH_TRUSTED_PROXIES: "192.168.0.0/16"
               IMMICH_MEDIA_LOCATION: &media /library
               REDIS_HOSTNAME: &redis redis.storage.svc.cluster.local
-            envFrom:
-              - secretRef:
-                  name: immich-secret
+            envFrom: *envFrom
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -147,19 +173,3 @@ spec:
                 subPath: geocoding
               - path: /usr/src/app/.transformers_cache
                 subPath: transformers
-      postgres-certs:
-        type: secret
-        name: postgres-immich-cert
-        defaultMode: 0400
-        advancedMounts:
-          immich:
-            app:
-              - path: /var/run/secrets/postgresql
-      postgres-ca:
-        type: secret
-        name: cluster-ca
-        defaultMode: 0400
-        advancedMounts:
-          immich:
-            app:
-              - path: /var/run/secrets/root-ca

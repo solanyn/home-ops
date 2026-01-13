@@ -4,7 +4,7 @@ kind: Terraform
 metadata:
   name: worker
 spec:
-  interval: 12h
+  interval: 5m
   approvePlan: auto
   backendConfig:
     customConfiguration: |

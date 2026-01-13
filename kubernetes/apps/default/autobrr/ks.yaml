@@ -6,11 +6,11 @@ metadata:
 spec:
   targetNamespace: default
   components:
-    - ../../../../components/database
-    - ../../../../components/oidc/app
   dependsOn:
-  - name: cloudnative-pg-cluster
-    namespace: storage
+    - name: authentik
+      namespace: default
+    - name: cloudnative-pg-cluster
+      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/autobrr/app
   postBuild:

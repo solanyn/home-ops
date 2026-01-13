@@ -1,0 +1,23 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: prowlarr
+spec:
+  oidc:
+    clientID: prowlarr
+    clientSecret:
+      name: prowlarr-secret
+    logoutPath: /logout
+    provider:
+      issuer: https://id.goyangi.io/application/o/prowlarr/
+    redirectURL: https://prowlarr.goyangi.io/oauth2/callback
+    refreshToken: true
+    scopes:
+      - openid
+      - profile
+      - email
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: prowlarr
