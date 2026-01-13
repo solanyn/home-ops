@@ -128,7 +128,7 @@ resource "google_container_node_pool" "cpu" {
   }
 
   node_config {
-    machine_type = "e2-standard-8"
+    machine_type = "e2-medium"
     disk_size_gb = 100
     disk_type    = "pd-ssd"
     spot         = true
