@@ -5,7 +5,6 @@ metadata:
   name: autobrr
 spec:
   targetNamespace: default
-  components:
   dependsOn:
     - name: authentik
       namespace: default

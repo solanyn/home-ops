@@ -5,7 +5,6 @@ kind: Kustomization
 metadata:
   name: fusion
 spec:
-  components:
     - ../../../../components/volsync
   dependsOn:
     - name: rook-ceph-cluster

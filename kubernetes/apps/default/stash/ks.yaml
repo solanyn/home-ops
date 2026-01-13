@@ -6,7 +6,6 @@ metadata:
   name: stash
 spec:
   targetNamespace: default
-  components:
     - ../../../../components/volsync
   dependsOn:
     - name: authentik

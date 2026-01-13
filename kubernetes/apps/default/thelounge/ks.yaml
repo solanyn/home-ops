@@ -6,7 +6,6 @@ metadata:
   name: thelounge
 spec:
   targetNamespace: default
-  components:
     - ../../../../components/volsync
   dependsOn:
   - name: rook-ceph-cluster

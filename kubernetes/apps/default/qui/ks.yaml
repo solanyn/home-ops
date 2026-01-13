@@ -6,7 +6,6 @@ metadata:
   name: qui
 spec:
   targetNamespace: default
-  components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
     - ../../../../components/oidc/app

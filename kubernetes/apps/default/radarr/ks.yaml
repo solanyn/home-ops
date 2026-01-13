@@ -6,7 +6,6 @@ metadata:
   name: radarr
 spec:
   targetNamespace: default
-  components:
   dependsOn:
     - name: authentik
       namespace: default

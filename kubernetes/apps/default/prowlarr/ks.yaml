@@ -6,7 +6,6 @@ metadata:
   name: prowlarr
 spec:
   targetNamespace: default
-  components:
   dependsOn:
     - name: authentik
       namespace: default

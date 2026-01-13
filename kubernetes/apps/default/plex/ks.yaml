@@ -5,7 +5,6 @@ kind: Kustomization
 metadata:
   name: plex
 spec:
-  components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
