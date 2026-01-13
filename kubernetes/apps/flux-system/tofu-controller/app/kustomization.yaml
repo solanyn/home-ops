@@ -3,12 +3,4 @@ kind: Kustomization
 resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
-  - ./externalsecret.yaml
-configMapGenerator:
-  - name: branch-planner
-    literals:
-      - secretName=branch-planner-token
-    files:
-      - resources=./resources/branch-planner-resources.yaml
-generatorOptions:
-  disableNameSuffixHash: true
+  - ./prometheusrule.yaml

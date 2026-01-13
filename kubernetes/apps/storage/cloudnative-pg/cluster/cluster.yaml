@@ -15,20 +15,12 @@ spec:
   superuserSecret:
     name: cloudnative-pg-secret
   enableSuperuserAccess: true
-  certificates:
-    serverCASecret: postgres-server-cert
-    serverTLSSecret: postgres-server-cert
-    clientCASecret: postgres-client-ca
-    replicationTLSSecret: postgres-replication-cert
   postgresql:
     shared_preload_libraries:
       - "vchord.so"
     parameters:
       max_connections: "200"
       shared_buffers: 256MB
-    pg_hba:
-      - hostnossl all all 10.42.0.0/16 scram-sha-256
-      - hostssl all all all cert clientcert=verify-full
     extensions:
       - name: postgis
         ld_library_path:
@@ -42,65 +34,6 @@ spec:
           - /usr/lib/postgresql/18/lib
         extension_control_path:
           - /usr/share/postgresql/18/
-  managed:
-    # TODO: Database CRD should create roles automatically
-    # https://github.com/cloudnative-pg/cloudnative-pg/issues/5341
-    roles:
-      - name: authentik
-        ensure: present
-        login: true
-        disablePassword: true
-      - name: atuin
-        ensure: present
-        login: true
-        disablePassword: true
-      - name: mealie
-        ensure: present
-        login: true
-        disablePassword: true
-      - name: immich
-        ensure: present
-        login: true
-        disablePassword: true
-      - name: mlflow
-        ensure: present
-        login: true
-        disablePassword: true
-      - name: prowlarr
-        ensure: present
-        login: true
-      - name: radarr
-        ensure: present
-        login: true
-      - name: autobrr
-        ensure: present
-        login: true
-        disablePassword: true
-      - name: label-studio
-        ensure: present
-        login: true
-      - name: romm
-        ensure: present
-        login: true
-        disablePassword: true
-      - name: lidarr
-        ensure: present
-        login: true
-      - name: seerr
-        ensure: present
-        login: true
-        disablePassword: true
-      - name: whisparr
-        ensure: present
-        login: true
-      - name: sonarr
-        ensure: present
-        login: true
-      - name: gitlab
-        ensure: present
-        login: true
-        passwordSecret:
-          name: gitlab-postgres
   resources:
     requests:
       cpu: 10m
@@ -112,7 +45,7 @@ spec:
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
-      parameters: &parameters
+      parameters:
         barmanObjectName: garage
         serverName: postgres18-v1
   bootstrap:

@@ -13,6 +13,14 @@ spec:
       autobrr:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -26,9 +34,7 @@ spec:
               AUTOBRR__METRICS_PORT: &metricsPort 9094
               AUTOBRR__CHECK_FOR_UPDATES: false
               AUTOBRR__LOG_LEVEL: INFO
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+            envFrom: *envFrom
             probes:
               liveness:
                 enabled: true
@@ -95,15 +101,3 @@ spec:
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
-      postgres-certs:
-        type: secret
-        name: postgres-autobrr-cert
-        defaultMode: 0400
-        globalMounts:
-          - path: /var/run/secrets/postgresql
-      postgres-ca:
-        type: secret
-        name: cluster-ca
-        defaultMode: 0400
-        globalMounts:
-          - path: /var/run/secrets/root-ca

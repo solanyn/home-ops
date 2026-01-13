@@ -14,6 +14,13 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
           chown-run:
             image:
               repository: busybox
@@ -27,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/linuxserver-labs/prarr
-              tag: whisparr-eros-3.1.0.2052@sha256:28e86e38424c6d74fbf3eff496a860768e7e5618958227360fc441edcb7ffdde
+              tag: whisparr-eros-3.1.0.2100@sha256:d4122c7a112f789f78977921d6733fc615e08af92730004e9a472827ce033cc9
             env:
               WHISPARR__APP__INSTANCENAME: Whisparr
               WHISPARR__APP__THEME: dark
@@ -36,9 +43,7 @@ spec:
               WHISPARR__LOG__DBENABLED: "False"
               WHISPARR__LOG__LEVEL: info
               TZ: Australia/Sydney
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: true

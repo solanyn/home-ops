@@ -22,8 +22,6 @@ metadata:
   name: authentik
 spec:
   targetNamespace: default
-  components:
-    - ../../../../components/database
   dependsOn:
     - name: authentik-blueprints
       namespace: default

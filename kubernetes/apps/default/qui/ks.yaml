@@ -11,6 +11,8 @@ spec:
     - ../../../../components/volsync
     - ../../../../components/oidc/app
   dependsOn:
+    - name: authentik
+      namespace: default
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
@@ -18,8 +20,6 @@ spec:
   postBuild:
     substitute:
       APP: qui
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /oauth2/callback
       VOLSYNC_CAPACITY: 2Gi
   prune: true
   sourceRef:

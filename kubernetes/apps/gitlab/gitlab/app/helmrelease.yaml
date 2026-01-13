@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: gitlab
-      version: 9.7.0
+      version: 9.7.1
       sourceRef:
         kind: HelmRepository
         name: gitlab
@@ -38,7 +38,7 @@ spec:
         username: gitlab
         password:
           useSecret: true
-          secret: gitlab-postgres
+          secret: gitlab-secret
           key: password
       redis:
         host: redis.storage.svc.cluster.local
@@ -170,4 +170,14 @@ spec:
     grafana:
       enabled: false
     gitlab-runner:
-      install: false
+      install: true
+      runners:
+        config: |
+          [[runners]]
+            [runners.kubernetes]
+              cpu_request = "10m"
+              memory_request = "64Mi"
+              service_cpu_request = "10m"
+              service_memory_request = "32Mi"
+              helper_cpu_request = "5m"
+              helper_memory_request = "32Mi"

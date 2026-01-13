@@ -8,8 +8,9 @@ spec:
   targetNamespace: default
   components:
     - ../../../../components/volsync
-    - ../../../../components/oidc/envoy
   dependsOn:
+    - name: authentik
+      namespace: default
     - name: intel-gpu-resource-driver
       namespace: kube-system
     - name: rook-ceph-cluster
