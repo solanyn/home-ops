@@ -5,5 +5,4 @@ kind: Kustomization
 namespace: liqo-tenant-worker
 
 resources:
-  - ./externalsecret.yaml
-  - ./replicationsource.yaml
+  - ./namespace.yaml
