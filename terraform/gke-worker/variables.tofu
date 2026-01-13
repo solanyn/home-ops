@@ -75,3 +75,27 @@ variable "CPU_MAX_NODES" {
   description = "Max CPU nodes for autoscaling"
   default     = 4
 }
+
+variable "BILLING_ACCOUNT_ID" {
+  type        = string
+  description = "GCP billing account ID"
+  sensitive   = true
+}
+
+variable "BUDGET_AMOUNT" {
+  type        = number
+  description = "Monthly budget in USD"
+  default     = 20
+}
+
+variable "PUSHOVER_USER_KEY" {
+  type        = string
+  description = "Pushover user key for alerts"
+  sensitive   = true
+}
+
+variable "PUSHOVER_API_TOKEN" {
+  type        = string
+  description = "Pushover API token for alerts"
+  sensitive   = true
+}
