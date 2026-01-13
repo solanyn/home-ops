@@ -89,7 +89,7 @@ resource "google_container_node_pool" "system" {
 
   node_config {
     machine_type = "e2-micro"
-    disk_size_gb = 30
+    disk_size_gb = 20
     disk_type    = "pd-standard"
     spot         = true
   }
