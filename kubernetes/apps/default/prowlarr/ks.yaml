@@ -6,6 +6,7 @@ metadata:
   name: prowlarr
 spec:
   targetNamespace: default
+  components:
   dependsOn:
     - name: authentik
       namespace: default
@@ -16,8 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: prowlarr
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /oauth2/callback
       VOLSYNC_CAPACITY: 1Gi
   prune: true
   sourceRef:

@@ -6,6 +6,7 @@ metadata:
   name: mealie
 spec:
   targetNamespace: default
+  components:
     - ../../../../components/volsync
   dependsOn:
     - name: authentik
@@ -17,8 +18,6 @@ spec:
   postBuild:
     substitute:
       APP: mealie
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /login
   prune: true
   sourceRef:
     kind: GitRepository
