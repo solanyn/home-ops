@@ -367,7 +367,7 @@ data "kubernetes_service" "liqo_gateway" {
 
 # Budget alerts
 resource "google_pubsub_topic" "budget_alerts" {
-  name    = "gke-worker-budget-alerts"
+  name    = "gcp-budget-alerts"
   project = var.GCP_PROJECT
 }
 
@@ -402,7 +402,7 @@ resource "google_billing_budget" "gke_worker" {
 }
 
 resource "google_cloudfunctions_function" "budget_alert" {
-  name        = "gke-worker-budget-alert"
+  name        = "gcp-budget-alert"
   project     = var.GCP_PROJECT
   region      = var.GCP_REGION
   runtime     = "python312"
