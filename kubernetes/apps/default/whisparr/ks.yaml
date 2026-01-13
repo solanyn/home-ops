@@ -6,6 +6,7 @@ metadata:
   name: whisparr
 spec:
   targetNamespace: default
+  components:
   dependsOn:
     - name: authentik
       namespace: default
@@ -18,8 +19,6 @@ spec:
   postBuild:
     substitute:
       APP: whisparr
-      OIDC_GROUP: admin
-      OIDC_REDIRECT_URI: /oauth2/callback
   prune: true
   sourceRef:
     kind: GitRepository

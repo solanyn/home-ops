@@ -6,6 +6,7 @@ metadata:
   name: cross-seed
 spec:
   targetNamespace: default
+  components:
     - ../../../../components/nfs-scaler
   dependsOn:
   interval: 1h

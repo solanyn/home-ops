@@ -5,6 +5,7 @@ metadata:
   name: autobrr
 spec:
   targetNamespace: default
+  components:
   dependsOn:
     - name: authentik
       namespace: default
@@ -15,8 +16,6 @@ spec:
   postBuild:
     substitute:
       APP: autobrr
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /oauth2/callback
   prune: true
   sourceRef:
     kind: GitRepository

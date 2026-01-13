@@ -6,7 +6,7 @@ metadata:
   name: &app ersatztv
 spec:
   targetNamespace: default
-    - ../../../../components/oidc/app
+  components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
@@ -17,8 +17,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /oidc/callback
   prune: true
   sourceRef:
     kind: GitRepository
