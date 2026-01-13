@@ -58,7 +58,6 @@ resource "google_container_cluster" "worker" {
   initial_node_count       = 1
   remove_default_node_pool = true
 
-  # Aggressive scale-down
   cluster_autoscaling {
     autoscaling_profile = "OPTIMIZE_UTILIZATION"
   }
