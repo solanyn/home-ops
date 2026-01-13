@@ -6,7 +6,6 @@ metadata:
   name: &app ersatztv
 spec:
   targetNamespace: default
-  components:
     - ../../../../components/oidc/app
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync

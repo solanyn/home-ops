@@ -6,7 +6,6 @@ metadata:
   name: zigbee
 spec:
   targetNamespace: default
-  components:
     - ../../../../components/volsync
   dependsOn:
   - name: vernemq

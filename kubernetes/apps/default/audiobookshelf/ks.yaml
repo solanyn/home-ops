@@ -6,7 +6,6 @@ metadata:
   name: audiobookshelf
 spec:
   targetNamespace: default
-  components:
     - ../../../../components/volsync
     - ../../../../components/oidc/app
   dependsOn:

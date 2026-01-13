@@ -6,7 +6,6 @@ metadata:
   name: bazarr
 spec:
   targetNamespace: default
-  components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:

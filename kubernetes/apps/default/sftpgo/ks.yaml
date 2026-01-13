@@ -10,7 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
     - ../../../../components/volsync
   dependsOn:
     - name: authentik

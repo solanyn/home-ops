@@ -6,7 +6,6 @@ metadata:
   name: romm
 spec:
   targetNamespace: default
-  components:
     - ../../../../components/volsync
     - ../../../../components/oidc/app
   dependsOn:
