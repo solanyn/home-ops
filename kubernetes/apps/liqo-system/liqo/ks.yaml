@@ -3,14 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: kagent-modelconfig
+  name: liqo
 spec:
-  targetNamespace: ai
-  dependsOn:
-    - name: kagent
-      namespace: flux-system
+  targetNamespace: liqo-system
   interval: 1h
-  path: ./kubernetes/apps/ai/kagent/modelconfig
+  path: ./kubernetes/apps/liqo-system/liqo/app
   prune: true
   sourceRef:
     kind: GitRepository

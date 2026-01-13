@@ -6,8 +6,8 @@ metadata:
   name: romm
 spec:
   targetNamespace: default
+  components:
     - ../../../../components/volsync
-    - ../../../../components/oidc/app
   dependsOn:
     - name: authentik
       namespace: default
@@ -20,8 +20,6 @@ spec:
   postBuild:
     substitute:
       APP: romm
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /api/oauth/openid
   prune: true
   sourceRef:
     kind: GitRepository

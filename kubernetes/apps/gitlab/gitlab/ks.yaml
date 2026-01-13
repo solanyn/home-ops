@@ -22,8 +22,6 @@ spec:
   postBuild:
     substitute:
       APP: gitlab
-      OIDC_GROUP: admin
-      OIDC_REDIRECT_URI: /users/auth/openid_connect/callback
       VOLSYNC_CAPACITY: 10Gi
   prune: true
   sourceRef:

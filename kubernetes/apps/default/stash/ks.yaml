@@ -6,6 +6,7 @@ metadata:
   name: stash
 spec:
   targetNamespace: default
+  components:
     - ../../../../components/volsync
   dependsOn:
     - name: authentik
@@ -19,8 +20,6 @@ spec:
   postBuild:
     substitute:
       APP: stash
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /oauth2/callback
   prune: true
   sourceRef:
     kind: GitRepository
@@ -36,7 +35,7 @@ spec:
   targetNamespace: default
   dependsOn:
     - name: stash
-      namespace: default
+      namespace: flux-system
   interval: 1h
   path: ./kubernetes/apps/default/stash/tools
   prune: true

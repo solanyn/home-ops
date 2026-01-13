@@ -5,6 +5,7 @@ metadata:
   name: mlflow
 spec:
   targetNamespace: default
+  components:
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage

@@ -6,6 +6,7 @@ metadata:
   name: calibre
 spec:
   targetNamespace: default
+  components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
