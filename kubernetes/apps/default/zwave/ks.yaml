@@ -6,7 +6,6 @@ metadata:
   name: zwave
 spec:
   targetNamespace: default
-  components:
     - ../../../../components/volsync
   dependsOn:
   - name: rook-ceph-cluster

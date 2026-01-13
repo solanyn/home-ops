@@ -6,7 +6,6 @@ metadata:
   name: home-assistant
 spec:
   targetNamespace: default
-  components:
     - ../../../../components/volsync
   dependsOn:
   - name: vernemq

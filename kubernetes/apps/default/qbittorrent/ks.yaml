@@ -6,7 +6,6 @@ metadata:
   name: qbittorrent
 spec:
   targetNamespace: default
-  components:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
