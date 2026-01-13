@@ -7,9 +7,10 @@ metadata:
 spec:
   targetNamespace: default
   components:
-    - ../../../../components/database
     - ../../../../components/volsync
   dependsOn:
+    - name: authentik
+      namespace: default
     - name: cloudnative-pg-cluster
       namespace: storage
     - name: rook-ceph-cluster

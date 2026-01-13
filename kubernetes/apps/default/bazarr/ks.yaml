@@ -10,14 +10,16 @@ spec:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
-  - name: rook-ceph-cluster
-    namespace: rook-ceph
+    - name: authentik
+      namespace: default
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/bazarr/app
   postBuild:
     substitute:
-      VOLSYNC_CAPACITY: 1Gi
       APP: bazarr
+      VOLSYNC_CAPACITY: 1Gi
   prune: true
   sourceRef:
     kind: GitRepository

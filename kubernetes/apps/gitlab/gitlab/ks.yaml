@@ -7,10 +7,10 @@ metadata:
 spec:
   targetNamespace: gitlab
   components:
-    - ../../../../components/database/password
     - ../../../../components/volsync
-    - ../../../../components/oidc/app
   dependsOn:
+    - name: authentik
+      namespace: default
     - name: cloudnative-pg-cluster
       namespace: storage
     - name: dragonfly
