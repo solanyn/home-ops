@@ -10,6 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
     - ../../../../components/volsync
   dependsOn:
     - name: authentik
@@ -25,5 +26,3 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      OIDC_GROUP: users
-      OIDC_REDIRECT_URI: /web/oidc/callback
