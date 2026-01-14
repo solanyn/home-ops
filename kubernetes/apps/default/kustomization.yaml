@@ -27,6 +27,8 @@ resources:
   - ./mealie/ks.yaml
   - ./mlflow/ks.yaml
   - ./mlm/ks.yaml
+  - ./paperless/ks.yaml
+  - ./paperless-ai/ks.yaml
   - ./plex/ks.yaml
   - ./print/ks.yaml
   - ./prowlarr/ks.yaml
