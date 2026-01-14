@@ -6,7 +6,7 @@ metadata:
   annotations:
     cnpg.io/skipEmptyWalArchiveCheck: "enabled"
 spec:
-  instances: 3
+  instances: 1
   imageName: ghcr.io/ferretdb/postgres-documentdb:17-0.106.0-ferretdb-2.5.0
   primaryUpdateStrategy: unsupervised
   postgresUID: 999
