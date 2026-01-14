@@ -20,11 +20,6 @@ releases:
     chart: oci://mirror.gcr.io/envoyproxy/gateway-helm
     version: v1.6.2
 
-  - name: envoy-ai-gateway-crds
-    namespace: network
-    chart: oci://mirror.gcr.io/envoyproxy/ai-gateway-crds-helm
-    version: 0.4.0
-
   - name: grafana-operator
     namespace: observability
     chart: oci://ghcr.io/grafana/helm-charts/grafana-operator
