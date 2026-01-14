@@ -14,7 +14,7 @@ spec:
         apiKeyFrom:
           secretKeyRef:
             name: kagent-openai
-        baseURL: "https://ai.goyangi.io/v1"
+        baseURL: "https://gateway.goyangi.io/v1"
         defaultHeaders:
           x-ai-eg-model: "gemini-3-pro-preview"
     agents:
