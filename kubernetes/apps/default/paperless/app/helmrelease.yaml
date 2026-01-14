@@ -1,0 +1,105 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: paperless
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: paperless
+  interval: 1h
+  values:
+    controllers:
+      paperless:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom:
+              - secretRef:
+                  name: paperless-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/paperless-ngx/paperless-ngx
+              tag: 2.20.3@sha256:57ad9565bff3bdf2378ab1dcc21ea649dfd68ee58e0eeca2bfba0120a26563e8
+            env:
+              PAPERLESS_PORT: &port 8000
+              PAPERLESS_TIME_ZONE: Australia/Sydney
+              PAPERLESS_URL: https://paperless.goyangi.io
+              PAPERLESS_DBENGINE: postgresql
+              PAPERLESS_REDIS: redis://redis.storage.svc.cluster.local:6379/0
+              PAPERLESS_CONSUMPTION_DIR: /inbox
+              PAPERLESS_DATA_DIR: /data
+              PAPERLESS_MEDIA_ROOT: /data
+              PAPERLESS_CONVERT_TMPDIR: /scratch
+              PAPERLESS_OCR_LANGUAGE: eng
+              PAPERLESS_TASK_WORKERS: 2
+              PAPERLESS_THREADS_PER_WORKER: 2
+              PAPERLESS_WEBSERVER_WORKERS: 2
+              PAPERLESS_CONSUMER_POLLING: 360
+              PAPERLESS_CONSUMER_RECURSIVE: true
+              PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: true
+              PAPERLESS_ENABLE_COMPRESSION: false
+              PAPERLESS_ENABLE_FLOWER: true
+              PAPERLESS_OCR_SKIP_ARCHIVE_FILE: with_text
+              USERMAP_UID: 1000
+              USERMAP_GID: 1000
+            envFrom:
+              - secretRef:
+                  name: paperless-secret
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: {drop: ["ALL"]}
+              readOnlyRootFilesystem: true
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+      inbox:
+        type: emptyDir
+        sizeLimit: 1Mi
+      run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 100Mi
+      scratch:
+        type: emptyDir
+        sizeLimit: 1Gi
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 100Mi
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    service:
+      app:
+        controller: paperless
+        ports:
+          http:
+            port: *port
