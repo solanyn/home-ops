@@ -20,6 +20,8 @@ spec:
             image:
               repository: ghcr.io/ferretdb/ferretdb
               tag: 2.7.0
+            args:
+              - --postgresql-url=$(FERRETDB_POSTGRESQL_URL)
             envFrom:
               - secretRef:
                   name: ferretdb-secret
