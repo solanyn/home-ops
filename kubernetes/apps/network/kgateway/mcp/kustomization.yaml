@@ -7,3 +7,4 @@ resources:
   - ./grafana.yaml
   - ./flux.yaml
   - ./context7.yaml
+  - ./unifi.yaml

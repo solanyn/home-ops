@@ -19,3 +19,4 @@ resources:
   - ./kgateway/ks.yaml
   - ./smtp-relay/ks.yaml
   - ./unifi-dns/ks.yaml
+  - ./unifi-network-mcp/ks.yaml
