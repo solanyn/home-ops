@@ -9,6 +9,7 @@ components:
 
 resources:
   - ./namespace.yaml
+  - ./agent-sandbox/ks.yaml
   - ./kagent/ks.yaml
   - ./librechat/ks.yaml
   - ./meilisearch/ks.yaml
