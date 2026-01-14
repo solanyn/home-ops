@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kgateway-crds
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/network/kgateway/crds
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: network
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kgateway
+spec:
+  targetNamespace: network
+  dependsOn:
+    - name: kgateway-crds
+      namespace: flux-system
+  interval: 1h
+  path: ./kubernetes/apps/network/kgateway/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kgateway-gateway
+spec:
+  targetNamespace: network
+  dependsOn:
+    - name: kgateway
+      namespace: flux-system
+    - name: certificates
+      namespace: network
+  interval: 1h
+  path: ./kubernetes/apps/network/kgateway/gateway
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
