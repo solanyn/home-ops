@@ -320,69 +320,31 @@ spec:
 - **Helm charts**: Review `values.yaml` in chart repository for available options
 - **Official docs**: Always check application's official documentation for configuration options
 
-**Database apps with CNPG managed roles (preferred):**
-
-Uses the `database` component which creates a CNPG Database CRD, client certificate and connection secret.
-
-1. Add managed role to CNPG cluster (`kubernetes/apps/storage/cloudnative-pg/cluster/cluster.yaml`):
+**Database apps with init containers:**
 ```yaml
-managed:
-  roles:
-    - name: myapp
-      ensure: present
-      login: true
-      disablePassword: true  # For cert auth
-```
+# ExternalSecret template
+target:
+  name: app-name-secret
+  template:
+    data:
+      POSTGRES_HOST: &dbHost postgres-rw.storage.svc.cluster.local
+      POSTGRES_DB: &dbName app-name
+      POSTGRES_USER: &dbUser "{{ .APP_POSTGRES_USER }}"
+      POSTGRES_PASS: &dbPass "{{ .APP_POSTGRES_PASSWORD }}"
+      # Init container
+      INIT_POSTGRES_HOST: *dbHost
+      INIT_POSTGRES_DBNAME: *dbName
+      INIT_POSTGRES_USER: *dbUser
+      INIT_POSTGRES_PASS: *dbPass
+      INIT_POSTGRES_SUPER_USER: postgres
+      INIT_POSTGRES_SUPER_PASS: "{{ .POSTGRES_SUPER_PASS }}"
+dataFrom:
+  - extract:
+      key: app-name
+  - extract:
+      key: cloudnative-pg
 
-2. Add component to ks.yaml:
-```yaml
-spec:
-  targetNamespace: default
-  components:
-    - ../../../../components/database
-  dependsOn:
-    - name: cloudnative-pg-cluster
-      namespace: storage
-  postBuild:
-    substitute:
-      APP: myapp
-```
-
-3. Mount certs and use connection secret in helmrelease.yaml:
-```yaml
-values:
-  controllers:
-    myapp:
-      containers:
-        app:
-          env:
-            DATABASE_URL:
-              valueFrom:
-                secretKeyRef:
-                  name: myapp-postgres
-                  key: myapp_POSTGRES_URL
-  persistence:
-    postgres-certs:
-      type: secret
-      name: postgres-myapp-cert
-      globalMounts:
-        - path: /var/run/secrets/postgresql
-    postgres-ca:
-      type: secret
-      name: cluster-ca
-      globalMounts:
-        - path: /var/run/secrets/root-ca
-```
-
-The component creates:
-- `postgres-myapp-cert` - Client certificate for mTLS auth
-- `myapp-postgres` - Secret with connection details including `myapp_POSTGRES_URL`
-- CNPG Database CRD - Creates database and role in postgres cluster
-
-Connection URL format: `postgresql://myapp@postgres-rw.storage.svc.cluster.local:5432/myapp?sslmode=verify-full&sslcert=/var/run/secrets/postgresql/tls.crt&sslkey=/var/run/secrets/postgresql/tls.key&sslrootcert=/var/run/secrets/root-ca/ca.crt`
-
-**Database apps with init containers (legacy):**
-```yaml
+# HelmRelease values
 values:
   controllers:
     app-name:
@@ -400,6 +362,10 @@ values:
         app:
           envFrom: *envFrom  # Same secrets as init container
 ```
+
+**1Password requirements:**
+- Create `app-name` item with `APP_POSTGRES_USER` and `APP_POSTGRES_PASSWORD`
+- Existing `cloudnative-pg` secret provides `POSTGRES_SUPER_PASS`
 
 5. **Create PVC (if needed)**:
 
@@ -644,7 +610,33 @@ op item get cloudnative-pg --field DB_USER --vault kubernetes
 
 ## OIDC Integration
 
-Applications use Authentik (https://id.goyangi.io) for SSO authentication. Each application has different OIDC field names and requirements:
+Applications use Authentik (https://id.goyangi.io) for SSO authentication. Each application has different OIDC field names and requirements.
+
+### Terraform Provisioning
+
+OIDC applications are provisioned via Terraform in `terraform/authentik/`. Add new applications to `terraform.tfvars`:
+
+```hcl
+applications = {
+  app-name = {
+    group         = "user"           # "user" or "admin" - controls access
+    icon          = "app-icon"       # Icon name from homarr-labs/dashboard-icons
+    redirect_uris = ["/oauth2/callback"]  # Relative or absolute URIs
+    public        = false            # Optional: true for public clients (no secret)
+  }
+}
+```
+
+**Redirect URI handling:**
+- Relative paths: Automatically prefixed with `https://app-name.goyangi.io`
+- Absolute URLs: Used as-is (for apps like Immich with mobile callbacks)
+
+**1Password integration:**
+- Terraform automatically creates `app-name` item in `kubernetes` vault
+- Generates `APP_NAME_CLIENT_SECRET` field (unless `public = true`)
+- Client ID is always the application name
+
+**Example configurations:**
 
 **Mealie:**
 ```yaml
@@ -712,9 +704,6 @@ appConfig:
     autoSignInWithProvider: []
     syncProfileFromProvider: [openid_connect]
     allowSingleSignOn: [openid_connect]
-    allowBypassTwoFactor: [openid_connect]
-    syncProfileAttributes: [email]
-    blockAutoCreatedUsers: false
     providers:
       - secret: gitlab-secret
         key: oidc-config
