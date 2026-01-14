@@ -5,7 +5,7 @@ kind: Gateway
 metadata:
   name: ai
   annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname ai.goyangi.io
+    external-dns.alpha.kubernetes.io/target: &hostname gateway.goyangi.io
 spec:
   gatewayClassName: agentgateway
   infrastructure:
