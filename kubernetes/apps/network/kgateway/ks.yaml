@@ -24,7 +24,7 @@ spec:
   targetNamespace: network
   dependsOn:
     - name: kgateway-crds
-      namespace: flux-system
+      namespace: network
   interval: 1h
   path: ./kubernetes/apps/network/kgateway/app
   prune: true
@@ -43,7 +43,7 @@ spec:
   targetNamespace: network
   dependsOn:
     - name: kgateway
-      namespace: flux-system
+      namespace: network
     - name: certificates
       namespace: network
   interval: 1h
@@ -64,7 +64,7 @@ spec:
   targetNamespace: network
   dependsOn:
     - name: kgateway-gateway
-      namespace: flux-system
+      namespace: network
   interval: 1h
   path: ./kubernetes/apps/network/kgateway/mcp
   prune: true
