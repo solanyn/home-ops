@@ -593,6 +593,67 @@ just kube cnpg-backup                     # Backup CNPG cluster
 just kube backup-and-suspend              # Full backup + suspend workflow
 ```
 
+### CloudNative-PG Cluster Backup and Restore
+
+When recreating a CNPG cluster (e.g., to fix plugin issues), follow this sequence to avoid data loss:
+
+**1. Hibernate the cluster** (stops PostgreSQL gracefully, prevents WAL generation):
+```bash
+kubectl annotate cluster -n storage postgres cnpg.io/hibernation=on
+```
+
+**2. Wait for pods to terminate**:
+```bash
+kubectl get pods -n storage | grep postgres
+```
+
+**3. Delete the cluster object**:
+```bash
+kubectl delete cluster -n storage postgres --wait=false
+```
+
+**4. Configure restore in cluster manifest**:
+
+```yaml
+spec:
+  bootstrap:
+    recovery:
+      source: source
+  externalClusters:
+    - name: source
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: garage
+          serverName: postgres18-v1
+```
+
+**5. Reconcile to recreate**:
+```bash
+flux reconcile ks cloudnative-pg-cluster -n storage --with-source
+```
+
+**Important:** If you hibernate before deleting, the WAL archive will be complete and you don't need to specify `backupID` or `targetImmediate`. CNPG will automatically use the latest backup and apply all available WALs.
+
+**Recovery from incomplete backup** (if cluster was deleted without hibernation):
+
+Find the most recent completed backup:
+```bash
+kubectl get backup.postgresql.cnpg.io -n storage -l cnpg.io/cluster=postgres -o json | \
+  jq -r '.items[] | select(.spec.pluginConfiguration.parameters.barmanObjectName == "garage") | select(.status.phase == "completed") | "\(.metadata.name) \(.status.backupId) \(.status.stoppedAt)"' | tail -5
+```
+
+Use `targetImmediate` to stop at backup end without requiring missing WALs:
+```yaml
+spec:
+  bootstrap:
+    recovery:
+      source: source
+      recoveryTarget:
+        backupID: 20260116T000003  # From backup object's status.backupId
+        targetImmediate: true       # Stop at backup end
+```
+
 ### 1Password CLI
 
 Use `op` CLI to verify secret values during development:
