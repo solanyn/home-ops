@@ -44,7 +44,7 @@ spec:
   dependsOn:
     - name: kgateway
       namespace: network
-    - name: certificates
+    - name: certificates-import
       namespace: network
   interval: 1h
   path: ./kubernetes/apps/network/kgateway/gateway
