@@ -10,7 +10,7 @@ spec:
     - ../../../../components/volsync
   dependsOn:
     - name: paperless
-      namespace: flux-system
+      namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/paperless-ai/app
   postBuild:
