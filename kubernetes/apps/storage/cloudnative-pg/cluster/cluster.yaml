@@ -51,6 +51,9 @@ spec:
   bootstrap:
     recovery:
       source: source
+      recoveryTarget:
+        backupID: 20260116T000003
+        targetImmediate: true
   externalClusters:
     - name: source
       plugin:
