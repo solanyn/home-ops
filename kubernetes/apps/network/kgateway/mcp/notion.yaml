@@ -1,6 +1,6 @@
 ---
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
+apiVersion: gateway.kgateway.dev/v1alpha1
+kind: Backend
 metadata:
   name: notion-mcp
 spec:
@@ -36,5 +36,5 @@ spec:
                 value: "Bearer ${NOTION_TOKEN}"
       backendRefs:
         - name: notion-mcp
-          group: agentgateway.dev
-          kind: AgentgatewayBackend
+          group: gateway.kgateway.dev
+          kind: Backend
