@@ -4,7 +4,8 @@ kind: Backend
 metadata:
   name: flux-mcp
 spec:
-  type: MCP  mcp:
+  type: MCP
+  mcp:
     targets:
       - name: flux
         static:
@@ -18,7 +19,7 @@ kind: HTTPRoute
 metadata:
   name: mcp-flux
 spec:
-  type: MCP  parentRefs:
+  parentRefs:
     - name: ai
       namespace: network
   rules:
