@@ -1,6 +1,6 @@
 ---
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
+apiVersion: gateway.kgateway.dev/v1alpha1
+kind: Backend
 metadata:
   name: context7-mcp
 spec:
@@ -36,5 +36,5 @@ spec:
                 value: "Bearer ${CONTEXT7_TOKEN}"
       backendRefs:
         - name: context7-mcp
-          group: agentgateway.dev
-          kind: AgentgatewayBackend
+          group: gateway.kgateway.dev
+          kind: Backend
