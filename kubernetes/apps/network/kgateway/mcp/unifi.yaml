@@ -4,7 +4,7 @@ kind: Backend
 metadata:
   name: unifi-network-mcp
 spec:
-  mcp:
+  type: MCP  mcp:
     targets:
       - name: unifi
         static:
@@ -18,7 +18,7 @@ kind: HTTPRoute
 metadata:
   name: mcp-unifi-network
 spec:
-  parentRefs:
+  type: MCP  parentRefs:
     - name: ai
       namespace: network
   rules:
