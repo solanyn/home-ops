@@ -4,7 +4,7 @@ kind: Backend
 metadata:
   name: notion-mcp
 spec:
-  mcp:
+  type: MCP  mcp:
     targets:
       - name: notion
         static:
@@ -20,7 +20,7 @@ kind: HTTPRoute
 metadata:
   name: mcp-notion
 spec:
-  parentRefs:
+  type: MCP  parentRefs:
     - name: ai
       namespace: network
   rules:

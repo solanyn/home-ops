@@ -4,6 +4,7 @@ kind: Backend
 metadata:
   name: context7-mcp
 spec:
+  type: MCP
   mcp:
     targets:
       - name: context7
