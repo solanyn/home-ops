@@ -11,9 +11,6 @@ spec:
           host: mcp.context7.com
           port: 443
           path: /mcp
-          policies:
-            tls:
-              sni: mcp.context7.com
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
