@@ -7,4 +7,4 @@ spec:
   interval: 1h
   url: oci://quay.io/strimzi-helm/strimzi-kafka-operator
   ref:
-    tag: 0.49.1
+    tag: 0.50.0
