@@ -106,7 +106,6 @@ spec:
         server: nas.internal
         path: /mnt/world/media
         globalMounts:
-          - path: /media/downloads/torrents
-            subPath: downloads/torrents
+          - path: /media
       tmp:
         type: emptyDir
