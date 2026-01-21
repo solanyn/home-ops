@@ -34,3 +34,8 @@ releases:
     namespace: observability
     chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
     version: 80.9.2
+
+  - name: liqo
+    namespace: liqo-system
+    chart: https://helm.liqo.io/liqo
+    version: 0.10.3
