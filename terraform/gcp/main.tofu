@@ -331,7 +331,7 @@ locals {
     users = [{
       name = "liqo-consumer"
       user = {
-        token = kubernetes_secret.liqo_consumer_token.data["token"]
+        token = try(kubernetes_secret.liqo_consumer_token.data["token"], "")
       }
     }]
     contexts = [{
