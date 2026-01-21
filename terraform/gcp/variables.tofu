@@ -43,13 +43,13 @@ variable "GKE_CLUSTER_NAME" {
 variable "GCP_REGION" {
   type        = string
   description = "GCP region"
-  default     = "us-central1"
+  default     = "asia-southeast1"
 }
 
 variable "GCP_ZONE" {
   type        = string
   description = "GCP zone for zonal cluster"
-  default     = "us-central1-a"
+  default     = "asia-southeast1-b"
 }
 
 variable "GPU_TYPE" {
@@ -97,5 +97,36 @@ variable "PUSHOVER_USER_KEY" {
 variable "PUSHOVER_API_TOKEN" {
   type        = string
   description = "Pushover API token for alerts"
+  sensitive   = true
+}
+
+variable "WG_WORKER_PRIVATE_KEY" {
+  type        = string
+  description = "Wireguard private key for worker cluster"
+  sensitive   = true
+}
+
+variable "WG_WORKER_PUBLIC_KEY" {
+  type        = string
+  description = "Wireguard public key for worker cluster"
+  sensitive   = true
+}
+
+variable "WG_MASTER_PRIVATE_KEY" {
+  type        = string
+  description = "Wireguard private key for master cluster"
+  sensitive   = true
+}
+
+variable "WG_MASTER_PUBLIC_KEY" {
+  type        = string
+  description = "Wireguard public key for master cluster"
+  sensitive   = true
+}
+
+
+variable "MASTER_GATEWAY_IP" {
+  type        = string
+  description = "Home cluster gateway IP (external/public IP for Liqo Wireguard)"
   sensitive   = true
 }
