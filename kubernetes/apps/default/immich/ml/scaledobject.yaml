@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/keda.sh/scaledobject_v1alpha1.json
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: immich-ml
+spec:
+  scaleTargetRef:
+    name: immich-ml
+  minReplicaCount: 0
+  maxReplicaCount: 2
+  cooldownPeriod: 300
+  pollingInterval: 15
+  triggers:
+    - type: redis
+      metadata:
+        address: redis.storage.svc.cluster.local:6379
+        listName: immich_bull:smartSearch:wait
+        listLength: "1"
+    - type: redis
+      metadata:
+        address: redis.storage.svc.cluster.local:6379
+        listName: immich_bull:faceDetection:wait
+        listLength: "1"
+    - type: redis
+      metadata:
+        address: redis.storage.svc.cluster.local:6379
+        listName: immich_bull:facialRecognition:wait
+        listLength: "1"

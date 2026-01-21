@@ -5,3 +5,6 @@ metadata:
   name: _
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
+  labels:
+    liqo.io/remote-cluster-id: worker
+    liqo.io/tenant-namespace: "true"
