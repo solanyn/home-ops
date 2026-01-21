@@ -11,4 +11,5 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: mariadb-operator-crds
+        namespace: storage
   interval: 1h
