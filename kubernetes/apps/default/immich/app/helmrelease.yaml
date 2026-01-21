@@ -58,45 +58,6 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources: {}
-      ml:
-        strategy: RollingUpdate
-        pod:
-          annotations:
-            reloader.stakater.com/auto: "true"
-        containers:
-          app:
-            image:
-              repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.4.1@sha256:b3deefd1826f113824e9d7bc30d905e7f823535887d03f869330946b6db3b44a
-            env:
-              REDIS_HOSTNAME: *redis
-              MPLCONFIGDIR: "/cache/matplotlib"
-              IMMICH_MEDIA_LOCATION: *media
-            resources: {}
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /ping
-                    port: &mlPort 3003
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /ping
-                    port: *mlPort
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 60
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -114,11 +75,6 @@ spec:
             port: 8081
           metrics-ms:
             port: 8082
-      ml:
-        controller: ml
-        ports:
-          http:
-            port: *mlPort
     serviceMonitor:
       immich:
         enabled: true
@@ -157,13 +113,6 @@ spec:
         path: /mnt/world/photos
         globalMounts:
           - path: *media
-      cache:
-        existingClaim: immich-cache
-        advancedMounts:
-          ml:
-            app:
-              - path: /cache
-              - path: /.cache
       tmpfs:
         type: emptyDir
         advancedMounts:

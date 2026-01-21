@@ -5,3 +5,13 @@ metadata:
   name: _
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
+---
+apiVersion: offloading.liqo.io/v1beta1
+kind: NamespaceOffloading
+metadata:
+  name: offloading
+spec:
+  namespaceMappingStrategy: EnforceSameName
+  podOffloadingStrategy: LocalAndRemote
+  clusterSelector:
+    nodeSelectorTerms: []
