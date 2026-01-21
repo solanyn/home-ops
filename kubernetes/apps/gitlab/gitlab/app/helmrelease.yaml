@@ -12,6 +12,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: gitlab
+        namespace: gitlab
   interval: 1h
   values:
     installCertmanager: false
