@@ -11,6 +11,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: meilisearch
+        namespace: ai
   interval: 1h
   values:
     environment:
