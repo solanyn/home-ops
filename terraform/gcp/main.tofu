@@ -6,7 +6,7 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 3.0"
+      version = "~> 2.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -27,9 +27,11 @@ provider "google" {
 
 provider "helm" {
   alias = "worker"
-  host                   = "https://${google_container_cluster.worker.endpoint}"
-  token                  = data.google_client_config.default.access_token
-  cluster_ca_certificate = base64decode(google_container_cluster.worker.master_auth[0].cluster_ca_certificate)
+  kubernetes {
+    host                   = "https://${google_container_cluster.worker.endpoint}"
+    token                  = data.google_client_config.default.access_token
+    cluster_ca_certificate = base64decode(google_container_cluster.worker.master_auth[0].cluster_ca_certificate)
+  }
 }
 
 provider "kubernetes" {
