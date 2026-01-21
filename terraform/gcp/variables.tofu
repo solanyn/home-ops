@@ -10,9 +10,14 @@ variable "GCP_CREDENTIALS" {
   sensitive   = true
 }
 
-variable "OP_SERVICE_ACCOUNT_TOKEN" {
+variable "OP_CONNECT_HOST" {
   type        = string
-  description = "1Password service account token"
+  description = "1Password Connect host URL"
+}
+
+variable "OP_CONNECT_TOKEN" {
+  type        = string
+  description = "1Password Connect token"
   sensitive   = true
 }
 
