@@ -508,7 +508,7 @@ def handle_budget_alert(event, context):
     cost = data.get('costAmount', 0)
     threshold = data.get('alertThresholdExceeded', 0)
     
-    message = f"GCP Budget Alert: {budget}\nCost: ${cost:.2f}\nThreshold: {threshold*100:.0f}%"
+    message = f"GCP Budget Alert: {budget}\nCost: $${cost:.2f}\nThreshold: {threshold*100:.0f}%"
     
     urllib.request.urlopen(
         urllib.request.Request(
