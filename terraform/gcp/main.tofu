@@ -46,7 +46,8 @@ provider "kubernetes" {
 }
 
 provider "onepassword" {
-  service_account_token = var.OP_SERVICE_ACCOUNT_TOKEN
+  url   = var.OP_CONNECT_HOST
+  token = var.OP_CONNECT_TOKEN
 }
 
 data "google_client_config" "default" {}
