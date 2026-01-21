@@ -9,7 +9,7 @@ metadata:
   labels:
     resource.kubernetes.io/admin-access: "true"
 ---
-apiVersion: offloading.liqo.io/v1beta1
+apiVersion: offloading.liqo.io/v1alpha1
 kind: NamespaceOffloading
 metadata:
   name: offloading
