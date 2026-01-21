@@ -8,13 +8,3 @@ metadata:
     volsync.backube/privileged-movers: "true"
   labels:
     resource.kubernetes.io/admin-access: "true"
----
-apiVersion: offloading.liqo.io/v1beta1
-kind: NamespaceOffloading
-metadata:
-  name: offloading
-spec:
-  namespaceMappingStrategy: EnforceSameName
-  podOffloadingStrategy: LocalAndRemote
-  clusterSelector:
-    nodeSelectorTerms: []
