@@ -6,3 +6,4 @@ namespace: liqo-tenant-worker
 
 resources:
   - ./namespace.yaml
+  - ./worker/ks.yaml

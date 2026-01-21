@@ -9,4 +9,4 @@ spec:
   remote:
     cidr:
       pod: ${POD_CIDR}
-      external: "10.70.0.0/16"
+      external: ${EXTERNAL_CIDR}

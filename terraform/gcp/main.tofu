@@ -139,6 +139,9 @@ resource "google_container_node_pool" "cpu" {
   }
 }
 
+# Wireguard keypairs - pre-generated and stored in 1Password
+# Generate with: wg genkey | tee private.key | wg pubkey > public.key
+
 resource "helm_release" "liqo" {
   provider         = helm.worker
   name             = "liqo"
@@ -146,11 +149,6 @@ resource "helm_release" "liqo" {
   create_namespace = true
   repository       = "https://helm.liqo.io"
   chart            = "liqo"
-
-  set {
-    name  = "networking.gatewayTemplates.server.service.type"
-    value = "NodePort"
-  }
 
   set {
     name  = "discovery.config.clusterID"
@@ -168,6 +166,78 @@ resource "helm_release" "liqo" {
   }
 
   depends_on = [google_container_node_pool.system]
+}
+
+# Wireguard secret for GKE gateway client (worker's keypair)
+resource "kubernetes_secret" "wireguard_worker" {
+  provider = kubernetes.worker
+  metadata {
+    name      = "wireguard-keys"
+    namespace = kubernetes_namespace.liqo_tenant_home.metadata[0].name
+    labels = {
+      "liqo.io/remote-cluster-id"           = var.MASTER_CLUSTER_ID
+      "networking.liqo.io/gateway-resource" = "true"
+    }
+  }
+  data = {
+    privateKey = var.WG_WORKER_PRIVATE_KEY
+    publicKey  = var.WG_WORKER_PUBLIC_KEY
+  }
+}
+
+# PublicKey CR for home cluster's public key (on worker)
+resource "kubernetes_manifest" "publickey_master" {
+  provider = kubernetes.worker
+  manifest = {
+    apiVersion = "networking.liqo.io/v1beta1"
+    kind       = "PublicKey"
+    metadata = {
+      name      = "master"
+      namespace = kubernetes_namespace.liqo_tenant_home.metadata[0].name
+      labels = {
+        "liqo.io/remote-cluster-id"           = var.MASTER_CLUSTER_ID
+        "networking.liqo.io/gateway-resource" = "true"
+      }
+    }
+    spec = {
+      publicKey = var.WG_MASTER_PUBLIC_KEY
+    }
+  }
+  depends_on = [helm_release.liqo]
+}
+
+# GatewayClient CR - connects to home cluster's GatewayServer
+resource "kubernetes_manifest" "gateway_client" {
+  provider = kubernetes.worker
+  manifest = {
+    apiVersion = "networking.liqo.io/v1beta1"
+    kind       = "GatewayClient"
+    metadata = {
+      name      = "master"
+      namespace = kubernetes_namespace.liqo_tenant_home.metadata[0].name
+      labels = {
+        "liqo.io/remote-cluster-id" = var.MASTER_CLUSTER_ID
+      }
+    }
+    spec = {
+      clientTemplateRef = {
+        apiVersion = "networking.liqo.io/v1beta1"
+        kind       = "WgGatewayClientTemplate"
+        name       = "wireguard-client"
+        namespace  = "liqo-system"
+      }
+      secretRef = {
+        name = kubernetes_secret.wireguard_worker.metadata[0].name
+      }
+      endpoint = {
+        addresses = [var.MASTER_GATEWAY_IP]
+        port      = 51840
+        protocol  = "UDP"
+      }
+      mtu = 1340
+    }
+  }
+  depends_on = [helm_release.liqo]
 }
 
 # Tenant namespace for home cluster peering
@@ -246,14 +316,7 @@ resource "kubernetes_manifest" "liqo_tenant" {
   depends_on = [helm_release.liqo]
 }
 
-# Get node IP for gateway endpoint
-data "kubernetes_nodes" "worker" {
-  provider = kubernetes.worker
-  depends_on = [google_container_node_pool.system]
-}
-
 locals {
-  worker_node_ip = [for addr in data.kubernetes_nodes.worker.nodes[0].status[0].addresses : addr.address if addr.type == "ExternalIP"][0]
   worker_kubeconfig = yamlencode({
     apiVersion = "v1"
     kind       = "Config"
@@ -300,29 +363,34 @@ resource "onepassword_item" "worker_cluster" {
       value = var.WORKER_CLUSTER_ID
     }
     field {
-      label = "NODE_IP"
-      type  = "CONCEALED"
-      value = local.worker_node_ip
-    }
-    field {
-      label = "NODE_PORT"
-      type  = "CONCEALED"
-      value = tostring(data.kubernetes_service.liqo_gateway.spec[0].port[0].node_port)
-    }
-    field {
       label = "POD_CIDR"
       type  = "CONCEALED"
       value = google_container_cluster.worker.cluster_ipv4_cidr
     }
     field {
-      label = "SERVICE_CIDR"
+      label = "EXTERNAL_CIDR"
       type  = "CONCEALED"
-      value = google_container_cluster.worker.services_ipv4_cidr
+      value = "10.70.0.0/16"
     }
     field {
       label = "kubeconfig"
       type  = "CONCEALED"
       value = local.worker_kubeconfig
+    }
+    field {
+      label = "WG_PUBLIC_KEY"
+      type  = "CONCEALED"
+      value = var.WG_WORKER_PUBLIC_KEY
+    }
+    field {
+      label = "MASTER_WG_PRIVATE_KEY"
+      type  = "CONCEALED"
+      value = var.WG_MASTER_PRIVATE_KEY
+    }
+    field {
+      label = "MASTER_WG_PUBLIC_KEY"
+      type  = "CONCEALED"
+      value = var.WG_MASTER_PUBLIC_KEY
     }
   }
 }
@@ -349,17 +417,6 @@ resource "kubernetes_manifest" "liqo_configuration_home" {
         }
       }
     }
-  }
-  depends_on = [helm_release.liqo]
-}
-
-# Gateway server is created automatically by Liqo helm chart
-# We just need to get the NodePort for the home cluster to connect
-data "kubernetes_service" "liqo_gateway" {
-  provider = kubernetes.worker
-  metadata {
-    name      = "liqo-gateway"
-    namespace = "liqo-system"
   }
   depends_on = [helm_release.liqo]
 }
