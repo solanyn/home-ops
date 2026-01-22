@@ -6,7 +6,7 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.0"
+      version = "~> 3.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -161,20 +161,20 @@ resource "helm_release" "liqo" {
   repository       = "https://helm.liqo.io"
   chart            = "liqo"
 
-  set {
-    name  = "discovery.config.clusterID"
-    value = var.WORKER_CLUSTER_ID
-  }
-
-  set {
-    name  = "networking.internal.podCIDR"
-    value = google_container_cluster.worker.cluster_ipv4_cidr
-  }
-
-  set {
-    name  = "networking.internal.serviceCIDR"
-    value = google_container_cluster.worker.services_ipv4_cidr
-  }
+  set = [
+    {
+      name  = "discovery.config.clusterID"
+      value = var.WORKER_CLUSTER_ID
+    },
+    {
+      name  = "networking.internal.podCIDR"
+      value = google_container_cluster.worker.cluster_ipv4_cidr
+    },
+    {
+      name  = "networking.internal.serviceCIDR"
+      value = google_container_cluster.worker.services_ipv4_cidr
+    }
+  ]
 
   depends_on = [google_container_node_pool.system]
 }
