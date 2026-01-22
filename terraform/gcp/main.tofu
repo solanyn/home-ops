@@ -75,6 +75,12 @@ resource "google_container_cluster" "worker" {
   initial_node_count       = 1
   remove_default_node_pool = true
 
+  # Use our service account for the initial node pool
+  node_config {
+    service_account = local.gcp_sa_email
+    oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
+  }
+
   cluster_autoscaling {
     autoscaling_profile = "OPTIMIZE_UTILIZATION"
   }
