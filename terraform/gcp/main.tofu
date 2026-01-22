@@ -12,6 +12,10 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 3.0"
     }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = "~> 1.0"
+    }
     onepassword = {
       source  = "1Password/onepassword"
       version = "~> 3.0"
@@ -43,6 +47,14 @@ provider "kubernetes" {
 
 provider "kubernetes" {
   alias = "master"
+}
+
+provider "kubectl" {
+  alias                  = "worker"
+  host                   = "https://${google_container_cluster.worker.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(google_container_cluster.worker.master_auth[0].cluster_ca_certificate)
+  load_config_file       = false
 }
 
 provider "onepassword" {
@@ -197,9 +209,9 @@ resource "kubernetes_secret" "wireguard_worker" {
 }
 
 # PublicKey CR for home cluster's public key (on worker)
-resource "kubernetes_manifest" "publickey_master" {
-  provider = kubernetes.worker
-  manifest = {
+resource "kubectl_manifest" "publickey_master" {
+  provider  = kubectl.worker
+  yaml_body = yamlencode({
     apiVersion = "networking.liqo.io/v1beta1"
     kind       = "PublicKey"
     metadata = {
@@ -213,14 +225,14 @@ resource "kubernetes_manifest" "publickey_master" {
     spec = {
       publicKey = var.WG_MASTER_PUBLIC_KEY
     }
-  }
+  })
   depends_on = [helm_release.liqo]
 }
 
 # GatewayClient CR - connects to home cluster's GatewayServer
-resource "kubernetes_manifest" "gateway_client" {
-  provider = kubernetes.worker
-  manifest = {
+resource "kubectl_manifest" "gateway_client" {
+  provider  = kubectl.worker
+  yaml_body = yamlencode({
     apiVersion = "networking.liqo.io/v1beta1"
     kind       = "GatewayClient"
     metadata = {
@@ -247,7 +259,7 @@ resource "kubernetes_manifest" "gateway_client" {
       }
       mtu = 1340
     }
-  }
+  })
   depends_on = [helm_release.liqo]
 }
 
@@ -306,9 +318,9 @@ resource "kubernetes_role_binding" "liqo_consumer" {
 }
 
 # Tenant CR to accept ResourceSlices from home cluster
-resource "kubernetes_manifest" "liqo_tenant" {
-  provider = kubernetes.worker
-  manifest = {
+resource "kubectl_manifest" "liqo_tenant" {
+  provider  = kubectl.worker
+  yaml_body = yamlencode({
     apiVersion = "authentication.liqo.io/v1beta1"
     kind       = "Tenant"
     metadata = {
@@ -323,7 +335,7 @@ resource "kubernetes_manifest" "liqo_tenant" {
       authzPolicy     = "TolerateNoHandshake"
       tenantCondition = "Active"
     }
-  }
+  })
   depends_on = [helm_release.liqo]
 }
 
@@ -408,9 +420,9 @@ resource "onepassword_item" "worker_cluster" {
 
 
 # Network Configuration for home cluster (home's CIDRs)
-resource "kubernetes_manifest" "liqo_configuration_home" {
-  provider = kubernetes.worker
-  manifest = {
+resource "kubectl_manifest" "liqo_configuration_home" {
+  provider  = kubectl.worker
+  yaml_body = yamlencode({
     apiVersion = "networking.liqo.io/v1beta1"
     kind       = "Configuration"
     metadata = {
@@ -428,6 +440,6 @@ resource "kubernetes_manifest" "liqo_configuration_home" {
         }
       }
     }
-  }
+  })
   depends_on = [helm_release.liqo]
 }
