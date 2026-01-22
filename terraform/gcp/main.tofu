@@ -52,6 +52,10 @@ provider "onepassword" {
 
 data "google_client_config" "default" {}
 
+locals {
+  gcp_sa_email = jsondecode(var.GCP_CREDENTIALS).client_email
+}
+
 resource "google_container_cluster" "worker" {
   name     = var.GKE_CLUSTER_NAME
   location = var.GCP_ZONE
@@ -89,10 +93,12 @@ resource "google_container_node_pool" "system" {
   node_count = 1
 
   node_config {
-    machine_type = "e2-micro"
-    disk_size_gb = 20
-    disk_type    = "pd-standard"
-    spot         = true
+    machine_type    = "e2-micro"
+    disk_size_gb    = 20
+    disk_type       = "pd-standard"
+    spot            = true
+    service_account = local.gcp_sa_email
+    oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 }
 
@@ -111,6 +117,8 @@ resource "google_container_node_pool" "gpu" {
     disk_size_gb = 100
     disk_type    = "pd-ssd"
     spot         = true
+    service_account = local.gcp_sa_email
+    oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
 
     guest_accelerator {
       type               = var.GPU_TYPE
@@ -133,10 +141,12 @@ resource "google_container_node_pool" "cpu" {
   }
 
   node_config {
-    machine_type = "e2-medium"
-    disk_size_gb = 100
-    disk_type    = "pd-ssd"
-    spot         = true
+    machine_type    = "e2-medium"
+    disk_size_gb    = 100
+    disk_type       = "pd-ssd"
+    spot            = true
+    service_account = local.gcp_sa_email
+    oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 }
 
