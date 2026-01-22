@@ -75,6 +75,7 @@ resource "google_container_cluster" "worker" {
   deletion_protection      = false
   initial_node_count       = 1
   remove_default_node_pool = true
+  resource_labels          = {}
 
   # Use our service account for the initial node pool
   node_config {
