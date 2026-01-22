@@ -72,6 +72,7 @@ resource "google_container_cluster" "worker" {
   name     = var.GKE_CLUSTER_NAME
   location = var.GCP_ZONE
 
+  deletion_protection      = false
   initial_node_count       = 1
   remove_default_node_pool = true
 
@@ -88,6 +89,12 @@ resource "google_container_cluster" "worker" {
   # Disable all GCP managed services
   logging_service    = "none"
   monitoring_service = "none"
+
+  monitoring_config {
+    managed_prometheus {
+      enabled = false
+    }
+  }
   
   # Disable addons we don't need
   addons_config {
