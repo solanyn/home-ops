@@ -1,10 +1,9 @@
 ---
-apiVersion: gateway.kgateway.dev/v1alpha1
-kind: Backend
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
 metadata:
   name: context7-mcp
 spec:
-  type: MCP
   mcp:
     targets:
       - name: context7
@@ -12,6 +11,9 @@ spec:
           host: mcp.context7.com
           port: 443
           path: /mcp
+          policies:
+            tls:
+              sni: mcp.context7.com
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -34,5 +36,5 @@ spec:
                 value: "Bearer ${CONTEXT7_TOKEN}"
       backendRefs:
         - name: context7-mcp
-          group: gateway.kgateway.dev
-          kind: Backend
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
