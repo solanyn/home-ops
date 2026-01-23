@@ -23,6 +23,7 @@ resources:
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
   - ./kiro2api/ks.yaml
+  - ./kiro-gateway/ks.yaml
   - ./label-studio/ks.yaml
   - ./lidarr/ks.yaml
   - ./mealie/ks.yaml
