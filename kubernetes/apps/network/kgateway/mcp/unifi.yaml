@@ -1,10 +1,9 @@
 ---
-apiVersion: gateway.kgateway.dev/v1alpha1
-kind: Backend
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
 metadata:
   name: unifi-network-mcp
 spec:
-  type: MCP
   mcp:
     targets:
       - name: unifi
@@ -29,5 +28,5 @@ spec:
             value: /mcp/unifi
       backendRefs:
         - name: unifi-network-mcp
-          group: gateway.kgateway.dev
-          kind: Backend
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
