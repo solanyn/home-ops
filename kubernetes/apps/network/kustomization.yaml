@@ -17,6 +17,7 @@ resources:
   - ./envoy-gateway/ks.yaml
   - ./flux-operator-mcp/ks.yaml
   - ./kgateway/ks.yaml
+  - ./notion-mcp/ks.yaml
   - ./smtp-relay/ks.yaml
   - ./unifi-dns/ks.yaml
   - ./unifi-network-mcp/ks.yaml
