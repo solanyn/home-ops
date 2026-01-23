@@ -9,7 +9,6 @@ spec:
     provider:
       openai:
         model: claude-sonnet-4.5
-    customHost:
       host: kiro-gateway.default.svc.cluster.local
       port: 80
   policies:
