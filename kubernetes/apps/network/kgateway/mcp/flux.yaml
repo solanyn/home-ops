@@ -10,8 +10,8 @@ spec:
         static:
           host: flux-operator-mcp.network.svc.cluster.local
           port: 9090
-          path: /sse
-          protocol: SSE
+          path: /mcp
+          protocol: StreamableHTTP
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
