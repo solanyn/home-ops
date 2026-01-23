@@ -22,7 +22,7 @@ spec:
             env:
               OPENAI_BASE_URL: "http://kiro-gateway.default.svc.cluster.local/v1"
               OPENAI_API_KEY: "kiro-gateway-secret"
-              BIG_MODEL: "claude-sonnet-4.5"
+              BIG_MODEL: "claude-opus-4.5"
               SMALL_MODEL: "claude-haiku-4.5"
               PREFERRED_PROVIDER: "openai"
             resources:
