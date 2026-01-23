@@ -1,0 +1,13 @@
+---
+apiVersion: gateway.kgateway.dev/v1alpha1
+kind: Backend
+metadata:
+  name: kiro-gateway
+  namespace: network
+spec:
+  type: AI
+  ai:
+    llm:
+      openai: {}
+      host: kiro-gateway.default.svc.cluster.local
+      port: 80
