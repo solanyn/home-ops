@@ -8,7 +8,9 @@ spec:
   type: AI
   ai:
     llm:
-      openai: {}
+      openai:
+        authToken:
+          kind: Passthrough
       host: kiro-gateway.default.svc.cluster.local
       port: 80
 
