@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/1rgs/claude-code-proxy
-              tag: latest
+              tag: main@sha256:719c3da6f7ca4768b72a7c3660945878df68ec27bb2f6cd0110b9d8766f99451
             env:
               OPENAI_BASE_URL: "http://kiro-gateway.default.svc.cluster.local/v1"
               OPENAI_API_KEY: "kiro-gateway-secret"
