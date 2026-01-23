@@ -88,10 +88,12 @@ resource "google_container_cluster" "worker" {
   }
 
   # Disable all GCP managed services
-  logging_service    = "none"
-  monitoring_service = "none"
+  logging_config {
+    enable_components = []
+  }
 
   monitoring_config {
+    enable_components = []
     managed_prometheus {
       enabled = false
     }
