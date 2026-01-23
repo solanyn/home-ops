@@ -1,10 +1,9 @@
 ---
-apiVersion: gateway.kgateway.dev/v1alpha1
-kind: Backend
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
 metadata:
   name: grafana-mcp
 spec:
-  type: MCP
   mcp:
     targets:
       - name: grafana
@@ -29,5 +28,5 @@ spec:
             value: /mcp/grafana
       backendRefs:
         - name: grafana-mcp
-          group: gateway.kgateway.dev
-          kind: Backend
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
