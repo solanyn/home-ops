@@ -9,8 +9,8 @@ spec:
       - name: flux
         static:
           host: flux-operator-mcp.network.svc.cluster.local
-          port: 8080
-          path: /mcp
+          port: 9090
+          path: /sse
           protocol: SSE
 ---
 apiVersion: gateway.networking.k8s.io/v1
