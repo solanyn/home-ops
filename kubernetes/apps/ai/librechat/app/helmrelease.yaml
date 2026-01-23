@@ -115,7 +115,7 @@ spec:
             endpoints:
               custom:
                 - name: "Claude (Kiro)"
-                  apiKey: "dummy"
+                  apiKey: "${KIRO_GATEWAY_API_KEY}"
                   baseURL: "https://gateway.goyangi.io/v1"
                   models:
                     default:
