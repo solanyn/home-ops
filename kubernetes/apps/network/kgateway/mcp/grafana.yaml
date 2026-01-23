@@ -8,9 +8,9 @@ spec:
     targets:
       - name: grafana
         static:
-          host: grafana.observability.svc.cluster.local
-          port: 80
-          path: /mcp
+          host: kagent-grafana-mcp.ai.svc.cluster.local
+          port: 8000
+          path: /sse
           protocol: SSE
 ---
 apiVersion: gateway.networking.k8s.io/v1
