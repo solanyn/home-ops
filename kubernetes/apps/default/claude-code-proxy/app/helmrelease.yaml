@@ -17,14 +17,14 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/fuergaosi233/claude-code-proxy
+              repository: ghcr.io/1rgs/claude-code-proxy
               tag: latest
             env:
-              OPENAI_API_BASE: "http://kiro-gateway.default.svc.cluster.local/v1"
+              OPENAI_BASE_URL: "http://kiro-gateway.default.svc.cluster.local/v1"
               OPENAI_API_KEY: "kiro-gateway-secret"
               BIG_MODEL: "claude-sonnet-4.5"
               SMALL_MODEL: "claude-haiku-4.5"
-              PORT: "8080"
+              PREFERRED_PROVIDER: "openai"
             resources:
               requests:
                 cpu: 10m
@@ -50,4 +50,4 @@ spec:
           lbipam.cilium.io/ips: 192.168.69.140
         ports:
           http:
-            port: 8080
+            port: 8082
