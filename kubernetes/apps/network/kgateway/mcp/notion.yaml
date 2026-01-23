@@ -14,7 +14,8 @@ spec:
           protocol: StreamableHTTP
           policies:
             auth:
-              key: "Bearer internal-mcp-token"
+              secretRef:
+                name: notion-mcp-internal-auth
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
