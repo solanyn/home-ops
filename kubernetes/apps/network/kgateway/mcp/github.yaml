@@ -12,6 +12,9 @@ spec:
           port: 443
           path: /mcp/
           policies:
+            auth:
+              secretRef:
+                name: github-mcp-auth
             tls:
               sni: api.githubcopilot.com
 ---
@@ -28,12 +31,6 @@ spec:
         - path:
             type: PathPrefix
             value: /mcp/github
-      filters:
-        - type: RequestHeaderModifier
-          requestHeaderModifier:
-            set:
-              - name: Authorization
-                value: "Bearer ${GITHUB_MCP_SERVER_TOKEN}"
       backendRefs:
         - name: github-mcp
           group: agentgateway.dev

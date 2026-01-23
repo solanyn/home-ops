@@ -12,6 +12,9 @@ spec:
           port: 443
           path: /mcp
           policies:
+            auth:
+              secretRef:
+                name: context7-mcp-auth
             tls:
               sni: mcp.context7.com
 ---
@@ -28,12 +31,6 @@ spec:
         - path:
             type: PathPrefix
             value: /mcp/context7
-      filters:
-        - type: RequestHeaderModifier
-          requestHeaderModifier:
-            set:
-              - name: Authorization
-                value: "Bearer ${CONTEXT7_TOKEN}"
       backendRefs:
         - name: context7-mcp
           group: agentgateway.dev
