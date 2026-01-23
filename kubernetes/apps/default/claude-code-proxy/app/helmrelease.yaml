@@ -42,6 +42,12 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /.cache
+          - path: /.local
     service:
       app:
         controller: claude-code-proxy
