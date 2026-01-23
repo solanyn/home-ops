@@ -33,7 +33,7 @@ spec:
                 memory: 256Mi
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
     defaultPodOptions:
       securityContext:
@@ -42,11 +42,10 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-    persistence:
-      cache:
+      local:
         type: emptyDir
         globalMounts:
-          - path: /.cache
+          - path: /.local
     service:
       app:
         controller: claude-code-proxy
