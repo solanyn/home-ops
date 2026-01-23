@@ -50,9 +50,14 @@ spec:
     service:
       app:
         controller: claude-code-proxy
-        type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 192.168.69.140
         ports:
           http:
             port: 8082
+    route:
+      app:
+        hostnames:
+          - claude.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
