@@ -12,6 +12,9 @@ spec:
           port: 443
           path: /mcp
           policies:
+            auth:
+              secretRef:
+                name: notion-mcp-auth
             tls:
               sni: mcp.notion.com
 ---
@@ -28,12 +31,6 @@ spec:
         - path:
             type: PathPrefix
             value: /mcp/notion
-      filters:
-        - type: RequestHeaderModifier
-          requestHeaderModifier:
-            set:
-              - name: Authorization
-                value: "Bearer ${NOTION_TOKEN}"
       backendRefs:
         - name: notion-mcp
           group: agentgateway.dev
