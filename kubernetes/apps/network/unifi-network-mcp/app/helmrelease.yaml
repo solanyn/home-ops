@@ -19,6 +19,8 @@ spec:
             image:
               repository: ghcr.io/sirkirby/unifi-network-mcp
               tag: 0.4.2@sha256:c44c640b5ee749a72a5e6fbd9eab5a72df041fab1e6e5426f85edab3deb4d0fc
+            env:
+              UNIFI_MCP_HTTP_ENABLED: "true"
             envFrom:
               - secretRef:
                   name: unifi-network-mcp-secret
