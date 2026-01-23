@@ -119,24 +119,12 @@ spec:
                   baseURL: "https://gateway.goyangi.io/v1"
                   models:
                     default:
-                      - "claude-opus-4-5"
-                      - "claude-sonnet-4-5"
-                      - "claude-haiku-4-5"
+                      - "claude-opus-4.5"
+                      - "claude-sonnet-4.5"
                       - "claude-sonnet-4"
-                      - "claude-3-7-sonnet-20250219"
-                  titleModel: "claude-sonnet-4-5"
-                - name: "Gemini"
-                  apiKey: "dummy"
-                  baseURL: "https://gateway.goyangi.io/v1"
-                  models:
-                    default:
-                      - "gemini-2.5-flash"
-                      - "gemini-2.5-pro"
-                      - "gemini-3-flash-preview"
-                      - "gemini-3-pro-preview"
-                  titleModel: "gemini-2.5-flash"
-                  headers:
-                    x-ai-eg-model: "${model}"
+                      - "claude-haiku-4.5"
+                      - "claude-3.7-sonnet"
+                  titleModel: "claude-haiku-4.5"
     persistence:
       config:
         type: emptyDir
