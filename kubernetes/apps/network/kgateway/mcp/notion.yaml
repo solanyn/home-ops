@@ -11,9 +11,7 @@ spec:
           host: notion-mcp.network.svc.cluster.local
           port: 3000
           path: /mcp
-          policies:
-            mcp:
-              protocol: StreamableHTTP
+          protocol: StreamableHTTP
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
