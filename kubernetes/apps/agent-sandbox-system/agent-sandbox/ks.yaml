@@ -12,7 +12,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: ai
+  targetNamespace: agent-sandbox-system
   wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -23,7 +23,7 @@ metadata:
 spec:
   dependsOn:
     - name: agent-sandbox-core
-      namespace: ai
+      namespace: agent-sandbox-system
   interval: 1h
   path: ./kubernetes/apps/ai/agent-sandbox/extensions
   prune: true
@@ -31,5 +31,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: ai
+  targetNamespace: agent-sandbox-system
   wait: false
