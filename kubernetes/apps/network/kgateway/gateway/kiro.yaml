@@ -19,6 +19,29 @@ kind: HTTPRoute
 metadata:
   name: kiro-gateway
   namespace: network
+spec:
+  hostnames:
+    - gateway.goyangi.io
+  parentRefs:
+    - name: ai
+      namespace: network
+      sectionName: https
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1
+      backendRefs:
+        - name: kiro-gateway
+          namespace: network
+          group: gateway.kgateway.dev
+          kind: Backend
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kiro-gateway
+  namespace: network
   annotations:
     external-dns.alpha.kubernetes.io/hostname: gateway.goyangi.io
 spec:
