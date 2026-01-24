@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/app-template-4.6.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: model-registry
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: model-registry
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      model-registry:
+        replicas: 1
+        serviceAccount:
+          name: model-registry-server
+        containers:
+          server:
+            image:
+              repository: ghcr.io/kubeflow/model-registry/server
+              tag: v0.2.7 # Using a stable tag
+            # Need to verify postgres args
+            # Using simple REST server mode for now
+            command:
+              - /model-registry
+              - proxy
+              - --hostname=0.0.0.0
+              - --port=8080
+              # Assuming postgres support via standard args if available, or just generic
+            envFrom:
+              - secretRef:
+                  name: model-registry-db
+            ports:
+              - containerPort: 8080
+                name: http-api
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+              runAsNonRoot: true
+    
+    service:
+      app:
+        controller: model-registry
+        ports:
+          http:
+            port: 8080
