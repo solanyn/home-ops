@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-network
+  namespace: knative-serving
+data:
+  ingress-class: "gateway-api.ingress.networking.knative.dev"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-gateway-api
+  namespace: knative-serving
+data:
+  # Reference your existing Envoy Gateway Class
+  gateway.class: "gtw" 
