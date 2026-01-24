@@ -17,3 +17,4 @@ resources:
   - ./tensorboard/ks.yaml
   - ./training-operator/ks.yaml
   - ./katib/ks.yaml
+  - ./model-registry/ks.yaml
