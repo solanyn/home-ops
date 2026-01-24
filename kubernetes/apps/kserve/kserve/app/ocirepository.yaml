@@ -1,0 +1,11 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: kserve
+  namespace: kserve
+spec:
+  interval: 1h
+  url: oci://ghcr.io/kserve/charts/kserve
+  ref:
+    tag: v0.14.1

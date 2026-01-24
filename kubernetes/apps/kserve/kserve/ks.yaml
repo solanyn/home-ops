@@ -3,8 +3,28 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kserve
-  namespace: flux-system
+  name: &app kserve-crds
+  namespace: kserve
+spec:
+  targetNamespace: kserve
+  interval: 1h
+  path: ./kubernetes/apps/kserve/kserve/crds
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  postBuild:
+    substitute:
+      APP: *app
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kserve-app
+  namespace: kserve
 spec:
   targetNamespace: kserve
   interval: 1h
@@ -15,11 +35,13 @@ spec:
     name: flux-system
     namespace: flux-system
   wait: true
+  dependsOn:
+    - name: kserve-crds
+      namespace: kserve
+    - name: knative-serving
+      namespace: knative-serving
+    - name: cert-manager
+      namespace: cert-manager
   postBuild:
     substitute:
       APP: *app
-  dependsOn:
-    - name: knative-serving
-      namespace: flux-system
-    - name: cert-manager
-      namespace: flux-system
