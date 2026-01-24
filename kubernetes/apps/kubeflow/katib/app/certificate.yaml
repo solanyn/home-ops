@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: katib-webhook-cert
+  namespace: kubeflow
+spec:
+  dnsNames:
+    - katib-controller.kubeflow.svc
+    - katib-controller.kubeflow.svc.cluster.local
+  issuerRef:
+    kind: ClusterIssuer
+    name: selfsigned
+  secretName: katib-webhook-cert
