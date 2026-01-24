@@ -77,6 +77,8 @@ spec:
                 subPath: resources
               - path: /romm/assets
                 subPath: assets
+              - path: /romm/config
+                subPath: config
       media:
         type: nfs
         server: nas.internal
@@ -88,7 +90,5 @@ spec:
         advancedMounts:
           romm:
             app:
-              - path: /romm/config
-                subPath: config
               - path: /tmp
                 subPath: tmp
