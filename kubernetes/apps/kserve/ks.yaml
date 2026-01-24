@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app kserve
+  namespace: flux-system
+spec:
+  targetNamespace: kserve
+  interval: 1h
+  path: ./kubernetes/apps/kserve/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+  postBuild:
+    substitute:
+      APP: *app
+  dependsOn:
+    - name: knative-serving
+      namespace: flux-system
+    - name: cert-manager
+      namespace: flux-system
