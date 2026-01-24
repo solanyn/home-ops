@@ -9,7 +9,7 @@ applications = {
   grafana        = { group = "admin", icon = "grafana", redirect_uris = ["/login/generic_oauth"] }
   headlamp       = { group = "admin", icon = "headlamp", redirect_uris = ["/oidc-callback"] }
   immich         = { group = "user", icon = "immich", redirect_uris = ["https://photos.goyangi.io/auth/login", "https://photos.goyangi.io/user-settings", "app.immich:/"] }
-  kubeflow       = { group = "admin", icon = "kubeflow", redirect_uris = ["/dex/callback"] }
+  kubeflow       = { group = "admin", icon = "kubeflow", redirect_uris = ["/oauth2/callback"] }
   librechat      = { group = "user", icon = "librechat", redirect_uris = ["/oauth/openid/callback"] }
   lidarr         = { group = "admin", icon = "lidarr", redirect_uris = ["/oauth2/callback"] }
   mealie         = { group = "user", icon = "mealie", redirect_uris = ["/login"] }
