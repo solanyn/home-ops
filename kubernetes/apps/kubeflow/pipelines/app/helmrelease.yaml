@@ -15,6 +15,14 @@ spec:
         replicas: 1
         serviceAccount:
           name: ml-pipeline
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom:
+              - secretRef:
+                  name: ml-pipeline-secret
         containers:
           app:
             image:
