@@ -1,0 +1,92 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/app-template-4.6.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tensorboard
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: tensorboard
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      tensorboard-controller:
+        replicas: 1
+        serviceAccount:
+          name: tensorboard-controller-service-account
+        containers:
+          manager:
+            image:
+              repository: ghcr.io/kubeflow/kubeflow/tensorboard-controller
+              tag: v1.10.0
+            command:
+              - /manager
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8081
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: 8081
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                cpu: 500m
+                memory: 128Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 999
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+      
+      tensorboards-web-app:
+        replicas: 1
+        serviceAccount:
+          name: tensorboards-web-app-service-account
+        containers:
+          app:
+            image:
+              repository: ghcr.io/kubeflow/kubeflow/tensorboards-web-app
+              tag: v1.10.0
+            env:
+              APP_PREFIX: /tensorboards
+              USERID_HEADER: X-Remote-User
+              USERID_PREFIX: ""
+              APP_SECURE_COOKIES: "false"
+            securityContext:
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              runAsUser: 1000
+              capabilities:
+                drop: ["ALL"]
+    
+    service:
+      tensorboards-web-app:
+        controller: tensorboards-web-app
+        ports:
+          http:
+            port: 5000
+

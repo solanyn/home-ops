@@ -1,0 +1,34 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admission-webhook-service-account
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: admission-webhook-cluster-role
+rules:
+  - apiGroups:
+      - kubeflow.org
+    resources:
+      - poddefaults
+    verbs:
+      - get
+      - watch
+      - list
+      - update
+      - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admission-webhook-cluster-role-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admission-webhook-cluster-role
+subjects:
+  - kind: ServiceAccount
+    name: admission-webhook-service-account
+    namespace: kubeflow

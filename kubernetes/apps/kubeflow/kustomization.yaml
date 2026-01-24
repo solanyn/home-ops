@@ -9,6 +9,9 @@ components:
 
 resources:
   - ./namespace.yaml
+  - ./admission-webhook/ks.yaml
   - ./profiles/ks.yaml
   - ./central-dashboard/ks.yaml
   - ./notebooks/ks.yaml
+  - ./volumes-web-app/ks.yaml
+  - ./tensorboard/ks.yaml

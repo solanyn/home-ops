@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/app-template-4.6.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: volumes-web-app
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: volumes-web-app
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      volumes-web-app:
+        replicas: 1
+        serviceAccount:
+          name: volumes-web-app-service-account
+        containers:
+          app:
+            image:
+              repository: ghcr.io/kubeflow/kubeflow/volumes-web-app
+              tag: v1.10.0
+            env:
+              APP_PREFIX: /volumes
+              USERID_HEADER: X-Remote-User
+              USERID_PREFIX: ""
+              APP_SECURE_COOKIES: "false"
+              VOLUME_VIEWER_IMAGE: filebrowser/filebrowser:v2.25.0
+            securityContext:
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              runAsUser: 1000
+              capabilities:
+                drop: ["ALL"]
+    
+    service:
+      app:
+        controller: volumes-web-app
+        ports:
+          http:
+            port: 5000
+
+    configMaps:
+      viewer-spec:
+        data:
+          viewer-spec.yaml: |
+            kind: Pod
+            metadata:
+              name: pvc-viewer
+              labels:
+                app: pvc-viewer
+            spec:
+              containers:
+              - name: viewer
+                image: filebrowser/filebrowser:v2.25.0
+                imagePullPolicy: IfNotPresent
+                args:
+                - --noauth
+                - --root=/mnt/
+                - --port=8080
+                - --address=0.0.0.0
+                volumeMounts:
+                - mountPath: /mnt/
+                  name: volume
+                readOnly: false
+              restartPolicy: Never
+              volumes:
+              - name: volume
+                persistentVolumeClaim:
+                  claimName: "{pvc}"
+    
+    persistence:
+      viewer-spec:
+        type: configMap
+        name: viewer-spec
+        globalMounts:
+          - path: /etc/config/viewer-spec.yaml
+            subPath: viewer-spec.yaml
+            readOnly: true
