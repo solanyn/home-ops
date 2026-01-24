@@ -1,0 +1,29 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kuberay-operator
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: kuberay-operator
+      version: 1.1.1
+      sourceRef:
+        kind: HelmRepository
+        name: kuberay
+  values:
+    # Operator itself on Liqo
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: liqo.io/type
+                  operator: In
+                  values:
+                    - virtual-node
+    tolerations:
+      - key: virtual-node.liqo.io/not-allowed
+        operator: Exists
+        effect: NoExecute

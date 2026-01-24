@@ -1,0 +1,34 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: spark-operator
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: spark-operator
+      version: 1.2.14
+      sourceRef:
+        kind: HelmRepository
+        name: spark-operator
+  values:
+    # Operator Config
+    sparkJobNamespace: "" # Watch all namespaces
+    webhook:
+      enable: true
+    # We could try to inject default affinity via MutatingWebhook or PodDefaults later.
+    # For the operator itself, we can move it to Liqo too if requested.
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: liqo.io/type
+                  operator: In
+                  values:
+                    - virtual-node
+    tolerations:
+      - key: virtual-node.liqo.io/not-allowed
+        operator: Exists
+        effect: NoExecute
