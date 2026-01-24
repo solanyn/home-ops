@@ -1,0 +1,43 @@
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Database
+metadata:
+  name: kfp-pipeline
+  namespace: kubeflow
+spec:
+  mariadbRef:
+    name: mariadb
+    namespace: storage
+  characterSet: utf8mb4
+  collate: utf8mb4_unicode_ci
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: User
+metadata:
+  name: kfp-user
+  namespace: kubeflow
+spec:
+  mariadbRef:
+    name: mariadb
+    namespace: storage
+  passwordSecretKeyRef:
+    name: ml-pipeline-db-secret
+    key: password
+    generate: true
+  maxUserConnections: 20
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Grant
+metadata:
+  name: kfp-grant
+  namespace: kubeflow
+spec:
+  mariadbRef:
+    name: mariadb
+    namespace: storage
+  privileges:
+    - "ALL PRIVILEGES"
+  database: kfp-pipeline
+  username: kfp-user
+  table: "*"
+  host: "%"
