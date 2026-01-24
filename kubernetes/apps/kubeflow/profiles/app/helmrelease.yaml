@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/app-template-3.2.1/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: profiles
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: profiles
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      manager:
+        replicas: 1
+        serviceAccount:
+          name: profiles-controller
+        containers:
+          manager:
+            image:
+              repository: ghcr.io/kubeflow/kubeflow/profile-controller
+              tag: v1.10.0
+            command:
+              - /manager
+              - -userid-header
+              - X-Remote-User
+              - -userid-prefix
+              - ""
+              - -workload-identity
+              - ""
+            envFrom:
+              - configMapRef:
+                  name: profiles-config
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              capabilities:
+                drop: ["ALL"]
+      kfam:
+        replicas: 1
+        serviceAccount:
+          name: profiles-controller
+        containers:
+          kfam:
+            image:
+              repository: ghcr.io/kubeflow/kubeflow/kfam
+              tag: v1.10.0
+            command:
+              - /access-management
+              - -cluster-admin
+              - admin@goyangi.io
+              - -userid-header
+              - X-Remote-User
+              - -userid-prefix
+              - ""
+            envFrom:
+              - configMapRef:
+                  name: profiles-config
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /metrics
+                    port: 8081
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              capabilities:
+                drop: ["ALL"]
+
+    service:
+      kfam:
+        controller: kfam
+        ports:
+          http:
+            port: 8081
+
+    configMaps:
+      config:
+        data:
+          namespace-labels.yaml: |
+            # Defines the labels to be added to the namespace created by the profile controller.
+            # The key is the label name and the value is the label value.
+            # If the value is empty, the label is not added.
+            # If the value is not empty, the label is added.
+            # If the label is already present, it is not overwritten.
+            # If the label is not present, it is added.
+            app.kubernetes.io/part-of: kubeflow-profile
+    
+    persistence:
+      namespace-labels:
+        type: configMap
+        name: profiles-config
+        globalMounts:
+          - path: /etc/profile-controller
+            readOnly: true
