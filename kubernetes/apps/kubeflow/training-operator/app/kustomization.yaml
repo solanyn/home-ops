@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: kubeflow
+resources:
+  - ./ocirepository.yaml
+  - ./helmrelease.yaml
+  - ./rbac.yaml
+  - ./certificate.yaml
+  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/training-operator/upstream/base/crds/kubeflow.org_jaxjobs.yaml
+  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/training-operator/upstream/base/crds/kubeflow.org_mpijobs.yaml
+  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/training-operator/upstream/base/crds/kubeflow.org_paddlejobs.yaml
+  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/training-operator/upstream/base/crds/kubeflow.org_pytorchjobs.yaml
+  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/training-operator/upstream/base/crds/kubeflow.org_tfjobs.yaml
+  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/training-operator/upstream/base/crds/kubeflow.org_xgboostjobs.yaml

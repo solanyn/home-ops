@@ -1,0 +1,152 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/app-template-4.6.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: katib
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: katib
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      katib-controller:
+        replicas: 1
+        serviceAccount:
+          name: katib-controller
+        containers:
+          controller:
+            image:
+              repository: ghcr.io/kubeflow/katib/katib-controller
+              tag: v0.17.0
+            command:
+              - ./katib-controller
+              - --katib-config=/etc/config/katib-config.yaml
+            ports:
+              - containerPort: 443
+                name: webhook
+                protocol: TCP
+              - containerPort: 8080
+                name: metrics
+                protocol: TCP
+            securityContext:
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              runAsUser: 1000
+              capabilities:
+                drop: ["ALL"]
+            volumeMounts:
+              - mountPath: /tmp/cert
+                name: cert
+                readOnly: true
+      
+      katib-db-manager:
+        replicas: 1
+        serviceAccount:
+          name: katib-controller
+        containers:
+          manager:
+            image:
+              repository: ghcr.io/kubeflow/katib/katib-db-manager
+              tag: v0.17.0
+            command:
+              - ./katib-db-manager
+            envFrom:
+              - secretRef:
+                  name: katib-db-secret
+            ports:
+              - containerPort: 6789
+                name: api
+            securityContext:
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              runAsUser: 1000
+              capabilities:
+                drop: ["ALL"]
+
+      katib-ui:
+        replicas: 1
+        serviceAccount:
+          name: katib-ui
+        containers:
+          ui:
+            image:
+              repository: ghcr.io/kubeflow/katib/katib-ui
+              tag: v0.17.0
+            command:
+              - ./katib-ui
+              - --port=8080
+            env:
+              KATIB_CORE_NAMESPACE: kubeflow
+            ports:
+              - containerPort: 8080
+                name: http
+            securityContext:
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              runAsUser: 1000
+              capabilities:
+                drop: ["ALL"]
+
+    service:
+      katib-controller:
+        controller: katib-controller
+        ports:
+          webhook:
+            port: 443
+            targetPort: 443
+          metrics:
+            port: 8080
+            targetPort: 8080
+      katib-db-manager:
+        controller: katib-db-manager
+        ports:
+          api:
+            port: 6789
+            targetPort: 6789
+      katib-ui:
+        controller: katib-ui
+        ports:
+          http:
+            port: 80
+            targetPort: 8080
+
+    persistence:
+      cert:
+        type: secret
+        name: katib-webhook-cert
+        globalMounts:
+          - path: /tmp/cert
+            readOnly: true
+      config:
+        type: configMap
+        name: katib-config
+        globalMounts:
+          - path: /etc/config/katib-config.yaml
+            subPath: katib-config.yaml
+            readOnly: true
+
+    configMaps:
+      katib-config:
+        data:
+          katib-config.yaml: |
+            metrics:
+              suggestion:
+                - name: random
+                  image: ghcr.io/kubeflow/katib/suggestion-hyperopt
+                  tag: v0.17.0
+                - name: tpe
+                  image: ghcr.io/kubeflow/katib/suggestion-hyperopt
+                  tag: v0.17.0
+              early-stopping:
+                - name: median-stop
+                  image: ghcr.io/kubeflow/katib/earlystopping-medianstop
+                  tag: v0.17.0

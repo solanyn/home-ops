@@ -1,0 +1,84 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: training-operator
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: training-operator
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["create", "list", "update", "watch"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+  - apiGroups: [""]
+    resources: ["pods/exec"]
+    verbs: ["create"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list", "update", "watch"]
+  - apiGroups: [""]
+    resources: ["serviceaccounts"]
+    verbs: ["create", "get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["services"]
+    verbs: ["create", "delete", "get", "list", "watch"]
+  - apiGroups: ["admissionregistration.k8s.io"]
+    resources: ["validatingwebhookconfigurations"]
+    verbs: ["get", "list", "update", "watch"]
+  - apiGroups: ["autoscaling"]
+    resources: ["horizontalpodautoscalers"]
+    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+  - apiGroups: ["kubeflow.org"]
+    resources: 
+      - jaxjobs
+      - mpijobs
+      - paddlejobs
+      - pytorchjobs
+      - tfjobs
+      - xgboostjobs
+    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+  - apiGroups: ["kubeflow.org"]
+    resources: 
+      - jaxjobs/finalizers
+      - mpijobs/finalizers
+      - paddlejobs/finalizers
+      - pytorchjobs/finalizers
+      - tfjobs/finalizers
+      - xgboostjobs/finalizers
+    verbs: ["update"]
+  - apiGroups: ["kubeflow.org"]
+    resources: 
+      - jaxjobs/status
+      - mpijobs/status
+      - paddlejobs/status
+      - pytorchjobs/status
+      - tfjobs/status
+      - xgboostjobs/status
+    verbs: ["get", "patch", "update"]
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["rolebindings", "roles"]
+    verbs: ["create", "list", "update", "watch"]
+  - apiGroups: ["scheduling.volcano.sh", "scheduling.x-k8s.io"]
+    resources: ["podgroups"]
+    verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: training-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: training-operator
+subjects:
+  - kind: ServiceAccount
+    name: training-operator
+    namespace: kubeflow
