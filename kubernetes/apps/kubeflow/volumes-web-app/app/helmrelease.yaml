@@ -49,6 +49,7 @@ spec:
 
     configMaps:
       viewer-spec:
+        name: viewer-spec
         data:
           viewer-spec.yaml: |
             kind: Pod
