@@ -7,7 +7,9 @@ resources:
   - ./rbac.yaml
   - ./externalsecret.yaml
   - ./httproute.yaml
-  - ./mariadb.yaml
-  # Core KFP resources from upstream (using raw github URLs)
-  - https://raw.githubusercontent.com/kubeflow/manifests/master/applications/pipeline/upstream/base/crds/pipelines.kubeflow.org_pipelines.yaml
-  - https://raw.githubusercontent.com/kubeflow/manifests/master/applications/pipeline/upstream/base/crds/pipelines.kubeflow.org_pipelineversions.yaml
+  - ./database.yaml
+  # Core KFP resources from upstream source repo
+  # renovate: datasource=github-tags depName=kubeflow/pipelines versioning=semver
+  - https://raw.githubusercontent.com/kubeflow/pipelines/sdk-2.15.2/manifests/kustomize/base/crds/pipelines.kubeflow.org_pipelines.yaml
+  # renovate: datasource=github-tags depName=kubeflow/pipelines versioning=semver
+  - https://raw.githubusercontent.com/kubeflow/pipelines/sdk-2.15.2/manifests/kustomize/base/crds/pipelines.kubeflow.org_pipelineversions.yaml
