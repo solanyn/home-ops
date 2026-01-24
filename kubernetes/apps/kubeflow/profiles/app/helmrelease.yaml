@@ -90,6 +90,7 @@ spec:
 
     configMaps:
       config:
+        name: profiles-config
         data:
           namespace-labels.yaml: |
             # Defines the labels to be added to the namespace created by the profile controller.
@@ -103,7 +104,7 @@ spec:
     persistence:
       namespace-labels:
         type: configMap
-        name: profiles-config
+        identifier: config
         globalMounts:
           - path: /etc/profile-controller
             readOnly: true

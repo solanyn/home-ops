@@ -81,6 +81,7 @@ spec:
 
     configMaps:
       envoy-config:
+        name: metadata-envoy-config
         data:
           envoy-config.yaml: |
             # Minimal Envoy config for MLMD
