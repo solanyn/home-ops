@@ -1,0 +1,19 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: pipelines
+spec:
+  parentRefs:
+    - name: envoy-internal
+      namespace: network
+  hostnames:
+    - kubeflow.goyangi.io
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /pipeline
+      backendRefs:
+        - name: pipelines-ui
+          port: 3000
