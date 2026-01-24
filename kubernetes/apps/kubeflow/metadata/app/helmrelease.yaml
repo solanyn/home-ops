@@ -15,14 +15,6 @@ spec:
         replicas: 1
         serviceAccount:
           name: metadata-grpc-server
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom:
-              - secretRef:
-                  name: metadata-db-secret
         containers:
           app:
             image:
@@ -31,11 +23,11 @@ spec:
             command: ["/bin/metadata_store_server"]
             args:
               - --grpc_port=8080
-              - --pg_config_dbname=metadb
-              - --pg_config_host=postgres-rw.storage.svc.cluster.local
-              - --pg_config_port=5432
-              - --pg_config_user=$(DBCONFIG_USER)
-              - --pg_config_password=$(DBCONFIG_PASSWORD)
+              - --mysql_config_database=$(MYSQL_DATABASE)
+              - --mysql_config_host=$(MYSQL_HOST)
+              - --mysql_config_port=$(MYSQL_PORT)
+              - --mysql_config_user=$(DBCONFIG_USER)
+              - --mysql_config_password=$(DBCONFIG_PASSWORD)
               - --enable_database_upgrade=true
               - --grpc_channel_arguments=grpc.max_metadata_size=16384
             envFrom:
