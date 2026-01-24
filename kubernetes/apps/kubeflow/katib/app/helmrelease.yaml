@@ -102,7 +102,7 @@ spec:
           ui:
             image:
               repository: ghcr.io/kubeflow/katib/katib-ui
-              tag: v0.17.0
+              tag: v0.19.0
             command:
               - ./katib-ui
               - --port=8080
