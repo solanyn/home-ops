@@ -6,4 +6,3 @@ resources:
   - ./helmrelease.yaml
   - ./rbac.yaml
   - ./externalsecret.yaml
-  - ./mariadb.yaml
