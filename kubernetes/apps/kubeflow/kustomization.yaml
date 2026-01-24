@@ -9,6 +9,8 @@ components:
 
 resources:
   - ./namespace.yaml
+  - ./externalsecret.yaml
+  - ./securitypolicy.yaml
   - ./admission-webhook/ks.yaml
   - ./profiles/ks.yaml
   - ./central-dashboard/ks.yaml
