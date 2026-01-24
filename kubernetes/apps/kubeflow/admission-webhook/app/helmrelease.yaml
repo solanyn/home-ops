@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/app-template-4.6.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: admission-webhook
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: admission-webhook
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      admission-webhook:
+        replicas: 1
+        serviceAccount:
+          name: admission-webhook-service-account
+        containers:
+          app:
+            image:
+              repository: ghcr.io/kubeflow/kubeflow/poddefaults-webhook
+              tag: v1.10.0
+            ports:
+              - name: https-webhook
+                containerPort: 4443
+            securityContext:
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              runAsUser: 65532
+              capabilities:
+                drop: ["ALL"]
+    
+    service:
+      app:
+        controller: admission-webhook
+        name: admission-webhook-service
+        ports:
+          https-webhook:
+            port: 443
+            targetPort: 4443
+
+    persistence:
+      webhook-cert:
+        type: secret
+        name: webhook-certs
+        globalMounts:
+          - path: /etc/webhook/certs
+            readOnly: true
