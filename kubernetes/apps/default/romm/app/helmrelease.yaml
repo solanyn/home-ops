@@ -68,13 +68,6 @@ spec:
             namespace: network
             sectionName: https
     persistence:
-      config:
-        type: configMap
-        name: romm-configmap
-        globalMounts:
-          - path: /romm/config/config.yml
-            subPath: config.yml
-            readOnly: true
       data:
         existingClaim: "{{ .Release.Name }}"
         advancedMounts:
