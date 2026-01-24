@@ -158,6 +158,7 @@ spec:
 
     configMaps:
       katib-config:
+        name: katib-config
         data:
           katib-config.yaml: |
             metrics:
