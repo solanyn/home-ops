@@ -37,7 +37,7 @@ spec:
               OBJECTSTORECONFIG_HOST: garage.storage.svc.cluster.local
               OBJECTSTORECONFIG_PORT: "3900"
               OBJECTSTORECONFIG_SECURE: "false"
-              OBJECTSTORECONFIG_BUCKETNAME: mlpipeline
+              OBJECTSTORECONFIG_BUCKETNAME: kfp-pipelines
             envFrom:
               - secretRef:
                   name: ml-pipeline-secret

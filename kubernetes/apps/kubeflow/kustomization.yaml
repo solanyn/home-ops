@@ -20,3 +20,5 @@ resources:
   - ./model-registry/ks.yaml
   - ./metadata/ks.yaml
   - ./pipelines/ks.yaml
+  - ./spark-operator/ks.yaml
+  - ./kuberay-operator/ks.yaml
