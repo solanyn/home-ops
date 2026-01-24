@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: spark-operator
-      version: 1.2.14
+      version: 2.4.0
       sourceRef:
         kind: HelmRepository
         name: spark-operator
