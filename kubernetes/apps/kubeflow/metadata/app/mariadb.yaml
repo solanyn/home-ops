@@ -1,0 +1,43 @@
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Database
+metadata:
+  name: kfp-metadata
+  namespace: kubeflow
+spec:
+  mariadbRef:
+    name: mariadb
+    namespace: storage
+  characterSet: utf8mb4
+  collate: utf8mb4_unicode_ci
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: User
+metadata:
+  name: mlmd-user
+  namespace: kubeflow
+spec:
+  mariadbRef:
+    name: mariadb
+    namespace: storage
+  passwordSecretKeyRef:
+    name: metadata-db-secret
+    key: password
+    generate: true
+  maxUserConnections: 20
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Grant
+metadata:
+  name: mlmd-grant
+  namespace: kubeflow
+spec:
+  mariadbRef:
+    name: mariadb
+    namespace: storage
+  privileges:
+    - "ALL PRIVILEGES"
+  database: kfp-metadata
+  username: mlmd-user
+  table: "*"
+  host: "%"
