@@ -15,6 +15,14 @@ spec:
         replicas: 1
         serviceAccount:
           name: metadata-grpc-server
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom:
+              - secretRef:
+                  name: metadata-db-secret
         containers:
           app:
             image:
