@@ -18,3 +18,5 @@ resources:
   - ./training-operator/ks.yaml
   - ./katib/ks.yaml
   - ./model-registry/ks.yaml
+  - ./metadata/ks.yaml
+  - ./pipelines/ks.yaml
