@@ -1,0 +1,158 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/app-template-4.6.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: notebooks
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: notebooks
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      notebook-controller:
+        replicas: 1
+        serviceAccount:
+          name: notebook-controller-service-account
+        containers:
+          manager:
+            image:
+              repository: ghcr.io/kubeflow/kubeflow/notebook-controller
+              tag: v1.10.0
+            command:
+              - /manager
+              - -enable-culling=false
+            env:
+              POD_NAMESPACE:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.namespace
+              USE_ISTIO: "false"
+            securityContext:
+              allowPrivilegeEscalation: false
+              runAsNonRoot: true
+              capabilities:
+                drop: ["ALL"]
+      jupyter-web-app:
+        replicas: 1
+        serviceAccount:
+          name: jupyter-web-app-service-account
+        containers:
+          app:
+            image:
+              repository: ghcr.io/kubeflow/kubeflow/jupyter-web-app
+              tag: v1.10.0
+            env:
+              APP_PREFIX: /jupyter
+              UI: default
+              USERID_HEADER: X-Remote-User
+              USERID_PREFIX: ""
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 5000
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+            securityContext:
+              allowPrivilegeEscalation: false
+              runAsNonRoot: true
+              capabilities:
+                drop: ["ALL"]
+
+    service:
+      jupyter-web-app:
+        controller: jupyter-web-app
+        ports:
+          http:
+            port: 5000
+      notebook-controller:
+        controller: notebook-controller
+        ports:
+          http:
+            port: 8080
+
+    configMaps:
+      jupyter-web-app-config:
+        data:
+          spawner_ui_config.yaml: |
+            spawnerFormDefaults:
+              image:
+                value: kubeflownotebookswg/jupyter-scipy:v1.10.0
+                options:
+                  - kubeflownotebookswg/jupyter-scipy:v1.10.0
+                  - kubeflownotebookswg/jupyter-pytorch-full:v1.10.0
+                  - kubeflownotebookswg/jupyter-tensorflow-full:v1.10.0
+              allowCustomImage: true
+              imagePullPolicy:
+                value: IfNotPresent
+                readOnly: false
+              cpu:
+                value: "0.5"
+                readOnly: false
+              memory:
+                value: "1.0Gi"
+                readOnly: false
+              workspaceVolume:
+                readOnly: true
+                value:
+                  mount: /home/jovyan
+                  newPvc:
+                    spec:
+                      storageClassName: liqo-storage
+                      resources:
+                        requests:
+                          storage: 10Gi
+                      accessModes:
+                        - ReadWriteOnce
+              affinityConfig:
+                readOnly: true
+                value: "liqo"
+                options:
+                  - configKey: "liqo"
+                    displayName: "GCP (Liqo)"
+                    affinity:
+                      nodeAffinity:
+                        requiredDuringSchedulingIgnoredDuringExecution:
+                          nodeSelectorTerms:
+                            - matchExpressions:
+                                - key: "liqo.io/type"
+                                  operator: "In"
+                                  values:
+                                    - "virtual-node"
+              tolerationGroup:
+                readOnly: true
+                value: "liqo"
+                options:
+                  - groupKey: "liqo"
+                    displayName: "GCP (Liqo)"
+                    tolerations:
+                      - key: "virtual-node.liqo.io/not-allowed"
+                        operator: "Exists"
+                        effect: "NoExecute"
+              shm:
+                value: true
+                readOnly: false
+              configurations:
+                value: []
+                readOnly: false
+
+    persistence:
+      jupyter-web-app-config:
+        type: configMap
+        name: jupyter-web-app-config
+        globalMounts:
+          - path: /etc/config/spawner_ui_config.yaml
+            subPath: spawner_ui_config.yaml
+            readOnly: true
