@@ -7,5 +7,15 @@ resources:
   - https://github.com/knative/serving/releases/download/knative-v1.14.0/serving-core.yaml
   # Networking Layer: Gateway API
   - https://github.com/knative-extensions/net-gateway-api/releases/download/knative-v1.14.0/net-gateway-api.yaml
-  # Default Config
-  - ./config-gateway.yaml
+
+configMapGenerator:
+  - name: config-network
+    literals:
+      - ingress-class=gateway-api.ingress.networking.knative.dev
+    options:
+      disableNameSuffixHash: true
+  - name: config-gateway-api
+    literals:
+      - gateway.class=gtw
+    options:
+      disableNameSuffixHash: true
