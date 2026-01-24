@@ -15,3 +15,5 @@ resources:
   - ./notebooks/ks.yaml
   - ./volumes-web-app/ks.yaml
   - ./tensorboard/ks.yaml
+  - ./training-operator/ks.yaml
+  - ./katib/ks.yaml

@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: training-operator-webhook-cert
+  namespace: kubeflow
+spec:
+  dnsNames:
+    - training-operator.kubeflow.svc
+    - training-operator.kubeflow.svc.cluster.local
+  issuerRef:
+    kind: ClusterIssuer
+    name: selfsigned
+  secretName: training-operator-webhook-cert
