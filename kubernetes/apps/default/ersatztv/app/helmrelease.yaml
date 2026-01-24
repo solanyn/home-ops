@@ -37,14 +37,14 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
-              claims:
-                - name: gpu
+              # claims:
+              #   - name: gpu
               requests:
                 cpu: 10m
     defaultPodOptions:
-      resourceClaims:
-        - name: gpu
-          resourceClaimTemplateName: ersatztv
+      # resourceClaims:
+      #   - name: gpu
+      #     resourceClaimTemplateName: ersatztv
       automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
