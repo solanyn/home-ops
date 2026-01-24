@@ -1,0 +1,88 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/app-template-4.6.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: training-operator
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: training-operator
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      training-operator:
+        replicas: 1
+        serviceAccount:
+          name: training-operator
+        containers:
+          training-operator:
+            image:
+              repository: ghcr.io/kubeflow/training-v1/training-operator
+              tag: v1.7.0
+            command:
+              - /manager
+            ports:
+              - containerPort: 8080
+              - containerPort: 9443
+                name: webhook-server
+            env:
+              MY_POD_NAMESPACE:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.namespace
+              MY_POD_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.name
+            securityContext:
+              allowPrivilegeEscalation: false
+              runAsUser: 1000
+              runAsNonRoot: true
+              capabilities:
+                drop: ["ALL"]
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8081
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: 8081
+                  initialDelaySeconds: 10
+                  periodSeconds: 15
+    
+    service:
+      app:
+        controller: training-operator
+        name: training-operator
+        ports:
+          webhook-server:
+            port: 443
+            targetPort: 9443
+          http:
+            port: 8080
+
+    persistence:
+      cert:
+        type: secret
+        name: training-operator-webhook-cert
+        globalMounts:
+          - path: /tmp/k8s-webhook-server/serving-certs
+            readOnly: true
