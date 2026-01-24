@@ -1,0 +1,183 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/app-template-4.6.2/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: central-dashboard
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: central-dashboard
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      centraldashboard:
+        replicas: 1
+        serviceAccount:
+          name: centraldashboard
+        containers:
+          app:
+            image:
+              repository: ghcr.io/kubeflow/kubeflow/central-dashboard
+              tag: v1.10.0
+            env:
+              USERID_HEADER: X-Remote-User
+              USERID_PREFIX: ""
+              PROFILES_KFAM_SERVICE_HOST: profiles-kfam.kubeflow
+              REGISTRATION_FLOW: "false"
+              DASHBOARD_CONFIGMAP: centraldashboard-config
+              LOGOUT_URL: /oauth2/sign_out
+              POD_NAMESPACE:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.namespace
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8082
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+            securityContext:
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              runAsUser: 1000
+              capabilities:
+                drop: ["ALL"]
+
+    service:
+      app:
+        controller: centraldashboard
+        ports:
+          http:
+            port: 8082
+
+    configMaps:
+      config:
+        name: centraldashboard-config
+        data:
+          settings: |-
+            {
+              "DASHBOARD_FORCE_IFRAME": true
+            }
+          links: |-
+            {
+                "menuLinks": [
+                    {
+                        "icon": "book",
+                        "link": "/jupyter/",
+                        "text": "Notebooks",
+                        "type": "item"
+                    },
+                    {
+                        "icon": "assessment",
+                        "link": "/tensorboards/",
+                        "text": "TensorBoards",
+                        "type": "item"
+                    },
+                    {
+                        "icon": "device:storage",
+                        "link": "/volumes/",
+                        "text": "Volumes",
+                        "type": "item"
+                    },
+                    {
+                        "icon": "kubeflow:katib",
+                        "link": "/katib/",
+                        "text": "Katib Experiments",
+                        "type": "item"
+                    },
+                    {
+                        "icon": "kubeflow:pipeline-centered",
+                        "items": [
+                            {
+                                "link": "/pipeline/#/pipelines",
+                                "text": "Pipelines",
+                                "type": "item"
+                            },
+                            {
+                                "link": "/pipeline/#/experiments",
+                                "text": "Experiments",
+                                "type": "item"
+                            },
+                            {
+                                "link": "/pipeline/#/runs",
+                                "text": "Runs",
+                                "type": "item"
+                            },
+                            {
+                                "link": "/pipeline/#/recurringruns",
+                                "text": "Recurring Runs",
+                                "type": "item"
+                            },
+                            {
+                                "link": "/pipeline/#/artifacts",
+                                "text": "Artifacts",
+                                "type": "item"
+                            },
+                            {
+                                "link": "/pipeline/#/executions",
+                                "text": "Executions",
+                                "type": "item"
+                            }
+                        ],
+                        "text": "Pipelines",
+                        "type": "section"
+                    }
+                ],
+                "externalLinks": [],
+                "documentationItems": [
+                    {
+                        "desc": "The Kubeflow website",
+                        "link": "https://www.kubeflow.org/",
+                        "text": "Kubeflow Website"
+                    },
+                    {
+                        "desc": "Documentation for Kubeflow Pipelines",
+                        "link": "https://www.kubeflow.org/docs/components/pipelines/",
+                        "text": "Kubeflow Pipelines Documentation"
+                    },
+                    {
+                        "desc": "Documentation for Kubeflow Notebooks",
+                        "link": "https://www.kubeflow.org/docs/components/notebooks/",
+                        "text": "Kubeflow Notebooks Documentation"
+                    },
+                    {
+                        "desc": "Documentation for Kubeflow Training Operator",
+                        "link": "https://www.kubeflow.org/docs/components/training/",
+                        "text": "Kubeflow Training Operator Documentation"
+                    },
+                    {
+                        "desc": "Documentation for Katib",
+                        "link": "https://www.kubeflow.org/docs/components/katib/",
+                        "text": "Katib Documentation"
+                    }
+                ],
+                "quickLinks": [
+                    {
+                        "desc": "Kubeflow Notebooks",
+                        "link": "/jupyter/new",
+                        "text": "Create a new Notebook"
+                    },
+                    {
+                        "desc": "Kubeflow Pipelines",
+                        "link": "/pipeline/#/pipelines",
+                        "text": "Upload a Pipeline"
+                    },
+                    {
+                        "desc": "Pipelines",
+                        "link": "/pipeline/#/runs",
+                        "text": "View Pipeline Runs"
+                    }
+                ]
+            }
