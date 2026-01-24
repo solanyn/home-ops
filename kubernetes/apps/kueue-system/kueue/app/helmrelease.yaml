@@ -1,0 +1,30 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kueue
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: kueue
+      version: 0.10.1 # Latest version
+      sourceRef:
+        kind: HelmRepository
+        name: kueue
+  values:
+    # Kueue Config
+    # No complex values needed for base install
+    # Integrations are enabled by default usually, but we can be explicit
+    integrations:
+      frameworks:
+        - "batch/job"
+        - "kubeflow.org/tfjob"
+        - "kubeflow.org/pytorchjob"
+        - "kubeflow.org/mpijob"
+        - "kubeflow.org/xgboostjob"
+        - "ray.io/rayjob"
+        - "ray.io/raycluster"
+    # Metrics
+    metrics:
+      enable: true
