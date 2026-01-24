@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: kserve
   interval: 1h
-  path: ./kubernetes/apps/kserve/app
+  path: ./kubernetes/apps/kserve/kserve/app
   prune: true
   sourceRef:
     kind: GitRepository

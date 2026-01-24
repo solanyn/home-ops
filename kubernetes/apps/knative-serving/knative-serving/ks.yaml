@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: knative-serving
   interval: 1h
-  path: ./kubernetes/apps/knative-serving/app
+  path: ./kubernetes/apps/knative-serving/knative-serving/app
   prune: true
   sourceRef:
     kind: GitRepository
