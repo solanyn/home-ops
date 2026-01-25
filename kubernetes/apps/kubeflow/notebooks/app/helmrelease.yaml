@@ -41,6 +41,11 @@ spec:
               runAsNonRoot: true
               capabilities:
                 drop: ["ALL"]
+            volumeMounts:
+              - mountPath: /etc/config/spawner_ui_config.yaml
+                name: jupyter-web-app-config
+                subPath: spawner_ui_config.yaml
+                readOnly: true
       jupyter-web-app:
         replicas: 1
         serviceAccount:
@@ -70,6 +75,11 @@ spec:
               runAsNonRoot: true
               capabilities:
                 drop: ["ALL"]
+            volumeMounts:
+              - mountPath: /etc/config/spawner_ui_config.yaml
+                name: jupyter-web-app-config
+                subPath: spawner_ui_config.yaml
+                readOnly: true
 
     service:
       jupyter-web-app:
@@ -84,8 +94,7 @@ spec:
             port: 8080
 
     configMaps:
-      jupyter-web-app-config:
-        name: jupyter-web-app-config
+      config:
         data:
           spawner_ui_config.yaml: |
             spawnerFormDefaults:
@@ -152,7 +161,7 @@ spec:
     persistence:
       jupyter-web-app-config:
         type: configMap
-        name: jupyter-web-app-config
+        identifier: config
         globalMounts:
           - path: /etc/config/spawner_ui_config.yaml
             subPath: spawner_ui_config.yaml
