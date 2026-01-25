@@ -13,6 +13,7 @@ applications = {
   librechat      = { group = "user", icon = "librechat", redirect_uris = ["/oauth/openid/callback"] }
   lidarr         = { group = "admin", icon = "lidarr", redirect_uris = ["/oauth2/callback"] }
   mealie         = { group = "user", icon = "mealie", redirect_uris = ["/login"] }
+  opencode       = { group = "admin", icon = "visual-studio-code", redirect_uris = ["/oauth2/callback"] }
   prowlarr       = { group = "admin", icon = "prowlarr", redirect_uris = ["/oauth2/callback"] }
   qui            = { group = "admin", icon = "qui", redirect_uris = ["/api/auth/oidc/callback"] }
   radarr         = { group = "user", icon = "radarr", redirect_uris = ["/oauth2/callback"] }
