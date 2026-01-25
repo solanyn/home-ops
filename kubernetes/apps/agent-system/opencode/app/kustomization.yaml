@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: agent-system
+resources:
+  - ./externalsecret.yaml
+  - ./helmrelease.yaml
+  - ./ocirepository.yaml
+  - ./pvc.yaml
+  - ./rbac.yaml
+  - ./securitypolicy.yaml
+configMapGenerator:
+  - name: opencode-config
+    files:
+      - devenv.nix=./resources/devenv.nix
+      - devenv.yaml=./resources/devenv.yaml
+      - AGENTS.md=./resources/AGENTS.md
+      - entrypoint.sh=./resources/entrypoint.sh
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
