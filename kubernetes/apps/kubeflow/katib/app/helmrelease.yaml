@@ -150,15 +150,14 @@ spec:
             readOnly: true
       config:
         type: configMap
-        name: katib-config
+        identifier: config
         globalMounts:
           - path: /etc/config/katib-config.yaml
             subPath: katib-config.yaml
             readOnly: true
 
     configMaps:
-      katib-config:
-        name: katib-config
+      config:
         data:
           katib-config.yaml: |
             metrics:
