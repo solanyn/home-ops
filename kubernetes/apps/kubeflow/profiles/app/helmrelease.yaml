@@ -90,15 +90,12 @@ spec:
 
     configMaps:
       config:
-        name: profiles-config
         data:
           namespace-labels.yaml: |
             # Defines the labels to be added to the namespace created by the profile controller.
             # The key is the label name and the value is the label value.
             # If the value is empty, the label is not added.
             # If the value is not empty, the label is added.
-            # If the label is already present, it is not overwritten.
-            # If the label is not present, it is added.
             app.kubernetes.io/part-of: kubeflow-profile
     
     persistence:
