@@ -48,8 +48,7 @@ spec:
             port: 5000
 
     configMaps:
-      viewer-spec:
-        name: viewer-spec
+      config:
         data:
           viewer-spec.yaml: |
             kind: Pod
@@ -80,7 +79,7 @@ spec:
     persistence:
       viewer-spec:
         type: configMap
-        name: viewer-spec
+        identifier: config
         globalMounts:
           - path: /etc/config/viewer-spec.yaml
             subPath: viewer-spec.yaml

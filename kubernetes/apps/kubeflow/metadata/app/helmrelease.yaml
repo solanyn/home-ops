@@ -81,7 +81,6 @@ spec:
 
     configMaps:
       envoy-config:
-        name: metadata-envoy-config
         data:
           envoy-config.yaml: |
             # Minimal Envoy config for MLMD
@@ -127,7 +126,7 @@ spec:
     persistence:
       envoy-config:
         type: configMap
-        name: metadata-envoy-config
+        identifier: envoy-config
         globalMounts:
           - path: /etc/envoy/envoy-config.yaml
             subPath: envoy-config.yaml
