@@ -32,6 +32,7 @@ resources:
   - ./paperless/ks.yaml
   - ./paperless-ai/ks.yaml
   - ./plex/ks.yaml
+  - ./pocket-id/ks.yaml
   - ./print/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml

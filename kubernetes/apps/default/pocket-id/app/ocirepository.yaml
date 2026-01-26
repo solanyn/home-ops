@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: pocket-id
+spec:
+  interval: 5m
+  url: oci://ghcr.io/pocket-id/pocket-id
+  ref:
+    tag: latest # Or pin to specific version
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: pocket-id-operator
+spec:
+  interval: 5m
+  url: oci://ghcr.io/aclerici38/pocket-id-operator
+  ref:
+    tag: latest
