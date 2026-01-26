@@ -2,7 +2,7 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: Composition
 metadata:
-  name: gke-cluster-with-liqo
+  name: liqo-worker
   labels:
     provider: gcp
 spec:
