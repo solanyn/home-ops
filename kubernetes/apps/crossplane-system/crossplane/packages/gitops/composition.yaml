@@ -19,7 +19,6 @@ spec:
             location: "australia-southeast1"
             initialNodeCount: 1
             removeDefaultNodePool: true
-            # Minimal addon config matching terraform
             addonsConfig:
               httpLoadBalancing:
                 disabled: true
