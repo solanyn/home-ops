@@ -1,0 +1,48 @@
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-gcp-container
+spec:
+  # renovate: datasource=docker depName=xpkg.upbound.io/upbound/provider-gcp-container
+  package: xpkg.upbound.io/upbound/provider-gcp-container:v2.4.0
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-gcp-compute
+spec:
+  # renovate: datasource=docker depName=xpkg.upbound.io/upbound/provider-gcp-compute
+  package: xpkg.upbound.io/upbound/provider-gcp-compute:v2.4.0
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-gcp-iam
+spec:
+  # renovate: datasource=docker depName=xpkg.upbound.io/upbound/provider-gcp-iam
+  package: xpkg.upbound.io/upbound/provider-gcp-iam:v2.4.0
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-helm
+spec:
+  # renovate: datasource=docker depName=xpkg.upbound.io/crossplane-contrib/provider-helm
+  package: xpkg.upbound.io/crossplane-contrib/provider-helm:v1.0.6
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-kubernetes
+spec:
+  # renovate: datasource=docker depName=xpkg.upbound.io/crossplane-contrib/provider-kubernetes
+  package: xpkg.upbound.io/crossplane-contrib/provider-kubernetes:v1.2.0
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-authentik
+spec:
+  # renovate: datasource=docker depName=xpkg.upbound.io/jacobcolvin/provider-authentik
+  package: xpkg.upbound.io/jacobcolvin/provider-authentik:v0.1.0
