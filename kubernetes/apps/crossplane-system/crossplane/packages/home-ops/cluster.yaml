@@ -3,7 +3,6 @@ apiVersion: home-ops.io/v1alpha1
 kind: XGKECluster
 metadata:
   name: test
-  namespace: crossplane-system
 spec:
   location: asia-southeast1-b
   nodePools:
