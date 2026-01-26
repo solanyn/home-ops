@@ -24,6 +24,7 @@ spec:
   targetNamespace: crossplane-system
   dependsOn:
     - name: crossplane
+      namespace: crossplane-system
   interval: 1h
   path: ./kubernetes/apps/crossplane-system/crossplane/providers
   prune: true
@@ -37,14 +38,16 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: crossplane-gitops
+  name: crossplane-home-ops
 spec:
   targetNamespace: crossplane-system
   dependsOn:
     - name: crossplane
+      namespace: crossplane-system
     - name: crossplane-providers
+      namespace: crossplane-system
   interval: 1h
-  path: ./kubernetes/apps/crossplane-system/crossplane/packages/gitops
+  path: ./kubernetes/apps/crossplane-system/crossplane/packages/home-ops
   prune: true
   sourceRef:
     kind: GitRepository

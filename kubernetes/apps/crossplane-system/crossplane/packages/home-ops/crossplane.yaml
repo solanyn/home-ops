@@ -2,12 +2,12 @@
 apiVersion: gcp.upbound.io/v1beta1
 kind: ProviderConfig
 metadata:
-  name: default
+  name: home-ops
 spec:
-  projectID: bmas-aus-nbn-vertex-aiml-prod
+  projectID: ${GCP_PROJECT_ID}
   credentials:
     source: Secret
     secretRef:
       namespace: crossplane-system
-      name: gcp-creds
-      key: creds
+      name: crossplane
+      key: GCP_SERVICE_ACCOUNT
