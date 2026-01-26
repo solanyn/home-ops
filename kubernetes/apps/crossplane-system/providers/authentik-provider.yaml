@@ -1,0 +1,8 @@
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-authentik
+spec:
+  # renovate: datasource=docker depName=xpkg.upbound.io/jacobcolvin/provider-authentik
+  package: xpkg.upbound.io/jacobcolvin/provider-authentik:v0.1.0

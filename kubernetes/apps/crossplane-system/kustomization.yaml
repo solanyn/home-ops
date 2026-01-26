@@ -1,8 +1,10 @@
+---
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: flux-system
+namespace: crossplane-system
 resources:
-  - ./authentik.yaml
-  - ./externalsecret.yaml
-  - ./garage.yaml
+  - ./namespace.yaml
+  - ./crossplane/ks.yaml
+  - ./providers/ks.yaml
+  - ./config/ks.yaml
