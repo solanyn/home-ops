@@ -8,9 +8,6 @@ spec:
   names:
     kind: XGKECluster
     plural: xgkeclusters
-  claimNames:
-    kind: GKECluster
-    plural: gkeclusters
   versions:
     - name: v1alpha1
       served: true
