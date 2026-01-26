@@ -1,0 +1,33 @@
+---
+apiVersion: home-ops.io/v1alpha1
+kind: XGKECluster
+metadata:
+  name: worker
+  namespace: crossplane-system
+spec:
+  location: asia-southeast1-b
+  nodePools:
+    system:
+      count: 1
+      machineType: e2-micro
+    gpu:
+      minCount: 0
+      maxCount: 8
+      machineType: g2-standard-8
+      acceleratorType: nvidia-l4
+    cpu:
+      minCount: 0
+      maxCount: 4
+      machineType: e2-medium
+  liqo:
+    clusterID: worker
+    homeClusterID: master
+    homePodCIDR: 10.42.0.0/16
+    homeExternalCIDR: 10.60.0.0/16
+    homeGatewayIP: ${HOME_GATEWAY_IP}
+    homeGatewayPort: 51840
+    workerExternalCIDR: 10.70.0.0/16
+    wireguard:
+      workerPrivateKey: ${WG_WORKER_PRIVATE_KEY}
+      workerPublicKey: ${WG_WORKER_PUBLIC_KEY}
+      homePublicKey: ${WG_HOME_PUBLIC_KEY}
