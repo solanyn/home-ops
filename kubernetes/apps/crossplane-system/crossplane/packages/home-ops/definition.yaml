@@ -21,7 +21,7 @@ spec:
               properties:
                 location:
                   type: string
-                  default: australia-southeast1
+                  default: asia-southeast1-b
                 nodePools:
                   type: object
                   properties:
@@ -42,13 +42,13 @@ spec:
                           default: 0
                         maxCount:
                           type: integer
-                          default: 1
+                          default: 8
                         machineType:
                           type: string
-                          default: n1-standard-4
+                          default: g2-standard-8
                         acceleratorType:
                           type: string
-                          default: nvidia-tesla-t4
+                          default: nvidia-l4
                     cpu:
                       type: object
                       properties:
@@ -57,14 +57,48 @@ spec:
                           default: 0
                         maxCount:
                           type: integer
-                          default: 3
+                          default: 4
                         machineType:
                           type: string
                           default: e2-medium
+                liqo:
+                  type: object
+                  properties:
+                    clusterID:
+                      type: string
+                      default: worker
+                    homeClusterID:
+                      type: string
+                      default: master
+                    homePodCIDR:
+                      type: string
+                      default: 10.42.0.0/16
+                    homeExternalCIDR:
+                      type: string
+                      default: 10.60.0.0/16
+                    homeGatewayIP:
+                      type: string
+                    homeGatewayPort:
+                      type: integer
+                      default: 51840
+                    workerExternalCIDR:
+                      type: string
+                      default: 10.70.0.0/16
+                    wireguard:
+                      type: object
+                      properties:
+                        workerPrivateKey:
+                          type: string
+                        workerPublicKey:
+                          type: string
+                        homePublicKey:
+                          type: string
             status:
               type: object
               properties:
                 clusterName:
                   type: string
                 endpoint:
+                  type: string
+                podCIDR:
                   type: string

@@ -23,10 +23,22 @@ spec:
               apiVersion: container.gcp.upbound.io/v1beta1
               kind: Cluster
               spec:
+                writeConnectionSecretToRef:
+                  namespace: crossplane-system
+                  name: worker-cluster-conn
                 forProvider:
-                  location: australia-southeast1
+                  location: asia-southeast1-b
                   initialNodeCount: 1
                   removeDefaultNodePool: true
+                  deletionProtection: false
+                  clusterAutoscaling:
+                    autoscalingProfile: OPTIMIZE_UTILIZATION
+                  loggingConfig:
+                    enableComponents: []
+                  monitoringConfig:
+                    enableComponents: []
+                    managedPrometheus:
+                      enabled: false
                   addonsConfig:
                     httpLoadBalancing:
                       disabled: true
@@ -38,6 +50,9 @@ spec:
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.location
                 toFieldPath: spec.forProvider.location
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: metadata.name
               - type: FromCompositeFieldPath
                 fromFieldPath: metadata.name
                 toFieldPath: spec.forProvider.name
@@ -59,7 +74,7 @@ spec:
             patches:
               - type: FromCompositeFieldPath
                 fromFieldPath: metadata.name
-                toFieldPath: spec.forProvider.cluster
+                toFieldPath: spec.forProvider.clusterSelector.matchLabels[crossplane.io/composite]
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.location
                 toFieldPath: spec.forProvider.location
@@ -78,22 +93,23 @@ spec:
                 forProvider:
                   autoscaling:
                     minNodeCount: 0
-                    maxNodeCount: 1
+                    maxNodeCount: 8
                   nodeConfig:
-                    machineType: n1-standard-4
+                    machineType: g2-standard-8
                     diskSizeGb: 100
                     diskType: pd-ssd
                     spot: true
                     guestAccelerator:
-                      count: 1
-                      gpuDriverInstallationConfig:
-                        gpuDriverVersion: LATEST
+                      - type: nvidia-l4
+                        count: 1
+                        gpuDriverInstallationConfig:
+                          gpuDriverVersion: LATEST
                     oauthScopes:
                       - https://www.googleapis.com/auth/cloud-platform
             patches:
               - type: FromCompositeFieldPath
                 fromFieldPath: metadata.name
-                toFieldPath: spec.forProvider.cluster
+                toFieldPath: spec.forProvider.clusterSelector.matchLabels[crossplane.io/composite]
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.location
                 toFieldPath: spec.forProvider.location
@@ -108,7 +124,7 @@ spec:
                 toFieldPath: spec.forProvider.nodeConfig.machineType
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.gpu.acceleratorType
-                toFieldPath: spec.forProvider.nodeConfig.guestAccelerator.type
+                toFieldPath: spec.forProvider.nodeConfig.guestAccelerator[0].type
 
           - name: cpu-pool
             base:
@@ -118,7 +134,7 @@ spec:
                 forProvider:
                   autoscaling:
                     minNodeCount: 0
-                    maxNodeCount: 3
+                    maxNodeCount: 4
                   nodeConfig:
                     machineType: e2-medium
                     diskSizeGb: 100
@@ -129,7 +145,7 @@ spec:
             patches:
               - type: FromCompositeFieldPath
                 fromFieldPath: metadata.name
-                toFieldPath: spec.forProvider.cluster
+                toFieldPath: spec.forProvider.clusterSelector.matchLabels[crossplane.io/composite]
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.location
                 toFieldPath: spec.forProvider.location
@@ -142,4 +158,337 @@ spec:
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.cpu.machineType
                 toFieldPath: spec.forProvider.nodeConfig.machineType
+
+          - name: helm-provider-config
+            base:
+              apiVersion: helm.crossplane.io/v1beta1
+              kind: ProviderConfig
+              spec:
+                credentials:
+                  source: Secret
+                  secretRef:
+                    namespace: crossplane-system
+                    key: kubeconfig
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: metadata.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "%s-helm"
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.credentials.secretRef.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "%s-cluster-conn"
+            readinessChecks:
+              - type: None
+
+          - name: k8s-provider-config
+            base:
+              apiVersion: kubernetes.crossplane.io/v1alpha1
+              kind: ProviderConfig
+              spec:
+                credentials:
+                  source: Secret
+                  secretRef:
+                    namespace: crossplane-system
+                    key: kubeconfig
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: metadata.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "%s-k8s"
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.credentials.secretRef.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "%s-cluster-conn"
+            readinessChecks:
+              - type: None
+
+          - name: liqo-release
+            base:
+              apiVersion: helm.crossplane.io/v1beta1
+              kind: Release
+              spec:
+                forProvider:
+                  chart:
+                    name: liqo
+                    repository: https://helm.liqo.io
+                    version: "0.10.3"
+                  namespace: liqo-system
+                  wait: true
+                  values:
+                    controllerManager:
+                      config:
+                        resourceSharingPercentage: 90
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.providerConfigRef.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "%s-helm"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.clusterID
+                toFieldPath: spec.forProvider.values.discovery.config.clusterID
+
+          - name: tenant-namespace
+            base:
+              apiVersion: kubernetes.crossplane.io/v1alpha2
+              kind: Object
+              spec:
+                forProvider:
+                  manifest:
+                    apiVersion: v1
+                    kind: Namespace
+                    metadata:
+                      name: liqo-tenant-master
+                      labels:
+                        liqo.io/tenant-namespace: "true"
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.providerConfigRef.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "%s-k8s"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.labels[liqo.io/remote-cluster-id]
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "liqo-tenant-%s"
+
+          - name: wireguard-secret
+            base:
+              apiVersion: kubernetes.crossplane.io/v1alpha2
+              kind: Object
+              spec:
+                forProvider:
+                  manifest:
+                    apiVersion: v1
+                    kind: Secret
+                    metadata:
+                      namespace: liqo-tenant-master
+                      labels:
+                        networking.liqo.io/gateway-resource: "true"
+                    type: Opaque
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.providerConfigRef.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "%s-k8s"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.namespace
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "liqo-tenant-%s"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "wireguard-keys"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.labels[liqo.io/remote-cluster-id]
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.wireguard.workerPrivateKey
+                toFieldPath: spec.forProvider.manifest.stringData.privateKey
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.wireguard.workerPublicKey
+                toFieldPath: spec.forProvider.manifest.stringData.publicKey
+
+          - name: home-publickey
+            base:
+              apiVersion: kubernetes.crossplane.io/v1alpha2
+              kind: Object
+              spec:
+                forProvider:
+                  manifest:
+                    apiVersion: networking.liqo.io/v1beta1
+                    kind: PublicKey
+                    metadata:
+                      namespace: liqo-tenant-master
+                      labels:
+                        networking.liqo.io/gateway-resource: "true"
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.providerConfigRef.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "%s-k8s"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.namespace
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "liqo-tenant-%s"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.name
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.labels[liqo.io/remote-cluster-id]
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.wireguard.homePublicKey
+                toFieldPath: spec.forProvider.manifest.spec.publicKey
+
+          - name: gateway-client
+            base:
+              apiVersion: kubernetes.crossplane.io/v1alpha2
+              kind: Object
+              spec:
+                forProvider:
+                  manifest:
+                    apiVersion: networking.liqo.io/v1beta1
+                    kind: GatewayClient
+                    metadata:
+                      namespace: liqo-tenant-master
+                    spec:
+                      clientTemplateRef:
+                        apiVersion: networking.liqo.io/v1beta1
+                        kind: WgGatewayClientTemplate
+                        name: wireguard-client
+                        namespace: liqo-system
+                      endpoint:
+                        protocol: UDP
+                      mtu: 1340
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.providerConfigRef.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "%s-k8s"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.namespace
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "liqo-tenant-%s"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.name
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.labels[liqo.io/remote-cluster-id]
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.spec.secretRef.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "wireguard-keys"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeGatewayIP
+                toFieldPath: spec.forProvider.manifest.spec.endpoint.addresses[0]
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeGatewayPort
+                toFieldPath: spec.forProvider.manifest.spec.endpoint.port
+
+          - name: tenant-cr
+            base:
+              apiVersion: kubernetes.crossplane.io/v1alpha2
+              kind: Object
+              spec:
+                forProvider:
+                  manifest:
+                    apiVersion: authentication.liqo.io/v1beta1
+                    kind: Tenant
+                    metadata:
+                      namespace: liqo-tenant-master
+                    spec:
+                      authzPolicy: TolerateNoHandshake
+                      tenantCondition: Active
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.providerConfigRef.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "%s-k8s"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.namespace
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "liqo-tenant-%s"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.name
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.labels[liqo.io/remote-cluster-id]
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.spec.clusterID
+
+          - name: configuration-cr
+            base:
+              apiVersion: kubernetes.crossplane.io/v1alpha2
+              kind: Object
+              spec:
+                forProvider:
+                  manifest:
+                    apiVersion: networking.liqo.io/v1beta1
+                    kind: Configuration
+                    metadata:
+                      namespace: liqo-tenant-master
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.providerConfigRef.name
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "%s-k8s"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.namespace
+                transforms:
+                  - type: string
+                    string:
+                      fmt: "liqo-tenant-%s"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.name
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeClusterID
+                toFieldPath: spec.forProvider.manifest.metadata.labels[liqo.io/remote-cluster-id]
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homePodCIDR
+                toFieldPath: spec.forProvider.manifest.spec.remote.cidr.pod
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.liqo.homeExternalCIDR
+                toFieldPath: spec.forProvider.manifest.spec.remote.cidr.external
   writeConnectionSecretsToNamespace: crossplane-system
