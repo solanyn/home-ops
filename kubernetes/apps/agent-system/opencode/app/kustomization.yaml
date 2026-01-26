@@ -15,7 +15,6 @@ configMapGenerator:
     files:
       - devenv.nix=./resources/devenv.nix
       - devenv.yaml=./resources/devenv.yaml
-      - AGENTS.md=./resources/AGENTS.md
       - entrypoint.sh=./resources/entrypoint.sh
 generatorOptions:
   disableNameSuffixHash: true

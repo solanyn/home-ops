@@ -7,5 +7,16 @@ spec:
   accessModes: ["ReadWriteOnce"]
   resources:
     requests:
+      storage: 10Gi
+  storageClassName: ceph-block
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: opencode-nix
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
       storage: 20Gi
   storageClassName: ceph-block

@@ -11,8 +11,6 @@ spec:
   postBuild:
     substitute:
       APP: opencode
-      APP_UID: "0"
-      APP_GID: "0"
   prune: true
   sourceRef:
     kind: GitRepository
