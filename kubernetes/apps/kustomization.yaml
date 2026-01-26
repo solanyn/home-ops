@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./actions-runner-system/kustomization.yaml
+  - ./agent-sandbox-system/kustomization.yaml
+  - ./agent-system/kustomization.yaml
+  - ./ai/kustomization.yaml
+  - ./analytics/kustomization.yaml
+  - ./argo-system/kustomization.yaml
+  - ./cert-manager/kustomization.yaml
+  - ./crossplane-system/kustomization.yaml
+  - ./default/kustomization.yaml
+  - ./external-secrets/kustomization.yaml
+  - ./flux-system/kustomization.yaml
+  - ./gitlab/kustomization.yaml
+  - ./knative-serving/kustomization.yaml
+  - ./kserve/kustomization.yaml
+  - ./kube-system/kustomization.yaml
+  - ./kubeflow/kustomization.yaml
+  - ./kueue-system/kustomization.yaml
+  - ./kyverno/kustomization.yaml
+  - ./liqo-system/kustomization.yaml
+  - ./liqo-tenant-worker/kustomization.yaml
+  - ./ml/kustomization.yaml
+  - ./network/kustomization.yaml
+  - ./observability/kustomization.yaml
+  - ./openebs-system/kustomization.yaml
+  - ./rook-ceph/kustomization.yaml
+  - ./storage/kustomization.yaml
+  - ./streaming/kustomization.yaml
+  - ./system-upgrade/kustomization.yaml
+  - ./volsync-system/kustomization.yaml
