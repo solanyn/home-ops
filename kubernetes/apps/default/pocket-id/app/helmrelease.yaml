@@ -1,0 +1,65 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pocket-id
+spec:
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  interval: 1h
+  values:
+    controllers:
+      pocket-id:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/pocket-id/pocket-id
+              tag: latest
+            env:
+              TZ: Australia/Sydney
+              PUBLIC_URL: "https://pocket-id.goyangi.io"
+              # Storage
+              FILE_BACKEND: "s3"
+              S3_ENDPOINT: "http://garage.storage.svc.cluster.local:3900"
+              S3_BUCKET: "pocket-id"
+              S3_REGION: "garage"
+              # Database
+              DB_CONNECTION_STRING: 
+                valueFrom:
+                  secretKeyRef:
+                    name: pocket-id-secret
+                    key: DATABASE_URL
+            envFrom:
+              - secretRef:
+                  name: pocket-id-secret
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+    service:
+      app:
+        controller: pocket-id
+        ports:
+          http:
+            port: 8080
+    route:
+      app:
+        enabled: true
+        hostnames:
+          - pocket-id.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      # Local storage disabled in favor of S3
+      uploads:
+        enabled: false
