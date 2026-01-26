@@ -46,3 +46,11 @@ metadata:
 spec:
   # renovate: datasource=docker depName=xpkg.upbound.io/jacobcolvin/provider-authentik
   package: xpkg.upbound.io/jacobcolvin/provider-authentik:v0.1.0
+---
+apiVersion: pkg.crossplane.io/v1beta1
+kind: Function
+metadata:
+  name: function-patch-and-transform
+spec:
+  # renovate: datasource=docker depName=xpkg.upbound.io/crossplane-contrib/function-patch-and-transform
+  package: xpkg.upbound.io/crossplane-contrib/function-patch-and-transform:v0.9.0
