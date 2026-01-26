@@ -1,13 +1,17 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: opencode
 spec:
-  chartRef:
-    kind: OCIRepository
-    name: opencode
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
   interval: 1h
   install:
     remediation:
@@ -56,10 +60,10 @@ spec:
                 add: ["SYS_ADMIN"]
             resources:
               requests:
-                cpu: 500m
-                memory: 2Gi
+                cpu: 10m
+                memory: 64Mi
               limits:
-                memory: 8Gi
+                memory: 8Gi # Keeping a safety ceiling is usually wise to prevent node OOM, but increased to 8Gi
     service:
       app:
         controller: opencode
@@ -80,7 +84,7 @@ spec:
         globalMounts:
           - path: /workspace
       nix:
-        type: emptyDir
+        existingClaim: opencode-nix
         globalMounts:
           - path: /nix
       config:
