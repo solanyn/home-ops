@@ -48,6 +48,10 @@ spec:
       namespace: crossplane-system
   interval: 1h
   path: ./kubernetes/apps/crossplane-system/crossplane/packages/home-ops
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: liqo-peering-secret
   prune: true
   sourceRef:
     kind: GitRepository
