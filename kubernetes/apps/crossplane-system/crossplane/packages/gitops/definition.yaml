@@ -1,5 +1,5 @@
 ---
-apiVersion: apiextensions.crossplane.io/v1
+apiVersion: apiextensions.crossplane.io/v2
 kind: CompositeResourceDefinition
 metadata:
   name: xgkeclusters.home-ops.io
@@ -24,30 +24,50 @@ spec:
               properties:
                 location:
                   type: string
-                  default: "australia-southeast1"
+                  default: australia-southeast1
                 nodePools:
                   type: object
                   properties:
                     system:
                       type: object
                       properties:
-                        count: { type: integer, default: 1 }
-                        machineType: { type: string, default: "e2-micro" }
+                        count:
+                          type: integer
+                          default: 1
+                        machineType:
+                          type: string
+                          default: e2-micro
                     gpu:
                       type: object
                       properties:
-                        minCount: { type: integer, default: 0 }
-                        maxCount: { type: integer, default: 1 }
-                        machineType: { type: string, default: "n1-standard-4" }
-                        acceleratorType: { type: string, default: "nvidia-tesla-t4" }
+                        minCount:
+                          type: integer
+                          default: 0
+                        maxCount:
+                          type: integer
+                          default: 1
+                        machineType:
+                          type: string
+                          default: n1-standard-4
+                        acceleratorType:
+                          type: string
+                          default: nvidia-tesla-t4
                     cpu:
                       type: object
                       properties:
-                        minCount: { type: integer, default: 0 }
-                        maxCount: { type: integer, default: 3 }
-                        machineType: { type: string, default: "e2-medium" }
+                        minCount:
+                          type: integer
+                          default: 0
+                        maxCount:
+                          type: integer
+                          default: 3
+                        machineType:
+                          type: string
+                          default: e2-medium
             status:
               type: object
               properties:
-                clusterName: { type: string }
-                endpoint: { type: string }
+                clusterName:
+                  type: string
+                endpoint:
+                  type: string
