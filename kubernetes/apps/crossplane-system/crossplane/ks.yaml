@@ -51,7 +51,10 @@ spec:
   postBuild:
     substituteFrom:
       - kind: Secret
+        name: crossplane
+      - kind: Secret
         name: liqo-peering-secret
+        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
