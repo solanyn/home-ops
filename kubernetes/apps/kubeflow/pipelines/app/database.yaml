@@ -5,7 +5,7 @@ metadata:
   name: kfp-pipeline
   namespace: kubeflow
 spec:
-  mariadbRef:
+  mariaDbRef:
     name: mariadb
     namespace: storage
   characterSet: utf8mb4
@@ -17,7 +17,7 @@ metadata:
   name: kfp-user
   namespace: kubeflow
 spec:
-  mariadbRef:
+  mariaDbRef:
     name: mariadb
     namespace: storage
   passwordSecretKeyRef:
@@ -32,7 +32,7 @@ metadata:
   name: kfp-grant
   namespace: kubeflow
 spec:
-  mariadbRef:
+  mariaDbRef:
     name: mariadb
     namespace: storage
   privileges:
