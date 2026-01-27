@@ -37,7 +37,7 @@ spec:
               - ""
             envFrom:
               - configMapRef:
-                  name: profiles-config
+                  name: profiles
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -63,7 +63,7 @@ spec:
               - ""
             envFrom:
               - configMapRef:
-                  name: profiles-config
+                  name: profiles
             probes:
               liveness:
                 enabled: true
