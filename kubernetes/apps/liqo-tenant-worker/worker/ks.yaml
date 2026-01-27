@@ -18,10 +18,6 @@ spec:
       - kind: Secret
         name: liqo-worker-secret
         optional: true
-      - kind: Secret
-        name: worker-cluster-conn
-        namespace: crossplane-system
-        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
