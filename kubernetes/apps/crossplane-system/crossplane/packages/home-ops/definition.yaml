@@ -67,18 +67,18 @@ spec:
                     clusterID:
                       type: string
                       default: worker
-                    homeClusterID:
+                    masterClusterID:
                       type: string
                       default: master
-                    homePodCIDR:
+                    masterPodCIDR:
                       type: string
                       default: 10.42.0.0/16
-                    homeExternalCIDR:
+                    masterExternalCIDR:
                       type: string
                       default: 10.60.0.0/16
-                    homeGatewayIP:
+                    masterGatewayIP:
                       type: string
-                    homeGatewayPort:
+                    masterGatewayPort:
                       type: integer
                       default: 51840
                     workerExternalCIDR:
@@ -91,7 +91,7 @@ spec:
                           type: string
                         workerPublicKey:
                           type: string
-                        homePublicKey:
+                        masterPublicKey:
                           type: string
             status:
               type: object

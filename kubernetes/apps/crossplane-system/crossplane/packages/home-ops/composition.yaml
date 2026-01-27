@@ -265,10 +265,10 @@ spec:
                     string:
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.labels[liqo.io/remote-cluster-id]
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.name
                 transforms:
                   - type: string
@@ -298,21 +298,21 @@ spec:
                     string:
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.namespace
                 transforms:
                   - type: string
                     string:
                       fmt: "liqo-tenant-%s"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.name
                 transforms:
                   - type: string
                     string:
                       fmt: "wireguard-keys"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.labels[liqo.io/remote-cluster-id]
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.wireguard.workerPrivateKey
@@ -343,20 +343,20 @@ spec:
                     string:
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.namespace
                 transforms:
                   - type: string
                     string:
                       fmt: "liqo-tenant-%s"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.name
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.labels[liqo.io/remote-cluster-id]
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.wireguard.homePublicKey
+                fromFieldPath: spec.liqo.wireguard.masterPublicKey
                 toFieldPath: spec.forProvider.manifest.spec.publicKey
 
           - name: gateway-client
@@ -388,30 +388,30 @@ spec:
                     string:
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.namespace
                 transforms:
                   - type: string
                     string:
                       fmt: "liqo-tenant-%s"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.name
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.labels[liqo.io/remote-cluster-id]
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.spec.secretRef.name
                 transforms:
                   - type: string
                     string:
                       fmt: "wireguard-keys"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeGatewayIP
+                fromFieldPath: spec.liqo.masterGatewayIP
                 toFieldPath: spec.forProvider.manifest.spec.endpoint.addresses[0]
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeGatewayPort
+                fromFieldPath: spec.liqo.masterGatewayPort
                 toFieldPath: spec.forProvider.manifest.spec.endpoint.port
 
           - name: tenant-cr
@@ -437,20 +437,20 @@ spec:
                     string:
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.namespace
                 transforms:
                   - type: string
                     string:
                       fmt: "liqo-tenant-%s"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.name
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.labels[liqo.io/remote-cluster-id]
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.spec.clusterID
 
           - name: configuration-cr
@@ -473,22 +473,23 @@ spec:
                     string:
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.namespace
                 transforms:
                   - type: string
                     string:
                       fmt: "liqo-tenant-%s"
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.name
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeClusterID
+                fromFieldPath: spec.liqo.masterClusterID
                 toFieldPath: spec.forProvider.manifest.metadata.labels[liqo.io/remote-cluster-id]
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homePodCIDR
+                fromFieldPath: spec.liqo.masterPodCIDR
                 toFieldPath: spec.forProvider.manifest.spec.remote.cidr.pod
               - type: FromCompositeFieldPath
-                fromFieldPath: spec.liqo.homeExternalCIDR
+                fromFieldPath: spec.liqo.masterExternalCIDR
                 toFieldPath: spec.forProvider.manifest.spec.remote.cidr.external
+
   writeConnectionSecretsToNamespace: crossplane-system
