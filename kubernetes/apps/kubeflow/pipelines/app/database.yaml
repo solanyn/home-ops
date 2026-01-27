@@ -23,7 +23,6 @@ spec:
   passwordSecretKeyRef:
     name: ml-pipeline-db-secret
     key: password
-    generate: true
   maxUserConnections: 20
 ---
 apiVersion: k8s.mariadb.com/v1alpha1
