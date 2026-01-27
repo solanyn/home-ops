@@ -85,7 +85,6 @@ spec:
     service:
       app:
         controller: training-operator
-        name: training-operator
         ports:
           webhook-server:
             port: 443

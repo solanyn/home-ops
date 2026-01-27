@@ -40,7 +40,6 @@ spec:
     service:
       app:
         controller: admission-webhook
-        name: admission-webhook-service
         ports:
           https-webhook:
             port: 443
