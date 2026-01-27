@@ -38,16 +38,33 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: crossplane-home-ops
+  name: crossplane-definitions
 spec:
   targetNamespace: crossplane-system
   dependsOn:
-    - name: crossplane
-      namespace: crossplane-system
     - name: crossplane-providers
       namespace: crossplane-system
   interval: 1h
-  path: ./kubernetes/apps/crossplane-system/crossplane/packages/home-ops
+  path: ./kubernetes/apps/crossplane-system/crossplane/definitions
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: crossplane-resources
+spec:
+  targetNamespace: crossplane-system
+  dependsOn:
+    - name: crossplane-definitions
+      namespace: crossplane-system
+  interval: 1h
+  path: ./kubernetes/apps/crossplane-system/crossplane/resources
   postBuild:
     substituteFrom:
       - kind: Secret
