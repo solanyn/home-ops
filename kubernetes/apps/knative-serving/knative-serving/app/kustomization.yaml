@@ -15,13 +15,13 @@ configMapGenerator:
       disableNameSuffixHash: true
   - name: config-gateway
     literals:
-      - external-gateways=|
-          - name: envoy-internal
-            namespace: network
-            service: envoy-internal.network.svc.cluster.local
-      - local-gateways=|
-          - name: envoy-internal
-            namespace: network
-            service: envoy-internal.network.svc.cluster.local
+      - |-
+        external-gateways=- name: envoy-internal
+          namespace: network
+          service: envoy-internal.network.svc.cluster.local
+      - |-
+        local-gateways=- name: envoy-internal
+          namespace: network
+          service: envoy-internal.network.svc.cluster.local
     options:
       disableNameSuffixHash: true
