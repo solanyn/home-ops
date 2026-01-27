@@ -64,7 +64,6 @@ spec:
 
     configMaps:
       config:
-        name: centraldashboard-config
         data:
           settings: |-
             {

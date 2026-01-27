@@ -20,12 +20,12 @@ patches:
       - op: add
         path: /data/external-gateways
         value: |
-          - name: envoy-internal
-            namespace: network
-            service: envoy-internal.network.svc.cluster.local
+          - class: envoy-gateway.gateway.networking.k8s.io
+            gateway: network/envoy-internal
+            service: network/envoy-internal
       - op: add
         path: /data/local-gateways
         value: |
-          - name: envoy-internal
-            namespace: network
-            service: envoy-internal.network.svc.cluster.local
+          - class: envoy-gateway.gateway.networking.k8s.io
+            gateway: network/envoy-internal
+            service: network/envoy-internal

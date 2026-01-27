@@ -29,7 +29,7 @@ spec:
               tag: v0.19.0
             command:
               - ./katib-controller
-              - --katib-config=/etc/config/katib-config.yaml
+              - --katib-config=/config/katib-config.yaml
             ports:
               - containerPort: 443
                 name: webhook
@@ -43,10 +43,6 @@ spec:
               runAsUser: 1000
               capabilities:
                 drop: ["ALL"]
-            volumeMounts:
-              - mountPath: /tmp/cert
-                name: cert
-                readOnly: true
       
       katib-db-manager:
         replicas: 1
@@ -145,16 +141,19 @@ spec:
       cert:
         type: secret
         name: katib-webhook-cert
-        globalMounts:
-          - path: /tmp/cert
-            readOnly: true
+        advancedMounts:
+          katib-controller:
+            controller:
+              - path: /tmp/cert
+                readOnly: true
       config:
         type: configMap
         identifier: config
-        globalMounts:
-          - path: /etc/config/katib-config.yaml
-            subPath: katib-config.yaml
-            readOnly: true
+        advancedMounts:
+          katib-controller:
+            controller:
+              - path: /config
+                readOnly: true
 
     configMaps:
       config:
