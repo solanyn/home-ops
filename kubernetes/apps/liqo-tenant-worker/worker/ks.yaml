@@ -9,12 +9,18 @@ spec:
   dependsOn:
     - name: liqo
       namespace: liqo-system
+    - name: crossplane-home-ops
+      namespace: crossplane-system
   interval: 1h
   path: ./kubernetes/apps/liqo-tenant-worker/worker/config
   postBuild:
     substituteFrom:
       - kind: Secret
         name: liqo-worker-secret
+        optional: true
+      - kind: Secret
+        name: worker-cluster-conn
+        namespace: crossplane-system
         optional: true
   prune: true
   sourceRef:
