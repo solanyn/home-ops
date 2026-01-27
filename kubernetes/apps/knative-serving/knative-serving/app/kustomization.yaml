@@ -2,26 +2,30 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: knative-serving
 resources:
-  # Core Serving (includes CRDs)
   - https://github.com/knative/serving/releases/download/knative-v1.20.1/serving-core.yaml
-  # Networking Layer: Gateway API
   - https://github.com/knative-extensions/net-gateway-api/releases/download/knative-v1.20.1/net-gateway-api.yaml
 
-configMapGenerator:
-  - name: config-network
-    literals:
-      - ingress-class=gateway-api.ingress.networking.knative.dev
-    options:
-      disableNameSuffixHash: true
-  - name: config-gateway
-    literals:
-      - |-
-        external-gateways=- name: envoy-internal
-          namespace: network
-          service: envoy-internal.network.svc.cluster.local
-      - |-
-        local-gateways=- name: envoy-internal
-          namespace: network
-          service: envoy-internal.network.svc.cluster.local
-    options:
-      disableNameSuffixHash: true
+patches:
+  - target:
+      kind: ConfigMap
+      name: config-network
+    patch: |
+      - op: add
+        path: /data/ingress-class
+        value: gateway-api.ingress.networking.knative.dev
+  - target:
+      kind: ConfigMap
+      name: config-gateway
+    patch: |
+      - op: add
+        path: /data/external-gateways
+        value: |
+          - name: envoy-internal
+            namespace: network
+            service: envoy-internal.network.svc.cluster.local
+      - op: add
+        path: /data/local-gateways
+        value: |
+          - name: envoy-internal
+            namespace: network
+            service: envoy-internal.network.svc.cluster.local
