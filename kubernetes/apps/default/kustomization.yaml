@@ -29,6 +29,7 @@ resources:
   - ./mealie/ks.yaml
   - ./mlflow/ks.yaml
   - ./mlm/ks.yaml
+  - ./opencode/ks.yaml
   - ./paperless/ks.yaml
   - ./paperless-ai/ks.yaml
   - ./plex/ks.yaml
