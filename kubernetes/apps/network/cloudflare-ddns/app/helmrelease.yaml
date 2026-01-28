@@ -26,6 +26,7 @@ spec:
               - --provider
               - random
               - --proxied=false
+              - --create-missing
             env:
               ACCOUNT_TOKEN:
                 valueFrom:
