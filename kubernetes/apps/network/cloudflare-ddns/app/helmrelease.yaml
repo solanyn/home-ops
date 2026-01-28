@@ -25,6 +25,7 @@ spec:
               - ipv4.goyangi.io
               - --provider
               - random
+              - --proxied=false
             env:
               ACCOUNT_TOKEN:
                 valueFrom:
