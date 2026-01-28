@@ -4,13 +4,11 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: ai
-  annotations:
-    external-dns.alpha.kubernetes.io/target: &hostname gateway.goyangi.io
 spec:
   gatewayClassName: agentgateway
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns.alpha.kubernetes.io/hostname: gateway.goyangi.io
       lbipam.cilium.io/ips: 192.168.69.130,fd5d:a293:f321:69::130
   listeners:
     - name: https
