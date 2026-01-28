@@ -10,5 +10,3 @@ components:
 resources:
   - ./namespace.yaml
   - ./kagent/ks.yaml
-  - ./librechat/ks.yaml
-  - ./meilisearch/ks.yaml
