@@ -21,7 +21,6 @@ resources:
   - ./flaresolverr/ks.yaml
   - ./fusion/ks.yaml
   - ./go2rtc/ks.yaml
-  - ./happy/ks.yaml
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
   - ./kiro-gateway/ks.yaml
@@ -46,6 +45,7 @@ resources:
   - ./sonarr/ks.yaml
   - ./stash/ks.yaml
   - ./tautulli/ks.yaml
+  - ./termix/ks.yaml
   - ./thelounge/ks.yaml
   - ./whisparr/ks.yaml
   - ./notifier/ks.yaml
