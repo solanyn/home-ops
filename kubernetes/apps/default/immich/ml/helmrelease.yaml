@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.5.0-cuda@sha256:87465e1736e071814f07169aedfabe94928b7f5a121ac06c9d63a74113585e4b
+              tag: v2.5.2-cuda@sha256:ba15638c3f38521f7997677ffa4234c63563f72a084ad03c7692b91b4ad243f9
             env:
               REDIS_HOSTNAME: redis.storage.svc.cluster.local
               MPLCONFIGDIR: /cache/matplotlib
