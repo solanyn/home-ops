@@ -48,14 +48,6 @@ spec:
         replicas: 1
         serviceAccount:
           name: katib-controller
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom:
-              - secretRef:
-                  name: katib-db-secret
         containers:
           manager:
             image:
@@ -63,9 +55,14 @@ spec:
               tag: v0.19.0
             command:
               - ./katib-db-manager
-            envFrom:
-              - secretRef:
-                  name: katib-db-secret
+            env:
+              - name: DB_NAME
+                value: "mysql"
+              - name: DB_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: katib-db-secret
+                    key: password
             ports:
               - containerPort: 6789
                 name: api
