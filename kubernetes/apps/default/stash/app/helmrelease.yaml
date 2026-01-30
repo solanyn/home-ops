@@ -40,17 +40,17 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
-              # claims:
-              #   - name: gpu
+              claims:
+                - name: gpu
               requests:
                 cpu: 10m
                 memory: 100Mi
               limits:
                 memory: 8Gi
     defaultPodOptions:
-      # resourceClaims:
-      #   - name: gpu
-      #     resourceClaimTemplateName: stash
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: stash
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
