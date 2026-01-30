@@ -11,6 +11,7 @@ resources:
   - ./namespace.yaml
   - ./externalsecret.yaml
   - ./securitypolicy.yaml
+  - ./mariadb-databases.yaml
   - ./admission-webhook/ks.yaml
   - ./profiles/ks.yaml
   - ./central-dashboard/ks.yaml

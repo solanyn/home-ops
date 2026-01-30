@@ -18,7 +18,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/kubeflow/pipelines/apiserver
+              repository: gcr.io/ml-pipeline/api-server
               tag: 2.3.0
             env:
               POD_NAMESPACE:
@@ -61,7 +61,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/kubeflow/pipelines/persistenceagent
+              repository: gcr.io/ml-pipeline/persistenceagent
               tag: 2.3.0
             env:
               NAMESPACE:
@@ -81,7 +81,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/kubeflow/pipelines/scheduledworkflow
+              repository: gcr.io/ml-pipeline/scheduledworkflow
               tag: 2.3.0
             securityContext:
               runAsNonRoot: true
@@ -96,7 +96,7 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/kubeflow/pipelines/frontend
+              repository: gcr.io/ml-pipeline/frontend
               tag: 2.3.0
             env:
               ALLOW_CUSTOM_VISUALIZATIONS: "true"
