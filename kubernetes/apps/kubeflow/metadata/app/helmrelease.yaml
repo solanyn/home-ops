@@ -15,32 +15,46 @@ spec:
         replicas: 1
         serviceAccount:
           name: metadata-grpc-server
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom:
-              - secretRef:
-                  name: metadata-db-secret
         containers:
           app:
             image:
               repository: gcr.io/tfx-oss-public/ml_metadata_store_server
-              tag: 1.17.0
+              tag: 1.14.0
             command: ["/bin/metadata_store_server"]
             args:
               - --grpc_port=8080
-              - --pg_config_dbname=$(PG_DATABASE)
-              - --pg_config_host=$(PG_HOST)
-              - --pg_config_port=$(PG_PORT)
-              - --pg_config_user=$(DBCONFIG_USER)
-              - --pg_config_password=$(DBCONFIG_PASSWORD)
+              - --mysql_config_database=$(MYSQL_DATABASE)
+              - --mysql_config_host=$(MYSQL_HOST)
+              - --mysql_config_port=$(MYSQL_PORT)
+              - --mysql_config_user=$(DBCONFIG_USER)
+              - --mysql_config_password=$(DBCONFIG_PASSWORD)
               - --enable_database_upgrade=true
-              - --grpc_channel_arguments=grpc.max_metadata_size=16384
-            envFrom:
-              - secretRef:
-                  name: metadata-db-secret
+            env:
+              - name: DBCONFIG_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: metadata-db-secret
+                    key: username
+              - name: DBCONFIG_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: metadata-db-secret
+                    key: password
+              - name: MYSQL_DATABASE
+                valueFrom:
+                  configMapKeyRef:
+                    name: metadata-config
+                    key: mlmdDb
+              - name: MYSQL_HOST
+                valueFrom:
+                  configMapKeyRef:
+                    name: metadata-config
+                    key: dbHost
+              - name: MYSQL_PORT
+                valueFrom:
+                  configMapKeyRef:
+                    name: metadata-config
+                    key: dbPort
             ports:
               - name: grpc-api
                 containerPort: 8080
@@ -122,6 +136,12 @@ spec:
                           socket_address:
                             address: 127.0.0.1
                             port_value: 8080
+      config:
+        data:
+          metadata-config.yaml: |
+            dbHost: mariadb-kubeflow.storage.svc.cluster.local
+            dbPort: "3306"
+            mlmdDb: metadb
     
     persistence:
       envoy-config:
@@ -130,4 +150,10 @@ spec:
         globalMounts:
           - path: /etc/envoy/envoy-config.yaml
             subPath: envoy-config.yaml
+            readOnly: true
+      config:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /config
             readOnly: true

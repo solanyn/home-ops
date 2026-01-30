@@ -1,0 +1,88 @@
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Database
+metadata:
+  name: kubeflow-metadb
+  namespace: storage
+spec:
+  mariaDbRef:
+    name: mariadb
+  characterSet: utf8mb4
+  collate: utf8mb4_unicode_ci
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Database
+metadata:
+  name: kubeflow-katib
+  namespace: storage
+spec:
+  mariaDbRef:
+    name: mariadb
+  characterSet: utf8mb4
+  collate: utf8mb4_unicode_ci
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Database
+metadata:
+  name: kubeflow-mlpipeline
+  namespace: storage
+spec:
+  mariaDbRef:
+    name: mariadb
+  characterSet: utf8mb4
+  collate: utf8mb4_unicode_ci
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: User
+metadata:
+  name: kubeflow
+  namespace: storage
+spec:
+  mariaDbRef:
+    name: mariadb
+  passwordSecretKeyRef:
+    name: kubeflow-mariadb-secret
+    key: password
+  maxUserConnections: 20
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Grant
+metadata:
+  name: kubeflow-metadb
+  namespace: storage
+spec:
+  mariaDbRef:
+    name: mariadb
+  privileges:
+    - ALL
+  database: kubeflow-metadb
+  table: "*"
+  username: kubeflow
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Grant
+metadata:
+  name: kubeflow-katib
+  namespace: storage
+spec:
+  mariaDbRef:
+    name: mariadb
+  privileges:
+    - ALL
+  database: kubeflow-katib
+  table: "*"
+  username: kubeflow
+---
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: Grant
+metadata:
+  name: kubeflow-mlpipeline
+  namespace: storage
+spec:
+  mariaDbRef:
+    name: mariadb
+  privileges:
+    - ALL
+  database: kubeflow-mlpipeline
+  table: "*"
+  username: kubeflow
