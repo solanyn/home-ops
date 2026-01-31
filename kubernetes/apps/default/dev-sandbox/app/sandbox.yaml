@@ -83,6 +83,12 @@ spec:
                 curl -fsSL https://get.opencode.ai/install.sh | bash
               fi
 
+              # Install kiro-cli (optional)
+              if [ ! -f /home/dev/.local/bin/kiro ]; then
+                echo "Installing kiro-cli..."
+                curl -fsSL https://get.kiro.dev/install.sh | bash || true
+              fi
+
               echo "Tool installation complete"
           env:
             - name: HOME
@@ -106,6 +112,9 @@ spec:
               export HOMEBREW_PREFIX=/home/dev/.linuxbrew
               export HOMEBREW_CELLAR=/home/dev/.linuxbrew/Cellar
               export HOMEBREW_REPOSITORY=/home/dev/.linuxbrew
+              
+              # Start opencode web server
+              /home/dev/.local/bin/opencode web --port 4096 --bind 0.0.0.0 &
               
               # Start ttyd for web terminal access (no authentication)
               /home/dev/.local/bin/ttyd -p 7681 bash &
@@ -131,6 +140,8 @@ spec:
             - secretRef:
                 name: dev-sandbox
           ports:
+            - name: opencode
+              containerPort: 4096
             - name: ttyd
               containerPort: 7681
             - name: ssh
