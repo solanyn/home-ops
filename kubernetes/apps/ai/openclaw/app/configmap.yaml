@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openclaw-config
+data:
+  openclaw.json: |
+    {
+      "channels": {
+        "bluebubbles": {
+          "enabled": true,
+          "url": "${BLUEBUBBLES_URL}",
+          "password": "${BLUEBUBBLES_PASSWORD}",
+          "allowFrom": ["*"],
+          "groups": ["*"]
+        }
+      },
+      "gateway": {
+        "bind": "0.0.0.0",
+        "port": 18789
+      }
+    }

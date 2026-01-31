@@ -4,5 +4,6 @@ resources:
   - ./pvc.yaml
   - ./rbac.yaml
   - ./externalsecret.yaml
+  - ./configmap.yaml
   - ./sandbox.yaml
   - ./httproute.yaml
