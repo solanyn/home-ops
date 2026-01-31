@@ -167,5 +167,27 @@
       },
       minimumGroupSize: 2,
     },
+    {
+      description: "Kubeflow Group",
+      groupName: "kubeflow",
+      matchDatasources: ["docker", "github-tags"],
+      matchPackageNames: [
+        "/kubeflow/kubeflow/profile-controller/",
+        "/kubeflow/kubeflow/kfam/",
+        "/kubeflow/katib/",
+        "/kubeflow/pipelines/",
+        "/kubeflow/kubeflow/notebook-controller/",
+        "/kubeflow/kubeflow/jupyter-web-app/",
+        "/kubeflow/kubeflow/central-dashboard/",
+        "/kubeflow/kubeflow/tensorboard-controller/",
+        "/kubeflow/kubeflow/tensorboard-web-app/",
+        "/kubeflow/kubeflow/volumes-web-app/",
+        "/kubeflow/kubeflow/admission-webhook/",
+      ],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
   ],
 }
