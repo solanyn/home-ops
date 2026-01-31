@@ -1,0 +1,160 @@
+---
+apiVersion: agents.x-k8s.io/v1alpha1
+kind: Sandbox
+metadata:
+  name: opencode
+  namespace: ai
+spec:
+  podTemplate:
+    metadata:
+      annotations:
+        reloader.stakater.com/auto: "true"
+    spec:
+      serviceAccountName: opencode
+      initContainers:
+        - name: install-tools
+          image: ghcr.io/opencode/opencode:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              mkdir -p /home/dev/.local/bin /home/dev/.local/go
+
+              echo "Starting tool installation..."
+
+              # Install Homebrew
+              if [ ! -f /home/dev/.local/homebrew/bin/brew ]; then
+                echo "Installing Homebrew..."
+                export HOMEBREW_PREFIX=/home/dev/.local/homebrew
+                export HOMEBREW_CELLAR=/home/dev/.local/homebrew/Cellar
+                export HOMEBREW_REPOSITORY=/home/dev/.local/homebrew
+                mkdir -p $HOMEBREW_PREFIX
+                cd /tmp
+                git clone --depth 1 https://github.com/Homebrew/brew $HOMEBREW_PREFIX
+              fi
+
+              # Install gh CLI
+              if [ ! -f /home/dev/.local/bin/gh ]; then
+                echo "Installing gh CLI..."
+                cd /tmp
+                curl -fsSL https://github.com/cli/cli/releases/download/v2.61.0/gh_2.61.0_linux_amd64.tar.gz -o gh.tar.gz
+                tar xzf gh.tar.gz
+                cp gh_2.61.0_linux_amd64/bin/gh /home/dev/.local/bin/
+                rm -rf gh.tar.gz gh_2.61.0_linux_amd64
+              fi
+
+              # Install Go
+              if [ ! -f /home/dev/.local/go/bin/go ]; then
+                echo "Installing Go..."
+                cd /tmp
+                curl -fsSL https://go.dev/dl/go1.23.5.linux-amd64.tar.gz -o go.tar.gz
+                tar xzf go.tar.gz
+                mv go /home/dev/.local/
+                rm -rf go.tar.gz
+              fi
+
+              # Install Node.js via n (if not present)
+              if [ ! -f /home/dev/.local/bin/node ]; then
+                echo "Installing Node.js..."
+                curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n -o /home/dev/.local/bin/n
+                chmod +x /home/dev/.local/bin/n
+                N_PREFIX=/home/dev/.local n lts
+              fi
+
+              echo "Tool installation complete"
+          env:
+            - name: HOME
+              value: /home/dev
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          volumeMounts:
+            - name: config
+              mountPath: /home/dev
+      containers:
+        - name: opencode
+          image: ghcr.io/opencode/opencode:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              # Set up environment
+              export HOME=/home/dev
+              export PATH="/home/dev/.local/bin:/home/dev/.local/go/bin:/home/dev/.local/homebrew/bin:$PATH"
+              export HOMEBREW_PREFIX=/home/dev/.local/homebrew
+              export HOMEBREW_CELLAR=/home/dev/.local/homebrew/Cellar
+              export HOMEBREW_REPOSITORY=/home/dev/.local/homebrew
+              
+              # Start ttyd for web access
+              ttyd -p 7681 -c admin:$(cat /secrets/admin-password) bash &
+              
+              # Keep container running
+              tail -f /dev/null
+          env:
+            - name: HOME
+              value: /home/dev
+            - name: PATH
+              value: /home/dev/.local/bin:/home/dev/.local/go/bin:/home/dev/.local/homebrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+            - name: HOMEBREW_PREFIX
+              value: /home/dev/.local/homebrew
+            - name: HOMEBREW_CELLAR
+              value: /home/dev/.local/homebrew/Cellar
+            - name: HOMEBREW_REPOSITORY
+              value: /home/dev/.local/homebrew
+            - name: TZ
+              value: Australia/Sydney
+          envFrom:
+            - secretRef:
+                name: opencode
+          ports:
+            - name: ttyd
+              containerPort: 7681
+            - name: ssh
+              containerPort: 22
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 4000m
+              memory: 8Gi
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: config
+              mountPath: /home/dev
+            - name: secrets
+              mountPath: /secrets
+              readOnly: true
+            - name: buildkit-sock
+              mountPath: /run/buildkit
+        # BuildKit sidecar for building containers
+        - name: buildkit
+          image: moby/buildkit:latest
+          args:
+            - --addr
+            - unix:///run/buildkit/buildkitd.sock
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: buildkit-sock
+              mountPath: /run/buildkit
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: opencode
+        - name: secrets
+          secret:
+            secretName: opencode
+        - name: buildkit-sock
+          emptyDir: {}
