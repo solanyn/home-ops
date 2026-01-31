@@ -104,6 +104,8 @@ spec:
               value: /home/dev/.local/homebrew
             - name: TZ
               value: Australia/Sydney
+            - name: BUILDKIT_HOST
+              value: tcp://buildkit.dev.svc.cluster.local:1234
           envFrom:
             - secretRef:
                 name: opencode
@@ -129,26 +131,6 @@ spec:
             - name: secrets
               mountPath: /secrets
               readOnly: true
-            - name: buildkit-sock
-              mountPath: /run/buildkit
-        # BuildKit sidecar for building containers
-        - name: buildkit
-          image: moby/buildkit:latest
-          args:
-            - --addr
-            - unix:///run/buildkit/buildkitd.sock
-          securityContext:
-            privileged: true
-          volumeMounts:
-            - name: buildkit-sock
-              mountPath: /run/buildkit
-          resources:
-            requests:
-              cpu: 100m
-              memory: 256Mi
-            limits:
-              cpu: 2000m
-              memory: 4Gi
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -156,5 +138,3 @@ spec:
         - name: secrets
           secret:
             secretName: opencode
-        - name: buildkit-sock
-          emptyDir: {}
