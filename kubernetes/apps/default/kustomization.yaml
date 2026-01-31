@@ -28,6 +28,8 @@ resources:
   - ./mlflow/ks.yaml
   - ./mlm/ks.yaml
   - ./opencode/ks.yaml
+  - ./opencode-sandbox/ks.yaml
+  - ./buildkit/ks.yaml
   - ./paperless/ks.yaml
   - ./paperless-ai/ks.yaml
   - ./plex/ks.yaml
