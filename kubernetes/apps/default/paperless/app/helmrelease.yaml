@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/paperless-ngx/paperless-ngx
-              tag: 2.20.6@sha256:1c6e7c7e0fdd1175c274270799817804c9776bc641f8ad1c1d804e042e848a13
+              tag: 2.20.6@sha256:850c3e955def0200819c75e828dad7c26e43142dfb53b6dc7e76d5a0a18ae1da
             env:
               PAPERLESS_PORT: &port 8000
               PAPERLESS_TIME_ZONE: Australia/Sydney
