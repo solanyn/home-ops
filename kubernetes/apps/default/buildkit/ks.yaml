@@ -6,7 +6,7 @@ metadata:
   name: buildkit
 spec:
   interval: 1h
-  path: ./kubernetes/apps/dev/buildkit/app
+  path: ./kubernetes/apps/default/buildkit/app
   postBuild:
     substitute:
       APP: buildkit
@@ -15,5 +15,5 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: dev
+  targetNamespace: default
   wait: false
