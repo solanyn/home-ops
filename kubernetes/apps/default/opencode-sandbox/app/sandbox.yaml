@@ -3,7 +3,7 @@ apiVersion: agents.x-k8s.io/v1alpha1
 kind: Sandbox
 metadata:
   name: opencode
-  namespace: ai
+  namespace: default
 spec:
   podTemplate:
     metadata:
@@ -13,25 +13,32 @@ spec:
       serviceAccountName: opencode
       initContainers:
         - name: install-tools
-          image: ghcr.io/opencode/opencode:latest
+          image: ubuntu:24.04
           command:
-            - /bin/sh
+            - /bin/bash
             - -c
             - |
               set -e
+              
+              # Install required packages
+              apt-get update && apt-get install -y curl git build-essential ca-certificates
+              
               mkdir -p /home/dev/.local/bin /home/dev/.local/go
 
               echo "Starting tool installation..."
 
-              # Install Homebrew
-              if [ ! -f /home/dev/.local/homebrew/bin/brew ]; then
+              # Install Homebrew to persistent volume
+              if [ ! -f /home/dev/.linuxbrew/bin/brew ]; then
                 echo "Installing Homebrew..."
-                export HOMEBREW_PREFIX=/home/dev/.local/homebrew
-                export HOMEBREW_CELLAR=/home/dev/.local/homebrew/Cellar
-                export HOMEBREW_REPOSITORY=/home/dev/.local/homebrew
+                export HOMEBREW_PREFIX=/home/dev/.linuxbrew
+                export HOMEBREW_CELLAR=/home/dev/.linuxbrew/Cellar
+                export HOMEBREW_REPOSITORY=/home/dev/.linuxbrew
+                export PATH="/home/dev/.linuxbrew/bin:$PATH"
                 mkdir -p $HOMEBREW_PREFIX
                 cd /tmp
                 git clone --depth 1 https://github.com/Homebrew/brew $HOMEBREW_PREFIX
+                # Install gcc first (required by many brew packages)
+                /home/dev/.linuxbrew/bin/brew install gcc || true
               fi
 
               # Install gh CLI
@@ -60,6 +67,14 @@ spec:
                 curl -fsSL https://raw.githubusercontent.com/tj/n/master/bin/n -o /home/dev/.local/bin/n
                 chmod +x /home/dev/.local/bin/n
                 N_PREFIX=/home/dev/.local n lts
+              fi
+
+              # Install ttyd
+              if [ ! -f /home/dev/.local/bin/ttyd ]; then
+                echo "Installing ttyd..."
+                cd /tmp
+                curl -fsSL https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 -o /home/dev/.local/bin/ttyd
+                chmod +x /home/dev/.local/bin/ttyd
               fi
 
               echo "Tool installation complete"
@@ -105,7 +120,7 @@ spec:
             - name: TZ
               value: Australia/Sydney
             - name: BUILDKIT_HOST
-              value: tcp://buildkit.dev.svc.cluster.local:1234
+              value: tcp://buildkit.default.svc.cluster.local:1234
           envFrom:
             - secretRef:
                 name: opencode
