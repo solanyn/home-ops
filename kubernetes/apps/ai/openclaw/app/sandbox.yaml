@@ -110,14 +110,21 @@ spec:
             - name: HOMEBREW_PREFIX
               value: /home/node/.local/homebrew
             - name: HOMEBREW_CELLAR
-              value: /home/node/.local/homebrew/Cellar
+              value: /home/node/.local/homebrew
             - name: HOMEBREW_REPOSITORY
               value: /home/node/.local/homebrew
             - name: TZ
               value: Australia/Sydney
-          envFrom:
-            - secretRef:
-                name: openclaw
+            - name: BLUEBUBBLES_URL
+              valueFrom:
+                secretKeyRef:
+                  name: openclaw
+                  key: BLUEBUBBLES_URL
+            - name: BLUEBUBBLES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: openclaw
+                  key: BLUEBUBBLES_PASSWORD
           ports:
             - name: http
               containerPort: 18789
