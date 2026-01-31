@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: openclaw
+spec:
+  interval: 1h
+  path: ./kubernetes/apps/ai/openclaw/app
+  postBuild:
+    substitute:
+      APP: openclaw
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: ai
+  wait: false
+  dependsOn:
+    - name: agent-sandbox-core
+      namespace: agent-sandbox-system
