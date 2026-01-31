@@ -11,3 +11,4 @@ resources:
   - ./namespace.yaml
   - ./kagent/ks.yaml
   - ./openclaw/ks.yaml
+  - ./coding-sandbox/ks.yaml
