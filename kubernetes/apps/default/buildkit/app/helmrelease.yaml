@@ -64,7 +64,7 @@ spec:
       app:
         type: LoadBalancer
         annotations:
-          lbipam.cilium.io/ips: 192.168.69.200
+          lbipam.cilium.io/ips: 192.168.69.134
         controller: buildkit
         ports:
           tcp:
