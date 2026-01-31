@@ -10,6 +10,7 @@ spec:
   postBuild:
     substitute:
       APP: openclaw
+      VOLSYNC_CAPACITY: 10Gi
   prune: true
   sourceRef:
     kind: GitRepository
@@ -20,3 +21,5 @@ spec:
   dependsOn:
     - name: agent-sandbox-core
       namespace: agent-sandbox-system
+  components:
+    - ../../../../components/volsync
