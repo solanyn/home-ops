@@ -69,6 +69,13 @@ spec:
               fi
               set -e
 
+              # Install uv
+              if [ ! -f /home/node/.local/bin/uv ]; then
+                echo "Installing uv..."
+                curl -LsSf https://astral.sh/uv/install.sh | sh
+                mv /home/node/.local/bin/uv* /home/node/.local/bin/ || true
+              fi
+
               echo "Tool installation complete"
           env:
             - name: HOME
