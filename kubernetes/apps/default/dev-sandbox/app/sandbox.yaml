@@ -101,6 +101,12 @@ spec:
                 curl -fsSL https://raw.githubusercontent.com/google-gemini/gemini-cli/main/install.sh | bash || true
               fi
 
+              # Install uv
+              if [ ! -f /home/dev/.local/bin/uv ]; then
+                echo "Installing uv..."
+                curl -LsSf https://astral.sh/uv/install.sh | sh
+              fi
+
               echo "Tool installation complete"
           env:
             - name: HOME
