@@ -5,13 +5,9 @@ metadata:
   name: kueue
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: kueue
-      version: 0.10.1 # Latest version
-      sourceRef:
-        kind: HelmRepository
-        name: kueue
+  chartRef:
+    kind: OCIRepository
+    name: kueue
   values:
     # Kueue Config
     # No complex values needed for base install
