@@ -52,6 +52,3 @@ spec:
     - name: ttyd
       port: 7681
       targetPort: 7681
-    - name: ssh
-      port: 22
-      targetPort: 22
