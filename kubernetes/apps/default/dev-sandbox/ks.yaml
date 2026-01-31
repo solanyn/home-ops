@@ -3,13 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: opencode-sandbox
+  name: dev-sandbox
 spec:
   interval: 1h
-  path: ./kubernetes/apps/default/opencode-sandbox/app
+  path: ./kubernetes/apps/default/dev-sandbox/app
   postBuild:
     substitute:
-      APP: opencode
+      APP: dev-sandbox
       VOLSYNC_CAPACITY: 50Gi
   prune: true
   sourceRef:

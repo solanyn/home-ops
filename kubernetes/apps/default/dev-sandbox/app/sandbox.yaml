@@ -2,7 +2,7 @@
 apiVersion: agents.x-k8s.io/v1alpha1
 kind: Sandbox
 metadata:
-  name: opencode
+  name: dev-sandbox
   namespace: default
 spec:
   podTemplate:
@@ -10,7 +10,7 @@ spec:
       annotations:
         reloader.stakater.com/auto: "true"
     spec:
-      serviceAccountName: opencode
+      serviceAccountName: dev-sandbox
       initContainers:
         - name: install-tools
           image: ubuntu:24.04
@@ -77,6 +77,12 @@ spec:
                 chmod +x /home/dev/.local/bin/ttyd
               fi
 
+              # Install opencode
+              if [ ! -f /home/dev/.local/bin/opencode ]; then
+                echo "Installing opencode..."
+                curl -fsSL https://get.opencode.ai/install.sh | bash
+              fi
+
               echo "Tool installation complete"
           env:
             - name: HOME
@@ -88,21 +94,21 @@ spec:
             - name: config
               mountPath: /home/dev
       containers:
-        - name: opencode
-          image: ghcr.io/opencode/opencode:latest
+        - name: dev
+          image: ubuntu:24.04
           command:
-            - /bin/sh
+            - /bin/bash
             - -c
             - |
               # Set up environment
               export HOME=/home/dev
-              export PATH="/home/dev/.local/bin:/home/dev/.local/go/bin:/home/dev/.local/homebrew/bin:$PATH"
-              export HOMEBREW_PREFIX=/home/dev/.local/homebrew
-              export HOMEBREW_CELLAR=/home/dev/.local/homebrew/Cellar
-              export HOMEBREW_REPOSITORY=/home/dev/.local/homebrew
+              export PATH="/home/dev/.local/bin:/home/dev/.local/go/bin:/home/dev/.linuxbrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+              export HOMEBREW_PREFIX=/home/dev/.linuxbrew
+              export HOMEBREW_CELLAR=/home/dev/.linuxbrew/Cellar
+              export HOMEBREW_REPOSITORY=/home/dev/.linuxbrew
               
-              # Start ttyd for web access
-              ttyd -p 7681 -c admin:$(cat /secrets/admin-password) bash &
+              # Start ttyd for web terminal access (no authentication)
+              /home/dev/.local/bin/ttyd -p 7681 bash &
               
               # Keep container running
               tail -f /dev/null
@@ -110,20 +116,20 @@ spec:
             - name: HOME
               value: /home/dev
             - name: PATH
-              value: /home/dev/.local/bin:/home/dev/.local/go/bin:/home/dev/.local/homebrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+              value: /home/dev/.local/bin:/home/dev/.local/go/bin:/home/dev/.linuxbrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
             - name: HOMEBREW_PREFIX
-              value: /home/dev/.local/homebrew
+              value: /home/dev/.linuxbrew
             - name: HOMEBREW_CELLAR
-              value: /home/dev/.local/homebrew/Cellar
+              value: /home/dev/.linuxbrew/Cellar
             - name: HOMEBREW_REPOSITORY
-              value: /home/dev/.local/homebrew
+              value: /home/dev/.linuxbrew
             - name: TZ
               value: Australia/Sydney
             - name: BUILDKIT_HOST
               value: tcp://buildkit.default.svc.cluster.local:1234
           envFrom:
             - secretRef:
-                name: opencode
+                name: dev-sandbox
           ports:
             - name: ttyd
               containerPort: 7681
@@ -149,7 +155,7 @@ spec:
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: opencode
+            claimName: dev-sandbox
         - name: secrets
           secret:
-            secretName: opencode
+            secretName: dev-sandbox
