@@ -89,6 +89,18 @@ spec:
                 curl -fsSL https://get.kiro.dev/install.sh | bash || true
               fi
 
+              # Install Claude Code
+              if [ ! -f /home/dev/.local/bin/claude ]; then
+                echo "Installing Claude Code..."
+                npm install -g @anthropic-ai/claude-code || true
+              fi
+
+              # Install Gemini CLI
+              if [ ! -f /home/dev/.local/bin/gemini ]; then
+                echo "Installing Gemini CLI..."
+                curl -fsSL https://raw.githubusercontent.com/google-gemini/gemini-cli/main/install.sh | bash || true
+              fi
+
               echo "Tool installation complete"
           env:
             - name: HOME
@@ -144,8 +156,6 @@ spec:
               containerPort: 4096
             - name: ttyd
               containerPort: 7681
-            - name: ssh
-              containerPort: 22
           resources:
             requests:
               cpu: 500m
