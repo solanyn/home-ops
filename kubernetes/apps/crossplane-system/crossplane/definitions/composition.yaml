@@ -48,6 +48,9 @@ spec:
                         - disabled: true
                       gcePersistentDiskCsiDriverConfig:
                         - enabled: true
+                  nodeConfig:
+                    - oauthScopes:
+                        - https://www.googleapis.com/auth/cloud-platform
             patches:
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.location
@@ -55,6 +58,9 @@ spec:
               - type: FromCompositeFieldPath
                 fromFieldPath: metadata.name
                 toFieldPath: metadata.name
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.serviceAccount
+                toFieldPath: spec.forProvider.nodeConfig[0].serviceAccount
 
           - name: system-pool
             base:
