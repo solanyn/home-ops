@@ -25,8 +25,8 @@ spec:
         containers:
           app:
             image:
-              repository: gcr.io/ml-pipeline/api-server
-              tag: 2.3.0
+              repository: ghcr.io/kubeflow/kfp-api-server
+              tag: 2.15.0
             env:
               POD_NAMESPACE:
                 valueFrom:
@@ -65,14 +65,11 @@ spec:
         replicas: 1
         serviceAccount:
           name: ml-pipeline-persistenceagent
-          annotations:
-            # Create a token secret for the persistence agent
-            kubernetes.io/service-account.name: ml-pipeline-persistenceagent
         containers:
           app:
             image:
-              repository: gcr.io/ml-pipeline/persistenceagent
-              tag: 2.3.0
+              repository: ghcr.io/kubeflow/kfp-persistence-agent
+              tag: 2.15.0
             env:
               NAMESPACE:
                 valueFrom:
@@ -91,8 +88,8 @@ spec:
         containers:
           app:
             image:
-              repository: gcr.io/ml-pipeline/scheduledworkflow
-              tag: 2.3.0
+              repository: ghcr.io/kubeflow/kfp-scheduled-workflow-controller
+              tag: 2.15.0
             securityContext:
               runAsNonRoot: true
               runAsUser: 1000
@@ -106,8 +103,8 @@ spec:
         containers:
           app:
             image:
-              repository: gcr.io/ml-pipeline/frontend
-              tag: 2.3.0
+              repository: ghcr.io/kubeflow/kfp-frontend
+              tag: 2.15.0
             env:
               ALLOW_CUSTOM_VISUALIZATIONS: "true"
               ARGO_ARCHIVE_LOGS: "true"
@@ -136,3 +133,19 @@ spec:
         ports:
           http:
             port: 3000
+
+    persistence:
+      sa-token:
+        type: custom
+        volumeSpec:
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: persistenceagent-sa-token
+                  expirationSeconds: 3600
+                  audience: pipelines.kubeflow.org
+        advancedMounts:
+          persistenceagent:
+            app:
+              - path: /var/run/secrets/kubeflow/tokens
+                readOnly: true
