@@ -61,7 +61,7 @@ spec:
                 -o StrictHostKeyChecking=accept-new \
                 -o ConnectTimeout=10 \
                 -T openclaw@mac.internal \
-                "/usr/local/bin/imsg" "$@"
+                "/Users/openclaw/homebrew/bin/imsg" "$@"
               SCRIPT
               chmod +x /home/node/.local/bin/imsg-ssh
 
