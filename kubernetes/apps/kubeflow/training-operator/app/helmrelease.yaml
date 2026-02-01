@@ -23,15 +23,6 @@ spec:
         serviceAccount:
           name: training-operator
         pod:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: liqo.io/type
-                        operator: In
-                        values:
-                          - virtual-node
           tolerations:
             - key: virtual-node.liqo.io/not-allowed
               operator: Exists

@@ -58,6 +58,17 @@ spec:
             env:
               - name: DB_NAME
                 value: "mysql"
+              - name: KATIB_MYSQL_DB_HOST
+                value: "mariadb.storage.svc.cluster.local"
+              - name: KATIB_MYSQL_DB_PORT
+                value: "3306"
+              - name: KATIB_MYSQL_DB_DATABASE
+                value: "katib"
+              - name: DB_USER
+                valueFrom:
+                  secretKeyRef:
+                    name: katib-db-secret
+                    key: username
               - name: DB_PASSWORD
                 valueFrom:
                   secretKeyRef:
