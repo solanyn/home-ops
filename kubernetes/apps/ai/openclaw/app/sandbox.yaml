@@ -11,81 +11,6 @@ spec:
         reloader.stakater.com/auto: "true"
     spec:
       serviceAccountName: openclaw
-      initContainers:
-        - name: install-tools
-          image: ghcr.io/openclaw/openclaw:2026.1.29@sha256:7b67c341d87f8e954dc1e8e9d7bb3aaeaf36acd49594abe4adb826ee89107170
-          command:
-            - /bin/sh
-            - -c
-            - |
-              set -e
-              mkdir -p /home/node/.local/bin /home/node/.local/go
-
-              echo "Starting tool installation..."
-
-              # Install gh CLI if not present on PVC
-              if [ ! -f /home/node/.local/bin/gh ]; then
-                echo "Installing gh CLI..."
-                cd /tmp
-                curl -fsSL https://github.com/cli/cli/releases/download/v2.61.0/gh_2.61.0_linux_amd64.tar.gz -o gh.tar.gz
-                tar xzf gh.tar.gz
-                cp gh_2.61.0_linux_amd64/bin/gh /home/node/.local/bin/
-                rm -rf gh.tar.gz gh_2.61.0_linux_amd64
-              fi
-
-              # Install Go if not present on PVC
-              if [ ! -f /home/node/.local/go/bin/go ]; then
-                echo "Installing Go..."
-                cd /tmp
-                curl -fsSL https://go.dev/dl/go1.23.5.linux-amd64.tar.gz -o go.tar.gz
-                tar xzf go.tar.gz
-                mv go /home/node/.local/
-                rm -rf go.tar.gz
-              fi
-
-              # Install Homebrew if not present on PVC
-              if [ ! -f /home/node/.local/homebrew/bin/brew ]; then
-                echo "Installing Homebrew..."
-                export HOMEBREW_PREFIX=/home/node/.local/homebrew
-                export HOMEBREW_CELLAR=/home/node/.local/homebrew/Cellar
-                export HOMEBREW_REPOSITORY=/home/node/.local/homebrew
-                mkdir -p $HOMEBREW_PREFIX
-                cd /tmp
-                git clone --depth 1 https://github.com/Homebrew/brew $HOMEBREW_PREFIX
-              fi
-
-              # Check if pip is available
-              set +e
-              if command -v pip3 >/dev/null 2>&1 || command -v pip >/dev/null 2>&1 || python3 -m pip --version >/dev/null 2>&1; then
-                echo "pip is available"
-              else
-                echo "Installing pip..."
-                cd /tmp
-                curl -fsSL https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-                python3 get-pip.py --user --no-warn-script-location --break-system-packages || \
-                python3 get-pip.py --user --no-warn-script-location || \
-                echo "pip install skipped (use python3 -m pip instead)"
-                rm -f get-pip.py
-              fi
-              set -e
-
-              # Install uv
-              if [ ! -f /home/node/.local/bin/uv ]; then
-                echo "Installing uv..."
-                curl -LsSf https://astral.sh/uv/install.sh | sh
-                mv /home/node/.local/bin/uv* /home/node/.local/bin/ || true
-              fi
-
-              echo "Tool installation complete"
-          env:
-            - name: HOME
-              value: /home/node
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 100
-          volumeMounts:
-            - name: config
-              mountPath: /home/node
       containers:
         - name: openclaw
           image: ghcr.io/openclaw/openclaw:2026.1.29@sha256:7b67c341d87f8e954dc1e8e9d7bb3aaeaf36acd49594abe4adb826ee89107170
@@ -110,7 +35,7 @@ spec:
             - name: HOMEBREW_PREFIX
               value: /home/node/.local/homebrew
             - name: HOMEBREW_CELLAR
-              value: /home/node/.local/homebrew
+              value: /home/node/.local/homebrew/Cellar
             - name: HOMEBREW_REPOSITORY
               value: /home/node/.local/homebrew
             - name: TZ
