@@ -3,21 +3,53 @@ set -e
 
 export PATH="/shared:$PATH"
 
-echo "Setting up gke-gcloud-auth-plugin..."
-# Copy from shared volume and install
-cp /shared/gke-gcloud-auth-plugin /usr/local/bin/
-chmod +x /usr/local/bin/gke-gcloud-auth-plugin
-
 echo "Authenticating with GCP..."
 gcloud auth activate-service-account --key-file=/etc/gcp/credentials.json
 
-echo "Getting GKE cluster credentials..."
-gcloud container clusters get-credentials "${GKE_CLUSTER_NAME}" \
+echo "Getting GKE cluster CA and endpoint..."
+# Get cluster info
+CLUSTER_CA=$(gcloud container clusters describe "${GKE_CLUSTER_NAME}" \
   --zone="${GCP_ZONE}" \
-  --project="${GCP_PROJECT}"
+  --project="${GCP_PROJECT}" \
+  --format='value(masterAuth.clusterCaCertificate)')
 
-# Save GKE kubeconfig for later use
-cp ~/.kube/config /shared/gke-kubeconfig
+CLUSTER_ENDPOINT=$(gcloud container clusters describe "${GKE_CLUSTER_NAME}" \
+  --zone="${GCP_ZONE}" \
+  --project="${GCP_PROJECT}" \
+  --format='value(endpoint)')
+
+# Get access token
+ACCESS_TOKEN=$(gcloud auth print-access-token)
+
+# Create kubeconfig manually
+cat > /shared/gke-kubeconfig <> EOF
+apiVersion: v1
+kind: Config
+clusters:
+- cluster:
+    certificate-authority-data: ${CLUSTER_CA}
+    server: https://${CLUSTER_ENDPOINT}
+  name: gke-cluster
+contexts:
+- context:
+    cluster: gke-cluster
+    user: gke-user
+  name: gke-context
+current-context: gke-context
+users:
+- name: gke-user
+  user:
+    token: ${ACCESS_TOKEN}
+EOF
+
+echo "Testing GKE cluster access..."
+export KUBECONFIG=/shared/gke-kubeconfig
+if kubectl get nodes &> /dev/null; then
+  echo "Successfully connected to GKE cluster"
+else
+  echo "Failed to connect to GKE cluster"
+  exit 1
+fi
 
 # Check if Liqo is already installed
 if kubectl get namespace liqo-system &> /dev/null; then
@@ -40,15 +72,28 @@ fi
 echo "Setting up peering with home cluster..."
 
 # Create kubeconfig for home cluster using service account token
-export KUBECONFIG=/shared/home-kubeconfig
-kubectl config set-cluster home-cluster \
-  --server="https://kubernetes.default.svc" \
-  --certificate-authority=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-kubectl config set-credentials home-user --token="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
-kubectl config set-context home-context --cluster=home-cluster --user=home-user
-kubectl config use-context home-context
+cat > /shared/home-kubeconfig <> EOF
+apiVersion: v1
+kind: Config
+clusters:
+- cluster:
+    certificate-authority-data: $(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt | base64 -w0)
+    server: https://kubernetes.default.svc
+  name: home-cluster
+contexts:
+- context:
+    cluster: home-cluster
+    user: home-user
+  name: home-context
+current-context: home-context
+users:
+- name: home-user
+  user:
+    token: $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+EOF
 
 # Check if peering already exists
+export KUBECONFIG=/shared/home-kubeconfig
 if kubectl get foreignclusters.liqo.io "${CLUSTER_NAME}" &> /dev/null; then
   echo "Peering with ${CLUSTER_NAME} already exists, skipping..."
 else
