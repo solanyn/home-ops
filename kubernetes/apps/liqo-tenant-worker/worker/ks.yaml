@@ -9,7 +9,7 @@ spec:
   dependsOn:
     - name: liqo
       namespace: liqo-system
-    - name: crossplane-home-ops
+    - name: crossplane-resources
       namespace: crossplane-system
   interval: 1h
   path: ./kubernetes/apps/liqo-tenant-worker/worker/config
