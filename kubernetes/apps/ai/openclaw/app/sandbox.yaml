@@ -21,6 +21,7 @@ spec:
               # Create home directory structure with correct permissions
               mkdir -p /home/node/.local/bin
               mkdir -p /home/node/.openclaw
+              mkdir -p /home/node/.ssh
               chown -R 1000:100 /home/node
           securityContext:
             runAsUser: 0
@@ -40,6 +41,18 @@ spec:
 
               # Set up openclawbot CLI symlink
               ln -sf /app/openclawbot.mjs /home/node/.local/bin/openclawbot
+
+              # Create SSH wrapper script for iMessage
+              cat > /home/node/.local/bin/imsg-ssh << 'SCRIPT'
+              #!/usr/bin/env bash
+              exec ssh -i /home/node/.ssh/id_ed25519 \
+                -o BatchMode=yes \
+                -o StrictHostKeyChecking=accept-new \
+                -o ConnectTimeout=10 \
+                -T openclaw@mac.internal \
+                "/usr/local/bin/imsg" "$@"
+              SCRIPT
+              chmod +x /home/node/.local/bin/imsg-ssh
 
               # Create openclaw config with Kimi as default provider
               cat > /home/node/.openclaw/openclaw.json << 'EOF'
@@ -89,6 +102,14 @@ spec:
                   "auth": {
                     "token": "${OPENCLAW_GATEWAY_TOKEN}"
                   }
+                },
+                "channels": {
+                  "imessage": {
+                    "enabled": true,
+                    "cliPath": "/home/node/.local/bin/imsg-ssh",
+                    "remoteHost": "openclaw@mac.internal",
+                    "dbPath": "/Users/openclaw/Library/Messages/chat.db"
+                  }
                 }
               }
               EOF
@@ -132,7 +153,19 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /home/node
+            - name: ssh-key
+              mountPath: /home/node/.ssh
+              readOnly: true
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: openclaw
+        - name: ssh-key
+          secret:
+            secretName: openclaw
+            items:
+              - key: OPENCLAW_SSH_PRIVATE_KEY
+                path: id_ed25519
+              - key: OPENCLAW_SSH_PUBLIC_KEY
+                path: id_ed25519.pub
+            defaultMode: 0400
