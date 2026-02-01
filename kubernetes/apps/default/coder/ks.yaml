@@ -3,22 +3,20 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: dev-sandbox
+  name: coder
 spec:
+  targetNamespace: default
+  dependsOn:
+    - name: cloudnative-pg-cluster
+      namespace: storage
   interval: 1h
-  path: ./kubernetes/apps/default/dev-sandbox/app
+  path: ./kubernetes/apps/default/coder/app
   postBuild:
     substitute:
-      APP: dev-sandbox
-      VOLSYNC_CAPACITY: 50Gi
+      APP: coder
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: default
   wait: false
-  dependsOn:
-    - name: agent-sandbox-core
-      namespace: agent-sandbox-system
-  # VolSync temporarily disabled - will enable after initial deployment
