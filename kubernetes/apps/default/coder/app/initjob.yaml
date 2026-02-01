@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/batch/v1/job.json
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: coder-init-db
+  namespace: default
+spec:
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      serviceAccountName: coder
+      restartPolicy: Never
+      containers:
+        - name: init-db
+          image: ghcr.io/home-operations/postgres-init:18
+          envFrom:
+            - secretRef:
+                name: coder-secret
