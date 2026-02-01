@@ -23,6 +23,8 @@ spec:
               apiVersion: container.gcp.upbound.io/v1beta1
               kind: Cluster
               spec:
+                providerConfigRef:
+                  name: home-ops
                 writeConnectionSecretToRef:
                   namespace: crossplane-system
                   name: worker-cluster-conn
@@ -59,6 +61,8 @@ spec:
               apiVersion: container.gcp.upbound.io/v1beta1
               kind: NodePool
               spec:
+                providerConfigRef:
+                  name: home-ops
                 forProvider:
                   nodeCount: 1
                   nodeConfig:
@@ -87,6 +91,8 @@ spec:
               apiVersion: container.gcp.upbound.io/v1beta1
               kind: NodePool
               spec:
+                providerConfigRef:
+                  name: home-ops
                 forProvider:
                   autoscaling:
                     - minNodeCount: 0
@@ -128,6 +134,8 @@ spec:
               apiVersion: container.gcp.upbound.io/v1beta1
               kind: NodePool
               spec:
+                providerConfigRef:
+                  name: home-ops
                 forProvider:
                   autoscaling:
                     - minNodeCount: 0
