@@ -1,0 +1,46 @@
+{
+  "mcpServers": {
+    "notion": {
+      "type": "url",
+      "url": "https://gateway.goyangi.io/mcp/notion",
+      "headers": {
+        "Authorization": "Bearer ${AGENTGATEWAY_API_KEY}"
+      }
+    },
+    "github": {
+      "type": "url",
+      "url": "https://gateway.goyangi.io/mcp/github",
+      "headers": {
+        "Authorization": "Bearer ${AGENTGATEWAY_API_KEY}"
+      }
+    },
+    "flux": {
+      "type": "url",
+      "url": "https://gateway.goyangi.io/mcp/flux",
+      "headers": {
+        "Authorization": "Bearer ${AGENTGATEWAY_API_KEY}"
+      }
+    },
+    "context7": {
+      "type": "url",
+      "url": "https://gateway.goyangi.io/mcp/context7",
+      "headers": {
+        "Authorization": "Bearer ${AGENTGATEWAY_API_KEY}"
+      }
+    },
+    "grafana": {
+      "type": "url",
+      "url": "https://gateway.goyangi.io/mcp/grafana",
+      "headers": {
+        "Authorization": "Bearer ${AGENTGATEWAY_API_KEY}"
+      }
+    },
+    "unifi": {
+      "type": "url",
+      "url": "https://gateway.goyangi.io/mcp/unifi",
+      "headers": {
+        "Authorization": "Bearer ${AGENTGATEWAY_API_KEY}"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayPolicy
+metadata:
+  name: ai-api-key-auth
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: ai
+  traffic:
+    apiKeyAuthentication:
+      mode: Strict
+      secretRef:
+        name: agentgateway-api-keys
