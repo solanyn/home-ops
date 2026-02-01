@@ -151,7 +151,7 @@ spec:
     persistence:
       jupyter-web-app-config:
         type: configMap
-        name: notebooks-config
+        identifier: config
         advancedMounts:
           notebook-controller:
             manager:
