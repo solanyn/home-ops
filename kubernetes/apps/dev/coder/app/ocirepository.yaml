@@ -1,0 +1,10 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: coder
+  namespace: coder
+spec:
+  interval: 12h
+  type: oci
+  url: oci://ghcr.io/coder/helm-charts

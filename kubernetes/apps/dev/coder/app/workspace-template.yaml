@@ -1,0 +1,206 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coder-workspace-template
+  namespace: coder
+data:
+  kubernetes.tf: |
+    terraform {
+      required_providers {
+        coder = {
+          source = "coder/coder"
+        }
+        kubernetes = {
+          source = "hashicorp/kubernetes"
+        }
+      }
+    }
+
+    variable "CODER_AGENT_TOKEN" {
+      description = "Bearer token to authenticate agent to Coder"
+      sensitive   = true
+    }
+
+    variable "CODER_AGENT_URL" {
+      description = "URL of the Coder instance"
+    }
+
+    locals {
+      username = data.coder_workspace.me.owner
+    }
+
+    data "coder_provisioner" "me" {
+    }
+
+    data "coder_workspace" "me" {
+    }
+
+    data "coder_workspace_build" "me" {
+    }
+
+    provider "kubernetes" {
+      config_path = "~/.kube/config"
+    }
+
+    provider "coder" {
+      url   = var.CODER_AGENT_URL
+      token = var.CODER_AGENT_TOKEN
+    }
+
+    # Pod specification with devcontainer support
+    resource "kubernetes_pod" "main" {
+      metadata {
+        name      = "coder-${lower(replace(data.coder_workspace.me.name, " ", "-"))}"
+        namespace = "coder-workspaces"
+        labels = {
+          "app.kubernetes.io/name"       = "coder-workspace"
+          "app.kubernetes.io/instance"   = data.coder_workspace.me.name
+          "app.kubernetes.io/created-by" = "coder"
+        }
+      }
+
+      spec {
+        service_account_name = kubernetes_service_account.workspace.metadata[0].name
+
+        # Home directory volume
+        volume {
+          name = "home"
+          persistent_volume_claim {
+            claim_name = kubernetes_persistent_volume_claim.home.metadata[0].name
+          }
+        }
+
+        # Docker socket for buildkit access
+        volume {
+          name = "docker-sock"
+          host_path {
+            path = "/var/run/docker.sock"
+            type = "Socket"
+          }
+        }
+
+        container {
+          name  = "dev"
+          image = "ubuntu:24.04"
+
+          command = ["/bin/bash"]
+          args = ["-c", "cd /home && bash -i"]
+
+          env {
+            name  = "CODER_AGENT_TOKEN"
+            value = var.CODER_AGENT_TOKEN
+          }
+
+          env {
+            name  = "CODER_AGENT_URL"
+            value = var.CODER_AGENT_URL
+          }
+
+          security_context {
+            run_as_user            = 1000
+            run_as_group           = 1000
+            allow_privilege_escalation = false
+          }
+
+          resources {
+            requests = {
+              cpu    = "500m"
+              memory = "1Gi"
+            }
+            limits = {
+              cpu    = "2000m"
+              memory = "4Gi"
+            }
+          }
+
+          volume_mount {
+            mount_path = "/home"
+            name       = "home"
+          }
+
+          volume_mount {
+            mount_path = "/var/run/docker.sock"
+            name       = "docker-sock"
+            read_only  = false
+          }
+        }
+
+        restart_policy = "Always"
+      }
+
+      depends_on = [
+        kubernetes_persistent_volume_claim.home,
+        kubernetes_service_account.workspace,
+      ]
+    }
+
+    # Persistent volume for workspace home
+    resource "kubernetes_persistent_volume_claim" "home" {
+      metadata {
+        name      = "coder-${lower(replace(data.coder_workspace.me.name, " ", "-"))}-home"
+        namespace = "coder-workspaces"
+      }
+
+      spec {
+        access_modes       = ["ReadWriteOnce"]
+        storage_class_name = "ceph-block"
+
+        resources {
+          requests = {
+            storage = "50Gi"
+          }
+        }
+      }
+    }
+
+    # Service account for workspace
+    resource "kubernetes_service_account" "workspace" {
+      metadata {
+        name      = "coder-${lower(replace(data.coder_workspace.me.name, " ", "-"))}"
+        namespace = "coder-workspaces"
+      }
+    }
+
+    # Coder Agent - runs inside the workspace pod
+    resource "coder_agent" "main" {
+      arch           = data.coder_provisioner.me.arch
+      os             = "linux"
+      startup_script = file("${path.module}/startup.sh")
+
+      connection_timeout = 5m
+      idle_timeout       = 30m
+
+      metadata {
+        key   = "type"
+        value = "kubernetes"
+      }
+    }
+
+    # Workspace web terminal
+    resource "coder_app" "terminal" {
+      agent_id      = coder_agent.main.id
+      slug          = "terminal"
+      display_name  = "Terminal"
+      icon          = "/icon/terminal.svg"
+      url           = "http://localhost:7681"
+      subdomain     = false
+      share          = "owner"
+      relative_path = true
+    }
+
+    # VS Code Web access
+    resource "coder_app" "vscode" {
+      agent_id      = coder_agent.main.id
+      slug          = "vscode"
+      display_name  = "VS Code"
+      icon          = "/icon/vscode.svg"
+      url           = "http://localhost:8000"
+      subdomain     = false
+      share          = "owner"
+      relative_path = true
+    }
+
+    output "agent_id" {
+      value = coder_agent.main.id
+    }
