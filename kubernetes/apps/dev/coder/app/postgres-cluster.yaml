@@ -1,0 +1,29 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: coder
+  namespace: coder
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.1-standard@sha256:4dce4eeb92bd3d16d0c1131838ce3586a16fdc4763d30423a00253968bfd3f9d
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+    storageClass: ceph-block
+  superuserSecret:
+    name: coder-postgres-secret
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      max_connections: "100"
+      shared_buffers: 256MB
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+  monitoring:
+    enablePodMonitor: true
