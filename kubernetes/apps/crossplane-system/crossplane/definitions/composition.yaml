@@ -32,20 +32,20 @@ spec:
                   removeDefaultNodePool: true
                   deletionProtection: false
                   clusterAutoscaling:
-                    autoscalingProfile: OPTIMIZE_UTILIZATION
+                    - autoscalingProfile: OPTIMIZE_UTILIZATION
                   loggingConfig:
-                    enableComponents: []
+                    - enableComponents: []
                   monitoringConfig:
-                    enableComponents: []
-                    managedPrometheus:
-                      enabled: false
+                    - enableComponents: []
+                      managedPrometheus:
+                        - enabled: false
                   addonsConfig:
-                    httpLoadBalancing:
-                      disabled: true
-                    horizontalPodAutoscaling:
-                      disabled: true
-                    gcePersistentDiskCsiDriverConfig:
-                      enabled: true
+                    - httpLoadBalancing:
+                        - disabled: true
+                      horizontalPodAutoscaling:
+                        - disabled: true
+                      gcePersistentDiskCsiDriverConfig:
+                        - enabled: true
             patches:
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.location
@@ -53,9 +53,6 @@ spec:
               - type: FromCompositeFieldPath
                 fromFieldPath: metadata.name
                 toFieldPath: metadata.name
-              - type: FromCompositeFieldPath
-                fromFieldPath: metadata.name
-                toFieldPath: spec.forProvider.name
 
           - name: system-pool
             base:
@@ -65,12 +62,12 @@ spec:
                 forProvider:
                   nodeCount: 1
                   nodeConfig:
-                    machineType: e2-micro
-                    diskSizeGb: 20
-                    diskType: pd-standard
-                    spot: true
-                    oauthScopes:
-                      - https://www.googleapis.com/auth/cloud-platform
+                    - machineType: e2-micro
+                      diskSizeGb: 20
+                      diskType: pd-standard
+                      spot: true
+                      oauthScopes:
+                        - https://www.googleapis.com/auth/cloud-platform
             patches:
               - type: FromCompositeFieldPath
                 fromFieldPath: metadata.name
@@ -83,7 +80,7 @@ spec:
                 toFieldPath: spec.forProvider.nodeCount
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.system.machineType
-                toFieldPath: spec.forProvider.nodeConfig.machineType
+                toFieldPath: spec.forProvider.nodeConfig[0].machineType
 
           - name: gpu-pool
             base:
@@ -92,20 +89,20 @@ spec:
               spec:
                 forProvider:
                   autoscaling:
-                    minNodeCount: 0
-                    maxNodeCount: 8
+                    - minNodeCount: 0
+                      maxNodeCount: 8
                   nodeConfig:
-                    machineType: g2-standard-8
-                    diskSizeGb: 100
-                    diskType: pd-ssd
-                    spot: true
-                    guestAccelerator:
-                      - type: nvidia-l4
-                        count: 1
-                        gpuDriverInstallationConfig:
-                          gpuDriverVersion: LATEST
-                    oauthScopes:
-                      - https://www.googleapis.com/auth/cloud-platform
+                    - machineType: g2-standard-8
+                      diskSizeGb: 100
+                      diskType: pd-ssd
+                      spot: true
+                      guestAccelerator:
+                        - type: nvidia-l4
+                          count: 1
+                          gpuDriverInstallationConfig:
+                            - gpuDriverVersion: LATEST
+                      oauthScopes:
+                        - https://www.googleapis.com/auth/cloud-platform
             patches:
               - type: FromCompositeFieldPath
                 fromFieldPath: metadata.name
@@ -115,16 +112,16 @@ spec:
                 toFieldPath: spec.forProvider.location
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.gpu.minCount
-                toFieldPath: spec.forProvider.autoscaling.minNodeCount
+                toFieldPath: spec.forProvider.autoscaling[0].minNodeCount
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.gpu.maxCount
-                toFieldPath: spec.forProvider.autoscaling.maxNodeCount
+                toFieldPath: spec.forProvider.autoscaling[0].maxNodeCount
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.gpu.machineType
-                toFieldPath: spec.forProvider.nodeConfig.machineType
+                toFieldPath: spec.forProvider.nodeConfig[0].machineType
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.gpu.acceleratorType
-                toFieldPath: spec.forProvider.nodeConfig.guestAccelerator[0].type
+                toFieldPath: spec.forProvider.nodeConfig[0].guestAccelerator[0].type
 
           - name: cpu-pool
             base:
@@ -133,15 +130,15 @@ spec:
               spec:
                 forProvider:
                   autoscaling:
-                    minNodeCount: 0
-                    maxNodeCount: 4
+                    - minNodeCount: 0
+                      maxNodeCount: 4
                   nodeConfig:
-                    machineType: e2-medium
-                    diskSizeGb: 100
-                    diskType: pd-ssd
-                    spot: true
-                    oauthScopes:
-                      - https://www.googleapis.com/auth/cloud-platform
+                    - machineType: e2-medium
+                      diskSizeGb: 100
+                      diskType: pd-ssd
+                      spot: true
+                      oauthScopes:
+                        - https://www.googleapis.com/auth/cloud-platform
             patches:
               - type: FromCompositeFieldPath
                 fromFieldPath: metadata.name
@@ -151,13 +148,13 @@ spec:
                 toFieldPath: spec.forProvider.location
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.cpu.minCount
-                toFieldPath: spec.forProvider.autoscaling.minNodeCount
+                toFieldPath: spec.forProvider.autoscaling[0].minNodeCount
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.cpu.maxCount
-                toFieldPath: spec.forProvider.autoscaling.maxNodeCount
+                toFieldPath: spec.forProvider.autoscaling[0].maxNodeCount
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.cpu.machineType
-                toFieldPath: spec.forProvider.nodeConfig.machineType
+                toFieldPath: spec.forProvider.nodeConfig[0].machineType
 
           - name: helm-provider-config
             base:
