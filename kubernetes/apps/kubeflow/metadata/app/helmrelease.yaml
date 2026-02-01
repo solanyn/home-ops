@@ -9,6 +9,13 @@ spec:
   chartRef:
     kind: OCIRepository
     name: metadata
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
   values:
     controllers:
       grpc:
@@ -41,20 +48,11 @@ spec:
                     name: metadata-db-secret
                     key: password
               - name: MYSQL_DATABASE
-                valueFrom:
-                  configMapKeyRef:
-                    name: metadata-config
-                    key: mlmdDb
+                value: metadb
               - name: MYSQL_HOST
-                valueFrom:
-                  configMapKeyRef:
-                    name: metadata-config
-                    key: dbHost
+                value: mariadb.storage.svc.cluster.local
               - name: MYSQL_PORT
-                valueFrom:
-                  configMapKeyRef:
-                    name: metadata-config
-                    key: dbPort
+                value: "3306"
             ports:
               - name: grpc-api
                 containerPort: 8080
@@ -134,26 +132,15 @@ spec:
                     - endpoint:
                         address:
                           socket_address:
-                            address: 127.0.0.1
+                            address: metadata-grpc.kubeflow.svc.cluster.local
                             port_value: 8080
-      config:
-        data:
-          metadata-config.yaml: |
-            dbHost: mariadb-kubeflow.storage.svc.cluster.local
-            dbPort: "3306"
-            mlmdDb: metadb
-    
     persistence:
       envoy-config:
         type: configMap
         identifier: envoy-config
-        globalMounts:
-          - path: /etc/envoy/envoy-config.yaml
-            subPath: envoy-config.yaml
-            readOnly: true
-      config:
-        type: configMap
-        identifier: config
-        globalMounts:
-          - path: /config
-            readOnly: true
+        advancedMounts:
+          envoy:
+            app:
+              - path: /etc/envoy/envoy-config.yaml
+                subPath: envoy-config.yaml
+                readOnly: true

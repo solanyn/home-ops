@@ -22,30 +22,25 @@ spec:
         replicas: 1
         serviceAccount:
           name: model-registry-server
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18
-            envFrom:
-              - secretRef:
-                  name: model-registry-db
         containers:
           server:
             image:
               repository: ghcr.io/kubeflow/model-registry/server
-              tag: v0.3.5 # Using a stable tag
-            # Need to verify postgres args
-            # Using simple REST server mode for now
+              tag: v0.3.5
             command:
               - /model-registry
               - proxy
               - --hostname=0.0.0.0
               - --port=8080
-              # Assuming postgres support via standard args if available, or just generic
-            envFrom:
-              - secretRef:
-                  name: model-registry-db
+              - --datastore-type=embedmd
+              - --embedmd-database-type=mysql
+              - --embedmd-database-dsn=$(DATABASE_DSN)
+            env:
+              DATABASE_DSN:
+                valueFrom:
+                  secretKeyRef:
+                    name: model-registry-db
+                    key: DSN
             ports:
               - containerPort: 8080
                 name: http-api
