@@ -72,6 +72,53 @@ volsync state:
     flux -n volsync-system {{ state }} helmrelease volsync
     kubectl -n volsync-system scale deployment volsync --replicas {{ if state != "suspend" { "1" } else { "0" } }}
 
+[doc('Restore VolSync PVC from R2')]
+restore-r2 namespace app:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    dst="{{ app }}-dst"
+    echo "Scaling down {{ app }}..."
+    kubectl -n {{ namespace }} scale deploy {{ app }} --replicas=0 2>/dev/null || true
+    kubectl -n {{ namespace }} scale sts {{ app }} --replicas=0 2>/dev/null || true
+    sleep 5
+    echo "Patching $dst to use R2 repo..."
+    trigger="restore-r2-$(date +%s)"
+    kubectl -n {{ namespace }} patch replicationdestination "$dst" --type merge -p \
+      "{\"spec\":{\"kopia\":{\"repository\":\"{{ app }}-volsync-r2-secret\",\"sourceIdentity\":{\"sourceName\":\"{{ app }}-r2\"}},\"trigger\":{\"manual\":\"$trigger\"}}}"
+    echo "Waiting for restore to complete..."
+    until [ "$(kubectl -n {{ namespace }} get replicationdestination "$dst" -o jsonpath='{.status.lastManualSync}')" = "$trigger" ]; do
+      sleep 5
+    done
+    snapshot=$(kubectl -n {{ namespace }} get replicationdestination "$dst" -o jsonpath='{.status.latestImage.name}')
+    echo "Restore complete. Snapshot: $snapshot"
+    echo "Deleting PVC {{ app }}..."
+    kubectl -n {{ namespace }} delete pvc {{ app }}
+    echo "Recreating PVC from snapshot..."
+    capacity=$(kubectl -n {{ namespace }} get replicationdestination "$dst" -o jsonpath='{.spec.kopia.capacity}')
+    sc=$(kubectl -n {{ namespace }} get replicationdestination "$dst" -o jsonpath='{.spec.kopia.storageClassName}')
+    kubectl apply -f - <<EOF
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: {{ app }}
+      namespace: {{ namespace }}
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: ${capacity}
+      storageClassName: ${sc}
+      dataSource:
+        kind: VolumeSnapshot
+        apiGroup: snapshot.storage.k8s.io
+        name: ${snapshot}
+    EOF
+    echo "Restoring local repo config..."
+    kubectl -n {{ namespace }} patch replicationdestination "$dst" --type merge -p \
+      "{\"spec\":{\"kopia\":{\"repository\":\"{{ app }}-volsync-secret\",\"sourceIdentity\":{\"sourceName\":\"{{ app }}\"}}}}"
+    echo "PVC recreated. Scale your app back up when ready:"
+    echo "  kubectl -n {{ namespace }} scale deploy {{ app }} --replicas=1"
+
 [doc('Sync ExternalSecrets')]
 sync-es:
     kubectl get es --no-headers -A | while read -r ns name _; do \
