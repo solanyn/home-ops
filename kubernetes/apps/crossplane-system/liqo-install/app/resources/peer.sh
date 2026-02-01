@@ -4,7 +4,12 @@ set -e
 export PATH="/shared:$PATH"
 
 echo "Installing gke-gcloud-auth-plugin..."
-gcloud components install gke-gcloud-auth-plugin -q
+# Download and install the auth plugin manually
+curl -LO https://storage.googleapis.com/cloud-sdk-release/gke-gcloud-auth-plugin-linux-amd64.tar.gz
+tar -xzf gke-gcloud-auth-plugin-linux-amd64.tar.gz
+mv gke-gcloud-auth-plugin /usr/local/bin/
+chmod +x /usr/local/bin/gke-gcloud-auth-plugin
+rm gke-gcloud-auth-plugin-linux-amd64.tar.gz
 
 echo "Authenticating with GCP..."
 gcloud auth activate-service-account --key-file=/etc/gcp/credentials.json
