@@ -22,6 +22,14 @@ spec:
               mkdir -p /home/node/.local/bin
               mkdir -p /home/node/.openclaw
               mkdir -p /home/node/.ssh
+              
+              # Copy SSH keys from secret to home directory with correct permissions
+              # Secrets are mounted as root, so we need to copy them to allow node user access
+              cp /tmp/ssh-keys/id_ed25519 /home/node/.ssh/id_ed25519
+              cp /tmp/ssh-keys/id_ed25519.pub /home/node/.ssh/id_ed25519.pub
+              chmod 600 /home/node/.ssh/id_ed25519
+              chmod 644 /home/node/.ssh/id_ed25519.pub
+              
               chown -R 1000:100 /home/node
           securityContext:
             runAsUser: 0
@@ -29,6 +37,9 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /home/node
+            - name: ssh-key
+              mountPath: /tmp/ssh-keys
+              readOnly: true
       containers:
         - name: openclaw
           image: ghcr.io/openclaw/openclaw:2026.1.29@sha256:7b67c341d87f8e954dc1e8e9d7bb3aaeaf36acd49594abe4adb826ee89107170
@@ -157,9 +168,6 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /home/node
-            - name: ssh-key
-              mountPath: /home/node/.ssh
-              readOnly: true
       volumes:
         - name: config
           persistentVolumeClaim:
