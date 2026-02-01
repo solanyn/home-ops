@@ -8,6 +8,7 @@ spec:
   names:
     kind: XGKECluster
     plural: xgkeclusters
+  scope: Cluster
   versions:
     - name: v1alpha1
       served: true
