@@ -55,7 +55,7 @@ spec:
               chmod +x /home/node/.local/bin/imsg-ssh
 
               # Create openclaw config with Kimi as default provider
-              cat > /home/node/.openclaw/openclaw.json << 'EOF'
+              cat > /home/node/.openclaw/openclaw.json << EOF
               {
                 "env": {
                   "KIMI_API_KEY": "${KIMI_API_KEY}"
