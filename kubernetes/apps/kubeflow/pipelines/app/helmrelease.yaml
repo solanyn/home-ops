@@ -9,6 +9,13 @@ spec:
   chartRef:
     kind: OCIRepository
     name: pipelines
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
   values:
     controllers:
       apiserver:
@@ -19,7 +26,7 @@ spec:
           app:
             image:
               repository: gcr.io/ml-pipeline/api-server
-              tag: 2.15.0
+              tag: 2.3.0
             env:
               POD_NAMESPACE:
                 valueFrom:
@@ -65,7 +72,7 @@ spec:
           app:
             image:
               repository: gcr.io/ml-pipeline/persistenceagent
-              tag: 2.15.0
+              tag: 2.3.0
             env:
               NAMESPACE:
                 valueFrom:
@@ -85,7 +92,7 @@ spec:
           app:
             image:
               repository: gcr.io/ml-pipeline/scheduledworkflow
-              tag: 2.15.0
+              tag: 2.3.0
             securityContext:
               runAsNonRoot: true
               runAsUser: 1000
@@ -100,7 +107,7 @@ spec:
           app:
             image:
               repository: gcr.io/ml-pipeline/frontend
-              tag: 2.15.0
+              tag: 2.3.0
             env:
               ALLOW_CUSTOM_VISUALIZATIONS: "true"
               ARGO_ARCHIVE_LOGS: "true"
