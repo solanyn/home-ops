@@ -3,3 +3,10 @@ kind: Kustomization
 resources:
   - ./rbac.yaml
   - ./job.yaml
+configMapGenerator:
+  - name: liqo-scripts
+    files:
+      - download-tools.sh=./resources/download-tools.sh
+      - setup.sh=./resources/setup.sh
+generatorOptions:
+  disableNameSuffixHash: true
