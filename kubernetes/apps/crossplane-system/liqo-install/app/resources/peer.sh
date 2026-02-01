@@ -4,7 +4,7 @@ set -e
 export PATH="/shared:$PATH"
 
 echo "Installing gke-gcloud-auth-plugin..."
-apt-get update && apt-get install -y google-cloud-cli-gke-gcloud-auth-plugin
+gcloud components install gke-gcloud-auth-plugin -q
 
 echo "Authenticating with GCP..."
 gcloud auth activate-service-account --key-file=/etc/gcp/credentials.json
