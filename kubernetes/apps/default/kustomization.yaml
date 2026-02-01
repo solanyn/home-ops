@@ -28,7 +28,7 @@ resources:
   - ./mlflow/ks.yaml
   - ./mlm/ks.yaml
   - ./opencode/ks.yaml
-  - ./dev-sandbox/ks.yaml
+  - ./coder/ks.yaml
   - ./buildkit/ks.yaml
   - ./paperless/ks.yaml
   - ./paperless-ai/ks.yaml
