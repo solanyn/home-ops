@@ -22,7 +22,7 @@ CLUSTER_ENDPOINT=$(gcloud container clusters describe "${GKE_CLUSTER_NAME}" \
 ACCESS_TOKEN=$(gcloud auth print-access-token)
 
 # Create kubeconfig manually
-cat > /shared/gke-kubeconfig <> EOF
+cat > /shared/gke-kubeconfig << EOF
 apiVersion: v1
 kind: Config
 clusters:
@@ -72,7 +72,7 @@ fi
 echo "Setting up peering with home cluster..."
 
 # Create kubeconfig for home cluster using service account token
-cat > /shared/home-kubeconfig <> EOF
+cat > /shared/home-kubeconfig << EOF
 apiVersion: v1
 kind: Config
 clusters:
