@@ -18,6 +18,9 @@ spec:
             - /bin/sh
             - -c
             - |
+              # Create local bin directory
+              mkdir -p /home/node/.local/bin
+
               # Set up openclawbot CLI symlink
               ln -sf /app/openclawbot.mjs /home/node/.local/bin/openclawbot
 
@@ -40,6 +43,11 @@ spec:
               value: /home/node/.local/homebrew
             - name: TZ
               value: Australia/Sydney
+            - name: OPENCLAW_GATEWAY_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: openclaw
+                  key: OPENCLAW_GATEWAY_TOKEN
             # BlueBubbles configuration - uncomment when ready to use
             # - name: BLUEBUBBLES_URL
             #   valueFrom:
