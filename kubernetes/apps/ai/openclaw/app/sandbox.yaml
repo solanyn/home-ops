@@ -43,22 +43,9 @@ spec:
               value: /home/node/.local/homebrew
             - name: TZ
               value: Australia/Sydney
-            - name: OPENCLAW_GATEWAY_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: openclaw
-                  key: OPENCLAW_GATEWAY_TOKEN
-            # BlueBubbles configuration - uncomment when ready to use
-            # - name: BLUEBUBBLES_URL
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: openclaw
-            #       key: BLUEBUBBLES_URL
-            # - name: BLUEBUBBLES_PASSWORD
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: openclaw
-            #       key: BLUEBUBBLES_PASSWORD
+          envFrom:
+            - secretRef:
+                name: openclaw
           ports:
             - name: http
               containerPort: 18789
