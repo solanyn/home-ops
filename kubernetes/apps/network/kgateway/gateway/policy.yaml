@@ -12,4 +12,4 @@ spec:
     apiKeyAuthentication:
       mode: Strict
       secretRef:
-        name: agentgateway-api-keys-secret
+        name: agentgateway-secret
