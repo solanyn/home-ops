@@ -23,6 +23,9 @@ spec:
                 location:
                   type: string
                   default: asia-southeast1-b
+                serviceAccount:
+                  type: string
+                  description: GCP service account for node pools
                 nodePools:
                   type: object
                   properties:

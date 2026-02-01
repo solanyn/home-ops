@@ -85,6 +85,9 @@ spec:
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.system.machineType
                 toFieldPath: spec.forProvider.nodeConfig[0].machineType
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.serviceAccount
+                toFieldPath: spec.forProvider.nodeConfig[0].serviceAccount
 
           - name: gpu-pool
             base:
@@ -128,6 +131,9 @@ spec:
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.gpu.acceleratorType
                 toFieldPath: spec.forProvider.nodeConfig[0].guestAccelerator[0].type
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.serviceAccount
+                toFieldPath: spec.forProvider.nodeConfig[0].serviceAccount
 
           - name: cpu-pool
             base:
@@ -163,6 +169,9 @@ spec:
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.nodePools.cpu.machineType
                 toFieldPath: spec.forProvider.nodeConfig[0].machineType
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.serviceAccount
+                toFieldPath: spec.forProvider.nodeConfig[0].serviceAccount
 
           - name: helm-provider-config
             base:
