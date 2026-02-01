@@ -31,7 +31,7 @@ spec:
           training-operator:
             image:
               repository: ghcr.io/kubeflow/training-v1/training-operator
-              tag: v1.7.0
+              tag: v1-3f15cb8
             command:
               - /manager
             ports:
