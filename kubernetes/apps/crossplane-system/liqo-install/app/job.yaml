@@ -13,7 +13,7 @@ spec:
         - name: download-tools
           image: alpine/curl:latest
           command:
-            - /scripts/download-tools.sh
+            - /scripts/setup.sh
           volumeMounts:
             - name: shared
               mountPath: /shared
@@ -33,7 +33,7 @@ spec:
             - name: GKE_CLUSTER_NAME
               value: "test"
           command:
-            - /scripts/setup.sh
+            - /scripts/peer.sh
           volumeMounts:
             - name: shared
               mountPath: /shared
