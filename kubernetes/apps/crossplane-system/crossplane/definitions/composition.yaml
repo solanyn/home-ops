@@ -176,6 +176,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "%s-helm"
               - type: FromCompositeFieldPath
                 fromFieldPath: metadata.name
@@ -183,6 +184,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "%s-cluster-conn"
             readinessChecks:
               - type: None
@@ -204,6 +206,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
                 fromFieldPath: metadata.name
@@ -211,6 +214,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "%s-cluster-conn"
             readinessChecks:
               - type: None
@@ -238,6 +242,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "%s-helm"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.clusterID
@@ -263,6 +268,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterClusterID
@@ -273,6 +279,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "liqo-tenant-%s"
 
           - name: wireguard-secret
@@ -296,6 +303,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterClusterID
@@ -303,6 +311,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "liqo-tenant-%s"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterClusterID
@@ -310,6 +319,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "wireguard-keys"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterClusterID
@@ -341,6 +351,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterClusterID
@@ -348,6 +359,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "liqo-tenant-%s"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterClusterID
@@ -386,6 +398,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterClusterID
@@ -393,6 +406,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "liqo-tenant-%s"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterClusterID
@@ -406,6 +420,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "wireguard-keys"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterGatewayIP
@@ -435,6 +450,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterClusterID
@@ -442,6 +458,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "liqo-tenant-%s"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterClusterID
@@ -471,6 +488,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "%s-k8s"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterClusterID
@@ -478,6 +496,7 @@ spec:
                 transforms:
                   - type: string
                     string:
+                      type: Format
                       fmt: "liqo-tenant-%s"
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.liqo.masterClusterID
