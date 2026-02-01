@@ -4,6 +4,12 @@ resources:
   - ./pvc.yaml
   - ./rbac.yaml
   - ./externalsecret.yaml
-  - ./configmap.yaml
   - ./sandbox.yaml
   - ./httproute.yaml
+
+configMapGenerator:
+  - name: openclaw-config
+    files:
+      - openclaw.json=./resources/openclaw.json
+    options:
+      disableNameSuffixHash: true
