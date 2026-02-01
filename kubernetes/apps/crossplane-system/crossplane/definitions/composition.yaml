@@ -27,7 +27,7 @@ spec:
                   name: home-ops
                 writeConnectionSecretToRef:
                   namespace: crossplane-system
-                  name: worker-cluster-conn
+                  name: test-cluster-conn
                 forProvider:
                   location: asia-southeast1-b
                   initialNodeCount: 1
