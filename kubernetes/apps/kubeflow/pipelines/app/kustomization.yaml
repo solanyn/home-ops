@@ -6,7 +6,6 @@ resources:
   - ./helmrelease.yaml
   - ./rbac.yaml
   - ./externalsecret.yaml
-  - ./sa-token.yaml
   - ./httproute.yaml
   - ./database.yaml
   # Core KFP resources from upstream source repo
