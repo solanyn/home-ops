@@ -48,9 +48,6 @@ spec:
               value: Australia/Sydney
             - name: BUILDKIT_HOST
               value: tcp://buildkit.default.svc.cluster.local:1234
-          envFrom:
-            - secretRef:
-                name: dev-sandbox
           ports:
             - name: opencode
               containerPort: 4096
@@ -70,13 +67,7 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /home/dev
-            - name: secrets
-              mountPath: /secrets
-              readOnly: true
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: dev-sandbox
-        - name: secrets
-          secret:
-            secretName: dev-sandbox
