@@ -59,7 +59,6 @@ kind: Kustomization
 metadata:
   name: crossplane-resources
 spec:
-  targetNamespace: crossplane-system
   dependsOn:
     - name: crossplane-definitions
       namespace: crossplane-system
