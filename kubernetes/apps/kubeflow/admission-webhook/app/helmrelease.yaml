@@ -49,6 +49,15 @@ spec:
       webhook-cert:
         type: secret
         name: webhook-certs
-        globalMounts:
-          - path: /etc/webhook/certs
-            readOnly: true
+        advancedMounts:
+          admission-webhook:
+            app:
+              - path: /etc/webhook/certs/cert.pem
+                subPath: tls.crt
+                readOnly: true
+              - path: /etc/webhook/certs/key.pem
+                subPath: tls.key
+                readOnly: true
+              - path: /etc/webhook/certs/ca.crt
+                subPath: ca.crt
+                readOnly: true
