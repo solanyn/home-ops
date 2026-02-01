@@ -1,0 +1,87 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: liqo-install
+  namespace: crossplane-system
+spec:
+  template:
+    spec:
+      serviceAccountName: liqo-installer
+      restartPolicy: OnFailure
+      initContainers:
+        - name: download-tools
+          image: alpine/curl:latest
+          command:
+            - sh
+            - -c
+            - |
+              echo "Downloading kubectl..."
+              curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+              chmod +x kubectl
+              mv kubectl /shared/
+              
+              echo "Downloading liqoctl..."
+              curl -LO https://github.com/liqotech/liqo/releases/download/v0.10.3/liqoctl-linux-amd64
+              chmod +x liqoctl-linux-amd64
+              mv liqoctl-linux-amd64 /shared/liqoctl
+              
+              echo "Tools downloaded successfully"
+          volumeMounts:
+            - name: shared
+              mountPath: /shared
+      containers:
+        - name: install-liqo
+          image: google/cloud-sdk:stable
+          env:
+            - name: CLUSTER_NAME
+              value: "worker"
+            - name: GCP_PROJECT
+              value: "bmas-aus-nbn-vertex-aiml-prod"
+            - name: GCP_ZONE
+              value: "asia-southeast1-b"
+            - name: GKE_CLUSTER_NAME
+              value: "test"
+          command:
+            - sh
+            - -c
+            - |
+              export PATH="/shared:$PATH"
+              
+              echo "Authenticating with GCP..."
+              gcloud auth activate-service-account --key-file=/etc/gcp/credentials.json
+              
+              echo "Getting GKE cluster credentials..."
+              gcloud container clusters get-credentials "${GKE_CLUSTER_NAME}" \
+                --zone="${GCP_ZONE}" \
+                --project="${GCP_PROJECT}"
+              
+              echo "Installing Liqo on GKE cluster..."
+              liqoctl install \
+                --cluster-name="${CLUSTER_NAME}" \
+                --service-type=LoadBalancer
+              
+              echo "Waiting for Liqo to be ready..."
+              kubectl wait --for=condition=ready pod \
+                -l app.kubernetes.io/name=liqo \
+                -n liqo-system \
+                --timeout=300s
+              
+              echo "Liqo installed successfully!"
+              echo "To peer this cluster with your home cluster, run:"
+              echo "  liqoctl peer --kubeconfig=<home-cluster-kubeconfig>"
+          volumeMounts:
+            - name: shared
+              mountPath: /shared
+            - name: gcp-credentials
+              mountPath: /etc/gcp
+              readOnly: true
+      volumes:
+        - name: shared
+          emptyDir: {}
+        - name: gcp-credentials
+          secret:
+            secretName: crossplane
+            items:
+              - key: GCP_SERVICE_ACCOUNT
+                path: credentials.json
