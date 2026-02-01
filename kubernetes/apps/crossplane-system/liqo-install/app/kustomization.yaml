@@ -6,7 +6,7 @@ resources:
 configMapGenerator:
   - name: liqo-scripts
     files:
-      - setup.sh
-      - peer.sh
+      - resources/setup.sh
+      - resources/peer.sh
 generatorOptions:
   disableNameSuffixHash: true
