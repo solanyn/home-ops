@@ -18,9 +18,15 @@ spec:
       retries: 3
   values:
     coder:
-      envFrom:
-        - secretRef:
-            name: coder-secret
+      initContainers:
+        init-db:
+          image:
+            repository: ghcr.io/home-operations/postgres-init
+            tag: 18
+          envFrom: &envFrom
+            - secretRef:
+                name: coder-secret
+      envFrom: *envFrom
       service:
         type: ClusterIP
       ingress:
