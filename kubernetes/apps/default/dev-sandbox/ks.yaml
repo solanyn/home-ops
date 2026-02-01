@@ -21,5 +21,4 @@ spec:
   dependsOn:
     - name: agent-sandbox-core
       namespace: agent-sandbox-system
-  components:
-    - ../../../../components/volsync
+  # VolSync temporarily disabled - will enable after initial deployment
