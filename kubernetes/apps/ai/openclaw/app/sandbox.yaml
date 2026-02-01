@@ -58,7 +58,7 @@ spec:
               cat > /home/node/.openclaw/openclaw.json << 'CONFIGEOF'
               {
                 "env": {
-                  "KIMI_API_KEY": "${KIMI_API_KEY}"
+                  "KIMI_API_KEY": "KIMI_API_KEY_PLACEHOLDER"
                 },
                 "agents": {
                   "defaults": {
@@ -77,7 +77,7 @@ spec:
                   "providers": {
                     "kimi-coding": {
                       "baseUrl": "https://api.moonshot.cn/v1",
-                      "apiKey": "${KIMI_API_KEY}",
+                      "apiKey": "KIMI_API_KEY_PLACEHOLDER",
                       "api": "openai-completions",
                       "models": [
                         {
@@ -100,7 +100,7 @@ spec:
                 },
                 "gateway": {
                   "auth": {
-                    "token": "${OPENCLAW_GATEWAY_TOKEN}"
+                    "token": "OPENCLAW_GATEWAY_TOKEN_PLACEHOLDER"
                   }
                 },
                 "channels": {
@@ -114,9 +114,9 @@ spec:
               }
               CONFIGEOF
               
-              # Substitute environment variables into the config file
-              envsubst < /home/node/.openclaw/openclaw.json > /home/node/.openclaw/openclaw.json.tmp
-              mv /home/node/.openclaw/openclaw.json.tmp /home/node/.openclaw/openclaw.json
+              # Substitute environment variables into the config file using sed
+              sed -i "s/KIMI_API_KEY_PLACEHOLDER/$(echo "$KIMI_API_KEY" | sed 's/[&/\]/\\&/g')/g" /home/node/.openclaw/openclaw.json
+              sed -i "s/OPENCLAW_GATEWAY_TOKEN_PLACEHOLDER/$(echo "$OPENCLAW_GATEWAY_TOKEN" | sed 's/[&/\]/\\&/g')/g" /home/node/.openclaw/openclaw.json
 
               # Start gateway
               exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
