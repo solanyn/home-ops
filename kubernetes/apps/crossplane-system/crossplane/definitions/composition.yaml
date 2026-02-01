@@ -189,6 +189,7 @@ spec:
                   source: Secret
                   secretRef:
                     namespace: crossplane-system
+                    name: gke-kubeconfig
                     key: kubeconfig
             patches:
               - type: FromCompositeFieldPath
@@ -199,14 +200,6 @@ spec:
                     string:
                       type: Format
                       fmt: "%s-helm"
-              - type: FromCompositeFieldPath
-                fromFieldPath: metadata.name
-                toFieldPath: spec.credentials.secretRef.name
-                transforms:
-                  - type: string
-                    string:
-                      type: Format
-                      fmt: "%s-cluster-conn"
             readinessChecks:
               - type: None
 
@@ -219,6 +212,7 @@ spec:
                   source: Secret
                   secretRef:
                     namespace: crossplane-system
+                    name: gke-kubeconfig
                     key: kubeconfig
             patches:
               - type: FromCompositeFieldPath
@@ -229,14 +223,6 @@ spec:
                     string:
                       type: Format
                       fmt: "%s-k8s"
-              - type: FromCompositeFieldPath
-                fromFieldPath: metadata.name
-                toFieldPath: spec.credentials.secretRef.name
-                transforms:
-                  - type: string
-                    string:
-                      type: Format
-                      fmt: "%s-cluster-conn"
             readinessChecks:
               - type: None
 
