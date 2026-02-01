@@ -8,5 +8,7 @@ metadata:
 spec:
   remote:
     cidr:
-      pod: ${POD_CIDR}
-      external: ${EXTERNAL_CIDR}
+      pod:
+        - ${POD_CIDR}
+      external:
+        - ${EXTERNAL_CIDR}
