@@ -11,6 +11,22 @@ spec:
         reloader.stakater.com/auto: "true"
     spec:
       serviceAccountName: openclaw
+      initContainers:
+        - name: fix-permissions
+          image: busybox:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              # Create home directory structure with correct permissions
+              mkdir -p /home/node/.local/bin
+              chown -R 1000:100 /home/node
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+          volumeMounts:
+            - name: config
+              mountPath: /home/node
       containers:
         - name: openclaw
           image: ghcr.io/openclaw/openclaw:2026.1.29@sha256:7b67c341d87f8e954dc1e8e9d7bb3aaeaf36acd49594abe4adb826ee89107170
