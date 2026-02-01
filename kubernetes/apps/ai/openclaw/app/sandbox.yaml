@@ -55,7 +55,7 @@ spec:
               chmod +x /home/node/.local/bin/imsg-ssh
 
               # Create openclaw config with Kimi as default provider
-              cat > /home/node/.openclaw/openclaw.json << EOF
+              cat > /home/node/.openclaw/openclaw.json << 'CONFIGEOF'
               {
                 "env": {
                   "KIMI_API_KEY": "${KIMI_API_KEY}"
@@ -112,7 +112,11 @@ spec:
                   }
                 }
               }
-              EOF
+              CONFIGEOF
+              
+              # Substitute environment variables into the config file
+              envsubst < /home/node/.openclaw/openclaw.json > /home/node/.openclaw/openclaw.json.tmp
+              mv /home/node/.openclaw/openclaw.json.tmp /home/node/.openclaw/openclaw.json
 
               # Start gateway
               exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
