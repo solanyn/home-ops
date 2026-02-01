@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ml-pipeline-persistenceagent-sa-token
+  namespace: kubeflow
+  annotations:
+    kubernetes.io/service-account.name: ml-pipeline-persistenceagent
+type: kubernetes.io/service-account-token
