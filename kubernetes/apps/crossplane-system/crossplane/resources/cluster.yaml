@@ -5,6 +5,7 @@ metadata:
   name: test
 spec:
   location: asia-southeast1-b
+  serviceAccount: ${GCP_SERVICE_ACCOUNT}
   nodePools:
     system:
       count: 1
