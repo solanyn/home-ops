@@ -115,12 +115,6 @@ spec:
                     "token": "OPENCLAW_GATEWAY_TOKEN_PLACEHOLDER"
                   }
                 },
-                "browser": {
-                  "enabled": true,
-                  "headless": true,
-                  "noSandbox": true,
-                  "defaultProfile": "openclaw"
-                },
                 "channels": {
                   "imessage": {
                     "enabled": true,
