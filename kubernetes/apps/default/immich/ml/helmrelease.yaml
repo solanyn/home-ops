@@ -63,7 +63,6 @@ spec:
                   failureThreshold: 90
         pod:
           nodeSelector:
-            liqo.io/remote-cluster-id: worker
           tolerations:
             - key: nvidia.com/gpu
               operator: Exists
