@@ -26,7 +26,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: llm-gpt-oss-20b
+  name: llm-devstral-small
 spec:
   parentRefs:
     - name: ai
@@ -35,7 +35,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /v1/gpt-oss-20b
+            value: /v1/devstral-small
       filters:
         - type: URLRewrite
           urlRewrite:
@@ -43,7 +43,7 @@ spec:
               type: ReplacePrefixMatch
               replacePrefixMatch: /v1
       backendRefs:
-        - name: modal-gpt-oss-20b
+        - name: modal-devstral-small
           group: agentgateway.dev
           kind: AgentgatewayBackend
 ---
