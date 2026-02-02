@@ -7,4 +7,5 @@ resources:
   - ./externalsecret.yaml
   - ./provider.yaml
   - ./kubernetes-providerconfig.yaml
+  - ./kubernetes-rbac.yaml
 
