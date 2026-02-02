@@ -68,8 +68,6 @@ spec:
     substituteFrom:
       - kind: Secret
         name: crossplane
-      - kind: Secret
-        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
