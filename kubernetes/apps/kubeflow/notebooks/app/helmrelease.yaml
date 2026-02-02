@@ -108,7 +108,6 @@ spec:
                   mount: /home/jovyan
                   newPvc:
                     spec:
-                      storageClassName: liqo-storage
                       resources:
                         requests:
                           storage: 10Gi
@@ -116,27 +115,21 @@ spec:
                         - ReadWriteOnce
               affinityConfig:
                 readOnly: true
-                value: "liqo"
                 options:
-                  - configKey: "liqo"
                     displayName: "GCP (Liqo)"
                     affinity:
                       nodeAffinity:
                         requiredDuringSchedulingIgnoredDuringExecution:
                           nodeSelectorTerms:
                             - matchExpressions:
-                                - key: "liqo.io/type"
                                   operator: "In"
                                   values:
                                     - "virtual-node"
               tolerationGroup:
                 readOnly: true
-                value: "liqo"
                 options:
-                  - groupKey: "liqo"
                     displayName: "GCP (Liqo)"
                     tolerations:
-                      - key: "virtual-node.liqo.io/not-allowed"
                         operator: "Exists"
                         effect: "NoExecute"
               shm:
