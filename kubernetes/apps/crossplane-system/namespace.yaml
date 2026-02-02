@@ -8,12 +8,3 @@ metadata:
     volsync.backube/privileged-movers: "true"
   labels:
     resource.kubernetes.io/admin-access: "true"
----
-kind: NamespaceOffloading
-metadata:
-  name: offloading
-spec:
-  namespaceMappingStrategy: EnforceSameName
-  podOffloadingStrategy: LocalAndRemote
-  clusterSelector:
-    nodeSelectorTerms: []
