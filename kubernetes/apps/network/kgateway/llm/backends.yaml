@@ -13,7 +13,7 @@ spec:
   policies:
     auth:
       secretRef:
-        name: modal-proxy-auth
+        name: modal-llm-auth
     tls:
       sni: solanyn--llm-gpt-oss-120b-serve.modal.run
 ---
@@ -31,7 +31,7 @@ spec:
   policies:
     auth:
       secretRef:
-        name: modal-proxy-auth
+        name: modal-llm-auth
     tls:
       sni: solanyn--llm-devstral-small-serve.modal.run
 ---
@@ -49,6 +49,6 @@ spec:
   policies:
     auth:
       secretRef:
-        name: modal-proxy-auth
+        name: modal-llm-auth
     tls:
       sni: solanyn--llm-ministral-8b-serve.modal.run
