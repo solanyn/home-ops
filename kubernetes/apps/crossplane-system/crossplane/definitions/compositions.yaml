@@ -40,8 +40,8 @@ spec:
                     {{- $name := .observed.composite.resource.metadata.name }}
                     {{- if eq $spec.engine "sglang" }}
                     app.py: |
+                      import os
                       import subprocess
-                      import time
                       import modal
 
                       MINUTES = 60
@@ -73,11 +73,11 @@ spec:
                           volumes={"/root/.cache/huggingface": hf_cache_vol},
                           scaledown_window={{ $spec.scaledownMinutes | default 10 }} * MINUTES,
                           timeout={{ $spec.timeoutMinutes | default 30 }} * MINUTES,
+                          secrets=[modal.Secret.from_name("llm-api-key")],
                       )
                       @modal.concurrent(max_inputs=TARGET_INPUTS)
-                      @modal.web_server(port=PORT, startup_timeout=30 * MINUTES, requires_proxy_auth=True)
+                      @modal.web_server(port=PORT, startup_timeout=30 * MINUTES)
                       def serve():
-                          import requests
                           cmd = [
                               "python", "-m", "sglang.launch_server",
                               "--model-path", MODEL_NAME,
@@ -88,6 +88,7 @@ spec:
                               "--tp", str(N_GPU),
                               "--cuda-graph-max-bs", str(TARGET_INPUTS * 2),
                               "--context-length", "{{ $spec.maxModelLen | default 32768 }}",
+                              "--api-key", os.environ["API_KEY"],
                               {{- if $spec.mistralFormat }}
                               "--tokenizer-mode", "mistral",
                               "--config-format", "mistral",
@@ -98,6 +99,7 @@ spec:
                     {{- else }}
                     app.py: |
                       import json
+                      import os
                       import subprocess
                       import modal
 
@@ -134,9 +136,10 @@ spec:
                               "/root/.cache/huggingface": hf_cache_vol,
                               "/root/.cache/vllm": vllm_cache_vol,
                           },
+                          secrets=[modal.Secret.from_name("llm-api-key")],
                       )
                       @modal.concurrent(max_inputs=MAX_INPUTS)
-                      @modal.web_server(port=PORT, startup_timeout=30 * MINUTES, requires_proxy_auth=True)
+                      @modal.web_server(port=PORT, startup_timeout=30 * MINUTES)
                       def serve():
                           cmd = [
                               "vllm", "serve", MODEL_NAME,
@@ -148,6 +151,7 @@ spec:
                               "--kv-cache-dtype", "{{ $spec.kvCacheDtype | default "fp8" }}",
                               "--max-num-batched-tokens", "{{ $spec.maxBatchedTokens | default 16384 }}",
                               "--max-model-len", "{{ $spec.maxModelLen | default 32768 }}",
+                              "--api-key", os.environ["API_KEY"],
                           ]
                           {{- if and $spec.speculative $spec.speculative.enabled }}
                           speculative_config = {
