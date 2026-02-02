@@ -33,6 +33,10 @@ spec:
                 set -e
                 mkdir -p /home/node/.local/bin /home/node/.openclaw
 
+                # Copy config from secret mount (writable copy on PVC)
+                cp /tmp/openclaw-config/openclaw.json /home/node/.openclaw/openclaw.json
+                chmod 600 /home/node/.openclaw/openclaw.json
+
                 # Install uv if not present on PVC
                 if [ ! -f /home/node/.local/bin/uv ]; then
                   echo "Installing uv..."
@@ -179,9 +183,11 @@ spec:
       openclaw-config:
         type: secret
         name: openclaw-config
-        globalMounts:
-          - path: /home/node/.openclaw/openclaw.json
-            subPath: openclaw.json
+        advancedMounts:
+          openclaw:
+            install-tools:
+              - path: /tmp/openclaw-config
+                readOnly: true
       ssh-key:
         type: secret
         name: openclaw
