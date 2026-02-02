@@ -5,12 +5,3 @@ metadata:
   name: _
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
----
-kind: NamespaceOffloading
-metadata:
-  name: offloading
-spec:
-  namespaceMappingStrategy: EnforceSameName
-  podOffloadingStrategy: LocalAndRemote
-  clusterSelector:
-    nodeSelectorTerms: []
