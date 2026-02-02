@@ -19,15 +19,3 @@ spec:
       minCount: 0
       maxCount: 4
       machineType: e2-medium
-  liqo:
-    clusterID: worker
-    masterClusterID: master
-    masterPodCIDR: 10.42.0.0/16
-    masterExternalCIDR: 10.60.0.0/16
-    masterGatewayIP: ${MASTER_GATEWAY_IP}
-    masterGatewayPort: 51840
-    workerExternalCIDR: 10.70.0.0/16
-    wireguard:
-      workerPrivateKey: ${WG_WORKER_PRIVATE_KEY}
-      workerPublicKey: ${WG_WORKER_PUBLIC_KEY}
-      masterPublicKey: ${WG_MASTER_PUBLIC_KEY}

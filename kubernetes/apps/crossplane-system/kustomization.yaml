@@ -6,4 +6,3 @@ namespace: crossplane-system
 resources:
   - ./namespace.yaml
   - ./crossplane/ks.yaml
-  - ./liqo-install/ks.yaml
