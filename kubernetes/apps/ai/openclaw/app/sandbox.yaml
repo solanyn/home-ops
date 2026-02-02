@@ -110,6 +110,7 @@ spec:
                   }
                 },
                 "gateway": {
+                  "mode": "local",
                   "auth": {
                     "token": "OPENCLAW_GATEWAY_TOKEN_PLACEHOLDER"
                   }
