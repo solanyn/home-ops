@@ -112,16 +112,17 @@ spec:
     dashboards:
       enabled: true
 
+    extraPorts:
+      - name: forward
+        port: 24224
+        containerPort: 24224
+        protocol: TCP
+
     service:
       type: LoadBalancer
       annotations:
         external-dns.alpha.kubernetes.io/hostname: fluent-bit.goyangi.io
         lbipam.cilium.io/ips: 192.168.69.135
-      ports:
-        - name: forward
-          port: 24224
-          targetPort: 24224
-          protocol: TCP
     
     resources:
       requests:
