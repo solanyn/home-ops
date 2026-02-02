@@ -97,6 +97,8 @@ spec:
               TERM: xterm-256color
               PATH: /home/node/.local/bin:/home/node/.local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
               TZ: Australia/Sydney
+              GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-sa/credentials.json
+              GOOGLE_GENAI_USE_VERTEXAI: "true"
             envFrom:
               - secretRef:
                   name: openclaw
@@ -104,6 +106,7 @@ spec:
               requests:
                 cpu: 10m
                 memory: 64Mi
+
     defaultPodOptions:
       shareProcessNamespace: true
       securityContext:
@@ -204,4 +207,15 @@ spec:
           openclaw:
             setup-ssh:
               - path: /tmp/ssh-keys
+                readOnly: true
+      google-sa-json:
+        type: secret
+        name: openclaw
+        items:
+          - key: GOOGLE_SERVICE_ACCOUNT_JSON
+            path: credentials.json
+        advancedMounts:
+          openclaw:
+            app:
+              - path: /tmp/google-sa
                 readOnly: true
