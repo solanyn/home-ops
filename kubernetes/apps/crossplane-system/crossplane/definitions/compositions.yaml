@@ -21,190 +21,204 @@ spec:
         inline:
           template: |
             ---
-            apiVersion: v1
-            kind: ConfigMap
+            apiVersion: kubernetes.crossplane.io/v1alpha2
+            kind: Object
             metadata:
-              name: modal-llm-{{ .observed.composite.resource.metadata.name }}
-              namespace: crossplane-system
+              name: modal-llm-configmap-{{ .observed.composite.resource.metadata.name }}
               annotations:
                 gotemplating.fn.crossplane.io/composition-resource-name: modal-app-configmap
-            data:
-              {{- $spec := .observed.composite.resource.spec }}
-              {{- $name := .observed.composite.resource.metadata.name }}
-              {{- if eq $spec.engine "sglang" }}
-              app.py: |
-                import subprocess
-                import time
-                import modal
-                import modal.experimental
+            spec:
+              forProvider:
+                manifest:
+                  apiVersion: v1
+                  kind: ConfigMap
+                  metadata:
+                    name: modal-llm-{{ .observed.composite.resource.metadata.name }}
+                    namespace: crossplane-system
+                  data:
+                    {{- $spec := .observed.composite.resource.spec }}
+                    {{- $name := .observed.composite.resource.metadata.name }}
+                    {{- if eq $spec.engine "sglang" }}
+                    app.py: |
+                      import subprocess
+                      import time
+                      import modal
+                      import modal.experimental
 
-                MINUTES = 60
+                      MINUTES = 60
 
-                sglang_image = (
-                    modal.Image.from_registry("lmsysorg/sglang:v0.5.6.post2-cu129-amd64-runtime")
-                    .entrypoint([])
-                    .uv_pip_install("huggingface-hub==0.36.0")
-                    .env({"HF_HUB_CACHE": "/root/.cache/huggingface", "HF_XET_HIGH_PERFORMANCE": "1"})
-                )
+                      sglang_image = (
+                          modal.Image.from_registry("lmsysorg/sglang:v0.5.6.post2-cu129-amd64-runtime")
+                          .entrypoint([])
+                          .uv_pip_install("huggingface-hub==0.36.0")
+                          .env({"HF_HUB_CACHE": "/root/.cache/huggingface", "HF_XET_HIGH_PERFORMANCE": "1"})
+                      )
 
-                hf_cache_vol = modal.Volume.from_name("huggingface-cache", create_if_missing=True)
+                      hf_cache_vol = modal.Volume.from_name("huggingface-cache", create_if_missing=True)
 
-                MODEL_NAME = "{{ $spec.model }}"
-                {{- if $spec.revision }}
-                MODEL_REVISION = "{{ $spec.revision }}"
-                {{- else }}
-                MODEL_REVISION = "main"
-                {{- end }}
-                N_GPU = {{ $spec.gpuCount | default 1 }}
-                PORT = 8000
-                TARGET_INPUTS = {{ $spec.maxInputs | default 32 }}
+                      MODEL_NAME = "{{ $spec.model }}"
+                      {{- if $spec.revision }}
+                      MODEL_REVISION = "{{ $spec.revision }}"
+                      {{- else }}
+                      MODEL_REVISION = "main"
+                      {{- end }}
+                      N_GPU = {{ $spec.gpuCount | default 1 }}
+                      PORT = 8000
+                      TARGET_INPUTS = {{ $spec.maxInputs | default 32 }}
 
-                app = modal.App("llm-{{ $name }}")
+                      app = modal.App("llm-{{ $name }}")
 
-                def wait_ready(process, timeout=5 * MINUTES):
-                    import requests
-                    deadline = time.time() + timeout
-                    while time.time() < deadline:
-                        try:
-                            if process.poll() is not None:
-                                raise RuntimeError("Process died")
-                            requests.get(f"http://127.0.0.1:{PORT}/health").raise_for_status()
-                            return
-                        except Exception:
-                            time.sleep(5)
-                    raise TimeoutError("SGLang server not ready")
+                      def wait_ready(process, timeout=5 * MINUTES):
+                          import requests
+                          deadline = time.time() + timeout
+                          while time.time() < deadline:
+                              try:
+                                  if process.poll() is not None:
+                                      raise RuntimeError("Process died")
+                                  requests.get(f"http://127.0.0.1:{PORT}/health").raise_for_status()
+                                  return
+                              except Exception:
+                                  time.sleep(5)
+                          raise TimeoutError("SGLang server not ready")
 
-                @app.cls(
-                    image=sglang_image,
-                    gpu="{{ $spec.gpu | default "L4" }}:{}".format(N_GPU) if N_GPU > 1 else "{{ $spec.gpu | default "L4" }}",
-                    volumes={"/root/.cache/huggingface": hf_cache_vol},
-                    scaledown_window={{ $spec.scaledownMinutes | default 10 }} * MINUTES,
-                    timeout={{ $spec.timeoutMinutes | default 30 }} * MINUTES,
-                )
-                @modal.experimental.http_server(port=PORT, requires_proxy_auth=True)
-                @modal.concurrent(target_inputs=TARGET_INPUTS)
-                class SGLang:
-                    @modal.enter()
-                    def startup(self):
-                        cmd = [
-                            "python", "-m", "sglang.launch_server",
-                            "--model-path", MODEL_NAME,
-                            "--revision", MODEL_REVISION,
-                            "--served-model-name", MODEL_NAME,
-                            "--host", "0.0.0.0",
-                            "--port", str(PORT),
-                            "--tp", str(N_GPU),
-                            "--cuda-graph-max-bs", str(TARGET_INPUTS * 2),
-                            "--context-length", "{{ $spec.maxModelLen | default 32768 }}",
-                            {{- if $spec.mistralFormat }}
-                            "--tokenizer-mode", "mistral",
-                            "--config-format", "mistral",
-                            "--load-format", "mistral",
-                            {{- end }}
-                        ]
-                        self.process = subprocess.Popen(cmd)
-                        wait_ready(self.process)
+                      @app.cls(
+                          image=sglang_image,
+                          gpu="{{ $spec.gpu | default "L4" }}:{}".format(N_GPU) if N_GPU > 1 else "{{ $spec.gpu | default "L4" }}",
+                          volumes={"/root/.cache/huggingface": hf_cache_vol},
+                          scaledown_window={{ $spec.scaledownMinutes | default 10 }} * MINUTES,
+                          timeout={{ $spec.timeoutMinutes | default 30 }} * MINUTES,
+                      )
+                      @modal.experimental.http_server(port=PORT, requires_proxy_auth=True)
+                      @modal.concurrent(target_inputs=TARGET_INPUTS)
+                      class SGLang:
+                          @modal.enter()
+                          def startup(self):
+                              cmd = [
+                                  "python", "-m", "sglang.launch_server",
+                                  "--model-path", MODEL_NAME,
+                                  "--revision", MODEL_REVISION,
+                                  "--served-model-name", MODEL_NAME,
+                                  "--host", "0.0.0.0",
+                                  "--port", str(PORT),
+                                  "--tp", str(N_GPU),
+                                  "--cuda-graph-max-bs", str(TARGET_INPUTS * 2),
+                                  "--context-length", "{{ $spec.maxModelLen | default 32768 }}",
+                                  {{- if $spec.mistralFormat }}
+                                  "--tokenizer-mode", "mistral",
+                                  "--config-format", "mistral",
+                                  "--load-format", "mistral",
+                                  {{- end }}
+                              ]
+                              self.process = subprocess.Popen(cmd)
+                              wait_ready(self.process)
 
-                    @modal.exit()
-                    def stop(self):
-                        self.process.terminate()
-              {{- else }}
-              app.py: |
-                import json
-                import subprocess
-                import modal
+                          @modal.exit()
+                          def stop(self):
+                              self.process.terminate()
+                    {{- else }}
+                    app.py: |
+                      import json
+                      import subprocess
+                      import modal
 
-                MINUTES = 60
+                      MINUTES = 60
 
-                vllm_image = (
-                    modal.Image.from_registry("nvidia/cuda:12.8.1-devel-ubuntu22.04", add_python="3.12")
-                    .entrypoint([])
-                    .uv_pip_install("vllm==0.8.5", "huggingface_hub[hf_transfer]==0.36.0")
-                    .env({"VLLM_USE_FLASHINFER_MOE_MXFP4_MXFP8": "1"})
-                )
+                      vllm_image = (
+                          modal.Image.from_registry("nvidia/cuda:12.8.1-devel-ubuntu22.04", add_python="3.12")
+                          .entrypoint([])
+                          .uv_pip_install("vllm==0.8.5", "huggingface_hub[hf_transfer]==0.36.0")
+                          .env({"VLLM_USE_FLASHINFER_MOE_MXFP4_MXFP8": "1"})
+                      )
 
-                hf_cache_vol = modal.Volume.from_name("huggingface-cache", create_if_missing=True)
-                vllm_cache_vol = modal.Volume.from_name("vllm-cache", create_if_missing=True)
+                      hf_cache_vol = modal.Volume.from_name("huggingface-cache", create_if_missing=True)
+                      vllm_cache_vol = modal.Volume.from_name("vllm-cache", create_if_missing=True)
 
-                MODEL_NAME = "{{ $spec.model }}"
-                {{- if $spec.revision }}
-                MODEL_REVISION = "{{ $spec.revision }}"
-                {{- else }}
-                MODEL_REVISION = "main"
-                {{- end }}
-                N_GPU = {{ $spec.gpuCount | default 1 }}
-                PORT = 8000
-                MAX_INPUTS = {{ $spec.maxInputs | default 32 }}
+                      MODEL_NAME = "{{ $spec.model }}"
+                      {{- if $spec.revision }}
+                      MODEL_REVISION = "{{ $spec.revision }}"
+                      {{- else }}
+                      MODEL_REVISION = "main"
+                      {{- end }}
+                      N_GPU = {{ $spec.gpuCount | default 1 }}
+                      PORT = 8000
+                      MAX_INPUTS = {{ $spec.maxInputs | default 32 }}
 
-                app = modal.App("llm-{{ $name }}")
+                      app = modal.App("llm-{{ $name }}")
 
-                @app.function(
-                    image=vllm_image,
-                    gpu="{{ $spec.gpu | default "L4" }}:{}".format(N_GPU) if N_GPU > 1 else "{{ $spec.gpu | default "L4" }}",
-                    scaledown_window={{ $spec.scaledownMinutes | default 10 }} * MINUTES,
-                    timeout={{ $spec.timeoutMinutes | default 30 }} * MINUTES,
-                    volumes={
-                        "/root/.cache/huggingface": hf_cache_vol,
-                        "/root/.cache/vllm": vllm_cache_vol,
-                    },
-                )
-                @modal.concurrent(max_inputs=MAX_INPUTS)
-                @modal.web_server(port=PORT, startup_timeout=30 * MINUTES, requires_proxy_auth=True)
-                def serve():
-                    cmd = [
-                        "vllm", "serve", MODEL_NAME,
-                        "--revision", MODEL_REVISION,
-                        "--served-model-name", MODEL_NAME, "llm",
-                        "--host", "0.0.0.0",
-                        "--port", str(PORT),
-                        "--tensor-parallel-size", str(N_GPU),
-                        "--kv-cache-dtype", "{{ $spec.kvCacheDtype | default "fp8" }}",
-                        "--max-num-batched-tokens", "{{ $spec.maxBatchedTokens | default 16384 }}",
-                        "--max-model-len", "{{ $spec.maxModelLen | default 32768 }}",
-                    ]
-                    {{- if and $spec.speculative $spec.speculative.enabled }}
-                    speculative_config = {
-                        "model": "{{ $spec.speculative.model }}",
-                        "num_speculative_tokens": {{ $spec.speculative.numTokens | default 7 }},
-                        "method": "{{ $spec.speculative.method | default "eagle3" }}",
-                    }
-                    cmd += ["--speculative-config", json.dumps(speculative_config)]
+                      @app.function(
+                          image=vllm_image,
+                          gpu="{{ $spec.gpu | default "L4" }}:{}".format(N_GPU) if N_GPU > 1 else "{{ $spec.gpu | default "L4" }}",
+                          scaledown_window={{ $spec.scaledownMinutes | default 10 }} * MINUTES,
+                          timeout={{ $spec.timeoutMinutes | default 30 }} * MINUTES,
+                          volumes={
+                              "/root/.cache/huggingface": hf_cache_vol,
+                              "/root/.cache/vllm": vllm_cache_vol,
+                          },
+                      )
+                      @modal.concurrent(max_inputs=MAX_INPUTS)
+                      @modal.web_server(port=PORT, startup_timeout=30 * MINUTES, requires_proxy_auth=True)
+                      def serve():
+                          cmd = [
+                              "vllm", "serve", MODEL_NAME,
+                              "--revision", MODEL_REVISION,
+                              "--served-model-name", MODEL_NAME, "llm",
+                              "--host", "0.0.0.0",
+                              "--port", str(PORT),
+                              "--tensor-parallel-size", str(N_GPU),
+                              "--kv-cache-dtype", "{{ $spec.kvCacheDtype | default "fp8" }}",
+                              "--max-num-batched-tokens", "{{ $spec.maxBatchedTokens | default 16384 }}",
+                              "--max-model-len", "{{ $spec.maxModelLen | default 32768 }}",
+                          ]
+                          {{- if and $spec.speculative $spec.speculative.enabled }}
+                          speculative_config = {
+                              "model": "{{ $spec.speculative.model }}",
+                              "num_speculative_tokens": {{ $spec.speculative.numTokens | default 7 }},
+                              "method": "{{ $spec.speculative.method | default "eagle3" }}",
+                          }
+                          cmd += ["--speculative-config", json.dumps(speculative_config)]
+                          {{- end }}
+                          print(*cmd)
+                          subprocess.Popen(cmd)
                     {{- end }}
-                    print(*cmd)
-                    subprocess.Popen(cmd)
-              {{- end }}
             ---
-            apiVersion: batch/v1
-            kind: Job
+            apiVersion: kubernetes.crossplane.io/v1alpha2
+            kind: Object
             metadata:
-              name: modal-deploy-{{ .observed.composite.resource.metadata.name }}
-              namespace: crossplane-system
+              name: modal-deploy-job-{{ .observed.composite.resource.metadata.name }}
               annotations:
                 gotemplating.fn.crossplane.io/composition-resource-name: modal-deploy-job
             spec:
-              ttlSecondsAfterFinished: 300
-              template:
-                spec:
-                  restartPolicy: OnFailure
-                  containers:
-                    - name: modal-deploy
-                      image: python:3.12-slim
-                      command:
-                        - /bin/sh
-                        - -c
-                        - |
-                          pip install modal -q
-                          modal deploy /app/app.py
-                      envFrom:
-                        - secretRef:
-                            name: modal-credentials
-                      volumeMounts:
-                        - name: app
-                          mountPath: /app
-                  volumes:
-                    - name: app
-                      configMap:
-                        name: modal-llm-{{ .observed.composite.resource.metadata.name }}
+              forProvider:
+                manifest:
+                  apiVersion: batch/v1
+                  kind: Job
+                  metadata:
+                    name: modal-deploy-{{ .observed.composite.resource.metadata.name }}
+                    namespace: crossplane-system
+                  spec:
+                    ttlSecondsAfterFinished: 300
+                    template:
+                      spec:
+                        restartPolicy: OnFailure
+                        containers:
+                          - name: modal-deploy
+                            image: python:3.12-slim
+                            command:
+                              - /bin/sh
+                              - -c
+                              - |
+                                pip install modal -q
+                                modal deploy /app/app.py
+                            envFrom:
+                              - secretRef:
+                                  name: modal-credentials
+                            volumeMounts:
+                              - name: app
+                                mountPath: /app
+                        volumes:
+                          - name: app
+                            configMap:
+                              name: modal-llm-{{ .observed.composite.resource.metadata.name }}
     - step: auto-ready
       functionRef:
         name: function-auto-ready

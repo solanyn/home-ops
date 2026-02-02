@@ -6,4 +6,5 @@ namespace: crossplane-system
 resources:
   - ./externalsecret.yaml
   - ./provider.yaml
+  - ./kubernetes-providerconfig.yaml
 
