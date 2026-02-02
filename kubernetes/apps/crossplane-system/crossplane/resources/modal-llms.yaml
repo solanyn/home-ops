@@ -25,7 +25,7 @@ kind: XModalLLM
 metadata:
   name: devstral-small
 spec:
-  model: mistralai/Devstral-Small-2505
+  model: mistralai/Devstral-Small-2-24B-Instruct-2512
   engine: sglang
   gpu: L40S
   gpuCount: 1
