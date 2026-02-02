@@ -74,7 +74,7 @@ spec:
                           scaledown_window={{ $spec.scaledownMinutes | default 10 }} * MINUTES,
                           timeout={{ $spec.timeoutMinutes | default 30 }} * MINUTES,
                       )
-                      @modal.concurrent(target_inputs=TARGET_INPUTS)
+                      @modal.concurrent(max_inputs=TARGET_INPUTS)
                       @modal.web_server(port=PORT, startup_timeout=30 * MINUTES, requires_proxy_auth=True)
                       def serve():
                           import requests
