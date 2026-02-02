@@ -33,8 +33,6 @@ spec:
   dependsOn:
     - name: immich
       namespace: default
-    - name: liqo-tenant-worker
-      namespace: liqo-tenant-worker
   interval: 1h
   path: ./kubernetes/apps/default/immich/ml
   postBuild:

@@ -24,7 +24,6 @@ spec:
           name: training-operator
         pod:
           tolerations:
-            - key: virtual-node.liqo.io/not-allowed
               operator: Exists
               effect: NoExecute
         containers:
