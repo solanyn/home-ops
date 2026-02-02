@@ -1,0 +1,198 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: "{{ .Release.Name }}"
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: openclaw
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      openclaw:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          install-tools:
+            image:
+              repository: ghcr.io/openclaw/openclaw
+              tag: 2026.1.30@sha256:95f9dda05e25dac6b1fe2f72722178da94fd8f9fbdac9f115e70e20b4c5e6989
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -e
+                mkdir -p /home/node/.local/bin /home/node/.openclaw
+
+                # Install uv if not present on PVC
+                if [ ! -f /home/node/.local/bin/uv ]; then
+                  echo "Installing uv..."
+                  cd /tmp
+                  curl -fsSL https://astral.sh/uv/install.sh | INSTALLER_NO_MODIFY_PATH=1 UV_INSTALL_DIR=/home/node/.local/bin sh
+                fi
+
+                echo "Init container completed successfully"
+          setup-ssh:
+            image:
+              repository: busybox
+              tag: latest
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -e
+                mkdir -p /home/node/.ssh
+                cp /tmp/ssh-keys/id_ed25519 /home/node/.ssh/id_ed25519
+                cp /tmp/ssh-keys/id_ed25519.pub /home/node/.ssh/id_ed25519.pub
+                chmod 600 /home/node/.ssh/id_ed25519
+                chmod 644 /home/node/.ssh/id_ed25519.pub
+                chown -R 1000:100 /home/node/.ssh
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+        containers:
+          app:
+            image:
+              repository: ghcr.io/openclaw/openclaw
+              tag: 2026.1.30@sha256:95f9dda05e25dac6b1fe2f72722178da94fd8f9fbdac9f115e70e20b4c5e6989
+            command:
+              - /bin/sh
+              - -c
+              - |
+                # Set up openclawbot CLI symlink
+                ln -sf /app/openclawbot.mjs /home/node/.local/bin/openclawbot
+
+                # Create SSH wrapper script for iMessage
+                cat > /home/node/.local/bin/imsg-ssh << 'SCRIPT'
+                #!/usr/bin/env bash
+                exec ssh -i /home/node/.ssh/id_ed25519 \
+                  -o BatchMode=yes \
+                  -o StrictHostKeyChecking=accept-new \
+                  -o ConnectTimeout=10 \
+                  -T openclaw@mac.internal \
+                  "/Users/openclaw/homebrew/bin/imsg" "$@"
+                SCRIPT
+                chmod +x /home/node/.local/bin/imsg-ssh
+
+                # Start gateway
+                exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
+            env:
+              HOME: &homepath /home/node
+              TERM: xterm-256color
+              PATH: /home/node/.local/bin:/home/node/.local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+              TZ: Australia/Sydney
+            envFrom:
+              - secretRef:
+                  name: openclaw
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+    defaultPodOptions:
+      shareProcessNamespace: true
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 100
+        fsGroup: 100
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: 18789
+    route:
+      app:
+        hostnames:
+          - openclaw.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    rbac:
+      roles:
+        openclaw-read-all:
+          type: ClusterRole
+          rules:
+            - apiGroups: [""]
+              resources: ["pods", "nodes", "services", "namespaces", "configmaps", "persistentvolumes", "persistentvolumeclaims", "endpoints", "resourcequotas", "limitranges", "serviceaccounts"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: [""]
+              resources: ["pods/log"]
+              verbs: ["get", "list"]
+            - apiGroups: ["apps"]
+              resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["batch"]
+              resources: ["jobs", "cronjobs"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["networking.k8s.io"]
+              resources: ["ingresses", "networkpolicies"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["storage.k8s.io"]
+              resources: ["storageclasses"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["rbac.authorization.k8s.io"]
+              resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["metrics.k8s.io"]
+              resources: ["nodes", "pods"]
+              verbs: ["get", "list", "watch"]
+        openclaw-write-restricted:
+          type: Role
+          rules:
+            - apiGroups: [""]
+              resources: ["pods"]
+              verbs: ["delete"]
+            - apiGroups: ["apps"]
+              resources: ["deployments"]
+              verbs: ["patch", "update"]
+      bindings:
+        openclaw-read-all:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: openclaw-read-all
+          subjects:
+            - identifier: openclaw
+              serviceAccount: openclaw
+        openclaw-write-restricted:
+          type: RoleBinding
+          roleRef:
+            identifier: openclaw-write-restricted
+          subjects:
+            - identifier: openclaw
+              serviceAccount: openclaw
+    serviceAccount:
+      openclaw: {}
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: *homepath
+      openclaw-config:
+        type: secret
+        name: openclaw-config
+        globalMounts:
+          - path: /home/node/.openclaw/openclaw.json
+            subPath: openclaw.json
+      ssh-key:
+        type: secret
+        name: openclaw
+        defaultMode: 0400
+        items:
+          - key: OPENCLAW_SSH_PRIVATE_KEY
+            path: id_ed25519
+          - key: OPENCLAW_SSH_PUBLIC_KEY
+            path: id_ed25519.pub
+        advancedMounts:
+          openclaw:
+            setup-ssh:
+              - path: /tmp/ssh-keys
+                readOnly: true

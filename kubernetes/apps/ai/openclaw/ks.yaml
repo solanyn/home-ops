@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: openclaw
 spec:
+  targetNamespace: ai
+  components:
+    - ../../../../components/volsync
   interval: 1h
   path: ./kubernetes/apps/ai/openclaw/app
   postBuild:
@@ -16,10 +19,4 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: ai
   wait: false
-  dependsOn:
-    - name: agent-sandbox-core
-      namespace: agent-sandbox-system
-  components:
-    - ../../../../components/volsync
