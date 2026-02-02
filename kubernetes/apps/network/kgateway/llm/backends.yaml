@@ -20,20 +20,20 @@ spec:
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: modal-gpt-oss-20b
+  name: modal-devstral-small
 spec:
   ai:
     provider:
       openai:
-        model: openai/gpt-oss-20b
-      host: solanyn--llm-gpt-oss-20b-serve.modal.run
+        model: mistralai/Devstral-Small-2505
+      host: solanyn--llm-devstral-small-serve.modal.run
       port: 443
   policies:
     auth:
       secretRef:
         name: modal-proxy-auth
     tls:
-      sni: solanyn--llm-gpt-oss-20b-serve.modal.run
+      sni: solanyn--llm-devstral-small-serve.modal.run
 ---
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
@@ -44,11 +44,11 @@ spec:
     provider:
       openai:
         model: mistralai/Ministral-8B-Instruct-2410
-      host: solanyn--llm-ministral-8b-sglang.modal.run
+      host: solanyn--llm-ministral-8b-serve.modal.run
       port: 443
   policies:
     auth:
       secretRef:
         name: modal-proxy-auth
     tls:
-      sni: solanyn--llm-ministral-8b-sglang.modal.run
+      sni: solanyn--llm-ministral-8b-serve.modal.run
