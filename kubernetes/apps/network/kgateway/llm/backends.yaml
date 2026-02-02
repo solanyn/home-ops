@@ -1,0 +1,57 @@
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: modal-gpt-oss-120b
+spec:
+  ai:
+    provider:
+      openai:
+        model: openai/gpt-oss-120b
+    host: solanyn--llm-gpt-oss-120b-serve.modal.run
+    port: 443
+    path: /v1/chat/completions
+  policies:
+    auth:
+      secretRef:
+        name: modal-proxy-auth
+    tls:
+      sni: solanyn--llm-gpt-oss-120b-serve.modal.run
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: modal-gpt-oss-20b
+spec:
+  ai:
+    provider:
+      openai:
+        model: openai/gpt-oss-20b
+    host: solanyn--llm-gpt-oss-20b-serve.modal.run
+    port: 443
+    path: /v1/chat/completions
+  policies:
+    auth:
+      secretRef:
+        name: modal-proxy-auth
+    tls:
+      sni: solanyn--llm-gpt-oss-20b-serve.modal.run
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: modal-ministral-8b
+spec:
+  ai:
+    provider:
+      openai:
+        model: mistralai/Ministral-8B-Instruct-2410
+    host: solanyn--llm-ministral-8b-sglang.modal.run
+    port: 443
+    path: /v1/chat/completions
+  policies:
+    auth:
+      secretRef:
+        name: modal-proxy-auth
+    tls:
+      sni: solanyn--llm-ministral-8b-sglang.modal.run
