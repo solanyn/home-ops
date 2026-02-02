@@ -87,6 +87,9 @@ spec:
                 SCRIPT
                 chmod +x /home/node/.local/bin/imsg-ssh
 
+                # Run doctor before gateway starts
+                node dist/index.js doctor --fix || true
+
                 # Start gateway
                 exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
             env:
