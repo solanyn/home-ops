@@ -88,7 +88,7 @@ spec:
                           scaledown_window={{ $spec.scaledownMinutes | default 10 }} * MINUTES,
                           timeout={{ $spec.timeoutMinutes | default 30 }} * MINUTES,
                       )
-                      @modal.experimental.http_server(port=PORT, requires_proxy_auth=True)
+                      @modal.experimental.http_server(port=PORT)
                       @modal.concurrent(target_inputs=TARGET_INPUTS)
                       class SGLang:
                           @modal.enter()
