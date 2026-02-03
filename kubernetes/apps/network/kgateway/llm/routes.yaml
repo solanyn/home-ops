@@ -74,7 +74,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: llm-local-ministral-3b
+  name: llm-mlx-ministral-8b
 spec:
   parentRefs:
     - name: ai
@@ -83,7 +83,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /v1/ministral-3b
+            value: /v1/ministral-8b-mlx
       filters:
         - type: URLRewrite
           urlRewrite:
@@ -91,6 +91,24 @@ spec:
               type: ReplacePrefixMatch
               replacePrefixMatch: /v1
       backendRefs:
-        - name: local-ministral-3b
+        - name: mlx-ministral-8b
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: llm-mlx-whisper
+spec:
+  parentRefs:
+    - name: ai
+      namespace: network
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/whisper
+      backendRefs:
+        - name: mlx-whisper
           group: agentgateway.dev
           kind: AgentgatewayBackend
