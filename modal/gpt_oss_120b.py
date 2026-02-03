@@ -23,7 +23,7 @@ app = modal.App("llm-gpt-oss-120b")
 
 @app.function(
     image=vllm_image,
-    gpu="A100-80GB",
+    gpu="H100",
     scaledown_window=10 * MINUTES,
     timeout=30 * MINUTES,
     volumes={
