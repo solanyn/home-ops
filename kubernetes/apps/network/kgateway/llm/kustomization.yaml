@@ -5,3 +5,4 @@ resources:
   - ./externalsecret.yaml
   - ./backends.yaml
   - ./routes.yaml
+  - ./securitypolicy.yaml
