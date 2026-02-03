@@ -23,7 +23,7 @@ spec:
 apiVersion: goyangi.io/v1alpha1
 kind: XModalLLM
 metadata:
-  name: devstral-small
+  name: devstral-small-2-24b
 spec:
   model: mistralai/Devstral-Small-2-24B-Instruct-2512
   engine: sglang
