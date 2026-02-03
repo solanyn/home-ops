@@ -40,12 +40,13 @@ def wait_ready(process, timeout=10 * MINUTES):
 
 def warmup():
     import requests
+    headers = {"Authorization": f"Bearer {os.environ['API_KEY']}"}
     for _ in range(3):
         requests.post(f"http://127.0.0.1:{PORT}/v1/chat/completions", json={
             "model": MODEL_NAME,
             "messages": [{"role": "user", "content": "Hello"}],
             "max_tokens": 8,
-        }).raise_for_status()
+        }, headers=headers).raise_for_status()
 
 
 def sleep():
