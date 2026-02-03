@@ -92,3 +92,19 @@ spec:
         model: whisper-small
       host: mac.internal
       port: 8081
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: kiro
+spec:
+  ai:
+    provider:
+      openai:
+        model: claude-sonnet-4-5
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
