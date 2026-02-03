@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -20,18 +20,19 @@ spec:
   values:
     controllers:
       baikal:
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
               repository: ckulka/baikal
-              tag: 0.10.1-nginx
+              tag: 0.10.1-nginx-php8.2@sha256:30c099b83aa88772b683d0c09fb6fa18ac82df442349fd6342e1df576abb580c
             env:
+              TZ: Australia/Sydney
               BAIKAL_DAV_AUTH_TYPE: Basic
-              BAIKAL_ADMIN_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: baikal-secret
-                    key: admin-password
+            envFrom:
+              - secretRef:
+                  name: baikal-secret
             probes:
               liveness:
                 enabled: true
@@ -49,16 +50,18 @@ spec:
         ports:
           http:
             port: 80
+    route:
+      app:
+        hostnames:
+          - baikal.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     persistence:
       config:
-        existingClaim: baikal-config
-        advancedMounts:
-          baikal:
-            app:
-              - path: /var/www/baikal/config
-      data:
-        existingClaim: baikal-data
-        advancedMounts:
-          baikal:
-            app:
-              - path: /var/www/baikal/data
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /var/www/baikal/config
+            subPath: config
+          - path: /var/www/baikal/Specific
+            subPath: data
