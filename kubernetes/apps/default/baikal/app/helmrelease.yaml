@@ -36,7 +36,7 @@ spec:
             command:
               - /bin/sh
               - -c
-              - cp /secret/baikal.yaml /config/baikal.yaml
+              - cp /secret/baikal.yaml /var/www/baikal/config/baikal.yaml
         containers:
           app:
             image:
@@ -75,8 +75,12 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /var/www/baikal/config
+        advancedMounts:
+          baikal:
+            init-config:
+              - path: /var/www/baikal/config
+            app:
+              - path: /var/www/baikal/config
       secret:
         type: secret
         name: baikal-secret
