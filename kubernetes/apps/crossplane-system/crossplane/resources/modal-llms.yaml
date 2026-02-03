@@ -51,5 +51,6 @@ spec:
   timeoutMinutes: 30
   maxModelLen: 32768
   mistralFormat: true
+  snapshot: true
   speculative:
     enabled: false
