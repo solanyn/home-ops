@@ -1,0 +1,28 @@
+---
+# Add resource limits to Kubeflow notebook components
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: notebooks
+  namespace: kubeflow
+spec:
+  values:
+    controllers:
+      jupyter-web-app:
+        containers:
+          app:
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+      notebook-controller:
+        containers:
+          manager:
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
