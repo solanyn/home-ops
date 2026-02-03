@@ -51,6 +51,10 @@ spec:
       spec:
         extraArgs:
           enableTCP6: "true"
+        resources:
+          requests:
+            cpu: 50m
+            memory: 200Mi
 
     vmsingle:
       spec:
