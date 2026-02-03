@@ -12,6 +12,7 @@ resources:
   - ./atuin/ks.yaml
   - ./audiobookshelf/ks.yaml
   - ./authentik/ks.yaml
+  - ./baikal/ks.yaml
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
   - ./booklore/ks.yaml
