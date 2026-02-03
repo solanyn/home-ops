@@ -125,7 +125,7 @@ spec:
       - providers:
           - name: kiro-gateway
             openai:
-              model: claude-sonnet-4-5
+              model: claude-opus-4.5
             host: mac.internal
             port: 8001
             policies:
