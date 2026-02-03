@@ -62,6 +62,10 @@ spec:
                   type: boolean
                   default: false
                   description: Use Mistral tokenizer/config/load format
+                snapshot:
+                  type: boolean
+                  default: false
+                  description: Enable GPU memory snapshots for faster cold starts
                 speculative:
                   type: object
                   properties:
