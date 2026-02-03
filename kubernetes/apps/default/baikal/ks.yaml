@@ -10,7 +10,7 @@ spec:
     - ../../../../components/volsync
   dependsOn:
     - name: cloudnative-pg-cluster
-      namespace: flux-system
+      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/baikal/app
   postBuild:
