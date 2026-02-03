@@ -2,7 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: kubeflow
 resources:
+  # Upstream CRD from Kubeflow - managed by Renovate
+  - https://raw.githubusercontent.com/kubeflow/kubeflow/master/components/notebook-controller/config/crd/bases/kubeflow.org_notebooks.yaml
   - ./ocirepository.yaml
   - ./helmrelease.yaml
   - ./rbac.yaml
   - ./httproute.yaml
+  - ./resource-limits.yaml
