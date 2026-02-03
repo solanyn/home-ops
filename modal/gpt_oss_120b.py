@@ -51,12 +51,14 @@ def warmup():
 
 def sleep():
     import requests
-    requests.post(f"http://127.0.0.1:{PORT}/release_memory_occupation", json={}).raise_for_status()
+    headers = {"Authorization": f"Bearer {os.environ['API_KEY']}"}
+    requests.post(f"http://127.0.0.1:{PORT}/release_memory_occupation", json={}, headers=headers).raise_for_status()
 
 
 def wake_up():
     import requests
-    requests.post(f"http://127.0.0.1:{PORT}/resume_memory_occupation", json={}).raise_for_status()
+    headers = {"Authorization": f"Bearer {os.environ['API_KEY']}"}
+    requests.post(f"http://127.0.0.1:{PORT}/resume_memory_occupation", json={}, headers=headers).raise_for_status()
 
 
 @app.cls(
