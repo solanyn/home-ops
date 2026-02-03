@@ -84,3 +84,29 @@ spec:
   matchers:
     - name: alertname
       value: KubeHpaMaxedOut
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+# Silence CPUThrottlingHigh info-level alerts - acceptable on low-spec cluster
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: cpu-throttling-info
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: CPUThrottlingHigh
+    - name: severity
+      value: info
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+# Silence NodeSystemSaturation - high load expected on this cluster
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: node-system-saturation
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: NodeSystemSaturation
