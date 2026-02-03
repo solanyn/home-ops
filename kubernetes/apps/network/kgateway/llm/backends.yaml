@@ -2,68 +2,84 @@
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: moonshot-kimi
+  name: auto
 spec:
   ai:
-    provider:
-      openai:
-        model: moonshot/kimi-k2.5
-      host: api.moonshot.ai
-      port: 443
-  policies:
-    auth:
-      secretRef:
-        name: moonshot-auth
-    tls:
-      sni: api.moonshot.ai
+    groups:
+      # Priority 1: Moonshot (use up credits)
+      - providers:
+          - name: moonshot-kimi
+            openai:
+              model: kimi-k2.5
+            host: api.moonshot.ai
+            port: 443
+            policies:
+              auth:
+                secretRef:
+                  name: moonshot-auth
+              tls:
+                sni: api.moonshot.ai
+      # Priority 2: Modal
+      - providers:
+          - name: modal-gpt-oss
+            openai:
+              model: gpt-oss-120b
+            host: solanyn--llm-gpt-oss-120b-serve.modal.run
+            port: 443
+            policies:
+              auth:
+                secretRef:
+                  name: modal-llm-auth
+              tls:
+                sni: solanyn--llm-gpt-oss-120b-serve.modal.run
+      # Priority 3: Free local MLX
+      - providers:
+          - name: mlx-ministral
+            openai:
+              model: ministral-8b
+            host: mac.internal
+            port: 8080
 ---
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: modal-gpt-oss-120b
+  name: auto-coding
 spec:
   ai:
-    provider:
-      openai:
-        model: openai/gpt-oss-120b
-      host: solanyn--llm-gpt-oss-120b-serve.modal.run
-      port: 443
-  policies:
-    auth:
-      secretRef:
-        name: modal-llm-auth
-    tls:
-      sni: solanyn--llm-gpt-oss-120b-serve.modal.run
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: modal-devstral-small-2-24b
-spec:
-  ai:
-    provider:
-      openai:
-        model: mistralai/Devstral-Small-2-24B-Instruct-2512
-      host: solanyn--llm-devstral-small-2-24b-sglang-serve.modal.run
-      port: 443
-  policies:
-    auth:
-      secretRef:
-        name: modal-llm-auth
-    tls:
-      sni: solanyn--llm-devstral-small-2-24b-sglang-serve.modal.run
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: mlx-ministral-8b
-spec:
-  ai:
-    provider:
-      openai:
-        model: mlx-community/Ministral-3-8B-Instruct-2512-4bit
-      host: mac.internal
-      port: 8080
+    groups:
+      # Priority 1: Moonshot (use up credits)
+      - providers:
+          - name: moonshot-kimi
+            openai:
+              model: kimi-k2.5
+            host: api.moonshot.ai
+            port: 443
+            policies:
+              auth:
+                secretRef:
+                  name: moonshot-auth
+              tls:
+                sni: api.moonshot.ai
+      # Priority 2: Modal Devstral (coding optimised)
+      - providers:
+          - name: modal-devstral
+            openai:
+              model: devstral-24b
+            host: solanyn--llm-devstral-small-2-24b-sglang-serve.modal.run
+            port: 443
+            policies:
+              auth:
+                secretRef:
+                  name: modal-llm-auth
+              tls:
+                sni: solanyn--llm-devstral-small-2-24b-sglang-serve.modal.run
+      # Priority 3: Free local MLX
+      - providers:
+          - name: mlx-ministral
+            openai:
+              model: ministral-8b
+            host: mac.internal
+            port: 8080
 ---
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
