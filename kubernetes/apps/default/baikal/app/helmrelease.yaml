@@ -1,0 +1,87 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: baikal
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: baikal
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      baikal:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom:
+              - secretRef:
+                  name: baikal-secret
+          init-config:
+            image:
+              repository: ghcr.io/home-operations/busybox
+              tag: 1.37.0
+            command:
+              - /bin/sh
+              - -c
+              - cp /secret/baikal.yaml /config/baikal.yaml
+        containers:
+          app:
+            image:
+              repository: ckulka/baikal
+              tag: 0.10.1-nginx-php8.2@sha256:30c099b83aa88772b683d0c09fb6fa18ac82df442349fd6342e1df576abb580c
+            env:
+              TZ: Australia/Sydney
+              BAIKAL_DAV_AUTH_TYPE: Basic
+            envFrom:
+              - secretRef:
+                  name: baikal-secret
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+    service:
+      app:
+        controller: baikal
+        ports:
+          http:
+            port: 80
+    route:
+      app:
+        hostnames:
+          - baikal.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /var/www/baikal/config
+      secret:
+        type: secret
+        name: baikal-secret
+        advancedMounts:
+          baikal:
+            init-config:
+              - path: /secret
+                readOnly: true
