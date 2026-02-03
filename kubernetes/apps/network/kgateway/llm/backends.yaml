@@ -52,3 +52,15 @@ spec:
         name: modal-llm-auth
     tls:
       sni: solanyn--llm-ministral-8b-serve.modal.run
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: local-ministral-3b
+spec:
+  ai:
+    provider:
+      openai:
+        model: mlx-community/Ministral-3-8B-Instruct-2512-4bit
+      host: mac.internal
+      port: 8080

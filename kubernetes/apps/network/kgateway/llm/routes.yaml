@@ -70,3 +70,27 @@ spec:
         - name: modal-ministral-8b
           group: agentgateway.dev
           kind: AgentgatewayBackend
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: llm-local-ministral-3b
+spec:
+  parentRefs:
+    - name: ai
+      namespace: network
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/ministral-3b
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /v1
+      backendRefs:
+        - name: local-ministral-3b
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
