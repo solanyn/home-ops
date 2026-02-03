@@ -2,7 +2,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: llm-moonshot
+  name: llm-auto
 spec:
   parentRefs:
     - name: ai
@@ -11,7 +11,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /v1/moonshot
+            value: /v1/auto
       filters:
         - type: URLRewrite
           urlRewrite:
@@ -19,14 +19,14 @@ spec:
               type: ReplacePrefixMatch
               replacePrefixMatch: /v1
       backendRefs:
-        - name: moonshot-kimi
+        - name: auto
           group: agentgateway.dev
           kind: AgentgatewayBackend
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: llm-gpt-oss-120b
+  name: llm-auto-coding
 spec:
   parentRefs:
     - name: ai
@@ -35,7 +35,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /v1/gpt-oss-120b
+            value: /v1/auto-coding
       filters:
         - type: URLRewrite
           urlRewrite:
@@ -43,62 +43,14 @@ spec:
               type: ReplacePrefixMatch
               replacePrefixMatch: /v1
       backendRefs:
-        - name: modal-gpt-oss-120b
+        - name: auto-coding
           group: agentgateway.dev
           kind: AgentgatewayBackend
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: llm-devstral-small-2-24b
-spec:
-  parentRefs:
-    - name: ai
-      namespace: network
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /v1/devstral-small-2-24b
-      filters:
-        - type: URLRewrite
-          urlRewrite:
-            path:
-              type: ReplacePrefixMatch
-              replacePrefixMatch: /v1
-      backendRefs:
-        - name: modal-devstral-small-2-24b
-          group: agentgateway.dev
-          kind: AgentgatewayBackend
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: llm-mlx-ministral-8b
-spec:
-  parentRefs:
-    - name: ai
-      namespace: network
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /v1/ministral-8b
-      filters:
-        - type: URLRewrite
-          urlRewrite:
-            path:
-              type: ReplacePrefixMatch
-              replacePrefixMatch: /v1
-      backendRefs:
-        - name: mlx-ministral-8b
-          group: agentgateway.dev
-          kind: AgentgatewayBackend
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: llm-mlx-whisper
+  name: llm-whisper
 spec:
   parentRefs:
     - name: ai
