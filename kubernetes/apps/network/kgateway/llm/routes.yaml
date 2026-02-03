@@ -112,27 +112,3 @@ spec:
         - name: mlx-whisper
           group: agentgateway.dev
           kind: AgentgatewayBackend
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: llm-opencode
-spec:
-  parentRefs:
-    - name: ai
-      namespace: network
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /v1/opencode
-      filters:
-        - type: URLRewrite
-          urlRewrite:
-            path:
-              type: ReplacePrefixMatch
-              replacePrefixMatch: /v1
-      backendRefs:
-        - name: opencode-llm
-          group: agentgateway.dev
-          kind: AgentgatewayBackend
