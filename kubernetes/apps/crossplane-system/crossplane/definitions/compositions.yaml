@@ -134,6 +134,13 @@ spec:
                                   "--config-format", "mistral",
                                   "--load-format", "mistral",
                                   {{- end }}
+                                  {{- if and $spec.speculative $spec.speculative.enabled }}
+                                  "--speculative-algorithm", "{{ $spec.speculative.method | default "eagle3" | upper }}",
+                                  "--speculative-draft-model-path", "{{ $spec.speculative.model }}",
+                                  "--speculative-num-steps", "{{ $spec.speculative.numSteps | default 5 }}",
+                                  "--speculative-eagle-topk", "{{ $spec.speculative.topk | default 8 }}",
+                                  "--speculative-num-draft-tokens", "{{ $spec.speculative.numTokens | default 32 }}",
+                                  {{- end }}
                               ]
                               self.process = subprocess.Popen(cmd)
                               wait_ready(self.process)
@@ -178,6 +185,13 @@ spec:
                               "--tokenizer-mode", "mistral",
                               "--config-format", "mistral",
                               "--load-format", "mistral",
+                              {{- end }}
+                              {{- if and $spec.speculative $spec.speculative.enabled }}
+                              "--speculative-algorithm", "{{ $spec.speculative.method | default "eagle3" | upper }}",
+                              "--speculative-draft-model-path", "{{ $spec.speculative.model }}",
+                              "--speculative-num-steps", "{{ $spec.speculative.numSteps | default 5 }}",
+                              "--speculative-eagle-topk", "{{ $spec.speculative.topk | default 8 }}",
+                              "--speculative-num-draft-tokens", "{{ $spec.speculative.numTokens | default 32 }}",
                               {{- end }}
                           ]
                           subprocess.Popen(cmd)
