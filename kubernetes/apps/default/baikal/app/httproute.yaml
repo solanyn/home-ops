@@ -1,0 +1,15 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: baikal
+spec:
+  hostnames:
+    - baikal.goyangi.io
+  parentRefs:
+    - name: internal
+      namespace: network
+  rules:
+    - backendRefs:
+        - name: baikal
+          port: 80
