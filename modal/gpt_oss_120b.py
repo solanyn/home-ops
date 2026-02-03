@@ -6,7 +6,7 @@ MINUTES = 60
 PORT = 8000
 MODEL_NAME = "openai/gpt-oss-120b"
 MODEL_REVISION = "main"
-MAX_INPUTS = 16
+MAX_INPUTS = 8  # low concurrency for sporadic use
 
 vllm_image = (
     modal.Image.from_registry("nvidia/cuda:12.8.1-devel-ubuntu22.04", add_python="3.12")
@@ -24,7 +24,7 @@ app = modal.App("llm-gpt-oss-120b")
 @app.function(
     image=vllm_image,
     gpu="H100",
-    scaledown_window=10 * MINUTES,
+    scaledown_window=5 * MINUTES,  # 5 min idle before scale down
     timeout=30 * MINUTES,
     volumes={
         "/root/.cache/huggingface": hf_cache_vol,
