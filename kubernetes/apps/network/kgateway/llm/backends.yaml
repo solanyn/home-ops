@@ -76,29 +76,3 @@ spec:
         model: whisper-small
       host: mac.internal
       port: 8081
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: opencode-llm
-spec:
-  ai:
-    groups:
-      - providers:
-          - name: moonshot
-            openai:
-              model: moonshot/kimi-k2
-            host: api.moonshot.ai
-            port: 443
-            policies:
-              auth:
-                secretRef:
-                  name: moonshot-auth
-              tls:
-                sni: api.moonshot.ai
-      - providers:
-          - name: mlx-fallback
-            openai:
-              model: mlx-community/Ministral-3-8B-Instruct-2512-4bit
-            host: mac.internal
-            port: 8080
