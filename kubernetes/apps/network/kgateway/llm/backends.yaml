@@ -65,14 +65,14 @@ spec:
           - name: modal-devstral
             openai:
               model: devstral-24b
-            host: solanyn--llm-devstral-small-2-24b-sglang-serve.modal.run
+            host: solanyn--llm-devstral-small-2-24b-serve.modal.run
             port: 443
             policies:
               auth:
                 secretRef:
                   name: modal-llm-auth
               tls:
-                sni: solanyn--llm-devstral-small-2-24b-sglang-serve.modal.run
+                sni: solanyn--llm-devstral-small-2-24b-serve.modal.run
       # Priority 3: Free local MLX
       - providers:
           - name: mlx-ministral
