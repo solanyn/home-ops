@@ -1,0 +1,15 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: couchdb
+spec:
+  hostnames:
+    - couchdb.goyangi.io
+  parentRefs:
+    - name: internal
+      namespace: network
+  rules:
+    - backendRefs:
+        - name: couchdb
+          port: 5984
