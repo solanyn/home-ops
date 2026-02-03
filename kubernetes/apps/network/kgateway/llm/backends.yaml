@@ -38,24 +38,6 @@ spec:
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: modal-ministral-8b
-spec:
-  ai:
-    provider:
-      openai:
-        model: mistralai/Ministral-8B-Instruct-2410
-      host: solanyn--llm-ministral-8b-sglang-serve.modal.run
-      port: 443
-  policies:
-    auth:
-      secretRef:
-        name: modal-llm-auth
-    tls:
-      sni: solanyn--llm-ministral-8b-sglang-serve.modal.run
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
   name: mlx-ministral-8b
 spec:
   ai:
