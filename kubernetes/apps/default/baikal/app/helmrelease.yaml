@@ -21,6 +21,29 @@ spec:
       baikal:
         annotations:
           reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom:
+              - secretRef:
+                  name: baikal-secret
+          init-config:
+            image:
+              repository: ghcr.io/home-operations/busybox
+              tag: 1.37.0
+            command:
+              - /bin/sh
+              - -c
+              - cp /secret/baikal.yaml /config/baikal.yaml
         containers:
           app:
             image:
@@ -61,6 +84,11 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /var/www/baikal/config
-            subPath: config
-          - path: /var/www/baikal/Specific
-            subPath: data
+      secret:
+        type: secret
+        name: baikal-secret
+        advancedMounts:
+          baikal:
+            init-config:
+              - path: /secret
+                readOnly: true
