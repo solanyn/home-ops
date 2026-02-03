@@ -2,6 +2,24 @@
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
+  name: moonshot-kimi
+spec:
+  ai:
+    provider:
+      openai:
+        model: moonshot/kimi-k2.5
+      host: api.moonshot.ai
+      port: 443
+  policies:
+    auth:
+      secretRef:
+        name: moonshot-auth
+    tls:
+      sni: api.moonshot.ai
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
   name: modal-gpt-oss-120b
 spec:
   ai:
