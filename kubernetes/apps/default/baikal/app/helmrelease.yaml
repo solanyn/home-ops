@@ -29,14 +29,6 @@ spec:
             envFrom:
               - secretRef:
                   name: baikal-secret
-          init-config:
-            image:
-              repository: ghcr.io/home-operations/busybox
-              tag: 1.37.0
-            command:
-              - /bin/sh
-              - -c
-              - cp /secret/baikal.yaml /var/www/baikal/config/baikal.yaml
         containers:
           app:
             image:
@@ -75,18 +67,6 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-        advancedMounts:
-          baikal:
-            init-config:
-              - path: /var/www/baikal/config
-            app:
-              - path: /var/www/baikal/config
-              - path: /var/www/baikal/Specific
-      secret:
-        type: secret
-        name: baikal-secret
-        advancedMounts:
-          baikal:
-            init-config:
-              - path: /secret
-                readOnly: true
+        globalMounts:
+          - path: /var/www/baikal/config
+          - path: /var/www/baikal/Specific
