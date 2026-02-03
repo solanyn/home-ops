@@ -8,14 +8,14 @@ spec:
     provider:
       openai:
         model: openai/gpt-oss-120b
-      host: solanyn--llm-gpt-oss-120b-serve.modal.run
+      host: solanyn--llm-gpt-oss-120b-sglang-serve.modal.run
       port: 443
   policies:
     auth:
       secretRef:
         name: modal-llm-auth
     tls:
-      sni: solanyn--llm-gpt-oss-120b-serve.modal.run
+      sni: solanyn--llm-gpt-oss-120b-sglang-serve.modal.run
 ---
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
@@ -26,14 +26,14 @@ spec:
     provider:
       openai:
         model: mistralai/Devstral-Small-2-24B-Instruct-2512
-      host: solanyn--llm-devstral-small-2-24b-serve.modal.run
+      host: solanyn--llm-devstral-small-2-24b-sglang-serve.modal.run
       port: 443
   policies:
     auth:
       secretRef:
         name: modal-llm-auth
     tls:
-      sni: solanyn--llm-devstral-small-2-24b-serve.modal.run
+      sni: solanyn--llm-devstral-small-2-24b-sglang-serve.modal.run
 ---
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
@@ -44,14 +44,14 @@ spec:
     provider:
       openai:
         model: mistralai/Ministral-8B-Instruct-2410
-      host: solanyn--llm-ministral-8b-serve.modal.run
+      host: solanyn--llm-ministral-8b-sglang-serve.modal.run
       port: 443
   policies:
     auth:
       secretRef:
         name: modal-llm-auth
     tls:
-      sni: solanyn--llm-ministral-8b-serve.modal.run
+      sni: solanyn--llm-ministral-8b-sglang-serve.modal.run
 ---
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
