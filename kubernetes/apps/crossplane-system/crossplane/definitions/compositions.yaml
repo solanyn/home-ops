@@ -132,11 +132,6 @@ spec:
                                   "--enable-metrics",
                                   "--enable-memory-saver",
                                   "--enable-weights-cpu-backup",
-                                  {{- if $spec.mistralFormat }}
-                                  "--tokenizer-mode", "mistral",
-                                  "--config-format", "mistral",
-                                  "--load-format", "mistral",
-                                  {{- end }}
                                   {{- if and $spec.speculative $spec.speculative.enabled }}
                                   "--speculative-algorithm", "{{ $spec.speculative.method | default "eagle3" | upper }}",
                                   "--speculative-draft-model-path", "{{ $spec.speculative.model }}",
@@ -184,11 +179,6 @@ spec:
                               "--cuda-graph-max-bs", str(TARGET_INPUTS * 2),
                               "--context-length", "{{ $spec.maxModelLen | default 32768 }}",
                               "--api-key", os.environ["API_KEY"],
-                              {{- if $spec.mistralFormat }}
-                              "--tokenizer-mode", "mistral",
-                              "--config-format", "mistral",
-                              "--load-format", "mistral",
-                              {{- end }}
                               {{- if and $spec.speculative $spec.speculative.enabled }}
                               "--speculative-algorithm", "{{ $spec.speculative.method | default "eagle3" | upper }}",
                               "--speculative-draft-model-path", "{{ $spec.speculative.model }}",
