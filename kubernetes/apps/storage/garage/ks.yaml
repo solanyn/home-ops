@@ -12,7 +12,6 @@ spec:
       app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
-  force: true
   dependsOn:
     - name: rook-ceph-cluster
       namespace: rook-ceph
