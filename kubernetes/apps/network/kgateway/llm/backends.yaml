@@ -26,14 +26,14 @@ spec:
     provider:
       openai:
         model: openai/gpt-oss-120b
-      host: solanyn--llm-gpt-oss-120b-sglang-serve.modal.run
+      host: solanyn--llm-gpt-oss-120b-serve.modal.run
       port: 443
   policies:
     auth:
       secretRef:
         name: modal-llm-auth
     tls:
-      sni: solanyn--llm-gpt-oss-120b-sglang-serve.modal.run
+      sni: solanyn--llm-gpt-oss-120b-serve.modal.run
 ---
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
