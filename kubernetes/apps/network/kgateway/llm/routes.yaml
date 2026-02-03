@@ -2,6 +2,30 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
+  name: llm-moonshot
+spec:
+  parentRefs:
+    - name: ai
+      namespace: network
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/moonshot
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /v1
+      backendRefs:
+        - name: moonshot-kimi
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
   name: llm-gpt-oss-120b
 spec:
   parentRefs:
