@@ -24,7 +24,7 @@ spec:
           name: training-operator
         pod:
           tolerations:
-              operator: Exists
+            - operator: Exists
               effect: NoExecute
         containers:
           training-operator:
