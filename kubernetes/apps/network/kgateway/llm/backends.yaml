@@ -110,3 +110,51 @@ spec:
               auth:
                 secretRef:
                   name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: modal-gpt-oss
+spec:
+  ai:
+    provider:
+      openai:
+        model: gpt-oss-120b
+      host: solanyn--llm-gpt-oss-120b-serve.modal.run
+      port: 443
+      policies:
+        auth:
+          secretRef:
+            name: modal-llm-auth
+        tls:
+          sni: solanyn--llm-gpt-oss-120b-serve.modal.run
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: modal-devstral
+spec:
+  ai:
+    provider:
+      openai:
+        model: devstral-24b
+      host: solanyn--llm-devstral-small-2-24b-serve.modal.run
+      port: 443
+      policies:
+        auth:
+          secretRef:
+            name: modal-llm-auth
+        tls:
+          sni: solanyn--llm-devstral-small-2-24b-serve.modal.run
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: mlx-ministral
+spec:
+  ai:
+    provider:
+      openai:
+        model: ministral-8b
+      host: mac.internal
+      port: 8080
