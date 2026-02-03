@@ -81,6 +81,7 @@ spec:
               - path: /var/www/baikal/config
             app:
               - path: /var/www/baikal/config
+              - path: /var/www/baikal/Specific
       secret:
         type: secret
         name: baikal-secret
