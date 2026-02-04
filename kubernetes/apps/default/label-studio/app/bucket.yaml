@@ -1,0 +1,10 @@
+---
+apiVersion: garage.crossplane.io/v1alpha1
+kind: Bucket
+metadata:
+  name: label-studio
+spec:
+  forProvider:
+    globalAlias: label-studio
+  providerConfigRef:
+    name: default

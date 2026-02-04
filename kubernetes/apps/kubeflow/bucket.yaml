@@ -1,0 +1,10 @@
+---
+apiVersion: garage.crossplane.io/v1alpha1
+kind: Bucket
+metadata:
+  name: kubeflow
+spec:
+  forProvider:
+    globalAlias: kubeflow
+  providerConfigRef:
+    name: default
