@@ -1,0 +1,10 @@
+---
+apiVersion: garage.crossplane.io/v1alpha1
+kind: Bucket
+metadata:
+  name: kfp-pipelines
+spec:
+  forProvider:
+    globalAlias: kfp-pipelines
+  providerConfigRef:
+    name: default

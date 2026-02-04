@@ -1,0 +1,84 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: thanos
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: thanos
+  interval: 1h
+  values:
+    image:
+      registry: quay.io
+      repository: thanos/thanos
+      tag: v0.37.2
+    existingObjstoreSecret: thanos-objstore-secret
+    query:
+      enabled: true
+      replicaCount: 1
+      replicaLabel: [__replica__]
+      dnsDiscovery:
+        sidecarsService: kube-prometheus-stack-thanos-discovery
+        sidecarsNamespace: observability
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          memory: 256Mi
+    queryFrontend:
+      enabled: true
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          memory: 256Mi
+    bucketweb:
+      enabled: true
+      replicaCount: 1
+      resources:
+        requests:
+          cpu: 10m
+          memory: 64Mi
+        limits:
+          memory: 128Mi
+    compactor:
+      enabled: true
+      retentionResolutionRaw: 30d
+      retentionResolution5m: 60d
+      retentionResolution1h: 1y
+      persistence:
+        enabled: true
+        storageClass: ceph-block
+        size: 10Gi
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          memory: 512Mi
+    storegateway:
+      enabled: true
+      replicaCount: 1
+      persistence:
+        enabled: true
+        storageClass: ceph-block
+        size: 5Gi
+      resources:
+        requests:
+          cpu: 10m
+          memory: 128Mi
+        limits:
+          memory: 512Mi
+    ruler:
+      enabled: false
+    receive:
+      enabled: false
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true

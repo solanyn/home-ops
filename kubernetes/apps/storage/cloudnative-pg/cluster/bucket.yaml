@@ -1,0 +1,10 @@
+---
+apiVersion: garage.crossplane.io/v1alpha1
+kind: Bucket
+metadata:
+  name: cloudnative-pg
+spec:
+  forProvider:
+    globalAlias: cloudnative-pg
+  providerConfigRef:
+    name: default
