@@ -111,8 +111,8 @@ spec:
       shareProcessNamespace: true
       securityContext:
         runAsUser: 1000
-        runAsGroup: 100
-        fsGroup: 100
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
@@ -186,6 +186,12 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: *homepath
+      hawow:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/hawow
+        globalMounts:
+          - path: /home/node/hawow
       openclaw-config:
         type: secret
         name: openclaw-config
