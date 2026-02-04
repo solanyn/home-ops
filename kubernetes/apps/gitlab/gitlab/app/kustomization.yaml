@@ -7,3 +7,4 @@ resources:
   - ./externalsecret.yaml
   - ./httproute.yaml
   - ./job.yaml
+  - ./oidc.yaml

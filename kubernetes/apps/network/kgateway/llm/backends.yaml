@@ -180,3 +180,55 @@ spec:
         model: ministral-8b
       host: mac.internal
       port: 8080
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: claude-code
+spec:
+  ai:
+    routes:
+      /v1/messages: messages
+      /v1/chat/completions: completions
+      "*": passthrough
+    groups:
+      - providers:
+          - name: moonshot-kimi
+            openai:
+              model: kimi-k2.5
+            host: api.moonshot.ai
+            port: 443
+            policies:
+              auth:
+                secretRef:
+                  name: moonshot-auth
+              tls:
+                sni: api.moonshot.ai
+      - providers:
+          - name: kiro
+            openai:
+              model: claude-opus-4.5
+            host: mac.internal
+            port: 8001
+            policies:
+              auth:
+                secretRef:
+                  name: kiro-auth
+      - providers:
+          - name: modal-devstral
+            openai:
+              model: devstral-24b
+            host: solanyn--llm-devstral-small-2-24b-serve.modal.run
+            port: 443
+            policies:
+              auth:
+                secretRef:
+                  name: modal-llm-auth
+              tls:
+                sni: solanyn--llm-devstral-small-2-24b-serve.modal.run
+      - providers:
+          - name: mlx-ministral
+            openai:
+              model: ministral-8b
+            host: mac.internal
+            port: 8080

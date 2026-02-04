@@ -1,0 +1,14 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: ersatztv
+spec:
+  callbackUrls:
+    - https://ersatztv.goyangi.io/oidc/callback
+  logoutCallbackUrls:
+    - https://ersatztv.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: ersatztv-oidc

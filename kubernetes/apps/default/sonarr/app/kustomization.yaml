@@ -6,6 +6,8 @@ resources:
   - ./pvc.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+  - ./oidc.yaml
+  - ./securitypolicy.yaml
 configMapGenerator:
   - name: sonarr-configmap
     files:
