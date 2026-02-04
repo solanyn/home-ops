@@ -11,7 +11,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: pocket-id-operator
-        namespace: flux-system
+        namespace: default
   interval: 1h
   install:
     crds: CreateReplace
