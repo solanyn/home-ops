@@ -164,7 +164,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: llm-claude-code
+  name: llm-anthropic
 spec:
   parentRefs:
     - name: ai
@@ -173,13 +173,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /v1/claude-code
-      filters:
-        - type: URLRewrite
-          urlRewrite:
-            path:
-              type: ReplacePrefixMatch
-              replacePrefixMatch: /v1
+            value: /v1/messages
       backendRefs:
         - name: claude-code
           group: agentgateway.dev
