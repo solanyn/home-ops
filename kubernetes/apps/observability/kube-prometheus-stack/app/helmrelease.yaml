@@ -56,10 +56,6 @@ spec:
         enabled: true
       prometheusSpec:
         externalUrl: https://prometheus.goyangi.io
-        image:
-          registry: docker.io
-          repository: prompp/prompp
-          tag: 0.7.4
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         ruleSelectorNilUsesHelmValues: false
