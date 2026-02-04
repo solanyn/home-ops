@@ -6,6 +6,7 @@ namespace: crossplane-system
 resources:
   - ./externalsecret.yaml
   - ./provider.yaml
+  - ./garage-providerconfig.yaml
   - ./kubernetes-providerconfig.yaml
   - ./kubernetes-rbac.yaml
 

@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: thanos
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: thanos
+      version: 1.22.1
+      sourceRef:
+        kind: HelmRepository
+        name: stevehipwell
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  valuesFrom:
+    - targetPath: objstoreConfig.value.config.access_key
+      kind: Secret
+      name: thanos-objstore-secret
+      valuesKey: access_key
+    - targetPath: objstoreConfig.value.config.secret_key
+      kind: Secret
+      name: thanos-objstore-secret
+      valuesKey: secret_key
+  values:
+    objstoreConfig:
+      value:
+        type: s3
+        config:
+          bucket: thanos
+          endpoint: garage.storage.svc.cluster.local:3900
+          insecure: true
+    additionalEndpoints:
+      - dnssrv+_grpc._tcp.kube-prometheus-stack-thanos-discovery.observability.svc.cluster.local
+    additionalReplicaLabels: ["__replica__"]
+    serviceMonitor:
+      enabled: true
+    compact:
+      enabled: true
+      extraArgs:
+        - --compact.concurrency=4
+        - --delete-delay=30m
+        - --retention.resolution-raw=14d
+        - --retention.resolution-5m=30d
+        - --retention.resolution-1h=60d
+      persistence:
+        enabled: true
+        storageClass: ceph-block
+        size: 10Gi
+    query:
+      replicas: 1
+    queryFrontend:
+      enabled: true
+      replicas: 1
+    rule:
+      enabled: false
+    storeGateway:
+      replicas: 1
+      persistence:
+        enabled: true
+        storageClass: ceph-block
+        size: 5Gi

@@ -1,0 +1,10 @@
+---
+apiVersion: garage.crossplane.io/v1alpha1
+kind: Bucket
+metadata:
+  name: dragonflydb
+spec:
+  forProvider:
+    globalAlias: dragonflydb
+  providerConfigRef:
+    name: default

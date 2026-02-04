@@ -1,0 +1,10 @@
+---
+apiVersion: garage.crossplane.io/v1alpha1
+kind: Bucket
+metadata:
+  name: mariadb
+spec:
+  forProvider:
+    globalAlias: mariadb
+  providerConfigRef:
+    name: default

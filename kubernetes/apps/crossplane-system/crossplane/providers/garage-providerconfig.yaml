@@ -1,0 +1,12 @@
+---
+apiVersion: garage.crossplane.io/v1
+kind: ProviderConfig
+metadata:
+  name: default
+spec:
+  credentials:
+    source: Secret
+    secretRef:
+      name: garage-credentials
+      namespace: crossplane-system
+      key: credentials
