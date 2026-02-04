@@ -671,104 +671,80 @@ op item get cloudnative-pg --field DB_USER --vault kubernetes
 
 ## OIDC Integration
 
-Applications use Authentik (https://id.goyangi.io) for SSO authentication. Each application has different OIDC field names and requirements.
+Applications use Pocket-ID (https://id.goyangi.io) for SSO authentication via passkeys. OIDC clients are managed via the pocket-id-operator CRDs.
 
-### Terraform Provisioning
+### Adding OIDC Clients
 
-OIDC applications are provisioned via Terraform in `terraform/authentik/`. Add new applications to `terraform.tfvars`:
+Create a `PocketIDOIDCClient` CRD in `kubernetes/apps/default/pocket-id/app/oidc-clients.yaml`:
 
-```hcl
-applications = {
-  app-name = {
-    group         = "user"           # "user" or "admin" - controls access
-    icon          = "app-icon"       # Icon name from homarr-labs/dashboard-icons
-    redirect_uris = ["/oauth2/callback"]  # Relative or absolute URIs
-    public        = false            # Optional: true for public clients (no secret)
-  }
-}
-```
-
-**Redirect URI handling:**
-- Relative paths: Automatically prefixed with `https://app-name.goyangi.io`
-- Absolute URLs: Used as-is (for apps like Immich with mobile callbacks)
-
-**1Password integration:**
-- Terraform automatically creates `app-name` item in `kubernetes` vault
-- Generates `APP_NAME_CLIENT_SECRET` field (unless `public = true`)
-- Client ID is always the application name
-
-**Example configurations:**
-
-**Mealie:**
 ```yaml
-OIDC_AUTH_ENABLED: "True"
-OIDC_SIGNUP_ENABLED: "True"
-OIDC_CONFIGURATION_URL: https://id.goyangi.io/.well-known/openid-configuration
-OIDC_CLIENT_ID: "{{ .MEALIE_CLIENT_ID }}"
-OIDC_CLIENT_SECRET: "{{ .MEALIE_CLIENT_SECRET }}"
-OIDC_ADMIN_GROUP: admin
-OIDC_AUTO_REDIRECT: "True"
-OIDC_REMEMBER_ME: "True"
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: app-name
+spec:
+  callbackUrls:
+    - https://app-name.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://app-name.goyangi.io
+  isPublic: false  # Set true for public clients (no secret)
+  secret:
+    name: app-name-oidc  # Generated secret name
 ```
 
-**Audiobookshelf:**
+The operator automatically generates a secret with `client_id` and `client_secret` fields.
+
+### Referencing OIDC Secrets
+
+**For apps with native OIDC support:**
 ```yaml
-OIDC_ISSUER_URL: "https://id.goyangi.io"
-OIDC_CLIENT_ID: "{{ .AUDIOBOOKSHELF_CLIENT_ID }}"
-OIDC_CLIENT_SECRET: "{{ .AUDIOBOOKSHELF_CLIENT_SECRET }}"
-OIDC_BUTTON_TEXT: "Login with Authentik"
-OIDC_AUTO_LAUNCH: "false"
+# In ExternalSecret
+spec:
+  target:
+    template:
+      data:
+        OIDC_CLIENT_ID: app-name
+        OIDC_CLIENT_SECRET: "{{ .client_secret }}"
+        OIDC_ISSUER_URL: https://id.goyangi.io/
+  data:
+    - secretKey: client_secret
+      remoteRef:
+        key: app-name-oidc
+        property: client_secret
 ```
 
-**Grafana:**
+**For apps using Envoy SecurityPolicy:**
 ```yaml
-GF_AUTH_GENERIC_OAUTH_ENABLED: "true"
-GF_AUTH_GENERIC_OAUTH_NAME: "Authentik"
-GF_AUTH_GENERIC_OAUTH_CLIENT_ID: "{{ .GRAFANA_CLIENT_ID }}"
-GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET: "{{ .GRAFANA_CLIENT_SECRET }}"
-GF_AUTH_GENERIC_OAUTH_AUTH_URL: https://id.goyangi.io/authorize
-GF_AUTH_GENERIC_OAUTH_TOKEN_URL: https://id.goyangi.io/api/oidc/token
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: app-name
+spec:
+  oidc:
+    clientID: app-name
+    clientSecret:
+      name: app-name-oidc
+    provider:
+      issuer: https://id.goyangi.io/
+    redirectURL: https://app-name.goyangi.io/oauth2/callback
+    scopes: [openid, profile, email]
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: app-name
 ```
 
-**Kubeflow:**
-```yaml
-KUBEFLOW_OIDC_CLIENT_ID: kubeflow-oidc-authservice
-KUBEFLOW_OIDC_CLIENT_SECRET: "{{ .KUBEFLOW_OIDC_CLIENT_SECRET }}"
-```
+### Key Endpoints
 
-**GitLab:**
-```yaml
-# In ExternalSecret template
-GITLAB_OIDC_CLIENT_ID: "{{ .GITLAB_OIDC_CLIENT_ID }}"
-GITLAB_OIDC_CLIENT_SECRET: "{{ .GITLAB_OIDC_CLIENT_SECRET }}"
+- **Issuer**: `https://id.goyangi.io/`
+- **Discovery**: `https://id.goyangi.io/.well-known/openid-configuration`
+- **Authorize**: `https://id.goyangi.io/authorize`
+- **Token**: `https://id.goyangi.io/api/oidc/token`
+- **Userinfo**: `https://id.goyangi.io/api/oidc/userinfo`
 
-oidc-config: |
-  name: openid_connect
-  label: Authentik
-  args:
-    name: openid_connect
-    scope: [openid, profile, email]
-    response_type: code
-    issuer: https://id.goyangi.io
-    client_auth_method: query
-    discovery: true
-    uid_field: preferred_username
-    client_options:
-      identifier: "{{ .GITLAB_OIDC_CLIENT_ID }}"
-      secret: "{{ .GITLAB_OIDC_CLIENT_SECRET }}"
-      redirect_uri: https://gitlab.goyangi.io/users/auth/openid_connect/callback
+### User Management
 
-# In HelmRelease values
-appConfig:
-  omniauth:
-    enabled: true
-    autoSignInWithProvider: []
-    syncProfileFromProvider: [openid_connect]
-    allowSingleSignOn: [openid_connect]
-    providers:
-      - secret: gitlab-secret
-        key: oidc-config
-```
+Users are created in the Pocket-ID admin UI at https://id.goyangi.io. Authentication is via passkeys only (no passwords).
 
 ## Infrastructure Integration
 
