@@ -7,10 +7,10 @@ spec:
   oidc:
     clientID: radarr
     clientSecret:
-      name: radarr-secret
+      name: radarr-oidc
     logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/application/o/radarr/
+      issuer: https://id.goyangi.io/
     redirectURL: https://radarr.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:
