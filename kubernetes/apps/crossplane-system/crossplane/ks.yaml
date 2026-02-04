@@ -44,7 +44,7 @@ spec:
   dependsOn:
     - name: crossplane-providers
       namespace: crossplane-system
-    - name: external-secrets-stores
+    - name: onepassword
       namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/crossplane-system/crossplane/configs
