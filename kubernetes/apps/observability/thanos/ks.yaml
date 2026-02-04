@@ -7,6 +7,8 @@ metadata:
 spec:
   targetNamespace: observability
   dependsOn:
+    - name: crossplane-configs
+      namespace: crossplane-system
     - name: kube-prometheus-stack
       namespace: observability
   interval: 1h
