@@ -7,6 +7,9 @@ metadata:
   namespace: kubeflow
 spec:
   targetNamespace: kubeflow
+  dependsOn:
+    - name: crossplane-configs
+      namespace: crossplane-system
   interval: 1h
   path: ./kubernetes/apps/kubeflow/pipelines/app
   prune: true
