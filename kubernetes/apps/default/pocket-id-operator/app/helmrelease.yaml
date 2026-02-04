@@ -25,13 +25,3 @@ spec:
   values:
     instance:
       enabled: false
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
-metadata:
-  name: pocket-id-operator
-  namespace: flux-system
-spec:
-  interval: 1h
-  type: oci
-  url: oci://ghcr.io/aclerici38/charts
