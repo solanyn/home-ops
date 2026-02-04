@@ -31,7 +31,6 @@ resources:
   - ./coder/ks.yaml
   - ./buildkit/ks.yaml
   - ./pocket-id-operator/ks.yaml
-  - ./pocket-id/ks.yaml
   - ./plex/ks.yaml
   - ./print/ks.yaml
   - ./prowlarr/ks.yaml
