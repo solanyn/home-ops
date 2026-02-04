@@ -160,3 +160,21 @@ spec:
         - name: mlx-ministral
           group: agentgateway.dev
           kind: AgentgatewayBackend
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: llm-anthropic
+spec:
+  parentRefs:
+    - name: ai
+      namespace: network
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/messages
+      backendRefs:
+        - name: claude-code
+          group: agentgateway.dev
+          kind: AgentgatewayBackend

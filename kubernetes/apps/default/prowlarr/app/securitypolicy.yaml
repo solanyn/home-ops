@@ -7,10 +7,10 @@ spec:
   oidc:
     clientID: prowlarr
     clientSecret:
-      name: prowlarr-secret
+      name: prowlarr-oidc
     logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/application/o/prowlarr/
+      issuer: https://id.goyangi.io/
     redirectURL: https://prowlarr.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:

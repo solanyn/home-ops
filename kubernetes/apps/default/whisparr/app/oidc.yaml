@@ -1,0 +1,14 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: whisparr
+spec:
+  callbackUrls:
+    - https://whisparr.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://whisparr.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: whisparr-oidc

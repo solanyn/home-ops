@@ -25,7 +25,7 @@ spec:
           install-tools:
             image:
               repository: ghcr.io/openclaw/openclaw
-              tag: 2026.2.1@sha256:51192e206fb7a3d5e7d26ddd18bbf934a85d13b4661371224d8788fc8f8fda05
+              tag: 2026.2.2@sha256:50121e1f025db70599365dc84162b514f0c79d91eb850e9152e4b2c71594a392
             command:
               - /bin/sh
               - -c
@@ -67,7 +67,7 @@ spec:
           app:
             image:
               repository: ghcr.io/openclaw/openclaw
-              tag: 2026.2.1@sha256:51192e206fb7a3d5e7d26ddd18bbf934a85d13b4661371224d8788fc8f8fda05
+              tag: 2026.2.2@sha256:50121e1f025db70599365dc84162b514f0c79d91eb850e9152e4b2c71594a392
             command:
               - /bin/sh
               - -c
@@ -97,8 +97,6 @@ spec:
               TERM: xterm-256color
               PATH: /home/node/.local/bin:/home/node/.local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
               TZ: Australia/Sydney
-              GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-sa/credentials.json
-              GOOGLE_GENAI_USE_VERTEXAI: "true"
             envFrom:
               - secretRef:
                   name: openclaw
@@ -111,8 +109,8 @@ spec:
       shareProcessNamespace: true
       securityContext:
         runAsUser: 1000
-        runAsGroup: 100
-        fsGroup: 100
+        runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
@@ -186,6 +184,12 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: *homepath
+      hawow:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/hawow
+        globalMounts:
+          - path: /home/node/hawow
       openclaw-config:
         type: secret
         name: openclaw-config
@@ -207,15 +211,4 @@ spec:
           openclaw:
             setup-ssh:
               - path: /tmp/ssh-keys
-                readOnly: true
-      google-sa-json:
-        type: secret
-        name: openclaw
-        items:
-          - key: GOOGLE_SERVICE_ACCOUNT_JSON
-            path: credentials.json
-        advancedMounts:
-          openclaw:
-            app:
-              - path: /tmp/google-sa
                 readOnly: true
