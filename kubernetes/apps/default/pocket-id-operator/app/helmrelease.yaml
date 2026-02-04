@@ -4,14 +4,9 @@ kind: HelmRelease
 metadata:
   name: pocket-id-operator
 spec:
-  chart:
-    spec:
-      chart: pocket-id-operator
-      version: 0.1.1
-      sourceRef:
-        kind: HelmRepository
-        name: pocket-id-operator
-        namespace: default
+  chartRef:
+    kind: OCIRepository
+    name: pocket-id-operator
   interval: 1h
   install:
     crds: CreateReplace
