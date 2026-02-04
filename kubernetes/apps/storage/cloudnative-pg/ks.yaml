@@ -53,6 +53,8 @@ spec:
       namespace: storage
     - name: cloudnative-pg-barman-cloud
       namespace: storage
+    - name: crossplane-configs
+      namespace: crossplane-system
     - name: garage
       namespace: storage
   healthChecks:
