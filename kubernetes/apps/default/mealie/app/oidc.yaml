@@ -1,0 +1,14 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: mealie
+spec:
+  callbackUrls:
+    - https://mealie.goyangi.io/login
+  logoutCallbackUrls:
+    - https://mealie.goyangi.io
+  allowedUserGroups:
+    - name: user
+  secret:
+    name: mealie-oidc

@@ -11,7 +11,6 @@ resources:
   - ./agregarr/ks.yaml
   - ./atuin/ks.yaml
   - ./audiobookshelf/ks.yaml
-  - ./authentik/ks.yaml
   - ./baikal/ks.yaml
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
@@ -31,6 +30,8 @@ resources:
   - ./opencode/ks.yaml
   - ./coder/ks.yaml
   - ./buildkit/ks.yaml
+  - ./pocket-id-operator/ks.yaml
+  - ./pocket-id/ks.yaml
   - ./plex/ks.yaml
   - ./print/ks.yaml
   - ./prowlarr/ks.yaml

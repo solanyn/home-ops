@@ -8,10 +8,10 @@ spec:
   oidc:
     clientID: kubeflow
     clientSecret:
-      name: kubeflow-oidc-secret
-    logoutPath: /logout # Central Dashboard logout url is /oauth2/sign_out usually, but check
+      name: kubeflow-oidc
+    logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/application/o/kubeflow/
+      issuer: https://id.goyangi.io/
     redirectURL: https://kubeflow.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:

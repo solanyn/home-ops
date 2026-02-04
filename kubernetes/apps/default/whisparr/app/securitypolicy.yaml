@@ -7,10 +7,10 @@ spec:
   oidc:
     clientID: whisparr
     clientSecret:
-      name: whisparr-secret
+      name: whisparr-oidc
     logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/application/o/whisparr/
+      issuer: https://id.goyangi.io/
     redirectURL: https://whisparr.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:

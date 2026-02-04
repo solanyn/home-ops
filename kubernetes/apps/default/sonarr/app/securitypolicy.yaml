@@ -6,10 +6,10 @@ spec:
   oidc:
     clientID: sonarr
     clientSecret:
-      name: sonarr-secret
+      name: sonarr-oidc
     logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/application/o/sonarr/
+      issuer: https://id.goyangi.io/
     redirectURL: https://sonarr.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:

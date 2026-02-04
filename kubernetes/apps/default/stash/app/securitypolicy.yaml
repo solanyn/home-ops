@@ -7,10 +7,10 @@ spec:
   oidc:
     clientID: stash
     clientSecret:
-      name: stash-secret
+      name: stash-oidc
     logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/application/o/stash/
+      issuer: https://id.goyangi.io/
     redirectURL: https://stash.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:

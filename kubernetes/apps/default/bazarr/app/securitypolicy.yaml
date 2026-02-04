@@ -7,10 +7,10 @@ spec:
   oidc:
     clientID: bazarr
     clientSecret:
-      name: bazarr-secret
+      name: bazarr-oidc
     logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/application/o/bazarr/
+      issuer: https://id.goyangi.io/
     redirectURL: https://bazarr.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:

@@ -1,0 +1,15 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: grafana
+spec:
+  callbackUrls:
+    - https://grafana.goyangi.io/login/generic_oauth
+  logoutCallbackUrls:
+    - https://grafana.goyangi.io
+  allowedUserGroups:
+    - name: admin
+      namespace: default
+  secret:
+    name: grafana-oidc

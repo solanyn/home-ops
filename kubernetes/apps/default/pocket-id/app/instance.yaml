@@ -1,0 +1,37 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDInstance
+metadata:
+  name: pocket-id
+spec:
+  image: ghcr.io/pocket-id/pocket-id:v2.2.0-distroless
+  appUrl: https://id.goyangi.io
+  encryptionKey:
+    valueFrom:
+      secretKeyRef:
+        name: pocket-id-secret
+        key: ENCRYPTION_KEY
+  databaseUrl:
+    valueFrom:
+      secretKeyRef:
+        name: pocket-id-secret
+        key: DATABASE_URL
+  env:
+    - name: UPDATE_CHECK_DISABLED
+      value: "true"
+    - name: SESSION_DURATION
+      value: "1440"
+    - name: EMAIL_LOGIN_NOTIFICATION_ENABLED
+      value: "true"
+    - name: SMTP_HOST
+      value: smtp-relay.network.svc.cluster.local
+    - name: SMTP_PORT
+      value: "25"
+    - name: SMTP_FROM
+      value: pocket-id@goyangi.io
+    - name: SMTP_TLS
+      value: "none"
+  persistence:
+    enabled: false
+  annotations:
+    reloader.stakater.com/auto: "true"
