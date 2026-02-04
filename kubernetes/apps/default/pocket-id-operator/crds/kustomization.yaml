@@ -1,0 +1,7 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - https://raw.githubusercontent.com/aclerici38/pocket-id-operator/v0.1.1/dist/chart/crds/pocketid.internal_pocketidinstances.yaml
+  - https://raw.githubusercontent.com/aclerici38/pocket-id-operator/v0.1.1/dist/chart/crds/pocketid.internal_pocketidoidcclients.yaml
+  - https://raw.githubusercontent.com/aclerici38/pocket-id-operator/v0.1.1/dist/chart/crds/pocketid.internal_pocketidusergroups.yaml
+  - https://raw.githubusercontent.com/aclerici38/pocket-id-operator/v0.1.1/dist/chart/crds/pocketid.internal_pocketidusers.yaml

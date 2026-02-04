@@ -3,12 +3,31 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: pocket-id-crds
+spec:
+  targetNamespace: default
+  interval: 1h
+  path: ./kubernetes/apps/default/pocket-id-operator/crds
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &app pocket-id-operator
 spec:
   targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: pocket-id-crds
+      namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/pocket-id-operator/app
   prune: true
