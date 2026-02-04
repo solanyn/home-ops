@@ -8,5 +8,7 @@ spec:
     - https://qui.goyangi.io/api/auth/oidc/callback
   logoutCallbackUrls:
     - https://qui.goyangi.io
+  allowedUserGroups:
+    - name: admin
   secret:
     name: qui-oidc

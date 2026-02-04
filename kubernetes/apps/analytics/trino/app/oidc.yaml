@@ -9,5 +9,8 @@ spec:
     - https://trino.goyangi.io/oauth2/callback
   logoutCallbackUrls:
     - https://trino.goyangi.io
+  allowedUserGroups:
+    - name: admin
+      namespace: default
   secret:
     name: trino-oidc

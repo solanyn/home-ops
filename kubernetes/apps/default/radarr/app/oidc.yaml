@@ -8,5 +8,7 @@ spec:
     - https://radarr.goyangi.io/oauth2/callback
   logoutCallbackUrls:
     - https://radarr.goyangi.io
+  allowedUserGroups:
+    - name: user
   secret:
     name: radarr-oidc

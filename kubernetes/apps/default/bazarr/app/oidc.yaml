@@ -8,5 +8,7 @@ spec:
     - https://bazarr.goyangi.io/oauth2/callback
   logoutCallbackUrls:
     - https://bazarr.goyangi.io
+  allowedUserGroups:
+    - name: admin
   secret:
     name: bazarr-oidc

@@ -8,5 +8,8 @@ spec:
     - https://headlamp.goyangi.io/oidc-callback
   logoutCallbackUrls:
     - https://headlamp.goyangi.io
+  allowedUserGroups:
+    - name: admin
+      namespace: default
   secret:
     name: headlamp-oidc

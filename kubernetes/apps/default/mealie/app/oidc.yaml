@@ -8,5 +8,7 @@ spec:
     - https://mealie.goyangi.io/login
   logoutCallbackUrls:
     - https://mealie.goyangi.io
+  allowedUserGroups:
+    - name: user
   secret:
     name: mealie-oidc

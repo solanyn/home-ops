@@ -8,5 +8,8 @@ spec:
     - https://grafana.goyangi.io/login/generic_oauth
   logoutCallbackUrls:
     - https://grafana.goyangi.io
+  allowedUserGroups:
+    - name: admin
+      namespace: default
   secret:
     name: grafana-oidc

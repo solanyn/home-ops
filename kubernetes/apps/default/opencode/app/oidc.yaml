@@ -8,5 +8,7 @@ spec:
     - https://opencode.goyangi.io/oauth2/callback
   logoutCallbackUrls:
     - https://opencode.goyangi.io
+  allowedUserGroups:
+    - name: admin
   secret:
     name: opencode-oidc

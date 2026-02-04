@@ -8,5 +8,7 @@ spec:
     - https://stash.goyangi.io/oauth2/callback
   logoutCallbackUrls:
     - https://stash.goyangi.io
+  allowedUserGroups:
+    - name: admin
   secret:
     name: stash-oidc

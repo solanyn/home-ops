@@ -8,5 +8,7 @@ spec:
     - https://whisparr.goyangi.io/oauth2/callback
   logoutCallbackUrls:
     - https://whisparr.goyangi.io
+  allowedUserGroups:
+    - name: admin
   secret:
     name: whisparr-oidc

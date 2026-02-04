@@ -8,5 +8,7 @@ spec:
     - https://lidarr.goyangi.io/oauth2/callback
   logoutCallbackUrls:
     - https://lidarr.goyangi.io
+  allowedUserGroups:
+    - name: admin
   secret:
     name: lidarr-oidc

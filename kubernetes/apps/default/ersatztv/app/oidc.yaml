@@ -8,5 +8,7 @@ spec:
     - https://ersatztv.goyangi.io/oidc/callback
   logoutCallbackUrls:
     - https://ersatztv.goyangi.io
+  allowedUserGroups:
+    - name: admin
   secret:
     name: ersatztv-oidc

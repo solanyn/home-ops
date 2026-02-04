@@ -8,5 +8,7 @@ spec:
     - https://sonarr.goyangi.io/oauth2/callback
   logoutCallbackUrls:
     - https://sonarr.goyangi.io
+  allowedUserGroups:
+    - name: user
   secret:
     name: sonarr-oidc

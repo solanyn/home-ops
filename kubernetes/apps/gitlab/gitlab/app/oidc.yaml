@@ -8,5 +8,8 @@ spec:
     - https://gitlab.goyangi.io/users/auth/openid_connect/callback
   logoutCallbackUrls:
     - https://gitlab.goyangi.io
+  allowedUserGroups:
+    - name: admin
+      namespace: default
   secret:
     name: gitlab-oidc
