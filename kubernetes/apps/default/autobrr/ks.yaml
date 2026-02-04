@@ -7,7 +7,7 @@ spec:
   targetNamespace: default
   components:
   dependsOn:
-    - name: authentik
+    - name: pocket-id-resources
       namespace: default
     - name: cloudnative-pg-cluster
       namespace: storage

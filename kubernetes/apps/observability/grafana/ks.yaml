@@ -23,7 +23,7 @@ metadata:
 spec:
   targetNamespace: observability
   dependsOn:
-    - name: authentik
+    - name: pocket-id-resources
       namespace: default
     - name: grafana
       namespace: observability
