@@ -1,0 +1,13 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: kubeflow
+  namespace: kubeflow
+spec:
+  callbackUrls:
+    - https://kubeflow.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://kubeflow.goyangi.io
+  secret:
+    name: kubeflow-oidc

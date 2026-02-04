@@ -671,7 +671,7 @@ op item get cloudnative-pg --field DB_USER --vault kubernetes
 
 ## OIDC Integration
 
-Applications use Pocket-ID (https://id.goyangi.io) for SSO authentication via passkeys. OIDC clients are managed via the pocket-id-operator CRDs.
+Applications use Pocket ID (https://id.goyangi.io) for SSO authentication via passkeys. OIDC clients are managed via the pocket-id-operator CRDs.
 
 ### Adding OIDC Clients
 
@@ -744,7 +744,7 @@ spec:
 
 ### User Management
 
-Users are created in the Pocket-ID admin UI at https://id.goyangi.io. Authentication is via passkeys only (no passwords).
+Users are created in the Pocket ID admin UI at https://id.goyangi.io. Authentication is via passkeys only (no passwords).
 
 ## Infrastructure Integration
 

@@ -1,0 +1,12 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: gitlab
+spec:
+  callbackUrls:
+    - https://gitlab.goyangi.io/users/auth/openid_connect/callback
+  logoutCallbackUrls:
+    - https://gitlab.goyangi.io
+  secret:
+    name: gitlab-oidc

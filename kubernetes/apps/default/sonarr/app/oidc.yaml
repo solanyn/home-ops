@@ -1,0 +1,12 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: sonarr
+spec:
+  callbackUrls:
+    - https://sonarr.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://sonarr.goyangi.io
+  secret:
+    name: sonarr-oidc

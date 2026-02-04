@@ -1,0 +1,12 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: romm
+spec:
+  callbackUrls:
+    - https://romm.goyangi.io/api/oauth/openid
+  logoutCallbackUrls:
+    - https://romm.goyangi.io
+  secret:
+    name: romm-oidc

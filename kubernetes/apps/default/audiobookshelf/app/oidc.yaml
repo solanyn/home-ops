@@ -1,0 +1,12 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: audiobookshelf
+spec:
+  callbackUrls:
+    - https://audiobookshelf.goyangi.io/auth/openid/callback
+  logoutCallbackUrls:
+    - https://audiobookshelf.goyangi.io
+  secret:
+    name: audiobookshelf-oidc

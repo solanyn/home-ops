@@ -1,0 +1,12 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: headlamp
+spec:
+  callbackUrls:
+    - https://headlamp.goyangi.io/oidc-callback
+  logoutCallbackUrls:
+    - https://headlamp.goyangi.io
+  secret:
+    name: headlamp-oidc

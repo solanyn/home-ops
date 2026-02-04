@@ -3,5 +3,4 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./instance.yaml
-  - ./oidc-clients.yaml
   - ./httproute.yaml

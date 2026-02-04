@@ -1,0 +1,12 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: opencode
+spec:
+  callbackUrls:
+    - https://opencode.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://opencode.goyangi.io
+  secret:
+    name: opencode-oidc

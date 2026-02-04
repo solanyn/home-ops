@@ -1,0 +1,13 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: flux
+  namespace: flux-system
+spec:
+  callbackUrls:
+    - https://flux.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://flux.goyangi.io
+  secret:
+    name: flux-oidc
