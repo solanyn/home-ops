@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: sonarr
 spec:
+  clientID: sonarr
   callbackUrls:
     - https://sonarr.goyangi.io/oauth2/callback
   logoutCallbackUrls:
