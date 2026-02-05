@@ -1,8 +1,15 @@
-apiVersion: pocketid.io/v1alpha1
+---
+apiVersion: pocketid.internal/v1alpha1
 kind: PocketIDOIDCClient
 metadata:
   name: forgejo
 spec:
-  clientName: forgejo
-  redirectURIs:
+  clientID: forgejo
+  callbackUrls:
     - https://forgejo.goyangi.io/user/oauth2/oidc/callback
+  logoutCallbackUrls:
+    - https://forgejo.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: forgejo-oidc
