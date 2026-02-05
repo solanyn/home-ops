@@ -45,24 +45,6 @@ spec:
                 fi
 
                 echo "Init container completed successfully"
-          setup-ssh:
-            image:
-              repository: busybox
-              tag: latest
-            command:
-              - /bin/sh
-              - -c
-              - |
-                set -e
-                mkdir -p /home/node/.ssh
-                cp /tmp/ssh-keys/id_ed25519 /home/node/.ssh/id_ed25519
-                cp /tmp/ssh-keys/id_ed25519.pub /home/node/.ssh/id_ed25519.pub
-                chmod 600 /home/node/.ssh/id_ed25519
-                chmod 644 /home/node/.ssh/id_ed25519.pub
-                chown -R 1000:100 /home/node/.ssh
-            securityContext:
-              runAsUser: 0
-              runAsGroup: 0
         containers:
           app:
             image:
@@ -74,18 +56,6 @@ spec:
               - |
                 # Set up openclawbot CLI symlink
                 ln -sf /app/openclawbot.mjs /home/node/.local/bin/openclawbot
-
-                # Create SSH wrapper script for iMessage
-                cat > /home/node/.local/bin/imsg-ssh << 'SCRIPT'
-                #!/usr/bin/env bash
-                exec ssh -i /home/node/.ssh/id_ed25519 \
-                  -o BatchMode=yes \
-                  -o StrictHostKeyChecking=accept-new \
-                  -o ConnectTimeout=10 \
-                  -T openclaw@mac.internal \
-                  "/Users/openclaw/homebrew/bin/imsg" "$@"
-                SCRIPT
-                chmod +x /home/node/.local/bin/imsg-ssh
 
                 # Run doctor before gateway starts
                 node dist/index.js doctor --fix || true
@@ -197,18 +167,4 @@ spec:
           openclaw:
             install-tools:
               - path: /tmp/openclaw-config
-                readOnly: true
-      ssh-key:
-        type: secret
-        name: openclaw
-        defaultMode: 0400
-        items:
-          - key: OPENCLAW_SSH_PRIVATE_KEY
-            path: id_ed25519
-          - key: OPENCLAW_SSH_PUBLIC_KEY
-            path: id_ed25519.pub
-        advancedMounts:
-          openclaw:
-            setup-ssh:
-              - path: /tmp/ssh-keys
                 readOnly: true
