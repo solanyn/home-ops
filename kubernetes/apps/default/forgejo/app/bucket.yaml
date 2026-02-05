@@ -1,10 +1,9 @@
----
 apiVersion: garage.crossplane.io/v1alpha1
 kind: Bucket
 metadata:
-  name: gitlab
+  name: forgejo
 spec:
   forProvider:
-    globalAlias: gitlab
+    globalAlias: forgejo
   providerConfigRef:
     name: default
