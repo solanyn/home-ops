@@ -52,15 +52,15 @@ spec:
 
         cache:
           ADAPTER: redis
-          HOST: redis://dragonfly.storage.svc.cluster.local:6379/0
+          HOST: redis://redis.storage.svc.cluster.local:6379/0
 
         session:
           PROVIDER: redis
-          PROVIDER_CONFIG: redis://dragonfly.storage.svc.cluster.local:6379/2
+          PROVIDER_CONFIG: redis://redis.storage.svc.cluster.local:6379/2
 
         queue:
           TYPE: redis
-          CONN_STR: redis://dragonfly.storage.svc.cluster.local:6379/1
+          CONN_STR: redis://redis.storage.svc.cluster.local:6379/1
 
         indexer:
           ISSUE_INDEXER_TYPE: db
