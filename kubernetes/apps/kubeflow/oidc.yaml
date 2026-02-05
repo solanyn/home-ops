@@ -5,6 +5,7 @@ metadata:
   name: kubeflow
   namespace: kubeflow
 spec:
+  clientID: kubeflow
   callbackUrls:
     - https://kubeflow.goyangi.io/oauth2/callback
   logoutCallbackUrls:

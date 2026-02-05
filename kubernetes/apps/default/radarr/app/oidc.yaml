@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: radarr
 spec:
+  clientID: radarr
   callbackUrls:
     - https://radarr.goyangi.io/oauth2/callback
   logoutCallbackUrls:

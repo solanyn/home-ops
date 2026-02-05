@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: bazarr
 spec:
+  clientID: bazarr
   callbackUrls:
     - https://bazarr.goyangi.io/oauth2/callback
   logoutCallbackUrls:
