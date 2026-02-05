@@ -5,6 +5,8 @@ metadata:
   name: forgejo
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/volsync
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage
@@ -21,6 +23,7 @@ spec:
   postBuild:
     substitute:
       APP: forgejo
+      VOLSYNC_CAPACITY: 10Gi
   prune: true
   sourceRef:
     kind: GitRepository

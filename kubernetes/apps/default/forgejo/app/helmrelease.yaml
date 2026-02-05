@@ -1,23 +1,23 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: forgejo
 spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: forgejo
-      version: "5.x"
-      sourceRef:
-        kind: HelmRepository
-        name: forgejo
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: forgejo
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
   values:
     replicaCount: 1
-
-    image:
-      repository: codeberg.org/forgejo/forgejo
-      tag: latest
-      pullPolicy: IfNotPresent
 
     service:
       http:
@@ -26,128 +26,102 @@ spec:
       ssh:
         type: LoadBalancer
         port: 22
-        externalIPs:
-          - 192.168.222.125
+        annotations:
+          lbipam.cilium.io/ips: 192.168.69.125
 
     ingress:
       enabled: false
 
-    forgejo:
+    gitea:
       admin:
         existingSecret: forgejo-secret
-        username: admin
 
-      server:
-        HTTP_ADDR: "0.0.0.0"
-        HTTP_PORT: 3000
-        ROOT_URL: "https://forgejo.goyangi.io/"
-        DOMAIN: "forgejo.goyangi.io"
-        SSH_DOMAIN: "ssh.forgejo.goyangi.io"
-        SSH_PORT: 22
-        SSH_LISTEN_HOST: "0.0.0.0"
-        SSH_LISTEN_PORT: 22
-        LANDING_PAGE: "explore"
-        DISABLE_REGISTRATION: "true"
-        ENABLE_PUSH_CREATE_USER: "false"
+      config:
+        server:
+          ROOT_URL: https://forgejo.goyangi.io/
+          DOMAIN: forgejo.goyangi.io
+          SSH_DOMAIN: forgejo.goyangi.io
+          SSH_PORT: 22
+          LANDING_PAGE: explore
 
-      database:
-        DB_TYPE: "postgres"
-        HOST: postgres-rw.storage.svc.cluster.local:5432
-        NAME: "forgejo"
-        USER: "forgejo"
-        PASSWD: ""
-        SSL_MODE: "disable"
-        SCHEMA: "public"
+        database:
+          DB_TYPE: postgres
+          HOST: postgres-rw.storage.svc.cluster.local:5432
+          NAME: forgejo
+          SSL_MODE: disable
 
-      cache:
-        ADAPTER: "redis"
-        HOST: "dragonfly.storage.svc.cluster.local:6379"
-        DB: "0"
+        cache:
+          ADAPTER: redis
+          HOST: redis://dragonfly.storage.svc.cluster.local:6379/0
 
-      session:
-        PROVIDER: "redis"
-        PROVIDER_CONFIG: "dragonfly.storage.svc.cluster.local:6379/2"
+        session:
+          PROVIDER: redis
+          PROVIDER_CONFIG: redis://dragonfly.storage.svc.cluster.local:6379/2
 
-      queue:
-        TYPE: "redis"
+        queue:
+          TYPE: redis
+          CONN_STR: redis://dragonfly.storage.svc.cluster.local:6379/1
 
-      indexer:
-        ISSUE_INDEXER_TYPE: "db"
+        indexer:
+          ISSUE_INDEXER_TYPE: db
 
-      storage:
-        STORAGE_TYPE: "s3"
-        S3_ENDPOINT: "garage.storage.svc.cluster.local:3900"
-        S3_ACCESS_KEY_ID: ""
-        S3_SECRET_ACCESS_KEY: ""
-        S3_BUCKET: "forgejo"
-        S3_REGION: "garage"
-        S3_PATH_PREFIX: ""
-        S3_USE_PATH_STYLE: "true"
-        S3_SKIP_TLS_VERIFY: "true"
+        storage:
+          STORAGE_TYPE: minio
+          MINIO_ENDPOINT: garage.storage.svc.cluster.local:3900
+          MINIO_BUCKET: forgejo
+          MINIO_LOCATION: garage
+          MINIO_USE_SSL: false
 
-      auth:
-        DISABLE_REGISTRATION: "true"
+        mailer:
+          ENABLED: true
+          PROTOCOL: smtp
+          SMTP_ADDR: smtp-relay.network.svc.cluster.local
+          SMTP_PORT: 25
+          FROM: noreply@goyangi.io
 
-      openid:
-        ENABLE_OPENID_SIGNIN: "true"
-        ENABLE_OPENID_SIGNUP: "true"
-        WHITELISTED_URIS: ""
+        openid:
+          ENABLE_OPENID_SIGNIN: true
+          ENABLE_OPENID_SIGNUP: false
 
-      mailer:
-        ENABLED: "true"
-        PROTOCOL: "smtp"
-        SMTP_ADDR: "smtp-relay.network.svc.cluster.local"
-        SMTP_PORT: "25"
-        FROM: "noreply@goyangi.io"
-        USER: ""
-        PASSWD: ""
+        service:
+          DISABLE_REGISTRATION: true
+
+      additionalConfigFromEnvs:
+        - name: GITEA__database__USER
+          valueFrom:
+            secretKeyRef:
+              name: forgejo-secret
+              key: GITEA__database__USER
+        - name: GITEA__database__PASSWD
+          valueFrom:
+            secretKeyRef:
+              name: forgejo-secret
+              key: GITEA__database__PASSWD
+        - name: GITEA__storage__MINIO_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: forgejo-secret
+              key: GITEA__storage__MINIO_ACCESS_KEY_ID
+        - name: GITEA__storage__MINIO_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: forgejo-secret
+              key: GITEA__storage__MINIO_SECRET_ACCESS_KEY
 
     postgresql:
       enabled: false
 
-    redis:
-      enabled: false
-
-    memcached:
+    redis-cluster:
       enabled: false
 
     persistence:
       enabled: true
-      size: 10Gi
-      storageClassName: ceph-block
-      mount: /data
-
-    securityContext:
-      runAsNonRoot: true
-      runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
-      fsGroupChangePolicy: OnRootMismatch
-      seccompProfile:
-        type: RuntimeDefault
-      capabilities:
-        drop:
-          - ALL
-        add:
-          - SYS_CHROOT
-
-    containerSecurityContext:
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: false
-      capabilities:
-        drop:
-          - ALL
-        add:
-          - SYS_CHROOT
+      create: false
+      claimName: forgejo
 
     resources:
       requests:
         cpu: 10m
         memory: 256Mi
       limits:
-        memory: 2Gi
-
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
+        memory: 1Gi

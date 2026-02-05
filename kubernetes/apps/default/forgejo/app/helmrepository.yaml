@@ -1,7 +1,0 @@
-apiVersion: source.toolkit.fluxcd.io/v1beta1
-kind: HelmRepository
-metadata:
-  name: forgejo
-spec:
-  interval: 1h
-  url: https://codeberg.org/forgejo/helm/raw/branch/main
