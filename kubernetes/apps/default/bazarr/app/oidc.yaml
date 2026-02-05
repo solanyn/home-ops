@@ -12,3 +12,5 @@ spec:
     - name: admin
   secret:
     name: bazarr-oidc
+    keys:
+      clientSecret: client-secret

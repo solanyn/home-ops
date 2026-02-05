@@ -12,3 +12,5 @@ spec:
     - name: admin
   secret:
     name: opencode-oidc
+    keys:
+      clientSecret: client-secret
