@@ -18,6 +18,7 @@ resources:
   - ./booktree/ks.yaml
   - ./ersatztv/ks.yaml
   - ./flaresolverr/ks.yaml
+  - ./forgejo/ks.yaml
   - ./fusion/ks.yaml
   - ./go2rtc/ks.yaml
   - ./home-assistant/ks.yaml

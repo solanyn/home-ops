@@ -1,27 +1,28 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: gitlab
+  name: forgejo
 spec:
-  targetNamespace: gitlab
+  targetNamespace: default
   components:
     - ../../../../components/volsync
   dependsOn:
-    - name: pocket-id-resources
-      namespace: default
     - name: cloudnative-pg-cluster
       namespace: storage
+    - name: crossplane-configs
+      namespace: crossplane-system
     - name: dragonfly
       namespace: storage
     - name: garage
       namespace: storage
+    - name: pocket-id-resources
+      namespace: default
   interval: 1h
-  path: ./kubernetes/apps/gitlab/gitlab/app
+  path: ./kubernetes/apps/default/forgejo/app
   postBuild:
     substitute:
-      APP: gitlab
+      APP: forgejo
       VOLSYNC_CAPACITY: 10Gi
   prune: true
   sourceRef:

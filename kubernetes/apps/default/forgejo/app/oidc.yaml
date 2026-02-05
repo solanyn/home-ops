@@ -2,14 +2,14 @@
 apiVersion: pocketid.internal/v1alpha1
 kind: PocketIDOIDCClient
 metadata:
-  name: gitlab
+  name: forgejo
 spec:
+  clientID: forgejo
   callbackUrls:
-    - https://gitlab.goyangi.io/users/auth/openid_connect/callback
+    - https://forgejo.goyangi.io/user/oauth2/oidc/callback
   logoutCallbackUrls:
-    - https://gitlab.goyangi.io
+    - https://forgejo.goyangi.io
   allowedUserGroups:
     - name: admin
-      namespace: default
   secret:
-    name: gitlab-oidc
+    name: forgejo-oidc
