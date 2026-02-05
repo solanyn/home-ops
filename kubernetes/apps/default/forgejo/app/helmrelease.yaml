@@ -69,7 +69,7 @@ spec:
           STORAGE_TYPE: minio
           MINIO_ENDPOINT: garage.storage.svc.cluster.local:3900
           MINIO_BUCKET: forgejo
-          MINIO_LOCATION: garage
+          MINIO_LOCATION: us-east-1
           MINIO_USE_SSL: false
 
         mailer:
