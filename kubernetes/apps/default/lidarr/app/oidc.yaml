@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: lidarr
 spec:
+  clientID: lidarr
   callbackUrls:
     - https://lidarr.goyangi.io/oauth2/callback
   logoutCallbackUrls:

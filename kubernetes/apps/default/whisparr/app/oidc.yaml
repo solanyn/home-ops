@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: whisparr
 spec:
+  clientID: whisparr
   callbackUrls:
     - https://whisparr.goyangi.io/oauth2/callback
   logoutCallbackUrls:
