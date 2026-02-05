@@ -12,3 +12,5 @@ spec:
     - name: admin
   secret:
     name: stash-oidc
+    keys:
+      clientSecret: client-secret

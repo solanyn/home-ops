@@ -12,3 +12,5 @@ spec:
     - name: admin
   secret:
     name: lidarr-oidc
+    keys:
+      clientSecret: client-secret
