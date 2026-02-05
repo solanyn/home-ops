@@ -11,6 +11,7 @@ spec:
     - https://radarr.goyangi.io
   allowedUserGroups:
     - name: user
+    - name: admin
   secret:
     name: radarr-oidc
     keys:
