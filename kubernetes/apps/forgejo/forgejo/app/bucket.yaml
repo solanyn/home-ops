@@ -1,0 +1,9 @@
+apiVersion: s3.garage.io/v1alpha1
+kind: Bucket
+metadata:
+  name: forgejo
+  namespace: forgejo
+spec:
+  forProvider:
+    region: garage
+    globalAlias: forgejo
