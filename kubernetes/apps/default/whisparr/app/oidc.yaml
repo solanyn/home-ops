@@ -12,3 +12,5 @@ spec:
     - name: admin
   secret:
     name: whisparr-oidc
+    keys:
+      clientSecret: client-secret

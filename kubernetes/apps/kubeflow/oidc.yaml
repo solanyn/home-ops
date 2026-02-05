@@ -14,3 +14,5 @@ spec:
       namespace: default
   secret:
     name: kubeflow-oidc
+    keys:
+      clientSecret: client-secret
