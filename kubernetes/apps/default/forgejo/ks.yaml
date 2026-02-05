@@ -1,0 +1,26 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: forgejo
+spec:
+  targetNamespace: default
+  dependsOn:
+    - name: cloudnative-pg-cluster
+      namespace: storage
+    - name: dragonfly
+      namespace: storage
+    - name: garage
+      namespace: storage
+    - name: pocket-id-resources
+      namespace: default
+  interval: 1h
+  path: ./kubernetes/apps/default/forgejo/app
+  prune: true
+  postBuild:
+    substitute:
+      APP: forgejo
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false

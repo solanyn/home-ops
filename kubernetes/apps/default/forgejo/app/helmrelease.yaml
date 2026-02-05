@@ -2,7 +2,6 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: forgejo
-  namespace: forgejo
 spec:
   interval: 30m
   chart:
@@ -12,7 +11,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: forgejo
-        namespace: forgejo
   values:
     replicaCount: 1
 
@@ -38,39 +36,40 @@ spec:
       admin:
         existingSecret: forgejo-secret
         username: admin
+
       server:
         HTTP_ADDR: "0.0.0.0"
         HTTP_PORT: 3000
-        ROOT_URL: "https://forgejo.${SECRET_DOMAIN_INTERNAL}/"
-        DOMAIN: "forgejo.${SECRET_DOMAIN_INTERNAL}"
-        SSH_DOMAIN: "ssh.forgejo.${SECRET_DOMAIN_INTERNAL}"
+        ROOT_URL: "https://forgejo.goyangi.io/"
+        DOMAIN: "forgejo.goyangi.io"
+        SSH_DOMAIN: "ssh.forgejo.goyangi.io"
         SSH_PORT: 22
         SSH_LISTEN_HOST: "0.0.0.0"
         SSH_LISTEN_PORT: 22
         LANDING_PAGE: "explore"
+        DISABLE_REGISTRATION: "true"
         ENABLE_PUSH_CREATE_USER: "false"
-        ENABLE_PUSH_CREATE_ORG: "false"
 
       database:
         DB_TYPE: "postgres"
-        HOST: "postgres-rw.storage.svc.cluster.local:5432"
+        HOST: postgres-rw.storage.svc.cluster.local:5432
         NAME: "forgejo"
         USER: "forgejo"
         PASSWD: ""
         SSL_MODE: "disable"
+        SCHEMA: "public"
 
       cache:
         ADAPTER: "redis"
         HOST: "dragonfly.storage.svc.cluster.local:6379"
         DB: "0"
 
-      queue:
-        TYPE: "redis"
-        CONN_STR: ""
-
       session:
         PROVIDER: "redis"
-        PROVIDER_CONFIG: "dragonfly.storage.svc.cluster.local:6379/1"
+        PROVIDER_CONFIG: "dragonfly.storage.svc.cluster.local:6379/2"
+
+      queue:
+        TYPE: "redis"
 
       indexer:
         ISSUE_INDEXER_TYPE: "db"
@@ -86,33 +85,20 @@ spec:
         S3_USE_PATH_STYLE: "true"
         S3_SKIP_TLS_VERIFY: "true"
 
-      oauth2:
-        ENABLED: "true"
+      auth:
+        DISABLE_REGISTRATION: "true"
 
       openid:
         ENABLE_OPENID_SIGNIN: "true"
         ENABLE_OPENID_SIGNUP: "true"
         WHITELISTED_URIS: ""
-        BLACKLISTED_URIS: ""
-
-      auth:
-        AUTH_ACTIVE_REG_EMAIL_CONFIRMATION: "false"
-        AUTH_REQUIRE_EMAIL_CONFIRMATION: "false"
-        AUTH_DISABLE_REGISTRATION: "true"
-
-      service:
-        ACTIVE_CODE_LIVE_MINUTES: "180"
-        RESET_PASSWD_CODE_LIVE_MINUTES: "180"
-        REGISTER_EMAIL_CONFIRM: "false"
-        ENABLE_NOTIFY_MAIL: "false"
-        ALLOW_ONLY_INTERNAL_REGISTRATION: "false"
 
       mailer:
         ENABLED: "true"
         PROTOCOL: "smtp"
         SMTP_ADDR: "smtp-relay.network.svc.cluster.local"
         SMTP_PORT: "25"
-        FROM: "noreply@${SECRET_DOMAIN}"
+        FROM: "noreply@goyangi.io"
         USER: ""
         PASSWD: ""
 
@@ -120,9 +106,6 @@ spec:
       enabled: false
 
     redis:
-      enabled: false
-
-    gitea:
       enabled: false
 
     memcached:
@@ -135,12 +118,36 @@ spec:
       mount: /data
 
     securityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+      seccompProfile:
+        type: RuntimeDefault
       capabilities:
+        drop:
+          - ALL
         add:
           - SYS_CHROOT
+
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: false
+      capabilities:
+        drop:
+          - ALL
+        add:
+          - SYS_CHROOT
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 256Mi
+      limits:
+        memory: 2Gi
 
     metrics:
       enabled: true
       serviceMonitor:
         enabled: true
-        namespace: forgejo
