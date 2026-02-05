@@ -12,3 +12,5 @@ spec:
     - name: user
   secret:
     name: radarr-oidc
+    keys:
+      clientSecret: client-secret

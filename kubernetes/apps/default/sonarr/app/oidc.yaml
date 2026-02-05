@@ -12,3 +12,5 @@ spec:
     - name: user
   secret:
     name: sonarr-oidc
+    keys:
+      clientSecret: client-secret
