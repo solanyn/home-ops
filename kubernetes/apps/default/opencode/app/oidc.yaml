@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: opencode
 spec:
+  clientID: opencode
   callbackUrls:
     - https://opencode.goyangi.io/oauth2/callback
   logoutCallbackUrls:

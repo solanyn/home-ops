@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: stash
 spec:
+  clientID: stash
   callbackUrls:
     - https://stash.goyangi.io/oauth2/callback
   logoutCallbackUrls:
