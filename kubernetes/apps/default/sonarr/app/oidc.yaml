@@ -11,6 +11,7 @@ spec:
     - https://sonarr.goyangi.io
   allowedUserGroups:
     - name: user
+    - name: admin
   secret:
     name: sonarr-oidc
     keys:
