@@ -1,0 +1,42 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: kubeflow
+  namespace: kubeflow
+spec:
+  oidc:
+    clientID: kubeflow
+    clientSecret:
+      name: kubeflow-oidc
+    logoutPath: /logout
+    provider:
+      issuer: https://id.goyangi.io/
+    redirectURL: https://kubeflow.goyangi.io/oauth2/callback
+    refreshToken: true
+    scopes:
+      - openid
+      - profile
+      - email
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: central-dashboard
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: katib
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: notebooks
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: pipelines
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: profiles
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: tensorboard
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: volumes-web-app
