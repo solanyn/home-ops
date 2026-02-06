@@ -8,6 +8,8 @@ metadata:
 spec:
   targetNamespace: kubeflow
   dependsOn:
+    - name: mariadb-cluster
+      namespace: storage
     - name: crossplane-configs
       namespace: crossplane-system
   interval: 1h
