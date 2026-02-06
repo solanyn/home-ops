@@ -7,6 +7,9 @@ metadata:
   namespace: kubeflow
 spec:
   targetNamespace: kubeflow
+  dependsOn:
+    - name: mariadb-cluster
+      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/kubeflow/metadata/app
   prune: true
