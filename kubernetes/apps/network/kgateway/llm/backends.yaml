@@ -23,7 +23,7 @@ spec:
       - providers:
           - name: kiro
             openai:
-              model: claude-opus-4-20250115
+              model: claude-opus-4.5
             host: mac.internal
             port: 8001
             policies:
@@ -75,7 +75,7 @@ spec:
       - providers:
           - name: kiro
             openai:
-              model: claude-opus-4-20250115
+              model: claude-opus-4.5
             host: mac.internal
             port: 8001
             policies:
@@ -125,7 +125,7 @@ spec:
       - providers:
           - name: kiro-gateway
             openai:
-              model: claude-opus-4-20250115
+              model: claude-opus-4.5
             host: mac.internal
             port: 8001
             policies:
@@ -191,7 +191,7 @@ spec:
       - providers:
           - name: kiro
             openai:
-              model: claude-opus-4-20250115
+              model: claude-opus-4.5
             host: mac.internal
             port: 8001
             policies:
