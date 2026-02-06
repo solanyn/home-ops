@@ -21,6 +21,13 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
+            env: &oidcEnv
+              DISABLE_USERPASS_LOGIN: "true"
+              OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: romm-oidc
+                    key: client_secret
         containers:
           app:
             image:

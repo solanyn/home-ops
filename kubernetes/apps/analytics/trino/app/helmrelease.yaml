@@ -35,6 +35,12 @@ spec:
     envFrom:
       - secretRef:
           name: trino-secret
+    env:
+      TRINO_CLIENT_SECRET:
+        valueFrom:
+          secretKeyRef:
+            name: trino-oidc
+            key: client_secret
     serviceMonitor:
       enabled: true
     catalogs:
