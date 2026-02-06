@@ -86,6 +86,10 @@ spec:
         service:
           DISABLE_REGISTRATION: true
 
+        git.config:
+          http.${GITLAB_MIRROR_URL}/.sslCert: /gitlab-certs/client.crt
+          http.${GITLAB_MIRROR_URL}/.sslKey: /gitlab-certs/client.key
+
       additionalConfigFromEnvs:
         - name: GITEA__database__USER
           valueFrom:
@@ -118,6 +122,19 @@ spec:
       enabled: true
       create: false
       claimName: forgejo
+      additionalVolumes:
+        - name: gitlab-certs
+          secret:
+            secretName: forgejo-secret
+            items:
+              - key: client.crt
+                path: client.crt
+              - key: client.key
+                path: client.key
+      additionalVolumeMounts:
+        - name: gitlab-certs
+          mountPath: /gitlab-certs
+          readOnly: true
 
     resources:
       requests:
