@@ -86,9 +86,8 @@ spec:
         service:
           DISABLE_REGISTRATION: true
 
-        git.config:
-          http.${GITLAB_MIRROR_URL}/.sslCert: /gitlab-certs/client.crt
-          http.${GITLAB_MIRROR_URL}/.sslKey: /gitlab-certs/client.key
+        # git.config with URL-based keys moved to lifecycle postStart
+        # to avoid env var conversion issues
 
       additionalConfigFromEnvs:
         - name: GITEA__database__USER
