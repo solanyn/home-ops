@@ -59,7 +59,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /v1/stt
+            value: /v1/audio/transcriptions
       backendRefs:
         - name: mlx-stt
           group: agentgateway.dev
@@ -191,13 +191,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /v1/tts
-      filters:
-        - type: URLRewrite
-          urlRewrite:
-            path:
-              type: ReplacePrefixMatch
-              replacePrefixMatch: /v1
+            value: /v1/audio/speech
       backendRefs:
         - name: mlx-tts
           group: agentgateway.dev
