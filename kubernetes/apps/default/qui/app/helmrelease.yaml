@@ -24,15 +24,14 @@ spec:
               QUI__PORT: &port 80
               QUI__LOG_LEVEL: INFO
               TZ: Australia/Sydney
-            envFrom:
-              - secretRef:
-                  name: "{{ .Release.Name }}-secret"
-            env:
               QUI__OIDC__CLIENT_SECRET:
                 valueFrom:
                   secretKeyRef:
                     name: qui-oidc
                     key: client_secret
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
