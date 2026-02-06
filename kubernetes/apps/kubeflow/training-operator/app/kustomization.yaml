@@ -1,14 +1,19 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: kubeflow
 resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
   - ./rbac.yaml
   - ./certificate.yaml
-  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/training-operator/upstream/base/crds/kubeflow.org_jaxjobs.yaml
-  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/training-operator/upstream/base/crds/kubeflow.org_mpijobs.yaml
-  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/training-operator/upstream/base/crds/kubeflow.org_paddlejobs.yaml
-  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/training-operator/upstream/base/crds/kubeflow.org_pytorchjobs.yaml
-  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/training-operator/upstream/base/crds/kubeflow.org_tfjobs.yaml
-  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/training-operator/upstream/base/crds/kubeflow.org_xgboostjobs.yaml
+  # renovate: datasource=github-tags depName=kubeflow/training-operator
+  - https://raw.githubusercontent.com/kubeflow/training-operator/v1.9.3/manifests/base/crds/kubeflow.org_jaxjobs.yaml
+  # renovate: datasource=github-tags depName=kubeflow/training-operator
+  - https://raw.githubusercontent.com/kubeflow/training-operator/v1.9.3/manifests/base/crds/kubeflow.org_mpijobs.yaml
+  # renovate: datasource=github-tags depName=kubeflow/training-operator
+  - https://raw.githubusercontent.com/kubeflow/training-operator/v1.9.3/manifests/base/crds/kubeflow.org_paddlejobs.yaml
+  # renovate: datasource=github-tags depName=kubeflow/training-operator
+  - https://raw.githubusercontent.com/kubeflow/training-operator/v1.9.3/manifests/base/crds/kubeflow.org_pytorchjobs.yaml
+  # renovate: datasource=github-tags depName=kubeflow/training-operator
+  - https://raw.githubusercontent.com/kubeflow/training-operator/v1.9.3/manifests/base/crds/kubeflow.org_tfjobs.yaml
+  # renovate: datasource=github-tags depName=kubeflow/training-operator
+  - https://raw.githubusercontent.com/kubeflow/training-operator/v1.9.3/manifests/base/crds/kubeflow.org_xgboostjobs.yaml

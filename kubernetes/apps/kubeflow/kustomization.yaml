@@ -9,10 +9,7 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./externalsecret.yaml
-  - ./oidc.yaml
-  - ./securitypolicy.yaml
-  - ./mariadb-databases.yaml
+  - ./auth/ks.yaml
   - ./admission-webhook/ks.yaml
   - ./profiles/ks.yaml
   - ./central-dashboard/ks.yaml
