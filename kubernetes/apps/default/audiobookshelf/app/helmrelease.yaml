@@ -23,9 +23,26 @@ spec:
               TZ: Australia/Sydney
               PORT: &port 80
               METADATA_PATH: /config/metadata
-            envFrom:
-              - secretRef:
-                  name: audiobookshelf-secret
+            env:
+              OIDC_ISSUER_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: audiobookshelf-oidc
+                    key: issuer_url
+              OIDC_CLIENT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: audiobookshelf-oidc
+                    key: client_id
+              OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: audiobookshelf-oidc
+                    key: client_secret
+              OIDC_BUTTON_TEXT: "Login with Pocket ID"
+              OIDC_AUTO_LAUNCH: "true"
+              OIDC_AUTO_REGISTER: "true"
+              OIDC_MATCH_EXISTING_BY: "email"
             probes:
               liveness: &probes
                 enabled: true

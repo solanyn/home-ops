@@ -21,6 +21,12 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
+            env: &oidcEnv
+              AUTOBRR__OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: autobrr-oidc
+                    key: client_secret
         containers:
           app:
             image:
