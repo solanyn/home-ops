@@ -21,8 +21,7 @@ spec:
               tag: v26.2.0@sha256:b46b2344c11bc67bdd39f320acf1c3bd36bfd77b9ddf250a3884ede9cb1090d5
             env:
               TZ: Australia/Sydney
-              XDG_DATA_HOME: /config # https://github.com/ErsatzTV/ErsatzTV/issues/327
-            env:
+              XDG_DATA_HOME: /config
               OIDC__AUTHORITY: https://id.goyangi.io
               OIDC__CLIENTID: ersatztv
               OIDC__CLIENTSECRET:
