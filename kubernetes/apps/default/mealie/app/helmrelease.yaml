@@ -34,6 +34,11 @@ spec:
               PUID: 1000
               PGID: 1000
               DB_ENGINE: postgres
+              OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: mealie-oidc
+                    key: client_secret
             envFrom: *envFrom
             probes:
               liveness: &probes
