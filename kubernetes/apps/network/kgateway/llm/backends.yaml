@@ -23,7 +23,7 @@ spec:
       - providers:
           - name: kiro
             openai:
-              model: claude-opus-4.5
+              model: claude-opus-4.6
             host: mac.internal
             port: 8001
             policies:
@@ -75,7 +75,7 @@ spec:
       - providers:
           - name: kiro
             openai:
-              model: claude-opus-4.5
+              model: claude-opus-4.6
             host: mac.internal
             port: 8001
             policies:
@@ -125,7 +125,7 @@ spec:
       - providers:
           - name: kiro-gateway
             openai:
-              model: claude-opus-4.5
+              model: claude-opus-4.6
             host: mac.internal
             port: 8001
             policies:
@@ -207,7 +207,7 @@ spec:
       - providers:
           - name: kiro
             openai:
-              model: claude-opus-4.5
+              model: claude-opus-4.6
             host: mac.internal
             port: 8001
             policies:
@@ -232,3 +232,15 @@ spec:
               model: ministral-8b
             host: mac.internal
             port: 8080
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: kokoro-tts
+spec:
+  ai:
+    provider:
+      openai:
+        model: kokoro
+      host: mac.internal
+      port: 8881
