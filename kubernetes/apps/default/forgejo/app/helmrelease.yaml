@@ -127,9 +127,9 @@ spec:
           secret:
             secretName: forgejo-secret
             items:
-              - key: client.crt
+              - key: client_crt
                 path: client.crt
-              - key: client.key
+              - key: client_key
                 path: client.key
       additionalVolumeMounts:
         - name: gitlab-certs
