@@ -187,10 +187,6 @@ metadata:
   name: claude-code
 spec:
   ai:
-    routes:
-      /v1/messages: messages
-      /v1/chat/completions: completions
-      "*": passthrough
     groups:
       - providers:
           - name: moonshot-kimi
