@@ -23,7 +23,6 @@ spec:
               TZ: Australia/Sydney
               PORT: &port 80
               METADATA_PATH: /config/metadata
-            env:
               OIDC_ISSUER_URL:
                 valueFrom:
                   secretKeyRef:
@@ -42,7 +41,7 @@ spec:
               OIDC_BUTTON_TEXT: "Login with Pocket ID"
               OIDC_AUTO_LAUNCH: "true"
               OIDC_AUTO_REGISTER: "true"
-              OIDC_MATCH_EXISTING_BY: "email"
+              OIDC_MATCH_EXISTING_BY: email
             probes:
               liveness: &probes
                 enabled: true

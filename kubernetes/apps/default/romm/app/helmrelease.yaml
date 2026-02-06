@@ -21,13 +21,6 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-            env: &oidcEnv
-              DISABLE_USERPASS_LOGIN: "true"
-              OIDC_CLIENT_SECRET:
-                valueFrom:
-                  secretKeyRef:
-                    name: romm-oidc
-                    key: client_secret
         containers:
           app:
             image:
@@ -42,6 +35,12 @@ spec:
               ROMM_BASE_URL: https://romm.goyangi.io
               DISABLE_DOWNLOAD_ENDPOINT_AUTH: true
               TZ: Australia/Sydney
+              DISABLE_USERPASS_LOGIN: "true"
+              OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: romm-oidc
+                    key: client_secret
             envFrom: *envFrom
             probes:
               liveness: &probes
