@@ -5,7 +5,6 @@ resources:
   - ./externalsecret.yaml
   - ./notion.yaml
   - ./github.yaml
-  - ./grafana.yaml
   - ./flux.yaml
   - ./context7.yaml
   - ./unifi.yaml
