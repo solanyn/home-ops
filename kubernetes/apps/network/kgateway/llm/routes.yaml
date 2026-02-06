@@ -50,7 +50,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: llm-whisper
+  name: llm-stt
 spec:
   parentRefs:
     - name: ai
@@ -59,7 +59,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /v1/whisper
+            value: /v1/stt
       backendRefs:
         - name: mlx-stt
           group: agentgateway.dev
@@ -182,7 +182,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: llm-kokoro-tts
+  name: llm-tts
 spec:
   parentRefs:
     - name: ai
