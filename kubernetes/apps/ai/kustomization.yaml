@@ -9,5 +9,4 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./kagent/ks.yaml
   - ./openclaw/ks.yaml
