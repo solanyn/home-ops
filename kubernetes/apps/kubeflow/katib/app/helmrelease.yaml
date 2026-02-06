@@ -131,6 +131,22 @@ spec:
             port: 80
             targetPort: 8080
 
+    route:
+      katib:
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames:
+          - kubeflow.goyangi.io
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /katib
+            backendRefs:
+              - name: katib-ui
+                port: 80
+
     persistence:
       cert:
         type: secret
