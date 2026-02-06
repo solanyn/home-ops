@@ -24,6 +24,10 @@ spec:
     substitute:
       APP: forgejo
       VOLSYNC_CAPACITY: 10Gi
+    substituteFrom:
+      - kind: Secret
+        name: forgejo-secret
+        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
