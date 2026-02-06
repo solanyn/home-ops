@@ -1,6 +1,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: kubeflow
 resources:
   - ./bucket.yaml
   - ./ocirepository.yaml
@@ -9,7 +8,6 @@ resources:
   - ./externalsecret.yaml
   - ./httproute.yaml
   - ./database.yaml
-  # Core KFP resources from upstream source repo
   # renovate: datasource=github-tags depName=kubeflow/pipelines versioning=semver
   - https://raw.githubusercontent.com/kubeflow/pipelines/sdk-2.15.2/manifests/kustomize/base/crds/pipelines.kubeflow.org_pipelines.yaml
   # renovate: datasource=github-tags depName=kubeflow/pipelines versioning=semver
