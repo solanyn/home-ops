@@ -46,7 +46,6 @@ resources:
   - ./sonarr/ks.yaml
   - ./stash/ks.yaml
   - ./tautulli/ks.yaml
-  - ./termix/ks.yaml
   - ./thelounge/ks.yaml
   - ./whisparr/ks.yaml
   - ./notifier/ks.yaml
