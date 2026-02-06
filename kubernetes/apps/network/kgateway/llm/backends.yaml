@@ -111,9 +111,9 @@ spec:
   ai:
     provider:
       openai:
-        model: whisper-small
+        model: mlx-community/parakeet-tdt-0.6b-v3
       host: mac.internal
-      port: 8081
+      port: 8000
 ---
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
@@ -241,6 +241,6 @@ spec:
   ai:
     provider:
       openai:
-        model: kokoro
+        model: mlx-community/Kokoro-82M-bf16
       host: mac.internal
-      port: 8881
+      port: 8000
