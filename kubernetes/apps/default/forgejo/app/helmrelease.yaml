@@ -125,11 +125,11 @@ spec:
       additionalVolumes:
         - name: gitlab-certs
           secret:
-            secretName: forgejo-secret
+            secretName: forgejo-gitlab-mirror-secret
             items:
-              - key: client_crt
+              - key: client.crt
                 path: client.crt
-              - key: client_key
+              - key: client.key
                 path: client.key
       additionalVolumeMounts:
         - name: gitlab-certs
