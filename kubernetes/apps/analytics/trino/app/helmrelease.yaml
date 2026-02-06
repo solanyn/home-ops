@@ -36,7 +36,7 @@ spec:
       - secretRef:
           name: trino-secret
     env:
-      TRINO_CLIENT_SECRET:
+      - name: TRINO_CLIENT_SECRET
         valueFrom:
           secretKeyRef:
             name: trino-oidc
