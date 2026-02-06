@@ -28,7 +28,7 @@ spec:
     - name: SMTP_PORT
       value: "25"
     - name: SMTP_FROM
-      value: pocket-id@goyangi.io
+      value: noreply@goyangi.io
     - name: SMTP_TLS
       value: "none"
   persistence:
