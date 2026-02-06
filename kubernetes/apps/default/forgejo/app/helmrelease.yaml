@@ -121,29 +121,31 @@ spec:
       enabled: true
       create: false
       claimName: forgejo
-      additionalVolumes:
-        - name: gitlab-certs
-          secret:
-            secretName: forgejo-gitlab-mirror-secret
-            items:
-              - key: client.crt
-                path: client.crt
-              - key: client.key
-                path: client.key
-        - name: gitconfig
-          secret:
-            secretName: forgejo-secret
-            items:
-              - key: gitconfig
-                path: .gitconfig
-      additionalVolumeMounts:
-        - name: gitlab-certs
-          mountPath: /gitlab-certs
-          readOnly: true
-        - name: gitconfig
-          mountPath: /data/git/.gitconfig
-          subPath: .gitconfig
-          readOnly: true
+
+    extraVolumes:
+      - name: gitlab-certs
+        secret:
+          secretName: forgejo-gitlab-mirror-secret
+          items:
+            - key: client.crt
+              path: client.crt
+            - key: client.key
+              path: client.key
+      - name: gitconfig
+        secret:
+          secretName: forgejo-secret
+          items:
+            - key: gitconfig
+              path: .gitconfig
+
+    extraContainerVolumeMounts:
+      - name: gitlab-certs
+        mountPath: /gitlab-certs
+        readOnly: true
+      - name: gitconfig
+        mountPath: /data/git/.gitconfig
+        subPath: .gitconfig
+        readOnly: true
 
     resources:
       requests:
