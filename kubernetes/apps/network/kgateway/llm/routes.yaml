@@ -61,7 +61,7 @@ spec:
             type: PathPrefix
             value: /v1/whisper
       backendRefs:
-        - name: mlx-whisper
+        - name: mlx-stt
           group: agentgateway.dev
           kind: AgentgatewayBackend
 ---
@@ -199,6 +199,6 @@ spec:
               type: ReplacePrefixMatch
               replacePrefixMatch: /v1
       backendRefs:
-        - name: kokoro-tts
+        - name: mlx-tts
           group: agentgateway.dev
           kind: AgentgatewayBackend

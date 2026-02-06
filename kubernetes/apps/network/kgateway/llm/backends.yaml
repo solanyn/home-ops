@@ -106,7 +106,7 @@ spec:
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: mlx-whisper
+  name: mlx-stt
 spec:
   ai:
     provider:
@@ -236,7 +236,7 @@ spec:
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: kokoro-tts
+  name: mlx-tts
 spec:
   ai:
     provider:
