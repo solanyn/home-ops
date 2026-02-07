@@ -22,8 +22,8 @@ spec:
     name: mariadb
     namespace: storage
   passwordSecretKeyRef:
-    name: ml-pipeline-db-secret
-    key: password
+    name: ml-pipeline-secret
+    key: DBCONFIG_PASSWORD
   maxUserConnections: 20
 ---
 apiVersion: k8s.mariadb.com/v1alpha1
