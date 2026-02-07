@@ -62,6 +62,9 @@ spec:
                   httpGet:
                     path: /healthz
                     port: 5000
+                    httpHeaders:
+                      - name: X-Remote-User
+                        value: healthcheck
                   initialDelaySeconds: 30
                   periodSeconds: 30
             securityContext:
