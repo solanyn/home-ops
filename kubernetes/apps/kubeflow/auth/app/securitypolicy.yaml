@@ -9,6 +9,11 @@ spec:
     clientID: kubeflow
     clientSecret:
       name: kubeflow-oidc
+    cookieNames:
+      accessToken: kubeflow-access-token
+      idToken: kubeflow-id-token
+    disableTokenEncryption: true
+    forwardAccessToken: true
     logoutPath: /logout
     provider:
       issuer: https://id.goyangi.io/
@@ -18,6 +23,17 @@ spec:
       - openid
       - profile
       - email
+  jwt:
+    providers:
+      - name: pocket-id
+        issuer: https://id.goyangi.io/
+        audiences:
+          - kubeflow
+        remoteJWKS:
+          uri: https://id.goyangi.io/.well-known/jwks.json
+        claimToHeaders:
+          - claim: email
+            header: X-Remote-User
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
