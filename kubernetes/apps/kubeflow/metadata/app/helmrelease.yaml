@@ -48,7 +48,7 @@ spec:
                     name: metadata-db-secret
                     key: password
               - name: MYSQL_DATABASE
-                value: metadb
+                value: kubeflow_metadata
               - name: MYSQL_HOST
                 value: mariadb.storage.svc.cluster.local
               - name: MYSQL_PORT
