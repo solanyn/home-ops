@@ -61,8 +61,10 @@ spec:
       gitlab-proxy:
         controller: gitlab-proxy
         type: LoadBalancer
+        ipFamilies: [IPv4, IPv6]
+        ipFamilyPolicy: PreferDualStack
         annotations:
-          lbipam.cilium.io/ips: 192.168.69.126
+          lbipam.cilium.io/ips: 192.168.69.127,fd5d:a293:f321:69::127
         ports:
           https:
             port: 443
