@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: grafana
 spec:
+  clientID: grafana
   callbackUrls:
     - https://grafana.goyangi.io/login/generic_oauth
   logoutCallbackUrls:

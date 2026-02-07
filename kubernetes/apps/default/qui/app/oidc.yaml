@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: qui
 spec:
+  clientID: qui
   callbackUrls:
     - https://qui.goyangi.io/api/auth/oidc/callback
   logoutCallbackUrls:

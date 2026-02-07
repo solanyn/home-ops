@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: sftpgo
 spec:
+  clientID: sftpgo
   callbackUrls:
     - https://sftpgo.goyangi.io/web/oidc/callback
   logoutCallbackUrls:
