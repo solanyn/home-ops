@@ -19,7 +19,7 @@ spec:
   values:
     global:
       hostAliases:
-        - ip: "192.168.69.126"
+        - ip: "192.168.69.127"
           hostnames:
             - "${GITLAB_MIRROR_HOST:=gitlab-proxy}"
 
@@ -35,9 +35,11 @@ spec:
         port: 3000
       ssh:
         type: LoadBalancer
+        ipFamilies: [IPv4, IPv6]
+        ipFamilyPolicy: PreferDualStack
         port: 22
         annotations:
-          lbipam.cilium.io/ips: 192.168.69.125
+          lbipam.cilium.io/ips: 192.168.69.125,fd5d:a293:f321:69::125
 
     ingress:
       enabled: false
