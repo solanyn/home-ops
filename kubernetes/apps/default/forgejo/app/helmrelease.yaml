@@ -145,7 +145,7 @@ spec:
 
     extraContainerVolumeMounts:
       - name: gitconfig
-        mountPath: /data/git/.gitconfig
+        mountPath: /data/gitea/git/.gitconfig
         subPath: .gitconfig
         readOnly: true
 
