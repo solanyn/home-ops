@@ -28,6 +28,9 @@ spec:
       - kind: Secret
         name: forgejo-secret
         optional: true
+      - kind: Secret
+        name: forgejo-oidc
+        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
