@@ -89,7 +89,8 @@ spec:
       oauth:
         - name: "Pocket ID"
           provider: openidConnect
-          existingSecret: forgejo-oauth-secret
+          key: "${client_id}"
+          secret: "${client_secret}"
           autoDiscoverUrl: https://id.goyangi.io/.well-known/openid-configuration
           scopes: openid profile email groups
 
