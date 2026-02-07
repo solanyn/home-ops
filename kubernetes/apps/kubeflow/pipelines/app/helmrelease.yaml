@@ -122,6 +122,7 @@ spec:
 
     service:
       apiserver:
+        forceRename: ml-pipeline
         controller: apiserver
         ports:
           http:
