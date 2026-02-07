@@ -38,23 +38,20 @@ spec:
     configMaps:
       config:
         data:
-          nginx.conf: |
-            events {}
-            http {
-              resolver kube-dns.kube-system.svc.cluster.local valid=5s;
-              server {
-                listen 443 ssl;
-                ssl_certificate /certs/tls.crt;
-                ssl_certificate_key /certs/tls.key;
+          default.conf.template: |
+            resolver kube-dns.kube-system.svc.cluster.local valid=5s;
+            server {
+              listen 443 ssl;
+              ssl_certificate /certs/tls.crt;
+              ssl_certificate_key /certs/tls.key;
 
-                location / {
-                  proxy_pass ${GITLAB_URL};
-                  proxy_ssl_certificate /client-certs/client.crt;
-                  proxy_ssl_certificate_key /client-certs/client.key;
-                  proxy_ssl_verify off;
-                  proxy_ssl_server_name on;
-                  proxy_set_header Host $proxy_host;
-                }
+              location / {
+                proxy_pass ${GITLAB_URL};
+                proxy_ssl_certificate /client-certs/client.crt;
+                proxy_ssl_certificate_key /client-certs/client.key;
+                proxy_ssl_verify off;
+                proxy_ssl_server_name on;
+                proxy_set_header Host $proxy_host;
               }
             }
 
@@ -70,8 +67,8 @@ spec:
         type: configMap
         name: gitlab-proxy
         globalMounts:
-          - path: /etc/nginx/templates/nginx.conf.template
-            subPath: nginx.conf
+          - path: /etc/nginx/templates/default.conf.template
+            subPath: default.conf.template
       server-certs:
         type: secret
         name: gitlab-proxy-tls
