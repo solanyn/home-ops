@@ -30,7 +30,7 @@ spec:
             env:
               USERID_HEADER: X-Remote-User
               USERID_PREFIX: ""
-              PROFILES_KFAM_SERVICE_HOST: profiles-kfam.kubeflow
+              PROFILES_KFAM_SERVICE_HOST: profiles.kubeflow
               REGISTRATION_FLOW: "false"
               DASHBOARD_CONFIGMAP: centraldashboard-config
               LOGOUT_URL: /oauth2/sign_out
