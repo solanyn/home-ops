@@ -6,6 +6,8 @@ metadata:
 spec:
   kanidmRef:
     name: kanidm
+  members:
+    - ${KANIDM_USER1_ID}
   accountPolicy:
     credentialTypeMinimum: passkey
 ---
@@ -16,5 +18,7 @@ metadata:
 spec:
   kanidmRef:
     name: kanidm
+  members:
+    - ${KANIDM_USER1_ID}
   accountPolicy:
     credentialTypeMinimum: passkey
