@@ -65,6 +65,9 @@ spec:
         indexer:
           ISSUE_INDEXER_TYPE: db
 
+        migrations:
+          ALLOW_LOCALNETWORKS: true
+
         storage:
           STORAGE_TYPE: minio
           MINIO_ENDPOINT: garage.storage.svc.cluster.local:3900
