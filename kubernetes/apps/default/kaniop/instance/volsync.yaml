@@ -1,0 +1,49 @@
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: kanidm-volsync
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: kanidm-volsync-secret
+    template:
+      data:
+        KOPIA_PASSWORD: "{{ .KOPIA_PASSWORD }}"
+        KOPIA_REPOSITORY: s3://volsync/kanidm
+        AWS_ACCESS_KEY_ID: "{{ .AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "{{ .AWS_SECRET_ACCESS_KEY }}"
+        AWS_S3_ENDPOINT: https://25450dc0f239d4e727e3488cfb31b5c4.r2.cloudflarestorage.com
+        KOPIA_S3_ENDPOINT: https://25450dc0f239d4e727e3488cfb31b5c4.r2.cloudflarestorage.com
+  dataFrom:
+    - extract:
+        key: volsync-template
+    - extract:
+        key: cloudflare
+---
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationSource
+metadata:
+  name: kanidm
+spec:
+  sourcePVC: kanidm-data-kanidm-default-0
+  trigger:
+    schedule: 0 * * * *
+  kopia:
+    accessModes:
+      - ReadWriteOnce
+    compression: zstd-fastest
+    copyMethod: Snapshot
+    moverSecurityContext:
+      runAsUser: 999
+      runAsGroup: 999
+      fsGroup: 999
+    parallelism: 2
+    repository: kanidm-volsync-secret
+    retain:
+      hourly: 24
+      daily: 7
+    storageClassName: ceph-block
+    volumeSnapshotClassName: csi-ceph-blockpool

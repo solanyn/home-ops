@@ -5,3 +5,4 @@ resources:
   - ./kanidm.yaml
   - ./backendtlspolicy.yaml
   - ./httproute.yaml
+  - ./volsync.yaml
