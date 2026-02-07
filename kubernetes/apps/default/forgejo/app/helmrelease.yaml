@@ -89,6 +89,13 @@ spec:
         # git.config with URL-based keys moved to lifecycle postStart
         # to avoid env var conversion issues
 
+      oauth:
+        - name: "Pocket ID"
+          provider: openidConnect
+          existingSecret: forgejo-oidc
+          autoDiscoverUrl: https://id.goyangi.io/.well-known/openid-configuration
+          scopes: openid profile email groups
+
       additionalConfigFromEnvs:
         - name: GITEA__database__USER
           valueFrom:
