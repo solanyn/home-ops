@@ -17,6 +17,12 @@ spec:
     remediation:
       retries: 3
   values:
+    global:
+      hostAliases:
+        - ip: "10.43.220.111"
+          hostnames:
+            - "${GITLAB_MIRROR_HOST:=gitlab-proxy}"
+
     replicaCount: 1
 
     deployment:
@@ -140,12 +146,6 @@ spec:
       claimName: forgejo
 
     extraVolumes:
-      - name: hosts
-        secret:
-          secretName: forgejo-secret
-          items:
-            - key: hosts
-              path: hosts
       - name: gitconfig
         secret:
           secretName: forgejo-secret
@@ -154,10 +154,6 @@ spec:
               path: .gitconfig
 
     extraContainerVolumeMounts:
-      - name: hosts
-        mountPath: /etc/hosts
-        subPath: hosts
-        readOnly: true
       - name: gitconfig
         mountPath: /data/gitea/git/.gitconfig
         subPath: .gitconfig
