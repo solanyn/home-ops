@@ -5,6 +5,7 @@ metadata:
   name: kanidm-tls
 spec:
   secretName: kanidm-tls
+  isCA: true
   dnsNames:
     - id.goyangi.io
     - kanidm.default.svc.cluster.local
