@@ -81,10 +81,11 @@ spec:
 
         openid:
           ENABLE_OPENID_SIGNIN: true
-          ENABLE_OPENID_SIGNUP: false
+          ENABLE_OPENID_SIGNUP: true
 
         service:
-          DISABLE_REGISTRATION: true
+          DISABLE_REGISTRATION: false
+          ALLOW_ONLY_EXTERNAL_REGISTRATION: true
 
       oauth:
         - name: "Pocket ID"
