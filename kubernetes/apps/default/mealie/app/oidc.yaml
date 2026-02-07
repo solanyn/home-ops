@@ -10,5 +10,6 @@ spec:
     - https://mealie.goyangi.io
   allowedUserGroups:
     - name: user
+  isPublic: true
   secret:
     name: mealie-oidc
