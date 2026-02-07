@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - ./httproute.yaml
   - ./usergroups.yaml
-  - ./flux-oidc.yaml
