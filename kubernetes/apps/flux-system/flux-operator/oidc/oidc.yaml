@@ -5,6 +5,7 @@ metadata:
   name: flux
   namespace: flux-system
 spec:
+  clientID: flux
   callbackUrls:
     - https://flux.goyangi.io/oauth2/callback
   logoutCallbackUrls:

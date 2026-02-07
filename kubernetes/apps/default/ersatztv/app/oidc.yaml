@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: ersatztv
 spec:
+  clientID: ersatztv
   callbackUrls:
     - https://ersatztv.goyangi.io/oidc/callback
   logoutCallbackUrls:

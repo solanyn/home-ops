@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: immich
 spec:
+  clientID: immich
   callbackUrls:
     - https://photos.goyangi.io/auth/login
     - https://photos.goyangi.io/user-settings

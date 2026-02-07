@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: audiobookshelf
 spec:
+  clientID: audiobookshelf
   callbackUrls:
     - https://audiobookshelf.goyangi.io/auth/openid/callback
   logoutCallbackUrls:
