@@ -3,15 +3,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kaniop
+  name: pocket-id-crds
 spec:
   targetNamespace: default
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
-  path: ./kubernetes/apps/default/kaniop/app
-  prune: true
+  path: ./kubernetes/apps/default/pocket-id-operator/crds
+  prune: false
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -22,46 +19,64 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kanidm
+  name: &app pocket-id-operator
 spec:
   targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: kaniop
+    - name: pocket-id-crds
       namespace: default
   interval: 1h
-  path: ./kubernetes/apps/default/kaniop/instance
+  path: ./kubernetes/apps/default/pocket-id-operator/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app pocket-id-instance
+spec:
+  targetNamespace: default
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: pocket-id-operator
+      namespace: default
+    - name: cloudnative-pg-cluster
+      namespace: storage
+  interval: 1h
+  path: ./kubernetes/apps/default/pocket-id-operator/instance
   postBuild:
     substitute:
-      APP: *app
+      APP: pocket-id
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  wait: true
+  wait: false
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app kanidm-resources
+  name: &app pocket-id-resources
 spec:
   targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: kanidm
+    - name: pocket-id-instance
       namespace: default
   interval: 1h
-  path: ./kubernetes/apps/default/kaniop/resources
-  postBuild:
-    substituteFrom:
-      - kind: Secret
-        name: kanidm-users
+  path: ./kubernetes/apps/default/pocket-id-operator/resources
   prune: true
   sourceRef:
     kind: GitRepository

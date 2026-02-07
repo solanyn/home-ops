@@ -7,10 +7,10 @@ spec:
   oidc:
     clientID: stash
     clientSecret:
-      name: stash-kanidm-oauth2-credentials
+      name: stash-oidc
     logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/oauth2/openid/stash
+      issuer: https://id.goyangi.io/
     redirectURL: https://stash.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:

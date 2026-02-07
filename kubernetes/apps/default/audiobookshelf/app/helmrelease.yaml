@@ -23,18 +23,22 @@ spec:
               TZ: Australia/Sydney
               PORT: &port 80
               METADATA_PATH: /config/metadata
-              OIDC_ISSUER_URL: https://id.goyangi.io/oauth2/openid/audiobookshelf
+              OIDC_ISSUER_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: audiobookshelf-oidc
+                    key: issuer_url
               OIDC_CLIENT_ID:
                 valueFrom:
                   secretKeyRef:
-                    name: audiobookshelf-kanidm-oauth2-credentials
-                    key: CLIENT_ID
+                    name: audiobookshelf-oidc
+                    key: client_id
               OIDC_CLIENT_SECRET:
                 valueFrom:
                   secretKeyRef:
-                    name: audiobookshelf-kanidm-oauth2-credentials
-                    key: CLIENT_SECRET
-              OIDC_BUTTON_TEXT: "Login with Kanidm"
+                    name: audiobookshelf-oidc
+                    key: client_secret
+              OIDC_BUTTON_TEXT: "Login with Pocket ID"
               OIDC_AUTO_LAUNCH: "true"
               OIDC_AUTO_REGISTER: "true"
               OIDC_MATCH_EXISTING_BY: email

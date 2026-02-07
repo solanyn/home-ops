@@ -1,0 +1,17 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: lidarr
+spec:
+  clientID: lidarr
+  callbackUrls:
+    - https://lidarr.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://lidarr.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: lidarr-oidc
+    keys:
+      clientSecret: client-secret

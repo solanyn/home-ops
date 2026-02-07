@@ -7,10 +7,10 @@ spec:
   oidc:
     clientID: prowlarr
     clientSecret:
-      name: prowlarr-kanidm-oauth2-credentials
+      name: prowlarr-oidc
     logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/oauth2/openid/prowlarr
+      issuer: https://id.goyangi.io/
     redirectURL: https://prowlarr.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:
