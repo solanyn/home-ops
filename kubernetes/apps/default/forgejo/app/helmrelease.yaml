@@ -19,7 +19,7 @@ spec:
   values:
     global:
       hostAliases:
-        - ip: "10.43.220.111"
+        - ip: "192.168.69.126"
           hostnames:
             - "${GITLAB_MIRROR_HOST:=gitlab-proxy}"
 
