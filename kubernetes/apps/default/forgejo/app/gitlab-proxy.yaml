@@ -9,8 +9,8 @@ data:
     http {
       server {
         listen 443 ssl;
-        ssl_certificate /certs/server.crt;
-        ssl_certificate_key /certs/server.key;
+        ssl_certificate /certs/tls.crt;
+        ssl_certificate_key /certs/tls.key;
 
         location / {
           proxy_pass https://gitlab.rosetta.ericssondevops.com;
