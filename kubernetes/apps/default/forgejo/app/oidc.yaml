@@ -6,7 +6,7 @@ metadata:
 spec:
   clientID: forgejo
   callbackUrls:
-    - https://forgejo.goyangi.io/user/oauth2/oidc/callback
+    - https://forgejo.goyangi.io/user/oauth2/Pocket%20ID/callback
   logoutCallbackUrls:
     - https://forgejo.goyangi.io
   allowedUserGroups:
