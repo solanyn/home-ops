@@ -8,6 +8,7 @@ spec:
   mariaDbRef:
     name: mariadb
     namespace: storage
+  name: kfp_pipeline
   characterSet: utf8mb4
   collate: utf8mb4_unicode_ci
 ---
@@ -36,7 +37,7 @@ spec:
     namespace: storage
   privileges:
     - "ALL PRIVILEGES"
-  database: kfp-pipeline
+  database: kfp_pipeline
   username: kfp-user
   table: "*"
   host: "%"
