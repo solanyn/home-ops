@@ -16,6 +16,10 @@ spec:
       namespace: flux-system
   interval: 1h
   path: ./kubernetes/apps/flux-system/flux-operator/app
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: flux-oidc
   prune: true
   sourceRef:
     kind: GitRepository
