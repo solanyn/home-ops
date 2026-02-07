@@ -68,7 +68,7 @@ spec:
     persistence:
       config:
         type: configMap
-        name: gitlab-proxy-config
+        name: gitlab-proxy
         globalMounts:
           - path: /etc/nginx/templates/nginx.conf.template
             subPath: nginx.conf
