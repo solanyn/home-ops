@@ -23,7 +23,7 @@ metadata:
 spec:
   targetNamespace: observability
   dependsOn:
-    - name: pocket-id-resources
+    - name: kanidm-resources
       namespace: default
     - name: grafana
       namespace: observability
