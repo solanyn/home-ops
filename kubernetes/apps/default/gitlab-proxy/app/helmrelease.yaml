@@ -60,6 +60,9 @@ spec:
     service:
       gitlab-proxy:
         controller: gitlab-proxy
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.69.126
         ports:
           https:
             port: 443
