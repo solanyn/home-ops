@@ -14,7 +14,7 @@ spec:
       idToken: kubeflow-id-token
     disableTokenEncryption: true
     forwardAccessToken: true
-    logoutPath: /logout
+    logoutPath: /oauth2/sign_out
     provider:
       issuer: https://id.goyangi.io/
     redirectURL: https://kubeflow.goyangi.io/oauth2/callback
