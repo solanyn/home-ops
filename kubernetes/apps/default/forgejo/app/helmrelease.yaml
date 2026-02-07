@@ -136,14 +136,6 @@ spec:
       claimName: forgejo
 
     extraVolumes:
-      - name: gitlab-certs
-        secret:
-          secretName: forgejo-gitlab-mirror-secret
-          items:
-            - key: client.crt
-              path: client.crt
-            - key: client.key
-              path: client.key
       - name: gitconfig
         secret:
           secretName: forgejo-secret
@@ -152,9 +144,6 @@ spec:
               path: .gitconfig
 
     extraContainerVolumeMounts:
-      - name: gitlab-certs
-        mountPath: /gitlab-certs
-        readOnly: true
       - name: gitconfig
         mountPath: /data/git/.gitconfig
         subPath: .gitconfig
