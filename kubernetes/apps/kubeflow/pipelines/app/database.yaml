@@ -15,7 +15,7 @@ spec:
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: User
 metadata:
-  name: kfp-user
+  name: kubeflow
   namespace: kubeflow
 spec:
   mariaDbRef:
@@ -38,6 +38,6 @@ spec:
   privileges:
     - "ALL PRIVILEGES"
   database: kfp_pipeline
-  username: kfp-user
+  username: kubeflow
   table: "*"
   host: "%"
