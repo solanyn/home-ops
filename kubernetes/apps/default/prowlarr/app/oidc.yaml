@@ -1,0 +1,17 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: prowlarr
+spec:
+  clientID: prowlarr
+  callbackUrls:
+    - https://prowlarr.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://prowlarr.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: prowlarr-oidc
+    keys:
+      clientSecret: client-secret

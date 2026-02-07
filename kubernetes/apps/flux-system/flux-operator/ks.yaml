@@ -7,7 +7,7 @@ metadata:
 spec:
   targetNamespace: flux-system
   dependsOn:
-    - name: kanidm-resources
+    - name: pocket-id-resources
       namespace: default
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
@@ -19,7 +19,7 @@ spec:
   postBuild:
     substituteFrom:
       - kind: Secret
-        name: flux-kanidm-oauth2-credentials
+        name: flux-oidc
   prune: true
   sourceRef:
     kind: GitRepository

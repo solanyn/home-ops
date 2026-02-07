@@ -28,7 +28,7 @@ spec:
     additionalConfigProperties:
       - http-server.process-forwarded=true
     coordinatorExtraConfig: |-
-      http-server.authentication.oauth2.issuer=https://id.goyangi.io/oauth2/openid/trino
+      http-server.authentication.oauth2.issuer=https://id.goyangi.io/
       http-server.authentication.oauth2.client-id=trino
       http-server.authentication.oauth2.client-secret=${TRINO_CLIENT_SECRET}
       http-server.authentication.oauth2.scopes=openid,profile,email
@@ -39,8 +39,8 @@ spec:
       - name: TRINO_CLIENT_SECRET
         valueFrom:
           secretKeyRef:
-            name: trino-kanidm-oauth2-credentials
-            key: CLIENT_SECRET
+            name: trino-oidc
+            key: client_secret
     serviceMonitor:
       enabled: true
     catalogs:

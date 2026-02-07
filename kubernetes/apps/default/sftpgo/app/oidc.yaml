@@ -1,0 +1,14 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: sftpgo
+spec:
+  callbackUrls:
+    - https://sftpgo.goyangi.io/web/oidc/callback
+  logoutCallbackUrls:
+    - https://sftpgo.goyangi.io
+  allowedUserGroups:
+    - name: user
+  secret:
+    name: sftpgo-oidc

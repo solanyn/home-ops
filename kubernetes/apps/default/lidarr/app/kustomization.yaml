@@ -5,4 +5,5 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+  - ./oidc.yaml
   - ./securitypolicy.yaml

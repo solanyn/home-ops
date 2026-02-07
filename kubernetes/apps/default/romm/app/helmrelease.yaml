@@ -39,8 +39,8 @@ spec:
               OIDC_CLIENT_SECRET:
                 valueFrom:
                   secretKeyRef:
-                    name: romm-kanidm-oauth2-credentials
-                    key: CLIENT_SECRET
+                    name: romm-oidc
+                    key: client_secret
             envFrom: *envFrom
             probes:
               liveness: &probes

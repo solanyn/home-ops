@@ -1,0 +1,18 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: radarr
+spec:
+  clientID: radarr
+  callbackUrls:
+    - https://radarr.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://radarr.goyangi.io
+  allowedUserGroups:
+    - name: user
+    - name: admin
+  secret:
+    name: radarr-oidc
+    keys:
+      clientSecret: client-secret

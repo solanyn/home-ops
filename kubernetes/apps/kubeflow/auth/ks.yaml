@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: kubeflow
   dependsOn:
-    - name: kaniop
+    - name: pocket-id-operator
       namespace: default
   interval: 1h
   path: ./kubernetes/apps/kubeflow/auth/app

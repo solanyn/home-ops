@@ -30,7 +30,7 @@ resources:
   - ./mlm/ks.yaml
   - ./opencode/ks.yaml
   - ./buildkit/ks.yaml
-  - ./kaniop/ks.yaml
+  - ./pocket-id-operator/ks.yaml
   - ./plex/ks.yaml
   - ./print/ks.yaml
   - ./prowlarr/ks.yaml
