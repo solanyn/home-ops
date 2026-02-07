@@ -63,8 +63,10 @@ spec:
     service:
       app:
         type: LoadBalancer
+        ipFamilies: [IPv4, IPv6]
+        ipFamilyPolicy: PreferDualStack
         annotations:
-          lbipam.cilium.io/ips: 192.168.69.134
+          lbipam.cilium.io/ips: 192.168.69.134,fd5d:a293:f321:69::134
         controller: buildkit
         ports:
           tcp:
