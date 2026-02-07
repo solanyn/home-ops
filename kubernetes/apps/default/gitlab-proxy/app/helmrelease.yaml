@@ -23,13 +23,9 @@ spec:
             image:
               repository: nginx
               tag: alpine
-            env:
-              GITLAB_URL:
-                valueFrom:
-                  secretKeyRef:
-                    name: forgejo-secret
-                    key: GITLAB_MIRROR_URL
-              GITLAB_HOST: gitlab.rosetta.ericssondevops.com
+            envFrom:
+              - secretRef:
+                  name: gitlab-proxy-secret
             probes:
               liveness:
                 enabled: false
@@ -47,12 +43,11 @@ spec:
               ssl_certificate_key /certs/tls.key;
 
               location / {
-                proxy_pass ${GITLAB_URL};
+                proxy_pass $GITLAB_MIRROR_URL;
                 proxy_ssl_certificate /client-certs/client.crt;
                 proxy_ssl_certificate_key /client-certs/client.key;
                 proxy_ssl_verify off;
                 proxy_ssl_server_name on;
-                proxy_set_header Host ${GITLAB_HOST};
               }
             }
 
@@ -77,6 +72,11 @@ spec:
           - path: /certs
       client-certs:
         type: secret
-        name: forgejo-gitlab-mirror-secret
+        name: gitlab-proxy-secret
+        items:
+          - key: client.crt
+            path: client.crt
+          - key: client.key
+            path: client.key
         globalMounts:
           - path: /client-certs
