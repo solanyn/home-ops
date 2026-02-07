@@ -10,7 +10,7 @@ spec:
   logoutCallbackUrls:
     - https://radarr.goyangi.io
   allowedUserGroups:
-    - name: user
+    - name: admin
     - name: admin
   secret:
     name: radarr-oidc
