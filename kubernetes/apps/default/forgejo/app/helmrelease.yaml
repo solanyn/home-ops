@@ -86,9 +86,6 @@ spec:
         service:
           DISABLE_REGISTRATION: true
 
-        # git.config with URL-based keys moved to lifecycle postStart
-        # to avoid env var conversion issues
-
       oauth:
         - name: "Pocket ID"
           provider: openidConnect
