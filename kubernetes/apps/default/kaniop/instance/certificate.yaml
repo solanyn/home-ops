@@ -5,13 +5,13 @@ metadata:
   name: kanidm-tls
 spec:
   secretName: kanidm-tls
-  isCA: true
   dnsNames:
     - id.goyangi.io
     - kanidm.default.svc.cluster.local
   issuerRef:
     kind: ClusterIssuer
-    name: selfsigned
+    name: letsencrypt-production
   privateKey:
     algorithm: ECDSA
+    rotationPolicy: Always
     size: 256

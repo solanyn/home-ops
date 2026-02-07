@@ -9,8 +9,5 @@ spec:
       name: kanidm
       group: ""
   validation:
-    caCertificateRefs:
-      - kind: Secret
-        name: kanidm-tls
-        group: ""
+    wellKnownCACertificates: System
     hostname: id.goyangi.io
