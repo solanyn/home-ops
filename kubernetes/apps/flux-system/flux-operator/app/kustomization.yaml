@@ -8,3 +8,4 @@ resources:
   - ./secret.yaml
   - ./httproute.yaml
   - ./rbac.yaml
+  - ./oidc.yaml
