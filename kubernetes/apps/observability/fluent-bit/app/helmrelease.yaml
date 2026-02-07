@@ -120,9 +120,11 @@ spec:
 
     service:
       type: LoadBalancer
+      ipFamilies: [IPv4, IPv6]
+      ipFamilyPolicy: PreferDualStack
       annotations:
         external-dns.alpha.kubernetes.io/hostname: fluent-bit.goyangi.io
-        lbipam.cilium.io/ips: 192.168.69.135
+        lbipam.cilium.io/ips: 192.168.69.135,fd5d:a293:f321:69::135
     
     resources:
       requests:
