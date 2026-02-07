@@ -7,10 +7,10 @@ spec:
   secretName: kanidm-tls
   dnsNames:
     - id.goyangi.io
+    - kanidm.default.svc.cluster.local
   issuerRef:
     kind: ClusterIssuer
-    name: letsencrypt-production
+    name: selfsigned
   privateKey:
     algorithm: ECDSA
-    rotationPolicy: Always
     size: 256
