@@ -36,7 +36,7 @@ spec:
               # MySQL Config
               DBCONFIG_MYSQLCONFIG_HOST: mariadb.storage.svc.cluster.local
               DBCONFIG_MYSQLCONFIG_PORT: "3306"
-              DBCONFIG_MYSQLCONFIG_DBNAME: kfp_pipeline
+              DBCONFIG_MYSQLCONFIG_DBNAME: kubeflow_pipelines
               DBCONFIG_MYSQLCONFIG_USER:
                 valueFrom:
                   secretKeyRef:
