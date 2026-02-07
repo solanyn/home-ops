@@ -8,6 +8,7 @@ spec:
   dnsNames:
     - gitlab-proxy
     - gitlab-proxy.default.svc
+    - gitlab-proxy.default.svc.cluster.local
   issuerRef:
     kind: ClusterIssuer
     name: selfsigned
