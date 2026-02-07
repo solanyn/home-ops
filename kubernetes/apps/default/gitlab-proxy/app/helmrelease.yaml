@@ -48,6 +48,10 @@ spec:
                 proxy_ssl_certificate_key /client-certs/client.key;
                 proxy_ssl_verify off;
                 proxy_ssl_server_name on;
+
+                sub_filter_types application/json;
+                sub_filter_once off;
+                sub_filter '$GITLAB_MIRROR_URL' 'https://gitlab-proxy.default.svc.cluster.local';
               }
             }
 
