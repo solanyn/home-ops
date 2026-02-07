@@ -7,7 +7,7 @@ spec:
   kanidmRef:
     name: kanidm
   members:
-    - ${KANIDM_USER1_ID}
+    - ${AC_ID}
   accountPolicy:
     credentialTypeMinimum: passkey
 ---
@@ -19,6 +19,6 @@ spec:
   kanidmRef:
     name: kanidm
   members:
-    - ${KANIDM_USER1_ID}
+    - ${AC_ID}
   accountPolicy:
     credentialTypeMinimum: passkey
