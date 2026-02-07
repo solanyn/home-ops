@@ -82,7 +82,7 @@ spec:
                 drop: ["ALL"]
 
     service:
-      profiles-kfam:
+      kfam:
         controller: kfam
         ports:
           http:
