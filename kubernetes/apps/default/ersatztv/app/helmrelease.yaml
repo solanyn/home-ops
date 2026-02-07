@@ -22,13 +22,13 @@ spec:
             env:
               TZ: Australia/Sydney
               XDG_DATA_HOME: /config
-              OIDC__AUTHORITY: https://id.goyangi.io
+              OIDC__AUTHORITY: https://id.goyangi.io/oauth2/openid/ersatztv
               OIDC__CLIENTID: ersatztv
               OIDC__CLIENTSECRET:
                 valueFrom:
                   secretKeyRef:
-                    name: ersatztv-oidc
-                    key: client_secret
+                    name: ersatztv-kanidm-oauth2-credentials
+                    key: CLIENT_SECRET
             probes:
               liveness:
                 enabled: true

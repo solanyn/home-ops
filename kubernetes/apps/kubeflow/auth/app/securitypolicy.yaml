@@ -8,7 +8,7 @@ spec:
   oidc:
     clientID: kubeflow
     clientSecret:
-      name: kubeflow-oidc
+      name: kubeflow-kanidm-oauth2-credentials
     cookieNames:
       accessToken: kubeflow-access-token
       idToken: kubeflow-id-token
@@ -16,7 +16,7 @@ spec:
     forwardAccessToken: true
     logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/
+      issuer: https://id.goyangi.io/oauth2/openid/kubeflow
     redirectURL: https://kubeflow.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:
@@ -25,12 +25,12 @@ spec:
       - email
   jwt:
     providers:
-      - name: pocket-id
-        issuer: https://id.goyangi.io
+      - name: kanidm
+        issuer: https://id.goyangi.io/oauth2/openid/kubeflow
         audiences:
           - kubeflow
         remoteJWKS:
-          uri: https://id.goyangi.io/.well-known/jwks.json
+          uri: https://id.goyangi.io/oauth2/openid/kubeflow/public_key.jwk
         claimToHeaders:
           - claim: email
             header: X-Remote-User
