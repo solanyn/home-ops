@@ -7,6 +7,7 @@ data:
   nginx.conf: |
     events {}
     http {
+      resolver kube-dns.kube-system.svc.cluster.local valid=5s;
       server {
         listen 443 ssl;
         ssl_certificate /certs/tls.crt;
@@ -17,6 +18,7 @@ data:
           proxy_ssl_certificate /client-certs/client.crt;
           proxy_ssl_certificate_key /client-certs/client.key;
           proxy_ssl_verify off;
+          proxy_ssl_server_name on;
           proxy_set_header Host gitlab.rosetta.ericssondevops.com;
         }
       }
