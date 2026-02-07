@@ -141,12 +141,12 @@ spec:
           secretName: forgejo-secret
           items:
             - key: gitconfig
-              path: .gitconfig
+              path: gitconfig
 
     extraContainerVolumeMounts:
       - name: gitconfig
-        mountPath: /data/gitea/git/.gitconfig
-        subPath: .gitconfig
+        mountPath: /etc/gitconfig
+        subPath: gitconfig
         readOnly: true
 
     resources:
