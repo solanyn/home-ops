@@ -16,7 +16,7 @@ spec:
       namespace: storage
     - name: garage
       namespace: storage
-    - name: pocket-id-resources
+    - name: kanidm-resources
       namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/forgejo/app
@@ -29,7 +29,7 @@ spec:
         name: forgejo-secret
         optional: true
       - kind: Secret
-        name: forgejo-oidc
+        name: forgejo-kanidm-oauth2-credentials
         optional: true
   prune: true
   sourceRef:

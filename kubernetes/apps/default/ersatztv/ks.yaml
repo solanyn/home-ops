@@ -10,7 +10,7 @@ spec:
     - ../../../../components/nfs-scaler
     - ../../../../components/volsync
   dependsOn:
-    - name: pocket-id-resources
+    - name: kanidm-resources
       namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/ersatztv/app

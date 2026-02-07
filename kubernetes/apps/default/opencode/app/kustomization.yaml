@@ -4,5 +4,4 @@ resources:
   - ./service.yaml
   - ./httproute.yaml
   - ./externalsecret.yaml
-  - ./oidc.yaml
   - ./securitypolicy.yaml

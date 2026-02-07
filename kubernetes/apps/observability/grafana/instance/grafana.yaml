@@ -48,8 +48,8 @@ spec:
                 - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
                   valueFrom:
                     secretKeyRef:
-                      name: grafana-oidc
-                      key: client_secret
+                      name: grafana-kanidm-oauth2-credentials
+                      key: CLIENT_SECRET
               envFrom:
                 - secretRef:
                     name: grafana-secret

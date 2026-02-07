@@ -7,7 +7,7 @@ spec:
   targetNamespace: default
   components:
   dependsOn:
-    - name: pocket-id-resources
+    - name: kanidm-resources
       namespace: default
     - name: cloudnative-pg-cluster
       namespace: storage
