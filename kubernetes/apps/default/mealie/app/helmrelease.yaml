@@ -37,8 +37,8 @@ spec:
               OIDC_CLIENT_SECRET:
                 valueFrom:
                   secretKeyRef:
-                    name: mealie-kanidm-oauth2-credentials
-                    key: CLIENT_SECRET
+                    name: mealie-oidc
+                    key: client_secret
             envFrom: *envFrom
             probes:
               liveness: &probes

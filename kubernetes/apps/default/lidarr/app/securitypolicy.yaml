@@ -7,10 +7,10 @@ spec:
   oidc:
     clientID: lidarr
     clientSecret:
-      name: lidarr-kanidm-oauth2-credentials
+      name: lidarr-oidc
     logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/oauth2/openid/lidarr
+      issuer: https://id.goyangi.io/
     redirectURL: https://lidarr.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:

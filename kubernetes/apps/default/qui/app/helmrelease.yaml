@@ -27,8 +27,8 @@ spec:
               QUI__OIDC__CLIENT_SECRET:
                 valueFrom:
                   secretKeyRef:
-                    name: qui-kanidm-oauth2-credentials
-                    key: CLIENT_SECRET
+                    name: qui-oidc
+                    key: client_secret
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
