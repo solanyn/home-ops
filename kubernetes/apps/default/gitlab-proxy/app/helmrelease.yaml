@@ -49,7 +49,7 @@ spec:
                 proxy_ssl_verify off;
                 proxy_ssl_server_name on;
                 proxy_pass_request_headers on;
-                proxy_set_header Authorization $http_authorization;
+                proxy_set_header PRIVATE-TOKEN $http_private_token;
 
                 sub_filter_types application/json;
                 sub_filter_once off;
