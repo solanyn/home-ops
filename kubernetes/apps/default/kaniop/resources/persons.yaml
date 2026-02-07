@@ -1,0 +1,12 @@
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmPersonAccount
+metadata:
+  name: ${KANIDM_USER1_ID}
+spec:
+  kanidmRef:
+    name: kanidm
+  personAttributes:
+    displayname: ${KANIDM_USER1_NAME}
+    mail:
+      - ${KANIDM_USER1_EMAIL}
