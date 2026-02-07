@@ -1,0 +1,13 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gitlab-proxy
+spec:
+  secretName: gitlab-proxy-tls
+  dnsNames:
+    - gitlab-proxy
+    - gitlab-proxy.default.svc
+  issuerRef:
+    kind: ClusterIssuer
+    name: selfsigned
