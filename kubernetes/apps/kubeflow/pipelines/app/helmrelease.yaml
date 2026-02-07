@@ -52,6 +52,8 @@ spec:
               OBJECTSTORECONFIG_PORT: "3900"
               OBJECTSTORECONFIG_SECURE: "false"
               OBJECTSTORECONFIG_BUCKETNAME: kfp-pipelines
+              ML_PIPELINE_VISUALIZATIONSERVER_SERVICE_HOST: ml-pipeline-visualizationserver
+              ML_PIPELINE_VISUALIZATIONSERVER_SERVICE_PORT: "8888"
             envFrom:
               - secretRef:
                   name: ml-pipeline-secret
@@ -120,6 +122,21 @@ spec:
               capabilities:
                 drop: ["ALL"]
 
+      visualizationserver:
+        replicas: 1
+        serviceAccount:
+          name: ml-pipeline-visualizationserver
+        containers:
+          app:
+            image:
+              repository: ghcr.io/kubeflow/kfp-visualization-server
+              tag: 2.15.0
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              capabilities:
+                drop: ["ALL"]
+
     service:
       apiserver:
         forceRename: ml-pipeline
@@ -134,6 +151,12 @@ spec:
         ports:
           http:
             port: 3000
+      visualizationserver:
+        forceRename: ml-pipeline-visualizationserver
+        controller: visualizationserver
+        ports:
+          http:
+            port: 8888
 
     persistence:
       sa-token:

@@ -26,7 +26,7 @@ spec:
   jwt:
     providers:
       - name: pocket-id
-        issuer: https://id.goyangi.io/
+        issuer: https://id.goyangi.io
         audiences:
           - kubeflow
         remoteJWKS:
