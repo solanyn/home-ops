@@ -63,7 +63,7 @@ spec:
             port: 8082
 
     configMaps:
-      config:
+      centraldashboard-config:
         data:
           settings: |-
             {
