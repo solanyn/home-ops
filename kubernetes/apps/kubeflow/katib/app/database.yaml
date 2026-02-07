@@ -11,19 +11,6 @@ spec:
   collate: utf8mb4_unicode_ci
 ---
 apiVersion: k8s.mariadb.com/v1alpha1
-kind: User
-metadata:
-  name: katib
-spec:
-  mariaDbRef:
-    name: mariadb
-    namespace: storage
-  passwordSecretKeyRef:
-    name: katib-db-secret
-    key: password
-  maxUserConnections: 20
----
-apiVersion: k8s.mariadb.com/v1alpha1
 kind: Grant
 metadata:
   name: katib
@@ -34,6 +21,6 @@ spec:
   privileges:
     - "ALL PRIVILEGES"
   database: katib
-  username: katib
+  username: kubeflow
   table: "*"
   host: "%"
