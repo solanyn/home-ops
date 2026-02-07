@@ -58,6 +58,10 @@ spec:
       namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/kaniop/resources
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: kanidm-users
   prune: true
   sourceRef:
     kind: GitRepository
