@@ -5,6 +5,7 @@ metadata:
   name: trino
   namespace: analytics
 spec:
+  clientID: trino
   callbackUrls:
     - https://trino.goyangi.io/oauth2/callback
   logoutCallbackUrls:

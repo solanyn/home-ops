@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: autobrr
 spec:
+  clientID: autobrr
   callbackUrls:
     - https://autobrr.goyangi.io/api/auth/oidc/callback
   logoutCallbackUrls:

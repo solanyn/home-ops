@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: romm
 spec:
+  clientID: romm
   callbackUrls:
     - https://romm.goyangi.io/api/oauth/openid
   logoutCallbackUrls:

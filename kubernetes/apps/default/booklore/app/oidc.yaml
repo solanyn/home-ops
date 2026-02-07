@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: booklore
 spec:
+  clientID: booklore
   isPublic: true
   callbackUrls:
     - https://booklore.goyangi.io/oauth2-callback

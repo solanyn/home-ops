@@ -4,6 +4,7 @@ kind: PocketIDOIDCClient
 metadata:
   name: mealie
 spec:
+  clientID: mealie
   callbackUrls:
     - https://mealie.goyangi.io/login
   logoutCallbackUrls:
