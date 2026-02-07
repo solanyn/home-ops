@@ -2,38 +2,26 @@
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: Database
 metadata:
-  name: metadb
+  name: kubeflow-metadata
 spec:
   mariaDbRef:
     name: mariadb
     namespace: storage
+  name: kubeflow_metadata
   characterSet: utf8mb4
   collate: utf8mb4_unicode_ci
 ---
 apiVersion: k8s.mariadb.com/v1alpha1
-kind: User
-metadata:
-  name: metadb
-spec:
-  mariaDbRef:
-    name: mariadb
-    namespace: storage
-  passwordSecretKeyRef:
-    name: metadata-db-secret
-    key: password
-  maxUserConnections: 20
----
-apiVersion: k8s.mariadb.com/v1alpha1
 kind: Grant
 metadata:
-  name: metadb
+  name: kubeflow-metadata
 spec:
   mariaDbRef:
     name: mariadb
     namespace: storage
   privileges:
     - "ALL PRIVILEGES"
-  database: metadb
-  username: metadb
+  database: kubeflow_metadata
+  username: kubeflow
   table: "*"
   host: "%"
