@@ -7,10 +7,10 @@ spec:
   oidc:
     clientID: opencode
     clientSecret:
-      name: opencode-kanidm-oauth2-credentials
+      name: opencode-oidc
     logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/oauth2/openid/opencode
+      issuer: https://id.goyangi.io/
     redirectURL: https://opencode.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:
