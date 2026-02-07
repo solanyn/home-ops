@@ -11,7 +11,7 @@ spec:
   logoutCallbackUrls:
     - https://kubeflow.goyangi.io
   allowedUserGroups:
-    - name: admin
+    - name: user
       namespace: default
   secret:
     name: kubeflow-oidc

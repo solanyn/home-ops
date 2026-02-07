@@ -10,6 +10,6 @@ spec:
   logoutCallbackUrls:
     - https://forgejo.goyangi.io
   allowedUserGroups:
-    - name: admin
+    - name: user
   secret:
     name: forgejo-oidc
