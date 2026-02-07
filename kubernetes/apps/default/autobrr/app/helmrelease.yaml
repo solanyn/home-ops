@@ -37,8 +37,8 @@ spec:
               AUTOBRR__OIDC_CLIENT_SECRET:
                 valueFrom:
                   secretKeyRef:
-                    name: autobrr-oidc
-                    key: client_secret
+                    name: autobrr-kanidm-oauth2-credentials
+                    key: CLIENT_SECRET
             envFrom: *envFrom
             probes:
               liveness:

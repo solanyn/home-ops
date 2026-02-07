@@ -5,7 +5,6 @@ namespace: default
 resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
-  - ./oidc.yaml
 configMapGenerator:
   - name: sftpgo-configmap
     files:
