@@ -19,6 +19,10 @@ spec:
   values:
     replicaCount: 1
 
+    deployment:
+      annotations:
+        reloader.stakater.com/auto: "true"
+
     service:
       http:
         type: ClusterIP
@@ -136,17 +140,27 @@ spec:
       claimName: forgejo
 
     extraVolumes:
+      - name: hosts
+        secret:
+          secretName: forgejo-secret
+          items:
+            - key: hosts
+              path: hosts
       - name: gitconfig
         secret:
           secretName: forgejo-secret
           items:
             - key: gitconfig
-              path: gitconfig
+              path: .gitconfig
 
     extraContainerVolumeMounts:
+      - name: hosts
+        mountPath: /etc/hosts
+        subPath: hosts
+        readOnly: true
       - name: gitconfig
-        mountPath: /etc/gitconfig
-        subPath: gitconfig
+        mountPath: /data/gitea/git/.gitconfig
+        subPath: .gitconfig
         readOnly: true
 
     resources:
