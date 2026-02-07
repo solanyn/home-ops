@@ -67,6 +67,7 @@ spec:
 
         migrations:
           ALLOW_LOCALNETWORKS: true
+          SKIP_TLS_VERIFY: true
 
         storage:
           STORAGE_TYPE: minio
