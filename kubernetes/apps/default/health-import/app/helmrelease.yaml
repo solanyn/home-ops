@@ -1,0 +1,68 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: health-import
+spec:
+  interval: 15m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 4.6.2
+  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: health-import
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: health-import
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      health-import:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/joeecarter/health-import-server
+              tag: latest
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+
+    service:
+      app:
+        controller: health-import
+        ports:
+          http:
+            port: 6060
+
+    route:
+      app:
+        hostnames:
+          - health.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+
+    persistence:
+      config:
+        type: secret
+        name: health-import-secret
+        globalMounts:
+          - path: /config
+            readOnly: true
