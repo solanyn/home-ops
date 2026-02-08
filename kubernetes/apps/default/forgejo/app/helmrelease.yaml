@@ -39,7 +39,7 @@ spec:
         ipFamilyPolicy: PreferDualStack
         port: 22
         annotations:
-          lbipam.cilium.io/ips: 192.168.69.125,fd5d:a293:f321:69::125
+          lbipam.cilium.io/ips: 192.168.69.136,fd5d:a293:f321:69::136
 
     ingress:
       enabled: false
