@@ -7,6 +7,7 @@ spec:
   staticConfigs:
     - targets:
         - nas.internal:9100
+        - mac.internal:9100
   metricsPath: /metrics
   relabelings:
     - action: replace
