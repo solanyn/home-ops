@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app influxdb
+spec:
+  targetNamespace: storage
+  commonMetadata:
+    labels:
+      app.kubernetes.io/instance: *app
+      app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/volsync
+  path: ./kubernetes/apps/storage/influxdb/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  interval: 1h
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 10Gi
