@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: golang
-              tag: 1.22-alpine
+              tag: 1.25-alpine
             command:
               - sh
               - -c
