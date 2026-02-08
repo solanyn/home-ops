@@ -12,5 +12,6 @@ resources:
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
   - ./garage/ks.yaml
+  - ./influxdb/ks.yaml
   - ./mariadb/ks.yaml
   - ./vernemq/ks.yaml
