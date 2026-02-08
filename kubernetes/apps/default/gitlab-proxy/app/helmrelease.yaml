@@ -50,7 +50,7 @@ spec:
                 proxy_ssl_certificate_key /client-certs/client.key;
                 proxy_ssl_verify off;
                 proxy_ssl_server_name on;
-                proxy_set_header Host $host;
+                proxy_set_header Host $GITLAB_MIRROR_HOST;
                 proxy_pass_request_headers on;
 
                 sub_filter_types application/json;
