@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: "{{ .Release.Name }}"
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: immich-kiosk
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      kiosk:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/damongolding/immich-kiosk
+              tag: 0.32.1@sha256:62e5667a913360f6843ce37e4b4263d19c8e9d1cd897463662c0d0b1c7e782a4
+            env:
+              TZ: Australia/Sydney
+              KIOSK_PORT: &port 3000
+              KIOSK_DURATION: 30
+              KIOSK_TRANSITION: cross-fade
+              KIOSK_CROSS_FADE_TRANSITION_DURATION: 1
+              KIOSK_IMAGE_FIT: contain
+              KIOSK_SHOW_TIME: false
+              KIOSK_SHOW_DATE: false
+              KIOSK_SHOW_IMAGE_DATE: true
+              KIOSK_SHOW_IMAGE_LOCATION: true
+              KIOSK_SHOW_PERSON_NAME: true
+              KIOSK_BACKGROUND_BLUR: true
+              KIOSK_THEME: fade
+              KIOSK_LAYOUT: single
+              KIOSK_CACHE: true
+              KIOSK_PREFETCH: true
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    service:
+      app:
+        controller: kiosk
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
