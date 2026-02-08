@@ -58,7 +58,7 @@ spec:
         controller: health-import
         ports:
           http:
-            port: 6060
+            port: 8080
 
     route:
       app:
