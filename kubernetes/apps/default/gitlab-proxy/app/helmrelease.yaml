@@ -39,15 +39,10 @@ spec:
         data:
           default.conf.template: |
             resolver kube-dns.kube-system.svc.cluster.local valid=5s;
-            log_format debug_headers '$remote_addr - $remote_user [$time_local] "$request" '
-                                     '$status $body_bytes_sent '
-                                     'private_token="$http_private_token" '
-                                     'auth="$http_authorization"';
             server {
               listen 443 ssl;
               ssl_certificate /certs/tls.crt;
               ssl_certificate_key /certs/tls.key;
-              access_log /dev/stdout debug_headers;
 
               set $gitlab_host '$GITLAB_MIRROR_HOST';
 
