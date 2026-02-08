@@ -39,6 +39,7 @@ spec:
         ipFamilyPolicy: PreferDualStack
         port: 22
         annotations:
+          external-dns.alpha.kubernetes.io/hostname: ssh.forgejo.goyangi.io
           lbipam.cilium.io/ips: 192.168.69.136,fd5d:a293:f321:69::136
 
     ingress:

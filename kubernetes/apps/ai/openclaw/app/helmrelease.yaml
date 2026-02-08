@@ -31,11 +31,17 @@ spec:
               - -c
               - |
                 set -e
-                mkdir -p /home/node/.local/bin /home/node/.openclaw
+                mkdir -p /home/node/.local/bin /home/node/.openclaw /home/node/.ssh
 
                 # Copy config from secret mount (writable copy on PVC)
                 cp /tmp/openclaw-config/openclaw.json /home/node/.openclaw/openclaw.json
                 chmod 600 /home/node/.openclaw/openclaw.json
+
+                # Setup SSH
+                cp /tmp/ssh-secrets/ssh_private_key /home/node/.ssh/forgejo_ed25519
+                cp /tmp/ssh-secrets/ssh_config /home/node/.ssh/config
+                chmod 700 /home/node/.ssh
+                chmod 600 /home/node/.ssh/forgejo_ed25519 /home/node/.ssh/config
 
                 # Install uv if not present on PVC
                 if [ ! -f /home/node/.local/bin/uv ]; then
@@ -167,4 +173,17 @@ spec:
           openclaw:
             install-tools:
               - path: /tmp/openclaw-config
+                readOnly: true
+      ssh-secrets:
+        type: secret
+        name: openclaw
+        items:
+          - key: ssh_private_key
+            path: ssh_private_key
+          - key: ssh_config
+            path: ssh_config
+        advancedMounts:
+          openclaw:
+            install-tools:
+              - path: /tmp/ssh-secrets
                 readOnly: true
