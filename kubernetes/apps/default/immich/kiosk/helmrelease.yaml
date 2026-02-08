@@ -60,7 +60,7 @@ spec:
     route:
       app:
         hostnames:
-          - immich-kiosk.goyangi.io
+          - kiosk.goyangi.io
         parentRefs:
           - name: envoy-internal
             namespace: network
