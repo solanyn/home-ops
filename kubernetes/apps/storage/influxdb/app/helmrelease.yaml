@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: influxdb
-              tag: 2.7-alpine
+              tag: 2.8-alpine
             env:
               DOCKER_INFLUXDB_INIT_MODE: setup
             envFrom:
