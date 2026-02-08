@@ -31,7 +31,7 @@ spec:
               - -c
               - |
                 set -e
-                mkdir -p /home/node/.local/bin /home/node/.openclaw /home/node/.ssh
+                mkdir -p /home/node/.local/bin /home/node/.openclaw /home/node/.ssh /home/node/.config/fj
 
                 # Copy config from secret mount (writable copy on PVC)
                 cp /tmp/openclaw-config/openclaw.json /home/node/.openclaw/openclaw.json
@@ -42,6 +42,17 @@ spec:
                 cp /tmp/ssh-secrets/ssh_config /home/node/.ssh/config
                 chmod 700 /home/node/.ssh
                 chmod 600 /home/node/.ssh/forgejo_ed25519 /home/node/.ssh/config
+
+                # Setup fj CLI config
+                cp /tmp/ssh-secrets/fj_config /home/node/.config/fj/config.toml
+                chmod 600 /home/node/.config/fj/config.toml
+
+                # Install fj CLI if not present
+                if [ ! -f /home/node/.local/bin/fj ]; then
+                  echo "Installing fj CLI..."
+                  curl -sL https://codeberg.org/forgejo/fj/releases/latest/download/fj-linux-amd64 -o /home/node/.local/bin/fj
+                  chmod +x /home/node/.local/bin/fj
+                fi
 
                 # Install uv if not present on PVC
                 if [ ! -f /home/node/.local/bin/uv ]; then
@@ -182,6 +193,8 @@ spec:
             path: ssh_private_key
           - key: ssh_config
             path: ssh_config
+          - key: fj_config
+            path: fj_config
         advancedMounts:
           openclaw:
             install-tools:
