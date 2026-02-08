@@ -44,14 +44,17 @@ spec:
               ssl_certificate /certs/tls.crt;
               ssl_certificate_key /certs/tls.key;
 
+              set $gitlab_host '$GITLAB_MIRROR_HOST';
+
               location / {
                 proxy_pass $GITLAB_MIRROR_URL;
                 proxy_ssl_certificate /client-certs/client.crt;
                 proxy_ssl_certificate_key /client-certs/client.key;
                 proxy_ssl_verify off;
                 proxy_ssl_server_name on;
-                proxy_set_header Host $GITLAB_MIRROR_HOST;
-                proxy_pass_request_headers on;
+                proxy_set_header Host $gitlab_host;
+                proxy_set_header PRIVATE-TOKEN $http_private_token;
+                proxy_set_header Authorization $http_authorization;
 
                 sub_filter_types application/json;
                 sub_filter_once off;
