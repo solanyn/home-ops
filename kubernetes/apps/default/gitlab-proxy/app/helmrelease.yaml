@@ -50,9 +50,8 @@ spec:
                 proxy_ssl_certificate_key /client-certs/client.key;
                 proxy_ssl_verify off;
                 proxy_ssl_server_name on;
-                proxy_set_header Host $proxy_host;
-                proxy_set_header PRIVATE-TOKEN $http_private_token;
-                proxy_set_header Authorization $http_authorization;
+                proxy_set_header Host $host;
+                proxy_pass_request_headers on;
 
                 sub_filter_types application/json;
                 sub_filter_once off;
