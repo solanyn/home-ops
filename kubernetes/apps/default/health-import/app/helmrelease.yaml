@@ -37,12 +37,21 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/joeecarter/health-import-server
-              tag: latest
+              repository: golang
+              tag: 1.22-alpine
+            command:
+              - sh
+              - -c
+              - |
+                apk add --no-cache git
+                cd /tmp
+                git clone --depth 1 https://github.com/joeecarter/health-import-server.git
+                cd health-import-server
+                go run ./cmd/server --config=/config/config.json
             resources:
               requests:
                 cpu: 10m
-                memory: 64Mi
+                memory: 128Mi
 
     service:
       app:
