@@ -11,6 +11,10 @@ spec:
   interval: 1h
   values:
     cleanPrometheusOperatorObjectNames: true
+    defaultRules:
+      rules:
+        kubeApiserverBurnrate: false
+        kubeApiserverAvailability: false
     alertmanager:
       route:
         main:
