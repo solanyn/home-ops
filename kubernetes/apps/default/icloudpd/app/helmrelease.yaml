@@ -36,7 +36,7 @@ spec:
                   --password-provider webui \
                   --mfa-provider webui \
                   --watch-with-interval 3600 \
-                  --folder-structure "{album}/{:%Y/%m}" \
+                  --folder-structure "{:%Y/%m}" \
                   --album "Catto Shmatto" \
                   --album "Us" \
                   --album "Family"
