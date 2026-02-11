@@ -80,6 +80,8 @@ spec:
             port: 6969
     route:
       app:
+        annotations:
+          gatus.home-operations.com/enabled: "false"
         hostnames: ["{{ .Release.Name }}.goyangi.io"]
         parentRefs:
           - name: envoy-internal
