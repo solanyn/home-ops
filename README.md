@@ -20,9 +20,9 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 
 <div align="center">
 
-[![Home-Internet](https://img.shields.io/uptimerobot/status/m793494864-dfc695db066960233ac70f45?color=brightgreeen&label=Home%20Internet&style=for-the-badge&logo=ubiquiti&logoColor=white)](https://status.goyangi.io)&nbsp;&nbsp;
-[![Status-Page](https://img.shields.io/uptimerobot/status/m793599155-ba1b18e51c9f8653acd0f5c1?color=brightgreeen&label=Status%20Page&style=for-the-badge&logo=statuspage&logoColor=white)](https://status.goyangi.io)&nbsp;&nbsp;
-[![Alertmanager](https://img.shields.io/uptimerobot/status/m793494864-dfc695db066960233ac70f45?color=brightgreeen&label=Alertmanager&style=for-the-badge&logo=prometheus&logoColor=white)](https://status.goyangi.io)
+[![Home-Internet](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.goyangi.io%2Fapi%2Fv1%2Fendpoints%2Fconnectivity_cloudflare%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=ubiquiti&logoColor=white&label=Home%20Internet)](https://status.goyangi.io)&nbsp;&nbsp;
+[![Status-Page](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.goyangi.io%2Fapi%2Fv1%2Fendpoints%2Fexternal_echo%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=statuspage&logoColor=white&label=Status%20Page)](https://status.goyangi.io)&nbsp;&nbsp;
+[![Alertmanager](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.goyangi.io%2Fapi%2Fv1%2Fendpoints%2Fmonitoring_alertmanager%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://status.goyangi.io)
 
 </div>
 
@@ -43,114 +43,123 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4a1/512.gif" alt="💡" width="20" height="20"> Overview
 
-This repository shows a production Kubernetes cluster running on bare metal with ML/MLOps tooling, data engineering platforms and automated operations.
+This is a mono repository for my home infrastructure and Kubernetes cluster. It doubles as a production-grade platform engineering reference, running enterprise tooling on bare metal to validate real-world patterns for AI/ML platforms, data engineering and platform operations.
 
-- Infrastructure as Code (IaC) with declarative configuration management
-- GitOps deployment workflows with automated reconciliation
-- Modern security with encrypted secrets and zero-trust networking
-- Production observability with comprehensive monitoring and alerting
-- Automated operations including dependency management and backup orchestration
-
----
-
-## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f331/512.gif" alt="🌱" width="20" height="20"> Architecture
-
-The cluster runs on [Talos Linux](https://www.talos.dev), a security-hardened operating system designed for Kubernetes:
-
-- Bare metal deployment with immutable infrastructure
-- Semi-hyper-converged architecture combining compute and storage resources
-- Distributed storage using Rook-Ceph for persistent volumes
-- Networking with Cilium CNI, BGP load balancing and Kubernetes Gateway API
-- AI gateway integration with Envoy proxy for model routing
-- GitOps automation with FluxCD and dependency management
+The cluster manages ~100 applications across 24 namespaces, covering everything from a full Kubeflow ML platform and real-time streaming pipelines to home automation and media services -- all deployed through GitOps with FluxCD.
 
 There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/cluster-template) if you want to follow along with some of the practices used here.
 
-### ML/MLOps Platform
+---
 
-- [kubeflow](https://github.com/kubeflow/kubeflow): Complete ML platform with pipelines, notebooks, model serving and experiment tracking
-- [kserve](https://github.com/kserve/kserve): Production model serving with autoscaling, multi-framework support and Envoy AI Gateway integration
-- [ray](https://github.com/ray-project/ray): Distributed computing for ML workloads and hyperparameter tuning
-- [feast](https://github.com/feast-dev/feast): Feature store for ML feature management and serving
-- [label-studio](https://github.com/heartexlabs/label-studio): Data annotation platform for ML dataset preparation
-- [mlflow](https://github.com/mlflow/mlflow): MLOps platform for experiment tracking, model registry and deployment
-- [katib](https://github.com/kubeflow/katib): Hyperparameter tuning and neural architecture search
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f331/512.gif" alt="🌱" width="20" height="20"> Platform Capabilities
 
-### Analytics & Data Engineering
+### AI/ML Platform
 
-- [spark](https://github.com/apache/spark): Big data processing engine for large-scale analytics
-- [dask](https://github.com/dask/dask): Parallel computing library for scalable data science
-- [trino](https://github.com/trinodb/trino): Distributed SQL engine for analytics across data sources
-- [kafka](https://github.com/apache/kafka): Event streaming platform for real-time data processing
-- [flink](https://github.com/apache/flink): Stream processing for real-time analytics and ML inference
-- [lakekeeper](https://github.com/lakekeeper/lakekeeper): Apache Iceberg REST catalog for data lakehouse operations
+A complete machine learning platform built on [Kubeflow](https://github.com/kubeflow/kubeflow), providing end-to-end ML lifecycle management from data annotation through to production model serving:
 
-### Infrastructure Components
+- [kserve](https://github.com/kserve/kserve) and [knative](https://github.com/knative/serving) for serverless model inference with autoscaling and scale-to-zero
+- [kgateway](https://github.com/kgateway-dev/kgateway) as an AI-native API gateway with LLM routing, MCP server integration and security policies
+- [kuberay-operator](https://github.com/ray-project/kuberay) for distributed training and hyperparameter tuning
+- [spark-operator](https://github.com/kubeflow/spark-operator) for large-scale data processing within ML pipelines
+- [katib](https://github.com/kubeflow/katib) for automated hyperparameter tuning and neural architecture search
+- [feast](https://github.com/feast-dev/feast) as a feature store for online/offline feature serving
+- [mlflow](https://github.com/mlflow/mlflow) for experiment tracking and model registry
+- [label-studio](https://github.com/heartexlabs/label-studio) for data annotation and dataset preparation
+- [agent-sandbox](https://github.com/anomalyco/agent-sandbox) for sandboxed AI agent execution
 
-- [envoy](https://github.com/envoyproxy/envoy): API gateway with Kubernetes Gateway API implementation and AI model routing
-- [istio](https://github.com/istio/istio): Service mesh for traffic management, security and observability
-- [knative](https://github.com/knative/serving): Serverless workload deployment with scale-to-zero capabilities
-- [rook-ceph](https://github.com/rook/rook): Cloud-native distributed storage with Ceph orchestration
-- [openebs](https://github.com/openebs/openebs): Container-native storage with local PV provisioning
-- [volsync](https://github.com/backube/volsync): Automated backup orchestration with cross-cluster replication
-- [kopia](https://github.com/kopia/kopia): Fast and secure backup/restore with encryption and deduplication
-- [spegel](https://github.com/spegel-org/spegel): Performance optimisation with distributed OCI registry mirror
-- [external-dns](https://github.com/kubernetes-sigs/external-dns): Multi-zone DNS automation with split-horizon configuration
+### Data Engineering & Streaming
 
-### Security & Compliance
+Production data infrastructure for real-time and batch processing:
 
-- [cert-manager](https://github.com/cert-manager/cert-manager): Automated TLS certificate lifecycle management
-- [external-secrets](https://github.com/external-secrets/external-secrets): Centralised secret management with [1Password Connect](https://github.com/1Password/connect) integration
-- [sops](https://github.com/getsops/sops): Git-committed encrypted secrets for declarative secret management
-- [cilium](https://github.com/cilium/cilium): Zero-trust networking with eBPF-based security policies
-- [oauth2-proxy](https://github.com/oauth2-proxy/oauth2-proxy): Authentication proxy for securing applications with SSO
-- [dex](https://github.com/dexidp/dex): Identity provider with OIDC and OAuth2 support
-- [kyverno](https://github.com/kyverno/kyverno): Policy management for security and governance enforcement
+- [kafka](https://github.com/apache/kafka) for event streaming and real-time data ingestion
+- [flink](https://github.com/apache/flink) for stateful stream processing and real-time analytics
+- [trino](https://github.com/trinodb/trino) as a distributed SQL query engine across heterogeneous data sources
+- [argo-workflows](https://github.com/argoproj/argo-workflows) for DAG-based workflow orchestration
 
-### DevOps & Development Infrastructure
+### Networking & Service Mesh
 
-- [actions-runner-controller](https://github.com/actions/actions-runner-controller): Self-hosted CI/CD runners for secure pipeline execution
-- [cloudflared](https://github.com/cloudflare/cloudflared): Zero-trust access tunnels for secure ingress
-- [headlamp](https://github.com/headlamp-k8s/headlamp): User-friendly Kubernetes web UI for cluster management
-- [keda](https://github.com/kedacore/keda): Event-driven autoscaling for Kubernetes workloads
+Dual-stack IPv4/IPv6 networking with BGP-based load balancing and Kubernetes Gateway API:
 
-### Data Storage & Databases
+- [cilium](https://github.com/cilium/cilium) as the CNI with eBPF-based network policies, BGP peering and L2/L3 load balancing
+- [envoy](https://github.com/envoyproxy/envoy) gateway with Kubernetes Gateway API for north-south traffic management
+- [kgateway](https://github.com/kgateway-dev/kgateway) for AI/LLM-aware routing with MCP tool proxying
+- [multus](https://github.com/k8snetworkplumbingwg/multus-cni) for cross-VLAN pod networking
+- [external-dns](https://github.com/kubernetes-sigs/external-dns) for automated split-horizon DNS across Cloudflare and UniFi
 
-- [cloudnative-pg](https://github.com/cloudnative-pg/cloudnative-pg): PostgreSQL operator for production database workloads
-- [percona-xtradb-cluster](https://github.com/percona/percona-xtradb-cluster-operator): Highly available MySQL cluster with synchronous replication
-- [dragonfly](https://github.com/dragonflydb/dragonfly): High-performance in-memory data store compatible with Redis and Memcached
-- [minio](https://github.com/minio/minio): S3-compatible object storage for unstructured data
+### Security & Identity
 
-### Observability & Monitoring
+Zero-trust security model with policy enforcement and centralised identity:
 
-- [prometheus](https://github.com/prometheus/prometheus): Metrics collection and alerting via kube-prometheus-stack
-- [grafana](https://github.com/grafana/grafana): Visualisation and dashboarding for metrics and logs
-- [victoria-logs](https://github.com/VictoriaMetrics/VictoriaMetrics): High-performance log aggregation and search
-- [fluent-bit](https://github.com/fluent/fluent-bit): Lightweight log forwarding and processing
-- [gatus](https://github.com/TwiN/gatus): Health monitoring and status page generation
-- [blackbox-exporter](https://github.com/prometheus/blackbox_exporter): External endpoint monitoring and probing
-- [kromgo](https://github.com/kashalls/kromgo): Prometheus metrics to badge service for status displays
+- [pocket-id](https://github.com/pocket-id/pocket-id) as the OIDC provider with passkey-based SSO (no passwords)
+- [external-secrets](https://github.com/external-secrets/external-secrets) with [1Password Connect](https://github.com/1Password/connect) for secret injection
+- [cert-manager](https://github.com/cert-manager/cert-manager) for automated TLS certificate lifecycle
+- [kyverno](https://github.com/kyverno/kyverno) for enforcing container resource requests via admission policies
 
-### GitOps Implementation
+### Observability
 
-[Flux](https://github.com/fluxcd/flux2) provides declarative cluster management through Git-based state reconciliation:
+Full-stack monitoring with long-term metric retention and structured logging:
 
-- Hierarchical resource organisation with dependency-aware deployment ordering
-- Multi-tenant namespace isolation with RBAC boundary enforcement
-- Automated reconciliation with drift detection and self-healing capabilities
-- Release management through Git-based promotion workflows
+- [prometheus](https://github.com/prometheus/prometheus) via kube-prometheus-stack for metrics collection and alerting
+- [thanos](https://github.com/thanos-io/thanos) for highly available Prometheus with long-term object storage
+- [grafana](https://github.com/grafana/grafana) for dashboarding across metrics, logs and traces
+- [victoria-logs](https://github.com/VictoriaMetrics/VictoriaMetrics) and [fluent-bit](https://github.com/fluent/fluent-bit) for log aggregation
+- [gatus](https://github.com/TwiN/gatus) for endpoint health monitoring and status pages
+- [blackbox-exporter](https://github.com/prometheus/blackbox_exporter), [smartctl-exporter](https://github.com/prometheus-community/smartctl_exporter) and [unpoller](https://github.com/unpoller/unpoller) for infrastructure probing
+- [silence-operator](https://github.com/giantswarm/silence-operator) and [kromgo](https://github.com/kashalls/kromgo) for alert management and badge generation
 
-[Renovate](https://github.com/renovatebot/renovate) provides automated dependency management across the entire repository, creating pull requests for updates and enabling continuous security patching when changes are merged.
+### Storage & Databases
 
-### Directories
+Distributed and local storage with operator-managed databases:
 
-This Git repository contains the following directories under [Kubernetes](./kubernetes/).
+- [rook-ceph](https://github.com/rook/rook) for distributed block, object and filesystem storage
+- [cloudnative-pg](https://github.com/cloudnative-pg/cloudnative-pg) for production PostgreSQL with automated backups and failover
+- [dragonfly](https://github.com/dragonflydb/dragonfly) as a high-performance Redis-compatible in-memory store
+- [garage](https://github.com/deuxfleurs-org/garage) for S3-compatible distributed object storage (backups, Thanos, CNPG WAL archival)
+- [mariadb](https://github.com/mariadb-operator/mariadb-operator) operator for MySQL-compatible workloads
+- [influxdb](https://github.com/influxdata/influxdb) for time-series data and IoT metrics
+- [vernemq](https://github.com/vernemq/vernemq) as an MQTT broker for IoT device communication
+- [openebs](https://github.com/openebs/openebs) for local PV provisioning
+- [volsync](https://github.com/backube/volsync) and [kopia](https://github.com/kopia/kopia) for encrypted backup orchestration
+
+### Infrastructure Provisioning & GitOps
+
+Declarative cluster management with dependency-aware deployments:
+
+- [flux](https://github.com/fluxcd/flux2) for Git-based state reconciliation with drift detection and self-healing
+- [crossplane](https://github.com/crossplane/crossplane) for cloud-native infrastructure provisioning as Kubernetes CRDs
+- [renovate](https://github.com/renovatebot/renovate) for automated dependency updates across the entire repository
+- [actions-runner-controller](https://github.com/actions/actions-runner-controller) for self-hosted CI/CD runners
+- [keda](https://github.com/kedacore/keda) for event-driven autoscaling
+- [spegel](https://github.com/spegel-org/spegel) for peer-to-peer OCI image distribution
+
+---
+
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f3e0/512.gif" alt="🏠" width="20" height="20"> Home Services
+
+Alongside the platform tooling, the cluster runs day-to-day home services:
+
+- [home-assistant](https://github.com/home-assistant/core), [go2rtc](https://github.com/AlexxIT/go2rtc), [zigbee](https://github.com/Koenkk/zigbee2mqtt) and [zwave](https://github.com/zwave-js/zwave-js-ui) for home automation and IoT
+- [plex](https://github.com/plexinc/pms-docker) and [tautulli](https://github.com/Tautulli/Tautulli) for media streaming
+- [immich](https://github.com/immich-app/immich) for photo and video management
+- [radarr](https://github.com/Radarr/Radarr), [sonarr](https://github.com/Sonarr/Sonarr), [lidarr](https://github.com/Lidarr/Lidarr), [prowlarr](https://github.com/Prowlarr/Prowlarr) and [qbittorrent](https://github.com/qbittorrent/qBittorrent) for media automation
+- [mealie](https://github.com/mealie-recipes/mealie) for recipe management
+- [audiobookshelf](https://github.com/advplyr/audiobookshelf) for audiobook and podcast library
+- [forgejo](https://github.com/forgejo/forgejo) as a self-hosted Git forge
+- [searxng](https://github.com/searxng/searxng) for private metasearch
+- [calibre](https://github.com/kovidgoyal/calibre) and [calibre-web](https://github.com/janeczku/calibre-web) for ebook management
+- [thelounge](https://github.com/thelounge/thelounge) for persistent IRC
+
+---
+
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f5c2_fe0f/512.gif" alt="🗂" width="20" height="20"> Repository Structure
 
 ```sh
 📁 kubernetes
-├── 📁 apps           # applications
-├── 📁 components     # commonly reused components e.g., status monitoring templates + volsync backed pvc
-└── 📁 flux           # flux system configuration
+├── 📁 apps           # applications across 24 namespaces
+├── 📁 components     # reusable Kustomize components (volsync, alerts, nfs-scaler)
+└── 📁 flux           # Flux system configuration
+📁 talos              # Talos Linux node configuration (Jinja2 templates)
+📁 bootstrap          # cluster bootstrapping resources
 ```
 
 ### Dependency Management
@@ -189,7 +198,8 @@ The cluster implements automated split-horizon DNS across multiple zones:
 
 - Internal zone management via UniFi controller integration using webhook providers
 - Public DNS automation with Cloudflare API integration
-- Traffic segmentation through ingress class-based routing (`internal`/`external`)
+- Dynamic DNS updates for public IP tracking via cloudflare-ddns
+- Traffic segmentation through gateway-based routing (`envoy-internal`/`envoy-external`)
 - Zero-touch operations with automatic record lifecycle management
 
 This pattern enables secure service exposure whilst maintaining internal network isolation.
