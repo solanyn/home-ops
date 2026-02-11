@@ -27,7 +27,7 @@ spec:
               tag: 0.32.1@sha256:62e5667a913360f6843ce37e4b4263d19c8e9d1cd897463662c0d0b1c7e782a4
             env:
               TZ: Australia/Sydney
-              KIOSK_ALBUMS: "b40d34e5-60ad-4608-962a-0010cbaee7fa"
+              KIOSK_ALBUMS: "d1d419ee-cbe7-4cec-bf74-a1629b5f912e,eb2c8472-6ac9-4aa4-b973-7d3809c08485,644afcb7-85b4-4ecd-bca3-fa166f311421"
               KIOSK_PORT: &port 3000
               KIOSK_DURATION: 30
               KIOSK_TRANSITION: cross-fade
