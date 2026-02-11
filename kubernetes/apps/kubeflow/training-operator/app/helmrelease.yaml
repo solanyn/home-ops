@@ -84,9 +84,7 @@ spec:
 
     persistence:
       cert:
-        type: secret
-        name: training-operator-webhook-cert
+        type: emptyDir
         globalMounts:
           - path: /tmp/k8s-webhook-server/serving-certs
-            readOnly: true
 
