@@ -133,23 +133,6 @@ Declarative cluster management with dependency-aware deployments:
 
 ---
 
-## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f3e0/512.gif" alt="🏠" width="20" height="20"> Home Services
-
-Alongside the platform tooling, the cluster runs day-to-day home services:
-
-- [home-assistant](https://github.com/home-assistant/core), [go2rtc](https://github.com/AlexxIT/go2rtc), [zigbee](https://github.com/Koenkk/zigbee2mqtt) and [zwave](https://github.com/zwave-js/zwave-js-ui) for home automation and IoT
-- [plex](https://github.com/plexinc/pms-docker) and [tautulli](https://github.com/Tautulli/Tautulli) for media streaming
-- [immich](https://github.com/immich-app/immich) for photo and video management
-- [radarr](https://github.com/Radarr/Radarr), [sonarr](https://github.com/Sonarr/Sonarr), [lidarr](https://github.com/Lidarr/Lidarr), [prowlarr](https://github.com/Prowlarr/Prowlarr) and [qbittorrent](https://github.com/qbittorrent/qBittorrent) for media automation
-- [mealie](https://github.com/mealie-recipes/mealie) for recipe management
-- [audiobookshelf](https://github.com/advplyr/audiobookshelf) for audiobook and podcast library
-- [forgejo](https://github.com/forgejo/forgejo) as a self-hosted Git forge
-- [searxng](https://github.com/searxng/searxng) for private metasearch
-- [calibre](https://github.com/kovidgoyal/calibre) and [calibre-web](https://github.com/janeczku/calibre-web) for ebook management
-- [thelounge](https://github.com/thelounge/thelounge) for persistent IRC
-
----
-
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f5c2_fe0f/512.gif" alt="🗂" width="20" height="20"> Repository Structure
 
 ```sh
@@ -209,9 +192,9 @@ This pattern enables secure service exposure whilst maintaining internal network
 
 | Device              | OS Disk             | Data Disk           | Memory | OS            | Function            |
 | ------------------- | ------------------- | ------------------- | ------ | ------------- | ------------------- |
-| Dell Optiplex 7050  | Samsung PM991 256GB | Samsung PM863 960GB | 32GB   | Talos         | Kubernetes          |
-| Dell Optiplex 7060  | Samsung PM991 256GB | Samsung PM863 960GB | 32GB   | Talos         | Kubernetes          |
-| Dell Optiplex 7060  | Samsung PM991 256GB | Samsung PM863 960GB | 32GB   | Talos         | Kubernetes          |
+| Dell Optiplex 7050  | Samsung PM863 960GB | Micron 7450 Pro 960GB | 32GB   | Talos         | Kubernetes          |
+| Dell Optiplex 7060  | Samsung PM863 960GB | Micron 7450 Pro 960GB | 32GB   | Talos         | Kubernetes          |
+| Dell Optiplex 7060  | Samsung PM863 960GB | Micron 7450 Pro 960GB | 32GB   | Talos         | Kubernetes          |
 | NAS (Repurposed PC) | 512GB               | 1x12TB ZFS          | 16GB   | TrueNAS SCALE | NFS + Backup Server |
 | UniFi UCG Ultra     | -                   | -                   | -      | -             | Router              |
 
