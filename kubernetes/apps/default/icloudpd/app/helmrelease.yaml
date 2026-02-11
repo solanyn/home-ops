@@ -42,6 +42,7 @@ spec:
                   --album "Family"
             env:
               TZ: Australia/Sydney
+              HOME: /config
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
@@ -83,4 +84,4 @@ spec:
       config-cache:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /home/user/.pyicloud
+          - path: /config/.pyicloud
