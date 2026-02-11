@@ -54,6 +54,12 @@ spec:
         - urlSecret:
             name: &secret alertmanager-secret
             key: ALERTMANAGER_HEARTBEAT_URL
+        - url: http://gatus.observability.svc.cluster.local/api/v1/endpoints/monitoring_alertmanager/external?success=true
+          httpConfig:
+            authorization:
+              credentials:
+                name: *secret
+                key: GATUS_HEARTBEAT_TOKEN
 
     - name: pushover
       pushoverConfigs:
