@@ -26,6 +26,20 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
 
+external-endpoints:
+  - name: Alertmanager
+    group: monitoring
+    token: ${GATUS_HEARTBEAT_TOKEN}
+    heartbeat:
+      interval: 5m
+    alerts:
+      - type: pushover
+
+alerting:
+  pushover:
+    application-token: ${PUSHOVER_TOKEN}
+    user-key: ${PUSHOVER_USER_KEY}
+
 metrics: true
 
 storage:
