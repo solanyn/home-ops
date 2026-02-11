@@ -111,7 +111,7 @@ spec:
       library:
         type: nfs
         server: nas.internal
-        path: /mnt/world/photos
+        path: /mnt/world/photos/immich
         globalMounts:
           - path: *media
       tmpfs:
@@ -126,6 +126,6 @@ spec:
       external:
         type: nfs
         server: nas.internal
-        path: /mnt/world/photos/icloud-sync
+        path: /mnt/world/photos/icloud
         globalMounts:
           - path: /external
