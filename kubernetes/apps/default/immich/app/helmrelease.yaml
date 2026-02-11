@@ -51,6 +51,7 @@ spec:
               TZ: Australia/Sydney
               IMMICH_TRUSTED_PROXIES: "192.168.0.0/16"
               IMMICH_MEDIA_LOCATION: &media /library
+              IMMICH_EXTERNAL_PATH: /library/icloud-sync
               REDIS_HOSTNAME: &redis redis.storage.svc.cluster.local
             envFrom: *envFrom
             securityContext:
