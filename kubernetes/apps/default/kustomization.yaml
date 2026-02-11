@@ -24,7 +24,6 @@ resources:
   - ./go2rtc/ks.yaml
   - ./health-import/ks.yaml
   - ./home-assistant/ks.yaml
-  - ./icloudpd/ks.yaml
   - ./immich/ks.yaml
   - ./label-studio/ks.yaml
   - ./lidarr/ks.yaml
