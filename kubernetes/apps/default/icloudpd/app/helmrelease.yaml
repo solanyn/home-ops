@@ -78,7 +78,7 @@ spec:
       data:
         type: nfs
         server: nas.internal
-        path: /mnt/world/photos/icloud-sync
+        path: /mnt/world/photos/icloud
         globalMounts:
           - path: /data
       config-cache:
