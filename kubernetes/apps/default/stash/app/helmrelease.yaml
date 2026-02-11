@@ -65,6 +65,8 @@ spec:
             port: 9999
     route:
       app:
+        annotations:
+          gatus.home-operations.com/enabled: "false"
         hostnames: ["stash.goyangi.io"]
         parentRefs:
           - name: envoy-internal
