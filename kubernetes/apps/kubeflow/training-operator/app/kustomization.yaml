@@ -4,6 +4,7 @@ resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
   - ./rbac.yaml
+  - ./secret.yaml
   - ./webhookconfiguration.yaml
   # renovate: datasource=github-tags depName=kubeflow/training-operator
   - https://raw.githubusercontent.com/kubeflow/training-operator/v1.9.3/manifests/base/crds/kubeflow.org_jaxjobs.yaml
