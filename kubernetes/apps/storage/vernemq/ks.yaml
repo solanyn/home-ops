@@ -20,3 +20,4 @@ spec:
   postBuild:
     substitute:
       APP: vernemq
+      CONTROLLER: StatefulSet
