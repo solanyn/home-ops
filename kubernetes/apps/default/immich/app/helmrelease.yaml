@@ -51,7 +51,6 @@ spec:
               TZ: Australia/Sydney
               IMMICH_TRUSTED_PROXIES: "192.168.0.0/16"
               IMMICH_MEDIA_LOCATION: &media /library
-              IMMICH_EXTERNAL_PATH: /external
               REDIS_HOSTNAME: &redis redis.storage.svc.cluster.local
             envFrom: *envFrom
             securityContext:
@@ -123,9 +122,3 @@ spec:
                 subPath: geocoding
               - path: /usr/src/app/.transformers_cache
                 subPath: transformers
-      external:
-        type: nfs
-        server: nas.internal
-        path: /mnt/world/photos/icloud
-        globalMounts:
-          - path: /external
