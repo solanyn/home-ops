@@ -10,7 +10,7 @@ spec:
     - ../../../../components/volsync
   dependsOn:
     - name: home-assistant
-      namespace: flux-system
+      namespace: default
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 1h
