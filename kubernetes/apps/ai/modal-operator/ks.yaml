@@ -24,7 +24,7 @@ spec:
   targetNamespace: ai
   dependsOn:
     - name: modal-operator-crds
-      namespace: flux-system
+      namespace: ai
   interval: 1h
   path: ./kubernetes/apps/ai/modal-operator/app
   prune: true
