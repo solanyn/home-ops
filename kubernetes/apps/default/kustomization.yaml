@@ -27,6 +27,7 @@ resources:
   - ./immich/ks.yaml
   - ./label-studio/ks.yaml
   - ./lidarr/ks.yaml
+  - ./matter-server/ks.yaml
   - ./mealie/ks.yaml
   - ./mlflow/ks.yaml
   - ./mlm/ks.yaml
