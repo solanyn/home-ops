@@ -23,3 +23,4 @@ resources:
   - ./pipelines/ks.yaml
   - ./spark-operator/ks.yaml
   - ./kuberay-operator/ks.yaml
+  - ./marimo-operator/ks.yaml
