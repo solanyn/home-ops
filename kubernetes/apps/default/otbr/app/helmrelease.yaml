@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: otbr
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: otbr
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      otbr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/bnutzer/otbr-tcp
+              tag: latest
+            env:
+              TZ: Australia/Sydney
+              RCP_HOST: "192.168.1.90"
+              RCP_PORT: "7638"
+              RCP_BAUDRATE: "460800"
+              OTBR_REST_LISTEN_ADDRESS: "0.0.0.0"
+              OTBR_REST_LISTEN_PORT: &port 8081
+              OTBR_BACKBONE_IF: net1
+              OTBR_LOG_LEVEL_INT: "6"
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |-
+          [{
+            "name": "iot",
+            "namespace": "kube-system",
+            "ips": ["192.168.70.22/24", "fd5d:a293:f321:70:22::1/64"]
+          }]
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /var/lib/thread
+      tun:
+        type: hostPath
+        hostPath: /dev/net/tun
+        globalMounts:
+          - path: /dev/net/tun
