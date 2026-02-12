@@ -1,0 +1,119 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: marimo-operator
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: marimo-operator
+  interval: 1h
+  values:
+    controllers:
+      marimo-operator:
+        containers:
+          app:
+            # renovate: datasource=github-tags depName=marimo-team/marimo-operator
+            image:
+              repository: ghcr.io/marimo-team/marimo-operator
+              tag: v0.2.5
+            args:
+              - --metrics-bind-address=:8443
+              - --leader-elect
+              - --health-probe-bind-address=:8081
+            command: [/manager]
+            env:
+              DEFAULT_INIT_IMAGE: busybox:1.36
+              GIT_IMAGE: alpine/git:latest
+              ALPINE_IMAGE: alpine:latest
+              S3FS_IMAGE: ghcr.io/marimo-team/marimo-operator/s3fs:latest
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8081
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: 8081
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+            resources:
+              limits:
+                cpu: 500m
+                memory: 128Mi
+              requests:
+                cpu: 10m
+                memory: 64Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 10
+    service:
+      app:
+        ports:
+          metrics:
+            port: 8443
+            protocol: TCP
+    serviceAccount:
+      marimo-operator: {}
+    rbac:
+      roles:
+        leader-election:
+          type: Role
+          rules:
+            - apiGroups: [""]
+              resources: [configmaps]
+              verbs: [get, list, watch, create, update, patch, delete]
+            - apiGroups: [coordination.k8s.io]
+              resources: [leases]
+              verbs: [get, list, watch, create, update, patch, delete]
+            - apiGroups: [""]
+              resources: [events]
+              verbs: [create, patch]
+        manager:
+          type: ClusterRole
+          rules:
+            - apiGroups: [""]
+              resources: [configmaps, persistentvolumeclaims, pods, services]
+              verbs: [create, delete, get, list, patch, update, watch]
+            - apiGroups: [""]
+              resources: [events]
+              verbs: [create, patch]
+            - apiGroups: [marimo.io]
+              resources: [marimos]
+              verbs: [create, delete, get, list, patch, update, watch]
+            - apiGroups: [marimo.io]
+              resources: [marimos/finalizers]
+              verbs: [update]
+            - apiGroups: [marimo.io]
+              resources: [marimos/status]
+              verbs: [get, patch, update]
+      bindings:
+        leader-election:
+          type: RoleBinding
+          roleRef:
+            identifier: leader-election
+          subjects:
+            - identifier: marimo-operator
+        manager:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: manager
+          subjects:
+            - identifier: marimo-operator
