@@ -81,12 +81,6 @@ spec:
             "namespace": "kube-system",
             "ips": ["192.168.70.22/24", "fd5d:a293:f321:70:22::1/64"]
           }]
-      securityContext:
-        sysctls:
-          - name: net.ipv6.conf.all.forwarding
-            value: "1"
-          - name: net.ipv6.conf.all.accept_ra
-            value: "2"
     service:
       app:
         ports:
