@@ -33,7 +33,7 @@ spec:
               BAUDRATE: "460800"
               FLOW_CONTROL: "1"
               NAT64: "0"
-              OTBR_REST_PORT: &port "8081"
+              OTBR_REST_PORT: "8081"
             securityContext:
               privileged: true
             probes:
@@ -43,7 +43,7 @@ spec:
                 spec:
                   httpGet:
                     path: /node
-                    port: *port
+                    port: http
                   periodSeconds: 10
                   timeoutSeconds: 2
                   failureThreshold: 30
@@ -53,7 +53,7 @@ spec:
                 spec:
                   httpGet:
                     path: /node
-                    port: *port
+                    port: http
                   periodSeconds: 10
                   timeoutSeconds: 2
                   failureThreshold: 3
@@ -63,7 +63,7 @@ spec:
                 spec:
                   httpGet:
                     path: /node
-                    port: *port
+                    port: http
                   periodSeconds: 30
                   timeoutSeconds: 2
                   failureThreshold: 3
@@ -91,7 +91,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: 8081
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
