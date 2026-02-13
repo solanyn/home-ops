@@ -24,7 +24,7 @@ spec:
               - --health-probe-bind-address=:8081
             command: [/manager]
             env:
-              DEFAULT_INIT_IMAGE: busybox:1.36
+              DEFAULT_INIT_IMAGE: busybox:1.37
               GIT_IMAGE: alpine/git:latest
               ALPINE_IMAGE: alpine:latest
               S3FS_IMAGE: ghcr.io/marimo-team/marimo-operator/s3fs:latest
