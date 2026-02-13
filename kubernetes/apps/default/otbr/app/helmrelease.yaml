@@ -44,7 +44,7 @@ spec:
                 spec:
                   httpGet:
                     path: /node
-                    port: http
+                    port: 8081
                   periodSeconds: 10
                   timeoutSeconds: 2
                   failureThreshold: 30
@@ -54,7 +54,7 @@ spec:
                 spec:
                   httpGet:
                     path: /node
-                    port: http
+                    port: 8081
                   periodSeconds: 10
                   timeoutSeconds: 2
                   failureThreshold: 3
@@ -64,7 +64,7 @@ spec:
                 spec:
                   httpGet:
                     path: /node
-                    port: http
+                    port: 8081
                   periodSeconds: 30
                   timeoutSeconds: 2
                   failureThreshold: 3
