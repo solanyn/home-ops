@@ -18,14 +18,19 @@ sonarr:
       - template: sonarr-quality-definition-series
       - template: sonarr-v4-quality-profile-web-1080p
       - template: sonarr-v4-custom-formats-web-1080p
+      - template: sonarr-v4-quality-profile-web-2160p
+      - template: sonarr-v4-custom-formats-web-2160p
     quality_profiles:
       - name: WEB-1080p
+      - name: WEB-2160p
     custom_formats:
       - # FLUX trumps REPACKS
         trash_ids:
           - 5d9fd1b1e06cd8a475462f40214b7df6 # FLUX
         assign_scores_to:
           - name: WEB-1080p
+            score: 100
+          - name: WEB-2160p
             score: 100
       - # Unwanted
         trash_ids:
@@ -35,6 +40,7 @@ sonarr:
           - 06d66ab109d4d2eddb2794d21526d140 # Retags
         assign_scores_to:
           - name: WEB-1080p
+          - name: WEB-2160p
 
 radarr:
   radarr:
@@ -60,11 +66,6 @@ radarr:
         assign_scores_to:
           - name: SQP-1 (2160p)
             score: 100
-      - trash_ids:
-          - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV)
-        assign_scores_to:
-          - name: SQP-1 (2160p)
-            score: 0
       - # Unwanted
         trash_ids:
           - 957d0f44b592285f26449575e8b1167e # Special Edition
