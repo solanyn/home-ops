@@ -37,7 +37,7 @@ spec:
                     key: ATUIN_DB_URI
               RUST_LOG: debug
               TZ: Australia/Sydney
-            args: ["server", "start"]
+            args: ["start"]
             probes:
               liveness: &probes
                 enabled: true
