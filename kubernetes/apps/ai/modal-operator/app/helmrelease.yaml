@@ -22,3 +22,14 @@ spec:
     watchNamespaces: ""
     metrics:
       enabled: true
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: Deployment
+              name: modal-operator
+            patch: |
+              - op: remove
+                path: /spec/template/spec/containers/0/livenessProbe
+              - op: remove
+                path: /spec/template/spec/containers/0/readinessProbe
