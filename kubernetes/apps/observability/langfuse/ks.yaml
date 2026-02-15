@@ -11,7 +11,11 @@ spec:
       namespace: storage
     - name: clickhouse
       namespace: storage
+    - name: crossplane-configs
+      namespace: crossplane-system
     - name: dragonfly-cluster
+      namespace: storage
+    - name: garage
       namespace: storage
   interval: 1h
   path: ./kubernetes/apps/observability/langfuse/app

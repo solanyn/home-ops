@@ -1,0 +1,10 @@
+---
+apiVersion: garage.crossplane.io/v1alpha1
+kind: Bucket
+metadata:
+  name: langfuse
+spec:
+  forProvider:
+    globalAlias: langfuse
+  providerConfigRef:
+    name: default
