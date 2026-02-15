@@ -34,9 +34,9 @@ spec:
                 python /app/worker.py
             env:
               TZ: Australia/Sydney
-            envFrom:
-              - secretRef:
-                  name: opencode-worker-secret
+              TEMPORAL_FRONTEND: temporal-frontend.ai.svc.cluster.local:7233
+              TASK_QUEUE: opencode-agent
+              SANDBOX_NAMESPACE: ai
             resources:
               requests:
                 cpu: 10m
