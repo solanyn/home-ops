@@ -29,33 +29,38 @@ spec:
             - secretRef:
                 name: temporal-secret
       config:
+        numHistoryShards: 512
         persistence:
           defaultStore: default
           visibilityStore: visibility
-          numHistoryShards: 512
-          datastores:
-            default:
-              sql:
-                createDatabase: false
-                manageSchema: true
-                pluginName: postgres12_pgx
-                driverName: postgres12_pgx
-                databaseName: temporal
-                connectAddr: postgres-rw.storage.svc.cluster.local:5432
-                user: temporal
-                existingSecret: temporal-secret
-                secretKey: password
-            visibility:
-              sql:
-                createDatabase: false
-                manageSchema: true
-                pluginName: postgres12_pgx
-                driverName: postgres12_pgx
-                databaseName: temporal_visibility
-                connectAddr: postgres-rw.storage.svc.cluster.local:5432
-                user: temporal
-                existingSecret: temporal-secret
-                secretKey: password
+          default:
+            driver: sql
+            sql:
+              pluginName: postgres12_pgx
+              driverName: postgres12_pgx
+              host: postgres-rw.storage.svc.cluster.local
+              port: 5432
+              database: temporal
+              user: temporal
+              existingSecret: temporal-secret
+              secretName: temporal-secret
+              maxConns: 20
+              maxIdleConns: 20
+              maxConnLifetime: 1h
+          visibility:
+            driver: sql
+            sql:
+              pluginName: postgres12_pgx
+              driverName: postgres12_pgx
+              host: postgres-rw.storage.svc.cluster.local
+              port: 5432
+              database: temporal_visibility
+              user: temporal
+              existingSecret: temporal-secret
+              secretName: temporal-secret
+              maxConns: 20
+              maxIdleConns: 20
+              maxConnLifetime: 1h
         namespaces:
           create: true
           namespace:
