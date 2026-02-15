@@ -4,7 +4,6 @@ kind: SandboxTemplate
 metadata:
   name: opencode-homeops
 spec:
-  shutdownPolicy: Delete
   podTemplate:
     spec:
       containers:
@@ -42,7 +41,6 @@ kind: SandboxTemplate
 metadata:
   name: opencode-mono
 spec:
-  shutdownPolicy: Delete
   podTemplate:
     spec:
       containers:
