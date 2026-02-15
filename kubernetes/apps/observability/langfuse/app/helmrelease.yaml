@@ -21,33 +21,31 @@ spec:
       retries: 3
   values:
     langfuse:
+      salt:
+        secretKeyRef:
+          name: langfuse-secret
+          key: SALT
+      nextauth:
+        secret:
+          secretKeyRef:
+            name: langfuse-secret
+            key: NEXTAUTH_SECRET
+      encryptionKey:
+        secretKeyRef:
+          name: langfuse-secret
+          key: ENCRYPTION_KEY
       extraInitContainers:
         - name: init-db
           image: ghcr.io/home-operations/postgres-init:18
           envFrom:
             - secretRef:
                 name: langfuse-secret
-      extraEnv:
+      additionalEnv:
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
               name: langfuse-secret
               key: DATABASE_URL
-        - name: NEXTAUTH_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: langfuse-secret
-              key: NEXTAUTH_SECRET
-        - name: SALT
-          valueFrom:
-            secretKeyRef:
-              name: langfuse-secret
-              key: SALT
-        - name: ENCRYPTION_KEY
-          valueFrom:
-            secretKeyRef:
-              name: langfuse-secret
-              key: ENCRYPTION_KEY
         - name: CLICKHOUSE_MIGRATION_URL
           valueFrom:
             secretKeyRef:
