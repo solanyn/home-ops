@@ -81,33 +81,6 @@ spec:
             secretKeyRef:
               name: langfuse-secret
               key: REDIS_AUTH
-        - name: LANGFUSE_S3_EVENT_UPLOAD_BUCKET
-          valueFrom:
-            secretKeyRef:
-              name: langfuse-secret
-              key: S3_BUCKET_NAME
-        - name: LANGFUSE_S3_EVENT_UPLOAD_REGION
-          valueFrom:
-            secretKeyRef:
-              name: langfuse-secret
-              key: S3_REGION
-        - name: LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT
-          valueFrom:
-            secretKeyRef:
-              name: langfuse-secret
-              key: S3_ENDPOINT
-        - name: LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: langfuse-secret
-              key: S3_ACCESS_KEY_ID
-        - name: LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: langfuse-secret
-              key: S3_SECRET_ACCESS_KEY
-        - name: LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE
-          value: "true"
         - name: NEXTAUTH_URL
           value: https://langfuse.goyangi.io
         - name: AUTH_CUSTOM_CLIENT_ID
@@ -139,3 +112,21 @@ spec:
       deploy: false
     s3:
       deploy: false
+      bucket: langfuse
+      region: garage
+      endpoint: http://garage.storage.svc.cluster.local:3900
+      forcePathStyle: true
+      accessKeyId:
+        secretKeyRef:
+          name: langfuse-secret
+          key: S3_ACCESS_KEY_ID
+      secretAccessKey:
+        secretKeyRef:
+          name: langfuse-secret
+          key: S3_SECRET_ACCESS_KEY
+      eventUpload:
+        prefix: events/
+      batchExport:
+        prefix: exports/
+      mediaUpload:
+        prefix: media/
