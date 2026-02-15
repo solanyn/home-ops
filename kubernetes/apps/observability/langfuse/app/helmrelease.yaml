@@ -47,10 +47,7 @@ spec:
               name: langfuse-secret
               key: DATABASE_URL
         - name: CLICKHOUSE_MIGRATION_URL
-          valueFrom:
-            secretKeyRef:
-              name: langfuse-secret
-              key: CLICKHOUSE_URL
+          value: "clickhouse://chi-clickhouse-default-0-0.storage.svc.cluster.local:9000"
         - name: CLICKHOUSE_URL
           valueFrom:
             secretKeyRef:
@@ -84,6 +81,8 @@ spec:
           value: Pocket ID
         - name: AUTH_DISABLE_USERNAME_PASSWORD
           value: "true"
+        - name: CLICKHOUSE_CLUSTER_ENABLED
+          value: "false"
       service:
         type: ClusterIP
         port: 3000
@@ -93,9 +92,10 @@ spec:
       deploy: false
     clickhouse:
       deploy: false
+      clusterEnabled: false
     redis:
       deploy: false
-      host: dragonfly-cluster.storage.svc.cluster.local
+      host: redis.storage.svc.cluster.local
       port: 6379
     s3:
       deploy: false
