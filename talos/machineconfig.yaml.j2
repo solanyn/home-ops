@@ -43,12 +43,14 @@ machine:
         [ NFSMount_Global_Options ]
         nfsvers=4.2
         hard=True
-        nconnect=16
+        nconnect=8
         noatime=True
+        rsize=1048576
+        wsize=1048576
   install:
     diskSelector:
       model: SAMSUNG MZ7LM960
-    image: factory.talos.dev/metal-installer/edca29dbf197ce03b016ab4aba64a6b0c629f6ac3889e2b775a346cc86e5bce4:v1.12.2
+    image: factory.talos.dev/metal-installer/b49e22b8da5582dc0836c175a58bf54bc9e847b69968e6f10577eb2f1c796be0:v1.12.2
     wipe: false
   kernel:
     modules:
@@ -84,6 +86,7 @@ machine:
     net.ipv4.tcp_slow_start_after_idle: "0"
     net.ipv4.tcp_window_scaling: "1"
     net.ipv4.tcp_wmem: 4096 65536 33554432
+    net.ipv4.tcp_notsent_lowat: "131072"
     net.ipv6.conf.all.accept_ra: "2"
     net.ipv6.conf.default.accept_ra: "2"
     net.ipv6.conf.eno1.accept_ra: "2"
