@@ -1,0 +1,9 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: langfuse
+spec:
+  interval: 1h
+  type: oci
+  url: oci://ghcr.io/langfuse/langfuse-k8s
