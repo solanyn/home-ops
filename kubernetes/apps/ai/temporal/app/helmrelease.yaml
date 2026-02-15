@@ -84,7 +84,7 @@ spec:
         - name: TEMPORAL_AUTH_ENABLED
           value: "true"
         - name: TEMPORAL_AUTH_PROVIDER_URL
-          value: https://id.goyangi.io/
+          value: https://id.goyangi.io
         - name: TEMPORAL_AUTH_CLIENT_ID
           value: temporal
         - name: TEMPORAL_AUTH_CALLBACK_URL
