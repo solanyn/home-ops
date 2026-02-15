@@ -8,7 +8,6 @@ spec:
   servicePort: 80
   source: |
     import modal
-    import sys
 
     MINUTES = 60
     PORT = 3003
@@ -42,9 +41,8 @@ spec:
         env = os.environ.copy()
         env["MACHINE_LEARNING_CACHE_FOLDER"] = "/cache"
         env["TRANSFORMERS_CACHE"] = "/cache"
-        env["PYTHONPATH"] = "/usr/src/app"
         subprocess.Popen(
             ["gunicorn", "app.main:app", "-k", "uvicorn.workers.UvicornWorker",
-             "-b", f"0.0.0.0:{PORT}", "-w", "1", "-t", "0"],
+             "-b", f"0.0.0.0:{PORT}", "-w", "1", "-t", "0", "--chdir", "/usr/src/app"],
             env=env,
         )
