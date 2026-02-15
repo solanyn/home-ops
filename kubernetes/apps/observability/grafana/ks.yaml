@@ -27,6 +27,8 @@ spec:
       namespace: default
     - name: grafana
       namespace: observability
+    - name: clickhouse
+      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/observability/grafana/instance
   prune: true
