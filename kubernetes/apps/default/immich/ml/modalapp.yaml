@@ -17,7 +17,6 @@ spec:
             "ghcr.io/immich-app/immich-machine-learning:v2.5.6-cuda",
             add_python=None,
         )
-        .entrypoint([])
     )
 
     model_cache_vol = modal.Volume.from_name("immich-ml-cache", create_if_missing=True)
@@ -43,8 +42,7 @@ spec:
         env["MACHINE_LEARNING_CACHE_FOLDER"] = "/cache"
         env["TRANSFORMERS_CACHE"] = "/cache"
         subprocess.Popen(
-            "python -m app.main",
-            shell=True,
-            cwd="/usr/src/app",
+            ["gunicorn", "app.main:app", "-k", "uvicorn.workers.UvicornWorker",
+             "-b", f"0.0.0.0:{PORT}", "-w", "1", "-t", "0"],
             env=env,
         )
