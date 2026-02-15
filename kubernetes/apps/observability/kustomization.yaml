@@ -25,4 +25,5 @@ resources:
   - ./smartctl-exporter/ks.yaml
   - ./thanos/ks.yaml
   - ./unpoller/ks.yaml
+  - ./siren/ks.yaml
   - ./victoria-logs/ks.yaml
