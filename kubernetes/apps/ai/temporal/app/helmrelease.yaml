@@ -95,3 +95,11 @@ spec:
               key: client_secret
     schema:
       backoffLimit: 100
+    cassandra:
+      enabled: false
+    elasticsearch:
+      enabled: false
+    prometheus:
+      enabled: false
+    grafana:
+      enabled: false
