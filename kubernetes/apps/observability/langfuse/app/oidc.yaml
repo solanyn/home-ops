@@ -1,0 +1,15 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: langfuse
+spec:
+  clientID: langfuse
+  callbackUrls:
+    - https://langfuse.goyangi.io/api/auth/callback/custom
+  logoutCallbackUrls:
+    - https://langfuse.goyangi.io
+  secret:
+    name: langfuse-oidc
+    keys:
+      clientSecret: client_secret
