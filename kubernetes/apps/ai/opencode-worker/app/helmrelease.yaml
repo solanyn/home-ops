@@ -1,0 +1,219 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: opencode-worker
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: opencode-worker
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      opencode-worker:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: python
+              tag: 3.12-slim
+            command:
+              - /bin/bash
+              - -c
+              - |
+                pip install --quiet temporalio kubernetes &&
+                python /app/worker.py
+            env:
+              TZ: Australia/Sydney
+            envFrom:
+              - secretRef:
+                  name: opencode-worker-secret
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+    serviceAccount:
+      opencode-worker: {}
+    rbac:
+      roles:
+        sandbox-manager:
+          type: ClusterRole
+          rules:
+            - apiGroups: ["agents.x-k8s.io"]
+              resources: ["sandboxes"]
+              verbs: ["create", "delete", "get", "list", "watch"]
+            - apiGroups: ["extensions.agents.x-k8s.io"]
+              resources: ["sandboxclaims"]
+              verbs: ["create", "delete", "get", "list", "watch"]
+            - apiGroups: [""]
+              resources: ["pods", "pods/log"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: [""]
+              resources: ["pods/exec"]
+              verbs: ["create"]
+      bindings:
+        sandbox-manager:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: sandbox-manager
+          subjects:
+            - identifier: opencode-worker
+              serviceAccount: opencode-worker
+    configMaps:
+      worker-code:
+        data:
+          worker.py: |
+            import asyncio
+            import json
+            import os
+            import time
+            from dataclasses import dataclass
+            from datetime import timedelta
+
+            from temporalio import activity, workflow
+            from temporalio.client import Client
+            from temporalio.worker import Worker
+
+            try:
+                from kubernetes import client, config, watch
+                config.load_incluster_config()
+                k8s_core = client.CoreV1Api()
+                k8s_custom = client.CustomObjectsApi()
+            except Exception:
+                k8s_core = None
+                k8s_custom = None
+
+            NAMESPACE = os.environ.get("SANDBOX_NAMESPACE", "ai")
+
+            @dataclass
+            class AgentTaskInput:
+                repo: str
+                branch: str
+                prompt: str
+                template: str = "opencode-homeops"
+
+            @activity.defn
+            async def run_opencode_task(task_input: AgentTaskInput) -> str:
+                claim_name = f"opencode-{task_input.template}-{int(time.time())}"
+                claim = {
+                    "apiVersion": "extensions.agents.x-k8s.io/v1alpha1",
+                    "kind": "SandboxClaim",
+                    "metadata": {
+                        "name": claim_name,
+                        "namespace": NAMESPACE,
+                    },
+                    "spec": {
+                        "sandboxTemplateRef": {
+                            "name": task_input.template,
+                        },
+                    },
+                }
+
+                activity.logger.info(f"Creating SandboxClaim {claim_name}")
+                k8s_custom.create_namespaced_custom_object(
+                    group="extensions.agents.x-k8s.io",
+                    version="v1alpha1",
+                    namespace=NAMESPACE,
+                    plural="sandboxclaims",
+                    body=claim,
+                )
+
+                activity.logger.info("Waiting for sandbox pod to be ready")
+                pod_name = claim_name
+                for _ in range(120):
+                    try:
+                        pod = k8s_core.read_namespaced_pod(pod_name, NAMESPACE)
+                        if pod.status.phase == "Running":
+                            ready = all(
+                                c.ready for c in (pod.status.container_statuses or [])
+                            )
+                            if ready:
+                                break
+                    except Exception:
+                        pass
+                    await asyncio.sleep(2)
+                    activity.heartbeat()
+
+                activity.logger.info(f"Executing opencode in sandbox {pod_name}")
+                exec_cmd = [
+                    "/bin/sh", "-c",
+                    f"cd /workspace && "
+                    f"git clone https://github.com/{task_input.repo}.git . 2>/dev/null || true && "
+                    f"git checkout -b {task_input.branch} 2>/dev/null || git checkout {task_input.branch} && "
+                    f"opencode -y \"{task_input.prompt}\"",
+                ]
+
+                from kubernetes.stream import stream
+                result = stream(
+                    k8s_core.connect_get_namespaced_pod_exec,
+                    pod_name,
+                    NAMESPACE,
+                    container="agent",
+                    command=exec_cmd,
+                    stderr=True,
+                    stdout=True,
+                    stdin=False,
+                    tty=False,
+                )
+
+                activity.logger.info(f"Cleaning up SandboxClaim {claim_name}")
+                try:
+                    k8s_custom.delete_namespaced_custom_object(
+                        group="extensions.agents.x-k8s.io",
+                        version="v1alpha1",
+                        namespace=NAMESPACE,
+                        plural="sandboxclaims",
+                        name=claim_name,
+                    )
+                except Exception:
+                    pass
+
+                return result
+
+            @workflow.defn
+            class AgentWorkflow:
+                @workflow.run
+                async def run(self, task_input: AgentTaskInput) -> str:
+                    return await workflow.execute_activity(
+                        run_opencode_task,
+                        task_input,
+                        start_to_close_timeout=timedelta(minutes=30),
+                        heartbeat_timeout=timedelta(minutes=5),
+                    )
+
+            async def main():
+                temporal_frontend = os.environ.get(
+                    "TEMPORAL_FRONTEND",
+                    "temporal-frontend.ai.svc.cluster.local:7233",
+                )
+                task_queue = os.environ.get("TASK_QUEUE", "opencode-agent")
+
+                client = await Client.connect(temporal_frontend)
+                worker = Worker(
+                    client,
+                    task_queue=task_queue,
+                    workflows=[AgentWorkflow],
+                    activities=[run_opencode_task],
+                )
+                print(f"Worker started, polling {task_queue}")
+                await worker.run()
+
+            if __name__ == "__main__":
+                asyncio.run(main())
+    persistence:
+      worker-code:
+        type: configMap
+        identifier: worker-code
+        globalMounts:
+          - path: /app/worker.py
+            subPath: worker.py
+            readOnly: true

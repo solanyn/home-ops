@@ -1,0 +1,81 @@
+---
+apiVersion: extensions.agents.x-k8s.io/v1alpha1
+kind: SandboxTemplate
+metadata:
+  name: opencode-homeops
+spec:
+  shutdownPolicy: Delete
+  podTemplate:
+    spec:
+      containers:
+        - name: agent
+          image: ghcr.io/anomalyco/opencode:1.2.3
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              apk add --no-cache git openssh-client python3 py3-pip
+              pip install --break-system-packages flux-local 2>/dev/null || true
+              mkdir -p ~/.config/opencode
+              cp /config/opencode.json ~/.config/opencode/
+              sleep infinity
+          env:
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: opencode-sandbox-secret
+                  key: GITHUB_TOKEN
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: workspace
+              mountPath: /workspace
+      volumes:
+        - name: config
+          secret:
+            secretName: opencode-sandbox-config
+        - name: workspace
+          emptyDir: {}
+---
+apiVersion: extensions.agents.x-k8s.io/v1alpha1
+kind: SandboxTemplate
+metadata:
+  name: opencode-mono
+spec:
+  shutdownPolicy: Delete
+  podTemplate:
+    spec:
+      containers:
+        - name: agent
+          image: ubuntu:24.04
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              apt-get update && apt-get install -y --no-install-recommends \
+                git gh curl build-essential ripgrep openssh-client ca-certificates
+              curl -fsSL https://opencode.ai/install | bash
+              curl -Lo /usr/local/bin/bazelisk \
+                "https://github.com/bazelbuild/bazelisk/releases/latest/download/bazelisk-linux-$(dpkg --print-architecture)"
+              chmod +x /usr/local/bin/bazelisk
+              ln -s /usr/local/bin/bazelisk /usr/local/bin/bazel
+              mkdir -p ~/.config/opencode
+              cp /config/opencode.json ~/.config/opencode/
+              sleep infinity
+          env:
+            - name: GITHUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: opencode-sandbox-secret
+                  key: GITHUB_TOKEN
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              readOnly: true
+            - name: workspace
+              mountPath: /workspace
+      volumes:
+        - name: config
+          secret:
+            secretName: opencode-sandbox-config
+        - name: workspace
+          emptyDir: {}
