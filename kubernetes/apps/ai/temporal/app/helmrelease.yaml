@@ -1,0 +1,97 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: temporal
+spec:
+  chart:
+    spec:
+      chart: temporal
+      version: 0.73.1
+      sourceRef:
+        kind: HelmRepository
+        name: temporal
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    server:
+      replicaCount: 1
+      additionalInitContainers:
+        - name: init-db
+          image: ghcr.io/home-operations/postgres-init:18
+          envFrom:
+            - secretRef:
+                name: temporal-secret
+      config:
+        persistence:
+          defaultStore: default
+          visibilityStore: visibility
+          numHistoryShards: 512
+          datastores:
+            default:
+              sql:
+                createDatabase: false
+                manageSchema: true
+                pluginName: postgres12_pgx
+                driverName: postgres12_pgx
+                databaseName: temporal
+                connectAddr: postgres-rw.storage.svc.cluster.local:5432
+                user: temporal
+                existingSecret: temporal-secret
+                secretKey: password
+            visibility:
+              sql:
+                createDatabase: false
+                manageSchema: true
+                pluginName: postgres12_pgx
+                driverName: postgres12_pgx
+                databaseName: temporal_visibility
+                connectAddr: postgres-rw.storage.svc.cluster.local:5432
+                user: temporal
+                existingSecret: temporal-secret
+                secretKey: password
+        namespaces:
+          create: true
+          namespace:
+            - name: default
+              retention: 7d
+      metrics:
+        serviceMonitor:
+          enabled: true
+      frontend:
+        replicaCount: 1
+      history:
+        replicaCount: 1
+      matching:
+        replicaCount: 1
+      worker:
+        replicaCount: 1
+    admintools:
+      enabled: true
+    web:
+      enabled: true
+      replicaCount: 1
+      additionalEnv:
+        - name: TEMPORAL_AUTH_ENABLED
+          value: "true"
+        - name: TEMPORAL_AUTH_PROVIDER_URL
+          value: https://id.goyangi.io/
+        - name: TEMPORAL_AUTH_CLIENT_ID
+          value: temporal
+        - name: TEMPORAL_AUTH_CALLBACK_URL
+          value: https://temporal.goyangi.io/auth/sso/callback
+        - name: TEMPORAL_AUTH_SCOPES
+          value: "openid,profile,email"
+        - name: TEMPORAL_AUTH_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: temporal-oidc
+              key: client_secret
+    schema:
+      backoffLimit: 100
