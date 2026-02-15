@@ -44,6 +44,7 @@ resources:
   - ./recyclarr/ks.yaml
   - ./romm/ks.yaml
   - ./searxng/ks.yaml
+  - ./seasonpackerr/ks.yaml
   - ./seerr/ks.yaml
   - ./sftpgo/ks.yaml
   - ./sonarr/ks.yaml
