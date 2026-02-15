@@ -97,6 +97,8 @@ spec:
               name: temporal-oidc
               key: client_secret
     schema:
+      createDatabase:
+        enabled: false
       backoffLimit: 100
     cassandra:
       enabled: false
