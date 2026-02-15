@@ -5,7 +5,7 @@ metadata:
   name: immich-ml
 spec:
   appName: immich-ml
-  servicePort: 3003
+  servicePort: 80
   source: |
     import modal
 
