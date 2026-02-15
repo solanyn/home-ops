@@ -9,8 +9,6 @@ spec:
     - https://temporal.goyangi.io/auth/sso/callback
   logoutCallbackUrls:
     - https://temporal.goyangi.io
-  allowedUserGroups:
-    - name: admin
   secret:
     name: temporal-oidc
     keys:
