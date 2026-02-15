@@ -96,11 +96,14 @@ Zero-trust security model with policy enforcement and centralised identity:
 
 ### Observability
 
-Full-stack monitoring with long-term metric retention and structured logging:
+Full-stack monitoring with long-term metric retention, distributed tracing and LLM observability:
 
 - [prometheus](https://github.com/prometheus/prometheus) via kube-prometheus-stack for metrics collection and alerting
 - [thanos](https://github.com/thanos-io/thanos) for highly available Prometheus with long-term object storage
 - [grafana](https://github.com/grafana/grafana) for dashboarding across metrics, logs and traces
+- [opentelemetry](https://github.com/open-telemetry/opentelemetry-collector) collector with eBPF auto-instrumentation for distributed tracing
+- [clickhouse](https://github.com/ClickHouse/ClickHouse) for high-performance trace and log storage
+- [langfuse](https://github.com/langfuse/langfuse) for LLM observability, prompt management and evaluation
 - [victoria-logs](https://github.com/VictoriaMetrics/VictoriaMetrics) and [fluent-bit](https://github.com/fluent/fluent-bit) for log aggregation
 - [gatus](https://github.com/TwiN/gatus) for endpoint health monitoring and status pages
 - [blackbox-exporter](https://github.com/prometheus/blackbox_exporter), [smartctl-exporter](https://github.com/prometheus-community/smartctl_exporter) and [unpoller](https://github.com/unpoller/unpoller) for infrastructure probing
