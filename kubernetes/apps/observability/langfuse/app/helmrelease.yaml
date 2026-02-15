@@ -66,21 +66,6 @@ spec:
             secretKeyRef:
               name: langfuse-secret
               key: CLICKHOUSE_PASSWORD
-        - name: REDIS_HOST
-          valueFrom:
-            secretKeyRef:
-              name: langfuse-secret
-              key: REDIS_HOST
-        - name: REDIS_PORT
-          valueFrom:
-            secretKeyRef:
-              name: langfuse-secret
-              key: REDIS_PORT
-        - name: REDIS_AUTH
-          valueFrom:
-            secretKeyRef:
-              name: langfuse-secret
-              key: REDIS_AUTH
         - name: NEXTAUTH_URL
           value: https://langfuse.goyangi.io
         - name: AUTH_CUSTOM_CLIENT_ID
@@ -110,6 +95,13 @@ spec:
       deploy: false
     redis:
       deploy: false
+      host: dragonfly-cluster.storage.svc.cluster.local
+      port: 6379
+      auth:
+        password:
+          secretKeyRef:
+            name: langfuse-secret
+            key: REDIS_AUTH
     s3:
       deploy: false
       bucket: langfuse
