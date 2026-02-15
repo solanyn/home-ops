@@ -36,8 +36,7 @@ spec:
           default:
             driver: sql
             sql:
-              pluginName: postgres12_pgx
-              driverName: postgres12_pgx
+              driver: postgres12_pgx
               host: postgres-rw.storage.svc.cluster.local
               port: 5432
               database: temporal
@@ -50,8 +49,7 @@ spec:
           visibility:
             driver: sql
             sql:
-              pluginName: postgres12_pgx
-              driverName: postgres12_pgx
+              driver: postgres12_pgx
               host: postgres-rw.storage.svc.cluster.local
               port: 5432
               database: temporal_visibility
