@@ -39,8 +39,12 @@ spec:
     def serve():
         import subprocess
         import os
-        os.environ["MACHINE_LEARNING_CACHE_FOLDER"] = "/cache"
-        os.environ["TRANSFORMERS_CACHE"] = "/cache"
-        subprocess.Popen([
-            "python", "-m", "app.main",
-        ], cwd="/usr/src/app")
+        env = os.environ.copy()
+        env["MACHINE_LEARNING_CACHE_FOLDER"] = "/cache"
+        env["TRANSFORMERS_CACHE"] = "/cache"
+        subprocess.Popen(
+            "python -m app.main",
+            shell=True,
+            cwd="/usr/src/app",
+            env=env,
+        )
