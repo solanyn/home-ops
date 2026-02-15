@@ -7,4 +7,5 @@ resources:
   - ./grafanadatasource.yaml
   - ./grafana.yaml
   - ./oidc.yaml
+  - ./grafanaserviceaccount.yaml
   - ./servicemonitor.yaml
