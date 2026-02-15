@@ -1,0 +1,17 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: temporal
+spec:
+  clientID: temporal
+  callbackUrls:
+    - https://temporal.goyangi.io/auth/sso/callback
+  logoutCallbackUrls:
+    - https://temporal.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: temporal-oidc
+    keys:
+      clientSecret: client_secret
