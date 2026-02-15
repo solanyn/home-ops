@@ -11,3 +11,5 @@ resources:
   - ./namespace.yaml
   - ./modal-operator/ks.yaml
   - ./openclaw/ks.yaml
+  - ./temporal/ks.yaml
+  - ./opencode-worker/ks.yaml
