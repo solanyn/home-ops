@@ -46,3 +46,37 @@ spec:
     name: victoria-logs
     access: proxy
     url: http://victoria-logs-server.observability.svc.cluster.local:9428
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: clickhouse
+spec:
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  valuesFrom:
+    - targetPath: secureJsonData.password
+      valueFrom:
+        secretKeyRef:
+          name: grafana-clickhouse-secret
+          key: password
+  datasource:
+    type: grafana-clickhouse-datasource
+    name: ClickHouse
+    access: proxy
+    url: http://clickhouse-clickhouse.storage.svc.cluster.local:8123
+    jsonData:
+      defaultDatabase: otel
+      username: grafana
+      otelEnabled: true
+      otelVersion: latest
+      logs:
+        defaultDatabase: otel
+        defaultTable: otel_logs
+        otelEnabled: true
+      traces:
+        defaultDatabase: otel
+        defaultTable: otel_traces
+        otelEnabled: true
