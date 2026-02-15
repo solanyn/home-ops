@@ -96,5 +96,5 @@ spec:
           userKey:
             name: *secret
             key: PUSHOVER_USER_KEY
-          url: https://siren.goyangi.io/a/{{ .Fingerprint }}
+          url: https://siren.goyangi.io/alerts
           urlTitle: View in Siren
