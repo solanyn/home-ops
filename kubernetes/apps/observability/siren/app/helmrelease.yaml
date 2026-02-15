@@ -28,7 +28,7 @@ spec:
               tag: v1.4.14
             env:
               TZ: Australia/Sydney
-              ALERTMANAGER_BASE_URL: http://vmalertmanager-victoria-metrics.observability.svc.cluster.local:9093
+              ALERTMANAGER_BASE_URL: http://vmalertmanager-victoria-metrics-k8s-stack.observability.svc.cluster.local:9093
             probes:
               liveness:
                 enabled: true
