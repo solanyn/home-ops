@@ -33,6 +33,8 @@ spec:
   dependsOn:
     - name: immich
       namespace: default
+    - name: modal-operator
+      namespace: ai
   interval: 1h
   path: ./kubernetes/apps/default/immich/ml
   postBuild:
