@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: langfuse
-      version: 1.2.16
+      version: 1.5.19
       sourceRef:
         kind: HelmRepository
         name: langfuse
@@ -134,8 +134,10 @@ spec:
     ingress:
       enabled: false
     postgresql:
-      enabled: false
+      deploy: false
     clickhouse:
-      enabled: false
+      deploy: false
     redis:
-      enabled: false
+      deploy: false
+    s3:
+      deploy: false

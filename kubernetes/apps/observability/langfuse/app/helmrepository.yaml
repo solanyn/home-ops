@@ -5,5 +5,4 @@ metadata:
   name: langfuse
 spec:
   interval: 1h
-  type: oci
-  url: oci://ghcr.io/langfuse/langfuse-k8s
+  url: https://langfuse.github.io/langfuse-k8s
