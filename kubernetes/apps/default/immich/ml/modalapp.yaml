@@ -1,0 +1,46 @@
+---
+apiVersion: modal.internal.io/v1alpha1
+kind: ModalApp
+metadata:
+  name: immich-ml
+spec:
+  appName: immich-ml
+  servicePort: 3003
+  source: |
+    import modal
+
+    MINUTES = 60
+    PORT = 3003
+
+    immich_ml_image = (
+        modal.Image.from_registry(
+            "ghcr.io/immich-app/immich-machine-learning:v2.5.6-cuda",
+            add_python=None,
+        )
+        .entrypoint([])
+    )
+
+    model_cache_vol = modal.Volume.from_name("immich-ml-cache", create_if_missing=True)
+
+    app = modal.App("immich-ml")
+
+    @app.function(
+        image=immich_ml_image,
+        gpu="T4",
+        scaledown_window=2 * MINUTES,
+        timeout=30 * MINUTES,
+        volumes={
+            "/cache": model_cache_vol,
+        },
+        memory=4096,
+    )
+    @modal.concurrent(max_inputs=4)
+    @modal.web_server(port=PORT, startup_timeout=10 * MINUTES)
+    def serve():
+        import subprocess
+        import os
+        os.environ["MACHINE_LEARNING_CACHE_FOLDER"] = "/cache"
+        os.environ["TRANSFORMERS_CACHE"] = "/cache"
+        subprocess.Popen([
+            "python", "-m", "app.main",
+        ], cwd="/usr/src/app")
