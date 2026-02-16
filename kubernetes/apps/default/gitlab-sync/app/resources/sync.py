@@ -49,6 +49,8 @@ def forgejo_post(client: httpx.Client, path: str, data: dict) -> dict:
     url = f"{FORGEJO_URL}/api/v1{path}"
     headers = {"Authorization": f"token {FORGEJO_TOKEN}"}
     resp = client.post(url, headers=headers, json=data)
+    if resp.status_code == 422:
+        print(f"    422 error: {resp.text}")
     resp.raise_for_status()
     return resp.json()
 
