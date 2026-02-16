@@ -9,6 +9,7 @@ spec:
     - gitlab-proxy
     - gitlab-proxy.default.svc
     - gitlab-proxy.default.svc.cluster.local
+    - "${GITLAB_MIRROR_HOST}"
   issuerRef:
     kind: ClusterIssuer
     name: selfsigned
