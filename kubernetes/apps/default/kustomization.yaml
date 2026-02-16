@@ -19,7 +19,8 @@ resources:
   - ./ersatztv/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./forgejo/ks.yaml
-  - gitlab-proxy/ks.yaml
+  - ./gitlab-proxy/ks.yaml
+  - ./gitlab-sync/ks.yaml
   - ./fusion/ks.yaml
   - ./go2rtc/ks.yaml
   - ./health-import/ks.yaml
