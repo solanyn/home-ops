@@ -1,0 +1,35 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: gitlab-sync
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 86400
+      template:
+        spec:
+          containers:
+            - name: sync
+              image: ghcr.io/astral-sh/uv:python3.12-alpine
+              command:
+                - uvx
+                - --from
+                - httpx
+                - python
+                - /scripts/sync.py
+              envFrom:
+                - secretRef:
+                    name: gitlab-sync-secret
+              volumeMounts:
+                - name: scripts
+                  mountPath: /scripts
+          volumes:
+            - name: scripts
+              configMap:
+                name: gitlab-sync-scripts
+          restartPolicy: OnFailure
