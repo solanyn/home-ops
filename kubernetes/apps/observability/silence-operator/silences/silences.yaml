@@ -123,3 +123,16 @@ spec:
       value: CephNodeRootFilesystemFull
     - name: instance
       value: mac.internal:9100
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: mac-diskspace-warning
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: CephNodeDiskspaceWarning
+    - name: instance
+      value: mac.internal:9100
