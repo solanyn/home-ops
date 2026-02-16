@@ -90,9 +90,9 @@ spec:
         type: secret
         name: gitlab-proxy-secret
         items:
-          - key: client.crt
+          - key: client_crt
             path: client.crt
-          - key: client.key
+          - key: client_key
             path: client.key
         globalMounts:
           - path: /client-certs
