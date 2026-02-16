@@ -78,7 +78,7 @@ def sync_labels(client: httpx.Client):
                 {
                     "name": label["name"],
                     "color": label["color"].lstrip("#"),
-                    "description": label.get("description", "")[:255],
+                    "description": (label.get("description") or "")[:255],
                 },
             )
 
