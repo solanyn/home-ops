@@ -63,18 +63,18 @@ def forgejo_patch(client: httpx.Client, path: str, data: dict) -> dict:
     return resp.json()
 
 
-def sync_labels(client: httpx.Client):
+def sync_labels(client: httpx.Client) -> dict:
     print("Syncing labels...")
     gl_labels = gitlab_get(client, f"/projects/{GITLAB_PROJECT_ID}/labels")
     fg_labels = (
         forgejo_get(client, f"/repos/{FORGEJO_OWNER}/{FORGEJO_REPO}/labels") or []
     )
-    fg_label_names = {l["name"] for l in fg_labels}
+    fg_label_map = {l["name"]: l["id"] for l in fg_labels}
 
     for label in gl_labels:
-        if label["name"] not in fg_label_names:
+        if label["name"] not in fg_label_map:
             print(f"  Creating label: {label['name']}")
-            forgejo_post(
+            created = forgejo_post(
                 client,
                 f"/repos/{FORGEJO_OWNER}/{FORGEJO_REPO}/labels",
                 {
@@ -83,6 +83,8 @@ def sync_labels(client: httpx.Client):
                     "description": (label.get("description") or "")[:255],
                 },
             )
+            fg_label_map[label["name"]] = created["id"]
+    return fg_label_map
 
 
 def sync_milestones(client: httpx.Client) -> dict:
@@ -119,7 +121,7 @@ def sync_milestones(client: httpx.Client) -> dict:
     return gl_to_fg
 
 
-def sync_issues(client: httpx.Client, milestone_map: dict):
+def sync_issues(client: httpx.Client, milestone_map: dict, label_map: dict):
     print("Syncing issues...")
     gl_issues = gitlab_get(
         client, f"/projects/{GITLAB_PROJECT_ID}/issues", {"state": "all"}
@@ -145,11 +147,11 @@ def sync_issues(client: httpx.Client, milestone_map: dict):
         body = issue.get("description") or ""
         body = f"<!-- gitlab-id:{gl_id} -->\n\n{body}\n\n---\n*Synced from GitLab #{gl_id}*"
 
-        labels = [l for l in issue.get("labels", [])]
+        label_ids = [label_map[l] for l in issue.get("labels", []) if l in label_map]
         data = {
             "title": issue["title"],
             "body": body,
-            "labels": labels,
+            "labels": label_ids,
         }
         if issue.get("milestone") and issue["milestone"]["id"] in milestone_map:
             data["milestone"] = milestone_map[issue["milestone"]["id"]]
@@ -179,7 +181,7 @@ def sync_issues(client: httpx.Client, milestone_map: dict):
                 )
 
 
-def sync_merge_requests(client: httpx.Client, milestone_map: dict):
+def sync_merge_requests(client: httpx.Client, milestone_map: dict, label_map: dict):
     print("Syncing merge requests as issues...")
     gl_mrs = gitlab_get(
         client, f"/projects/{GITLAB_PROJECT_ID}/merge_requests", {"state": "all"}
@@ -210,11 +212,13 @@ def sync_merge_requests(client: httpx.Client, milestone_map: dict):
         )
         body = f"<!-- gitlab-mr:{mr_id} -->\n\n**Merge Request** {state_emoji} `{mr['source_branch']}` → `{mr['target_branch']}`\n\n{body}\n\n---\n*Synced from GitLab MR !{mr_id}*"
 
-        labels = [l for l in mr.get("labels", [])] + ["merge-request"]
+        label_ids = [label_map[l] for l in mr.get("labels", []) if l in label_map]
+        if "merge-request" in label_map:
+            label_ids.append(label_map["merge-request"])
         data = {
             "title": f"[MR] {mr['title']}",
             "body": body,
-            "labels": labels,
+            "labels": label_ids,
         }
         if mr.get("milestone") and mr["milestone"]["id"] in milestone_map:
             data["milestone"] = milestone_map[mr["milestone"]["id"]]
@@ -280,10 +284,10 @@ def main():
         f"Syncing GitLab project {GITLAB_PROJECT_ID} to Forgejo {FORGEJO_OWNER}/{FORGEJO_REPO}"
     )
     with httpx.Client(timeout=60, verify=False) as client:
-        sync_labels(client)
+        label_map = sync_labels(client)
         milestone_map = sync_milestones(client)
-        sync_issues(client, milestone_map)
-        sync_merge_requests(client, milestone_map)
+        sync_issues(client, milestone_map, label_map)
+        sync_merge_requests(client, milestone_map, label_map)
         sync_releases(client)
     print("Sync complete!")
 
