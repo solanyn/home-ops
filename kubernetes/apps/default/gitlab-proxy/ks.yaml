@@ -16,6 +16,10 @@ spec:
   postBuild:
     substitute:
       APP: *app
+    substituteFrom:
+      - kind: Secret
+        name: gitlab-proxy-secret
+        optional: false
   prune: true
   sourceRef:
     kind: GitRepository
