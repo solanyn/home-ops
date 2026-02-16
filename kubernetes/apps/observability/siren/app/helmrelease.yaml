@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/shamubernetes/siren
-              tag: v1.4.14
+              tag: 1.4.15
             env:
               TZ: Australia/Sydney
               ALERTMANAGER_BASE_URL: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
