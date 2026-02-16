@@ -19,7 +19,7 @@ spec:
     substituteFrom:
       - kind: Secret
         name: gitlab-proxy-secret
-        optional: false
+        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
