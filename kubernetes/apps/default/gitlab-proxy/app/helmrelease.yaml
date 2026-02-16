@@ -58,7 +58,7 @@ spec:
 
                 sub_filter_types application/json;
                 sub_filter_once off;
-                sub_filter '$GITLAB_MIRROR_URL' 'https://gitlab-proxy';
+                sub_filter '$GITLAB_MIRROR_URL' 'https://$GITLAB_MIRROR_HOST';
               }
             }
 
