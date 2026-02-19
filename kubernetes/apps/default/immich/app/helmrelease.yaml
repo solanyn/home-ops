@@ -49,6 +49,7 @@ spec:
               tag: v2.5.6@sha256:aa163d2e1cc2b16a9515dd1fef901e6f5231befad7024f093d7be1f2da14341a
             env:
               TZ: Australia/Sydney
+              IMMICH_METRICS: "true"
               IMMICH_TRUSTED_PROXIES: "192.168.0.0/16"
               IMMICH_MEDIA_LOCATION: &media /library
               REDIS_HOSTNAME: &redis redis.storage.svc.cluster.local
