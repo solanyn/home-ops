@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: grafana/mcp-grafana
-              tag: 0.10.0@sha256:f26b3bdd554e847effbf75ec2497b8a4d5211b82d34e1160c512e7955962a361
+              tag: 0.11.0@sha256:42dc03dda77f58dfb2d31a5a85ed8663b138dbd4ad96b7e1276945f27a657eb4
             args:
               - -t
               - streamable-http
