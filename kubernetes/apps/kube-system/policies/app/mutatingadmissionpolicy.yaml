@@ -22,8 +22,8 @@ spec:
                 name: c.name,
                 resources: Object.spec.containers.resources{
                   requests: Object.spec.containers.resources.requests{
-                    cpu: c.resources.?requests.?cpu.orValue("10m"),
-                    memory: c.resources.?requests.?memory.orValue("16Mi")
+                    cpu: "10m",
+                    memory: "16Mi"
                   }
                 }
               }),
@@ -31,8 +31,8 @@ spec:
                 name: c.name,
                 resources: Object.spec.initContainers.resources{
                   requests: Object.spec.initContainers.resources.requests{
-                    cpu: c.resources.?requests.?cpu.orValue("10m"),
-                    memory: c.resources.?requests.?memory.orValue("16Mi")
+                    cpu: "10m",
+                    memory: "16Mi"
                   }
                 }
               })
