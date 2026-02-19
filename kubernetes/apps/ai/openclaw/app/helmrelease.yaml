@@ -140,12 +140,15 @@ spec:
         openclaw-write-restricted:
           type: Role
           rules:
-            - apiGroups: [""]
-              resources: ["pods"]
-              verbs: ["delete"]
             - apiGroups: ["apps"]
               resources: ["deployments"]
               verbs: ["patch", "update"]
+        openclaw-pod-manage:
+          type: ClusterRole
+          rules:
+            - apiGroups: [""]
+              resources: ["pods"]
+              verbs: ["delete"]
       bindings:
         openclaw-read-all:
           type: ClusterRoleBinding
@@ -158,6 +161,13 @@ spec:
           type: RoleBinding
           roleRef:
             identifier: openclaw-write-restricted
+          subjects:
+            - identifier: openclaw
+              serviceAccount: openclaw
+        openclaw-pod-manage:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: openclaw-pod-manage
           subjects:
             - identifier: openclaw
               serviceAccount: openclaw
