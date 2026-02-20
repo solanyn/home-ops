@@ -92,7 +92,6 @@ Zero-trust security model with policy enforcement and centralised identity:
 - [pocket-id](https://github.com/pocket-id/pocket-id) as the OIDC provider with passkey-based SSO (no passwords)
 - [external-secrets](https://github.com/external-secrets/external-secrets) with [1Password Connect](https://github.com/1Password/connect) for secret injection
 - [cert-manager](https://github.com/cert-manager/cert-manager) for automated TLS certificate lifecycle
-- [kyverno](https://github.com/kyverno/kyverno) for enforcing container resource requests via admission policies
 
 ### Observability
 
