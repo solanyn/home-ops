@@ -17,7 +17,6 @@ spec:
   path: ./kubernetes/apps/default/home-assistant/app
   postBuild:
     substitute:
-      VOLSYNC_CAPACITY: 5Gi
       APP: home-assistant
   prune: true
   sourceRef:
