@@ -47,10 +47,6 @@ spec:
                         - disabled: true
                       gcePersistentDiskCsiDriverConfig:
                         - enabled: true
-                  nodeConfig:
-                    - spot: true
-                      oauthScopes:
-                        - https://www.googleapis.com/auth/cloud-platform
             patches:
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.location
@@ -66,9 +62,6 @@ spec:
                     string:
                       type: Format
                       fmt: "%s-conn"
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.serviceAccount
-                toFieldPath: spec.forProvider.nodeConfig[0].serviceAccount
               - type: ToCompositeFieldPath
                 fromFieldPath: metadata.name
                 toFieldPath: status.clusterName
