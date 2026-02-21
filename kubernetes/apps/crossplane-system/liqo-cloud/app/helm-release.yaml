@@ -10,7 +10,7 @@ spec:
     chart:
       name: liqo
       repository: https://helm.liqo.io/
-      version: "1.1.1"
+      version: "v1.1.1"
     namespace: liqo-system
     wait: true
     values:
