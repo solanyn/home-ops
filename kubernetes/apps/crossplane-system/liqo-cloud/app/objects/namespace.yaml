@@ -1,0 +1,17 @@
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  name: liqo-tenant-master-ns
+spec:
+  providerConfigRef:
+    name: gke-worker
+  forProvider:
+    manifest:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: liqo-tenant-master
+        labels:
+          liqo.io/remote-cluster-id: master
+          liqo.io/tenant-namespace: "true"
