@@ -9,12 +9,15 @@ spec:
   dependsOn:
     - name: crossplane-resources
       namespace: crossplane-system
+    - name: onepassword
+      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/crossplane-system/liqo-cloud/app
   postBuild:
     substituteFrom:
       - kind: Secret
         name: liqo-cloud-secret
+        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
