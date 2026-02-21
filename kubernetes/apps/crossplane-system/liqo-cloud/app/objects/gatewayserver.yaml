@@ -1,0 +1,29 @@
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  name: liqo-gatewayserver-master
+spec:
+  providerConfigRef:
+    name: gke-worker
+  forProvider:
+    manifest:
+      apiVersion: networking.liqo.io/v1beta1
+      kind: GatewayServer
+      metadata:
+        name: master
+        namespace: liqo-tenant-master
+        labels:
+          liqo.io/remote-cluster-id: master
+      spec:
+        serverTemplateRef:
+          apiVersion: networking.liqo.io/v1beta1
+          kind: WgGatewayServerTemplate
+          name: wireguard-server
+          namespace: liqo-system
+        secretRef:
+          name: wireguard-keys
+        endpoint:
+          port: 51840
+          serviceType: LoadBalancer
+        mtu: 1340

@@ -1,0 +1,23 @@
+---
+apiVersion: helm.crossplane.io/v1beta1
+kind: Release
+metadata:
+  name: liqo-gke
+spec:
+  providerConfigRef:
+    name: gke-worker
+  forProvider:
+    chart:
+      name: liqo
+      repository: https://helm.liqo.io/
+      version: "1.1.1"
+    namespace: liqo-system
+    wait: true
+    values:
+      discovery:
+        config:
+          clusterID: worker
+      networking:
+        internal:
+          podCIDR: "10.64.0.0/14"
+          serviceCIDR: "10.52.0.0/20"

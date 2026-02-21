@@ -1,0 +1,212 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: gke-cluster
+  labels:
+    provider: gcp
+spec:
+  compositeTypeRef:
+    apiVersion: home-ops.io/v1alpha1
+    kind: XGKECluster
+  mode: Pipeline
+  pipeline:
+    - step: patch-and-transform
+      functionRef:
+        name: function-patch-and-transform
+      input:
+        apiVersion: pt.fn.crossplane.io/v1beta1
+        kind: Resources
+        resources:
+          - name: gke-cluster
+            base:
+              apiVersion: container.gcp.upbound.io/v1beta1
+              kind: Cluster
+              spec:
+                providerConfigRef:
+                  name: home-ops
+                writeConnectionSecretToRef:
+                  namespace: crossplane-system
+                forProvider:
+                  location: asia-southeast1-b
+                  initialNodeCount: 1
+                  removeDefaultNodePool: true
+                  deletionProtection: false
+                  clusterAutoscaling:
+                    - autoscalingProfile: OPTIMIZE_UTILIZATION
+                  loggingConfig:
+                    - enableComponents: []
+                  monitoringConfig:
+                    - enableComponents: []
+                      managedPrometheus:
+                        - enabled: false
+                  addonsConfig:
+                    - httpLoadBalancing:
+                        - disabled: true
+                      horizontalPodAutoscaling:
+                        - disabled: true
+                      gcePersistentDiskCsiDriverConfig:
+                        - enabled: true
+                  nodeConfig:
+                    - spot: true
+                      oauthScopes:
+                        - https://www.googleapis.com/auth/cloud-platform
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.location
+                toFieldPath: spec.forProvider.location
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: metadata.name
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.writeConnectionSecretToRef.name
+                transforms:
+                  - type: string
+                    string:
+                      type: Format
+                      fmt: "%s-conn"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.serviceAccount
+                toFieldPath: spec.forProvider.nodeConfig[0].serviceAccount
+              - type: ToCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: status.clusterName
+              - type: ToCompositeFieldPath
+                fromFieldPath: status.atProvider.endpoint
+                toFieldPath: status.endpoint
+              - type: ToCompositeFieldPath
+                fromFieldPath: status.atProvider.clusterIpv4Cidr
+                toFieldPath: status.podCIDR
+              - type: ToCompositeFieldPath
+                fromFieldPath: status.atProvider.servicesIpv4Cidr
+                toFieldPath: status.serviceCIDR
+            connectionDetails:
+              - type: FromConnectionSecretKey
+                fromConnectionSecretKey: kubeconfig
+                name: kubeconfig
+
+          - name: system-pool
+            base:
+              apiVersion: container.gcp.upbound.io/v1beta1
+              kind: NodePool
+              metadata:
+                name: system
+              spec:
+                providerConfigRef:
+                  name: home-ops
+                forProvider:
+                  nodeCount: 1
+                  nodeConfig:
+                    - machineType: e2-micro
+                      diskSizeGb: 20
+                      diskType: pd-standard
+                      spot: true
+                      oauthScopes:
+                        - https://www.googleapis.com/auth/cloud-platform
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.forProvider.clusterSelector.matchLabels[crossplane.io/composite]
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.location
+                toFieldPath: spec.forProvider.location
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.nodePools.system.count
+                toFieldPath: spec.forProvider.nodeCount
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.nodePools.system.machineType
+                toFieldPath: spec.forProvider.nodeConfig[0].machineType
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.serviceAccount
+                toFieldPath: spec.forProvider.nodeConfig[0].serviceAccount
+
+          - name: gpu-pool
+            base:
+              apiVersion: container.gcp.upbound.io/v1beta1
+              kind: NodePool
+              metadata:
+                name: gpu
+              spec:
+                providerConfigRef:
+                  name: home-ops
+                forProvider:
+                  autoscaling:
+                    - minNodeCount: 0
+                      maxNodeCount: 8
+                  nodeConfig:
+                    - machineType: g2-standard-8
+                      diskSizeGb: 100
+                      diskType: pd-ssd
+                      spot: true
+                      guestAccelerator:
+                        - type: nvidia-l4
+                          count: 1
+                          gpuDriverInstallationConfig:
+                            - gpuDriverVersion: LATEST
+                      oauthScopes:
+                        - https://www.googleapis.com/auth/cloud-platform
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.forProvider.clusterSelector.matchLabels[crossplane.io/composite]
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.location
+                toFieldPath: spec.forProvider.location
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.nodePools.gpu.minCount
+                toFieldPath: spec.forProvider.autoscaling[0].minNodeCount
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.nodePools.gpu.maxCount
+                toFieldPath: spec.forProvider.autoscaling[0].maxNodeCount
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.nodePools.gpu.machineType
+                toFieldPath: spec.forProvider.nodeConfig[0].machineType
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.nodePools.gpu.acceleratorType
+                toFieldPath: spec.forProvider.nodeConfig[0].guestAccelerator[0].type
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.serviceAccount
+                toFieldPath: spec.forProvider.nodeConfig[0].serviceAccount
+
+          - name: cpu-pool
+            base:
+              apiVersion: container.gcp.upbound.io/v1beta1
+              kind: NodePool
+              metadata:
+                name: cpu
+              spec:
+                providerConfigRef:
+                  name: home-ops
+                forProvider:
+                  autoscaling:
+                    - minNodeCount: 0
+                      maxNodeCount: 4
+                  nodeConfig:
+                    - machineType: e2-medium
+                      diskSizeGb: 100
+                      diskType: pd-ssd
+                      spot: true
+                      oauthScopes:
+                        - https://www.googleapis.com/auth/cloud-platform
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: spec.forProvider.clusterSelector.matchLabels[crossplane.io/composite]
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.location
+                toFieldPath: spec.forProvider.location
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.nodePools.cpu.minCount
+                toFieldPath: spec.forProvider.autoscaling[0].minNodeCount
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.nodePools.cpu.maxCount
+                toFieldPath: spec.forProvider.autoscaling[0].maxNodeCount
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.nodePools.cpu.machineType
+                toFieldPath: spec.forProvider.nodeConfig[0].machineType
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.serviceAccount
+                toFieldPath: spec.forProvider.nodeConfig[0].serviceAccount
+
+  writeConnectionSecretsToNamespace: crossplane-system
