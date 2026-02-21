@@ -1,0 +1,21 @@
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  name: liqo-tenant-master
+spec:
+  providerConfigRef:
+    name: gke-worker
+  forProvider:
+    manifest:
+      apiVersion: authentication.liqo.io/v1beta1
+      kind: Tenant
+      metadata:
+        name: master
+        namespace: liqo-tenant-master
+        labels:
+          liqo.io/remote-cluster-id: master
+      spec:
+        clusterID: master
+        authzPolicy: TolerateNoHandshake
+        tenantCondition: Active

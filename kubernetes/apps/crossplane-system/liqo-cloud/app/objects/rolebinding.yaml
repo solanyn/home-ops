@@ -1,0 +1,25 @@
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  name: liqo-rolebinding-master
+spec:
+  providerConfigRef:
+    name: gke-worker
+  forProvider:
+    manifest:
+      apiVersion: rbac.authorization.k8s.io/v1
+      kind: RoleBinding
+      metadata:
+        name: liqo-remote-controlplane
+        namespace: liqo-tenant-master
+        labels:
+          liqo.io/remote-cluster-id: master
+      roleRef:
+        apiGroup: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: liqo-remote-controlplane
+      subjects:
+        - apiGroup: rbac.authorization.k8s.io
+          kind: User
+          name: master

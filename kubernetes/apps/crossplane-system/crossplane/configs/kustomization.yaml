@@ -4,3 +4,5 @@ resources:
   - ./externalsecret.yaml
   - ./garage-providerconfig.yaml
   - ./kubernetes-providerconfig.yaml
+  - ./helm-gke-providerconfig.yaml
+  - ./kubernetes-gke-providerconfig.yaml
