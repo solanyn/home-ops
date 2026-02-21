@@ -13,7 +13,6 @@ spec:
   path: ./kubernetes/apps/default/atuin/app
   postBuild:
     substitute:
-      VOLSYNC_CAPACITY: 5Gi
       APP: atuin
   prune: true
   sourceRef:
