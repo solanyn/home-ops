@@ -47,6 +47,9 @@ spec:
                         - disabled: true
                       gcePersistentDiskCsiDriverConfig:
                         - enabled: true
+                  masterAuth:
+                    - clientCertificateConfig:
+                        - issueClientCertificate: true
             patches:
               - type: FromCompositeFieldPath
                 fromFieldPath: spec.location
