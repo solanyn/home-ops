@@ -17,5 +17,6 @@ spec:
       discovery:
         config:
           clusterID: worker
-      podCIDR: "10.64.0.0/14"
-      serviceCIDR: "10.52.0.0/20"
+      ipam:
+        podCIDR: "10.64.0.0/14"
+        serviceCIDR: "10.52.0.0/20"
