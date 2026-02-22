@@ -2,7 +2,7 @@
 apiVersion: authentication.liqo.io/v1beta1
 kind: ResourceSlice
 metadata:
-  name: worker-gpu
+  name: master-gpu-offer
   labels:
     liqo.io/remote-cluster-id: worker
     liqo.io/replication: "true"
@@ -10,7 +10,8 @@ metadata:
     liqo.io/create-virtual-node: "true"
 spec:
   class: default
-  providerClusterID: worker
+  providerClusterID: master
+  consumerClusterID: worker
   resources:
     cpu: "32"
     memory: 128Gi
