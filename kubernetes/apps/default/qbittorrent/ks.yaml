@@ -16,7 +16,6 @@ spec:
   path: ./kubernetes/apps/default/qbittorrent/app
   postBuild:
     substitute:
-      VOLSYNC_CAPACITY: 2Gi
       APP: qbittorrent
   prune: true
   sourceRef:

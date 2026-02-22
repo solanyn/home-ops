@@ -17,7 +17,6 @@ spec:
   path: ./kubernetes/apps/default/zigbee/app
   postBuild:
     substitute:
-      VOLSYNC_CAPACITY: 1Gi
       APP: zigbee
   prune: true
   sourceRef:
