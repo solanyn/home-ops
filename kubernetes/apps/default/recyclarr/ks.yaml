@@ -15,7 +15,6 @@ spec:
   path: ./kubernetes/apps/default/recyclarr/app
   postBuild:
     substitute:
-      VOLSYNC_CAPACITY: 1Gi
       APP: recyclarr
   prune: true
   sourceRef:
