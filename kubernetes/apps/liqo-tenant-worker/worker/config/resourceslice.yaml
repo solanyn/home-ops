@@ -7,6 +7,7 @@ metadata:
     liqo.io/remote-cluster-id: worker
     liqo.io/originID: master
     liqo.io/replication: "true"
+    liqo.io/replicated: "true"
   annotations:
     liqo.io/create-virtual-node: "true"
 spec:
