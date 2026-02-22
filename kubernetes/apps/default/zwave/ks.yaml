@@ -15,7 +15,6 @@ spec:
   path: ./kubernetes/apps/default/zwave/app
   postBuild:
     substitute:
-      VOLSYNC_CAPACITY: 1Gi
       APP: zwave
   prune: true
   sourceRef:
