@@ -32,7 +32,7 @@ spec:
               USERID_HEADER: X-Remote-User
               USERID_PREFIX: ""
               APP_SECURE_COOKIES: "false"
-              VOLUME_VIEWER_IMAGE: filebrowser/filebrowser:v2.59.0
+              VOLUME_VIEWER_IMAGE: filebrowser/filebrowser:v2.60.0
             securityContext:
               runAsNonRoot: true
               allowPrivilegeEscalation: false
@@ -59,7 +59,7 @@ spec:
             spec:
               containers:
               - name: viewer
-                image: filebrowser/filebrowser:v2.59.0
+                image: filebrowser/filebrowser:v2.60.0
                 imagePullPolicy: IfNotPresent
                 args:
                 - --noauth
