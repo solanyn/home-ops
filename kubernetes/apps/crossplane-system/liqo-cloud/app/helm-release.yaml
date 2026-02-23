@@ -14,6 +14,8 @@ spec:
     namespace: liqo-system
     wait: true
     values:
+      apiServer:
+        address: "https://34.177.82.19"
       discovery:
         config:
           clusterID: worker
