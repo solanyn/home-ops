@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: ghcr.io/0x2e/fusion
-              tag: 1.0.0@sha256:7e411d0b9d7e44cd518367b01d9ce52229fd12f464ced929baad5dad617e38d3
+              tag: 1.1.1@sha256:9d4f9f041f138b4ed84c6673d9c754a9f4dab6173b723872ecbf8ae3e97dfe33
             env:
               PORT: &port 80
               TZ: Australia/Sydney
