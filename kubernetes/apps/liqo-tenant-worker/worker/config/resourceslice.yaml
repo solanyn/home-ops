@@ -4,7 +4,7 @@ kind: ResourceSlice
 metadata:
   name: master-gpu-offer
   labels:
-    liqo.io/remoteID: worker
+    liqo.io/remoteID: master
     liqo.io/replication: "true"
   annotations:
     liqo.io/create-virtual-node: "true"
