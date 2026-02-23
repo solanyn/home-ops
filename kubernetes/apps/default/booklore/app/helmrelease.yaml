@@ -83,3 +83,9 @@ spec:
         path: /mnt/world/media/bookdrop
         globalMounts:
           - path: /bookdrop
+      mlm-ebooks:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media/downloads/torrents/complete/mlm-ebooks
+        globalMounts:
+          - path: /mlm-ebooks
