@@ -136,6 +136,8 @@ cluster:
       kind: Policy
       rules:
         - level: Metadata
+    certSANs:
+      - 10.60.0.1
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
