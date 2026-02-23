@@ -15,7 +15,7 @@ spec:
   interval: 1h
   values:
     apiServer:
-      address: "https://10.60.0.1:443"
+      address: "https://10.43.0.1:443"
       trustedCA: true
     discovery:
       config:
