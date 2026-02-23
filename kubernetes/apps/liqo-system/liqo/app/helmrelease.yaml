@@ -16,7 +16,7 @@ spec:
   values:
     apiServer:
       address: "https://10.60.0.1:443"
-      trustedCA: false
+      trustedCA: true
     discovery:
       config:
         clusterID: master
