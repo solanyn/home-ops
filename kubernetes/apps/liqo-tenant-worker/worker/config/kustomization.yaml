@@ -8,7 +8,6 @@ resources:
   - ./gatewayclient.yaml
   - ./wireguard-secret.yaml
   - ./publickey.yaml
-  - ./resourceslice.yaml
   - ./quota.yaml
   - ./virtualnode.yaml
   - ./firewallconfiguration.yaml
