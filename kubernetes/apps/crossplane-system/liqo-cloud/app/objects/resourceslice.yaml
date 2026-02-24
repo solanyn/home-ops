@@ -1,0 +1,28 @@
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  name: liqo-resourceslice-worker-gpu
+spec:
+  providerConfigRef:
+    name: gke-worker
+  forProvider:
+    manifest:
+      apiVersion: authentication.liqo.io/v1beta1
+      kind: ResourceSlice
+      metadata:
+        name: worker-gpu-offer
+        namespace: liqo-tenant-master
+        labels:
+          liqo.io/remoteID: master
+          liqo.io/replication: "true"
+        annotations:
+          liqo.io/create-virtual-node: "true"
+      spec:
+        class: default
+        consumerClusterID: master
+        providerClusterID: worker
+        resources:
+          cpu: "32"
+          memory: 128Gi
+          nvidia.com/gpu: "8"
