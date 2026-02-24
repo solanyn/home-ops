@@ -5,6 +5,7 @@ metadata:
   name: gke-api-server-masquerade
   labels:
     networking.liqo.io/firewall-category: gateway
+    networking.liqo.io/firewall-subcategory: ip-mapping
 spec:
   table:
     family: IPV4
