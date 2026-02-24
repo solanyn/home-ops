@@ -24,3 +24,27 @@ spec:
       podCIDR: 10.42.0.0/16
       serviceCIDR: 10.43.0.0/16
       externalCIDR: 10.60.0.0/16
+    metrics:
+      enabled: true
+      prometheusOperator:
+        enabled: true
+    controllerManager:
+      metrics:
+        serviceMonitor:
+          enabled: true
+    gateway:
+      metrics:
+        serviceMonitor:
+          enabled: true
+    webhook:
+      metrics:
+        serviceMonitor:
+          enabled: true
+    crdReplicator:
+      metrics:
+        podMonitor:
+          enabled: true
+    virtualKubelet:
+      metrics:
+        podMonitor:
+          enabled: true
