@@ -11,3 +11,5 @@ resources:
   - ./objects/tenant.yaml
   - ./objects/rolebinding.yaml
   - ./objects/identity-secret.yaml
+  - ./objects/quota.yaml
+  - ./objects/resourceslice.yaml

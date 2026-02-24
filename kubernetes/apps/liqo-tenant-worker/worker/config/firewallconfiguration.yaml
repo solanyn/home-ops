@@ -1,0 +1,42 @@
+---
+apiVersion: networking.liqo.io/v1beta1
+kind: FirewallConfiguration
+metadata:
+  name: gke-api-server-masquerade
+  labels:
+    networking.liqo.io/firewall-category: gateway
+spec:
+  table:
+    family: IPV4
+    name: gke-api-masquerade
+    chains:
+      - name: prerouting
+        hook: prerouting
+        priority: -100
+        policy: accept
+        type: nat
+        rules:
+          natRules:
+            - name: gke-api-dnat
+              natType: dnat
+              to: 10.70.0.1
+              match:
+                - op: eq
+                  ip:
+                    position: dst
+                    value: 10.40.0.1
+      - name: postrouting
+        hook: postrouting
+        priority: 100
+        policy: accept
+        type: nat
+        rules:
+          natRules:
+            - name: gke-api-snat
+              natType: snat
+              to: 10.70.0.1
+              match:
+                - op: eq
+                  ip:
+                    position: src
+                    value: 10.40.0.1
