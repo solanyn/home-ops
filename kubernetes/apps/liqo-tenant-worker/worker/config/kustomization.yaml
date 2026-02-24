@@ -9,3 +9,4 @@ resources:
   - ./wireguard-secret.yaml
   - ./publickey.yaml
   - ./resourceslice.yaml
+  - ./quota.yaml
