@@ -826,3 +826,125 @@ dataFrom:
 **Storage:** Rook-Ceph, OpenEBS, VolSync
 
 **Operations:** External Secrets, cert-manager
+
+## Liqo Multi-Cluster GPU Offloading
+
+Liqo enables bidirectional workload offloading between the home Talos cluster (master) and GKE (worker) via WireGuard tunnel.
+
+### Cluster Configuration
+
+| Cluster | ID | Pod CIDR | Service CIDR | External CIDR |
+|---------|-----|----------|--------------|---------------|
+| Home (Talos) | `master` | 10.42.0.0/16 | 10.43.0.0/16 | 10.60.0.0/16 |
+| GKE | `worker` | 10.64.0.0/14 | N/A | 10.70.0.0/16 |
+
+The external CIDR is remapped for cross-cluster communication:
+- GKE's 10.70.0.0/16 appears as 10.40.0.0/16 on home cluster
+- Home's 10.60.0.0/16 appears as configured on GKE
+
+### Directory Structure
+
+```
+kubernetes/apps/
+├── liqo-system/liqo/                    # Liqo Helm chart (home cluster)
+├── liqo-tenant-worker/worker/           # GKE peering config (home cluster)
+│   └── config/
+│       ├── configuration.yaml           # Network CIDRs
+│       ├── gatewayclient.yaml           # WireGuard client
+│       ├── virtualnode.yaml             # VirtualNode for GKE GPUs
+│       ├── resourceslice.yaml           # Resources offered to GKE
+│       ├── quota.yaml                   # Quota for GKE service account
+│       ├── firewallconfiguration.yaml   # NAT rules for API server
+│       └── externalsecret.yaml          # WireGuard keys, kubeconfigs
+└── crossplane-system/liqo-cloud/        # GKE Liqo via Crossplane
+    └── app/objects/
+        ├── tenant.yaml                  # Tenant for home cluster
+        ├── gatewayserver.yaml           # WireGuard server
+        ├── resourceslice.yaml           # GPU resources offered to home
+        └── quota.yaml                   # Quota for home service account
+```
+
+### 1Password Secrets
+
+The `liqo` item in 1Password must contain:
+- `WG_MASTER_PUBLIC_KEY` / `WG_MASTER_PRIVATE_KEY` - Home cluster WireGuard keys
+- `WG_WORKER_PUBLIC_KEY` / `WG_WORKER_PRIVATE_KEY` - GKE WireGuard keys
+- `GATEWAY_IP` - GKE gateway external IP
+- `GKE_LIQO_TOKEN` - Long-lived token for `liqo-remote-admin` service account on GKE
+
+### Testing GPU Offloading (Home → GKE)
+
+```bash
+# Create test namespace with offloading
+KUBECONFIG=/Users/andrew/git/home-ops/kubeconfig kubectl apply -f - <<'EOF'
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gpu-offload
+---
+apiVersion: offloading.liqo.io/v1beta1
+kind: NamespaceOffloading
+metadata:
+  name: offloading
+  namespace: gpu-offload
+spec:
+  namespaceMappingStrategy: EnforceSameName
+  podOffloadingStrategy: LocalAndRemote
+  clusterSelector:
+    nodeSelectorTerms:
+      - matchExpressions:
+          - key: liqo.io/remote-cluster-id
+            operator: In
+            values:
+              - worker
+EOF
+
+# Deploy GPU pod (triggers GKE autoscaler)
+KUBECONFIG=/Users/andrew/git/home-ops/kubeconfig kubectl apply -f - <<'EOF'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-test
+  namespace: gpu-offload
+spec:
+  nodeSelector:
+    liqo.io/remote-cluster-id: worker
+  tolerations:
+  - key: "node.cilium.io/agent-not-ready"
+    operator: "Exists"
+    effect: "NoSchedule"
+  containers:
+  - name: cuda
+    image: nvidia/cuda:12.2.0-base-ubuntu22.04
+    command: ["sleep", "3600"]
+    resources:
+      limits:
+        nvidia.com/gpu: "1"
+EOF
+
+# Verify GPU access
+KUBECONFIG=/Users/andrew/git/home-ops/kubeconfig kubectl exec -n gpu-offload gpu-test -- nvidia-smi
+```
+
+### Monitoring
+
+Liqo metrics are enabled via ServiceMonitors and PodMonitors in `liqo-system`. Key metrics:
+- `liqo_virtual_kubelet_*` - Offloaded pod metrics
+- `liqo_gateway_*` - WireGuard tunnel metrics
+
+### Troubleshooting
+
+**ShadowPod creation fails with "failed getting quota":**
+1. Check Quota exists in tenant namespace on target cluster
+2. Restart `liqo-webhook` deployment to refresh quota cache
+3. Verify quota `user` field matches the service account name
+
+**API server connectivity timeout:**
+1. Check FirewallConfiguration is applied on gateway
+2. Verify WireGuard tunnel is up: `kubectl exec -n liqo-tenant-worker deploy/gw-worker -c gateway -- wg show`
+3. Test connectivity from gateway: `kubectl exec -n liqo-tenant-worker deploy/gw-worker -c gateway -- nc -v 10.70.0.1 443`
+
+**VirtualNode not Ready:**
+1. Check vk-worker pod logs: `kubectl logs -n liqo-tenant-worker deploy/vk-worker`
+2. Verify kubeconfig secret has correct API server address (use remapped IP)
+3. Check token hasn't expired (GKE limits to 48h, needs refresh)
