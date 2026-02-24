@@ -947,4 +947,59 @@ Liqo metrics are enabled via ServiceMonitors and PodMonitors in `liqo-system`. K
 **VirtualNode not Ready:**
 1. Check vk-worker pod logs: `kubectl logs -n liqo-tenant-worker deploy/vk-worker`
 2. Verify kubeconfig secret has correct API server address (use remapped IP)
-3. Check token hasn't expired (GKE limits to 48h, needs refresh)
+3. Check token hasn't expired (use non-expiring ServiceAccount token)
+
+### Bootstrap from Scratch
+
+GKE is managed via Crossplane from the home cluster - no ESO or Flux needed on GKE.
+
+**1. Generate WireGuard keypairs:**
+```bash
+wg genkey | tee master-private.key | wg pubkey > master-public.key
+wg genkey | tee worker-private.key | wg pubkey > worker-public.key
+```
+
+**2. Store in 1Password (`liqo` item in `kubernetes` vault):**
+- `WG_MASTER_PRIVATE_KEY` / `WG_MASTER_PUBLIC_KEY`
+- `WG_WORKER_PRIVATE_KEY` / `WG_WORKER_PUBLIC_KEY`
+- `GATEWAY_IP` - GKE gateway LoadBalancer IP (get after step 3)
+
+**3. Deploy GKE Liqo via Crossplane:**
+```bash
+flux reconcile ks liqo-cloud -n crossplane-system --with-source
+```
+
+**4. Get GKE gateway IP and update 1Password:**
+```bash
+kubectl get svc -n liqo-system liqo-gateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
+op item edit liqo --vault kubernetes "GATEWAY_IP=<ip>"
+```
+
+**5. Create non-expiring ServiceAccount token on GKE:**
+```bash
+kubectl apply -f - <<'EOF'
+apiVersion: v1
+kind: Secret
+metadata:
+  name: liqo-remote-admin-token
+  namespace: kube-system
+  annotations:
+    kubernetes.io/service-account.name: liqo-remote-admin
+type: kubernetes.io/service-account-token
+EOF
+
+# Get token and store in 1Password
+TOKEN=$(kubectl get secret liqo-remote-admin-token -n kube-system -o jsonpath='{.data.token}' | base64 -d)
+op item edit liqo --vault kubernetes "GKE_LIQO_TOKEN=$TOKEN"
+```
+
+**6. Deploy home cluster Liqo tenant config:**
+```bash
+flux reconcile ks liqo-tenant-worker -n liqo-tenant-worker --with-source
+```
+
+**7. Verify peering:**
+```bash
+KUBECONFIG=/Users/andrew/git/home-ops/kubeconfig kubectl get nodes
+# Should show "worker" virtual node
+```
