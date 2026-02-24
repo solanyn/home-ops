@@ -827,9 +827,9 @@ dataFrom:
 
 **Operations:** External Secrets, cert-manager
 
-## Liqo Multi-Cluster GPU Offloading
+## Liqo Multi-Cluster Offloading
 
-Liqo enables one-way workload offloading from the home Talos cluster (master) to GKE (worker) for GPU access via WireGuard tunnel. GKE is managed via Crossplane and autoscales GPU nodes from 0-8.
+Liqo enables one-way workload offloading from the home Talos cluster (master) to GKE (worker) via WireGuard tunnel. GKE is managed via Crossplane with autoscaling node pools.
 
 ### Architecture
 
@@ -838,12 +838,39 @@ Home Cluster (master)              GKE (worker)
 ┌─────────────────────┐           ┌─────────────────────┐
 │ Talos k8s           │           │ Managed by Crossplane│
 │ - 3x control-plane  │           │ - 1x e2-micro (system)│
-│ - "worker" vnode ───┼──WireGuard──► 0-8x g2-standard-8 │
-│                     │           │   (nvidia-l4, spot)  │
-│ Runs: Flux, ESO,    │           │                     │
-│ Prometheus, Liqo    │           │ Runs: Liqo only     │
-└─────────────────────┘           └─────────────────────┘
+│ - "worker" vnode ───┼──WireGuard──► 0-4x e2-medium (cpu)│
+│                     │           │   0-8x g2-standard-8 │
+│ Runs: Flux, ESO,    │           │   (nvidia-l4, spot)  │
+│ Prometheus, Liqo    │           │                     │
+└─────────────────────┘           │ Runs: Liqo only     │
+                                  └─────────────────────┘
 ```
+
+### Workload Placement
+
+Any pod with `nodeSelector: liqo.io/remote-cluster-id: worker` offloads to GKE:
+
+```yaml
+# CPU workload → e2-medium pool (autoscales 0-4)
+spec:
+  nodeSelector:
+    liqo.io/remote-cluster-id: worker
+
+# GPU workload → g2-standard-8 + L4 pool (autoscales 0-8)
+spec:
+  nodeSelector:
+    liqo.io/remote-cluster-id: worker
+  resources:
+    limits:
+      nvidia.com/gpu: "1"
+```
+
+Use cases for offloading:
+- GPU/ML workloads (training, inference)
+- Burst compute for batch jobs
+- Workloads needing GCP service proximity (BigQuery, GCS, Vertex AI)
+- Spot instance cost savings
+- Isolating experimental workloads
 
 ### Cluster Configuration
 
