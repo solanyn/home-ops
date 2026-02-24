@@ -140,6 +140,10 @@ spec:
                           count: 1
                           gpuDriverInstallationConfig:
                             - gpuDriverVersion: LATEST
+                      taint:
+                        - key: nvidia.com/gpu
+                          value: present
+                          effect: NO_SCHEDULE
                       oauthScopes:
                         - https://www.googleapis.com/auth/cloud-platform
             patches:
@@ -183,6 +187,10 @@ spec:
                       diskSizeGb: 100
                       diskType: pd-ssd
                       spot: true
+                      taint:
+                        - key: workload
+                          value: "true"
+                          effect: NO_SCHEDULE
                       oauthScopes:
                         - https://www.googleapis.com/auth/cloud-platform
             patches:
