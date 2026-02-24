@@ -829,7 +829,21 @@ dataFrom:
 
 ## Liqo Multi-Cluster GPU Offloading
 
-Liqo enables bidirectional workload offloading between the home Talos cluster (master) and GKE (worker) via WireGuard tunnel.
+Liqo enables one-way workload offloading from the home Talos cluster (master) to GKE (worker) for GPU access via WireGuard tunnel. GKE is managed via Crossplane and autoscales GPU nodes from 0-8.
+
+### Architecture
+
+```
+Home Cluster (master)              GKE (worker)
+┌─────────────────────┐           ┌─────────────────────┐
+│ Talos k8s           │           │ Managed by Crossplane│
+│ - 3x control-plane  │           │ - 1x e2-micro (system)│
+│ - "worker" vnode ───┼──WireGuard──► 0-8x g2-standard-8 │
+│                     │           │   (nvidia-l4, spot)  │
+│ Runs: Flux, ESO,    │           │                     │
+│ Prometheus, Liqo    │           │ Runs: Liqo only     │
+└─────────────────────┘           └─────────────────────┘
+```
 
 ### Cluster Configuration
 
