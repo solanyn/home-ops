@@ -75,7 +75,7 @@ spec:
                 ln -sf /app/openclawbot.mjs /home/node/.local/bin/openclawbot
 
                 # Start gateway
-                exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured --control-ui-allowed-origins https://openclaw.goyangi.io
+                exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
             env:
               HOME: &homepath /home/node
               TERM: xterm-256color
