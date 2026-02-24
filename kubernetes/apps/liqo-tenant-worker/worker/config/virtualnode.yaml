@@ -1,0 +1,22 @@
+---
+apiVersion: offloading.liqo.io/v1beta1
+kind: VirtualNode
+metadata:
+  name: worker
+  annotations:
+    liqo.io/create-node: "true"
+spec:
+  clusterID: worker
+  createNode: true
+  kubeconfigSecretRef:
+    name: vk-worker-kubeconfig
+  resourceQuota:
+    hard:
+      cpu: "32"
+      memory: 128Gi
+      nvidia.com/gpu: "8"
+      pods: "110"
+  storageClasses:
+    - storageClassName: liqo
+    - default: true
+      storageClassName: standard-rwo
