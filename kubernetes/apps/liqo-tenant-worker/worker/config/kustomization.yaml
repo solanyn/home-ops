@@ -10,3 +10,5 @@ resources:
   - ./publickey.yaml
   - ./resourceslice.yaml
   - ./quota.yaml
+  - ./virtualnode.yaml
+  - ./firewallconfiguration.yaml

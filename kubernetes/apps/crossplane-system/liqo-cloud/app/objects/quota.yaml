@@ -1,0 +1,23 @@
+---
+apiVersion: kubernetes.crossplane.io/v1alpha2
+kind: Object
+metadata:
+  name: liqo-quota-master
+spec:
+  providerConfigRef:
+    name: gke-worker
+  forProvider:
+    manifest:
+      apiVersion: offloading.liqo.io/v1beta1
+      kind: Quota
+      metadata:
+        name: system-serviceaccount-kube-system-liqo-remote-admin
+        namespace: liqo-tenant-worker
+      spec:
+        limitsEnforcement: None
+        resources:
+          cpu: "32"
+          memory: 128Gi
+          nvidia.com/gpu: "8"
+          pods: "110"
+        user: system-serviceaccount-kube-system-liqo-remote-admin

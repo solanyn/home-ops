@@ -2,7 +2,7 @@
 apiVersion: authentication.liqo.io/v1beta1
 kind: ResourceSlice
 metadata:
-  name: master-gpu-offer
+  name: master-cpu-offer
   labels:
     liqo.io/remoteID: master
     liqo.io/replication: "true"
@@ -13,6 +13,5 @@ spec:
   providerClusterID: master
   consumerClusterID: worker
   resources:
-    cpu: "32"
-    memory: 128Gi
-    nvidia.com/gpu: "8"
+    cpu: "16"
+    memory: 64Gi
