@@ -71,7 +71,7 @@ spec:
           app:
             image:
               repository: ghcr.io/kubeflow/kfp-persistence-agent
-              tag: 2.15.0
+              tag: 2.16.0
             env:
               NAMESPACE:
                 valueFrom:
