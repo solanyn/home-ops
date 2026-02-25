@@ -122,12 +122,21 @@ Distributed and local storage with operator-managed databases:
 - [openebs](https://github.com/openebs/openebs) for local PV provisioning
 - [volsync](https://github.com/backube/volsync) and [kopia](https://github.com/kopia/kopia) for encrypted backup orchestration
 
+### Multi-Cluster & Cloud Burst
+
+On-demand GPU/CPU capacity via workload offloading to GKE:
+
+- [liqo](https://github.com/liqotech/liqo) for transparent multi-cluster workload offloading over WireGuard
+- [crossplane](https://github.com/crossplane/crossplane) for declarative GKE cluster provisioning as Kubernetes CRDs
+- One-way offloading from home cluster to GKE for GPU workloads (L4, A100)
+- Autoscaling node pools with scale-to-zero when idle (spot instances for cost efficiency)
+- No Flux/ESO on GKE -- entire remote cluster managed via Crossplane from home
+
 ### Infrastructure Provisioning & GitOps
 
 Declarative cluster management with dependency-aware deployments:
 
 - [flux](https://github.com/fluxcd/flux2) for Git-based state reconciliation with drift detection and self-healing
-- [crossplane](https://github.com/crossplane/crossplane) for cloud-native infrastructure provisioning as Kubernetes CRDs
 - [renovate](https://github.com/renovatebot/renovate) for automated dependency updates across the entire repository
 - [actions-runner-controller](https://github.com/actions/actions-runner-controller) for self-hosted CI/CD runners
 - [keda](https://github.com/kedacore/keda) for event-driven autoscaling
