@@ -94,10 +94,9 @@ spec:
                 forProvider:
                   nodeCount: 1
                   nodeConfig:
-                    - machineType: e2-micro
+                    - machineType: e2-small
                       diskSizeGb: 20
                       diskType: pd-standard
-                      spot: true
                       oauthScopes:
                         - https://www.googleapis.com/auth/cloud-platform
             patches:
