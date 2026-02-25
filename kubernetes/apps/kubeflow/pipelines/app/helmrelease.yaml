@@ -106,7 +106,7 @@ spec:
           app:
             image:
               repository: ghcr.io/kubeflow/kfp-frontend
-              tag: 2.15.0
+              tag: 2.16.0
             env:
               ALLOW_CUSTOM_VISUALIZATIONS: "true"
               ARGO_ARCHIVE_LOGS: "true"
