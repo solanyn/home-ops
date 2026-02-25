@@ -92,11 +92,12 @@ spec:
                 providerConfigRef:
                   name: home-ops
                 forProvider:
-                  nodeCount: 1
+                  nodeCount: 2
                   nodeConfig:
                     - machineType: e2-small
                       diskSizeGb: 20
                       diskType: pd-standard
+                      spot: true
                       oauthScopes:
                         - https://www.googleapis.com/auth/cloud-platform
             patches:
