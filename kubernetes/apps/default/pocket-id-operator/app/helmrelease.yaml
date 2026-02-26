@@ -21,3 +21,6 @@ spec:
   values:
     instance:
       enabled: false
+      spec:
+        encryptionKey:
+          value: "placeholder"
