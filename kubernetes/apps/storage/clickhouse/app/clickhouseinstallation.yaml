@@ -48,7 +48,7 @@ spec:
         spec:
           containers:
             - name: clickhouse
-              image: clickhouse/clickhouse-server:26.1
+              image: clickhouse/clickhouse-server:26.2
     volumeClaimTemplates:
       - name: data
         spec:
