@@ -1,7 +1,7 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/servicemonitor_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/podmonitor_v1.json
 apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+kind: PodMonitor
 metadata:
   name: kgateway
   namespace: network
@@ -9,7 +9,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/instance: kgateway
-  endpoints:
+  podMetricsEndpoints:
     - port: metrics
       path: /metrics
       interval: 30s
@@ -21,14 +21,12 @@ spec:
           targetLabel: namespace
         - sourceLabels: [__meta_kubernetes_pod_name]
           targetLabel: pod
-        - sourceLabels: [__meta_kubernetes_service_name]
-          targetLabel: service
         - replacement: kgateway-control-plane
           targetLabel: component
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/servicemonitor_v1.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/podmonitor_v1.json
 apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
+kind: PodMonitor
 metadata:
   name: agentgateway
   namespace: network
@@ -36,7 +34,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/instance: agentgateway
-  endpoints:
+  podMetricsEndpoints:
     - port: metrics
       path: /metrics
       interval: 30s
@@ -48,7 +46,5 @@ spec:
           targetLabel: namespace
         - sourceLabels: [__meta_kubernetes_pod_name]
           targetLabel: pod
-        - sourceLabels: [__meta_kubernetes_service_name]
-          targetLabel: service
         - replacement: agentgateway-control-plane
           targetLabel: component
