@@ -1,0 +1,109 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: liqo-cost
+  namespace: liqo-system
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  datasources:
+    - datasourceName: prometheus
+      inputName: DS_PROMETHEUS
+  json: |
+    {
+      "annotations": {"list": []},
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "links": [],
+      "panels": [
+        {
+          "type": "stat",
+          "title": "Active Liqo Nodes",
+          "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+          "targets": [{"expr": "count(kube_node_info{node=~\"liqo-.*\"}) or vector(0)", "refId": "A"}],
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 1}, {"color": "red", "value": 5}]},
+              "unit": "none"
+            }
+          },
+          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+        },
+        {
+          "type": "stat",
+          "title": "Pods on Liqo Nodes",
+          "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+          "targets": [{"expr": "count(kube_pod_info{node=~\"liqo-.*\"}) or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]}, "unit": "none"}},
+          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+        },
+        {
+          "type": "stat",
+          "title": "Estimated Running Cost ($/hr)",
+          "description": "T4 GPU: $0.35/hr, e2-small: $0.01/hr, e2-medium: $0.01/hr",
+          "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+          "targets": [{"expr": "(count(kube_node_info{node=~\"liqo-.*gpu.*\"}) or vector(0)) * 0.35 + (count(kube_node_info{node=~\"liqo-.*e2.*\"}) or vector(0)) * 0.01", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 0.5}, {"color": "red", "value": 2}]}, "unit": "currencyUSD", "decimals": 2}},
+          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+        },
+        {
+          "type": "stat",
+          "title": "Session Cost ($)",
+          "description": "Estimated cost since nodes started",
+          "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
+          "targets": [{"expr": "sum((time() - kube_node_created{node=~\"liqo-.*gpu.*\"}) / 3600 * 0.35) or vector(0) + sum((time() - kube_node_created{node=~\"liqo-.*e2.*\"}) / 3600 * 0.01) or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 5}, {"color": "red", "value": 20}]}, "unit": "currencyUSD", "decimals": 2}},
+          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+        },
+        {
+          "type": "table",
+          "title": "Liqo Nodes",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+          "targets": [{"expr": "kube_node_info{node=~\"liqo-.*\"}", "format": "table", "instant": true, "refId": "A"}],
+          "transformations": [{"id": "organize", "options": {"excludeByName": {"Time": true, "Value": true, "__name__": true, "container_runtime_version": true, "instance": true, "job": true, "kernel_version": true, "kubelet_version": true, "os_image": true, "pod": true, "provider_id": true, "service": true, "endpoint": true, "namespace": true, "uid": true}, "renameByName": {"node": "Node", "internal_ip": "IP"}}}],
+          "fieldConfig": {"defaults": {}, "overrides": []}
+        },
+        {
+          "type": "table",
+          "title": "Pods on Liqo Nodes",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+          "targets": [{"expr": "kube_pod_info{node=~\"liqo-.*\"}", "format": "table", "instant": true, "refId": "A"}],
+          "transformations": [{"id": "organize", "options": {"excludeByName": {"Time": true, "Value": true, "__name__": true, "container": true, "endpoint": true, "host_ip": true, "host_network": true, "instance": true, "job": true, "service": true, "uid": true, "created_by_kind": true, "created_by_name": true, "priority_class": true, "pod_ip": true}, "renameByName": {"namespace": "Namespace", "node": "Node", "pod": "Pod"}}}],
+          "fieldConfig": {"defaults": {}, "overrides": []}
+        },
+        {
+          "type": "timeseries",
+          "title": "Liqo Node Count Over Time",
+          "gridPos": {"h": 8, "w": 24, "x": 0, "y": 12},
+          "targets": [
+            {"expr": "count(kube_node_info{node=~\"liqo-.*\"}) or vector(0)", "legendFormat": "Total Nodes", "refId": "A"},
+            {"expr": "count(kube_node_info{node=~\"liqo-.*gpu.*\"}) or vector(0)", "legendFormat": "GPU Nodes", "refId": "B"},
+            {"expr": "count(kube_node_info{node=~\"liqo-.*e2.*\"}) or vector(0)", "legendFormat": "Compute Nodes", "refId": "C"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "stepAfter", "fillOpacity": 10}, "unit": "none"}},
+          "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
+        },
+        {
+          "type": "timeseries",
+          "title": "Estimated Hourly Cost Over Time",
+          "gridPos": {"h": 8, "w": 24, "x": 0, "y": 20},
+          "targets": [{"expr": "(count(kube_node_info{node=~\"liqo-.*gpu.*\"}) or vector(0)) * 0.35 + (count(kube_node_info{node=~\"liqo-.*e2.*\"}) or vector(0)) * 0.01", "legendFormat": "$/hr", "refId": "A"}],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "stepAfter", "fillOpacity": 20}, "unit": "currencyUSD", "decimals": 2}},
+          "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
+        }
+      ],
+      "schemaVersion": 39,
+      "tags": ["liqo", "cost", "gke", "gpu"],
+      "templating": {"list": []},
+      "time": {"from": "now-6h", "to": "now"},
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "Liqo Cloud Burst Costs",
+      "uid": "liqo-cost",
+      "version": 1
+    }
