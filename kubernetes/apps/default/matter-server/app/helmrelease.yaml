@@ -37,6 +37,8 @@ spec:
               MATTER_SERVER__PORT: &port 5580
               MATTER_SERVER__APPLICATION_URL: &host "{{ .Release.Name }}.goyangi.io"
               MATTER_SERVER__LOG_LEVEL: info
+            securityContext:
+              privileged: true
             resources:
               requests:
                 cpu: 10m
@@ -57,6 +59,13 @@ spec:
         runAsGroup: 0
         fsGroup: 0
         fsGroupChangePolicy: OnRootMismatch
+        sysctls:
+          - name: net.ipv6.conf.net1.accept_ra
+            value: "2"
+          - name: net.ipv6.conf.net1.accept_ra_defrtr
+            value: "1"
+          - name: net.ipv6.conf.net1.accept_ra_rt_info_max_plen
+            value: "64"
     service:
       app:
         ports:
