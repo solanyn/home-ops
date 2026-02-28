@@ -16,7 +16,7 @@ spec:
         namespace: analytics
   values:
     server:
-      workers: 1
+      workers: 0
       authenticationType: "OAUTH2"
       exchangeManager:
         name: filesystem
@@ -25,6 +25,18 @@ spec:
           aws-access-key: "${GARAGE_ROOT_USER}"
           aws-secret-key: "${GARAGE_ROOT_PASSWORD}"
           endpoint: http://garage.storage.svc.cluster.local:3900
+      keda:
+        enabled: true
+        pollingInterval: 30
+        cooldownPeriod: 300
+        minReplicaCount: 0
+        maxReplicaCount: 3
+        triggers:
+          - type: prometheus
+            metadata:
+              serverAddress: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
+              query: trino_running_queries{service="trino"}
+              threshold: "1"
     additionalConfigProperties:
       - http-server.process-forwarded=true
     coordinatorExtraConfig: |-
@@ -43,6 +55,19 @@ spec:
             key: client_secret
     serviceMonitor:
       enabled: true
+    coordinator:
+      nodeSelector:
+        kubernetes.io/os: linux
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: liqo.io/type
+                    operator: DoesNotExist
+    worker:
+      nodeSelector:
+        liqo.io/type: virtual-node
     catalogs:
       iceberg: |-
         connector.name=iceberg
