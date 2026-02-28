@@ -1,0 +1,180 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: liqo-cluster
+  namespace: observability
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  datasources:
+    - datasourceName: prometheus
+      inputName: DS_PROMETHEUS
+  json: |
+    {
+      "annotations": {"list": []},
+      "editable": true,
+      "panels": [
+        {
+          "type": "row",
+          "title": "Overview",
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0},
+          "collapsed": false
+        },
+        {
+          "type": "stat",
+          "title": "Home Nodes",
+          "gridPos": {"h": 4, "w": 4, "x": 0, "y": 1},
+          "targets": [{"expr": "count(kubelet_node_name{node!~\"liqo-.*\"}) or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]}, "unit": "short"}},
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
+        },
+        {
+          "type": "stat",
+          "title": "Liqo GPU Nodes",
+          "gridPos": {"h": 4, "w": 4, "x": 4, "y": 1},
+          "targets": [{"expr": "count(kubelet_node_name{node=~\"liqo-.*gpu.*\"}) or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}, {"color": "yellow", "value": 1}]}, "unit": "short"}},
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
+        },
+        {
+          "type": "stat",
+          "title": "Liqo e2 Nodes",
+          "gridPos": {"h": 4, "w": 4, "x": 8, "y": 1},
+          "targets": [{"expr": "count(kubelet_node_name{node=~\"liqo-.*e2.*\"}) or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}, {"color": "yellow", "value": 1}]}, "unit": "short"}},
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
+        },
+        {
+          "type": "stat",
+          "title": "Total Nodes",
+          "gridPos": {"h": 4, "w": 4, "x": 12, "y": 1},
+          "targets": [{"expr": "count(kubelet_node_name) or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]}, "unit": "short"}},
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
+        },
+        {
+          "type": "stat",
+          "title": "Liqo Cost ($/hr)",
+          "gridPos": {"h": 4, "w": 4, "x": 16, "y": 1},
+          "targets": [{"expr": "(count(kubelet_node_name{node=~\"liqo-.*gpu.*\"}) or vector(0)) * 0.35 + (count(kubelet_node_name{node=~\"liqo-.*e2.*\"}) or vector(0)) * 0.01", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 0.5}, {"color": "red", "value": 2}]}, "unit": "currencyUSD", "decimals": 2}},
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
+        },
+        {
+          "type": "stat",
+          "title": "Liqo Session Cost ($)",
+          "gridPos": {"h": 4, "w": 4, "x": 20, "y": 1},
+          "targets": [{"expr": "(sum((time() - kubelet_started_time_seconds{node=~\"liqo-.*gpu.*\"}) / 3600 * 0.35) or vector(0)) + (sum((time() - kubelet_started_time_seconds{node=~\"liqo-.*e2.*\"}) / 3600 * 0.01) or vector(0))", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 5}, {"color": "red", "value": 20}]}, "unit": "currencyUSD", "decimals": 2}},
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
+        },
+        {
+          "type": "row",
+          "title": "Node Pools",
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 5},
+          "collapsed": false
+        },
+        {
+          "type": "timeseries",
+          "title": "Node Count by Pool",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 6},
+          "targets": [
+            {"expr": "count(kubelet_node_name{node!~\"liqo-.*\"}) or vector(0)", "legendFormat": "Home (default)", "refId": "A"},
+            {"expr": "count(kubelet_node_name{node=~\"liqo-.*gpu.*\"}) or vector(0)", "legendFormat": "Liqo GPU (T4)", "refId": "B"},
+            {"expr": "count(kubelet_node_name{node=~\"liqo-.*e2.*\"}) or vector(0)", "legendFormat": "Liqo e2 (preemptible)", "refId": "C"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "stepAfter", "fillOpacity": 30, "stacking": {"mode": "normal"}}, "unit": "short", "min": 0}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["lastNotNull", "max"]}}
+        },
+        {
+          "type": "timeseries",
+          "title": "Estimated Hourly Cost by Pool",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 6},
+          "targets": [
+            {"expr": "(count(kubelet_node_name{node=~\"liqo-.*gpu.*\"}) or vector(0)) * 0.35", "legendFormat": "GPU ($0.35/hr)", "refId": "A"},
+            {"expr": "(count(kubelet_node_name{node=~\"liqo-.*e2.*\"}) or vector(0)) * 0.01", "legendFormat": "e2 ($0.01/hr)", "refId": "B"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "stepAfter", "fillOpacity": 30, "stacking": {"mode": "normal"}}, "unit": "currencyUSD", "decimals": 2, "min": 0}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["lastNotNull", "max"]}}
+        },
+        {
+          "type": "row",
+          "title": "Home Pool (k8s-0, k8s-1, k8s-2)",
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 14},
+          "collapsed": false
+        },
+        {
+          "type": "timeseries",
+          "title": "Home Node CPU Usage",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 15},
+          "targets": [
+            {"expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\", instance=~\"192.168.42.*\"}[5m])) * 100)", "legendFormat": "{{instance}}", "refId": "A"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0, "max": 100}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}}
+        },
+        {
+          "type": "timeseries",
+          "title": "Home Node Memory Usage",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 15},
+          "targets": [
+            {"expr": "100 * (1 - node_memory_MemAvailable_bytes{instance=~\"192.168.42.*\"} / node_memory_MemTotal_bytes{instance=~\"192.168.42.*\"})", "legendFormat": "{{instance}}", "refId": "A"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0, "max": 100}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}}
+        },
+        {
+          "type": "row",
+          "title": "Liqo Pool (GKE burst)",
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 23},
+          "collapsed": false
+        },
+        {
+          "type": "timeseries",
+          "title": "Liqo Node CPU Usage",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24},
+          "targets": [
+            {"expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\", instance!~\"192.168.42.*|nas.*|mac.*\"}[5m])) * 100)", "legendFormat": "{{instance}}", "refId": "A"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0, "max": 100}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}},
+          "description": "Only shows data when Liqo nodes are active"
+        },
+        {
+          "type": "timeseries",
+          "title": "Liqo Node Memory Usage",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24},
+          "targets": [
+            {"expr": "100 * (1 - node_memory_MemAvailable_bytes{instance!~\"192.168.42.*|nas.*|mac.*\"} / node_memory_MemTotal_bytes{instance!~\"192.168.42.*|nas.*|mac.*\"})", "legendFormat": "{{instance}}", "refId": "A"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0, "max": 100}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}},
+          "description": "Only shows data when Liqo nodes are active"
+        },
+        {
+          "type": "table",
+          "title": "All Nodes",
+          "gridPos": {"h": 8, "w": 24, "x": 0, "y": 32},
+          "targets": [
+            {"expr": "kubelet_node_name", "format": "table", "instant": true, "refId": "A"}
+          ],
+          "transformations": [
+            {"id": "organize", "options": {"excludeByName": {"Time": true, "Value": true, "__name__": true, "container": true, "endpoint": true, "job": true, "metrics_path": true, "namespace": true, "pod": true, "prometheus": true, "prometheus_replica": true, "service": true}, "renameByName": {"node": "Node", "instance": "Instance"}}}
+          ],
+          "fieldConfig": {"defaults": {}}
+        }
+      ],
+      "schemaVersion": 39,
+      "tags": ["liqo", "cluster", "nodes", "cost"],
+      "templating": {"list": []},
+      "time": {"from": "now-6h", "to": "now"},
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "Liqo Cluster",
+      "uid": "liqo-cluster",
+      "version": 1
+    }
