@@ -20,6 +20,7 @@ spec:
             env:
               PORT: &port 80
               TZ: Australia/Sydney
+              FUSION_ALLOW_EMPTY_PASSWORD: "true"
             probes:
               liveness: &probes
                 enabled: true
