@@ -9,7 +9,5 @@ spec:
     - https://audiobookshelf.goyangi.io/auth/openid/callback
   logoutCallbackUrls:
     - https://audiobookshelf.goyangi.io
-  allowedUserGroups:
-    - name: user
   secret:
     name: audiobookshelf-oidc

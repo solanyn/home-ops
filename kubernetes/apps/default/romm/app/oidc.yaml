@@ -9,7 +9,5 @@ spec:
     - https://romm.goyangi.io/api/oauth/openid
   logoutCallbackUrls:
     - https://romm.goyangi.io
-  allowedUserGroups:
-    - name: user
   secret:
     name: romm-oidc
