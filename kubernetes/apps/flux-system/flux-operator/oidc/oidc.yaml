@@ -10,8 +10,5 @@ spec:
     - https://flux.goyangi.io/oauth2/callback
   logoutCallbackUrls:
     - https://flux.goyangi.io
-  allowedUserGroups:
-    - name: admin
-      namespace: default
   secret:
     name: flux-oidc

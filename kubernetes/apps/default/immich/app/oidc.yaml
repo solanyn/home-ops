@@ -11,7 +11,5 @@ spec:
     - app.immich:/
   logoutCallbackUrls:
     - https://photos.goyangi.io
-  allowedUserGroups:
-    - name: user
   secret:
     name: immich-oidc

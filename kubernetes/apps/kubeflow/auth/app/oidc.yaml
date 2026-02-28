@@ -10,9 +10,6 @@ spec:
     - https://kubeflow.goyangi.io/oauth2/callback
   logoutCallbackUrls:
     - https://kubeflow.goyangi.io
-  allowedUserGroups:
-    - name: user
-      namespace: default
   secret:
     name: kubeflow-oidc
     keys:

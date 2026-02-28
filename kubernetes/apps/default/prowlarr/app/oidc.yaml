@@ -9,8 +9,6 @@ spec:
     - https://prowlarr.goyangi.io/oauth2/callback
   logoutCallbackUrls:
     - https://prowlarr.goyangi.io
-  allowedUserGroups:
-    - name: admin
   secret:
     name: prowlarr-oidc
     keys:
