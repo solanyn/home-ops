@@ -52,7 +52,7 @@ spec:
             cpu: 10m
             memory: 10Mi
           limits:
-            memory: 8Gi
+            memory: 2Gi
         prepareosd:
           requests:
             cpu: 10m
@@ -82,6 +82,7 @@ spec:
           bdev_enable_discard: "true" # quote
           bdev_async_discard_threads: "1" # quote
           osd_class_update_on_start: "false" # quote
+          osd_memory_target: "1610612736" # 1.5GB, down from 4GB default
           device_failure_prediction_mode: local # requires mgr module
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
