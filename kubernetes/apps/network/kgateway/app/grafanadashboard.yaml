@@ -3,7 +3,7 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: agentgateway
+  name: agentgateway-llm-cost
   namespace: network
 spec:
   allowCrossNamespaceImport: true
@@ -13,4 +13,95 @@ spec:
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
-  url: http://kgateway.dev/docs/main/agentgateway/observability/agentgateway.json
+  json: |
+    {
+      "annotations": {"list": []},
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "links": [],
+      "panels": [
+        {
+          "type": "stat",
+          "title": "Daily Cost",
+          "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+          "targets": [{"expr": "agentgateway:cost_usd:total_daily or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 5}, {"color": "red", "value": 10}]}, "unit": "currencyUSD", "decimals": 2}},
+          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+        },
+        {
+          "type": "stat",
+          "title": "Hourly Cost",
+          "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+          "targets": [{"expr": "agentgateway:cost_usd:total_hourly or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 0.5}, {"color": "red", "value": 1}]}, "unit": "currencyUSD", "decimals": 4}},
+          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+        },
+        {
+          "type": "stat",
+          "title": "Input Tokens (5m)",
+          "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+          "targets": [{"expr": "agentgateway:input_tokens:total or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}]}, "unit": "short", "decimals": 0}},
+          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+        },
+        {
+          "type": "stat",
+          "title": "Output Tokens (5m)",
+          "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
+          "targets": [{"expr": "agentgateway:output_tokens:total or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "purple", "value": null}]}, "unit": "short", "decimals": 0}},
+          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+        },
+        {
+          "type": "timeseries",
+          "title": "Token Usage Over Time",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+          "targets": [
+            {"expr": "sum(rate(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\"}[5m])) or vector(0)", "legendFormat": "Input Tokens/s", "refId": "A"},
+            {"expr": "sum(rate(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type=\"output\"}[5m])) or vector(0)", "legendFormat": "Output Tokens/s", "refId": "B"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 20}, "unit": "short"}},
+          "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
+        },
+        {
+          "type": "timeseries",
+          "title": "Cost Over Time",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+          "targets": [
+            {"expr": "agentgateway:cost_usd:total_hourly or vector(0)", "legendFormat": "Hourly Cost", "refId": "A"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 20}, "unit": "currencyUSD", "decimals": 4}},
+          "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
+        },
+        {
+          "type": "piechart",
+          "title": "Tokens by Model",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
+          "targets": [
+            {"expr": "sum by (gen_ai_response_model) (increase(agentgateway_gen_ai_client_token_usage_sum[1h]))", "legendFormat": "{{gen_ai_response_model}}", "refId": "A"}
+          ],
+          "fieldConfig": {"defaults": {"unit": "short"}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "values": ["value", "percent"]}, "pieType": "pie"}
+        },
+        {
+          "type": "table",
+          "title": "Request Count by Model",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
+          "targets": [
+            {"expr": "sum by (gen_ai_response_model) (increase(agentgateway_gen_ai_client_operation_duration_count[1h]))", "format": "table", "instant": true, "refId": "A"}
+          ],
+          "transformations": [{"id": "organize", "options": {"excludeByName": {"Time": true}, "renameByName": {"gen_ai_response_model": "Model", "Value": "Requests (1h)"}}}],
+          "fieldConfig": {"defaults": {}, "overrides": []}
+        }
+      ],
+      "schemaVersion": 39,
+      "tags": ["agentgateway", "llm", "cost", "tokens"],
+      "templating": {"list": []},
+      "time": {"from": "now-6h", "to": "now"},
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "AgentGateway LLM Cost",
+      "uid": "agentgateway-llm-cost",
+      "version": 1
+    }
