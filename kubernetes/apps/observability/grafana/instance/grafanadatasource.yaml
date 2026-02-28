@@ -108,7 +108,7 @@ spec:
       valueFrom:
         secretKeyRef:
           name: health-influxdb-token
-          key: HEALTH_INFLUXDB_TOKEN
+          key: INFLUXDB_TOKEN
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -137,4 +137,4 @@ spec:
       valueFrom:
         secretKeyRef:
           name: health-influxdb-grafana
-          key: HEALTH_INFLUXDB_TOKEN
+          key: INFLUXDB_TOKEN
