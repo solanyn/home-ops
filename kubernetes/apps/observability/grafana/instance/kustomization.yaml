@@ -14,3 +14,4 @@ resources:
   - ./grafanadashboard-health.yaml
   - ./grafanadashboard-liqo.yaml
   - ./prometheusrule-liqo.yaml
+  - ./grafanadashboard-capacity.yaml
