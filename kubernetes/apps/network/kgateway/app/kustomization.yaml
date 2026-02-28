@@ -7,4 +7,5 @@ resources:
   - ./ocirepository.yaml
   - ./externalsecret.yaml
   - ./podmonitor.yaml
+  - ./prometheusrule.yaml
   - ./grafanadashboard.yaml
