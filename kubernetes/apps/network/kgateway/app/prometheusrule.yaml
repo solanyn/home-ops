@@ -47,15 +47,3 @@ spec:
             ) + (
               sum(increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type="output"}[1h])) * 8 / 1000000
             ) or vector(0)
-
-    - name: agentgateway_cost_alerts
-      interval: 1m
-      rules:
-        - alert: AgentGatewayDailyCostHigh
-          expr: agentgateway:cost_usd:total_daily > 10
-          for: 5m
-          labels:
-            severity: warning
-          annotations:
-            summary: "AgentGateway daily cost exceeded $10"
-            description: "Daily LLM cost is ${{ $value | humanize }}"
