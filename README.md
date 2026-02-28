@@ -128,9 +128,26 @@ On-demand GPU/CPU capacity via workload offloading to GKE:
 
 - [liqo](https://github.com/liqotech/liqo) for transparent multi-cluster workload offloading over WireGuard
 - [crossplane](https://github.com/crossplane/crossplane) for declarative GKE cluster provisioning as Kubernetes CRDs
-- One-way offloading from home cluster to GKE for GPU workloads (L4, A100)
+- One-way offloading from home cluster to GKE for GPU workloads
 - Autoscaling node pools with scale-to-zero when idle (spot instances for cost efficiency)
-- No Flux/ESO on GKE -- entire remote cluster managed via Crossplane from home
+
+```mermaid
+graph LR
+  subgraph Home["Home Cluster (Talos)"]
+    API[API Server]
+    N1[Node 1]
+    N2[Node 2]
+    N3[Node 3]
+    VN[Virtual Node]
+  end
+  subgraph GKE["GKE (Remote)"]
+    GPU1[GPU Spot Node]
+    GPU2[Compute Spot Node]
+  end
+  API --> VN
+  VN -.->|Liqo Tunnel| GPU1
+  VN -.->|Liqo Tunnel| GPU2
+```
 
 ### Infrastructure Provisioning & GitOps
 
