@@ -17,41 +17,54 @@ spec:
     {
       "annotations": {"list": []},
       "editable": true,
-      "fiscalYearStartMonth": 0,
-      "graphTooltip": 0,
-      "links": [],
       "panels": [
         {
           "type": "stat",
           "title": "Daily Cost",
-          "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+          "gridPos": {"h": 4, "w": 4, "x": 0, "y": 0},
           "targets": [{"expr": "agentgateway:cost_usd:total_daily or vector(0)", "refId": "A"}],
           "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 5}, {"color": "red", "value": 10}]}, "unit": "currencyUSD", "decimals": 2}},
-          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
         },
         {
           "type": "stat",
           "title": "Hourly Cost",
-          "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+          "gridPos": {"h": 4, "w": 4, "x": 4, "y": 0},
           "targets": [{"expr": "agentgateway:cost_usd:total_hourly or vector(0)", "refId": "A"}],
           "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 0.5}, {"color": "red", "value": 1}]}, "unit": "currencyUSD", "decimals": 4}},
-          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
         },
         {
           "type": "stat",
-          "title": "Input Tokens (5m)",
-          "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
-          "targets": [{"expr": "agentgateway:input_tokens:total or vector(0)", "refId": "A"}],
+          "title": "Requests (1h)",
+          "gridPos": {"h": 4, "w": 4, "x": 8, "y": 0},
+          "targets": [{"expr": "sum(increase(agentgateway_requests_total[1h])) or vector(0)", "refId": "A"}],
           "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}]}, "unit": "short", "decimals": 0}},
-          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
         },
         {
           "type": "stat",
-          "title": "Output Tokens (5m)",
-          "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
-          "targets": [{"expr": "agentgateway:output_tokens:total or vector(0)", "refId": "A"}],
+          "title": "Input Tokens (1h)",
+          "gridPos": {"h": 4, "w": 4, "x": 12, "y": 0},
+          "targets": [{"expr": "sum(increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\"}[1h])) or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}]}, "unit": "short", "decimals": 0}},
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
+        },
+        {
+          "type": "stat",
+          "title": "Output Tokens (1h)",
+          "gridPos": {"h": 4, "w": 4, "x": 16, "y": 0},
+          "targets": [{"expr": "sum(increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type=\"output\"}[1h])) or vector(0)", "refId": "A"}],
           "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "purple", "value": null}]}, "unit": "short", "decimals": 0}},
-          "options": {"colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "auto", "reduceOptions": {"calcs": ["lastNotNull"], "fields": "", "values": false}, "textMode": "auto"}
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
+        },
+        {
+          "type": "stat",
+          "title": "Avg TTFT",
+          "gridPos": {"h": 4, "w": 4, "x": 20, "y": 0},
+          "targets": [{"expr": "sum(rate(agentgateway_gen_ai_server_time_to_first_token_sum[5m])) / sum(rate(agentgateway_gen_ai_server_time_to_first_token_count[5m])) or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 2}, {"color": "red", "value": 5}]}, "unit": "s", "decimals": 2}},
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
         },
         {
           "type": "timeseries",
@@ -75,24 +88,114 @@ spec:
           "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
         },
         {
-          "type": "piechart",
-          "title": "Tokens by Model",
+          "type": "timeseries",
+          "title": "Requests by Route",
           "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
           "targets": [
-            {"expr": "sum by (gen_ai_response_model) (increase(agentgateway_gen_ai_client_token_usage_sum[1h]))", "legendFormat": "{{gen_ai_response_model}}", "refId": "A"}
+            {"expr": "sum by (route) (rate(agentgateway_requests_total[5m]))", "legendFormat": "{{route}}", "refId": "A"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10, "stacking": {"mode": "normal"}}, "unit": "reqps"}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["sum"]}}
+        },
+        {
+          "type": "timeseries",
+          "title": "Tokens by Route",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
+          "targets": [
+            {"expr": "sum by (route) (rate(agentgateway_gen_ai_client_token_usage_sum[5m]))", "legendFormat": "{{route}}", "refId": "A"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10, "stacking": {"mode": "normal"}}, "unit": "short"}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["sum"]}}
+        },
+        {
+          "type": "piechart",
+          "title": "Tokens by Model",
+          "gridPos": {"h": 8, "w": 8, "x": 0, "y": 20},
+          "targets": [
+            {"expr": "sum by (gen_ai_response_model) (increase(agentgateway_gen_ai_client_token_usage_sum[$__range]))", "legendFormat": "{{gen_ai_response_model}}", "refId": "A"}
           ],
           "fieldConfig": {"defaults": {"unit": "short"}},
-          "options": {"legend": {"displayMode": "table", "placement": "right", "values": ["value", "percent"]}, "pieType": "pie"}
+          "options": {"legend": {"displayMode": "table", "placement": "right", "values": ["value", "percent"]}, "pieType": "donut"}
+        },
+        {
+          "type": "piechart",
+          "title": "Requests by Route",
+          "gridPos": {"h": 8, "w": 8, "x": 8, "y": 20},
+          "targets": [
+            {"expr": "sum by (route) (increase(agentgateway_requests_total[$__range]))", "legendFormat": "{{route}}", "refId": "A"}
+          ],
+          "fieldConfig": {"defaults": {"unit": "short"}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "values": ["value", "percent"]}, "pieType": "donut"}
+        },
+        {
+          "type": "piechart",
+          "title": "Data Transferred by Route",
+          "gridPos": {"h": 8, "w": 8, "x": 16, "y": 20},
+          "targets": [
+            {"expr": "sum by (route) (increase(agentgateway_response_bytes_total[$__range]))", "legendFormat": "{{route}}", "refId": "A"}
+          ],
+          "fieldConfig": {"defaults": {"unit": "bytes"}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "values": ["value", "percent"]}, "pieType": "donut"}
+        },
+        {
+          "type": "timeseries",
+          "title": "Request Duration (p50 / p95 / p99)",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 28},
+          "targets": [
+            {"expr": "histogram_quantile(0.50, sum by (le) (rate(agentgateway_gen_ai_server_request_duration_bucket[5m])))", "legendFormat": "p50", "refId": "A"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(agentgateway_gen_ai_server_request_duration_bucket[5m])))", "legendFormat": "p95", "refId": "B"},
+            {"expr": "histogram_quantile(0.99, sum by (le) (rate(agentgateway_gen_ai_server_request_duration_bucket[5m])))", "legendFormat": "p99", "refId": "C"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "s"}},
+          "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
+        },
+        {
+          "type": "timeseries",
+          "title": "Time to First Token (p50 / p95)",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 28},
+          "targets": [
+            {"expr": "histogram_quantile(0.50, sum by (le) (rate(agentgateway_gen_ai_server_time_to_first_token_bucket[5m])))", "legendFormat": "TTFT p50", "refId": "A"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(agentgateway_gen_ai_server_time_to_first_token_bucket[5m])))", "legendFormat": "TTFT p95", "refId": "B"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "s"}},
+          "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
+        },
+        {
+          "type": "timeseries",
+          "title": "Time per Output Token (p50 / p95)",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 36},
+          "targets": [
+            {"expr": "histogram_quantile(0.50, sum by (le) (rate(agentgateway_gen_ai_server_time_per_output_token_bucket[5m])))", "legendFormat": "p50", "refId": "A"},
+            {"expr": "histogram_quantile(0.95, sum by (le) (rate(agentgateway_gen_ai_server_time_per_output_token_bucket[5m])))", "legendFormat": "p95", "refId": "B"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "s"}},
+          "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
+        },
+        {
+          "type": "timeseries",
+          "title": "MCP Requests by Route",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 36},
+          "targets": [
+            {"expr": "sum by (route) (rate(agentgateway_mcp_requests_total[5m]))", "legendFormat": "{{route}}", "refId": "A"}
+          ],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "bars", "fillOpacity": 50, "stacking": {"mode": "normal"}}, "unit": "reqps"}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["sum"]}}
         },
         {
           "type": "table",
-          "title": "Request Count by Model",
-          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
+          "title": "Route Summary",
+          "gridPos": {"h": 8, "w": 24, "x": 0, "y": 44},
           "targets": [
-            {"expr": "sum by (gen_ai_response_model) (increase(agentgateway_gen_ai_client_operation_duration_count[1h]))", "format": "table", "instant": true, "refId": "A"}
+            {"expr": "sum by (route) (increase(agentgateway_requests_total[$__range]))", "format": "table", "instant": true, "refId": "requests"},
+            {"expr": "sum by (route) (increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\"}[$__range]))", "format": "table", "instant": true, "refId": "input_tokens"},
+            {"expr": "sum by (route) (increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type=\"output\"}[$__range]))", "format": "table", "instant": true, "refId": "output_tokens"},
+            {"expr": "sum by (route) (increase(agentgateway_response_bytes_total[$__range]))", "format": "table", "instant": true, "refId": "bytes"}
           ],
-          "transformations": [{"id": "organize", "options": {"excludeByName": {"Time": true}, "renameByName": {"gen_ai_response_model": "Model", "Value": "Requests (1h)"}}}],
-          "fieldConfig": {"defaults": {}, "overrides": []}
+          "transformations": [
+            {"id": "seriesToColumns", "options": {"byField": "route"}},
+            {"id": "organize", "options": {"excludeByName": {"Time": true, "Time 1": true, "Time 2": true, "Time 3": true, "Time 4": true}, "renameByName": {"route": "Route", "Value #requests": "Requests", "Value #input_tokens": "Input Tokens", "Value #output_tokens": "Output Tokens", "Value #bytes": "Response Bytes"}}}
+          ],
+          "fieldConfig": {"defaults": {}, "overrides": [{"matcher": {"id": "byName", "options": "Response Bytes"}, "properties": [{"id": "unit", "value": "bytes"}]}]}
         }
       ],
       "schemaVersion": 39,
@@ -101,7 +204,7 @@ spec:
       "time": {"from": "now-6h", "to": "now"},
       "timepicker": {},
       "timezone": "browser",
-      "title": "AgentGateway LLM Cost",
+      "title": "AgentGateway LLM",
       "uid": "agentgateway-llm-cost",
-      "version": 1
+      "version": 2
     }
