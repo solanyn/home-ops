@@ -6,9 +6,6 @@ metadata:
   name: health
   namespace: observability
 spec:
-  datasources:
-    - datasourceName: influxdb
-      inputName: DS_INFLUXDB
   allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
@@ -22,7 +19,7 @@ spec:
           "type": "stat",
           "title": "Resting Heart Rate",
           "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
-          "targets": [{"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"resting_heart_rate\" and r._field == \"qty\")\n  |> last()", "refId": "A"}],
+          "targets": [{"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"resting_heart_rate\" and r._field == \"qty\")\n  |> last()", "refId": "A"}],
           "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 65}, {"color": "red", "value": 80}]}, "unit": "bpm"}},
           "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
         },
@@ -30,7 +27,7 @@ spec:
           "type": "stat",
           "title": "HRV",
           "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
-          "targets": [{"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"heart_rate_variability\" and r._field == \"qty\")\n  |> last()", "refId": "A"}],
+          "targets": [{"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"heart_rate_variability\" and r._field == \"qty\")\n  |> last()", "refId": "A"}],
           "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "red", "value": null}, {"color": "yellow", "value": 30}, {"color": "green", "value": 50}]}, "unit": "ms"}},
           "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
         },
@@ -38,7 +35,7 @@ spec:
           "type": "stat",
           "title": "Steps Today",
           "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
-          "targets": [{"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: today())\n  |> filter(fn: (r) => r._measurement == \"step_count\" and r._field == \"qty\")\n  |> sum()", "refId": "A"}],
+          "targets": [{"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: today())\n  |> filter(fn: (r) => r._measurement == \"step_count\" and r._field == \"qty\")\n  |> sum()", "refId": "A"}],
           "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "red", "value": null}, {"color": "yellow", "value": 5000}, {"color": "green", "value": 10000}]}, "unit": "short"}},
           "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
         },
@@ -46,7 +43,7 @@ spec:
           "type": "stat",
           "title": "Exercise Today (min)",
           "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
-          "targets": [{"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: today())\n  |> filter(fn: (r) => r._measurement == \"apple_exercise_time\" and r._field == \"qty\")\n  |> sum()", "refId": "A"}],
+          "targets": [{"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: today())\n  |> filter(fn: (r) => r._measurement == \"apple_exercise_time\" and r._field == \"qty\")\n  |> sum()", "refId": "A"}],
           "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "red", "value": null}, {"color": "yellow", "value": 15}, {"color": "green", "value": 30}]}, "unit": "m"}},
           "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
         },
@@ -55,9 +52,9 @@ spec:
           "title": "Heart Rate",
           "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
           "targets": [
-            {"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"heart_rate\" and r._field == \"avg\")\n  |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)", "legendFormat": "Avg", "refId": "A"},
-            {"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"heart_rate\" and r._field == \"max\")\n  |> aggregateWindow(every: 5m, fn: max, createEmpty: false)", "legendFormat": "Max", "refId": "B"},
-            {"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"heart_rate\" and r._field == \"min\")\n  |> aggregateWindow(every: 5m, fn: min, createEmpty: false)", "legendFormat": "Min", "refId": "C"}
+            {"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"heart_rate\" and r._field == \"avg\")\n  |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)", "legendFormat": "Avg", "refId": "A"},
+            {"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"heart_rate\" and r._field == \"max\")\n  |> aggregateWindow(every: 5m, fn: max, createEmpty: false)", "legendFormat": "Max", "refId": "B"},
+            {"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"heart_rate\" and r._field == \"min\")\n  |> aggregateWindow(every: 5m, fn: min, createEmpty: false)", "legendFormat": "Min", "refId": "C"}
           ],
           "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "bpm"}, "overrides": [{"matcher": {"id": "byName", "options": "Avg"}, "properties": [{"id": "color", "value": {"fixedColor": "red", "mode": "fixed"}}]}, {"matcher": {"id": "byName", "options": "Max"}, "properties": [{"id": "color", "value": {"fixedColor": "orange", "mode": "fixed"}}, {"id": "custom.lineStyle", "value": {"fill": "dash"}}]}, {"matcher": {"id": "byName", "options": "Min"}, "properties": [{"id": "color", "value": {"fixedColor": "blue", "mode": "fixed"}}, {"id": "custom.lineStyle", "value": {"fill": "dash"}}]}]},
           "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
@@ -66,7 +63,7 @@ spec:
           "type": "timeseries",
           "title": "HRV Over Time",
           "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
-          "targets": [{"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"heart_rate_variability\" and r._field == \"qty\")\n  |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)", "refId": "A"}],
+          "targets": [{"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"heart_rate_variability\" and r._field == \"qty\")\n  |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)", "refId": "A"}],
           "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "ms", "color": {"mode": "fixed", "fixedColor": "purple"}}},
           "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
         },
@@ -75,8 +72,8 @@ spec:
           "title": "Sleep (hours)",
           "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
           "targets": [
-            {"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"sleep_analysis\" and r._field == \"asleep\")\n  |> map(fn: (r) => ({r with _value: float(v: r._value) / 60.0}))", "legendFormat": "Asleep", "refId": "A"},
-            {"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"sleep_analysis\" and r._field == \"inBed\")\n  |> map(fn: (r) => ({r with _value: float(v: r._value) / 60.0}))", "legendFormat": "In Bed", "refId": "B"}
+            {"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"sleep_analysis\" and r._field == \"asleep\")\n  |> map(fn: (r) => ({r with _value: float(v: r._value) / 60.0}))", "legendFormat": "Asleep", "refId": "A"},
+            {"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"sleep_analysis\" and r._field == \"inBed\")\n  |> map(fn: (r) => ({r with _value: float(v: r._value) / 60.0}))", "legendFormat": "In Bed", "refId": "B"}
           ],
           "fieldConfig": {"defaults": {"custom": {"drawStyle": "bars", "fillOpacity": 50}, "unit": "h"}, "overrides": [{"matcher": {"id": "byName", "options": "Asleep"}, "properties": [{"id": "color", "value": {"fixedColor": "blue", "mode": "fixed"}}]}, {"matcher": {"id": "byName", "options": "In Bed"}, "properties": [{"id": "color", "value": {"fixedColor": "light-blue", "mode": "fixed"}}, {"id": "custom.fillOpacity", "value": 20}]}]},
           "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
@@ -85,7 +82,7 @@ spec:
           "type": "timeseries",
           "title": "Daily Steps",
           "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
-          "targets": [{"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"step_count\" and r._field == \"qty\")\n  |> aggregateWindow(every: 1d, fn: sum, createEmpty: false)", "refId": "A"}],
+          "targets": [{"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"step_count\" and r._field == \"qty\")\n  |> aggregateWindow(every: 1d, fn: sum, createEmpty: false)", "refId": "A"}],
           "fieldConfig": {"defaults": {"custom": {"drawStyle": "bars", "fillOpacity": 50}, "unit": "short", "color": {"mode": "fixed", "fixedColor": "green"}, "thresholds": {"mode": "absolute", "steps": [{"color": "red", "value": null}, {"color": "yellow", "value": 5000}, {"color": "green", "value": 10000}]}}},
           "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
         },
@@ -93,7 +90,7 @@ spec:
           "type": "timeseries",
           "title": "Resting Heart Rate Trend",
           "gridPos": {"h": 8, "w": 12, "x": 0, "y": 20},
-          "targets": [{"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"resting_heart_rate\" and r._field == \"qty\")\n  |> aggregateWindow(every: 1d, fn: mean, createEmpty: false)", "refId": "A"}],
+          "targets": [{"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"resting_heart_rate\" and r._field == \"qty\")\n  |> aggregateWindow(every: 1d, fn: mean, createEmpty: false)", "refId": "A"}],
           "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "bpm", "color": {"mode": "fixed", "fixedColor": "orange"}}},
           "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
         },
@@ -101,7 +98,7 @@ spec:
           "type": "timeseries",
           "title": "Respiratory Rate",
           "gridPos": {"h": 8, "w": 12, "x": 12, "y": 20},
-          "targets": [{"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"respiratory_rate\" and r._field == \"qty\")\n  |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)", "refId": "A"}],
+          "targets": [{"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"respiratory_rate\" and r._field == \"qty\")\n  |> aggregateWindow(every: 1h, fn: mean, createEmpty: false)", "refId": "A"}],
           "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "short", "color": {"mode": "fixed", "fixedColor": "cyan"}}},
           "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
         },
@@ -109,7 +106,7 @@ spec:
           "type": "timeseries",
           "title": "Active Energy (kJ)",
           "gridPos": {"h": 8, "w": 12, "x": 0, "y": 28},
-          "targets": [{"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"active_energy\" and r._field == \"qty\")\n  |> aggregateWindow(every: 1d, fn: sum, createEmpty: false)", "refId": "A"}],
+          "targets": [{"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"active_energy\" and r._field == \"qty\")\n  |> aggregateWindow(every: 1d, fn: sum, createEmpty: false)", "refId": "A"}],
           "fieldConfig": {"defaults": {"custom": {"drawStyle": "bars", "fillOpacity": 50}, "unit": "short", "color": {"mode": "fixed", "fixedColor": "yellow"}}},
           "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
         },
@@ -117,7 +114,7 @@ spec:
           "type": "timeseries",
           "title": "Exercise Time (min)",
           "gridPos": {"h": 8, "w": 12, "x": 12, "y": 28},
-          "targets": [{"datasource": {"type": "influxdb", "uid": "${DS_INFLUXDB}"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"apple_exercise_time\" and r._field == \"qty\")\n  |> aggregateWindow(every: 1d, fn: sum, createEmpty: false)", "refId": "A"}],
+          "targets": [{"datasource": {"type": "influxdb"}, "query": "from(bucket: \"health\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"apple_exercise_time\" and r._field == \"qty\")\n  |> aggregateWindow(every: 1d, fn: sum, createEmpty: false)", "refId": "A"}],
           "fieldConfig": {"defaults": {"custom": {"drawStyle": "bars", "fillOpacity": 50}, "unit": "m", "color": {"mode": "fixed", "fixedColor": "semi-dark-green"}}},
           "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
         }
