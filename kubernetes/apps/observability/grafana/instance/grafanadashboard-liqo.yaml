@@ -20,86 +20,84 @@ spec:
       "panels": [
         {
           "type": "row",
-          "title": "Overview",
+          "title": "Liqo Peering",
           "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0},
           "collapsed": false
         },
         {
           "type": "stat",
-          "title": "Home Nodes",
+          "title": "Peer Connected",
           "gridPos": {"h": 4, "w": 4, "x": 0, "y": 1},
-          "targets": [{"expr": "count(kubelet_node_name{node!~\"liqo-.*\"}) or vector(0)", "refId": "A"}],
-          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]}, "unit": "short"}},
-          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
+          "targets": [{"expr": "liqo_peer_is_connected{cluster_id=\"worker\"}", "refId": "A"}],
+          "fieldConfig": {"defaults": {"mappings": [{"type": "value", "options": {"0": {"text": "Disconnected", "color": "red"}, "1": {"text": "Connected", "color": "green"}}}], "thresholds": {"mode": "absolute", "steps": [{"color": "red", "value": null}, {"color": "green", "value": 1}]}}},
+          "options": {"colorMode": "background", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
         },
         {
           "type": "stat",
-          "title": "Liqo GPU Nodes",
+          "title": "Peer Latency",
           "gridPos": {"h": 4, "w": 4, "x": 4, "y": 1},
-          "targets": [{"expr": "count(kubelet_node_name{node=~\"liqo-.*gpu.*\"}) or vector(0)", "refId": "A"}],
-          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}, {"color": "yellow", "value": 1}]}, "unit": "short"}},
-          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
+          "targets": [{"expr": "liqo_peer_latency_us{cluster_id=\"worker\"} / 1000", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 50}, {"color": "red", "value": 200}]}, "unit": "ms", "decimals": 1}},
+          "options": {"colorMode": "value", "graphMode": "area", "reduceOptions": {"calcs": ["lastNotNull"]}}
         },
         {
           "type": "stat",
-          "title": "Liqo e2 Nodes",
+          "title": "Home Nodes",
           "gridPos": {"h": 4, "w": 4, "x": 8, "y": 1},
-          "targets": [{"expr": "count(kubelet_node_name{node=~\"liqo-.*e2.*\"}) or vector(0)", "refId": "A"}],
-          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}, {"color": "yellow", "value": 1}]}, "unit": "short"}},
-          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
-        },
-        {
-          "type": "stat",
-          "title": "Total Nodes",
-          "gridPos": {"h": 4, "w": 4, "x": 12, "y": 1},
-          "targets": [{"expr": "count(kubelet_node_name) or vector(0)", "refId": "A"}],
+          "targets": [{"expr": "count(kubelet_node_name{node!~\"worker\"}) or vector(0)", "refId": "A"}],
           "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]}, "unit": "short"}},
           "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
         },
         {
           "type": "stat",
-          "title": "Liqo Cost ($/hr)",
-          "gridPos": {"h": 4, "w": 4, "x": 16, "y": 1},
-          "targets": [{"expr": "(count(kubelet_node_name{node=~\"liqo-.*gpu.*\"}) or vector(0)) * 0.35 + (count(kubelet_node_name{node=~\"liqo-.*e2.*\"}) or vector(0)) * 0.01", "refId": "A"}],
-          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 0.5}, {"color": "red", "value": 2}]}, "unit": "currencyUSD", "decimals": 2}},
+          "title": "Virtual Node (GKE)",
+          "gridPos": {"h": 4, "w": 4, "x": 12, "y": 1},
+          "targets": [{"expr": "count(kubelet_node_name{node=\"worker\"}) or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}]}, "unit": "short"}},
           "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
         },
         {
           "type": "stat",
-          "title": "Liqo Session Cost ($)",
+          "title": "GKE Advertised GPUs",
+          "gridPos": {"h": 4, "w": 4, "x": 16, "y": 1},
+          "targets": [{"expr": "kube_node_status_capacity{node=\"worker\", resource=\"nvidia_com_gpu\"} or vector(0)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "blue", "value": null}]}, "unit": "short", "displayName": "L4 GPUs"}},
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}},
+          "description": "nvidia-l4 GPUs advertised by Liqo virtual node (g2-standard-8 pool)"
+        },
+        {
+          "type": "stat",
+          "title": "System Pool Cost ($/day)",
           "gridPos": {"h": 4, "w": 4, "x": 20, "y": 1},
-          "targets": [{"expr": "(sum((time() - kubelet_started_time_seconds{node=~\"liqo-.*gpu.*\"}) / 3600 * 0.35) or vector(0)) + (sum((time() - kubelet_started_time_seconds{node=~\"liqo-.*e2.*\"}) / 3600 * 0.01) or vector(0))", "refId": "A"}],
-          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 5}, {"color": "red", "value": 20}]}, "unit": "currencyUSD", "decimals": 2}},
-          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}}
+          "targets": [{"expr": "vector(0.34)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}]}, "unit": "currencyUSD", "decimals": 2}},
+          "options": {"colorMode": "value", "graphMode": "none", "reduceOptions": {"calcs": ["lastNotNull"]}},
+          "description": "2x e2-small spot @ ~$0.007/hr = ~$0.34/day (always on)"
         },
         {
           "type": "row",
-          "title": "Node Pools",
+          "title": "Liqo Network",
           "gridPos": {"h": 1, "w": 24, "x": 0, "y": 5},
           "collapsed": false
         },
         {
           "type": "timeseries",
-          "title": "Node Count by Pool",
+          "title": "Peer Latency",
           "gridPos": {"h": 8, "w": 12, "x": 0, "y": 6},
-          "targets": [
-            {"expr": "count(kubelet_node_name{node!~\"liqo-.*\"}) or vector(0)", "legendFormat": "Home (default)", "refId": "A"},
-            {"expr": "count(kubelet_node_name{node=~\"liqo-.*gpu.*\"}) or vector(0)", "legendFormat": "Liqo GPU (T4)", "refId": "B"},
-            {"expr": "count(kubelet_node_name{node=~\"liqo-.*e2.*\"}) or vector(0)", "legendFormat": "Liqo e2 (preemptible)", "refId": "C"}
-          ],
-          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "stepAfter", "fillOpacity": 30, "stacking": {"mode": "normal"}}, "unit": "short", "min": 0}},
-          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["lastNotNull", "max"]}}
+          "targets": [{"expr": "liqo_peer_latency_us{cluster_id=\"worker\"} / 1000", "legendFormat": "worker (GKE)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "ms", "color": {"mode": "fixed", "fixedColor": "orange"}}},
+          "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
         },
         {
           "type": "timeseries",
-          "title": "Estimated Hourly Cost by Pool",
+          "title": "Peer Bandwidth",
           "gridPos": {"h": 8, "w": 12, "x": 12, "y": 6},
           "targets": [
-            {"expr": "(count(kubelet_node_name{node=~\"liqo-.*gpu.*\"}) or vector(0)) * 0.35", "legendFormat": "GPU ($0.35/hr)", "refId": "A"},
-            {"expr": "(count(kubelet_node_name{node=~\"liqo-.*e2.*\"}) or vector(0)) * 0.01", "legendFormat": "e2 ($0.01/hr)", "refId": "B"}
+            {"expr": "rate(liqo_peer_transmit_bytes_total{cluster_id=\"worker\"}[5m])", "legendFormat": "TX → GKE", "refId": "A"},
+            {"expr": "-rate(liqo_peer_receive_bytes_total{cluster_id=\"worker\"}[5m])", "legendFormat": "RX ← GKE", "refId": "B"}
           ],
-          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "stepAfter", "fillOpacity": 30, "stacking": {"mode": "normal"}}, "unit": "currencyUSD", "decimals": 2, "min": 0}},
-          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["lastNotNull", "max"]}}
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 20}, "unit": "Bps"}, "overrides": [{"matcher": {"id": "byName", "options": "TX → GKE"}, "properties": [{"id": "color", "value": {"fixedColor": "green", "mode": "fixed"}}]}, {"matcher": {"id": "byName", "options": "RX ← GKE"}, "properties": [{"id": "color", "value": {"fixedColor": "blue", "mode": "fixed"}}]}]},
+          "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
         },
         {
           "type": "row",
@@ -129,36 +127,29 @@ spec:
         },
         {
           "type": "row",
-          "title": "Liqo Pool (GKE burst)",
+          "title": "GKE Node Pools (Crossplane)",
           "gridPos": {"h": 1, "w": 24, "x": 0, "y": 23},
           "collapsed": false
         },
         {
-          "type": "timeseries",
-          "title": "Liqo Node CPU Usage",
-          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24},
-          "targets": [
-            {"expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\", instance!~\"192.168.42.*|nas.*|mac.*\"}[5m])) * 100)", "legendFormat": "{{instance}}", "refId": "A"}
-          ],
-          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0, "max": 100}},
-          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}},
-          "description": "Only shows data when Liqo nodes are active"
+          "type": "text",
+          "title": "GKE Cluster Info",
+          "gridPos": {"h": 8, "w": 24, "x": 0, "y": 24},
+          "options": {
+            "mode": "markdown",
+            "content": "## Node Pools (asia-southeast1-b)\n\n| Pool | Machine | GPU | Spot | Nodes | Autoscale | ~$/hr/node |\n|------|---------|-----|------|-------|-----------|------------|\n| **system-pool** | e2-small | - | ✅ | 2 (fixed) | - | ~$0.007 |\n| **cpu-pool** | e2-medium | - | ✅ | 0 | 0→4 | ~$0.013 |\n| **gpu-pool** | g2-standard-8 | nvidia-l4 ×1 | ✅ | 0 | 0→8 | ~$0.55 |\n\n**Virtual node `worker`** aggregates all pools: 32 CPU, 128Gi RAM, 8× L4 GPU\n\n*Node counts from Crossplane CRDs — not available as Prometheus metrics. Check with:*\n```\nkubectl get nodepools.container.gcp.upbound.io -o custom-columns=POOL:.metadata.annotations.crossplane\\.io/composition-resource-name,NODES:.status.atProvider.nodeCount\n```"
+          }
         },
         {
-          "type": "timeseries",
-          "title": "Liqo Node Memory Usage",
-          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24},
-          "targets": [
-            {"expr": "100 * (1 - node_memory_MemAvailable_bytes{instance!~\"192.168.42.*|nas.*|mac.*\"} / node_memory_MemTotal_bytes{instance!~\"192.168.42.*|nas.*|mac.*\"})", "legendFormat": "{{instance}}", "refId": "A"}
-          ],
-          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0, "max": 100}},
-          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}},
-          "description": "Only shows data when Liqo nodes are active"
+          "type": "row",
+          "title": "All Nodes",
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 32},
+          "collapsed": false
         },
         {
           "type": "table",
-          "title": "All Nodes",
-          "gridPos": {"h": 8, "w": 24, "x": 0, "y": 32},
+          "title": "Cluster Nodes",
+          "gridPos": {"h": 6, "w": 24, "x": 0, "y": 33},
           "targets": [
             {"expr": "kubelet_node_name", "format": "table", "instant": true, "refId": "A"}
           ],
@@ -169,12 +160,12 @@ spec:
         }
       ],
       "schemaVersion": 39,
-      "tags": ["liqo", "cluster", "nodes", "cost"],
+      "tags": ["liqo", "cluster", "nodes", "cost", "gke"],
       "templating": {"list": []},
       "time": {"from": "now-6h", "to": "now"},
       "timepicker": {},
       "timezone": "browser",
       "title": "Liqo Cluster",
       "uid": "liqo-cluster",
-      "version": 1
+      "version": 2
     }
