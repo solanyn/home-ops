@@ -149,3 +149,16 @@ spec:
       deletionPolicy: Delete
     cephFileSystems: []
     cephObjectStores: []
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: PrometheusRule
+              name: prometheus-ceph-rules
+            patch: |
+              - op: add
+                path: /spec/groups/6/interval
+                value: "5m"
+              - op: add
+                path: /spec/groups/7/interval
+                value: "5m"
