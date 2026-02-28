@@ -1,0 +1,190 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: cluster-capacity
+  namespace: observability
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  datasources:
+    - datasourceName: prometheus
+      inputName: DS_PROMETHEUS
+  json: |
+    {
+      "annotations": {"list": []},
+      "editable": true,
+      "panels": [
+        {
+          "type": "row",
+          "title": "🚦 Upgrade Signals",
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 0},
+          "collapsed": false
+        },
+        {
+          "type": "gauge",
+          "title": "Network Saturation (peak node)",
+          "gridPos": {"h": 6, "w": 6, "x": 0, "y": 1},
+          "targets": [{"expr": "max(rate(node_network_receive_bytes_total{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|liqo.*|.*\\\\..*\"}[5m]) + rate(node_network_transmit_bytes_total{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|liqo.*|.*\\\\..*\"}[5m])) / max(node_network_speed_bytes{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|liqo.*|.*\\\\..*\"}) * 100", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 50}, {"color": "orange", "value": 70}, {"color": "red", "value": 85}]}, "unit": "percent", "min": 0, "max": 100, "displayName": "→ 2.5GbE"}},
+          "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "showThresholdLabels": false, "showThresholdMarkers": true},
+          "description": "Peak bidirectional throughput as % of link speed. >70% = consider 2.5GbE upgrade"
+        },
+        {
+          "type": "gauge",
+          "title": "CPU Saturation (peak node)",
+          "gridPos": {"h": 6, "w": 6, "x": 6, "y": 1},
+          "targets": [{"expr": "max(100 - avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\",instance=~\"192.168.42.*\"}[5m])) * 100)", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 60}, {"color": "orange", "value": 75}, {"color": "red", "value": 90}]}, "unit": "percent", "min": 0, "max": 100, "displayName": "→ More cores"}},
+          "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "showThresholdLabels": false, "showThresholdMarkers": true},
+          "description": "Peak CPU usage (incl iowait). >75% sustained = consider more cores or nodes"
+        },
+        {
+          "type": "gauge",
+          "title": "RAM Pressure (peak node)",
+          "gridPos": {"h": 6, "w": 6, "x": 12, "y": 1},
+          "targets": [{"expr": "max(100 * (1 - node_memory_MemAvailable_bytes{instance=~\"192.168.42.*\"} / node_memory_MemTotal_bytes{instance=~\"192.168.42.*\"}))", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 75}, {"color": "orange", "value": 85}, {"color": "red", "value": 92}]}, "unit": "percent", "min": 0, "max": 100, "displayName": "→ More RAM"}},
+          "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "showThresholdLabels": false, "showThresholdMarkers": true},
+          "description": "Peak RAM usage. >85% = consider 64GB upgrade or more nodes"
+        },
+        {
+          "type": "gauge",
+          "title": "Disk I/O (peak node)",
+          "gridPos": {"h": 6, "w": 6, "x": 18, "y": 1},
+          "targets": [{"expr": "max(avg by (instance) (rate(node_cpu_seconds_total{mode=\"iowait\",instance=~\"192.168.42.*\"}[5m]))) * 100", "refId": "A"}],
+          "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 5}, {"color": "orange", "value": 15}, {"color": "red", "value": 30}]}, "unit": "percent", "min": 0, "max": 100, "displayName": "→ Faster disk"}},
+          "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "showThresholdLabels": false, "showThresholdMarkers": true},
+          "description": "Peak iowait %. >15% = investigate which workload is hammering disk"
+        },
+        {
+          "type": "row",
+          "title": "📊 Per-Node Detail",
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 7},
+          "collapsed": false
+        },
+        {
+          "type": "timeseries",
+          "title": "Network Utilization %",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+          "targets": [{"expr": "(rate(node_network_receive_bytes_total{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|liqo.*|.*\\\\..*\"}[5m]) + rate(node_network_transmit_bytes_total{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|liqo.*|.*\\\\..*\"})) / node_network_speed_bytes{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|liqo.*|.*\\\\..*\"} * 100", "legendFormat": "{{instance}} {{device}}", "refId": "A"}],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0, "max": 100, "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "red", "value": 70}]}, "custom.thresholdsStyle": {"mode": "line"}}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}}
+        },
+        {
+          "type": "timeseries",
+          "title": "CPU Usage % (excl iowait)",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+          "targets": [{"expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=~\"idle|iowait\",instance=~\"192.168.42.*\"}[5m])) * 100)", "legendFormat": "{{instance}}", "refId": "A"}],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0, "max": 100}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}}
+        },
+        {
+          "type": "timeseries",
+          "title": "RAM Usage %",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+          "targets": [{"expr": "100 * (1 - node_memory_MemAvailable_bytes{instance=~\"192.168.42.*\"} / node_memory_MemTotal_bytes{instance=~\"192.168.42.*\"})", "legendFormat": "{{instance}}", "refId": "A"}],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0, "max": 100}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}}
+        },
+        {
+          "type": "timeseries",
+          "title": "IO Wait %",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+          "targets": [{"expr": "avg by (instance) (rate(node_cpu_seconds_total{mode=\"iowait\",instance=~\"192.168.42.*\"}[5m])) * 100", "legendFormat": "{{instance}}", "refId": "A"}],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0, "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "red", "value": 15}]}, "custom.thresholdsStyle": {"mode": "line"}}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}}
+        },
+        {
+          "type": "row",
+          "title": "🔍 Deep Dive",
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 24},
+          "collapsed": false
+        },
+        {
+          "type": "timeseries",
+          "title": "Ceph OSD Disk Utilization",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 25},
+          "targets": [{"expr": "rate(node_disk_io_time_seconds_total{instance=~\"192.168.42.*\",device=~\"nvme.*|sd.*\"}[5m]) * 100", "legendFormat": "{{instance}} {{device}}", "refId": "A"}],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}}
+        },
+        {
+          "type": "timeseries",
+          "title": "RBD Volume Utilization (top 5)",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 25},
+          "targets": [{"expr": "topk(5, rate(node_disk_io_time_seconds_total{instance=~\"192.168.42.*\",device=~\"rbd.*\"}[5m]) * 100)", "legendFormat": "{{instance}} {{device}}", "refId": "A"}],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}}
+        },
+        {
+          "type": "timeseries",
+          "title": "etcd WAL Fsync Latency (p99)",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 33},
+          "targets": [{"expr": "histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket[5m]))", "legendFormat": "{{instance}}", "refId": "A"}],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "s", "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "red", "value": 0.01}]}, "custom.thresholdsStyle": {"mode": "line"}}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}}
+        },
+        {
+          "type": "timeseries",
+          "title": "etcd Peer RTT (p99)",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 33},
+          "targets": [{"expr": "histogram_quantile(0.99, rate(etcd_network_peer_round_trip_time_seconds_bucket[5m]))", "legendFormat": "{{instance}} → {{To}}", "refId": "A"}],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "s", "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "red", "value": 0.15}]}, "custom.thresholdsStyle": {"mode": "line"}}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}}
+        },
+        {
+          "type": "timeseries",
+          "title": "Prometheus Rule Eval Time",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 41},
+          "targets": [{"expr": "topk(5, prometheus_rule_group_last_duration_seconds)", "legendFormat": "{{rule_group}}", "refId": "A"}],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "s"}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}}
+        },
+        {
+          "type": "timeseries",
+          "title": "Pods per Node",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 41},
+          "targets": [{"expr": "kubelet_running_pods{instance=~\"192.168.42.*\"}", "legendFormat": "{{instance}}", "refId": "A"}],
+          "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "stepAfter", "fillOpacity": 10}, "unit": "short", "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "red", "value": 110}]}, "custom.thresholdsStyle": {"mode": "line"}}},
+          "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["lastNotNull", "max"]}},
+          "description": "Default pod limit is 110 per node"
+        },
+        {
+          "type": "row",
+          "title": "🗄️ NAS",
+          "gridPos": {"h": 1, "w": 24, "x": 0, "y": 49},
+          "collapsed": true,
+          "panels": [
+            {
+              "type": "timeseries",
+              "title": "NAS Disk Utilization",
+              "gridPos": {"h": 8, "w": 12, "x": 0, "y": 50},
+              "targets": [{"expr": "rate(node_disk_io_time_seconds_total{instance=\"nas.internal:9100\"}[5m]) * 100", "legendFormat": "{{device}}", "refId": "A"}],
+              "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0}},
+              "options": {"legend": {"displayMode": "list", "placement": "bottom"}}
+            },
+            {
+              "type": "timeseries",
+              "title": "NAS Filesystem Usage",
+              "gridPos": {"h": 8, "w": 12, "x": 12, "y": 50},
+              "targets": [{"expr": "100 * (1 - node_filesystem_avail_bytes{instance=\"nas.internal:9100\",mountpoint=~\"/mnt/world/.*\"} / node_filesystem_size_bytes{instance=\"nas.internal:9100\",mountpoint=~\"/mnt/world/.*\"})", "legendFormat": "{{mountpoint}}", "refId": "A"}],
+              "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0, "max": 100}},
+              "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["lastNotNull"]}}
+            }
+          ]
+        }
+      ],
+      "schemaVersion": 39,
+      "tags": ["capacity", "upgrade", "planning"],
+      "templating": {"list": []},
+      "time": {"from": "now-24h", "to": "now"},
+      "timepicker": {},
+      "timezone": "browser",
+      "title": "Cluster Capacity",
+      "uid": "cluster-capacity",
+      "version": 1
+    }
