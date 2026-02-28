@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: liqo-cost
+  namespace: observability
+spec:
+  groups:
+    - name: liqo_alerts
+      rules:
+        - alert: LiqoNodesRunningTooLong
+          expr: |
+            (time() - kubelet_started_time_seconds{node=~"liqo-.*"}) > 3600
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Liqo node {{ $labels.node }} running for over 1 hour"
+            description: "Liqo node {{ $labels.node }} has been running for {{ $value | humanizeDuration }}. Check if it should be scaled down."
