@@ -1,0 +1,61 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: agentgateway-cost
+  namespace: network
+spec:
+  groups:
+    - name: agentgateway_token_tracking
+      interval: 30s
+      rules:
+        # Total input tokens
+        - record: agentgateway:input_tokens:total
+          expr: |
+            sum(increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type="input"}[5m])) or vector(0)
+
+        # Total output tokens
+        - record: agentgateway:output_tokens:total
+          expr: |
+            sum(increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type="output"}[5m])) or vector(0)
+
+        # Tokens by model
+        - record: agentgateway:input_tokens:by_model
+          expr: |
+            sum by (gen_ai_response_model) (increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type="input"}[5m]))
+
+        - record: agentgateway:output_tokens:by_model
+          expr: |
+            sum by (gen_ai_response_model) (increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type="output"}[5m]))
+
+        # Daily cost estimate (generic pricing - adjust per model as needed)
+        # Using rough averages: $2/1M input, $8/1M output
+        - record: agentgateway:cost_usd:total_daily
+          expr: |
+            (
+              sum(increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type="input"}[24h])) * 2 / 1000000
+            ) + (
+              sum(increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type="output"}[24h])) * 8 / 1000000
+            ) or vector(0)
+
+        # Hourly cost
+        - record: agentgateway:cost_usd:total_hourly
+          expr: |
+            (
+              sum(increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type="input"}[1h])) * 2 / 1000000
+            ) + (
+              sum(increase(agentgateway_gen_ai_client_token_usage_sum{gen_ai_token_type="output"}[1h])) * 8 / 1000000
+            ) or vector(0)
+
+    - name: agentgateway_cost_alerts
+      interval: 1m
+      rules:
+        - alert: AgentGatewayDailyCostHigh
+          expr: agentgateway:cost_usd:total_daily > 10
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "AgentGateway daily cost exceeded $10"
+            description: "Daily LLM cost is ${{ $value | humanize }}"
