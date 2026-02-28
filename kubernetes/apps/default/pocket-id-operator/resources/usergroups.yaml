@@ -5,6 +5,8 @@ metadata:
   name: admin
 spec:
   friendlyName: Administrators
+  users:
+    - name: ac
 ---
 apiVersion: pocketid.internal/v1alpha1
 kind: PocketIDUserGroup
@@ -12,3 +14,6 @@ metadata:
   name: user
 spec:
   friendlyName: Users
+  users:
+    - name: ac
+    - name: ph
