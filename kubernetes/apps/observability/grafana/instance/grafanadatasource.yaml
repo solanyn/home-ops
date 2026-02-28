@@ -80,3 +80,61 @@ spec:
         defaultDatabase: otel
         defaultTable: otel_traces
         otelEnabled: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: influxdb
+  namespace: observability
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  datasource:
+    type: influxdb
+    name: InfluxDB
+    access: proxy
+    url: http://influxdb.storage.svc.cluster.local:8086
+    jsonData:
+      version: Flux
+      organization: home
+      defaultBucket: health
+    secureJsonData:
+      token: ${HEALTH_INFLUXDB_TOKEN}
+  valuesFrom:
+    - targetPath: "secureJsonData.token"
+      valueFrom:
+        secretKeyRef:
+          name: health-influxdb-token
+          key: token
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: influxdb
+  namespace: observability
+spec:
+  allowCrossNamespaceImport: true
+  instanceSelector:
+    matchLabels:
+      grafana.internal/instance: grafana
+  datasource:
+    type: influxdb
+    name: InfluxDB
+    access: proxy
+    url: http://influxdb.storage.svc.cluster.local:8086
+    jsonData:
+      version: Flux
+      organization: home
+      defaultBucket: health
+    secureJsonData:
+      token: ${token}
+  valuesFrom:
+    - targetPath: "secureJsonData.token"
+      valueFrom:
+        secretKeyRef:
+          name: health-influxdb-grafana
+          key: token
