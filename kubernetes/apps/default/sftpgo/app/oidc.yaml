@@ -9,7 +9,5 @@ spec:
     - https://sftpgo.goyangi.io/web/oidc/callback
   logoutCallbackUrls:
     - https://sftpgo.goyangi.io
-  allowedUserGroups:
-    - name: user
   secret:
     name: sftpgo-oidc

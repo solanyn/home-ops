@@ -9,7 +9,5 @@ spec:
     - https://autobrr.goyangi.io/api/auth/oidc/callback
   logoutCallbackUrls:
     - https://autobrr.goyangi.io
-  allowedUserGroups:
-    - name: admin
   secret:
     name: autobrr-oidc

@@ -9,7 +9,5 @@ spec:
     - https://forgejo.goyangi.io/user/oauth2/Pocket%20ID/callback
   logoutCallbackUrls:
     - https://forgejo.goyangi.io
-  allowedUserGroups:
-    - name: user
   secret:
     name: forgejo-oidc
