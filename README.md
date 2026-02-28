@@ -131,24 +131,6 @@ On-demand GPU/CPU capacity via workload offloading to GKE:
 - One-way offloading from home cluster to GKE for GPU workloads
 - Autoscaling node pools with scale-to-zero when idle (spot instances for cost efficiency)
 
-```mermaid
-graph LR
-  subgraph Home["Home Cluster (Talos)"]
-    API[API Server]
-    N1[Node 1]
-    N2[Node 2]
-    N3[Node 3]
-    VN[Virtual Node]
-  end
-  subgraph GKE["GKE (Remote)"]
-    GPU1[GPU Spot Node]
-    GPU2[Compute Spot Node]
-  end
-  API --> VN
-  VN -.->|Liqo Tunnel| GPU1
-  VN -.->|Liqo Tunnel| GPU2
-```
-
 ### Infrastructure Provisioning & GitOps
 
 Declarative cluster management with dependency-aware deployments:
@@ -199,6 +181,24 @@ The setup maximises self-hosted infrastructure whilst using cloud services where
 | [Pushover](https://pushover.net/)           | Kubernetes Alerts and application notifications                   | $5 OTP        |
 | [healthchecks.io](https://healthchecks.io/) | Monitoring internet connectivity and external facing applications | Free          |
 |                                             |                                                                   | Total: ~$7/mo |
+
+```mermaid
+graph LR
+  subgraph Home["Home Cluster (Talos)"]
+    API[API Server]
+    N1[Node 1]
+    N2[Node 2]
+    N3[Node 3]
+    VN[Virtual Node]
+  end
+  subgraph GKE["GKE (Remote)"]
+    GPU1[GPU Spot Node]
+    GPU2[Compute Spot Node]
+  end
+  API --> VN
+  VN -.->|Liqo Tunnel| GPU1
+  VN -.->|Liqo Tunnel| GPU2
+```
 
 ---
 
