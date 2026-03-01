@@ -23,7 +23,7 @@ resources:
   - ./gitlab-proxy/ks.yaml
   - ./fusion/ks.yaml
   - ./go2rtc/ks.yaml
-  - ./health-import/ks.yaml
+  - ./apple-health-ingester/ks.yaml
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
   - ./label-studio/ks.yaml
