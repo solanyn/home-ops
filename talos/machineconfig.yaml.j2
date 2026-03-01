@@ -61,6 +61,8 @@ machine:
     extraConfig:
       maxPods: 2000
       serializeImagePulls: false
+      allowedUnsafeSysctls:
+        - net.ipv6.conf.*
     image: ghcr.io/siderolabs/kubelet:v1.35.2
     nodeIP:
       validSubnets:
