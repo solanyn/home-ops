@@ -1,0 +1,46 @@
+---
+services:
+  tailscale:
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - NET_ADMIN
+      - NET_RAW
+      - SYS_MODULE
+    cap_drop:
+      - ALL
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 256M
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      TS_ACCEPT_DNS: "true"
+      TS_AUTH_ONCE: "true"
+      TS_EXTRA_ARGS: "--accept-routes"
+      TS_HOSTNAME: truenas-scale
+      TS_SOCKET: /var/run/tailscale/tailscaled.sock
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_USERSPACE: "false"
+      TZ: Australia/Sydney
+    healthcheck:
+      interval: 30s
+      retries: 5
+      start_interval: 2s
+      start_period: 15s
+      test: tailscale status
+      timeout: 5s
+    image: ghcr.io/tailscale/tailscale:v1.90.6
+    network_mode: host
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /var/run/tailscale:mode=0755
+    volumes:
+      - tailscale-state:/var/lib/tailscale
+volumes:
+  tailscale-state:
