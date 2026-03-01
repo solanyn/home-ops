@@ -24,9 +24,9 @@ spec:
         cores: 1
       memory:
         container:
-          max: 512Mi
+          max: 1.5Gi
         redpanda:
-          memory: 256Mi
+          memory: 1Gi
           reserveMemory: 0Mi
     storage:
       persistentVolume:
