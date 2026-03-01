@@ -64,9 +64,3 @@ spec:
           - port: http
             interval: 2m
             scrapeTimeout: 10s
-            metricRelabelings:
-              - sourceLabels: [__name__]
-                regex: unpoller_(.*)
-                targetLabel: __name__
-                replacement: unifi_$1
-                action: replace
