@@ -41,6 +41,4 @@ services:
     tmpfs:
       - /var/run/tailscale:mode=0755
     volumes:
-      - tailscale-state:/var/lib/tailscale
-volumes:
-  tailscale-state:
+      - /mnt/.ix-apps/app_mounts/tailscale/state:/var/lib/tailscale
