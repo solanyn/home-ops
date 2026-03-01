@@ -18,22 +18,6 @@ spec:
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: provider-gcp-compute
-spec:
-  # renovate: datasource=docker depName=xpkg.upbound.io/upbound/provider-gcp-compute
-  package: xpkg.upbound.io/upbound/provider-gcp-compute:v2.4.0
----
-apiVersion: pkg.crossplane.io/v1
-kind: Provider
-metadata:
-  name: provider-gcp-iam
-spec:
-  # renovate: datasource=docker depName=xpkg.upbound.io/upbound/provider-gcp-iam
-  package: xpkg.upbound.io/upbound/provider-gcp-iam:v2.4.0
----
-apiVersion: pkg.crossplane.io/v1
-kind: Provider
-metadata:
   name: provider-helm
 spec:
   # renovate: datasource=docker depName=xpkg.upbound.io/crossplane-contrib/provider-helm
