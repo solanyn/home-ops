@@ -69,7 +69,7 @@ spec:
         ruleSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
-        retention: 2d
+        retention: 7d
         retentionSize: 10GB
         resources:
           requests:
@@ -82,7 +82,7 @@ spec:
               storageClassName: ceph-block
               resources:
                 requests:
-                  storage: 15Gi
+                  storage: 25Gi
         thanos:
           image: quay.io/thanos/thanos:v0.41.0
           objectStorageConfig:
