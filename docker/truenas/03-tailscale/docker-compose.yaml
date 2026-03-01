@@ -33,7 +33,7 @@ services:
       start_period: 15s
       test: tailscale status
       timeout: 5s
-    image: ghcr.io/tailscale/tailscale:v1.90.6
+    image: ghcr.io/tailscale/tailscale:v1.94.2
     network_mode: host
     restart: unless-stopped
     security_opt:
