@@ -3,15 +3,15 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: health-import
+  name: apple-health-ingester
 spec:
   chartRef:
     kind: OCIRepository
-    name: health-import
+    name: apple-health-ingester
   interval: 1h
   values:
     controllers:
-      health-import:
+      apple-health-ingester:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -29,7 +29,7 @@ spec:
               - --http.listenAddr=:8080
             envFrom:
               - secretRef:
-                  name: health-import-secret
+                  name: apple-health-ingester-secret
             resources:
               requests:
                 cpu: 10m
@@ -38,7 +38,7 @@ spec:
                 memory: 128Mi
     service:
       app:
-        controller: health-import
+        controller: apple-health-ingester
         ports:
           http:
             port: 8080
