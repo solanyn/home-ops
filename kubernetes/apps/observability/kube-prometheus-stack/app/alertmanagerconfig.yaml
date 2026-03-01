@@ -51,15 +51,16 @@ spec:
     - name: blackhole
     - name: heartbeat
       webhookConfigs:
-        - httpConfig:
+        - urlSecret:
+            name: alertmanager-secret
+            key: ALERTMANAGER_HEARTBEAT_URL
+        - url: http://gatus.observability.svc.cluster.local/api/v1/endpoints/monitoring_alertmanager/external?success=true
+          httpConfig:
             authorization:
               type: Bearer
               credentials:
                 name: alertmanager-secret
                 key: GATUS_HEARTBEAT_TOKEN
-          urlSecret:
-            name: alertmanager-secret
-            key: ALERTMANAGER_HEARTBEAT_URL
     - name: pushover
       pushoverConfigs:
         - html: true
