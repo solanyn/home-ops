@@ -22,6 +22,7 @@ services:
       - --providers.docker.exposedByDefault=false
       - --providers.docker.network=apps
       - --metrics.prometheus=true
+      - --metrics.prometheus.entryPoint=metrics
       - --entryPoints.metrics.address=:8082
     container_name: traefik
     environment:
