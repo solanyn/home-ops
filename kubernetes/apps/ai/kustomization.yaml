@@ -13,3 +13,4 @@ resources:
   - ./openclaw/ks.yaml
   - ./temporal/ks.yaml
   - ./opencode-worker/ks.yaml
+  - ./moltis/ks.yaml
