@@ -22,6 +22,9 @@ spec:
             restartPolicy: Always
             securityContext:
               privileged: true
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
             env:
               - name: DOCKER_TLS_CERTDIR
                 value: /certs
