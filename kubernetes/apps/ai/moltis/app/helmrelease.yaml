@@ -1,0 +1,127 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: moltis
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: moltis
+  interval: 1h
+  values:
+    controllers:
+      moltis:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          daemon:
+            image:
+              repository: docker
+              tag: 29.1.5-dind
+            restartPolicy: Always
+            securityContext:
+              privileged: true
+            env:
+              - name: DOCKER_TLS_CERTDIR
+                value: /certs
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec: &probeSpec
+                  exec:
+                    command: ["docker", "info"]
+                  periodSeconds: 2
+                  timeoutSeconds: 3
+                  failureThreshold: 60
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  <<: *probeSpec
+                  periodSeconds: 5
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  <<: *probeSpec
+                  periodSeconds: 20
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+        containers:
+          app:
+            image:
+              repository: ghcr.io/moltis-org/moltis
+              tag: 0.10.6
+            args:
+              - --bind
+              - "[::]:13131"
+              - --no-tls
+            env:
+              TZ: Australia/Sydney
+              MOLTIS_BEHIND_PROXY: "true"
+              MOLTIS_CONFIG_DIR: /config
+              MOLTIS_DATA_DIR: /data
+              MOLTIS_WEBAUTHN_RP_ID: moltis.goyangi.io
+              MOLTIS_WEBAUTHN_ORIGIN: https://moltis.goyangi.io
+              DOCKER_HOST: tcp://localhost:2376
+              DOCKER_CERT_PATH: /certs/client
+              DOCKER_TLS_VERIFY: "1"
+            envFrom:
+              - secretRef:
+                  name: moltis
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 13131
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness: *probe
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+
+    defaultPodOptions:
+      shareProcessNamespace: true
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+
+    route:
+      app:
+        hostnames:
+          - moltis.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /config
+            subPath: config
+          - path: /data
+            subPath: data
+      tmp:
+        type: emptyDir
+      certs:
+        type: emptyDir
