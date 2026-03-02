@@ -84,6 +84,25 @@ spec:
             envFrom:
               - secretRef:
                   name: openclaw
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 18789
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: 18789
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
             resources:
               requests:
                 cpu: 10m
