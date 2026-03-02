@@ -61,7 +61,7 @@ spec:
               tag: 0.10.6
             args:
               - --bind
-              - "0.0.0.0"
+              - "[::]"
               - --port
               - "13131"
               - --no-tls
@@ -119,12 +119,6 @@ spec:
             namespace: network
 
     persistence:
-      config-file:
-        type: configMap
-        name: moltis-config
-        globalMounts:
-          - path: /config/moltis.toml
-            subPath: moltis.toml
       data:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
