@@ -100,6 +100,11 @@ spec:
           log_response_payload false
 
         [OUTPUT]
+          name stdout
+          match external.*
+          format json_lines
+
+        [OUTPUT]
           name http
           match external.*
           host victoria-logs-server.observability.svc.cluster.local
@@ -109,7 +114,7 @@ spec:
           json_date_format iso8601
           compress gzip
           buffer_size 256k
-          log_response_payload false
+          log_response_payload true
 
     dashboards:
       enabled: true
@@ -136,4 +141,4 @@ spec:
     serviceMonitor:
       enabled: true
     
-    logLevel: warn
+    logLevel: info
