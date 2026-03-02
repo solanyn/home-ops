@@ -61,3 +61,10 @@ spec:
       enabled: false
     tests:
       enabled: false
+  postRenderers:
+  - kustomize:
+      patches:
+      - target:
+          kind: ServiceMonitor
+          name: redpanda
+        patch: "- op: remove\n  path: /spec/endpoints/0/enableHttp2"
