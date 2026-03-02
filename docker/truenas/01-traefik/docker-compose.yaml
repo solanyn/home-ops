@@ -21,6 +21,8 @@ services:
       - --providers.docker=true
       - --providers.docker.exposedByDefault=false
       - --providers.docker.network=apps
+      - --metrics.prometheus=true
+      - --entryPoints.metrics.address=:8082
     container_name: traefik
     environment:
       CF_DNS_API_TOKEN: ${TRAEFIK_CF_DNS_API_TOKEN}
@@ -30,6 +32,7 @@ services:
     ports:
       - 80:80
       - 443:443
+      - 8082:8082
     volumes:
       - acme:/certs
       - /var/run/docker.sock:/var/run/docker.sock:ro
