@@ -105,6 +105,11 @@ spec:
           format json_lines
 
         [OUTPUT]
+          name stdout
+          match external.*
+          format json_lines
+
+        [OUTPUT]
           name http
           match external.*
           host victoria-logs-server.observability.svc.cluster.local
