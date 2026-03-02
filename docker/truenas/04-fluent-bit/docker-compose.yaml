@@ -1,0 +1,18 @@
+---
+services:
+  fluent-bit:
+    container_name: fluent-bit
+    image: fluent/fluent-bit:4.0
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 64M
+    restart: unless-stopped
+    volumes:
+      - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf:ro
+      - ./parsers.conf:/fluent-bit/etc/parsers.conf:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - positions:/fluent-bit/positions
+volumes:
+  positions: {}
