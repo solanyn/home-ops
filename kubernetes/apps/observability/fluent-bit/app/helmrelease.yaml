@@ -44,7 +44,6 @@ spec:
           name forward
           listen 0.0.0.0
           port 24224
-          tag external
 
       filters: |-
         [FILTER]
