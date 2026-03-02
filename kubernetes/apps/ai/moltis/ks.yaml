@@ -1,0 +1,21 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: moltis
+spec:
+  targetNamespace: ai
+  components:
+    - ../../../../components/volsync
+  interval: 1h
+  path: ./kubernetes/apps/ai/moltis/app
+  postBuild:
+    substitute:
+      APP: moltis
+      VOLSYNC_CAPACITY: 5Gi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false
