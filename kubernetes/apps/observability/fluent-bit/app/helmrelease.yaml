@@ -78,6 +78,12 @@ spec:
           rename k_labels_app app
           rename k_labels_k8s-app app
 
+        [FILTER]
+          name modify
+          match external.*
+          add host truenas
+          add source docker
+
       customParsers: |-
         [PARSER]
           name containerd
@@ -99,16 +105,6 @@ spec:
           log_response_payload false
 
         [OUTPUT]
-          name stdout
-          match external.*
-          format json_lines
-
-        [OUTPUT]
-          name stdout
-          match external.*
-          format json_lines
-
-        [OUTPUT]
           name http
           match external.*
           host victoria-logs-server.observability.svc.cluster.local
@@ -117,7 +113,7 @@ spec:
           format json_lines
           json_date_format iso8601
           compress gzip
-          log_response_payload true
+          log_response_payload false
 
     dashboards:
       enabled: true
@@ -144,4 +140,4 @@ spec:
     serviceMonitor:
       enabled: true
     
-    logLevel: info
+    logLevel: warn
