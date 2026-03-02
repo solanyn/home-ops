@@ -58,7 +58,7 @@ spec:
           app:
             image:
               repository: ghcr.io/moltis-org/moltis
-              tag: 0.10.6
+              tag: 0.10.11
             args:
               - --bind
               - "[::]"
