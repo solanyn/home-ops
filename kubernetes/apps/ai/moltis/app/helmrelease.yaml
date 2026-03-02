@@ -61,7 +61,7 @@ spec:
               tag: 0.10.6
             args:
               - --bind
-              - "[::]:13131"
+              - "0.0.0.0:13131"
               - --no-tls
             env:
               TZ: Australia/Sydney
