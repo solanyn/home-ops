@@ -35,6 +35,7 @@ services:
     image: ghcr.io/kimdre/doco-cd:0.70.0
     ports:
       - 8080:8080
+      - 9120:9120
     restart: unless-stopped
     secrets:
       - 1pw_token
