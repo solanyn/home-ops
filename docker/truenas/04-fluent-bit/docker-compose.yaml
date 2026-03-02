@@ -2,7 +2,7 @@
 services:
   fluent-bit:
     container_name: fluent-bit
-    image: fluent/fluent-bit:4.0
+    image: fluent/fluent-bit:4.2
     deploy:
       resources:
         limits:
