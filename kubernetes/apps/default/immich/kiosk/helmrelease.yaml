@@ -24,7 +24,7 @@ spec:
           app:
             image:
               repository: ghcr.io/damongolding/immich-kiosk
-              tag: 0.33.2@sha256:32605e6959405c4e3e5ae3b7861662f8533346185f90e7c21ce22443110a0b1d
+              tag: 0.33.3@sha256:e5342f6aba95b2949ae4196600684fbf44e7ff05715cf5b75a71113dc40e1f3c
             env:
               TZ: Australia/Sydney
               KIOSK_ALBUMS: "d1d419ee-cbe7-4cec-bf74-a1629b5f912e,eb2c8472-6ac9-4aa4-b973-7d3809c08485,644afcb7-85b4-4ecd-bca3-fa166f311421"
