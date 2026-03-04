@@ -113,6 +113,12 @@ spec:
                 # Set up openclawbot CLI symlink
                 ln -sf /app/openclawbot.mjs /home/node/.local/bin/openclawbot
 
+                # Write kubeconfig for sandbox kubectl access
+                mkdir -p /home/node/.openclaw/workspace/.kube /home/node/.openclaw/workspace-coding/.kube
+                for dir in /home/node/.openclaw/workspace/.kube /home/node/.openclaw/workspace-coding/.kube; do
+                  printf 'apiVersion: v1\nkind: Config\nclusters:\n- cluster:\n    server: https://10.43.0.1:443\n    certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt\n  name: cluster\ncontexts:\n- context:\n    cluster: cluster\n    user: sa\n  name: default\ncurrent-context: default\nusers:\n- name: sa\n  user:\n    tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token\n' > "$dir/config"
+                done
+
                 # Start gateway
                 exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
             env:
