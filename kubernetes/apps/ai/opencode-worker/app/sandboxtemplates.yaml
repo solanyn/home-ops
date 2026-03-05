@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: agent
-          image: ghcr.io/anomalyco/opencode:1.2.16
+          image: ghcr.io/anomalyco/opencode:1.2.17
           command: ["/bin/sh", "-c"]
           args:
             - |
