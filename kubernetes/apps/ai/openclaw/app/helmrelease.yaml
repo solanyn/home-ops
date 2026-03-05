@@ -132,6 +132,37 @@ spec:
             envFrom:
               - secretRef:
                   name: openclaw
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 18789
+                  periodSeconds: 2
+                  timeoutSeconds: 3
+                  failureThreshold: 60
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 18789
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 18789
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
             resources:
               requests:
                 cpu: 10m
@@ -229,7 +260,13 @@ spec:
           rules:
             - apiGroups: ["apps"]
               resources: ["deployments"]
-              verbs: ["patch", "update"]
+              verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
+            - apiGroups: [""]
+              resources: ["services", "configmaps"]
+              verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
+            - apiGroups: ["gateway.networking.k8s.io"]
+              resources: ["httproutes"]
+              verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
         openclaw-pod-manage:
           type: ClusterRole
           rules:
