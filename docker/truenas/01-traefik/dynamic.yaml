@@ -1,0 +1,19 @@
+---
+http:
+  routers:
+    truenas:
+      entryPoints:
+        - websecure
+      rule: Host(`nas.goyangi.io`)
+      service: truenas
+      tls:
+        certResolver: cf
+  services:
+    truenas:
+      loadBalancer:
+        servers:
+          - url: https://host.docker.internal:10443
+        serversTransport: insecure
+  serversTransports:
+    insecure:
+      insecureSkipVerify: true

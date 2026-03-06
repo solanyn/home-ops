@@ -21,6 +21,8 @@ services:
       - --providers.docker=true
       - --providers.docker.exposedByDefault=false
       - --providers.docker.network=apps
+      - --providers.file.filename=/etc/traefik/dynamic.yaml
+      - --providers.file.watch=true
       - --metrics.prometheus=true
       - --metrics.prometheus.entryPoint=metrics
       - --entryPoints.metrics.address=:8082
@@ -34,8 +36,11 @@ services:
       - 80:80
       - 443:443
       - 8082:8082
+    extra_hosts:
+      - host.docker.internal:host-gateway
     volumes:
       - acme:/certs
+      - ./dynamic.yaml:/etc/traefik/dynamic.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
 volumes:
   acme:
