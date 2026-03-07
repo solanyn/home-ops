@@ -84,4 +84,18 @@ spec:
   matchers:
     - name: alertname
       value: KubeHpaMaxedOut
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+# mac.internal is not Ceph storage, disk alerts are false positives
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: ceph-node-mac-diskspace-warning
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: CephNodeDiskspaceWarning
+    - name: instance
+      value: mac.internal:9100
 
