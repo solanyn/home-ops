@@ -12,6 +12,7 @@ spec:
   values:
     controllers:
       deduparr:
+        strategy: RollingUpdate
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -21,12 +22,18 @@ spec:
               tag: 1.1.0@sha256:2b2a695212bab92347f3adc07b334d96b00ea717bebe54134273cbdb5dd970ad
             env:
               TZ: Australia/Sydney
+              DEDUPARR_LOG_LEVEL: info
+              DEDUPARR_SCHEDULE: service
+              DEDUPARR_ACTION: dry-run
+              DEDUPARR_REMOVE_FROM_CLIENT: "false"
+              DEDUPARR_SERVICE_INTERVAL: 2m
+              RADARR_MOVIES_URL: http://radarr.default.svc.cluster.local
+              RADARR_MOVIES_ENABLED: "true"
+              SONARR_SERIES_URL: http://sonarr.default.svc.cluster.local
+              SONARR_SERIES_ENABLED: "true"
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-            args:
-              - --config
-              - /config/config.yaml
             probes:
               liveness:
                 enabled: true
@@ -40,7 +47,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health/ready
-                    port: &port 9090
+                    port: &port 80
                   periodSeconds: 10
                   timeoutSeconds: 5
                   failureThreshold: 5
@@ -70,10 +77,3 @@ spec:
         ports:
           http:
             port: *port
-    persistence:
-      config-file:
-        type: configMap
-        name: "{{ .Release.Name }}-configmap"
-        globalMounts:
-          - path: /config/config.yaml
-            subPath: config.yaml
