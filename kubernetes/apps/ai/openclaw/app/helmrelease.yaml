@@ -134,7 +134,7 @@ spec:
                 done
 
                 # Pre-pull sandbox image
-                docker pull buildpack-deps:bookworm &
+                docker pull ghcr.io/solanyn/openclaw-sandbox:1.0.0 &
 
                 # Start gateway
                 exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
