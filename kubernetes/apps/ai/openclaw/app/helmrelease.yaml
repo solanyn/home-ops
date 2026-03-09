@@ -123,10 +123,14 @@ spec:
                 # Set up openclawbot CLI symlink
                 ln -sf /app/openclawbot.mjs /home/node/.local/bin/openclawbot
 
+                # Copy SA token to user-space path for sandbox bind mount
+                mkdir -p /home/node/.kube/sa
+                cp /var/run/secrets/kubernetes.io/serviceaccount/* /home/node/.kube/sa/
+
                 # Write kubeconfig for sandbox kubectl access
                 mkdir -p /home/node/.openclaw/workspace/.kube /home/node/.openclaw/workspace-coding/.kube
                 for dir in /home/node/.openclaw/workspace/.kube /home/node/.openclaw/workspace-coding/.kube; do
-                  printf 'apiVersion: v1\nkind: Config\nclusters:\n- cluster:\n    server: https://10.43.0.1:443\n    certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt\n  name: cluster\ncontexts:\n- context:\n    cluster: cluster\n    user: sa\n  name: default\ncurrent-context: default\nusers:\n- name: sa\n  user:\n    tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token\n' > "$dir/config"
+                  printf 'apiVersion: v1\nkind: Config\nclusters:\n- cluster:\n    server: https://10.43.0.1:443\n    certificate-authority: /home/node/.kube/sa/ca.crt\n  name: cluster\ncontexts:\n- context:\n    cluster: cluster\n    user: sa\n  name: default\ncurrent-context: default\nusers:\n- name: sa\n  user:\n    tokenFile: /home/node/.kube/sa/token\n' > "$dir/config"
                 done
 
                 # Pre-pull sandbox image
