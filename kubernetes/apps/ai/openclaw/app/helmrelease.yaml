@@ -100,6 +100,15 @@ spec:
                   curl -fsSL https://astral.sh/uv/install.sh | INSTALLER_NO_MODIFY_PATH=1 UV_INSTALL_DIR=/home/node/.local/bin sh
                 fi
 
+                # Install docker CLI if not present
+                if [ ! -f /home/node/.local/bin/docker ]; then
+                  echo "Installing docker CLI..."
+                  curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-29.0.5.tgz | tar xz -C /tmp
+                  mv /tmp/docker/docker /home/node/.local/bin/docker
+                  chmod +x /home/node/.local/bin/docker
+                  rm -rf /tmp/docker
+                fi
+
                 echo "Init container completed successfully"
         containers:
           app:
