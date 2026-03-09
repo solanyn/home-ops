@@ -103,6 +103,7 @@ spec:
                 # Install docker CLI if not present
                 if [ ! -f /home/node/.local/bin/docker ]; then
                   echo "Installing docker CLI..."
+                  # renovate: datasource=github-releases depName=moby/moby
                   curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-27.5.1.tgz | tar xz -C /tmp
                   mv /tmp/docker/docker /home/node/.local/bin/docker
                   chmod +x /home/node/.local/bin/docker
@@ -127,6 +128,9 @@ spec:
                 for dir in /home/node/.openclaw/workspace/.kube /home/node/.openclaw/workspace-coding/.kube; do
                   printf 'apiVersion: v1\nkind: Config\nclusters:\n- cluster:\n    server: https://10.43.0.1:443\n    certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt\n  name: cluster\ncontexts:\n- context:\n    cluster: cluster\n    user: sa\n  name: default\ncurrent-context: default\nusers:\n- name: sa\n  user:\n    tokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token\n' > "$dir/config"
                 done
+
+                # Pre-pull sandbox image
+                docker pull debian:bookworm-slim &
 
                 # Start gateway
                 exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
