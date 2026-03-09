@@ -134,7 +134,7 @@ spec:
                 done
 
                 # Pre-pull sandbox image
-                docker pull debian:bookworm-slim &
+                docker pull buildpack-deps:bookworm &
 
                 # Start gateway
                 exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
