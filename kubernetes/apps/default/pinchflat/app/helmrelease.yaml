@@ -8,6 +8,13 @@ spec:
     kind: OCIRepository
     name: pinchflat
   interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
   values:
     controllers:
       pinchflat:
@@ -20,6 +27,8 @@ spec:
               tag: v2025.6.6@sha256:4e975edf58f0861a5cbfe8fc6aac4851ff5a02dfc3f05ffeea4982e3084a5a4a
             env:
               TZ: Australia/Sydney
+              TZ_DATA_DIR: /tmp/elixir_tz_data
+              PORT: &port 80
             probes:
               liveness: &probes
                 enabled: true
@@ -27,7 +36,7 @@ spec:
                 spec:
                   httpGet:
                     path: /healthcheck
-                    port: &port 8945
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -35,6 +44,7 @@ spec:
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
@@ -65,14 +75,21 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /config
-      tmp:
-        type: emptyDir
-        sizeLimit: 1Gi
       media:
         type: nfs
         server: nas.internal
         path: /mnt/world/media
-        globalMounts:
-          - path: /downloads
+        advancedMounts:
+          pinchflat:
+            app:
+              - path: /downloads
+                subPath: Library/YouTube
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          pinchflat:
+            app:
+              - path: /etc/yt-dlp
+                subPath: yt-dlp
+              - path: /tmp
+                subPath: tmp
