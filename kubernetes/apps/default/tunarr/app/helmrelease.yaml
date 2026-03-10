@@ -22,6 +22,7 @@ spec:
               TZ: Australia/Sydney
               LOG_LEVEL: info
               TUNARR_SERVER_TRUST_PROXY: "true"
+              TUNARR_DATABASE_NAME: /config/tunarr
             probes:
               liveness: &probes
                 enabled: true
