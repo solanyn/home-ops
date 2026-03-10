@@ -10,4 +10,5 @@ spec:
         - name: gpu
           exactly:
             deviceClassName: gpu.intel.com
-          adminAccess: true
+            adminAccess: true
+            allocationMode: "All"
