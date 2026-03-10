@@ -81,7 +81,7 @@ spec:
           pinchflat:
             app:
               - path: /downloads
-                subPath: Library/YouTube
+                subPath: pinchflat
       tmpfs:
         type: emptyDir
         advancedMounts:
