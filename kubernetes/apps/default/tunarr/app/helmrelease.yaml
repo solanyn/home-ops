@@ -18,11 +18,11 @@ spec:
             image:
               repository: ghcr.io/chrisbenincasa/tunarr
               tag: 1.1.18@sha256:ad9635417a6876c710eaef449df0bb434a87982e9f7b9249b5329cdb7937bbf2
+            args: ["server", "-d", "/config/tunarr"]
             env:
               TZ: Australia/Sydney
               LOG_LEVEL: info
               TUNARR_SERVER_TRUST_PROXY: "true"
-              TUNARR_DATABASE_NAME: /config/tunarr
             probes:
               liveness: &probes
                 enabled: true
