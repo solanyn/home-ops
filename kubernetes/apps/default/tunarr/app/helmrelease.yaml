@@ -21,7 +21,7 @@ spec:
             args: ["server", "-d", "/config/tunarr"]
             env:
               TZ: Australia/Sydney
-              HOME: /config
+              HOME: /tmp
               LOG_LEVEL: info
               TUNARR_SERVER_TRUST_PROXY: "true"
             probes:
