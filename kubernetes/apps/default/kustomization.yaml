@@ -37,6 +37,7 @@ resources:
   - ./buildkit/ks.yaml
   - ./pocket-id-operator/ks.yaml
   - ./plex/ks.yaml
+  - ./pinchflat/ks.yaml
   - ./print/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
