@@ -20,6 +20,8 @@ spec:
               tag: 1.1.18@sha256:ad9635417a6876c710eaef449df0bb434a87982e9f7b9249b5329cdb7937bbf2
             env:
               TZ: Australia/Sydney
+              LOG_LEVEL: info
+              TUNARR_SERVER_TRUST_PROXY: "true"
             probes:
               liveness: &probes
                 enabled: true
@@ -74,6 +76,8 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /config/tunarr
       media:
         type: nfs
         server: nas.internal
