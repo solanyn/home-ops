@@ -95,4 +95,5 @@ spec:
               - path: /tmp
                 subPath: tmp
               - path: /cache
-                subPath: cache
+              - path: /root
+                subPath: root
