@@ -47,12 +47,17 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
+              claims:
+                - name: gpu
               requests:
                 cpu: 10m
                 memory: 256Mi
               limits:
                 memory: 2Gi
     defaultPodOptions:
+      resourceClaims:
+        - name: gpu
+          resourceClaimTemplateName: pinchflat
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
