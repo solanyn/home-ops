@@ -23,7 +23,7 @@ spec:
           app:
             image:
               repository: jpillora/chisel
-              tag: 1.10.1
+              tag: 1.11.5
             args:
               - server
               - --port=8443
