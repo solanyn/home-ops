@@ -74,6 +74,16 @@ spec:
           - backendRefs:
               - name: chisel
                 port: 8443
+      work-opencode:
+        hostnames:
+          - work-opencode.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - name: chisel
+                port: 4097
     persistence:
       config:
         type: secret
