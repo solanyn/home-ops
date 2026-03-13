@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: mirror.gcr.io/heartexlabs/label-studio
-              tag: 1.22.0@sha256:86b4e8046e83a16290cb2d1046f0fa94a4c98fdb9c8d42711808f18e25d47be2
+              tag: 1.23.0@sha256:aa461572e8f9d86a1bf9520c1db620204e86160fd2f80dd7e9d40ac84a8828ea
             env:
               CSRF_TRUSTED_ORIGINS: "https://label-studio.goyangi.io"
               EXPERIMENTAL_FEATURES: 1
