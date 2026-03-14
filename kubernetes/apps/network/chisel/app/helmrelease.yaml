@@ -63,6 +63,8 @@ spec:
             port: 8443
           opencode-work:
             port: 4097
+          dev-work:
+            port: 4098
     route:
       app:
         hostnames:
@@ -84,6 +86,16 @@ spec:
           - backendRefs:
               - name: chisel
                 port: 4097
+      work-dev:
+        hostnames:
+          - work-dev.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - name: chisel
+                port: 4098
     persistence:
       config:
         type: secret
