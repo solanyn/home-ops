@@ -93,7 +93,13 @@ spec:
           - name: envoy-internal
             namespace: network
         rules:
-          - backendRefs:
+          - filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  set:
+                    - name: Host
+                      value: localhost:8080
+            backendRefs:
               - name: chisel
                 port: 4098
     persistence:
