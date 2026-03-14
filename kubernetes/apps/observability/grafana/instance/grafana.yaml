@@ -31,9 +31,6 @@ spec:
     server:
       enable_gzip: "true"
       root_url: https://grafana.goyangi.io
-  plugins:
-    - name: victoriametrics-logs-datasource
-      version: v0.14.0
   deployment:
     spec:
       strategy:
@@ -46,6 +43,8 @@ spec:
           containers:
             - name: grafana
               env:
+                - name: GF_INSTALL_PLUGINS
+                  value: https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.14.0/victoriametrics-logs-datasource-v0.14.0.zip;victoriametrics-logs-datasource
                 - name: GF_SECURITY_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
