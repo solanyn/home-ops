@@ -17,7 +17,7 @@ spec:
           app:
             image:
               repository: ghcr.io/chrisbenincasa/tunarr
-              tag: 1.1.19@sha256:7853d6dff01360761b28a537b39581084ac2f25bc4c606fbfb2d292c31059008
+              tag: 1.2.1@sha256:e7dbde0381fd36c63b4852f70b2723c4a6b298ba322978700a0032c64f6efeed
             env:
               TZ: Australia/Sydney
               LOG_LEVEL: info
