@@ -9,5 +9,11 @@ spec:
   enabled: true
   trigger:
     schedule: 0 */8 * * *
+  moverVolumes:
+    - mountPath: repository
+      volumeSource:
+        nfs:
+          path: /mnt/world/volsynckopia
+          server: nas.internal
   repository:
     repository: volsync-maintenance-secret
