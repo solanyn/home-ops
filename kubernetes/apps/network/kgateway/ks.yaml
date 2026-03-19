@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: kgateway-crds
+  name: agentgateway-crds
 spec:
   interval: 1h
   path: ./kubernetes/apps/network/kgateway/crds
@@ -19,11 +19,11 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: kgateway
+  name: agentgateway
 spec:
   targetNamespace: network
   dependsOn:
-    - name: kgateway-crds
+    - name: agentgateway-crds
       namespace: network
   interval: 1h
   path: ./kubernetes/apps/network/kgateway/app
@@ -38,11 +38,11 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: kgateway-gateway
+  name: agentgateway-gateway
 spec:
   targetNamespace: network
   dependsOn:
-    - name: kgateway
+    - name: agentgateway
       namespace: network
     - name: certificates-import
       namespace: network
@@ -59,11 +59,11 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: kgateway-mcp
+  name: agentgateway-mcp
 spec:
   targetNamespace: network
   dependsOn:
-    - name: kgateway-gateway
+    - name: agentgateway-gateway
       namespace: network
   interval: 1h
   path: ./kubernetes/apps/network/kgateway/mcp
@@ -78,11 +78,11 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: kgateway-llm
+  name: agentgateway-llm
 spec:
   targetNamespace: network
   dependsOn:
-    - name: kgateway-gateway
+    - name: agentgateway-gateway
       namespace: network
   interval: 1h
   path: ./kubernetes/apps/network/kgateway/llm
