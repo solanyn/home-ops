@@ -30,7 +30,7 @@ spec:
               TZ: Australia/Sydney
               BACKBONE_IF: net1
               DEVICE: "/tmp/ttyOTBR"
-              NETWORK_DEVICE: "192.168.1.90:7638"
+              NETWORK_DEVICE: "192.168.1.90:6638"
               BAUDRATE: "460800"
               FLOW_CONTROL: "1"
               NAT64: "0"
