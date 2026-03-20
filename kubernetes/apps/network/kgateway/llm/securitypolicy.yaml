@@ -1,6 +1,6 @@
 ---
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: SecurityPolicy
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayPolicy
 metadata:
   name: llm-apikey-auth
 spec:
@@ -8,11 +8,8 @@ spec:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: ai
-  apiKeyAuth:
-    credentialRefs:
-      - group: ""
-        kind: Secret
+  traffic:
+    apiKeyAuthentication:
+      mode: Strict
+      secretRef:
         name: agentgateway-apikey
-    extractFrom:
-      - headers:
-          - Authorization
