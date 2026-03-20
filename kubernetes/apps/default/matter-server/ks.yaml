@@ -9,6 +9,8 @@ spec:
   components:
     - ../../../../components/volsync
   dependsOn:
+    - name: multus-networks
+      namespace: kube-system
     - name: home-assistant
       namespace: default
     - name: rook-ceph-cluster
