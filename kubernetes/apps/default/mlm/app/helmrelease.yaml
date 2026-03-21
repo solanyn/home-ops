@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/stirlingmouse/mlm
-              tag: v0.4.6@sha256:df493c6de394fd5d0fe98abeec740531238ca67d313b25b7744d692bf069fa9d
+              tag: v0.4.7@sha256:8369d6369f492a853f6830bd48f39fb5475f9750a2f9713fc237fd32e0fa05a3
             env:
               TZ: Australia/Sydney
             resources:
