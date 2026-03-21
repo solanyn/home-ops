@@ -1,0 +1,31 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agentgateway-admin
+spec:
+  selector:
+    gateway.networking.k8s.io/gateway-name: ai
+  ports:
+    - name: admin
+      port: 15000
+      targetPort: 15000
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: agentgateway-admin
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: agentgateway.goyangi.io
+spec:
+  hostnames:
+    - agentgateway.goyangi.io
+  parentRefs:
+    - name: envoy-internal
+      namespace: network
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: agentgateway-admin
+          port: 15000
