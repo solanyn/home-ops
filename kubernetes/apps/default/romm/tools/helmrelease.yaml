@@ -54,110 +54,128 @@ spec:
         data:
           convert.py: |
             #!/usr/bin/env python3
+            import shutil
             import subprocess
             import re
+            import urllib.request
+            import urllib.parse
+            import json
             from pathlib import Path
 
-            TORRENTS_DIRS = [
-                Path("/media/downloads/torrents/complete/games"),
-                Path("/media/downloads/torrents/complete/switch")
+            QBT = "http://qbittorrent.default.svc.cluster.local"
+            DEST = Path("/media/games/roms/switch")
+            SOURCES = [
+                (Path("/media/downloads/torrents/complete/switch"), "switch", True),
+                (Path("/media/downloads/torrents/complete/games"), "games", False),
             ]
-            BASE_DIR = Path("/media/games/roms/switch")
 
-            def normalize_filename(filename):
-                """Remove size suffix like (0.08 GB) from filename"""
-                return re.sub(r'\s*\(\d+\.\d+\s+GB\)', '', filename)
+            def normalize(name):
+                return re.sub(r'\s*\(\d+\.\d+\s+GB\)', '', name)
 
-            def extract_game_name(filename):
-                """Extract base game name, removing DLC descriptions"""
-                # Remove file extension and size info
-                name = normalize_filename(filename.rsplit('.', 1)[0])
-                
-                # Check if it's DLC - has [DLC ...] before the title ID
-                dlc_match = re.search(r'^(.+?)\s*\[DLC[^\]]*\]\s*\[[\dA-F]{16}\]', name)
-                if dlc_match:
-                    return dlc_match.group(1).strip()
-                
-                # Regular game - extract everything before title ID
-                match = re.match(r'^(.+?)\s*\[[\dA-F]{16}\]', name)
-                return match.group(1).strip() if match else name.split('[')[0].strip()
+            def game_info(filename):
+                name = normalize(filename.rsplit('.', 1)[0])
+                dlc = re.search(r'^(.+?)\s*\[DLC[^\]]*\]\s*\[[\dA-F]{16}\]', name)
+                base = re.match(r'^(.+?)\s*\[[\dA-F]{16}\]', name)
+                game = (dlc or base).group(1).strip() if (dlc or base) else name.split('[')[0].strip()
+                if dlc:
+                    return game, "dlc"
+                ver = re.search(r'\[v(\d+)\]', filename)
+                return game, "update" if ver and int(ver.group(1)) > 0 else "base"
 
-            def get_file_info(filename):
-                """Determine game name, type, and if it's DLC"""
-                game_name = extract_game_name(filename)
-                is_dlc = bool(re.search(r'\[DLC[^\]]*\]', filename))
-                
-                version_match = re.search(r'\[v(\d+)\]', filename)
-                version = int(version_match.group(1)) if version_match else 0
-                
-                if is_dlc:
-                    return game_name, "dlc"
-                elif version > 0:
-                    return game_name, "update"
-                else:
-                    return game_name, "base"
-            
-            def file_exists_normalized(dest_file):
-                """Check if file exists, ignoring size suffix differences"""
-                if dest_file.exists():
+            def exists(dest):
+                if dest.exists():
                     return True
-                # Check for file with size suffix added/removed
-                normalized = normalize_filename(dest_file.name)
-                for existing in dest_file.parent.glob("*.nsp"):
-                    if normalize_filename(existing.name) == normalized:
-                        return True
-                return False
+                norm = normalize(dest.name)
+                return any(normalize(f.name) == norm for f in dest.parent.glob("*.nsp"))
 
-            def process_files():
-                for torrents_dir in TORRENTS_DIRS:
-                    if not torrents_dir.exists():
+            def make_dest(game, kind, filename):
+                d = DEST / game if kind == "base" else DEST / game / kind
+                d.mkdir(parents=True, exist_ok=True)
+                return d / filename
+
+            def qbt_torrents(category):
+                url = f"{QBT}/api/v2/torrents/info?" + urllib.parse.urlencode({"category": category})
+                with urllib.request.urlopen(url) as r:
+                    return json.loads(r.read())
+
+            def qbt_remove(hashes):
+                body = urllib.parse.urlencode({
+                    "hashes": "|".join(hashes),
+                    "deleteFiles": "false",
+                }).encode()
+                urllib.request.urlopen(urllib.request.Request(f"{QBT}/api/v2/torrents/delete", data=body))
+                print(f"Removed {len(hashes)} torrents from qBittorrent")
+
+            def match_torrents(torrents, src_dir, cleaned):
+                cleaned_parents = {f.parent for f in cleaned}
+                hashes = set()
+                for t in torrents:
+                    content = Path(t["content_path"])
+                    if content in cleaned or content.parent in cleaned_parents or content in cleaned_parents:
+                        hashes.add(t["hash"])
+                return hashes
+
+            def import_files(src_dir, cleanup):
+                cleaned = []
+                for nsz in src_dir.rglob("*.nsz"):
+                    game, kind = game_info(nsz.name)
+                    dest = make_dest(game, kind, nsz.with_suffix(".nsp").name)
+                    if exists(dest):
+                        cleaned.append(nsz)
                         continue
-
-                    for nsz_file in torrents_dir.rglob("*.nsz"):
-                        game_name, file_type = get_file_info(nsz_file.name)
-                        game_dir = BASE_DIR / game_name
-                        game_dir.mkdir(exist_ok=True)
-                        
-                        if file_type == "base":
-                            dest_file = game_dir / nsz_file.with_suffix(".nsp").name
-                        else:
-                            subdir = game_dir / file_type
-                            subdir.mkdir(exist_ok=True)
-                            dest_file = subdir / nsz_file.with_suffix(".nsp").name
-                        
-                        if file_exists_normalized(dest_file):
-                            print(f"Skipping {nsz_file}, {dest_file.name} already exists")
-                            continue
-                        
-                        print(f"Converting {nsz_file} to {dest_file} ({file_type})")
+                    print(f"Converting {nsz.name}")
+                    subprocess.run(["nsz", "-D", str(nsz), "-o", str(dest.parent)], check=True)
+                    cleaned.append(nsz)
+                for nsp in src_dir.rglob("*.nsp"):
+                    game, kind = game_info(nsp.name)
+                    dest = make_dest(game, kind, nsp.name)
+                    if exists(dest):
+                        cleaned.append(nsp)
+                        continue
+                    if cleanup:
+                        tmp = dest.with_suffix(".nsp.tmp")
                         try:
-                            subprocess.run(["nsz", "-D", str(nsz_file), "-o", str(dest_file.parent)], check=True)
-                            print(f"Converted {nsz_file}")
-                        except subprocess.CalledProcessError as e:
-                            print(f"Failed to convert {nsz_file}: {e}")
-                            return
+                            print(f"Copying {nsp.name}")
+                            shutil.copy2(nsp, tmp)
+                            tmp.rename(dest)
+                        except BaseException:
+                            tmp.unlink(missing_ok=True)
+                            raise
+                        cleaned.append(nsp)
+                    else:
+                        print(f"Hardlinking {nsp.name}")
+                        dest.hardlink_to(nsp)
+                return cleaned
 
-                    for nsp_file in torrents_dir.rglob("*.nsp"):
-                        game_name, file_type = get_file_info(nsp_file.name)
-                        game_dir = BASE_DIR / game_name
-                        game_dir.mkdir(exist_ok=True)
-                        
-                        if file_type == "base":
-                            dest_file = game_dir / nsp_file.name
-                        else:
-                            subdir = game_dir / file_type
-                            subdir.mkdir(exist_ok=True)
-                            dest_file = subdir / nsp_file.name
-                        
-                        if file_exists_normalized(dest_file):
-                            print(f"Skipping {nsp_file}, {dest_file.name} already exists")
-                            continue
-                        
-                        print(f"Hardlinking {nsp_file} to {dest_file} ({file_type})")
-                        dest_file.hardlink_to(nsp_file)
+            def cleanup_sources(category, src_dir, cleaned):
+                torrents = qbt_torrents(category)
+                hashes = match_torrents(torrents, src_dir, cleaned)
+                if hashes:
+                    qbt_remove(hashes)
+                for f in cleaned:
+                    f.unlink()
+                    print(f"Deleted {f.name}")
+                for d in sorted(src_dir.rglob("*"), reverse=True):
+                    if d.is_dir() and not any(d.iterdir()):
+                        d.rmdir()
+
+            def process():
+                for src_dir, category, cleanup in SOURCES:
+                    if not src_dir.exists():
+                        continue
+                    try:
+                        cleaned = import_files(src_dir, cleanup)
+                    except Exception as e:
+                        print(f"Import failed for {src_dir}: {e}")
+                        continue
+                    if cleanup and cleaned:
+                        try:
+                            cleanup_sources(category, src_dir, cleaned)
+                        except Exception as e:
+                            print(f"Cleanup failed for {category}: {e}")
 
             if __name__ == "__main__":
-                process_files()
+                process()
     persistence:
       script:
         type: configMap
