@@ -6,7 +6,7 @@ metadata:
 spec:
   clientID: ersatztv
   callbackUrls:
-    - https://ersatztv.goyangi.io/oidc/callback
+    - https://ersatztv.goyangi.io/signin-oidc
   logoutCallbackUrls:
     - https://ersatztv.goyangi.io
   allowedUserGroups:
