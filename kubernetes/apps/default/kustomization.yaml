@@ -17,6 +17,7 @@ resources:
   - ./bazarr/ks.yaml
   - ./booklore/ks.yaml
   - ./booktree/ks.yaml
+  - ./decluttarr/ks.yaml
   - ./deduparr/ks.yaml
   - ./ersatztv/ks.yaml
   - ./flaresolverr/ks.yaml
