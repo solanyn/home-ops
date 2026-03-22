@@ -110,6 +110,9 @@ spec:
             - apiGroups: ["dragonflydb.io"]
               resources: ["dragonflies/status"]
               verbs: ["get", "patch", "update"]
+            - apiGroups: ["networking.k8s.io"]
+              resources: ["networkpolicies"]
+              verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
       bindings:
         gatus:
           type: ClusterRoleBinding
