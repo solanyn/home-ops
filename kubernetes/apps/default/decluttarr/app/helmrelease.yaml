@@ -42,6 +42,13 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /app/logs
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          - path: /media
+            readOnly: true
       secret-file:
         type: secret
         name: "{{ .Release.Name }}-secret"
