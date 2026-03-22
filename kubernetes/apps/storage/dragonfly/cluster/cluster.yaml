@@ -49,9 +49,6 @@ spec:
     annotations:
       lbipam.cilium.io/ips: 192.168.69.131,fd5d:a293:f321:69::131
       external-dns.alpha.kubernetes.io/hostname: redis.goyangi.io
-  snapshot:
-    cron: "0 * * * *"
-    dir: "s3://dragonflydb"
   topologySpreadConstraints:
     - maxSkew: 1
       topologyKey: "kubernetes.io/hostname"
