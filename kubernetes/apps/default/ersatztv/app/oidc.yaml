@@ -7,8 +7,10 @@ spec:
   clientID: ersatztv
   callbackUrls:
     - https://ersatztv.goyangi.io/callback
+    - https://tv.goyangi.io/callback
   logoutCallbackUrls:
     - https://ersatztv.goyangi.io
+    - https://tv.goyangi.io
   allowedUserGroups:
     - name: admin
   secret:
