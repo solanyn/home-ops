@@ -83,8 +83,7 @@ spec:
               resources:
                 requests:
                   storage: 25Gi
-        startupProbe:
-          failureThreshold: 120
+        maximumStartupDurationSeconds: 1800
         thanos:
           image: quay.io/thanos/thanos:v0.41.0
           objectStorageConfig:
