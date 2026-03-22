@@ -11,3 +11,12 @@ spec:
   interval: 1h
   values:
     replicaCount: 2
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: liqo.io/type
+                  operator: NotIn
+                  values:
+                    - virtual-node
