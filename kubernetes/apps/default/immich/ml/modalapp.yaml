@@ -10,7 +10,6 @@ spec:
     import modal
 
     MINUTES = 60
-    PORT = 3003
 
     immich_ml_image = (
         modal.Image.from_registry(
@@ -34,15 +33,14 @@ spec:
         memory=4096,
     )
     @modal.concurrent(max_inputs=4)
-    @modal.web_server(port=PORT, startup_timeout=10 * MINUTES)
+    @modal.asgi_app()
     def serve():
-        import subprocess
         import os
-        env = os.environ.copy()
-        env["MACHINE_LEARNING_CACHE_FOLDER"] = "/cache"
-        env["TRANSFORMERS_CACHE"] = "/cache"
-        subprocess.Popen(
-            ["gunicorn", "app.main:app", "-k", "uvicorn.workers.UvicornWorker",
-             "-b", f"0.0.0.0:{PORT}", "-w", "1", "-t", "0", "--chdir", "/usr/src/app"],
-            env=env,
-        )
+        import sys
+        sys.path.insert(0, "/usr/src")
+        os.environ["MACHINE_LEARNING_CACHE_FOLDER"] = "/cache"
+        os.environ["TRANSFORMERS_CACHE"] = "/cache"
+        os.environ["VIRTUAL_ENV"] = "/opt/venv"
+        os.environ["PATH"] = "/opt/venv/bin:" + os.environ.get("PATH", "")
+        from immich_ml.main import app as fastapi_app
+        return fastapi_app
