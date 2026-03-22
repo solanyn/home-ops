@@ -28,6 +28,8 @@ spec:
       plugin_admin_enabled: "false"
     security:
       angular_support_enabled: "true"
+    dataproxy:
+      timeout: "300"
     server:
       enable_gzip: "true"
       root_url: https://grafana.goyangi.io
