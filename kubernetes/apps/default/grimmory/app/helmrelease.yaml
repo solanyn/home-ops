@@ -3,39 +3,37 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: booklore
+  name: grimmory
 spec:
   chartRef:
     kind: OCIRepository
-    name: booklore
+    name: grimmory
   interval: 1h
   values:
     controllers:
-      booklore:
+      grimmory:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/booklore-app/booklore
-              tag: v2.2.1@sha256:252586c469ff6d07a06469fd1d49f19af932f4d323713d253c5d29e33b6ec97a
+              repository: ghcr.io/grimmory-tools/grimmory
+              tag: v2.3.0@sha256:9014247f591074529894f81115ca40f899db697e89f72c2fe91ec530e3f19597
             env:
               TZ: Australia/Sydney
               USER_ID: "1000"
               GROUP_ID: "1000"
-              BOOKLORE_PORT: &port 6060
-              SWAGGER_ENABLED: "false"
             envFrom:
               - secretRef:
-                  name: booklore-secret
+                  name: grimmory-secret
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /
-                    port: *port
+                    path: /api/v1/healthcheck
+                    port: &port 6060
                   initialDelaySeconds: 30
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -47,10 +45,6 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
-    # defaultPodOptions:
-    #   securityContext:
-    #     fsGroup: 1000
-    #     fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
@@ -62,6 +56,7 @@ spec:
           gatus.home-operations.com/enabled: "true"
         hostnames:
           - "{{ .Release.Name }}.goyangi.io"
+          - booklore.goyangi.io
         parentRefs:
           - name: envoy-internal
             namespace: network
