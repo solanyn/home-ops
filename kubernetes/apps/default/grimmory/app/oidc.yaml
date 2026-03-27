@@ -2,13 +2,13 @@
 apiVersion: pocketid.internal/v1alpha1
 kind: PocketIDOIDCClient
 metadata:
-  name: booklore
+  name: grimmory
 spec:
-  clientID: booklore
+  clientID: grimmory
   isPublic: true
   callbackUrls:
-    - https://booklore.goyangi.io/oauth2-callback
+    - https://grimmory.goyangi.io/oauth2-callback
   logoutCallbackUrls:
-    - https://booklore.goyangi.io
+    - https://grimmory.goyangi.io
   secret:
-    name: booklore-oidc
+    name: grimmory-oidc
