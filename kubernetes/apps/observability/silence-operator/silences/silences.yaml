@@ -98,4 +98,32 @@ spec:
       value: CephNodeDiskspaceWarning
     - name: instance
       value: mac.internal:9100
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: smart-device-test-failed-nvme0
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: SmartDeviceTestFailed
+    - name: device
+      value: nvme0
+    - name: instance
+      value: 10.42.1.78:9633
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: pocketid-reconcile-errors-liqo
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: PocketIDReconcileErrors
+    - name: namespace
+      value: liqo-tenant-worker
 
