@@ -56,6 +56,7 @@ spec:
           gatus.home-operations.com/enabled: "true"
         hostnames:
           - "{{ .Release.Name }}.goyangi.io"
+          - booklore.goyangi.io
         parentRefs:
           - name: envoy-internal
             namespace: network

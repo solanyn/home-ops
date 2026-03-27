@@ -8,7 +8,9 @@ spec:
   isPublic: true
   callbackUrls:
     - https://grimmory.goyangi.io/oauth2-callback
+    - https://booklore.goyangi.io/oauth2-callback
   logoutCallbackUrls:
     - https://grimmory.goyangi.io
+    - https://booklore.goyangi.io
   secret:
     name: grimmory-oidc
