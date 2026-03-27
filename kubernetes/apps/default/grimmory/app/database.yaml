@@ -2,41 +2,41 @@
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: User
 metadata:
-  name: booklore
+  name: grimmory
 spec:
   mariaDbRef:
     name: mariadb
     namespace: storage
   passwordSecretKeyRef:
     name: grimmory-secret
-    key: BOOKLORE_DB_PASS
+    key: GRIMMORY_DB_PASS
   host: "%"
   maxUserConnections: 20
 ---
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: Database
 metadata:
-  name: booklore
+  name: grimmory
 spec:
   mariaDbRef:
     name: mariadb
     namespace: storage
-  name: booklore
+  name: grimmory
   characterSet: utf8mb4
   collate: utf8mb4_general_ci
 ---
 apiVersion: k8s.mariadb.com/v1alpha1
 kind: Grant
 metadata:
-  name: booklore
+  name: grimmory
 spec:
   mariaDbRef:
     name: mariadb
     namespace: storage
   privileges:
     - ALL PRIVILEGES
-  database: booklore
+  database: grimmory
   table: "*"
-  username: booklore
+  username: grimmory
   host: "%"
   grantOption: false
