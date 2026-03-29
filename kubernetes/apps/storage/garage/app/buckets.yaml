@@ -1,0 +1,30 @@
+---
+apiVersion: garage.crossplane.io/v1alpha1
+kind: Bucket
+metadata:
+  name: bronze
+spec:
+  forProvider:
+    globalAlias: bronze
+  providerConfigRef:
+    name: default
+---
+apiVersion: garage.crossplane.io/v1alpha1
+kind: Bucket
+metadata:
+  name: silver
+spec:
+  forProvider:
+    globalAlias: silver
+  providerConfigRef:
+    name: default
+---
+apiVersion: garage.crossplane.io/v1alpha1
+kind: Bucket
+metadata:
+  name: gold
+spec:
+  forProvider:
+    globalAlias: gold
+  providerConfigRef:
+    name: default
