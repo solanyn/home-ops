@@ -60,12 +60,12 @@ data:
         bronze_cat = get_catalog("bronze")
         create_ns(bronze_cat, "default")
         for t in BRONZE_TABLES:
-            create_tbl(bronze_cat, "default", t, f"s3://bronze/{t}/")
+            create_tbl(bronze_cat, "default", t, f"s3://bronze/iceberg/{t}/")
 
         silver_cat = get_catalog("silver")
         create_ns(silver_cat, "default")
         for t in SILVER_TABLES:
-            create_tbl(silver_cat, "default", t, f"s3://silver/{t}/")
+            create_tbl(silver_cat, "default", t, f"s3://silver/iceberg/{t}/")
 
         gold_cat = get_catalog("gold")
         create_ns(gold_cat, "default")
