@@ -15,5 +15,6 @@ resources:
   - ./dragonfly/ks.yaml
   - ./garage/ks.yaml
   - ./influxdb/ks.yaml
+  - ./lakekeeper/ks.yaml
   - ./mariadb/ks.yaml
   - ./vernemq/ks.yaml
