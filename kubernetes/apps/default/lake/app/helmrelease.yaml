@@ -114,7 +114,7 @@ spec:
               repository: ghcr.io/solanyn/lake-mcp
               tag: sha-7917b88aba1aad2db5218214742d647a816e4103
               pullPolicy: Always
-            command: ["/mcp_server"]
+            command: ["/lake-mcp/mcp_server"]
             args: ["--transport", "sse"]
             env:
               S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
