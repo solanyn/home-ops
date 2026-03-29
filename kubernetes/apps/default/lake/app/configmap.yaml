@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lake-register-tables
+data:
+  register_tables.py: |
+    """Register Iceberg tables in Lakekeeper for existing S3 parquet data."""
+    import os
+    import sys
+
+    from pyiceberg.catalog import load_catalog
+    from pyiceberg.exceptions import NamespaceAlreadyExistsError, TableAlreadyExistsError
+    from pyiceberg.schema import Schema
+    from pyiceberg.types import NestedField, StringType, TimestampType
+
+    BRONZE_SCHEMA = Schema(
+        NestedField(1, "_source", StringType(), required=False),
+        NestedField(2, "_ingested_at", TimestampType(), required=False),
+        NestedField(3, "_raw_payload", StringType(), required=False),
+        NestedField(4, "_batch_id", StringType(), required=False),
+    )
+
+    BRONZE_SOURCES = ["rba", "abs", "aemo", "rss", "reddit", "domain", "nsw_vg"]
+    SILVER_SOURCES = [
+        "rba_rates", "abs_indicators", "aemo_prices", "news_articles",
+        "reddit_sentiment", "domain_listings", "nsw_vg_sales",
+    ]
+
+    def create_ns(catalog, name):
+        try:
+            catalog.create_namespace(name)
+            print(f"Created namespace: {name}")
+        except NamespaceAlreadyExistsError:
+            pass
+
+    def create_tbl(catalog, ns, name, location):
+        try:
+            catalog.create_table(f"{ns}.{name}", schema=BRONZE_SCHEMA, location=location)
+            print(f"Created table: {ns}.{name}")
+        except TableAlreadyExistsError:
+            pass
+
+    def main():
+        catalog_uri = os.environ.get("ICEBERG_CATALOG_URI", "http://lakekeeper.storage.svc.cluster.local:8181/catalog")
+        s3_endpoint = os.environ.get("AWS_ENDPOINT_URL", "http://garage.storage.svc.cluster.local:3900")
+        s3_access_key = os.environ.get("AWS_ACCESS_KEY_ID", os.environ.get("S3_ACCESS_KEY", ""))
+        s3_secret_key = os.environ.get("AWS_SECRET_ACCESS_KEY", os.environ.get("S3_SECRET_KEY", ""))
+        s3_region = os.environ.get("AWS_REGION", os.environ.get("S3_REGION", "us-east-1"))
+
+        catalog = load_catalog("lakekeeper", **{
+            "type": "rest",
+            "uri": catalog_uri,
+            "s3.endpoint": s3_endpoint,
+            "s3.access-key-id": s3_access_key,
+            "s3.secret-access-key": s3_secret_key,
+            "s3.region": s3_region,
+            "s3.path-style-access": "true",
+        })
+
+        for ns in ("bronze", "silver", "gold"):
+            create_ns(catalog, ns)
+
+        for src in BRONZE_SOURCES:
+            create_tbl(catalog, "bronze", src, f"s3://bronze/{src}/")
+
+        for src in SILVER_SOURCES:
+            create_tbl(catalog, "silver", src, f"s3://silver/{src}/")
+
+        print("Table registration complete")
+
+    if __name__ == "__main__":
+        main()
