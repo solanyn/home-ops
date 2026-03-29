@@ -12,11 +12,22 @@ spec:
       ingest:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          create-topics:
+            image:
+              repository: docker.redpanda.com/redpandadata/redpanda
+              tag: latest
+            command:
+              - /bin/sh
+              - -c
+              - |
+                rpk topic create lake.bronze.written --brokers=redpanda.streaming.svc.cluster.local:9093 -p 3 -r 1 || true
+                rpk topic create lake.silver.written --brokers=redpanda.streaming.svc.cluster.local:9093 -p 3 -r 1 || true
         containers:
           app:
             image:
               repository: ghcr.io/solanyn/lake-ingest
-              tag: sha-d912b3a5adbb5b0bbedc73acb2831e4e21c06855
+              tag: sha-fdc95255f44a74058ee216c8c59ddf0f0630f464
               pullPolicy: Always
             env: &env
               S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
@@ -62,7 +73,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-promote
-              tag: sha-d912b3a5adbb5b0bbedc73acb2831e4e21c06855
+              tag: sha-fdc95255f44a74058ee216c8c59ddf0f0630f464
               pullPolicy: Always
             env:
               <<: *env
@@ -87,7 +98,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-aggregate
-              tag: sha-d912b3a5adbb5b0bbedc73acb2831e4e21c06855
+              tag: sha-fdc95255f44a74058ee216c8c59ddf0f0630f464
               pullPolicy: Always
             env:
               <<: *env
@@ -112,7 +123,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-mcp
-              tag: sha-4fe4f0386cfcfb7056e8e37dbbd8845769482ddd
+              tag: sha-fdc95255f44a74058ee216c8c59ddf0f0630f464
               pullPolicy: Always
             command: ["/lake-mcp/mcp_server"]
             args: ["--transport", "sse"]
