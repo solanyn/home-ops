@@ -1,12 +1,12 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: macro
+  name: lake
 spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: macro
+    name: lake
   values:
     controllers:
       ingest:
@@ -20,13 +20,13 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/macro
+              repository: ghcr.io/solanyn/lake
               tag: latest
-            args: ["macro.ingest.cli", "all"]
+            args: ["lake.ingest.cli", "all"]
             env:
               S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
               S3_REGION: us-east-1
-              MACRO_STATE_PATH: /data/macro-state.json
+              LAKE_STATE_PATH: /data/lake-state.json
               PYTHONUNBUFFERED: "1"
             envFrom: &envFrom
               - secretRef:
@@ -54,20 +54,20 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/macro
+              repository: ghcr.io/solanyn/lake
               tag: latest
             command: ["/bin/sh"]
             args:
               - -c
               - |
-                python -m macro.ingest.cli promote-rba;
-                python -m macro.ingest.cli promote-abs;
-                python -m macro.ingest.cli promote-aemo;
-                python -m macro.ingest.cli promote-rss
+                python -m lake.ingest.cli promote-rba;
+                python -m lake.ingest.cli promote-abs;
+                python -m lake.ingest.cli promote-aemo;
+                python -m lake.ingest.cli promote-rss
             env:
               S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
               S3_REGION: us-east-1
-              MACRO_STATE_PATH: /data/macro-state.json
+              LAKE_STATE_PATH: /data/lake-state.json
               PYTHONUNBUFFERED: "1"
             envFrom: *envFrom
             securityContext: *securityContext
@@ -80,18 +80,18 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/macro
+              repository: ghcr.io/solanyn/lake
               tag: latest
               pullPolicy: Always
             command: ["python", "-c"]
             args:
               - |
-                from macro.mcp_server import mcp
+                from lake.mcp_server import mcp
                 mcp.run(transport="sse", host="0.0.0.0", port=8080)
             env:
               S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
               S3_REGION: us-east-1
-              MACRO_STATE_PATH: /data/macro-state.json
+              LAKE_STATE_PATH: /data/lake-state.json
               OPENAI_BASE_URL: http://envoy-ai-gateway.gateway.svc.cluster.local:8080/v1
               OPENAI_API_KEY: dummy
               PYTHONUNBUFFERED: "1"
