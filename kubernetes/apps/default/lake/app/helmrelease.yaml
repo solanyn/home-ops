@@ -27,7 +27,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-ingest
-              tag: sha-fdc95255f44a74058ee216c8c59ddf0f0630f464
+              tag: sha-5db304ffb3f502fd92fd94de08bc518443db1c06
               pullPolicy: Always
             env: &env
               S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
@@ -73,7 +73,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-promote
-              tag: sha-fdc95255f44a74058ee216c8c59ddf0f0630f464
+              tag: sha-5db304ffb3f502fd92fd94de08bc518443db1c06
               pullPolicy: Always
             env:
               <<: *env
@@ -98,7 +98,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-aggregate
-              tag: sha-fdc95255f44a74058ee216c8c59ddf0f0630f464
+              tag: sha-5db304ffb3f502fd92fd94de08bc518443db1c06
               pullPolicy: Always
             env:
               <<: *env
@@ -123,7 +123,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-mcp
-              tag: sha-fdc95255f44a74058ee216c8c59ddf0f0630f464
+              tag: sha-5db304ffb3f502fd92fd94de08bc518443db1c06
               pullPolicy: Always
             command: ["/lake-mcp/mcp_server"]
             args: ["--transport", "sse"]
