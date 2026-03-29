@@ -14,9 +14,6 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/liqo-tenant-worker/worker/config
   postBuild:
-    substitute:
-      WG_PRIVATE_KEY: "ZHVtbXlrZXlmb3JjaXRlc3Rpbmdvbmx5YWFhYWE="
-      WG_LOCAL_PUBLIC_KEY: "ZHVtbXlrZXlmb3JjaXRlc3Rpbmdvbmx5YWFhYWE="
     substituteFrom:
       - kind: Secret
         name: liqo-worker-secret
