@@ -114,11 +114,8 @@ spec:
               repository: ghcr.io/solanyn/lake-mcp
               tag: latest
               pullPolicy: Always
-            command: ["python", "-c"]
-            args:
-              - |
-                from lake_mcp.mcp_server import mcp
-                mcp.run(transport="sse", host="0.0.0.0", port=8080)
+            command: ["/lake-mcp/mcp_server"]
+            args: ["--transport", "sse"]
             env:
               S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
               S3_REGION: us-east-1
