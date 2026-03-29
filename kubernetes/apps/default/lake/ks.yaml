@@ -1,18 +1,18 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: macro
+  name: lake
 spec:
   targetNamespace: default
   dependsOn:
     - name: garage
       namespace: storage
   interval: 1h
-  path: ./kubernetes/apps/default/macro/app
+  path: ./kubernetes/apps/default/lake/app
   prune: true
   postBuild:
     substitute:
-      APP: macro
+      APP: lake
   sourceRef:
     kind: GitRepository
     name: flux-system
