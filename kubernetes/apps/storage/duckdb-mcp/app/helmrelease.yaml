@@ -24,11 +24,9 @@ spec:
           app:
             image:
               repository: ghcr.io/astral-sh/uv
-              tag: latest
-            command: ["/usr/local/bin/uv"]
+              tag: python3.13-bookworm-slim
+            command: ["uvx"]
             args:
-              - tool
-              - run
               - mcp-server-motherduck
               - --db-path
               - ":memory:"
