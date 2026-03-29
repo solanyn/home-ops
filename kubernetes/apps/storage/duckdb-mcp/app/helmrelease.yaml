@@ -37,6 +37,10 @@ spec:
             env:
               ICEBERG_REST_CATALOG_URL: http://lakekeeper.storage.svc.cluster.local:8181/catalog
               UV_CACHE_DIR: /tmp/uv-cache
+              UV_TOOL_DIR: /tmp/uv-tools
+              UV_TOOL_BIN_DIR: /tmp/uv-bin
+              XDG_DATA_HOME: /tmp/xdg
+              HOME: /tmp
             envFrom:
               - secretRef:
                   name: duckdb-mcp-secret
