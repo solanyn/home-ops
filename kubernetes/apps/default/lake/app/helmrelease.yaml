@@ -32,7 +32,6 @@ spec:
             env: &env
               S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
               S3_REGION: us-east-1
-              S3_BUCKET: datalake
               KAFKA_BROKERS: redpanda.streaming.svc.cluster.local:9093
             envFrom: &envFrom
               - secretRef:
@@ -42,7 +41,7 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             probes:
-              liveness: &probes
+              liveness:
                 enabled: true
                 custom: true
                 spec:
@@ -116,27 +115,6 @@ spec:
                   periodSeconds: 30
                   failureThreshold: 3
             resources: *resources
-      mcp:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          app:
-            image:
-              repository: ghcr.io/solanyn/lake-mcp
-              tag: "2026.03.90"
-              pullPolicy: Always
-            command: ["/lake-mcp/mcp_server"]
-            args: ["--transport", "sse"]
-            env:
-              S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
-              S3_REGION: us-east-1
-              LAKE_STATE_PATH: /data/lake-state.json
-              OPENAI_BASE_URL: http://envoy-ai-gateway.gateway.svc.cluster.local:8080/v1
-              OPENAI_API_KEY: dummy
-              PYTHONUNBUFFERED: "1"
-            envFrom: *envFrom
-            securityContext: *securityContext
-            resources: *resources
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -145,14 +123,6 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     persistence:
-      data:
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        advancedMounts:
-          mcp:
-            app:
-              - path: /data
       tmp:
         type: emptyDir
         sizeLimit: 512Mi
@@ -174,8 +144,3 @@ spec:
         ports:
           http:
             port: 8083
-      mcp:
-        controller: mcp
-        ports:
-          http:
-            port: 8080
