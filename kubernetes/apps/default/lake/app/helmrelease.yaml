@@ -10,24 +10,19 @@ spec:
   values:
     controllers:
       ingest:
-        type: cronjob
-        cronjob:
-          schedule: "0 20 * * *"
-          timeZone: Australia/Sydney
-          concurrencyPolicy: Forbid
-          successfulJobsHistory: 3
-          failedJobsHistory: 3
+        annotations:
+          reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/lake
+              repository: ghcr.io/solanyn/lake-ingest
               tag: latest
-            args: ["lake.ingest.cli", "all"]
+              pullPolicy: Always
             env:
               S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
               S3_REGION: us-east-1
-              LAKE_STATE_PATH: /data/lake-state.json
-              PYTHONUNBUFFERED: "1"
+              S3_BUCKET: datalake
+              PORT: "8081"
             envFrom: &envFrom
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
@@ -35,58 +30,44 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-            resources: &resources
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8081
+                  periodSeconds: 30
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: 8081
+                  periodSeconds: 10
+                  failureThreshold: 3
+            resources:
               requests:
-                cpu: 100m
-                memory: 256Mi
+                cpu: 50m
+                memory: 128Mi
               limits:
-                memory: 1Gi
-        pod:
-          restartPolicy: OnFailure
-      promote:
-        type: cronjob
-        cronjob:
-          schedule: "30 20 * * *"
-          timeZone: Australia/Sydney
-          concurrencyPolicy: Forbid
-          successfulJobsHistory: 3
-          failedJobsHistory: 3
-        containers:
-          app:
-            image:
-              repository: ghcr.io/solanyn/lake
-              tag: latest
-            command: ["/bin/sh"]
-            args:
-              - -c
-              - |
-                python -m lake.ingest.cli promote-rba;
-                python -m lake.ingest.cli promote-abs;
-                python -m lake.ingest.cli promote-aemo;
-                python -m lake.ingest.cli promote-rss
-            env:
-              S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
-              S3_REGION: us-east-1
-              LAKE_STATE_PATH: /data/lake-state.json
-              PYTHONUNBUFFERED: "1"
-            envFrom: *envFrom
-            securityContext: *securityContext
-            resources: *resources
-        pod:
-          restartPolicy: OnFailure
-      agent:
+                memory: 512Mi
+      mcp:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/lake
+              repository: ghcr.io/solanyn/lake-mcp
               tag: latest
               pullPolicy: Always
             command: ["python", "-c"]
             args:
               - |
-                from lake.mcp_server import mcp
+                from lake_mcp.mcp_server import mcp
                 mcp.run(transport="sse", host="0.0.0.0", port=8080)
             env:
               S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
@@ -115,10 +96,23 @@ spec:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         size: 1Gi
-        globalMounts:
-          - path: /data
+        advancedMounts:
+          mcp:
+            app:
+              - path: /data
       tmp:
         type: emptyDir
         sizeLimit: 512Mi
         globalMounts:
           - path: /tmp
+    service:
+      ingest:
+        controller: ingest
+        ports:
+          http:
+            port: 8081
+      mcp:
+        controller: mcp
+        ports:
+          http:
+            port: 8080
