@@ -46,7 +46,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-ingest
-              tag: "2026.03.90"
+              tag: "2026.03.94"
               pullPolicy: Always
             env: &env
               S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
@@ -91,7 +91,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-promote
-              tag: "2026.03.90"
+              tag: "2026.03.94"
               pullPolicy: Always
             env:
               <<: *env
@@ -116,7 +116,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-aggregate
-              tag: "2026.03.90"
+              tag: "2026.03.94"
               pullPolicy: Always
             env:
               <<: *env
