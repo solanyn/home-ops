@@ -23,6 +23,25 @@ spec:
               - |
                 rpk topic create lake.bronze.written --brokers=redpanda.streaming.svc.cluster.local:9093 -p 3 -r 1 || true
                 rpk topic create lake.silver.written --brokers=redpanda.streaming.svc.cluster.local:9093 -p 3 -r 1 || true
+          register-tables:
+            image:
+              repository: ghcr.io/astral-sh/uv
+              tag: python3.13-bookworm-slim
+            command: ["uvx"]
+            args:
+              - "--with"
+              - "pyiceberg[s3]"
+              - "python"
+              - "/scripts/register_tables.py"
+            env:
+              ICEBERG_CATALOG_URI: http://lakekeeper.storage.svc.cluster.local:8181/catalog
+              AWS_ENDPOINT_URL: http://garage.storage.svc.cluster.local:3900
+              AWS_REGION: us-east-1
+              HOME: /tmp
+              UV_CACHE_DIR: /tmp/uv-cache
+            envFrom: &envFrom
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
         containers:
           app:
             image:
@@ -128,6 +147,13 @@ spec:
         sizeLimit: 512Mi
         globalMounts:
           - path: /tmp
+      register-script:
+        type: configMap
+        name: lake-register-tables
+        advancedMounts:
+          ingest:
+            register-tables:
+              - path: /scripts
     service:
       ingest:
         controller: ingest
