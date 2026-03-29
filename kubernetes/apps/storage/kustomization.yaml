@@ -13,6 +13,7 @@ resources:
   - ./clickhouse-operator/ks.yaml
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
+  - ./duckdb-mcp/ks.yaml
   - ./garage/ks.yaml
   - ./influxdb/ks.yaml
   - ./lakekeeper/ks.yaml
