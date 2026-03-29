@@ -28,6 +28,8 @@ spec:
       enabled: true
       prometheusOperator:
         enabled: true
+    authentication:
+      tlsCompatibilityMode: true
     controllerManager:
       config:
         tlsCompatibilityMode: true
