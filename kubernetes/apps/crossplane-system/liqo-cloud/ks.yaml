@@ -14,14 +14,9 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/crossplane-system/liqo-cloud/app
   postBuild:
-    substitute:
-      WG_GKE_PRIVATE_KEY: "ZHVtbXlrZXlmb3JjaXRlc3Rpbmdvbmx5YWFhYWE="
-      WG_GKE_PUBLIC_KEY: "ZHVtbXlrZXlmb3JjaXRlc3Rpbmdvbmx5YWFhYWE="
-      WG_HOME_PUBLIC_KEY: "ZHVtbXlrZXlmb3JjaXRlc3Rpbmdvbmx5YWFhYWE="
     substituteFrom:
       - kind: Secret
         name: liqo-cloud-secret
-        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
