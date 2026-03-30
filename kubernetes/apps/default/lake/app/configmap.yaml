@@ -41,6 +41,9 @@ data:
         "pypi_stats": {"description": "PyPI download stats for tracked packages", "source_url": "https://pypistats.org/api", "source_name": "PyPI", "update_frequency": "daily", "auth": "none"},
         "npm_stats": {"description": "npm weekly download stats for tracked packages", "source_url": "https://api.npmjs.org/downloads", "source_name": "npm", "update_frequency": "daily", "auth": "none"},
         "hn_stories": {"description": "Hacker News recent stories via Algolia API", "source_url": "https://hn.algolia.com/api/v1/search_by_date", "source_name": "Hacker News", "update_frequency": "hourly", "auth": "none"},
+        "nsw_fuel": {"description": "NSW fuel prices from FuelCheck API (10k+ stations)", "source_url": "https://api.onegov.nsw.gov.au/FuelPriceCheck/v2/fuel/prices", "source_name": "NSW Government", "update_frequency": "hourly", "auth": "oauth2_client_credentials"},
+        "nsw_property_licences": {"description": "NSW property agent and corporation licences", "source_url": "https://api.onegov.nsw.gov.au/propertyregister/v1/browse", "source_name": "NSW Government", "update_frequency": "daily", "auth": "oauth2_client_credentials"},
+        "nsw_trades_licences": {"description": "NSW trades and contractor licences", "source_url": "https://api.onegov.nsw.gov.au/tradesregister/v1/browse", "source_name": "NSW Government", "update_frequency": "daily", "auth": "oauth2_client_credentials"},
     }
 
     SILVER = {
