@@ -96,7 +96,7 @@ spec:
               pullPolicy: Always
             env:
               <<: *env
-              PORT: "8082"
+              HEALTH_PORT: "8082"
             envFrom: *envFrom
             securityContext: *securityContext
             probes:
@@ -121,7 +121,7 @@ spec:
               pullPolicy: Always
             env:
               <<: *env
-              PORT: "8083"
+              HEALTH_PORT: "8083"
             envFrom: *envFrom
             securityContext: *securityContext
             probes:
