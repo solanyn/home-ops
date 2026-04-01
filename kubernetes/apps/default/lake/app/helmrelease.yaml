@@ -155,15 +155,6 @@ spec:
           ingest:
             register-tables:
               - path: /scripts
-      rss-feeds:
-        type: configMap
-        name: lake-rss-feeds
-        advancedMounts:
-          ingest:
-            app:
-              - path: /config/feeds.yaml
-                subPath: feeds.yaml
-                readOnly: true
     service:
       ingest:
         controller: ingest
