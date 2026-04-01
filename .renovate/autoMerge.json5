@@ -7,7 +7,16 @@
       automerge: true,
       automergeType: "pr",
       matchUpdateTypes: ["digest"],
-      matchPackageNames: ["/home-operations/"],
+      matchPackageNames: ["/home-operations/", "/solanyn/"],
+      ignoreTests: false,
+    },
+    {
+      description: "Auto-merge solanyn containers",
+      matchDatasources: ["docker"],
+      automerge: true,
+      automergeType: "pr",
+      matchUpdateTypes: ["minor", "patch"],
+      matchPackageNames: ["/solanyn/"],
       ignoreTests: false,
     },
     {
