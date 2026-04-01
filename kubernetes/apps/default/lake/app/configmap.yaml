@@ -28,7 +28,7 @@ data:
         "rba": {"description": "RBA interest rate statistics (Table F1)", "source_url": "https://rba.gov.au/statistics/tables/csv/f1-data.csv", "source_name": "Reserve Bank of Australia", "update_frequency": "daily", "auth": "none"},
         "abs": {"description": "ABS CPI monthly index numbers via SDMX JSON", "source_url": "https://data.api.abs.gov.au/data/CPI", "source_name": "Australian Bureau of Statistics", "update_frequency": "monthly", "auth": "none"},
         "aemo": {"description": "AEMO NEM 5-min spot prices, demand, generation by region", "source_url": "https://visualisations.aemo.com.au/aemo/apps/api/report/ELEC_NEM_SUMMARY", "source_name": "AEMO", "update_frequency": "5min", "auth": "none"},
-        "rss": {"description": "RSS articles from Guardian AU Business, RBA media releases", "source_name": "Multiple", "update_frequency": "15min", "auth": "none"},
+        "rss": {"description": "RSS feeds from ~50 sources across tech/AI, eng blogs, aggregators, infra/k8s, YouTube, AU news and finance", "source_name": "Multiple", "update_frequency": "1h", "auth": "none"},
         "reddit": {"description": "Reddit r/AusFinance hot and new posts", "source_url": "https://www.reddit.com/r/AusFinance/.json", "source_name": "Reddit", "update_frequency": "30min", "auth": "none"},
         "domain": {"description": "Domain.com.au Sydney auction results and listings", "source_url": "https://api.domain.com.au/v1/salesResults/Sydney", "source_name": "Domain Group", "update_frequency": "daily", "auth": "oauth2"},
         "nsw_vg": {"description": "NSW Valuer General bulk property sales", "source_url": "https://valuation.property.nsw.gov.au/embed/propertySalesInformation", "source_name": "NSW Valuer General", "update_frequency": "weekly", "auth": "none"},
@@ -44,6 +44,7 @@ data:
         "nsw_fuel": {"description": "NSW fuel prices from FuelCheck API (10k+ stations)", "source_url": "https://api.onegov.nsw.gov.au/FuelPriceCheck/v2/fuel/prices", "source_name": "NSW Government", "update_frequency": "hourly", "auth": "oauth2_client_credentials"},
         "nsw_property_licences": {"description": "NSW property agent and corporation licences", "source_url": "https://api.onegov.nsw.gov.au/propertyregister/v1/browse", "source_name": "NSW Government", "update_frequency": "daily", "auth": "oauth2_client_credentials"},
         "nsw_trades_licences": {"description": "NSW trades and contractor licences", "source_url": "https://api.onegov.nsw.gov.au/tradesregister/v1/browse", "source_name": "NSW Government", "update_frequency": "daily", "auth": "oauth2_client_credentials"},
+        "rss_feeds": {"description": "RSS/Atom feed articles with full extracted content from 50+ sources", "source_name": "Multiple (RSS/Atom feeds)", "update_frequency": "1h-24h per feed", "auth": "none"},
     }
 
     SILVER = {
