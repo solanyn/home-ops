@@ -128,6 +128,16 @@
       minimumGroupSize: 5,
     },
     {
+      description: "Lake Group",
+      groupName: "lake",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/solanyn\/lake-/"],
+      group: {
+        commitMessageTopic: "{{{groupName}}} group",
+      },
+      minimumGroupSize: 2,
+    },
+    {
       description: "Rook-Ceph Group",
       groupName: "rook-ceph",
       matchDatasources: ["docker"],
