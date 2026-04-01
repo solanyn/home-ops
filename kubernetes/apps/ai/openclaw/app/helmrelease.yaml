@@ -76,6 +76,10 @@ spec:
                 cp /tmp/openclaw-config/openclaw.json /home/node/.openclaw/openclaw.json
                 chmod 600 /home/node/.openclaw/openclaw.json
 
+                # Write exec-approvals with full security (skip approval prompts)
+                printf '{"version":1,"defaults":{"security":"full"}}\n' > /home/node/.openclaw/exec-approvals.json
+                chmod 600 /home/node/.openclaw/exec-approvals.json
+
                 # Setup SSH
                 cp /tmp/ssh-secrets/ssh_private_key /home/node/.ssh/forgejo_ed25519
                 cp /tmp/ssh-secrets/ssh_config /home/node/.ssh/config
