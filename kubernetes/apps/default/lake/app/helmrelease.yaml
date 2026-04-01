@@ -46,7 +46,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-ingest
-              tag: "2026.03.102"
+              tag: "2026.04.0"
               pullPolicy: Always
             env: &env
               S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
