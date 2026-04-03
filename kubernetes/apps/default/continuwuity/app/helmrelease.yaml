@@ -26,7 +26,7 @@ spec:
               CONTINUWUITY_PORT: &port 6167
               CONTINUWUITY_DATABASE_BACKEND: rocksdb
               CONTINUWUITY_DATABASE_PATH: /data/db
-              CONTINUWUITY_ALLOW_REGISTRATION: "false"
+              CONTINUWUITY_ALLOW_REGISTRATION: "true"
               CONTINUWUITY_REGISTRATION_TOKEN:
                 valueFrom:
                   secretKeyRef:
