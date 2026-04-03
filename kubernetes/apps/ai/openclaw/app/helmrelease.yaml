@@ -145,7 +145,7 @@ spec:
                 done
 
                 # Pre-pull sandbox image
-                docker pull ghcr.io/solanyn/openclaw-sandbox:1.0.0 &
+                docker pull ghcr.io/solanyn/openclaw-sandbox:1.0.0@sha256:8f80817976fb41059e965b7d66f70f77a349114a6f370b208921be3b20e5fc52 &
 
                 # Start gateway
                 exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
