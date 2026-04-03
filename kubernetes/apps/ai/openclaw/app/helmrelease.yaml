@@ -121,6 +121,12 @@ spec:
                   rm -rf /tmp/docker
                 fi
 
+                # Install Matrix plugin if not present
+                if [ ! -d /home/node/.openclaw/extensions/matrix ]; then
+                  echo "Installing Matrix plugin..."
+                  openclaw plugins install @openclaw/matrix --dangerously-force-unsafe-install
+                fi
+
                 echo "Init container completed successfully"
         containers:
           app:
