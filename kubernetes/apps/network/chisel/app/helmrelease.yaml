@@ -65,6 +65,8 @@ spec:
             port: 4097
           dev-work:
             port: 4098
+          ssh-work:
+            port: 2222
     route:
       app:
         hostnames:
