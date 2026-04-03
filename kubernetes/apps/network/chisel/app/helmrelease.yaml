@@ -80,7 +80,7 @@ spec:
                 port: 8443
       work-opencode:
         hostnames:
-          - work-opencode.goyangi.io
+          - work.opencode.goyangi.io
         parentRefs:
           - name: envoy-internal
             namespace: network
