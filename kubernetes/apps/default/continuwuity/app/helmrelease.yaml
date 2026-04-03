@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: continuwuity
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: continuwuity
+  interval: 1h
+  values:
+    controllers:
+      continuwuity:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          enableServiceLinks: false
+        containers:
+          app:
+            image:
+              repository: forgejo.ellis.link/continuwuation/continuwuity
+              tag: v0.5.6
+            env:
+              CONTINUWUITY_SERVER_NAME: goyangi.io
+              CONTINUWUITY_PORT: &port 6167
+              CONTINUWUITY_DATABASE_BACKEND: rocksdb
+              CONTINUWUITY_DATABASE_PATH: /data/db
+              CONTINUWUITY_ALLOW_REGISTRATION: "false"
+              CONTINUWUITY_ALLOW_FEDERATION: "true"
+              CONTINUWUITY_ALLOW_CHECK_FOR_UPDATES: "false"
+              CONTINUWUITY_TRUSTED_SERVERS: '["matrix.org"]'
+              CONTINUWUITY_ADDRESS: 0.0.0.0
+              CONTINUWUITY_MAX_REQUEST_SIZE: "20000000"
+              CONTINUWUITY_LOG: warn,continuwuity=info
+              CONTINUWUITY_WELL_KNOWN__CLIENT: https://matrix.goyangi.io
+              CONTINUWUITY_WELL_KNOWN__SERVER: goyangi.io:443
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /_matrix/federation/v1/version
+                    port: *port
+                  initialDelaySeconds: 5
+                  periodSeconds: 30
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 512Mi
+    service:
+      app:
+        controller: continuwuity
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - matrix.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: continuwuity
+                port: *port
+    persistence:
+      data:
+        existingClaim: continuwuity
+        globalMounts:
+          - path: /data
