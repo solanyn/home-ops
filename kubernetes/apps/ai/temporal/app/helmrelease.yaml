@@ -23,7 +23,7 @@ spec:
     server:
       replicaCount: 1
       setConfigFilePath: true
-      configMount: sprig
+      configMapsToMount: sprig
       additionalInitContainers:
         - name: init-db
           image: ghcr.io/home-operations/postgres-init:18
