@@ -1,0 +1,15 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: rustical
+spec:
+  clientID: rustical
+  callbackUrls:
+    - https://caldav.goyangi.io/frontend/login/oidc/callback
+  logoutCallbackUrls:
+    - https://caldav.goyangi.io
+  allowedUserGroups:
+    - name: user
+  secret:
+    name: rustical-oidc

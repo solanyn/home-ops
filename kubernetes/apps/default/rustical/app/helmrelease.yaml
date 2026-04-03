@@ -5,17 +5,10 @@ kind: HelmRelease
 metadata:
   name: rustical
 spec:
-  interval: 1h
   chartRef:
     kind: OCIRepository
     name: rustical
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 1h
   values:
     controllers:
       rustical:
@@ -30,26 +23,27 @@ spec:
               tag: edge
             env:
               TZ: Australia/Sydney
-              RUSTICAL_CONFIG: /config/config.toml
+              RUSTICAL_OIDC__NAME: Pocket ID
+              RUSTICAL_OIDC__ISSUER: https://id.goyangi.io
+              RUSTICAL_OIDC__CLIENT_ID: rustical
+              RUSTICAL_OIDC__CLAIM_USERID: preferred_username
+              RUSTICAL_OIDC__SCOPES: '["openid", "profile"]'
+              RUSTICAL_OIDC__ALLOW_SIGN_UP: "true"
+              RUSTICAL_FRONTEND__ALLOW_PASSWORD_LOGIN: "false"
+            envFrom:
+              - secretRef:
+                  name: rustical-secret
             probes:
-              liveness:
+              liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /health
-                    port: 5232
+                    port: &port 4000
                   initialDelaySeconds: 5
                   periodSeconds: 30
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: 5232
-                  initialDelaySeconds: 5
-                  periodSeconds: 10
+              readiness: *probes
             resources:
               requests:
                 cpu: 10m
@@ -61,14 +55,15 @@ spec:
         controller: rustical
         ports:
           http:
-            port: 5232
+            port: *port
     route:
       app:
         hostnames:
           - caldav.goyangi.io
         parentRefs:
-          - name: envoy-external
+          - name: envoy-internal
             namespace: network
+            sectionName: https
         rules:
           - matches:
               - path:
@@ -94,15 +89,9 @@ spec:
                   statusCode: 301
           - backendRefs:
               - name: rustical
-                port: 5232
+                port: *port
     persistence:
-      config:
-        type: secret
-        name: rustical-secret
-        globalMounts:
-          - path: /config
-            readOnly: true
       data:
         existingClaim: rustical
         globalMounts:
-          - path: /data
+          - path: /var/lib/rustical
