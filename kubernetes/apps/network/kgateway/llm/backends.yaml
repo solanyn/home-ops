@@ -190,3 +190,35 @@ spec:
         model: mlx-community/Kokoro-82M-bf16
       host: mac.internal
       port: 8000
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: claude-opus
+spec:
+  ai:
+    provider:
+      openai:
+        model: claude-opus-4.6
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: claude-haiku
+spec:
+  ai:
+    provider:
+      openai:
+        model: claude-haiku-4.5
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
