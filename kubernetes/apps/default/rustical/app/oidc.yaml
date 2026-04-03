@@ -13,3 +13,5 @@ spec:
     - name: user
   secret:
     name: rustical-oidc
+    keys:
+      clientSecret: client_secret
