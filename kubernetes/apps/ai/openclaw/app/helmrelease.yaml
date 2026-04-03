@@ -81,10 +81,17 @@ spec:
                 chmod 600 /home/node/.openclaw/exec-approvals.json
 
                 # Setup SSH
-                cp /tmp/ssh-secrets/ssh_private_key /home/node/.ssh/forgejo_ed25519
+                cp /tmp/ssh-secrets/ssh_private_key /home/node/.ssh/id_ed25519
                 cp /tmp/ssh-secrets/ssh_config /home/node/.ssh/config
                 chmod 700 /home/node/.ssh
-                chmod 600 /home/node/.ssh/forgejo_ed25519 /home/node/.ssh/config
+                chmod 600 /home/node/.ssh/id_ed25519 /home/node/.ssh/config
+
+                # Copy SSH key to workspace for sandbox access
+                mkdir -p /home/node/.openclaw/workspace/.ssh
+                cp /home/node/.ssh/id_ed25519 /home/node/.openclaw/workspace/.ssh/id_ed25519
+                cp /home/node/.ssh/config /home/node/.openclaw/workspace/.ssh/config
+                chmod 700 /home/node/.openclaw/workspace/.ssh
+                chmod 600 /home/node/.openclaw/workspace/.ssh/id_ed25519 /home/node/.openclaw/workspace/.ssh/config
 
                 # Setup fj CLI config
                 cp /tmp/ssh-secrets/fj_config /home/node/.config/fj/config.toml
