@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kobo-dash
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: kobo-dash
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      kobo-dash:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/solanyn/kobo-dash-server
+              tag: latest
+            args:
+              - -file
+              - /data/dashboard.md
+              - -bindir
+              - /data/bin
+              - -width
+              - "1072"
+              - -height
+              - "1448"
+            env:
+              TZ: Australia/Sydney
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8080
+                  initialDelaySeconds: 5
+                  periodSeconds: 30
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8080
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+    service:
+      app:
+        controller: kobo-dash
+        ports:
+          http:
+            port: 8080
+    route:
+      app:
+        hostnames:
+          - kobo.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - name: kobo-dash
+                port: 8080
+    persistence:
+      data:
+        existingClaim: kobo-dash
+        globalMounts:
+          - path: /data
