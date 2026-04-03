@@ -1,0 +1,100 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rustical
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: rustical
+  interval: 1h
+  values:
+    controllers:
+      rustical:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          enableServiceLinks: false
+        containers:
+          app:
+            image:
+              repository: ghcr.io/lennart-k/rustical
+              tag: main
+            env:
+              TZ: Australia/Sydney
+              RUSTICAL_OIDC__NAME: Pocket ID
+              RUSTICAL_OIDC__ISSUER: https://id.goyangi.io
+              RUSTICAL_OIDC__CLIENT_ID: rustical
+              RUSTICAL_OIDC__CLAIM_USERID: preferred_username
+              RUSTICAL_OIDC__SCOPES: '["openid", "profile"]'
+              RUSTICAL_OIDC__ALLOW_SIGN_UP: "true"
+              RUSTICAL_FRONTEND__ALLOW_PASSWORD_LOGIN: "false"
+              RUSTICAL_DATA_STORE__SQLITE__DB_URL: sqlite:///var/lib/rustical/rustical.db
+              RUSTICAL_OIDC__CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: rustical-oidc
+                    key: client_secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 4000
+                  initialDelaySeconds: 5
+                  periodSeconds: 30
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+    service:
+      app:
+        controller: rustical
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - caldav.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: Exact
+                  value: /.well-known/caldav
+            filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  path:
+                    type: ReplaceFullPath
+                    replaceFullPath: /
+                  statusCode: 301
+          - matches:
+              - path:
+                  type: Exact
+                  value: /.well-known/carddav
+            filters:
+              - type: RequestRedirect
+                requestRedirect:
+                  path:
+                    type: ReplaceFullPath
+                    replaceFullPath: /
+                  statusCode: 301
+          - backendRefs:
+              - name: rustical
+                port: *port
+    persistence:
+      data:
+        existingClaim: rustical
+        globalMounts:
+          - path: /var/lib/rustical
