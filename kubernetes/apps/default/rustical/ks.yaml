@@ -5,8 +5,13 @@ metadata:
   name: rustical
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/volsync
   interval: 1h
   path: ./kubernetes/apps/default/rustical/app
+  postBuild:
+    substitute:
+      APP: rustical
   prune: true
   sourceRef:
     kind: GitRepository
