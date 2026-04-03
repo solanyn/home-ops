@@ -49,6 +49,7 @@ resources:
   - ./qui/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
+  - ./redlib/ks.yaml
   - ./romm/ks.yaml
   - ./searxng/ks.yaml
   - ./seasonpackerr/ks.yaml
