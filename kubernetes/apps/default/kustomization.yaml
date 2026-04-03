@@ -8,6 +8,7 @@ components:
 
 resources:
   - ./kobo-dash/ks.yaml
+  - ./rustical/ks.yaml
   - ./namespace.yaml
   - ./agregarr/ks.yaml
   - ./atuin/ks.yaml
