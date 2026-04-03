@@ -14,4 +14,9 @@ spec:
     size: 256
     rotationPolicy: Always
   commonName: goyangi.io
-  dnsNames: ["goyangi.io", "*.goyangi.io"]
+  dnsNames:
+    - goyangi.io
+    - "*.goyangi.io"
+    - "*.work.goyangi.io"
+    - "*.kobo.goyangi.io"
+    - "*.s3.goyangi.io"
