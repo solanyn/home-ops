@@ -80,18 +80,6 @@ spec:
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: mlx-stt
-spec:
-  ai:
-    provider:
-      openai:
-        model: mlx-community/parakeet-tdt-0.6b-v3
-      host: mac.internal
-      port: 8000
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
   name: kiro
 spec:
   ai:
@@ -178,18 +166,6 @@ spec:
               model: ministral-8b
             host: mac.internal
             port: 8080
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: mlx-tts
-spec:
-  ai:
-    provider:
-      openai:
-        model: mlx-community/Kokoro-82M-bf16
-      host: mac.internal
-      port: 8000
 ---
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
