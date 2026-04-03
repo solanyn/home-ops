@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: ghcr.io/lennart-k/rustical
-              tag: edge
+              tag: main
             env:
               TZ: Australia/Sydney
               RUSTICAL_OIDC__NAME: Pocket ID
