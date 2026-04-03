@@ -42,6 +42,16 @@
     },
     {
       customType: "regex",
+      description: "Track openclaw-sandbox image digest",
+      managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
+      matchStrings: [
+        "ghcr\\.io/solanyn/openclaw-sandbox:(?<currentValue>[^@]+)@(?<currentDigest>sha256:[a-f0-9]+)",
+      ],
+      depNameTemplate: "ghcr.io/solanyn/openclaw-sandbox",
+      datasourceTemplate: "docker",
+    },
+    {
+      customType: "regex",
       description: "Track Flink Kubernetes Operator version in HelmRepository URL",
       fileMatch: ["kubernetes/apps/streaming/flink/.*\\.yaml$"],
       matchStrings: [
