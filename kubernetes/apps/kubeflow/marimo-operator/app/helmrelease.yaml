@@ -17,7 +17,7 @@ spec:
             # renovate: datasource=github-tags depName=marimo-team/marimo-operator
             image:
               repository: ghcr.io/marimo-team/marimo-operator
-              tag: v0.2.5
+              tag: v0.3.0
             args:
               - --metrics-bind-address=:8443
               - --leader-elect
