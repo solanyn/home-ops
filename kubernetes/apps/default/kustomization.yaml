@@ -7,6 +7,7 @@ components:
   - ../../components/alerts
 
 resources:
+  - ./kobo-dash/ks.yaml
   - ./namespace.yaml
   - ./agregarr/ks.yaml
   - ./atuin/ks.yaml
