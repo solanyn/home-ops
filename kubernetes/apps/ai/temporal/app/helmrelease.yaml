@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: temporal
-      version: 0.73.2
+      version: 0.74.0
       sourceRef:
         kind: HelmRepository
         name: temporal
