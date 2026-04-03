@@ -61,4 +61,5 @@ resources:
   - ./wizarr/ks.yaml
   - ./zigbee/ks.yaml
   - ./zwave/ks.yaml
+  - ./continuwuity/ks.yaml
   - obsidian-couchdb/ks.yaml
