@@ -68,6 +68,9 @@ spec:
         hostnames:
           - matrix.goyangi.io
         parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
           - name: envoy-external
             namespace: network
             sectionName: https
