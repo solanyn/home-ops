@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: redlib
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: redlib
+  interval: 1h
+  values:
+    controllers:
+      redlib:
+        containers:
+          app:
+            image:
+              repository: quay.io/redlib/redlib
+              tag: latest
+            env:
+              REDLIB_DEFAULT_THEME: dark
+              REDLIB_DEFAULT_SHOW_NSFW: "off"
+              REDLIB_DEFAULT_USE_HLS: "on"
+              REDLIB_DEFAULT_HIDE_HLS_NOTIFICATION: "on"
+              REDLIB_ROBOTS_DISABLE_INDEXING: "on"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /settings
+                    port: &port 8080
+                  initialDelaySeconds: 5
+                  periodSeconds: 30
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 5m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      enableServiceLinks: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+    service:
+      app:
+        controller: redlib
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - reddit.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: redlib
+                port: *port
