@@ -26,6 +26,7 @@ spec:
           name: langfuse-secret
           key: SALT
       nextauth:
+        url: https://langfuse.goyangi.io
         secret:
           secretKeyRef:
             name: langfuse-secret
@@ -63,8 +64,6 @@ spec:
             secretKeyRef:
               name: langfuse-secret
               key: CLICKHOUSE_PASSWORD
-        - name: NEXTAUTH_URL
-          value: https://langfuse.goyangi.io
         - name: AUTH_CUSTOM_CLIENT_ID
           valueFrom:
             secretKeyRef:
