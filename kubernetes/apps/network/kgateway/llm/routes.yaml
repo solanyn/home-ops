@@ -131,7 +131,7 @@ spec:
     - matches:
         - path:
             type: PathPrefix
-            value: /v1/ministral-8b
+            value: /v1/gemma-4
       filters:
         - type: URLRewrite
           urlRewrite:
@@ -139,7 +139,7 @@ spec:
               type: ReplacePrefixMatch
               replacePrefixMatch: /v1
       backendRefs:
-        - name: mlx-ministral
+        - name: mlx-gemma
           group: agentgateway.dev
           kind: AgentgatewayBackend
 ---
