@@ -137,6 +137,10 @@ spec:
               - /bin/sh
               - -c
               - |
+                # Always copy clean config from secret mount (overwrite runtime changes)
+                cp /tmp/openclaw-config/openclaw.json /home/node/.openclaw/openclaw.json
+                chmod 600 /home/node/.openclaw/openclaw.json
+
                 # Set up openclawbot CLI symlink
                 ln -sf /app/openclawbot.mjs /home/node/.local/bin/openclawbot
 
@@ -356,6 +360,9 @@ spec:
         advancedMounts:
           openclaw:
             install-tools:
+              - path: /tmp/openclaw-config
+                readOnly: true
+            app:
               - path: /tmp/openclaw-config
                 readOnly: true
       ssh-secrets:
