@@ -32,6 +32,7 @@ resources:
   - ./immich/ks.yaml
   - ./label-studio/ks.yaml
   - ./lidarr/ks.yaml
+  - ./lubelogger/ks.yaml
   - ./matter-server/ks.yaml
   - ./otbr/ks.yaml
   - ./mealie/ks.yaml
