@@ -4,14 +4,10 @@ kind: RenovateJob
 metadata:
   name: home-ops
 spec:
-  schedule: "0 */4 * * *"
+  schedule: "0 * * * *"
   provider:
     name: github
   secretRef: renovate-secret
-  discoverTopics:
-    - renovate
-  discoveryFilters:
-    - "solanyn/*"
   image: ghcr.io/renovatebot/renovate:latest
   parallelism: 3
   extraEnv:
@@ -19,3 +15,7 @@ spec:
       value: debug
     - name: RENOVATE_PLATFORM_COMMIT
       value: "true"
+    - name: RENOVATE_AUTODISCOVER
+      value: "false"
+    - name: RENOVATE_REPOSITORIES
+      value: '["solanyn/mono","solanyn/home-ops","solanyn/containers"]'
