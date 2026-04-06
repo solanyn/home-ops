@@ -9,10 +9,3 @@ spec:
     kind: OCIRepository
     name: renovate-operator
   interval: 1h
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
