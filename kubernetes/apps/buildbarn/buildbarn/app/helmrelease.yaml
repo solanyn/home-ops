@@ -27,6 +27,7 @@ spec:
         replicas: 2
         statefulset:
           podManagementPolicy: Parallel
+          serviceName: buildbarn-storage
         initContainers:
           volume-init:
             image:
