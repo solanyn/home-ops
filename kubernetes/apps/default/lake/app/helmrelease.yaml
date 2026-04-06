@@ -92,7 +92,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-promote
-              tag: "2026.04.39"
+              tag: "2026.04.40"
               pullPolicy: Always
             env:
               <<: *env
@@ -117,7 +117,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-aggregate
-              tag: "2026.04.40"
+              tag: "2026.04.42"
               pullPolicy: Always
             env:
               <<: *env
