@@ -53,10 +53,6 @@ spec:
               tag: 20260326T163248Z-e6ab874
             args:
               - /config/worker-ubuntu22-04.jsonnet
-              - -V
-              - NODE_NAME=$(NODE_NAME)
-              - -V
-              - POD_NAME=$(POD_NAME)
             env:
               NODE_NAME:
                 valueFrom:

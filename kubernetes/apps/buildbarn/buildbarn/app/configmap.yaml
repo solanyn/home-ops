@@ -245,8 +245,8 @@ data:
             ],
           },
           workerId: {
-            pod: std.extVar('POD_NAME'),
-            node: std.extVar('NODE_NAME'),
+            pod: 'worker',
+            node: 'gke',
           },
         }],
       }],
