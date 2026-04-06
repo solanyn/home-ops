@@ -6,4 +6,3 @@ resources:
   - ./helmrelease.yaml
   - ./configmap.yaml
   - ./httproute.yaml
-  - ./namespaceoffloading.yaml
