@@ -11,11 +11,11 @@ data:
           sharding: {
             shards: {
               '0': {
-                backend: { grpc: { client: { address: 'buildbarn-storage-0.buildbarn-storage.buildbarn:8981' } } },
+                backend: { grpc: { client: { address: 'buildbarn-storage-0.buildbarn-storage.buildbarn.svc.cluster.local:8981' } } },
                 weight: 1,
               },
               '1': {
-                backend: { grpc: { client: { address: 'buildbarn-storage-1.buildbarn-storage.buildbarn:8981' } } },
+                backend: { grpc: { client: { address: 'buildbarn-storage-1.buildbarn-storage.buildbarn.svc.cluster.local:8981' } } },
                 weight: 1,
               },
             },
@@ -27,11 +27,11 @@ data:
               sharding: {
                 shards: {
                   '0': {
-                    backend: { grpc: { client: { address: 'buildbarn-storage-0.buildbarn-storage.buildbarn:8981' } } },
+                    backend: { grpc: { client: { address: 'buildbarn-storage-0.buildbarn-storage.buildbarn.svc.cluster.local:8981' } } },
                     weight: 1,
                   },
                   '1': {
-                    backend: { grpc: { client: { address: 'buildbarn-storage-1.buildbarn-storage.buildbarn:8981' } } },
+                    backend: { grpc: { client: { address: 'buildbarn-storage-1.buildbarn-storage.buildbarn.svc.cluster.local:8981' } } },
                     weight: 1,
                   },
                 },
