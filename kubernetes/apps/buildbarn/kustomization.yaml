@@ -4,3 +4,6 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./buildbarn/ks.yaml
+  - ./scheduler/ks.yaml
+  - ./browser/ks.yaml
+  - ./worker/ks.yaml
