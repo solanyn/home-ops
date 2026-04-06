@@ -18,6 +18,8 @@ spec:
       retries: 3
   values:
     defaultPodOptions:
+      annotations:
+        reloader.stakater.com/auto: "true"
       enableServiceLinks: false
     controllers:
       storage:
