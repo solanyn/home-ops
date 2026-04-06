@@ -110,10 +110,3 @@ spec:
               - path: /storage-ac
             app:
               - path: /storage-ac
-    route:
-      frontend:
-        hostnames:
-          - buildbarn.goyangi.io
-        parentRefs:
-          - name: envoy-internal
-            namespace: network

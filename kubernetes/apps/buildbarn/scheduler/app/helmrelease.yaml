@@ -53,10 +53,3 @@ spec:
         name: buildbarn-config
         globalMounts:
           - path: /config
-    route:
-      app:
-        hostnames:
-          - scheduler.buildbarn.goyangi.io
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
