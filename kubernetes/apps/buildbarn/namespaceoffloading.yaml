@@ -3,6 +3,7 @@ apiVersion: offloading.liqo.io/v1beta1
 kind: NamespaceOffloading
 metadata:
   name: offloading
+  namespace: buildbarn
 spec:
   clusterSelector:
     nodeSelectorTerms:
