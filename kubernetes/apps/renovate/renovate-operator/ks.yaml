@@ -7,9 +7,6 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: renovate
-  dependsOn:
-    - name: external-secrets-onepassword
-      namespace: flux-system
   interval: 1h
   path: ./kubernetes/apps/renovate/renovate-operator/app
   prune: true
