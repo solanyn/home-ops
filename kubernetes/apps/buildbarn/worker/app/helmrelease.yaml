@@ -1,0 +1,107 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: buildbarn-worker
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: buildbarn-worker
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    defaultPodOptions:
+      enableServiceLinks: false
+      nodeSelector:
+        liqo.io/remote-cluster-id: worker
+      tolerations:
+        - key: node.cilium.io/agent-not-ready
+          operator: Exists
+          effect: NoSchedule
+    controllers:
+      app:
+        replicas: 2
+        initContainers:
+          runner-installer:
+            image:
+              repository: ghcr.io/buildbarn/bb-runner-installer
+              tag: 20260326T163248Z-e6ab874
+          volume-init:
+            image:
+              repository: busybox
+              tag: "1.36"
+            command:
+              - sh
+              - -c
+              - mkdir -p /worker/build /worker/cache /worker/tmp
+        containers:
+          app:
+            image:
+              repository: ghcr.io/buildbarn/bb-worker
+              tag: 20260326T163248Z-e6ab874
+            args:
+              - /config/worker-ubuntu22-04.jsonnet
+              - -V
+              - NODE_NAME=$(NODE_NAME)
+              - -V
+              - POD_NAME=$(POD_NAME)
+            env:
+              NODE_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+              POD_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.name
+            resources:
+              requests:
+                cpu: "1"
+                memory: 1Gi
+              limits:
+                memory: 2Gi
+          runner:
+            image:
+              repository: ghcr.io/catthehacker/ubuntu
+              tag: act-22.04@sha256:dd7654ffb01d5b7b54b23b9ce928a1f7f2d08c7b3d7e320b6574b55d7ccde78b
+            command:
+              - /bb/bb_runner
+            args:
+              - /config/runner-ubuntu22-04.jsonnet
+            resources:
+              requests:
+                cpu: "1"
+                memory: 1Gi
+              limits:
+                memory: 2Gi
+    persistence:
+      config:
+        type: configMap
+        name: buildbarn-config
+        globalMounts:
+          - path: /config
+      runner-installer:
+        type: emptyDir
+        advancedMounts:
+          app:
+            runner-installer:
+              - path: /bb
+            runner:
+              - path: /bb
+      worker:
+        type: emptyDir
+        advancedMounts:
+          app:
+            volume-init:
+              - path: /worker
+            app:
+              - path: /worker
+            runner:
+              - path: /worker
