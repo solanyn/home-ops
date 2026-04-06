@@ -10,12 +10,12 @@ data:
         contentAddressableStorage: {
           sharding: {
             shards: {
-              "0": {
-                backend: { grpc: { client: { address: 'storage-0.storage.buildbarn:8981' } } },
+              '0': {
+                backend: { grpc: { client: { address: 'buildbarn-storage-0.buildbarn-storage.buildbarn:8981' } } },
                 weight: 1,
               },
-              "1": {
-                backend: { grpc: { client: { address: 'storage-1.storage.buildbarn:8981' } } },
+              '1': {
+                backend: { grpc: { client: { address: 'buildbarn-storage-1.buildbarn-storage.buildbarn:8981' } } },
                 weight: 1,
               },
             },
@@ -26,12 +26,12 @@ data:
             backend: {
               sharding: {
                 shards: {
-                  "0": {
-                    backend: { grpc: { client: { address: 'storage-0.storage.buildbarn:8981' } } },
+                  '0': {
+                    backend: { grpc: { client: { address: 'buildbarn-storage-0.buildbarn-storage.buildbarn:8981' } } },
                     weight: 1,
                   },
-                  "1": {
-                    backend: { grpc: { client: { address: 'storage-1.storage.buildbarn:8981' } } },
+                  '1': {
+                    backend: { grpc: { client: { address: 'buildbarn-storage-1.buildbarn-storage.buildbarn:8981' } } },
                     weight: 1,
                   },
                 },
@@ -41,7 +41,7 @@ data:
           },
         },
       },
-      browserUrl: 'http://browser.buildbarn.goyangi.io',
+      browserUrl: 'https://browser.buildbarn.goyangi.io',
       maximumMessageSizeBytes: 2 * 1024 * 1024,
       global: {
         diagnosticsHttpServer: {
@@ -55,6 +55,81 @@ data:
         },
       },
     }
+  storage.jsonnet: |
+    local common = import 'common.libsonnet';
+    {
+      grpcServers: [{
+        listenAddresses: [':8981'],
+        authenticationPolicy: { allow: {} },
+      }],
+      maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+      global: common.global,
+      contentAddressableStorage: {
+        backend: {
+          'local': {
+            keyLocationMapOnBlockDevice: {
+              file: {
+                path: '/storage-cas/key_location_map',
+                sizeBytes: 400 * 1024 * 1024,
+              },
+            },
+            keyLocationMapMaximumGetAttempts: 16,
+            keyLocationMapMaximumPutAttempts: 64,
+            oldBlocks: 8,
+            currentBlocks: 24,
+            newBlocks: 3,
+            blocksOnBlockDevice: {
+              source: {
+                file: {
+                  path: '/storage-cas/blocks',
+                  sizeBytes: 32 * 1024 * 1024 * 1024,
+                },
+              },
+              spareBlocks: 3,
+            },
+            persistent: {
+              stateDirectoryPath: '/storage-cas/persistent_state',
+              minimumEpochInterval: '300s',
+            },
+          },
+        },
+        getAuthorizer: { allow: {} },
+        putAuthorizer: { allow: {} },
+        findMissingAuthorizer: { allow: {} },
+      },
+      actionCache: {
+        backend: {
+          'local': {
+            keyLocationMapOnBlockDevice: {
+              file: {
+                path: '/storage-ac/key_location_map',
+                sizeBytes: 1024 * 1024,
+              },
+            },
+            keyLocationMapMaximumGetAttempts: 16,
+            keyLocationMapMaximumPutAttempts: 64,
+            oldBlocks: 8,
+            currentBlocks: 24,
+            newBlocks: 1,
+            blocksOnBlockDevice: {
+              source: {
+                file: {
+                  path: '/storage-ac/blocks',
+                  sizeBytes: 512 * 1024 * 1024,
+                },
+              },
+              spareBlocks: 3,
+            },
+            persistent: {
+              stateDirectoryPath: '/storage-ac/persistent_state',
+              minimumEpochInterval: '300s',
+            },
+          },
+        },
+        getAuthorizer: { allow: {} },
+        putAuthorizer: { allow: {} },
+      },
+    }
   frontend.jsonnet: |
     local common = import 'common.libsonnet';
     {
@@ -65,9 +140,9 @@ data:
       schedulers: {
         '': {
           endpoint: {
-            address: 'scheduler:8982',
+            address: 'buildbarn-scheduler:8982',
             addMetadataJmespathExpression: {
-              expression: '{\n  "build.bazel.remote.execution.v2.requestmetadata-bin": incomingGRPCMetadata."build.bazel.remote.execution.v2.requestmetadata-bin"\n}\n',
+              expression: '{"build.bazel.remote.execution.v2.requestmetadata-bin": incomingGRPCMetadata."build.bazel.remote.execution.v2.requestmetadata-bin"}',
             },
           },
         },
@@ -86,6 +161,19 @@ data:
         putAuthorizer: { allow: {} },
       },
       executeAuthorizer: { allow: {} },
+    }
+  browser.jsonnet: |
+    local common = import 'common.libsonnet';
+    {
+      blobstore: common.blobstore,
+      maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+      httpServers: [{
+        listenAddresses: [':7984'],
+        authenticationPolicy: { allow: {} },
+      }],
+      global: common.global,
+      authorizer: { allow: {} },
+      requestMetadataLinksJmespathExpression: { expression: '`{}`' },
     }
   scheduler.jsonnet: |
     local common = import 'common.libsonnet';
@@ -129,120 +217,16 @@ data:
       },
       platformQueueWithNoWorkersTimeout: '900s',
     }
-  storage.jsonnet: |
-    local common = import 'common.libsonnet';
-    {
-      grpcServers: [{
-        listenAddresses: [':8981'],
-        authenticationPolicy: { allow: {} },
-      }],
-      blobAccess: {
-        contentAddressableStorage: {
-          readCaching: {
-            slow: {
-              local: {
-                keyLocationMapOnBlockDevice: {
-                  file: {
-                    path: '/storage-cas/key_location_map',
-                    sizeBytes: 16 * 1024 * 1024,
-                  },
-                },
-                keyLocationMapMaximumGetAttempts: 8,
-                keyLocationMapMaximumPutAttempts: 32,
-                oldBlocks: 8,
-                currentBlocks: 24,
-                newBlocks: 3,
-                blocksOnBlockDevice: {
-                  source: {
-                    file: {
-                      path: '/storage-cas/blocks',
-                      sizeBytes: 33 * 1024 * 1024 * 1024,
-                    },
-                  },
-                  spareBlocks: 3,
-                },
-                persistent: {
-                  stateDirectoryPath: '/storage-cas/persistent_state',
-                  minimumEpochInterval: '300s',
-                },
-              },
-            },
-            fast: {
-              existingCaching: {
-                backend: {
-                  'local': {
-                    keyLocationMapOnBlockDevice: {
-                      file: {
-                        path: '/storage-cas/key_location_map_existence',
-                        sizeBytes: 1024 * 1024,
-                      },
-                    },
-                    keyLocationMapMaximumGetAttempts: 8,
-                    keyLocationMapMaximumPutAttempts: 32,
-                    oldBlocks: 14,
-                    currentBlocks: 2,
-                    newBlocks: 1,
-                    blocksOnBlockDevice: {
-                      source: {
-                        file: {
-                          path: '/storage-cas/blocks_existence',
-                          sizeBytes: 100 * 1024 * 1024,
-                        },
-                      },
-                      spareBlocks: 3,
-                    },
-                    persistent: {
-                      stateDirectoryPath: '/storage-cas/persistent_state_existence',
-                      minimumEpochInterval: '300s',
-                    },
-                  },
-                },
-                existenceCache: {
-                  cacheSize: 1000000,
-                  cacheDuration: '600s',
-                  cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
-                },
-              },
-            },
-          },
-        },
-        actionCache: {
-          local: {
-            keyLocationMapOnBlockDevice: {
-              file: {
-                path: '/storage-ac/key_location_map',
-                sizeBytes: 1024 * 1024,
-              },
-            },
-            keyLocationMapMaximumGetAttempts: 8,
-            keyLocationMapMaximumPutAttempts: 32,
-            oldBlocks: 8,
-            currentBlocks: 24,
-            newBlocks: 3,
-            blocksOnBlockDevice: {
-              source: {
-                file: {
-                  path: '/storage-ac/blocks',
-                  sizeBytes: 1024 * 1024 * 1024,
-                },
-              },
-              spareBlocks: 3,
-            },
-            persistent: {
-              stateDirectoryPath: '/storage-ac/persistent_state',
-              minimumEpochInterval: '300s',
-            },
-          },
-        },
-      },
-      global: common.global,
-      maximumMessageSizeBytes: common.maximumMessageSizeBytes,
-    }
   worker-ubuntu22-04.jsonnet: |
     local common = import 'common.libsonnet';
     {
-      global: common.global,
+      blobstore: common.blobstore,
+      browserUrl: common.browserUrl,
       maximumMessageSizeBytes: common.maximumMessageSizeBytes,
+      scheduler: { address: 'buildbarn-scheduler:8983' },
+      global: common.global {
+        setUmask: { umask: 0 },
+      },
       buildDirectories: [{
         native: {
           buildDirectoryPath: '/worker/build',
@@ -253,41 +237,32 @@ data:
         },
         runners: [{
           endpoint: { address: 'unix:///worker/runner' },
-          concurrency: 4,
+          concurrency: 8,
           platform: {
             properties: [
-              { name: 'OSFamily', value: 'Linux' },
+              { name: 'OSFamily', value: 'linux' },
               { name: 'container-image', value: 'docker://ghcr.io/catthehacker/ubuntu:act-22.04@sha256:dd7654ffb01d5b7b54b23b9ce928a1f7f2d08c7b3d7e320b6574b55d7ccde78b' },
             ],
           },
           workerId: {
-            node: std.extVar('NODE_NAME'),
             pod: std.extVar('POD_NAME'),
+            node: std.extVar('NODE_NAME'),
           },
         }],
       }],
-      contentAddressableStorage: common.blobstore.contentAddressableStorage,
-      scheduler: { address: 'scheduler:8983' },
+      inputDownloadConcurrency: 10,
+      outputUploadConcurrency: 11,
+      directoryCache: {
+        maximumCount: 1000,
+        maximumSizeBytes: 1000 * 1024,
+        cacheReplacementPolicy: 'LEAST_RECENTLY_USED',
+      },
     }
   runner-ubuntu22-04.jsonnet: |
     {
       buildDirectoryPath: '/worker/build',
-      commandCreator: { simple: {} },
-      runner: {
-        local: {
-          temporaryDirectory: '/worker/tmp',
-        },
-      },
-    }
-  browser.jsonnet: |
-    local common = import 'common.libsonnet';
-    {
-      httpServers: [{
-        listenAddresses: [':7984'],
+      grpcServers: [{
+        listenPaths: ['/worker/runner'],
         authenticationPolicy: { allow: {} },
       }],
-      contentAddressableStorage: common.blobstore.contentAddressableStorage,
-      actionCache: common.blobstore.actionCache,
-      maximumMessageSizeBytes: common.maximumMessageSizeBytes,
-      global: common.global,
     }

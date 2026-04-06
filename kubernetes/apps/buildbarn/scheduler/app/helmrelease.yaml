@@ -1,0 +1,62 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: buildbarn-scheduler
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: buildbarn-scheduler
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    defaultPodOptions:
+      enableServiceLinks: false
+    controllers:
+      app:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/buildbarn/bb-scheduler
+              tag: 20260326T163248Z-e6ab874
+            args:
+              - /config/scheduler.jsonnet
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 512Mi
+    service:
+      app:
+        ports:
+          admin:
+            port: 7982
+          client:
+            port: 8982
+          worker:
+            port: 8983
+          buildqueue:
+            port: 8984
+          metrics:
+            port: 9980
+    persistence:
+      config:
+        type: configMap
+        name: buildbarn-config
+        globalMounts:
+          - path: /config
+    route:
+      app:
+        hostnames:
+          - scheduler.buildbarn.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
