@@ -28,6 +28,7 @@ spec:
               - server
               - --port=8443
               - --reverse
+              - --socks5
               - --authfile=/config/users.json
               - --keyfile=/config/key.pem
             env:
@@ -61,12 +62,10 @@ spec:
         ports:
           tunnel:
             port: 8443
-          opencode-work:
-            port: 4097
-          dev-work:
-            port: 4098
-          ssh-work:
-            port: 2222
+          socks:
+            port: 1080
+          node-exporter:
+            port: 9100
     route:
       app:
         hostnames:
@@ -78,32 +77,6 @@ spec:
           - backendRefs:
               - name: chisel
                 port: 8443
-      work-opencode:
-        hostnames:
-          - work.opencode.goyangi.io
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - backendRefs:
-              - name: chisel
-                port: 4097
-      work-dev:
-        hostnames:
-          - work-dev.goyangi.io
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - filters:
-              - type: RequestHeaderModifier
-                requestHeaderModifier:
-                  set:
-                    - name: Host
-                      value: localhost:8080
-            backendRefs:
-              - name: chisel
-                port: 4098
     persistence:
       config:
         type: secret
