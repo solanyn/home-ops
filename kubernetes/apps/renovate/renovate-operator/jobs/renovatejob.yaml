@@ -1,5 +1,5 @@
 ---
-apiVersion: renovate.mogenius.com/v1
+apiVersion: renovate-operator.mogenius.com/v1alpha1
 kind: RenovateJob
 metadata:
   name: home-ops
