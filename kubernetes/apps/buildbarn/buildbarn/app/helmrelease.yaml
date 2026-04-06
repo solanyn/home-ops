@@ -1,0 +1,119 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: buildbarn
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: buildbarn-buildbarn
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    defaultPodOptions:
+      enableServiceLinks: false
+    controllers:
+      storage:
+        type: statefulset
+        replicas: 2
+        statefulset:
+          podManagementPolicy: Parallel
+        initContainers:
+          volume-init:
+            image:
+              repository: busybox
+              tag: "1.36"
+            command:
+              - sh
+              - -c
+              - mkdir -p /storage-cas/persistent_state /storage-ac/persistent_state
+        containers:
+          app:
+            image:
+              repository: ghcr.io/buildbarn/bb-storage
+              tag: 20260326T151518Z-d0c6f26
+            args:
+              - /config/storage.jsonnet
+            resources:
+              requests:
+                cpu: 250m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
+      frontend:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/buildbarn/bb-storage
+              tag: 20260326T151518Z-d0c6f26
+            args:
+              - /config/frontend.jsonnet
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 512Mi
+    service:
+      storage:
+        controller: storage
+        clusterIP: None
+        ports:
+          grpc:
+            port: 8981
+          metrics:
+            port: 9980
+      frontend:
+        controller: frontend
+        ports:
+          grpc:
+            port: 8980
+          metrics:
+            port: 9980
+    persistence:
+      config:
+        type: configMap
+        name: buildbarn-config
+        advancedMounts:
+          storage:
+            app:
+              - path: /config
+          frontend:
+            app:
+              - path: /config
+      storage-cas:
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 33Gi
+        advancedMounts:
+          storage:
+            volume-init:
+              - path: /storage-cas
+            app:
+              - path: /storage-cas
+      storage-ac:
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        advancedMounts:
+          storage:
+            volume-init:
+              - path: /storage-ac
+            app:
+              - path: /storage-ac
+    route:
+      frontend:
+        hostnames:
+          - buildbarn.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
