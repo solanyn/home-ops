@@ -1,0 +1,51 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: gha-runner-scale-set-mono
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.14.0
+  url: oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &name mono-runner
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: gha-runner-scale-set-mono
+  interval: 1h
+  values:
+    githubConfigUrl: https://github.com/solanyn/mono
+    githubConfigSecret: mono-runner-secret
+    minRunners: 0
+    maxRunners: 3
+    containerMode:
+      type: kubernetes
+      kubernetesModeWorkVolumeClaim:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: openebs-hostpath
+        resources:
+          requests:
+            storage: 25Gi
+    controllerServiceAccount:
+      name: actions-runner-controller
+      namespace: actions-runner-system
+    template:
+      spec:
+        containers:
+          - name: runner
+            image: ghcr.io/home-operations/actions-runner:2.333.1@sha256:1a7726bcaeba4e46fe07fe98e1805b4df78618a71e67758f932862b929f852d4
+            command: ["/home/runner/run.sh"]
+            env:
+              - name: ACTIONS_RESULTS_URL
+                value: https://github-actions-cache.goyangi.io/
+              - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
+                value: "false"
+        serviceAccountName: *name
