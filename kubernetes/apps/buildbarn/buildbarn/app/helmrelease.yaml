@@ -43,7 +43,7 @@ spec:
               - /config/storage.jsonnet
             resources:
               requests:
-                cpu: 250m
+                cpu: 10m
                 memory: 512Mi
               limits:
                 memory: 1Gi
@@ -57,7 +57,7 @@ spec:
               - /config/frontend.jsonnet
             resources:
               requests:
-                cpu: 100m
+                cpu: 10m
                 memory: 256Mi
               limits:
                 memory: 512Mi

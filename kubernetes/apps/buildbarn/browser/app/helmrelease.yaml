@@ -30,7 +30,7 @@ spec:
               - /config/browser.jsonnet
             resources:
               requests:
-                cpu: 100m
+                cpu: 10m
                 memory: 256Mi
               limits:
                 memory: 512Mi
