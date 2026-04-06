@@ -48,7 +48,7 @@ jobs:
 
       # HACK: flux-local doesn't support GitRepository chart refs, so we sparse checkout the chart
       - name: Run flux-local test
-        uses: docker://ghcr.io/allenporter/flux-local:v8.1.0
+        uses: docker://ghcr.io/allenporter/flux-local:v8.2.0
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         with:
@@ -97,7 +97,7 @@ jobs:
           token: ${{ steps.app-token.outputs.token }}
 
       - name: Run flux-local diff
-        uses: docker://ghcr.io/allenporter/flux-local:v8.1.0
+        uses: docker://ghcr.io/allenporter/flux-local:v8.2.0
         env:
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         with:
