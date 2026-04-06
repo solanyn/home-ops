@@ -1,0 +1,15 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GRPCRoute
+metadata:
+  name: buildbarn-frontend
+spec:
+  parentRefs:
+    - name: envoy-internal
+      namespace: network
+  hostnames:
+    - buildbarn.goyangi.io
+  rules:
+    - backendRefs:
+        - name: buildbarn-frontend
+          port: 8980
