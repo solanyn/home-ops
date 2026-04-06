@@ -66,6 +66,8 @@ spec:
             port: 1080
           node-exporter:
             port: 9100
+          opencode:
+            port: 4097
     route:
       app:
         hostnames:
