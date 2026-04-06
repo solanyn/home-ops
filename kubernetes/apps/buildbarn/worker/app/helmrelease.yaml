@@ -41,7 +41,7 @@ spec:
           volume-init:
             image:
               repository: busybox
-              tag: "1.36"
+              tag: "1.37"
             command:
               - sh
               - -c
