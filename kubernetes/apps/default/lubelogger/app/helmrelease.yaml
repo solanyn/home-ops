@@ -1,0 +1,93 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: lubelogger
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: lubelogger
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      lubelogger:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/hargata/lubelogger
+              tag: v1.6.3
+            env:
+              TZ: Australia/Sydney
+              LC_ALL: en_AU.UTF-8
+              LANG: en_AU.UTF-8
+              LOGGING__LOGLEVEL__DEFAULT: Information
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 256Mi
+    service:
+      app:
+        ports:
+          http:
+            port: 8080
+    route:
+      app:
+        hostnames:
+          - lubelogger.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 8080
+    persistence:
+      config:
+        existingClaim: lubelogger
+        globalMounts:
+          - path: /App/config
+            subPath: config
+      data:
+        existingClaim: lubelogger
+        globalMounts:
+          - path: /App/data
+            subPath: data
+      documents:
+        existingClaim: lubelogger
+        globalMounts:
+          - path: /App/wwwroot/documents
+            subPath: documents
+      images:
+        existingClaim: lubelogger
+        globalMounts:
+          - path: /App/wwwroot/images
+            subPath: images
+      temp:
+        existingClaim: lubelogger
+        globalMounts:
+          - path: /App/wwwroot/temp
+            subPath: temp
+      log:
+        type: emptyDir
+        globalMounts:
+          - path: /App/log
+      keys:
+        type: emptyDir
+        globalMounts:
+          - path: /root/.aspnet/DataProtection-Keys
