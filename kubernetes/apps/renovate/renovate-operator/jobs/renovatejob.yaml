@@ -5,24 +5,17 @@ metadata:
   name: home-ops
 spec:
   schedule: "0 */4 * * *"
-  suspend: false
-  renovateConfig:
-    env:
-      - name: RENOVATE_TOKEN
-        valueFrom:
-          secretKeyRef:
-            name: renovate-secret
-            key: GITHUB_TOKEN
-      - name: RENOVATE_AUTODISCOVER
-        value: "true"
-      - name: RENOVATE_AUTODISCOVER_FILTER
-        value: "solanyn/*"
-      - name: RENOVATE_PLATFORM
-        value: "github"
-      - name: RENOVATE_PLATFORM_COMMIT
-        value: "true"
-      - name: LOG_LEVEL
-        value: "debug"
-    image:
-      repository: ghcr.io/renovatebot/renovate
-      tag: latest
+  provider:
+    name: github
+  secretRef: renovate-secret
+  discoverTopics:
+    - renovate
+  discoveryFilters:
+    - "solanyn/*"
+  image: ghcr.io/renovatebot/renovate:latest
+  parallelism: 3
+  extraEnv:
+    - name: LOG_LEVEL
+      value: debug
+    - name: RENOVATE_PLATFORM_COMMIT
+      value: "true"
