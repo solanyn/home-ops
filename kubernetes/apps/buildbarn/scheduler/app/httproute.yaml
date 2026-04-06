@@ -1,0 +1,15 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: buildbarn-scheduler
+spec:
+  parentRefs:
+    - name: envoy-internal
+      namespace: network
+  hostnames:
+    - scheduler.buildbarn.goyangi.io
+  rules:
+    - backendRefs:
+        - name: buildbarn-scheduler
+          port: 7982
