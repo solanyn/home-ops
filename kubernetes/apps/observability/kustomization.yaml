@@ -8,12 +8,11 @@ components:
   - ../../components/alerts
 
 resources:
-  - ./vpa/ks.yaml
-  - ./goldilocks/ks.yaml
   - ./namespace.yaml
   - ./blackbox-exporter/ks.yaml
   - ./fluent-bit/ks.yaml
   - ./gatus/ks.yaml
+  - ./goldilocks/ks.yaml
   - ./grafana/ks.yaml
   - ./grafana-mcp/ks.yaml
   - ./keda/ks.yaml
@@ -24,8 +23,9 @@ resources:
   - ./opentelemetry-ebpf/ks.yaml
   - ./opentelemetry-operator/ks.yaml
   - ./silence-operator/ks.yaml
+  - ./siren/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./thanos/ks.yaml
   - ./unpoller/ks.yaml
-  - ./siren/ks.yaml
   - ./victoria-logs/ks.yaml
+  - ./vpa/ks.yaml
