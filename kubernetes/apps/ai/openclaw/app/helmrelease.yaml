@@ -121,6 +121,20 @@ spec:
                   rm -rf /tmp/docker
                 fi
 
+                # Install hippo-memory CLI and plugin if not present
+                if [ ! -f /home/node/.local/bin/hippo ]; then
+                  echo "Installing hippo-memory..."
+                  npm install -g hippo-memory
+                fi
+                if [ ! -d /home/node/.openclaw/extensions/hippo-memory ]; then
+                  echo "Installing hippo-memory OpenClaw plugin..."
+                  openclaw plugins install hippo-memory --dangerously-force-unsafe-install
+                fi
+                # Init hippo in workspace if not already
+                if [ ! -d /home/node/.openclaw/workspace/.hippo ]; then
+                  cd /home/node/.openclaw/workspace && hippo init
+                fi
+
                 # Install Matrix plugin if not present
                 if [ ! -d /home/node/.openclaw/extensions/matrix ]; then
                   echo "Installing Matrix plugin..."
