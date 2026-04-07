@@ -10,3 +10,4 @@ components:
 resources:
   - ./namespace.yaml
   - ./actions-runner-controller/ks.yaml
+  - ./namespaceoffloading.yaml
