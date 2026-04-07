@@ -9,16 +9,18 @@ spec:
     kind: OCIRepository
     name: buildbarn-scheduler
   interval: 1h
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   values:
     defaultPodOptions:
       enableServiceLinks: false
+      nodeSelector:
+        liqo.io/remote-cluster-id: worker
+      tolerations:
+        - key: virtual-node.liqo.io/not-allowed
+          operator: Exists
+          effect: NoExecute
+        - key: node.cilium.io/agent-not-ready
+          operator: Exists
+          effect: NoSchedule
     controllers:
       app:
         containers:

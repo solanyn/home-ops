@@ -1,0 +1,16 @@
+---
+apiVersion: offloading.liqo.io/v1beta1
+kind: NamespaceOffloading
+metadata:
+  name: offloading
+  namespace: actions-runner-system
+spec:
+  clusterSelector:
+    nodeSelectorTerms:
+      - matchExpressions:
+          - key: liqo.io/remote-cluster-id
+            operator: In
+            values:
+              - worker
+  namespaceMappingStrategy: EnforceSameName
+  podOffloadingStrategy: LocalAndRemote
