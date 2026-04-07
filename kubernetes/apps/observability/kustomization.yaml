@@ -8,6 +8,8 @@ components:
   - ../../components/alerts
 
 resources:
+  - ./vpa/ks.yaml
+  - ./goldilocks/ks.yaml
   - ./namespace.yaml
   - ./blackbox-exporter/ks.yaml
   - ./fluent-bit/ks.yaml
