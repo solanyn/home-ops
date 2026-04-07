@@ -9,4 +9,5 @@ components:
 
 resources:
   - ./namespace.yaml
+  - ./namespaceoffloading.yaml
   - ./tuppr/ks.yaml
