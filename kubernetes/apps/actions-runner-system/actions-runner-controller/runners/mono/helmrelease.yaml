@@ -53,5 +53,8 @@ spec:
           - key: virtual-node.liqo.io/not-allowed
             operator: Exists
             effect: NoExecute
+          - key: node.cilium.io/agent-not-ready
+            operator: Exists
+            effect: NoSchedule
         nodeSelector:
           liqo.io/type: virtual-node
