@@ -36,7 +36,6 @@ resources:
   - ./matter-server/ks.yaml
   - ./otbr/ks.yaml
   - ./mealie/ks.yaml
-  - ./mlflow/ks.yaml
   - ./lake/ks.yaml
   - ./mlm/ks.yaml
   - ./opencode/ks.yaml
