@@ -13,7 +13,6 @@ resources:
   - ./agregarr/ks.yaml
   - ./atuin/ks.yaml
   - ./audiobookshelf/ks.yaml
-  - ./baikal/ks.yaml
   - ./autobrr/ks.yaml
   - ./brrpolice/ks.yaml
   - ./bazarr/ks.yaml
