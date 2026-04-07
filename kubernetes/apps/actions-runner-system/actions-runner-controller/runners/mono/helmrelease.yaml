@@ -28,12 +28,6 @@ spec:
     maxRunners: 3
     containerMode:
       type: kubernetes
-      kubernetesModeWorkVolumeClaim:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: liqo
-        resources:
-          requests:
-            storage: 25Gi
     controllerServiceAccount:
       name: actions-runner-controller
       namespace: actions-runner-system
@@ -48,6 +42,9 @@ spec:
                 value: https://github-actions-cache.goyangi.io/
               - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
                 value: "false"
+            volumeMounts:
+              - name: work
+                mountPath: /home/runner/_work
         serviceAccountName: *name
         tolerations:
           - key: virtual-node.liqo.io/not-allowed
@@ -58,3 +55,6 @@ spec:
             effect: NoSchedule
         nodeSelector:
           liqo.io/type: virtual-node
+        volumes:
+          - name: work
+            emptyDir: {}
