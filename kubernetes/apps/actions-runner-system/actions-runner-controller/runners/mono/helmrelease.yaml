@@ -25,34 +25,38 @@ spec:
     githubConfigUrl: https://github.com/solanyn/mono
     githubConfigSecret: mono-runner-secret
     minRunners: 0
-    maxRunners: 3
-    containerMode:
-      type: kubernetes
-      kubernetesModeWorkVolumeClaim:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: openebs-hostpath
-        resources:
-          requests:
-            storage: 25Gi
+    maxRunners: 2
     controllerServiceAccount:
       name: actions-runner-controller
       namespace: actions-runner-system
     template:
       spec:
+        nodeSelector:
+          liqo.io/remote-cluster-id: worker
+        tolerations:
+          - key: virtual-node.liqo.io/not-allowed
+            operator: Exists
+            effect: NoExecute
+          - key: node.cilium.io/agent-not-ready
+            operator: Exists
+            effect: NoSchedule
         containers:
           - name: runner
             image: ghcr.io/home-operations/actions-runner:2.333.1@sha256:1a7726bcaeba4e46fe07fe98e1805b4df78618a71e67758f932862b929f852d4
             command: ["/home/runner/run.sh"]
             env:
-              - name: ACTIONS_RESULTS_URL
-                value: https://github-actions-cache.goyangi.io/
               - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
                 value: "false"
             resources:
               requests:
-                cpu: 500m
-                memory: 2Gi
+                cpu: "2"
+                memory: 4Gi
               limits:
-                cpu: "3"
-                memory: 6Gi
-        serviceAccountName: *name
+                cpu: "6"
+                memory: 12Gi
+            volumeMounts:
+              - name: work
+                mountPath: /home/runner/_work
+        volumes:
+          - name: work
+            emptyDir: {}
