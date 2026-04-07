@@ -30,7 +30,7 @@ spec:
       type: kubernetes
       kubernetesModeWorkVolumeClaim:
         accessModes: ["ReadWriteOnce"]
-        storageClassName: openebs-hostpath
+        storageClassName: liqo
         resources:
           requests:
             storage: 25Gi
@@ -49,3 +49,9 @@ spec:
               - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
                 value: "false"
         serviceAccountName: *name
+        tolerations:
+          - key: virtual-node.liqo.io/not-allowed
+            operator: Exists
+            effect: NoExecute
+        nodeSelector:
+          liqo.io/type: virtual-node
