@@ -135,7 +135,7 @@ spec:
   wait: false
   dependsOn:  # Optional - for dependencies
     - name: dependency-name
-      namespace: flux-system
+      namespace: target-namespace
   components:  # Optional - for VolSync backups
     - ../../../../components/volsync
 ```
@@ -148,10 +148,14 @@ kind: Kustomization
 metadata:
   name: app-crds
 spec:
+  targetNamespace: target-namespace
   interval: 1h
   path: ./kubernetes/apps/namespace/app-name/crds
   prune: false  # Never prune CRDs
-  targetNamespace: target-namespace
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
   wait: true    # Wait for CRDs to be ready
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -159,14 +163,19 @@ kind: Kustomization
 metadata:
   name: app-name
 spec:
+  targetNamespace: target-namespace
   dependsOn:
     - name: app-crds
+      namespace: target-namespace
   interval: 1h
   path: ./kubernetes/apps/namespace/app-name/app
-  targetNamespace: target-namespace
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
 ```
 
-**Field ordering in ks.yaml:**
+**Field ordering in ks.yaml** (follow this order strictly):
 ```yaml
 metadata:
   name: app-name
@@ -174,7 +183,7 @@ spec:
   targetNamespace: namespace     # Always first
   components:                    # Optional - before dependsOn
     - ../../../../components/volsync
-  dependsOn:  # Dependencies
+  dependsOn:                     # Dependencies (always include namespace)
     - name: cloudnative-pg-cluster
       namespace: storage
   interval: 1h                   # Standard fields
@@ -184,24 +193,23 @@ spec:
       APP: app-name
       VOLSYNC_CAPACITY: 5Gi
   prune: true
-  sourceRef:                     # Git source
+  sourceRef:                     # Git source (always flux-system)
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   wait: false
 ```
 
+**ks.yaml conventions:**
+- **No `namespace` in metadata** - inherited from the parent namespace kustomization
+- **`sourceRef.name` is always `flux-system`** (not `home-ops-kubernetes`)
+- **`dependsOn` always includes `namespace`** on every entry
+- **Resources in namespace `kustomization.yaml` must be in alphabetical order**
+
 **Common dependencies:**
 - **Database apps**: `cloudnative-pg-cluster` (namespace: storage)
 - **Storage apps**: `rook-ceph-cluster` (namespace: rook-ceph)
 - **AI apps**: May depend on model serving or gateway services
-
-**Always include namespace in dependsOn:**
-```yaml
-dependsOn:
-  - name: dependency-name
-    namespace: target-namespace
-```
 
 3. **Create app/kustomization.yaml**:
 
@@ -284,14 +292,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: app-name
-  interval: 1h
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
+  interval: 10m
   values:
     controllers:
       app:
@@ -313,6 +314,10 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
 ```
+
+**Do not add `install`, `upgrade`, or `rollback` remediation blocks to HelmRelease** - these are applied automatically by the cluster `ks.yaml` patches. Only add them if the app needs non-standard remediation.
+
+**Default HelmRelease interval is `10m`** (not `1h` or `30m`).
 
 **Reference upstream documentation:**
 - **App-template**: https://bjw-s.github.io/helm-charts/docs/app-template/
