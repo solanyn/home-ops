@@ -154,6 +154,44 @@ spec:
                 fi
 
                 echo "Init container completed successfully"
+          livesync-bridge:
+            image:
+              repository: ghcr.io/openclaw/openclaw
+              tag: 2026.4.8@sha256:cfd0d7fbd222bf570f9b19293b70d161b046da05a25651c2bef6146935fb9209
+            restartPolicy: Always
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -e
+                export PATH="$HOME/.deno/bin:$HOME/.local/bin:$PATH"
+                if [ ! -f "$HOME/.deno/bin/deno" ]; then
+                  echo "Installing deno..."
+                  curl -fsSL https://deno.land/install.sh | sh -s -- --yes
+                fi
+                BRIDGE_DIR="$HOME/.openclaw/workspace/livesync-bridge"
+                if [ ! -d "$BRIDGE_DIR" ]; then
+                  cd "$HOME/.openclaw/workspace"
+                  git clone --recursive https://github.com/vrtmrz/livesync-bridge.git
+                fi
+                COUCH_PASS=$(op read 'op://kubernetes/obsidian/OBSIDIAN_COUCHDB_PASSWORD')
+                mkdir -p "$BRIDGE_DIR/dat"
+                printf '{"peers":[{"type":"couchdb","name":"obsidian","url":"http://obsidian-couchdb.default.svc.cluster.local:5984","database":"couchdb","username":"obsidian","password":"%s","passphrase":"","obfuscatePassphrase":"","customChunkSize":100,"minimumChunkSize":20,"baseDir":"","useRemoteTweaks":true},{"type":"storage","name":"hawow-local","baseDir":"./vault/","scanOfflineChanges":true}]}' "$COUCH_PASS" > "$BRIDGE_DIR/dat/config.json"
+                if ! grep -q 'entry.path ||' "$BRIDGE_DIR/PeerCouchDB.ts" 2>/dev/null; then
+                  sed -i 's/if (entry.path.indexOf(":"))/if (!entry.path || entry.path.indexOf(":"))/' "$BRIDGE_DIR/PeerCouchDB.ts"
+                fi
+                cd "$BRIDGE_DIR"
+                exec deno task run
+            env:
+              HOME: /home/node
+              PATH: /home/node/.deno/bin:/home/node/.local/bin:/usr/local/bin:/usr/bin:/bin
+            envFrom:
+              - secretRef:
+                  name: openclaw
+            resources:
+              requests:
+                cpu: 5m
+                memory: 64Mi
         containers:
           app:
             image:
