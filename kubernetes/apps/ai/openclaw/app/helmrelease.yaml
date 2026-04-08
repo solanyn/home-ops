@@ -139,6 +139,14 @@ spec:
                   hippo init 2>/dev/null || true
                 fi
 
+                # Install gogcli if not present
+                if [ ! -f /home/node/.local/bin/gog ]; then
+                  echo "Installing gogcli..."
+                  curl -fsSL https://github.com/steipete/gogcli/releases/download/v0.12.0/gogcli_0.12.0_linux_amd64.tar.gz | tar xz -C /tmp
+                  mv /tmp/gog /home/node/.local/bin/gog
+                  chmod +x /home/node/.local/bin/gog
+                fi
+
                 # Install Matrix plugin if not present
                 if [ ! -d /home/node/.openclaw/extensions/matrix ]; then
                   echo "Installing Matrix plugin..."
