@@ -9,11 +9,11 @@ data:
     from pyiceberg.catalog import load_catalog
     from pyiceberg.exceptions import NamespaceAlreadyExistsError, TableAlreadyExistsError
     from pyiceberg.schema import Schema
-    from pyiceberg.types import NestedField, StringType, TimestampType
+    from pyiceberg.types import NestedField, StringType, TimestamptzType
 
     BRONZE_SCHEMA = Schema(
         NestedField(1, "_source", StringType(), required=False, doc="Source identifier"),
-        NestedField(2, "_ingested_at", TimestampType(), required=False, doc="UTC ingest timestamp"),
+        NestedField(2, "_ingested_at", TimestamptzType(), required=False, doc="UTC ingest timestamp"),
         NestedField(3, "_raw_payload", StringType(), required=False, doc="JSON-encoded raw payload"),
         NestedField(4, "_batch_id", StringType(), required=False, doc="Ingest batch UUID"),
     )
