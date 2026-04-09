@@ -3,7 +3,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: actions-cache-server
+  name: home-ops-actions-cache-server
 spec:
   interval: 15m
   layerSelector:
