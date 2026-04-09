@@ -65,7 +65,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.7.2-openvino@sha256:1ce55bbbe472702babc6996918298bccab946826e8206da8281b438e8e7626c9
+              tag: v2.7.2@sha256:ebf6321014e3a4f4dbd12a2659baffcf2265637f853a885aa107dc577b554ce0
             env:
               TZ: Australia/Sydney
               MACHINE_LEARNING_CACHE_FOLDER: /cache
