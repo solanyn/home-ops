@@ -68,6 +68,8 @@ spec:
             port: 9100
           opencode:
             port: 4097
+          ssh:
+            port: 2222
     route:
       app:
         hostnames:
