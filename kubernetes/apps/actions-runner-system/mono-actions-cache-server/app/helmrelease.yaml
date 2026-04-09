@@ -3,15 +3,24 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app actions-cache-server
+  name: mono-actions-cache-server
 spec:
   chartRef:
     kind: OCIRepository
-    name: actions-cache-server
+    name: mono-actions-cache-server
   interval: 1h
   values:
     defaultPodOptions:
       enableServiceLinks: false
+      nodeSelector:
+        liqo.io/remote-cluster-id: worker
+      tolerations:
+        - key: virtual-node.liqo.io/not-allowed
+          operator: Exists
+          effect: NoExecute
+        - key: node.cilium.io/agent-not-ready
+          operator: Exists
+          effect: NoSchedule
     controllers:
       app:
         containers:
@@ -20,7 +29,7 @@ spec:
               repository: ghcr.io/falcondev-oss/github-actions-cache-server
               tag: 9.4.3@sha256:fdc457c9dfcecf0ad2cfb11511327c74d6d654a7d2489023afdf1f7334d62628
             env:
-              API_BASE_URL: http://actions-cache-server.actions-runner-system.svc.cluster.local:3000
+              API_BASE_URL: http://mono-actions-cache-server.actions-runner-system.svc.cluster.local:3000
               STORAGE_DRIVER: filesystem
               STORAGE_FILESYSTEM_PATH: /data/cache
               DB_DRIVER: sqlite
@@ -40,7 +49,7 @@ spec:
     persistence:
       data:
         type: persistentVolumeClaim
-        storageClass: openebs-hostpath
+        storageClass: standard-rwo
         accessMode: ReadWriteOnce
         size: 10Gi
         globalMounts:
