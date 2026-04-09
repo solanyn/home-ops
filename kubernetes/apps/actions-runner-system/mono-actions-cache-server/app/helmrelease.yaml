@@ -48,9 +48,7 @@ spec:
             port: 3000
     persistence:
       data:
-        type: persistentVolumeClaim
-        storageClass: liqo
-        accessMode: ReadWriteOnce
-        size: 10Gi
+        type: emptyDir
+        sizeLimit: 10Gi
         globalMounts:
           - path: /data
