@@ -1,0 +1,310 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: moltis
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: moltis
+  interval: 10m
+  values:
+    controllers:
+      moltis:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          daemon:
+            image:
+              repository: docker
+              tag: 29.4.0-dind
+            restartPolicy: Always
+            securityContext:
+              privileged: true
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
+            env:
+              DOCKER_TLS_CERTDIR: /certs
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec: &daemonProbe
+                  exec:
+                    command: ["docker", "info"]
+                  periodSeconds: 2
+                  timeoutSeconds: 3
+                  failureThreshold: 60
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  <<: *daemonProbe
+                  periodSeconds: 5
+                  failureThreshold: 3
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  <<: *daemonProbe
+                  periodSeconds: 20
+                  failureThreshold: 3
+          init-setup:
+            image:
+              repository: ghcr.io/moltis-org/moltis
+              tag: 20260409.01@sha256:0d263e279db8b413dd8355621d54315cd0ba7771411744bda931ac970e38265f
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -e
+                mkdir -p /home/moltis/.ssh /home/moltis/.config/fj /config /data /home/moltis/.moltis
+
+                cp /tmp/ssh-secrets/ssh_private_key /home/moltis/.ssh/id_ed25519
+                cp /tmp/ssh-secrets/ssh_config /home/moltis/.ssh/config
+                chmod 700 /home/moltis/.ssh
+                chmod 600 /home/moltis/.ssh/id_ed25519 /home/moltis/.ssh/config
+
+                cp /tmp/ssh-secrets/fj_config /home/moltis/.config/fj/config.toml
+                chmod 600 /home/moltis/.config/fj/config.toml
+
+                cp /tmp/moltis-config/moltis.toml /config/moltis.toml
+                chmod 600 /config/moltis.toml
+        containers:
+          app:
+            image:
+              repository: ghcr.io/moltis-org/moltis
+              tag: 20260409.01@sha256:0d263e279db8b413dd8355621d54315cd0ba7771411744bda931ac970e38265f
+            args:
+              - --bind
+              - "[::]"
+              - --port
+              - "13131"
+              - --no-tls
+            env:
+              TZ: Australia/Sydney
+              MOLTIS_BEHIND_PROXY: "true"
+              MOLTIS_CONFIG_DIR: /config
+              MOLTIS_DATA_DIR: /data
+              MOLTIS_WEBAUTHN_RP_ID: moltis.goyangi.io
+              MOLTIS_WEBAUTHN_ORIGIN: https://moltis.goyangi.io
+              DOCKER_HOST: tcp://localhost:2376
+              DOCKER_CERT_PATH: /certs/client
+              DOCKER_TLS_VERIFY: "1"
+            envFrom:
+              - secretRef:
+                  name: moltis-secret
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 13131
+                  periodSeconds: 2
+                  timeoutSeconds: 3
+                  failureThreshold: 60
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 13131
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 13131
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+
+    defaultPodOptions:
+      shareProcessNamespace: true
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        ports:
+          http:
+            port: 13131
+    route:
+      app:
+        hostnames:
+          - moltis.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    rbac:
+      roles:
+        moltis-read-all:
+          type: ClusterRole
+          rules:
+            - apiGroups: ["apiextensions.k8s.io"]
+              resources: ["customresourcedefinitions"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: [""]
+              resources: ["pods", "nodes", "services", "namespaces", "configmaps", "persistentvolumes", "persistentvolumeclaims", "endpoints", "resourcequotas", "limitranges", "serviceaccounts"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: [""]
+              resources: ["pods/log"]
+              verbs: ["get", "list"]
+            - apiGroups: [""]
+              resources: ["pods/exec"]
+              verbs: ["create"]
+            - apiGroups: ["apps"]
+              resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["apps"]
+              resources: ["deployments/scale"]
+              verbs: ["get", "patch", "update"]
+            - apiGroups: ["batch"]
+              resources: ["jobs", "cronjobs"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["networking.k8s.io"]
+              resources: ["ingresses", "networkpolicies"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["storage.k8s.io"]
+              resources: ["storageclasses"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["rbac.authorization.k8s.io"]
+              resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["metrics.k8s.io"]
+              resources: ["nodes", "pods"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["helm.toolkit.fluxcd.io"]
+              resources: ["helmreleases"]
+              verbs: ["get", "list", "watch", "patch"]
+            - apiGroups: ["kustomize.toolkit.fluxcd.io"]
+              resources: ["kustomizations"]
+              verbs: ["get", "list", "watch", "patch"]
+            - apiGroups: ["source.toolkit.fluxcd.io"]
+              resources: ["gitrepositories", "ocirepositories", "helmrepositories", "helmcharts"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["grafana.integreatly.org"]
+              resources: ["grafanadashboards", "grafanadatasources", "grafanas", "grafanafolders"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["external-secrets.io"]
+              resources: ["externalsecrets", "clustersecretstores", "secretstores"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["container.gcp.upbound.io"]
+              resources: ["clusters", "nodepools"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["monitoring.coreos.com"]
+              resources: ["prometheusrules", "servicemonitors", "podmonitors", "alertmanagerconfigs"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["gateway.networking.k8s.io"]
+              resources: ["gateways", "httproutes", "grpcroutes"]
+              verbs: ["get", "list", "watch"]
+            - apiGroups: ["discovery.liqo.io", "net.liqo.io", "offloading.liqo.io", "sharing.liqo.io"]
+              resources: ["*"]
+              verbs: ["get", "list", "watch"]
+        moltis-write-restricted:
+          type: Role
+          rules:
+            - apiGroups: ["apps"]
+              resources: ["deployments"]
+              verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
+            - apiGroups: [""]
+              resources: ["services", "configmaps"]
+              verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
+            - apiGroups: ["gateway.networking.k8s.io"]
+              resources: ["httproutes"]
+              verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
+        moltis-pod-manage:
+          type: ClusterRole
+          rules:
+            - apiGroups: [""]
+              resources: ["pods"]
+              verbs: ["delete"]
+      bindings:
+        moltis-read-all:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: moltis-read-all
+          subjects:
+            - identifier: moltis
+              serviceAccount: moltis
+        moltis-write-restricted:
+          type: RoleBinding
+          roleRef:
+            identifier: moltis-write-restricted
+          subjects:
+            - identifier: moltis
+              serviceAccount: moltis
+        moltis-pod-manage:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: moltis-pod-manage
+          subjects:
+            - identifier: moltis
+              serviceAccount: moltis
+    serviceAccount:
+      moltis: {}
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /config
+            subPath: config
+          - path: /data
+            subPath: data
+          - path: /home/moltis/.ssh
+            subPath: ssh
+          - path: /home/moltis/.config/fj
+            subPath: fj
+      hawow:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/hawow
+        globalMounts:
+          - path: /home/moltis/hawow
+      certs:
+        type: emptyDir
+        advancedMounts:
+          moltis:
+            daemon:
+              - path: /certs
+            app:
+              - path: /certs
+                readOnly: true
+      moltis-config:
+        type: secret
+        name: moltis-config
+        advancedMounts:
+          moltis:
+            init-setup:
+              - path: /tmp/moltis-config
+                readOnly: true
+      ssh-secrets:
+        type: secret
+        name: moltis-secret
+        items:
+          - key: ssh_private_key
+            path: ssh_private_key
+          - key: ssh_config
+            path: ssh_config
+          - key: fj_config
+            path: fj_config
+        advancedMounts:
+          moltis:
+            init-setup:
+              - path: /tmp/ssh-secrets
+                readOnly: true
