@@ -64,3 +64,50 @@ spec:
       metrics:
         podMonitor:
           enabled: true
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: MutatingWebhookConfiguration
+              name: liqo-webhook
+            patch: |
+              - op: replace
+                path: /webhooks/0/timeoutSeconds
+                value: 30
+              - op: replace
+                path: /webhooks/1/timeoutSeconds
+                value: 30
+              - op: replace
+                path: /webhooks/2/timeoutSeconds
+                value: 30
+              - op: replace
+                path: /webhooks/3/timeoutSeconds
+                value: 30
+              - op: replace
+                path: /webhooks/4/timeoutSeconds
+                value: 30
+              - op: replace
+                path: /webhooks/5/timeoutSeconds
+                value: 30
+          - target:
+              kind: ValidatingWebhookConfiguration
+              name: liqo-webhook
+            patch: |
+              - op: replace
+                path: /webhooks/0/timeoutSeconds
+                value: 30
+              - op: replace
+                path: /webhooks/1/timeoutSeconds
+                value: 30
+              - op: replace
+                path: /webhooks/2/timeoutSeconds
+                value: 30
+              - op: replace
+                path: /webhooks/3/timeoutSeconds
+                value: 30
+              - op: replace
+                path: /webhooks/4/timeoutSeconds
+                value: 30
+              - op: replace
+                path: /webhooks/5/timeoutSeconds
+                value: 30
