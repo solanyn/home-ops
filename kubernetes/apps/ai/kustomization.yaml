@@ -11,4 +11,5 @@ resources:
   - ./namespace.yaml
   - ./openclaw/ks.yaml
   - ./temporal/ks.yaml
+  - ./moltis/ks.yaml
 
