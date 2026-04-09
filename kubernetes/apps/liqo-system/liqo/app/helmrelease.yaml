@@ -41,6 +41,18 @@ spec:
         serviceMonitor:
           enabled: true
     webhook:
+      replicas: 2
+      pod:
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                podAffinityTerm:
+                  labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/component: webhook
+                      app.kubernetes.io/part-of: liqo
+                  topologyKey: kubernetes.io/hostname
       metrics:
         serviceMonitor:
           enabled: true
