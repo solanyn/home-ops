@@ -64,7 +64,6 @@ spec:
 
                 cp /tmp/ssh-secrets/ssh_private_key /home/moltis/.ssh/id_ed25519
                 cp /tmp/ssh-secrets/ssh_config /home/moltis/.ssh/config
-                chmod 700 /home/moltis/.ssh
                 chmod 600 /home/moltis/.ssh/id_ed25519 /home/moltis/.ssh/config
 
                 cp /tmp/ssh-secrets/fj_config /home/moltis/.config/fj/config.toml
