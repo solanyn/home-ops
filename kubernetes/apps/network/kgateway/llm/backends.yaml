@@ -2,210 +2,11 @@
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: auto
-spec:
-  ai:
-    groups:
-      # Priority 1: Opus (free, best quality)
-      - providers:
-          - name: kiro
-            openai:
-              model: claude-opus-4.6
-            host: mac.internal
-            port: 8001
-            policies:
-              auth:
-                secretRef:
-                  name: kiro-auth
-      # Priority 2: Haiku (free, fast)
-      - providers:
-          - name: haiku
-            openai:
-              model: claude-haiku-4.5
-            host: mac.internal
-            port: 8001
-            policies:
-              auth:
-                secretRef:
-                  name: kiro-auth
-      # Priority 3: Modal
-      - providers:
-          - name: modal-gpt-oss
-            openai:
-              model: gpt-oss-120b
-            host: solanyn--llm-gpt-oss-120b-serve.modal.run
-            port: 443
-            policies:
-              auth:
-                secretRef:
-                  name: modal-llm-auth
-              tls:
-                sni: solanyn--llm-gpt-oss-120b-serve.modal.run
-      # Priority 4: Local MLX (speed)
-      - providers:
-          - name: mlx-gemma
-            openai:
-              model: gemma-4-e4b-it-4bit
-            host: mac.internal
-            port: 8080
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: auto-coding
-spec:
-  ai:
-    groups:
-      # Priority 1: Opus (free, best quality)
-      - providers:
-          - name: kiro
-            openai:
-              model: claude-opus-4.6
-            host: mac.internal
-            port: 8001
-            policies:
-              auth:
-                secretRef:
-                  name: kiro-auth
-      # Priority 2: Haiku (free, fast)
-      - providers:
-          - name: haiku
-            openai:
-              model: claude-haiku-4.5
-            host: mac.internal
-            port: 8001
-            policies:
-              auth:
-                secretRef:
-                  name: kiro-auth
-      # Priority 3: Modal Devstral (coding optimised)
-      - providers:
-          - name: modal-devstral
-            openai:
-              model: devstral-24b
-            host: solanyn--llm-devstral-small-2-24b-serve.modal.run
-            port: 443
-            policies:
-              auth:
-                secretRef:
-                  name: modal-llm-auth
-              tls:
-                sni: solanyn--llm-devstral-small-2-24b-serve.modal.run
-      # Priority 4: Local MLX (speed)
-      - providers:
-          - name: mlx-gemma
-            openai:
-              model: gemma-4-e4b-it-4bit
-            host: mac.internal
-            port: 8080
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: kiro
-spec:
-  ai:
-    groups:
-      - providers:
-          - name: kiro-gateway
-            openai:
-              model: claude-opus-4.6
-            host: mac.internal
-            port: 8001
-            policies:
-              auth:
-                secretRef:
-                  name: kiro-auth
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: modal-gpt-oss
-spec:
-  ai:
-    provider:
-      openai:
-        model: gpt-oss-120b
-      host: solanyn--llm-gpt-oss-120b-serve.modal.run
-      port: 443
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: modal-devstral
-spec:
-  ai:
-    provider:
-      openai:
-        model: devstral-24b
-      host: solanyn--llm-devstral-small-2-24b-serve.modal.run
-      port: 443
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: mlx-gemma
-spec:
-  ai:
-    provider:
-      openai:
-        model: gemma-4-e4b-it-4bit
-      host: mac.internal
-      port: 8080
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: claude-code
-spec:
-  ai:
-    groups:
-      - providers:
-          - name: kiro
-            openai:
-              model: claude-opus-4.6
-            host: mac.internal
-            port: 8001
-            policies:
-              auth:
-                secretRef:
-                  name: kiro-auth
-      - providers:
-          - name: haiku
-            openai:
-              model: claude-haiku-4.5
-            host: mac.internal
-            port: 8001
-            policies:
-              auth:
-                secretRef:
-                  name: kiro-auth
-      - providers:
-          - name: modal-devstral
-            openai:
-              model: devstral-24b
-            host: solanyn--llm-devstral-small-2-24b-serve.modal.run
-            port: 443
-            policies:
-              auth:
-                secretRef:
-                  name: modal-llm-auth
-              tls:
-                sni: solanyn--llm-devstral-small-2-24b-serve.modal.run
-      - providers:
-          - name: mlx-gemma
-            openai:
-              model: gemma-4-e4b-it-4bit
-            host: mac.internal
-            port: 8080
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
   name: claude-opus
 spec:
   ai:
     groups:
+      # Primary: Opus via kiro-gateway
       - providers:
           - name: kiro
             openai:
@@ -216,6 +17,13 @@ spec:
               auth:
                 secretRef:
                   name: kiro-auth
+      # Fallback: Gemma 4 local
+      - providers:
+          - name: mlx-gemma
+            openai:
+              model: gemma-4-e4b-it-4bit
+            host: mac.internal
+            port: 8080
 ---
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
@@ -234,3 +42,15 @@ spec:
               auth:
                 secretRef:
                   name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: mlx-gemma
+spec:
+  ai:
+    provider:
+      openai:
+        model: gemma-4-e4b-it-4bit
+      host: mac.internal
+      port: 8080
