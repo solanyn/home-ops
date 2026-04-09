@@ -14,19 +14,10 @@ spec:
       annotations:
         reloader.stakater.com/auto: "true"
       enableServiceLinks: false
-      nodeSelector:
-        liqo.io/remote-cluster-id: worker
-      tolerations:
-        - key: virtual-node.liqo.io/not-allowed
-          operator: Exists
-          effect: NoExecute
-        - key: node.cilium.io/agent-not-ready
-          operator: Exists
-          effect: NoSchedule
     controllers:
       storage:
         type: statefulset
-        replicas: 2
+        replicas: 1
         statefulset:
           podManagementPolicy: Parallel
           serviceName: storage
@@ -95,7 +86,7 @@ spec:
               - path: /config
       storage-cas:
         type: persistentVolumeClaim
-        storageClass: standard-rwo
+        storageClass: openebs-hostpath
         accessMode: ReadWriteOnce
         size: 33Gi
         advancedMounts:
@@ -106,7 +97,7 @@ spec:
               - path: /storage-cas
       storage-ac:
         type: persistentVolumeClaim
-        storageClass: standard-rwo
+        storageClass: openebs-hostpath
         accessMode: ReadWriteOnce
         size: 1Gi
         advancedMounts:
