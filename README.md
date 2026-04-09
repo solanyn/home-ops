@@ -55,7 +55,7 @@ There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/clu
 A complete machine learning platform built on [Kubeflow](https://github.com/kubeflow/kubeflow), providing end-to-end ML lifecycle management from data annotation through to production model serving:
 
 - [kserve](https://github.com/kserve/kserve) and [knative](https://github.com/knative/serving) for serverless model inference with autoscaling and scale-to-zero
-- [kgateway](https://github.com/kgateway-dev/kgateway) as an AI-native API gateway with LLM routing, MCP server integration and security policies
+- [agentgateway](https://github.com/agentgateway-dev/agentgateway) as an AI-native API gateway with LLM routing, MCP server integration and security policies
 - [kuberay-operator](https://github.com/ray-project/kuberay) for distributed training and hyperparameter tuning
 - [spark-operator](https://github.com/kubeflow/spark-operator) for large-scale data processing within ML pipelines
 - [katib](https://github.com/kubeflow/katib) for automated hyperparameter tuning and neural architecture search
@@ -79,7 +79,7 @@ Dual-stack IPv4/IPv6 networking with BGP-based load balancing and Kubernetes Gat
 
 - [cilium](https://github.com/cilium/cilium) as the CNI with eBPF-based network policies, BGP peering and L2/L3 load balancing
 - [envoy](https://github.com/envoyproxy/envoy) gateway with Kubernetes Gateway API for north-south traffic management
-- [kgateway](https://github.com/kgateway-dev/kgateway) for AI/LLM-aware routing with MCP tool proxying
+- [agentgateway](https://github.com/agentgateway-dev/agentgateway) for AI/LLM-aware routing with MCP tool proxying
 - [multus](https://github.com/k8snetworkplumbingwg/multus-cni) for cross-VLAN pod networking
 - [external-dns](https://github.com/kubernetes-sigs/external-dns) for automated split-horizon DNS across Cloudflare and UniFi
 
