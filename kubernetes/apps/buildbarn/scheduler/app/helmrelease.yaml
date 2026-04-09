@@ -12,15 +12,6 @@ spec:
   values:
     defaultPodOptions:
       enableServiceLinks: false
-      nodeSelector:
-        liqo.io/remote-cluster-id: worker
-      tolerations:
-        - key: virtual-node.liqo.io/not-allowed
-          operator: Exists
-          effect: NoExecute
-        - key: node.cilium.io/agent-not-ready
-          operator: Exists
-          effect: NoSchedule
     controllers:
       app:
         containers:
