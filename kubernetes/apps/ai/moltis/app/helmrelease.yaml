@@ -51,26 +51,6 @@ spec:
                   <<: *daemonProbe
                   periodSeconds: 20
                   failureThreshold: 3
-          init-setup:
-            image:
-              repository: ghcr.io/moltis-org/moltis
-              tag: 20260409.01@sha256:0d263e279db8b413dd8355621d54315cd0ba7771411744bda931ac970e38265f
-            command:
-              - /bin/sh
-              - -c
-              - |
-                set -e
-                mkdir -p /home/moltis/.ssh /home/moltis/.config/fj /config /data /home/moltis/.moltis
-
-                cp /tmp/ssh-secrets/ssh_private_key /home/moltis/.ssh/id_ed25519
-                cp /tmp/ssh-secrets/ssh_config /home/moltis/.ssh/config
-                chmod 600 /home/moltis/.ssh/id_ed25519 /home/moltis/.ssh/config
-
-                cp /tmp/ssh-secrets/fj_config /home/moltis/.config/fj/config.toml
-                chmod 600 /home/moltis/.config/fj/config.toml
-
-                cp /tmp/moltis-config/moltis.toml /config/moltis.toml
-                chmod 600 /config/moltis.toml
         containers:
           app:
             image:
@@ -96,36 +76,18 @@ spec:
               - secretRef:
                   name: moltis-secret
             probes:
-              startup:
+              liveness: &probe
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /health
-                    port: 13131
-                  periodSeconds: 2
-                  timeoutSeconds: 3
-                  failureThreshold: 60
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: 13131
-                  periodSeconds: 10
-                  timeoutSeconds: 3
-                  failureThreshold: 3
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: 13131
+                    port: &port 13131
+                  initialDelaySeconds: 10
                   periodSeconds: 30
-                  timeoutSeconds: 5
+                  timeoutSeconds: 10
                   failureThreshold: 3
+              readiness: *probe
             resources:
               requests:
                 cpu: 10m
@@ -138,11 +100,13 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+
     service:
       app:
         ports:
           http:
-            port: 13131
+            port: *port
+
     route:
       app:
         hostnames:
@@ -150,6 +114,7 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+
     rbac:
       roles:
         moltis-read-all:
@@ -255,8 +220,10 @@ spec:
           subjects:
             - identifier: moltis
               serviceAccount: moltis
+
     serviceAccount:
       moltis: {}
+
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
@@ -265,45 +232,37 @@ spec:
             subPath: config
           - path: /data
             subPath: data
-          - path: /home/moltis/.ssh
-            subPath: ssh
-          - path: /home/moltis/.config/fj
-            subPath: fj
       hawow:
         type: nfs
         server: nas.internal
         path: /mnt/world/hawow
         globalMounts:
           - path: /home/moltis/hawow
-      certs:
-        type: emptyDir
-        advancedMounts:
-          moltis:
-            daemon:
-              - path: /certs
-            app:
-              - path: /certs
-                readOnly: true
+      ssh-keys:
+        type: secret
+        name: moltis-secret
+        defaultMode: 0600
+        items:
+          - key: ssh_private_key
+            path: id_ed25519
+          - key: ssh_config
+            path: config
+        globalMounts:
+          - path: /home/moltis/.ssh
       moltis-config:
         type: secret
         name: moltis-config
-        advancedMounts:
-          moltis:
-            init-setup:
-              - path: /tmp/moltis-config
-                readOnly: true
-      ssh-secrets:
-        type: secret
-        name: moltis-secret
+        defaultMode: 0600
         items:
-          - key: ssh_private_key
-            path: ssh_private_key
-          - key: ssh_config
-            path: ssh_config
-          - key: fj_config
-            path: fj_config
+          - key: moltis.toml
+            path: moltis.toml
         advancedMounts:
           moltis:
-            init-setup:
-              - path: /tmp/ssh-secrets
+            app:
+              - path: /config/moltis.toml
+                subPath: moltis.toml
                 readOnly: true
+      tmp:
+        type: emptyDir
+      certs:
+        type: emptyDir
