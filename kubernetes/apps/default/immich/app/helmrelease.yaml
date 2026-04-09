@@ -51,13 +51,27 @@ spec:
               TZ: Australia/Sydney
               IMMICH_METRICS: "true"
               IMMICH_TRUSTED_PROXIES: "192.168.0.0/16"
-              IMMICH_MACHINE_LEARNING_URL: http://immich-ml.default.svc.cluster.local
+              IMMICH_MACHINE_LEARNING_URL: http://immich-ml:3003
               IMMICH_MEDIA_LOCATION: &media /library
               REDIS_HOSTNAME: &redis redis.storage.svc.cluster.local
             envFrom: *envFrom
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources: {}
+      ml:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/immich-app/immich-machine-learning
+              tag: v2.7.2-openvino@sha256:1ce55bbbe472702babc6996918298bccab946826e8206da8281b438e8e7626c9
+            env:
+              TZ: Australia/Sydney
+              MACHINE_LEARNING_CACHE_FOLDER: /cache
+              TRANSFORMERS_CACHE: /cache
+            securityContext:
+              allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
             resources: {}
     defaultPodOptions:
@@ -77,6 +91,11 @@ spec:
             port: 8081
           metrics-ms:
             port: 8082
+      immich-ml:
+        controller: ml
+        ports:
+          http:
+            port: 3003
     serviceMonitor:
       immich:
         enabled: true
@@ -111,8 +130,10 @@ spec:
         type: nfs
         server: nas.internal
         path: /mnt/world/photos/immich
-        globalMounts:
-          - path: *media
+        advancedMounts:
+          immich:
+            app:
+              - path: *media
       tmpfs:
         type: emptyDir
         advancedMounts:
@@ -122,3 +143,9 @@ spec:
                 subPath: geocoding
               - path: /usr/src/app/.transformers_cache
                 subPath: transformers
+      ml-cache:
+        type: emptyDir
+        advancedMounts:
+          ml:
+            app:
+              - path: /cache
