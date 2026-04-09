@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: actions-cache-server
+  name: mono-actions-cache-server
 spec:
   targetNamespace: actions-runner-system
   dependsOn:
@@ -12,7 +12,7 @@ spec:
   - name: liqo
     namespace: liqo-system
   interval: 1h
-  path: ./kubernetes/apps/actions-runner-system/actions-cache-server/app
+  path: ./kubernetes/apps/actions-runner-system/mono-actions-cache-server/app
   prune: true
   sourceRef:
     kind: GitRepository
