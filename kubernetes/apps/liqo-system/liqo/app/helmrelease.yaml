@@ -43,6 +43,13 @@ spec:
     webhook:
       replicas: 2
       pod:
+        priorityClassName: system-cluster-critical
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            memory: 256Mi
         affinity:
           podAntiAffinity:
             preferredDuringSchedulingIgnoredDuringExecution:
