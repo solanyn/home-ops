@@ -51,26 +51,76 @@ spec:
                   <<: *daemonProbe
                   periodSeconds: 20
                   failureThreshold: 3
-          git-sync:
+          workspace-sync:
             image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.6.0@sha256:228a26d5f55ac5ae9c51635812570ba0073e0b1e0bd8fc3a653a0523b918c092
+              repository: alpine/git
+              tag: "2.47.2"
             restartPolicy: Always
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -e
+                REPO_DIR=/workspace-repo/repo
+                REPO_URL="https://andrew:${FORGEJO_TOKEN}@forgejo.goyangi.io/andrew/hawow-shmawow.git"
+                DIRS="skills scripts vault me memory"
+                FILES="SOUL.md IDENTITY.md USER.md MEMORY.md TOOLS.md AGENTS.md HEARTBEAT.md"
+
+                git config --global user.name "bot-goyangi[bot]"
+                git config --global user.email "194625711+bot-goyangi[bot]@users.noreply.github.com"
+                git config --global safe.directory "$REPO_DIR"
+
+                # Initial clone
+                if [ ! -d "$REPO_DIR/.git" ]; then
+                  git clone "$REPO_URL" "$REPO_DIR"
+                  ln -sfn "$REPO_DIR" /workspace-repo/current
+                fi
+
+                echo "Workspace sync running (pull+push every 5m)..."
+                while true; do
+                  sleep 300
+
+                  cd "$REPO_DIR" || continue
+
+                  # Pull remote changes
+                  git fetch origin master && git reset --hard origin/master
+
+                  # Sync repo -> /data (picks up remote changes)
+                  for dir in $DIRS; do
+                    [ -d "$REPO_DIR/$dir" ] && cp -a "$REPO_DIR/$dir/." "/data/$dir/" 2>/dev/null
+                  done
+                  for f in $FILES; do
+                    [ -f "$REPO_DIR/$f" ] && cp "$REPO_DIR/$f" "/data/$f"
+                  done
+
+                  # Sync /data -> repo (picks up moltis changes)
+                  for dir in $DIRS; do
+                    if [ -d "/data/$dir" ]; then
+                      rm -rf "$REPO_DIR/$dir"
+                      cp -a "/data/$dir" "$REPO_DIR/$dir"
+                    fi
+                  done
+                  for f in $FILES; do
+                    [ -f "/data/$f" ] && cp "/data/$f" "$REPO_DIR/$f"
+                  done
+
+                  # Commit and push if changed
+                  git add -A
+                  if ! git diff --cached --quiet; then
+                    echo "$(date): pushing workspace changes..."
+                    git commit -m "chore: sync workspace changes"
+                    git push origin master || echo "push failed, will retry"
+                  fi
+                done
             env:
-              GITSYNC_REPO: https://forgejo.goyangi.io/andrew/hawow-shmawow.git
-              GITSYNC_REF: master
-              GITSYNC_PERIOD: 5m
-              GITSYNC_ROOT: /workspace-repo
-              GITSYNC_LINK: current
-              GITSYNC_USERNAME: andrew
-              GITSYNC_PASSWORD:
+              FORGEJO_TOKEN:
                 secretKeyRef:
                   name: moltis-secret
                   key: FORGEJO_API_TOKEN
             resources:
               requests:
                 cpu: 10m
-                memory: 10Mi
+                memory: 32Mi
               limits:
                 memory: 128Mi
           init-workspace:
@@ -94,7 +144,7 @@ spec:
 
                 # Sync workspace dirs into /data
                 if [ -d /workspace-repo/current ]; then
-                  for dir in skills scripts vault me; do
+                  for dir in skills scripts vault me memory; do
                     if [ -d "/workspace-repo/current/$dir" ]; then
                       rm -rf "/data/$dir"
                       cp -a "/workspace-repo/current/$dir" "/data/$dir"
