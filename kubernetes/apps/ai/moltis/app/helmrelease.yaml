@@ -51,6 +51,62 @@ spec:
                   <<: *daemonProbe
                   periodSeconds: 20
                   failureThreshold: 3
+          workspace-sync:
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.6.0@sha256:228a26d5f55ac5ae9c51635812570ba0073e0b1e0bd8fc3a653a0523b918c092
+            restartPolicy: Always
+            env:
+              GITSYNC_REPO: https://forgejo.goyangi.io/andrew/hawow-shmawow.git
+              GITSYNC_REF: master
+              GITSYNC_PERIOD: 5m
+              GITSYNC_ROOT: /workspace-repo
+              GITSYNC_LINK: current
+              GITSYNC_USERNAME: andrew
+              GITSYNC_PASSWORD:
+                secretKeyRef:
+                  name: moltis-secret
+                  key: FORGEJO_API_TOKEN
+            resources:
+              requests:
+                cpu: 10m
+                memory: 10Mi
+              limits:
+                memory: 128Mi
+          init-workspace:
+            image:
+              repository: ghcr.io/moltis-org/moltis
+              tag: 20260409.01@sha256:0d263e279db8b413dd8355621d54315cd0ba7771411744bda931ac970e38265f
+            command:
+              - /bin/sh
+              - -c
+              - |
+                # Copy config to writable location
+                cp /tmp/moltis-config/moltis.toml /config/moltis.toml
+                chmod 600 /config/moltis.toml
+
+                # Wait for git-sync initial clone
+                echo "Waiting for git-sync..."
+                for i in $(seq 1 60); do
+                  [ -d /workspace-repo/current ] && break
+                  sleep 2
+                done
+
+                # Sync workspace dirs into /data
+                if [ -d /workspace-repo/current ]; then
+                  for dir in skills scripts vault me; do
+                    if [ -d "/workspace-repo/current/$dir" ]; then
+                      rm -rf "/data/$dir"
+                      cp -a "/workspace-repo/current/$dir" "/data/$dir"
+                    fi
+                  done
+                  for f in SOUL.md IDENTITY.md USER.md MEMORY.md TOOLS.md AGENTS.md HEARTBEAT.md; do
+                    [ -f "/workspace-repo/current/$f" ] && cp "/workspace-repo/current/$f" "/data/$f"
+                  done
+                  echo "Workspace synced from git"
+                else
+                  echo "WARNING: git-sync not ready, skipping workspace sync"
+                fi
         containers:
           app:
             image:
@@ -258,10 +314,11 @@ spec:
             path: moltis.toml
         advancedMounts:
           moltis:
-            app:
-              - path: /config/moltis.toml
-                subPath: moltis.toml
+            init-workspace:
+              - path: /tmp/moltis-config
                 readOnly: true
+      workspace-repo:
+        type: emptyDir
       tmp:
         type: emptyDir
       certs:
