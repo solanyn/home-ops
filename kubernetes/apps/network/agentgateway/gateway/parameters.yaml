@@ -1,0 +1,9 @@
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayParameters
+metadata:
+  name: ai
+spec:
+  rawConfig:
+    config:
+      adminAddr: "0.0.0.0:15000"
