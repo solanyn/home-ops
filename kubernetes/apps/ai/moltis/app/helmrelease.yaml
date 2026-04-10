@@ -179,7 +179,7 @@ spec:
               DOCKER_HOST: tcp://localhost:2376
               DOCKER_CERT_PATH: /certs/client
               DOCKER_TLS_VERIFY: "1"
-              OPENCLAW_HOME: /workspace-repo/current
+              OPENCLAW_HOME: /openclaw
             envFrom:
               - secretRef:
                   name: moltis-secret
@@ -381,6 +381,13 @@ spec:
           moltis:
             daemon:
               - path: /var/lib/docker
+      openclaw:
+        existingClaim: openclaw
+        advancedMounts:
+          moltis:
+            app:
+              - path: /openclaw
+                readOnly: true
       tmp:
         type: emptyDir
       certs:
