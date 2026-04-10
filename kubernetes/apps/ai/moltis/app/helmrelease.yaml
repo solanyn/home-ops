@@ -73,8 +73,8 @@ spec:
                 # Initial clone
                 if [ ! -d "$REPO_DIR/.git" ]; then
                   git clone "$REPO_URL" "$REPO_DIR"
-                  ln -sfn "$REPO_DIR" /workspace-repo/current
                 fi
+                ln -sfn "$REPO_DIR" /workspace-repo/current
 
                 echo "Workspace sync running (pull+push every 5m)..."
                 while true; do
