@@ -136,14 +136,19 @@ spec:
                 cp /tmp/moltis-config/moltis.toml /config/moltis.toml
                 chmod 600 /config/moltis.toml
 
-                # Copy SSH keys to /data/.ssh for sandbox access
-                mkdir -p /data/.ssh
-                cp /tmp/ssh-secrets/ssh_private_key /data/.ssh/id_ed25519
-                cp /tmp/ssh-secrets/ssh_config /data/.ssh/config
-                chmod 700 /data/.ssh
-                chmod 600 /data/.ssh/id_ed25519 /data/.ssh/config
+                # Copy SSH keys to sandbox shared home (/home/sandbox in container)
+                mkdir -p /data/sandbox/home/shared/.ssh
+                cp /tmp/ssh-secrets/ssh_private_key /data/sandbox/home/shared/.ssh/id_ed25519
+                cp /tmp/ssh-secrets/ssh_config /data/sandbox/home/shared/.ssh/config
+                chmod 700 /data/sandbox/home/shared/.ssh
+                chmod 600 /data/sandbox/home/shared/.ssh/id_ed25519 /data/sandbox/home/shared/.ssh/config
 
-                # Setup fj CLI config
+                # Setup fj CLI config for sandbox
+                mkdir -p /data/sandbox/home/shared/.config/fj
+                cp /tmp/ssh-secrets/fj_config /data/sandbox/home/shared/.config/fj/config.toml
+                chmod 600 /data/sandbox/home/shared/.config/fj/config.toml
+
+                # Also keep copies for the moltis app container
                 mkdir -p /home/moltis/.config/fj
                 cp /tmp/ssh-secrets/fj_config /home/moltis/.config/fj/config.toml
                 chmod 600 /home/moltis/.config/fj/config.toml
