@@ -371,6 +371,7 @@ spec:
         type: emptyDir
       docker-data:
         type: persistentVolumeClaim
+        nameOverride: moltis-docker-data
         accessMode: ReadWriteOnce
         size: 15Gi
         storageClass: openebs-hostpath
