@@ -136,6 +136,18 @@ spec:
                 cp /tmp/moltis-config/moltis.toml /config/moltis.toml
                 chmod 600 /config/moltis.toml
 
+                # Copy SSH keys to /data/.ssh for sandbox access
+                mkdir -p /data/.ssh
+                cp /tmp/ssh-secrets/ssh_private_key /data/.ssh/id_ed25519
+                cp /tmp/ssh-secrets/ssh_config /data/.ssh/config
+                chmod 700 /data/.ssh
+                chmod 600 /data/.ssh/id_ed25519 /data/.ssh/config
+
+                # Setup fj CLI config
+                mkdir -p /home/moltis/.config/fj
+                cp /tmp/ssh-secrets/fj_config /home/moltis/.config/fj/config.toml
+                chmod 600 /home/moltis/.config/fj/config.toml
+
                 # Wait for git-sync initial clone
                 echo "Waiting for git-sync..."
                 for i in $(seq 1 60); do
@@ -356,6 +368,21 @@ spec:
             path: config
         globalMounts:
           - path: /home/moltis/.ssh
+      ssh-secrets:
+        type: secret
+        name: moltis-secret
+        items:
+          - key: ssh_private_key
+            path: ssh_private_key
+          - key: ssh_config
+            path: ssh_config
+          - key: fj_config
+            path: fj_config
+        advancedMounts:
+          moltis:
+            init-workspace:
+              - path: /tmp/ssh-secrets
+                readOnly: true
       moltis-config:
         type: secret
         name: moltis-config
