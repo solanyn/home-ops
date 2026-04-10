@@ -140,13 +140,13 @@ spec:
                 mkdir -p /data/sandbox/home/shared/.ssh
                 cp /tmp/ssh-secrets/ssh_private_key /data/sandbox/home/shared/.ssh/id_ed25519
                 cp /tmp/ssh-secrets/ssh_config /data/sandbox/home/shared/.ssh/config
-                chmod 700 /data/sandbox/home/shared/.ssh
-                chmod 600 /data/sandbox/home/shared/.ssh/id_ed25519 /data/sandbox/home/shared/.ssh/config
+                chmod 755 /data/sandbox/home/shared/.ssh
+                chmod 644 /data/sandbox/home/shared/.ssh/id_ed25519 /data/sandbox/home/shared/.ssh/config
 
                 # Setup fj CLI config for sandbox
                 mkdir -p /data/sandbox/home/shared/.config/fj
                 cp /tmp/ssh-secrets/fj_config /data/sandbox/home/shared/.config/fj/config.toml
-                chmod 600 /data/sandbox/home/shared/.config/fj/config.toml
+                chmod 644 /data/sandbox/home/shared/.config/fj/config.toml
 
                 # Also keep copies for the moltis app container
                 mkdir -p /home/moltis/.config/fj
