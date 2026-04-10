@@ -51,7 +51,7 @@ spec:
                   <<: *daemonProbe
                   periodSeconds: 20
                   failureThreshold: 3
-          workspace-sync:
+          git-sync:
             image:
               repository: registry.k8s.io/git-sync/git-sync
               tag: v4.6.0@sha256:228a26d5f55ac5ae9c51635812570ba0073e0b1e0bd8fc3a653a0523b918c092
