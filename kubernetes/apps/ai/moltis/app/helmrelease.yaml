@@ -369,6 +369,15 @@ spec:
                 readOnly: true
       workspace-repo:
         type: emptyDir
+      docker-data:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 15Gi
+        storageClass: openebs-hostpath
+        advancedMounts:
+          moltis:
+            daemon:
+              - path: /var/lib/docker
       tmp:
         type: emptyDir
       certs:
