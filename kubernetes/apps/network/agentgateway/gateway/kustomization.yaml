@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./admin.yaml
   - ./ai.yaml
+  - ./parameters.yaml
