@@ -370,7 +370,10 @@ spec:
       workspace-repo:
         type: emptyDir
       docker-data:
-        existingClaim: moltis-docker-data
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 15Gi
+        storageClass: openebs-hostpath
         advancedMounts:
           moltis:
             daemon:
