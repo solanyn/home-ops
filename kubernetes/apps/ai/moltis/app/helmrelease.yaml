@@ -51,7 +51,7 @@ spec:
                   <<: *daemonProbe
                   periodSeconds: 20
                   failureThreshold: 3
-          workspace-sync:
+          git-sync:
             image:
               repository: alpine/git
               tag: "2.47.2"
