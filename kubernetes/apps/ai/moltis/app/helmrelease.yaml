@@ -113,6 +113,7 @@ spec:
                   fi
                 done
             env:
+              HOME: /tmp
               FORGEJO_TOKEN:
                 secretKeyRef:
                   name: moltis-secret
