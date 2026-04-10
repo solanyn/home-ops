@@ -62,7 +62,7 @@ spec:
               - |
                 set -e
                 REPO_DIR=/workspace-repo/repo
-                REPO_URL="https://andrew:${FORGEJO_TOKEN}@forgejo.goyangi.io/andrew/hawow-shmawow.git"
+                REPO_URL="https://andrew:$${FORGEJO_TOKEN}@forgejo.goyangi.io/andrew/hawow-shmawow.git"
                 DIRS="skills scripts vault me memory"
                 FILES="SOUL.md IDENTITY.md USER.md MEMORY.md TOOLS.md AGENTS.md HEARTBEAT.md"
 
