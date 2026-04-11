@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: livekit/livekit-server
-              tag: v1.8.4
+              tag: v1.10.1
             args:
               - --config
               - /etc/livekit/config.yaml
