@@ -40,6 +40,7 @@ spec:
               CONTINUWUITY_LOG: warn,continuwuity=info
               CONTINUWUITY_WELL_KNOWN__CLIENT: https://matrix.goyangi.io
               CONTINUWUITY_WELL_KNOWN__SERVER: goyangi.io:443
+              CONTINUWUITY_MATRIX_RTC__FOCI: '[{"type":"livekit","livekit_service_url":"https://livekit-jwt.goyangi.io"}]'
             probes:
               liveness: &probes
                 enabled: true
