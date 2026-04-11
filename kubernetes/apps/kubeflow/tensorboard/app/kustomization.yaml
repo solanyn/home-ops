@@ -6,4 +6,4 @@ resources:
   - ./helmrelease.yaml
   - ./rbac.yaml
   - ./httproute.yaml
-  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/tensorboard/tensorboard-controller/upstream/crd/bases/tensorboard.kubeflow.org_tensorboards.yaml
+  - https://raw.githubusercontent.com/kubeflow/manifests/refs/heads/master/applications/notebooks-v1/upstream/tensorboard-controller/crd/bases/tensorboard.kubeflow.org_tensorboards.yaml
