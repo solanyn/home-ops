@@ -10,5 +10,3 @@ spec:
     cidr:
       pod:
         - ${POD_CIDR}
-      external:
-        - ${EXTERNAL_CIDR}
