@@ -22,16 +22,12 @@ spec:
               repository: forgejo.ellis.link/continuwuation/continuwuity
               tag: v0.5.6
             env:
+              CONTINUWUITY_CONFIG: /config/continuwuity.toml
               CONTINUWUITY_SERVER_NAME: goyangi.io
               CONTINUWUITY_PORT: &port 6167
               CONTINUWUITY_DATABASE_BACKEND: rocksdb
               CONTINUWUITY_DATABASE_PATH: /data/db
               CONTINUWUITY_ALLOW_REGISTRATION: "true"
-              CONTINUWUITY_REGISTRATION_TOKEN:
-                valueFrom:
-                  secretKeyRef:
-                    name: continuwuity-secret
-                    key: CONTINUWUITY_REGISTRATION_TOKEN
               CONTINUWUITY_ALLOW_FEDERATION: "true"
               CONTINUWUITY_ALLOW_CHECK_FOR_UPDATES: "false"
               CONTINUWUITY_TRUSTED_SERVERS: '["matrix.org"]'
@@ -40,7 +36,9 @@ spec:
               CONTINUWUITY_LOG: warn,continuwuity=info
               CONTINUWUITY_WELL_KNOWN__CLIENT: https://matrix.goyangi.io
               CONTINUWUITY_WELL_KNOWN__SERVER: goyangi.io:443
-              CONTINUWUITY_MATRIX_RTC__FOCI: '[{"type":"livekit","livekit_service_url":"https://livekit-jwt.goyangi.io"}]'
+            envFrom:
+              - secretRef:
+                  name: continuwuity-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -58,6 +56,12 @@ spec:
                 memory: 64Mi
               limits:
                 memory: 512Mi
+    configMaps:
+      config:
+        data:
+          continuwuity.toml: |-
+            [global.matrix_rtc]
+            foci = [{ type = "livekit", livekit_service_url = "https://livekit-jwt.goyangi.io" }]
     service:
       app:
         controller: continuwuity
@@ -69,9 +73,6 @@ spec:
         hostnames:
           - matrix.goyangi.io
         parentRefs:
-          - name: envoy-internal
-            namespace: network
-            sectionName: https
           - name: envoy-external
             namespace: network
             sectionName: https
@@ -84,3 +85,10 @@ spec:
         existingClaim: continuwuity
         globalMounts:
           - path: /data
+      config-file:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /config/continuwuity.toml
+            subPath: continuwuity.toml
+            readOnly: true
