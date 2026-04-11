@@ -46,7 +46,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v2.7.3@sha256:00cd2d57e4d9310a4aeac3c23f249af1eadbc1802746e1178589ef0a49374cef
+              tag: v2.7.4@sha256:040b2fed8f7f6b7405f9b4b26348b4656355e4d4ed0852b8e966d453dd6635cc
             env:
               TZ: Australia/Sydney
               IMMICH_METRICS: "true"
@@ -65,7 +65,7 @@ spec:
           app:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.7.3@sha256:94d42e7d733e853c5daf4fdb4ef31bdcc504b5156a524e937a3c72dc4ed4e720
+              tag: v2.7.4@sha256:5426275a8a0007aec1cbf8737bffbd09cbe9e188ff3bbfdb3219de4e8a5edef5
             env:
               TZ: Australia/Sydney
               MACHINE_LEARNING_CACHE_FOLDER: /cache
