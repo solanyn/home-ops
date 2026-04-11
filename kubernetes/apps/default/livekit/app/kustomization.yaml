@@ -7,3 +7,5 @@ resources:
   - httproute.yaml
   - lk-jwt-helmrelease.yaml
   - lk-jwt-httproute.yaml
+  - ocirepository.yaml
+  - lk-jwt-ocirepository.yaml
