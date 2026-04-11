@@ -46,7 +46,7 @@ spec:
     persistence:
       config:
         type: configMap
-        name: element-web-config
+        name: element-web
         globalMounts:
           - path: /app/config.json
             subPath: config.json
