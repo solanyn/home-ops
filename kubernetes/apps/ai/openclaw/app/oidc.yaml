@@ -1,0 +1,17 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: openclaw
+spec:
+  clientID: openclaw
+  callbackUrls:
+    - https://openclaw.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://openclaw.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: openclaw-oidc
+    keys:
+      clientSecret: client-secret

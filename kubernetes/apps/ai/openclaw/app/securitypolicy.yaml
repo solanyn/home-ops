@@ -1,0 +1,23 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: openclaw
+spec:
+  oidc:
+    clientID: openclaw
+    clientSecret:
+      name: openclaw-oidc
+    logoutPath: /logout
+    provider:
+      issuer: https://id.goyangi.io/
+    redirectURL: https://openclaw.goyangi.io/oauth2/callback
+    refreshToken: true
+    scopes:
+      - openid
+      - profile
+      - email
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: openclaw
