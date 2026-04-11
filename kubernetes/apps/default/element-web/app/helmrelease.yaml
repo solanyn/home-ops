@@ -51,7 +51,7 @@ spec:
           - path: /app/config.json
             subPath: config.json
     configMaps:
-      element-web-config:
+      config:
         data:
           config.json: |
             {
