@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: element-web
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: element-web
+  interval: 1h
+  values:
+    controllers:
+      element-web:
+        containers:
+          app:
+            image:
+              repository: docker.io/vectorim/element-web
+              tag: v1.12.15@sha256:26fc84a6a80364ce2bafbd0a2f85a32cd8dcae34d4acc37784e88ee87e447a3c
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+    service:
+      app:
+        ports:
+          http:
+            port: 80
+    route:
+      app:
+        hostnames:
+          - element.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: element-web
+                port: 80
+    persistence:
+      config:
+        type: configMap
+        name: element-web-config
+        globalMounts:
+          - path: /app/config.json
+            subPath: config.json
+    configMaps:
+      config:
+        data:
+          config.json: |
+            {
+              "default_server_config": {
+                "m.homeserver": {
+                  "base_url": "https://matrix.goyangi.io",
+                  "server_name": "goyangi.io"
+                }
+              },
+              "brand": "Element",
+              "disable_guests": true,
+              "disable_3pid_login": true
+            }
