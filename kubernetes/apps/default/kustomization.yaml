@@ -21,6 +21,7 @@ resources:
   - ./decluttarr/ks.yaml
   - ./deduparr/ks.yaml
   - ./ersatztv/ks.yaml
+  - ./element-web/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./forgejo/ks.yaml
   - ./gitlab-proxy/ks.yaml
