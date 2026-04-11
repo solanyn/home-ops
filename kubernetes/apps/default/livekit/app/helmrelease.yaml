@@ -8,7 +8,7 @@ spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: app-template
+    name: livekit
   values:
     controllers:
       livekit:
@@ -20,17 +20,9 @@ spec:
             args:
               - --config
               - /etc/livekit/config.yaml
-            env:
-              LIVEKIT_API_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: livekit-secret
-                    key: LIVEKIT_API_KEY
-              LIVEKIT_API_SECRET:
-                valueFrom:
-                  secretKeyRef:
-                    name: livekit-secret
-                    key: LIVEKIT_API_SECRET
+            envFrom:
+              - secretRef:
+                  name: livekit-secret
             probes:
               liveness:
                 enabled: true
