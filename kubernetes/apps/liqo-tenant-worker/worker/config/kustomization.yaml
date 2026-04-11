@@ -10,4 +10,3 @@ resources:
   - ./publickey.yaml
   - ./quota.yaml
   - ./virtualnode.yaml
-  - ./firewallconfiguration.yaml
