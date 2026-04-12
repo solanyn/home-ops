@@ -35,6 +35,9 @@ spec:
       metrics:
         serviceMonitor:
           enabled: true
+      pod:
+        extraArgs:
+          - --enable-api-server-ip-remapping=false
     gateway:
       metrics:
         serviceMonitor:
