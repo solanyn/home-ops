@@ -49,12 +49,11 @@ spec:
               mountPath: /workspace
       volumes:
         - name: authorized-keys
-          secret:
-            secretName: openclaw-sandbox-secret
+          configMap:
+            name: openclaw-sandbox-authorized-keys
             items:
               - key: authorized_keys
                 path: authorized_keys
-                mode: 0600
             defaultMode: 0600
         - name: workspace
           persistentVolumeClaim:
