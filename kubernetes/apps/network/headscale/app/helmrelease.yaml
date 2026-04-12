@@ -74,6 +74,13 @@ spec:
               tag: latest
             env:
               HEADPLANE_CONFIG_PATH: /etc/headplane/config.yaml
+              HEADPLANE_LOAD_ENV_OVERRIDES: "true"
+              HEADPLANE_OIDC__HEADSCALE_API_KEY: "hskey-api-6STvDaXw1BE4-OxQc0uyR9T8XEa8nd1CMbwm3VATAraH2_9_6SRecxmREC8rBmKtz8Rb1-cgzt60q"
+              HEADPLANE_OIDC__CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: headscale-oidc
+                    key: HEADSCALE_OIDC_CLIENT_SECRET
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
