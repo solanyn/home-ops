@@ -25,7 +25,7 @@ spec:
     githubConfigUrl: https://github.com/solanyn/mono
     githubConfigSecret: mono-runner-secret
     minRunners: 0
-    maxRunners: 2
+    maxRunners: 8
     controllerServiceAccount:
       name: actions-runner-controller
       namespace: actions-runner-system
