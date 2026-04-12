@@ -34,8 +34,8 @@ spec:
               HEADSCALE_DATABASE_SQLITE_PATH: /var/lib/headscale/db.sqlite
               HEADSCALE_DERP_SERVER_ENABLED: "true"
               HEADSCALE_DERP_SERVER_REGION_ID: "900"
-              HEADSCALE_DERP_SERVER_REGION_CODE: syd
-              HEADSCALE_DERP_SERVER_REGION_NAME: Sydney
+              HEADSCALE_DERP_SERVER_REGION_CODE: home
+              HEADSCALE_DERP_SERVER_REGION_NAME: home
               HEADSCALE_DERP_SERVER_STUN_LISTEN_ADDR: 0.0.0.0:3478
               HEADSCALE_DERP_URLS: ""
               HEADSCALE_DERP_AUTO_UPDATE_ENABLED: "false"
@@ -70,10 +70,10 @@ spec:
                 memory: 256Mi
           ui:
             image:
-              repository: ghcr.io/gurucomputing/headscale-ui
-              tag: 2026.03.17
+              repository: ghcr.io/tale/headplane
+              tag: latest
             env:
-              HTTP_PORT: "8081"
+              HEADPLANE_CONFIG_PATH: /etc/headplane/config.yaml
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -81,9 +81,9 @@ spec:
             resources:
               requests:
                 cpu: 5m
-                memory: 32Mi
-              limits:
                 memory: 64Mi
+              limits:
+                memory: 128Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -97,7 +97,7 @@ spec:
           http:
             port: *port
           ui:
-            port: 8081
+            port: 3000
           metrics:
             port: 9090
       stun:
@@ -137,15 +137,30 @@ spec:
           - matches:
               - path:
                   type: PathPrefix
-                  value: /web
+                  value: /admin
             backendRefs:
               - identifier: app
-                port: 8081
+                port: 3000
     persistence:
       data:
         existingClaim: headscale
         globalMounts:
           - path: /var/lib/headscale
+      headplane-config:
+        type: configMap
+        name: headplane-config
+        advancedMounts:
+          headscale:
+            ui:
+              - path: /etc/headplane/config.yaml
+                subPath: config.yaml
+                readOnly: true
+      headplane-data:
+        type: emptyDir
+        advancedMounts:
+          headscale:
+            ui:
+              - path: /var/lib/headplane
       tmp:
         type: emptyDir
         globalMounts:
