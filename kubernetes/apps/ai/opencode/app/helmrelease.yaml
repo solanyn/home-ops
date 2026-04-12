@@ -14,20 +14,6 @@ spec:
       opencode:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-dirs:
-            image:
-              repository: busybox
-              tag: latest
-            command:
-              - sh
-              - -c
-              - |
-                mkdir -p /home/node/.local/share/opencode /home/node/.local/state /home/node/.config
-                chown -R 1000:1000 /home/node/.local /home/node/.config
-            securityContext:
-              runAsUser: 0
-              runAsGroup: 0
         containers:
           app:
             image:
@@ -118,14 +104,10 @@ spec:
         globalMounts:
           - path: /home/node/.local/share/opencode
             subPath: session-data
-      home-local:
+      home:
         type: emptyDir
         globalMounts:
-          - path: /home/node/.local
-      home-config:
-        type: emptyDir
-        globalMounts:
-          - path: /home/node/.config
+          - path: /home/node
       scripts:
         type: configMap
         name: opencode-git-sync
