@@ -41,7 +41,9 @@ spec:
               HEADSCALE_DERP_AUTO_UPDATE_ENABLED: "false"
             envFrom:
               - secretRef:
-                  name: headscale-secret
+                  name: headscale-oidc
+              - configMapRef:
+                  name: headscale-config
             probes:
               liveness: &probes
                 enabled: true
