@@ -1,0 +1,127 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: compute-node-pool
+  labels:
+    provider: gcp
+spec:
+  compositeTypeRef:
+    apiVersion: home-ops.io/v1alpha1
+    kind: XComputeNodePool
+  mode: Pipeline
+  pipeline:
+    - step: patch-and-transform
+      functionRef:
+        name: function-patch-and-transform
+      input:
+        apiVersion: pt.fn.crossplane.io/v1beta1
+        kind: Resources
+        resources:
+          - name: instance-template
+            base:
+              apiVersion: compute.gcp.upbound.io/v1beta2
+              kind: InstanceTemplate
+              spec:
+                providerConfigRef:
+                  name: home-ops
+                deletionPolicy: Delete
+                forProvider:
+                  machineType: e2-standard-8
+                  disk:
+                    - sourceImage: ""
+                      diskSizeGb: 50
+                      diskType: pd-standard
+                      autoDelete: true
+                      boot: true
+                  networkInterface:
+                    - network: default
+                      accessConfig:
+                        - networkTier: STANDARD
+                  scheduling:
+                    - preemptible: true
+                      automaticRestart: false
+                  metadata:
+                    user-data: ""
+                  tags:
+                    - compute-worker
+                  labels:
+                    managed-by: crossplane
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: metadata.name
+                transforms:
+                  - type: string
+                    string:
+                      type: Format
+                      fmt: "%s-template"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.machineType
+                toFieldPath: spec.forProvider.machineType
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.spot
+                toFieldPath: spec.forProvider.scheduling[0].preemptible
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.diskSizeGb
+                toFieldPath: spec.forProvider.disk[0].diskSizeGb
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.diskType
+                toFieldPath: spec.forProvider.disk[0].diskType
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.image
+                toFieldPath: spec.forProvider.disk[0].sourceImage
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.userData
+                toFieldPath: spec.forProvider.metadata[user-data]
+              - type: ToCompositeFieldPath
+                fromFieldPath: status.atProvider.selfLinkUnique
+                toFieldPath: status.templateName
+          - name: instance-group-manager
+            base:
+              apiVersion: compute.gcp.upbound.io/v1beta2
+              kind: InstanceGroupManager
+              spec:
+                providerConfigRef:
+                  name: home-ops
+                deletionPolicy: Delete
+                forProvider:
+                  baseInstanceName: worker
+                  zone: australia-southeast1-b
+                  targetSize: 0
+                  version:
+                    - instanceTemplate: ""
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: metadata.name
+                transforms:
+                  - type: string
+                    string:
+                      type: Format
+                      fmt: "%s-mig"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.region
+                toFieldPath: spec.forProvider.zone
+                transforms:
+                  - type: string
+                    string:
+                      type: Format
+                      fmt: "%s-b"
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.targetSize
+                toFieldPath: spec.forProvider.targetSize
+              - type: FromCompositeFieldPath
+                fromFieldPath: status.templateName
+                toFieldPath: spec.forProvider.version[0].instanceTemplate
+                policy:
+                  fromFieldPath: Required
+              - type: ToCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: status.groupName
+              - type: ToCompositeFieldPath
+                fromFieldPath: status.atProvider.targetSize
+                toFieldPath: status.currentSize
+    - step: auto-ready
+      functionRef:
+        name: function-auto-ready
