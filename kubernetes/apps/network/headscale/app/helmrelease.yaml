@@ -120,6 +120,10 @@ spec:
           - name: envoy-internal
             namespace: network
             sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 8080
       ui:
         hostnames: ["headscale.goyangi.io"]
         parentRefs:
@@ -132,7 +136,8 @@ spec:
                   type: PathPrefix
                   value: /web
             backendRefs:
-              - port: 8081
+              - identifier: app
+                port: 8081
     persistence:
       data:
         existingClaim: headscale
