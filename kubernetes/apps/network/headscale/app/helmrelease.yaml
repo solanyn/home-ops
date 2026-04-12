@@ -21,7 +21,8 @@ spec:
               tag: 0.25.1
             args: ["serve"]
             env:
-              HEADSCALE_DNS_BASE_DOMAIN: ts.goyangi.io
+              HEADSCALE_DNS_BASE_DOMAIN: mesh.goyangi.io
+              HEADSCALE_DNS_MAGIC_DNS: "true"
               HEADSCALE_DNS_NAMESERVERS_GLOBAL: 1.1.1.1 9.9.9.9
               HEADSCALE_PREFIXES_V4: 100.64.0.0/10
               HEADSCALE_PREFIXES_V6: fd7a:115c:a1e0::/48
@@ -32,13 +33,15 @@ spec:
               HEADSCALE_DATABASE_TYPE: sqlite
               HEADSCALE_DATABASE_SQLITE_PATH: /var/lib/headscale/db.sqlite
               HEADSCALE_DERP_SERVER_ENABLED: "true"
-              HEADSCALE_DERP_SERVER_REGION_ID: "999"
-              HEADSCALE_DERP_SERVER_REGION_CODE: home
-              HEADSCALE_DERP_SERVER_REGION_NAME: Home
+              HEADSCALE_DERP_SERVER_REGION_ID: "900"
+              HEADSCALE_DERP_SERVER_REGION_CODE: syd
+              HEADSCALE_DERP_SERVER_REGION_NAME: Sydney
               HEADSCALE_DERP_SERVER_STUN_LISTEN_ADDR: 0.0.0.0:3478
+              HEADSCALE_DERP_URLS: ""
+              HEADSCALE_DERP_AUTO_UPDATE_ENABLED: "false"
             envFrom:
               - secretRef:
-                  name: "{{ .Release.Name }}-secret"
+                  name: headscale-secret
             probes:
               liveness: &probes
                 enabled: true
@@ -62,6 +65,22 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 256Mi
+          ui:
+            image:
+              repository: ghcr.io/gurucomputing/headscale-ui
+              tag: 2025.01.20
+            env:
+              HTTP_PORT: "8081"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 5m
+                memory: 32Mi
+              limits:
+                memory: 64Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -74,6 +93,8 @@ spec:
         ports:
           http:
             port: *port
+          ui:
+            port: 8081
           metrics:
             port: 9090
       stun:
@@ -93,14 +114,27 @@ spec:
           - port: metrics
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        hostnames: ["headscale.goyangi.io"]
         parentRefs:
           - name: envoy-internal
             namespace: network
             sectionName: https
+      ui:
+        hostnames: ["headscale.goyangi.io"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /web
+            backendRefs:
+              - port: 8081
     persistence:
       data:
-        existingClaim: "{{ .Release.Name }}"
+        existingClaim: headscale
         globalMounts:
           - path: /var/lib/headscale
       tmp:
