@@ -6,6 +6,8 @@ metadata:
   name: paperless-ai
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/volsync
   dependsOn:
     - name: paperless
       namespace: default
