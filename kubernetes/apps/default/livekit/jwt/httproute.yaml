@@ -4,10 +4,13 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: lk-jwt
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: livekit-jwt.goyangi.io
 spec:
   parentRefs:
-    - name: envoy-internal
+    - name: envoy-external
       namespace: network
+      sectionName: https
   hostnames:
     - livekit-jwt.goyangi.io
   rules:
