@@ -98,11 +98,3 @@ spec:
     shims:
       dockerize: false
       elasticsearchTool: false
-    cassandra:
-      enabled: false
-    elasticsearch:
-      enabled: false
-    prometheus:
-      enabled: false
-    grafana:
-      enabled: false
