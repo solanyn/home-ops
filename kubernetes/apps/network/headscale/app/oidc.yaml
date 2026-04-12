@@ -7,6 +7,7 @@ spec:
   clientID: headscale
   callbackUrls:
     - https://headscale.goyangi.io/oidc/callback
+    - https://headscale.goyangi.io/admin/oidc/callback
   allowedUserGroups:
     - name: admin
       namespace: default
