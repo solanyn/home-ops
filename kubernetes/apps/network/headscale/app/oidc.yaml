@@ -9,6 +9,7 @@ spec:
     - https://headscale.goyangi.io/oidc/callback
   allowedUserGroups:
     - name: admin
+      namespace: default
   secret:
     name: headscale-oidc
     keys:
