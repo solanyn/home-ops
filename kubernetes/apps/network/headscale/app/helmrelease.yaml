@@ -68,7 +68,7 @@ spec:
           ui:
             image:
               repository: ghcr.io/gurucomputing/headscale-ui
-              tag: 2025.01.20
+              tag: 2025.08.23
             env:
               HTTP_PORT: "8081"
             securityContext:
