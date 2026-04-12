@@ -11,6 +11,8 @@ spec:
   dependsOn:
     - name: agent-sandbox-extensions
       namespace: agent-sandbox-system
+    - name: openclaw-sandbox
+      namespace: ai
   interval: 1h
   path: ./kubernetes/apps/ai/openclaw/app
   postBuild:

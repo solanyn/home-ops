@@ -4,5 +4,4 @@ resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
   - ./externalsecret.yaml
-  - ./sandbox.yaml
 
