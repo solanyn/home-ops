@@ -10,19 +10,19 @@ data:
     FORGEJO_REPOS="nix-darwin obsidian"
 
     while true; do
-      for repo in $GITHUB_REPOS; do
-        if [ -d "/repos/$repo/.git" ]; then
-          git -C "/repos/$repo" pull --ff-only 2>/dev/null || true
+      for repo in $$GITHUB_REPOS; do
+        if [ -d "/repos/$$repo/.git" ]; then
+          git -C "/repos/$$repo" pull --ff-only 2>/dev/null || true
         else
-          git clone "https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/solanyn/${repo}.git" "/repos/$repo"
+          git clone "https://$${GITHUB_USERNAME}:$${GITHUB_TOKEN}@github.com/solanyn/$${repo}.git" "/repos/$$repo"
         fi
       done
 
-      for repo in $FORGEJO_REPOS; do
-        if [ -d "/repos/$repo/.git" ]; then
-          git -C "/repos/$repo" pull --ff-only 2>/dev/null || true
+      for repo in $$FORGEJO_REPOS; do
+        if [ -d "/repos/$$repo/.git" ]; then
+          git -C "/repos/$$repo" pull --ff-only 2>/dev/null || true
         else
-          git clone "https://${FORGEJO_USERNAME}:${FORGEJO_TOKEN}@forgejo.goyangi.io/andrew/${repo}.git" "/repos/$repo"
+          git clone "https://$${FORGEJO_USERNAME}:$${FORGEJO_TOKEN}@forgejo.goyangi.io/andrew/$${repo}.git" "/repos/$$repo"
         fi
       done
 
