@@ -25,6 +25,9 @@ spec:
               - |
                 mkdir -p /home/node/.local/share/opencode /home/node/.local/state /home/node/.config
                 chown -R 1000:1000 /home/node/.local /home/node/.config
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
         containers:
           app:
             image:
