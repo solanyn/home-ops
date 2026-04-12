@@ -68,7 +68,29 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 256Mi
-
+          ui:
+            image:
+              repository: ghcr.io/tale/headplane
+              tag: latest
+            env:
+              HEADPLANE_CONFIG_PATH: /etc/headplane/config.yaml
+              HEADPLANE_LOAD_ENV_OVERRIDES: "true"
+              HEADPLANE_OIDC__HEADSCALE_API_KEY: "hskey-api-6STvDaXw1BE4-OxQc0uyR9T8XEa8nd1CMbwm3VATAraH2_9_6SRecxmREC8rBmKtz8Rb1-cgzt60q"
+              HEADPLANE_OIDC__CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: headscale-oidc
+                    key: HEADSCALE_OIDC_CLIENT_SECRET
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 5m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -81,6 +103,8 @@ spec:
         ports:
           http:
             port: *port
+          ui:
+            port: 3000
           metrics:
             port: 9090
       stun:
@@ -110,11 +134,40 @@ spec:
           - backendRefs:
               - identifier: app
                 port: 8080
+      ui:
+        hostnames: ["headscale.goyangi.io"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /admin
+            backendRefs:
+              - identifier: app
+                port: 3000
     persistence:
       data:
         existingClaim: headscale
         globalMounts:
           - path: /var/lib/headscale
+      headplane-config:
+        type: configMap
+        name: headplane-config
+        advancedMounts:
+          headscale:
+            ui:
+              - path: /etc/headplane/config.yaml
+                subPath: config.yaml
+                readOnly: true
+      headplane-data:
+        type: emptyDir
+        advancedMounts:
+          headscale:
+            ui:
+              - path: /var/lib/headplane
       tmp:
         type: emptyDir
         globalMounts:
