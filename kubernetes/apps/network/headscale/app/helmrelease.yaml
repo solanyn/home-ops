@@ -1,0 +1,113 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: headscale
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: headscale
+  interval: 10m
+  values:
+    controllers:
+      headscale:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/juanfont/headscale
+              tag: 0.25.1
+            args: ["serve"]
+            env:
+              HEADSCALE_DNS_BASE_DOMAIN: ts.goyangi.io
+              HEADSCALE_DNS_NAMESERVERS_GLOBAL: 1.1.1.1 9.9.9.9
+              HEADSCALE_PREFIXES_V4: 100.64.0.0/10
+              HEADSCALE_PREFIXES_V6: fd7a:115c:a1e0::/48
+              HEADSCALE_SERVER_URL: https://headscale.goyangi.io
+              HEADSCALE_LISTEN_ADDR: 0.0.0.0:8080
+              HEADSCALE_METRICS_LISTEN_ADDR: 0.0.0.0:9090
+              HEADSCALE_NOISE_PRIVATE_KEY_PATH: /var/lib/headscale/noise_private.key
+              HEADSCALE_DATABASE_TYPE: sqlite
+              HEADSCALE_DATABASE_SQLITE_PATH: /var/lib/headscale/db.sqlite
+              HEADSCALE_DERP_SERVER_ENABLED: "true"
+              HEADSCALE_DERP_SERVER_REGION_ID: "999"
+              HEADSCALE_DERP_SERVER_REGION_CODE: home
+              HEADSCALE_DERP_SERVER_REGION_NAME: Home
+              HEADSCALE_DERP_SERVER_STUN_LISTEN_ADDR: 0.0.0.0:3478
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8080
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+          metrics:
+            port: 9090
+      stun:
+        type: LoadBalancer
+        ipFamilies: [IPv4, IPv6]
+        ipFamilyPolicy: PreferDualStack
+        annotations:
+          lbipam.cilium.io/ips: 192.168.69.138,fd5d:a293:f321:69::138
+        externalTrafficPolicy: Local
+        ports:
+          stun-udp:
+            port: 3478
+            protocol: UDP
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: metrics
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /var/lib/headscale
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+      run:
+        type: emptyDir
+        globalMounts:
+          - path: /var/run/headscale
