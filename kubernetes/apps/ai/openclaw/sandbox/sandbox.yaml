@@ -15,7 +15,7 @@ spec:
         runAsGroup: 0
       containers:
         - name: sandbox
-          image: ghcr.io/solanyn/openclaw-sandbox:2.0.0@sha256:30d450744829b25896a7154ea0e986c0e3940ae20e84f75e39fa73cdb80dd94e
+          image: ghcr.io/solanyn/openclaw-sandbox:2.0.0@sha256:1eff16b07a7f23bd47005738b8ec4a9bdf1117bc4d2b69c47e65cd521f134c68
           command: ["/usr/sbin/sshd", "-D", "-e", "-p", "2222"]
           ports:
             - containerPort: 2222
