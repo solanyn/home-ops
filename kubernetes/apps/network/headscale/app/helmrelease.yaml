@@ -110,6 +110,7 @@ spec:
             protocol: UDP
     serviceMonitor:
       app:
+        serviceName: app
         endpoints:
           - port: metrics
     route:
