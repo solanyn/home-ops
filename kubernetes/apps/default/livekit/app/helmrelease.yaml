@@ -61,7 +61,7 @@ spec:
     persistence:
       config:
         type: configMap
-        name: livekit-config
+        identifier: config
         globalMounts:
           - path: /etc/livekit/config.yaml
             subPath: config.yaml
