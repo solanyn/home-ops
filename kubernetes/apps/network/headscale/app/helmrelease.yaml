@@ -153,3 +153,10 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /var/run/headscale
+      config:
+        type: configMap
+        name: headscale-config-file
+        globalMounts:
+          - path: /etc/headscale/config.yaml
+            subPath: config.yaml
+            readOnly: true
