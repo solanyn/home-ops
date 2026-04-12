@@ -2,12 +2,12 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xcomputenodes.home-ops.io
+  name: xcomputenodepools.home-ops.io
 spec:
   group: home-ops.io
   names:
-    kind: XComputeNode
-    plural: xcomputenodes
+    kind: XComputeNodePool
+    plural: xcomputenodepools
   versions:
     - name: v1alpha1
       served: true
@@ -19,18 +19,18 @@ spec:
             spec:
               type: object
               properties:
-                zone:
+                region:
                   type: string
-                  default: australia-southeast1-b
+                  default: australia-southeast1
                 machineType:
                   type: string
-                  default: e2-medium
+                  default: e2-standard-8
                 spot:
                   type: boolean
                   default: true
                 diskSizeGb:
                   type: integer
-                  default: 20
+                  default: 50
                 diskType:
                   type: string
                   default: pd-standard
@@ -39,13 +39,20 @@ spec:
                   description: GCE boot image self-link
                 userData:
                   type: string
-                  description: Talos machine config (base64 or inline)
+                  description: Machine config (base64)
+                targetSize:
+                  type: integer
+                  default: 0
+                  description: Desired number of instances (0-8)
+                maxSize:
+                  type: integer
+                  default: 8
             status:
               type: object
               properties:
-                instanceId:
+                currentSize:
+                  type: integer
+                templateName:
                   type: string
-                externalIp:
-                  type: string
-                internalIp:
+                groupName:
                   type: string

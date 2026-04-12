@@ -8,6 +8,9 @@ spec:
   targetNamespace: network
   components:
     - ../../../../components/volsync
+  dependsOn:
+    - name: pocket-id-operator
+      namespace: default
   interval: 1h
   path: ./kubernetes/apps/network/headscale/app
   postBuild:
