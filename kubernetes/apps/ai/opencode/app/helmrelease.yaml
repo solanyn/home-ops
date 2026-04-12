@@ -28,6 +28,7 @@ spec:
               - "4096"
             env:
               TZ: Australia/Sydney
+              HOME: /home/node
               OPENAI_BASE_URL: http://agentgateway.network.svc.cluster.local:8080/v1/opus
             envFrom:
               - secretRef:
