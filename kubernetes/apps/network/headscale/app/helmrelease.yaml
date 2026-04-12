@@ -39,6 +39,7 @@ spec:
               HEADSCALE_DERP_SERVER_STUN_LISTEN_ADDR: 0.0.0.0:3478
               HEADSCALE_DERP_URLS: ""
               HEADSCALE_DERP_AUTO_UPDATE_ENABLED: "false"
+              HEADSCALE_DERP_SERVER_PRIVATE_KEY_PATH: /var/lib/headscale/derp_server_private.key
             envFrom:
               - secretRef:
                   name: headscale-oidc
