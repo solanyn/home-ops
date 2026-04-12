@@ -11,13 +11,12 @@ spec:
         app.kubernetes.io/name: openclaw-sandbox
     spec:
       securityContext:
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
+        runAsUser: 0
+        runAsGroup: 0
       containers:
         - name: sandbox
           image: ghcr.io/solanyn/openclaw-sandbox:2.0.0@sha256:30d450744829b25896a7154ea0e986c0e3940ae20e84f75e39fa73cdb80dd94e
+          command: ["/usr/sbin/sshd", "-D", "-e", "-p", "2222"]
           ports:
             - containerPort: 2222
               name: ssh
@@ -29,8 +28,6 @@ spec:
               value: "10.43.0.1"
             - name: KUBERNETES_SERVICE_PORT
               value: "443"
-            - name: SSH_PORT
-              value: "2222"
           envFrom:
             - secretRef:
                 name: openclaw-sandbox-secret
@@ -42,7 +39,7 @@ spec:
               memory: 1Gi
           volumeMounts:
             - name: authorized-keys
-              mountPath: /home/node/.ssh/authorized_keys
+              mountPath: /etc/ssh/authorized_keys/node
               subPath: authorized_keys
               readOnly: true
             - name: workspace
@@ -54,7 +51,7 @@ spec:
             items:
               - key: authorized_keys
                 path: authorized_keys
-            defaultMode: 0600
+            defaultMode: 0644
         - name: workspace
           persistentVolumeClaim:
             claimName: openclaw-sandbox
