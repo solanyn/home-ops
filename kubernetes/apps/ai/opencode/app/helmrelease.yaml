@@ -29,6 +29,7 @@ spec:
             env:
               TZ: Australia/Sydney
               HOME: /home/node
+              XDG_DATA_HOME: /data
               OPENAI_BASE_URL: http://agentgateway.network.svc.cluster.local:8080/v1/opus
             envFrom:
               - secretRef:
@@ -86,6 +87,7 @@ spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
+        fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
 
     service:
@@ -101,9 +103,14 @@ spec:
           - path: /repos
       session-data:
         existingClaim: opencode
-        globalMounts:
-          - path: /home/node/.local/share/opencode
-            subPath: session-data
+        advancedMounts:
+          opencode:
+            app:
+              - path: /data/opencode
+                subPath: session-data
+            git-sync:
+              - path: /data/opencode
+                subPath: session-data
       home:
         type: emptyDir
         globalMounts:
