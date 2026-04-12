@@ -1,25 +1,4 @@
 ---
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: openclaw-sandbox
-spec:
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: onepassword
-  target:
-    name: openclaw-sandbox-secret
-    creationPolicy: Owner
-    template:
-      data:
-        authorized_keys: "{{ .SANDBOX_SSH_PUBLIC_KEY }}"
-        OP_SERVICE_ACCOUNT_TOKEN: "{{ .HAWOW_OP_SERVICE_ACCOUNT_TOKEN }}"
-  dataFrom:
-    - extract:
-        key: 1password
-    - extract:
-        key: openclaw
----
 apiVersion: agents.x-k8s.io/v1alpha1
 kind: Sandbox
 metadata:
@@ -55,11 +34,10 @@ spec:
           envFrom:
             - secretRef:
                 name: openclaw-sandbox-secret
-                optional: true
           resources:
             requests:
-              cpu: 100m
-              memory: 256Mi
+              cpu: 10m
+              memory: 64Mi
             limits:
               memory: 1Gi
           volumeMounts:

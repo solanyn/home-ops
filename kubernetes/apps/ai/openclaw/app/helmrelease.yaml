@@ -44,7 +44,7 @@ spec:
                 # Setup SSH
                 cp /tmp/ssh-secrets/ssh_private_key /home/node/.ssh/id_ed25519
                 cp /tmp/ssh-secrets/ssh_config /home/node/.ssh/config
-                cp /tmp/ssh-secrets/sandbox_ssh_key /home/node/.ssh/sandbox_id
+                cp /tmp/ssh-secrets/ssh_private_key /home/node/.ssh/sandbox_id
                 chmod 700 /home/node/.ssh
                 chmod 600 /home/node/.ssh/id_ed25519 /home/node/.ssh/config /home/node/.ssh/sandbox_id
 
@@ -345,8 +345,6 @@ spec:
             path: ssh_config
           - key: fj_config
             path: fj_config
-          - key: sandbox_ssh_key
-            path: sandbox_ssh_key
         advancedMounts:
           openclaw:
             install-tools:

@@ -10,6 +10,5 @@ components:
 resources:
   - ./namespace.yaml
   - ./openclaw/ks.yaml
-  - ./openclaw/sandbox/ks.yaml
   - ./temporal/ks.yaml
 
