@@ -173,7 +173,7 @@ spec:
         - name: webhook
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: gcr.io/knative-releases/knative.dev/net-gateway-api/cmd/webhook@sha256:086167756478ee48f8201c5ef9349178f95e27d30f3e16ca52a0ffd75c4d7f33
+          image: gcr.io/knative-releases/knative.dev/net-gateway-api/cmd/webhook@sha256:c42118b5c156b232bdde5541e2111501dcd2e4c2677fb375545aabab7c98a776
           resources:
             requests:
               cpu: 20m
