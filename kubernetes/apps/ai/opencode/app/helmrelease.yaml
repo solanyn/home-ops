@@ -1,0 +1,228 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: opencode
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: opencode
+  interval: 10m
+  values:
+    controllers:
+      opencode:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/anomalyco/opencode
+              tag: latest
+            command:
+              - opencode
+              - web
+              - --hostname
+              - 0.0.0.0
+              - --port
+              - "4096"
+            env:
+              TZ: Australia/Sydney
+              OPENAI_BASE_URL: http://agentgateway.network.svc.cluster.local:8080/v1/opus
+            envFrom:
+              - secretRef:
+                  name: opencode-secret
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 4096
+                  periodSeconds: 2
+                  failureThreshold: 30
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 4096
+                  periodSeconds: 10
+                  failureThreshold: 3
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 4096
+                  periodSeconds: 30
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+          git-sync-home-ops:
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.4.1
+            env:
+              GITSYNC_REPO: https://github.com/solanyn/home-ops
+              GITSYNC_REF: main
+              GITSYNC_ROOT: /repos/home-ops
+              GITSYNC_ONE_TIME: "false"
+              GITSYNC_PERIOD: 60s
+              GITSYNC_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencode-secret
+                    key: GITHUB_USERNAME
+              GITSYNC_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencode-secret
+                    key: GITHUB_TOKEN
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+          git-sync-mono:
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.4.1
+            env:
+              GITSYNC_REPO: https://github.com/solanyn/mono
+              GITSYNC_REF: main
+              GITSYNC_ROOT: /repos/mono
+              GITSYNC_ONE_TIME: "false"
+              GITSYNC_PERIOD: 60s
+              GITSYNC_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencode-secret
+                    key: GITHUB_USERNAME
+              GITSYNC_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencode-secret
+                    key: GITHUB_TOKEN
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+          git-sync-containers:
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.4.1
+            env:
+              GITSYNC_REPO: https://github.com/solanyn/containers
+              GITSYNC_REF: main
+              GITSYNC_ROOT: /repos/containers
+              GITSYNC_ONE_TIME: "false"
+              GITSYNC_PERIOD: 60s
+              GITSYNC_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencode-secret
+                    key: GITHUB_USERNAME
+              GITSYNC_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencode-secret
+                    key: GITHUB_TOKEN
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+          git-sync-nix-darwin:
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.4.1
+            env:
+              GITSYNC_REPO: https://forgejo.goyangi.io/andrew/nix-darwin
+              GITSYNC_REF: main
+              GITSYNC_ROOT: /repos/nix-darwin
+              GITSYNC_ONE_TIME: "false"
+              GITSYNC_PERIOD: 60s
+              GITSYNC_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencode-secret
+                    key: FORGEJO_USERNAME
+              GITSYNC_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencode-secret
+                    key: FORGEJO_TOKEN
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+          git-sync-obsidian:
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.4.1
+            env:
+              GITSYNC_REPO: https://forgejo.goyangi.io/andrew/obsidian
+              GITSYNC_REF: main
+              GITSYNC_ROOT: /repos/obsidian
+              GITSYNC_ONE_TIME: "false"
+              GITSYNC_PERIOD: 60s
+              GITSYNC_USERNAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencode-secret
+                    key: FORGEJO_USERNAME
+              GITSYNC_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencode-secret
+                    key: FORGEJO_TOKEN
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      app:
+        ports:
+          http:
+            port: 4096
+
+    route:
+      app:
+        hostnames:
+          - opencode.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+
+    persistence:
+      repos:
+        existingClaim: opencode
+        globalMounts:
+          - path: /repos
+      session-data:
+        existingClaim: opencode
+        globalMounts:
+          - path: /home/node/.local/share/opencode
+            subPath: session-data
