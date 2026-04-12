@@ -31,6 +31,7 @@ resources:
   - ./home-assistant/ks.yaml
   - ./immich/ks.yaml
   - ./label-studio/ks.yaml
+  - ./livekit/ks.yaml
   - ./lidarr/ks.yaml
   - ./lubelogger/ks.yaml
   - ./matter-server/ks.yaml
