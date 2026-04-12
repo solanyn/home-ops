@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/juanfont/headscale
-              tag: 0.25.1
+              tag: v0.28.0
             args: ["serve"]
             env:
               HEADSCALE_DNS_BASE_DOMAIN: mesh.goyangi.io
