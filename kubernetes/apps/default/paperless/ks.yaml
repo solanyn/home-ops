@@ -6,8 +6,6 @@ metadata:
   name: paperless
 spec:
   targetNamespace: default
-  components:
-    - ../../../../components/volsync
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage
