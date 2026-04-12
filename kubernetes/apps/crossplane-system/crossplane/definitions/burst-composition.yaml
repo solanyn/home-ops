@@ -1,0 +1,83 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: compute-node
+  labels:
+    provider: gcp
+spec:
+  compositeTypeRef:
+    apiVersion: home-ops.io/v1alpha1
+    kind: XComputeNode
+  mode: Pipeline
+  pipeline:
+    - step: patch-and-transform
+      functionRef:
+        name: function-patch-and-transform
+      input:
+        apiVersion: pt.fn.crossplane.io/v1beta1
+        kind: Resources
+        resources:
+          - name: instance
+            base:
+              apiVersion: compute.gcp.upbound.io/v1beta2
+              kind: Instance
+              spec:
+                providerConfigRef:
+                  name: home-ops
+                deletionPolicy: Delete
+                forProvider:
+                  zone: australia-southeast1-b
+                  machineType: e2-medium
+                  scheduling:
+                    - preemptible: true
+                      automaticRestart: false
+                  bootDisk:
+                    - initializeParams:
+                        - size: 20
+                          type: pd-standard
+                  networkInterface:
+                    - network: default
+                      accessConfig:
+                        - networkTier: STANDARD
+                  tags:
+                    - compute-worker
+                  labels:
+                    managed-by: crossplane
+            patches:
+              - type: FromCompositeFieldPath
+                fromFieldPath: metadata.name
+                toFieldPath: metadata.name
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.zone
+                toFieldPath: spec.forProvider.zone
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.machineType
+                toFieldPath: spec.forProvider.machineType
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.spot
+                toFieldPath: spec.forProvider.scheduling[0].preemptible
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.diskSizeGb
+                toFieldPath: spec.forProvider.bootDisk[0].initializeParams[0].size
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.diskType
+                toFieldPath: spec.forProvider.bootDisk[0].initializeParams[0].type
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.image
+                toFieldPath: spec.forProvider.bootDisk[0].initializeParams[0].image
+              - type: FromCompositeFieldPath
+                fromFieldPath: spec.userData
+                toFieldPath: spec.forProvider.metadata[user-data]
+              - type: ToCompositeFieldPath
+                fromFieldPath: status.atProvider.instanceId
+                toFieldPath: status.instanceId
+              - type: ToCompositeFieldPath
+                fromFieldPath: status.atProvider.networkInterface[0].accessConfig[0].natIp
+                toFieldPath: status.externalIp
+              - type: ToCompositeFieldPath
+                fromFieldPath: status.atProvider.networkInterface[0].networkIp
+                toFieldPath: status.internalIp
+    - step: auto-ready
+      functionRef:
+        name: function-auto-ready

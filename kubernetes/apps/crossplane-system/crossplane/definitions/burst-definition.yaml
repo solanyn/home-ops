@@ -1,0 +1,51 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xcomputenodes.home-ops.io
+spec:
+  group: home-ops.io
+  names:
+    kind: XComputeNode
+    plural: xcomputenodes
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                zone:
+                  type: string
+                  default: australia-southeast1-b
+                machineType:
+                  type: string
+                  default: e2-medium
+                spot:
+                  type: boolean
+                  default: true
+                diskSizeGb:
+                  type: integer
+                  default: 20
+                diskType:
+                  type: string
+                  default: pd-standard
+                image:
+                  type: string
+                  description: GCE boot image self-link
+                userData:
+                  type: string
+                  description: Talos machine config (base64 or inline)
+            status:
+              type: object
+              properties:
+                instanceId:
+                  type: string
+                externalIp:
+                  type: string
+                internalIp:
+                  type: string
