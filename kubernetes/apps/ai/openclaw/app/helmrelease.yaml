@@ -22,45 +22,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          daemon:
-            image:
-              repository: docker
-              tag: 29.4.0-dind
-            restartPolicy: Always
-            securityContext:
-              privileged: true
-              runAsUser: 0
-              runAsGroup: 0
-              runAsNonRoot: false
-            env:
-              - name: DOCKER_TLS_CERTDIR
-                value: /certs
-            probes:
-              startup:
-                enabled: true
-                custom: true
-                spec: &probeSpec
-                  exec:
-                    command: ["docker", "info"]
-                  periodSeconds: 2
-                  timeoutSeconds: 3
-                  failureThreshold: 60
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  <<: *probeSpec
-                  periodSeconds: 5
-                  timeoutSeconds: 3
-                  failureThreshold: 3
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  <<: *probeSpec
-                  periodSeconds: 20
-                  timeoutSeconds: 3
-                  failureThreshold: 3
           install-tools:
             image:
               repository: ghcr.io/openclaw/openclaw
@@ -83,8 +44,9 @@ spec:
                 # Setup SSH
                 cp /tmp/ssh-secrets/ssh_private_key /home/node/.ssh/id_ed25519
                 cp /tmp/ssh-secrets/ssh_config /home/node/.ssh/config
+                cp /tmp/ssh-secrets/ssh_private_key /home/node/.ssh/sandbox_id
                 chmod 700 /home/node/.ssh
-                chmod 600 /home/node/.ssh/id_ed25519 /home/node/.ssh/config
+                chmod 600 /home/node/.ssh/id_ed25519 /home/node/.ssh/config /home/node/.ssh/sandbox_id
 
                 # Copy SSH key to workspace for sandbox access
                 mkdir -p /home/node/.openclaw/workspace/.ssh
@@ -109,16 +71,6 @@ spec:
                   echo "Installing uv..."
                   cd /tmp
                   curl -fsSL https://astral.sh/uv/install.sh | INSTALLER_NO_MODIFY_PATH=1 UV_INSTALL_DIR=/home/node/.local/bin sh
-                fi
-
-                # Install docker CLI if not present
-                if [ ! -f /home/node/.local/bin/docker ]; then
-                  echo "Installing docker CLI..."
-                  # renovate: datasource=github-releases depName=moby/moby
-                  curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-27.5.1.tgz | tar xz -C /tmp
-                  mv /tmp/docker/docker /home/node/.local/bin/docker
-                  chmod +x /home/node/.local/bin/docker
-                  rm -rf /tmp/docker
                 fi
 
                 # Install hippo-memory CLI and OpenClaw plugin
@@ -162,32 +114,22 @@ spec:
               - /bin/sh
               - -c
               - |
-                # Set up openclawbot CLI symlink
                 ln -sf /app/openclawbot.mjs /home/node/.local/bin/openclawbot
 
-                # Copy SA token to workspace for sandbox bind mount
                 mkdir -p /home/node/.openclaw/workspace/.kube/sa
                 cp /var/run/secrets/kubernetes.io/serviceaccount/* /home/node/.openclaw/workspace/.kube/sa/
 
-                # Write kubeconfig for sandbox kubectl access
                 mkdir -p /home/node/.openclaw/workspace/.kube /home/node/.openclaw/workspace-coding/.kube
                 for dir in /home/node/.openclaw/workspace/.kube /home/node/.openclaw/workspace-coding/.kube; do
                   printf 'apiVersion: v1\nkind: Config\nclusters:\n- cluster:\n    server: https://10.43.0.1:443\n    certificate-authority: /home/node/.openclaw/workspace/.kube/sa/ca.crt\n  name: cluster\ncontexts:\n- context:\n    cluster: cluster\n    user: sa\n  name: default\ncurrent-context: default\nusers:\n- name: sa\n  user:\n    tokenFile: /home/node/.openclaw/workspace/.kube/sa/token\n' > "$dir/config"
                 done
 
-                # Pre-pull sandbox image
-                docker pull ghcr.io/solanyn/openclaw-sandbox:2.0.0@sha256:29a5ed2ff83d31baa6fc21e1ea1866f64c542c609abfa78118aee44fb009cb95 &
-
-                # Start gateway
                 exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
             env:
               HOME: &homepath /home/node
               TERM: xterm-256color
               PATH: /home/node/.local/bin:/home/node/.local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
               TZ: Australia/Sydney
-              DOCKER_HOST: tcp://localhost:2376
-              DOCKER_CERT_PATH: /certs/client
-              DOCKER_TLS_VERIFY: "1"
             envFrom:
               - secretRef:
                   name: openclaw
@@ -228,7 +170,6 @@ spec:
                 memory: 64Mi
 
     defaultPodOptions:
-      shareProcessNamespace: true
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
@@ -338,6 +279,12 @@ spec:
             - apiGroups: [""]
               resources: ["pods"]
               verbs: ["delete"]
+        openclaw-sandbox-manage:
+          type: Role
+          rules:
+            - apiGroups: ["agents.x-k8s.io"]
+              resources: ["sandboxes"]
+              verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
       bindings:
         openclaw-read-all:
           type: ClusterRoleBinding
@@ -360,6 +307,13 @@ spec:
           subjects:
             - identifier: openclaw
               serviceAccount: openclaw
+        openclaw-sandbox-manage:
+          type: RoleBinding
+          roleRef:
+            identifier: openclaw-sandbox-manage
+          subjects:
+            - identifier: openclaw
+              serviceAccount: openclaw
     serviceAccount:
       openclaw: {}
     persistence:
@@ -373,8 +327,6 @@ spec:
         path: /mnt/world/hawow
         globalMounts:
           - path: /home/node/hawow
-      certs:
-        type: emptyDir
       openclaw-config:
         type: secret
         name: openclaw-config
