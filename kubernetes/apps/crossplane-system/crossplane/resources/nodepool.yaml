@@ -10,6 +10,8 @@ spec:
   diskSizeGb: 200
   diskType: pd-standard
   image: projects/${GCP_PROJECT_ID}/global/images/talos-tailscale-v1-12-6
-  userData: ${NODEPOOL_USER_DATA}
+  userDataSecretRef:
+    name: nodepool-config
+    key: NODEPOOL_USER_DATA
   targetSize: 0
   maxSize: 8

@@ -30,16 +30,24 @@ spec:
                   default: true
                 diskSizeGb:
                   type: integer
-                  default: 50
+                  default: 200
                 diskType:
                   type: string
                   default: pd-standard
                 image:
                   type: string
                   description: GCE boot image self-link
-                userData:
-                  type: string
-                  description: Machine config (base64)
+                userDataSecretRef:
+                  type: object
+                  description: Reference to Secret containing machine config
+                  properties:
+                    name:
+                      type: string
+                    key:
+                      type: string
+                      default: NODEPOOL_USER_DATA
+                  required:
+                    - name
                 targetSize:
                   type: integer
                   default: 0

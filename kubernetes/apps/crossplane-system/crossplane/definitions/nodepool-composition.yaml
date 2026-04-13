@@ -11,7 +11,88 @@ spec:
     kind: XComputeNodePool
   mode: Pipeline
   pipeline:
-    - step: patch-and-transform
+    - step: render-templates
+      functionRef:
+        name: function-go-templating
+      input:
+        apiVersion: gotemplating.fn.crossplane.io/v1beta1
+        kind: GoTemplate
+        source: Inline
+        inline:
+          template: |
+            {{- $spec := .observed.composite.resource.spec }}
+            {{- $name := .observed.composite.resource.metadata.name }}
+            {{- $secretItems := (index .extraResources "user-data").items }}
+            {{- $secret := index $secretItems 0 }}
+            {{- $secretKey := $spec.userDataSecretRef.key | default "NODEPOOL_USER_DATA" }}
+            {{- $userData := index $secret.resource.data $secretKey | b64dec }}
+            {{- $templateSelfLink := "" }}
+            {{- if (index .observed.composed "instance-template") }}
+            {{- $templateSelfLink = (index .observed.composed "instance-template").resource.status.atProvider.selfLinkUnique | default "" }}
+            {{- end }}
+            ---
+            apiVersion: meta.gotemplating.fn.crossplane.io/v1alpha1
+            kind: ExtraResources
+            requirements:
+              user-data:
+                apiVersion: v1
+                kind: Secret
+                matchName: {{ $spec.userDataSecretRef.name }}
+            ---
+            apiVersion: compute.gcp.upbound.io/v1beta2
+            kind: InstanceTemplate
+            metadata:
+              name: {{ $name }}-template
+              annotations:
+                gotemplating.fn.crossplane.io/composition-resource-name: instance-template
+            spec:
+              providerConfigRef:
+                name: home-ops
+              deletionPolicy: Delete
+              forProvider:
+                machineType: {{ $spec.machineType }}
+                disk:
+                  - sourceImage: {{ $spec.image }}
+                    diskSizeGb: {{ $spec.diskSizeGb }}
+                    diskType: {{ $spec.diskType }}
+                    autoDelete: true
+                    boot: true
+                networkInterface:
+                  - network: default
+                    accessConfig:
+                      - networkTier: STANDARD
+                scheduling:
+                  - preemptible: {{ $spec.spot }}
+                    automaticRestart: false
+                metadata:
+                  user-data: |
+                    {{ $userData | nindent 12 }}
+                tags:
+                  - compute-worker
+                labels:
+                  managed-by: crossplane
+            ---
+            apiVersion: compute.gcp.upbound.io/v1beta2
+            kind: InstanceGroupManager
+            metadata:
+              name: {{ $name }}-mig
+              annotations:
+                gotemplating.fn.crossplane.io/composition-resource-name: instance-group-manager
+            spec:
+              providerConfigRef:
+                name: home-ops
+              deletionPolicy: Delete
+              forProvider:
+                baseInstanceName: worker
+                zone: {{ $spec.region }}-b
+                targetSize: {{ $spec.targetSize }}
+                version:
+                  {{- if $templateSelfLink }}
+                  - instanceTemplate: {{ $templateSelfLink }}
+                  {{- else }}
+                  - instanceTemplate: ""
+                  {{- end }}
+    - step: status-patches
       functionRef:
         name: function-patch-and-transform
       input:
@@ -22,63 +103,7 @@ spec:
             base:
               apiVersion: compute.gcp.upbound.io/v1beta2
               kind: InstanceTemplate
-              spec:
-                providerConfigRef:
-                  name: home-ops
-                deletionPolicy: Delete
-                forProvider:
-                  machineType: e2-standard-8
-                  disk:
-                    - sourceImage: ""
-                      diskSizeGb: 50
-                      diskType: pd-standard
-                      autoDelete: true
-                      boot: true
-                  networkInterface:
-                    - network: default
-                      accessConfig:
-                        - networkTier: STANDARD
-                  scheduling:
-                    - preemptible: true
-                      automaticRestart: false
-                  metadata:
-                    user-data: ""
-                  tags:
-                    - compute-worker
-                  labels:
-                    managed-by: crossplane
             patches:
-              - type: FromCompositeFieldPath
-                fromFieldPath: metadata.name
-                toFieldPath: metadata.name
-                transforms:
-                  - type: string
-                    string:
-                      type: Format
-                      fmt: "%s-template"
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.machineType
-                toFieldPath: spec.forProvider.machineType
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.spot
-                toFieldPath: spec.forProvider.scheduling[0].preemptible
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.diskSizeGb
-                toFieldPath: spec.forProvider.disk[0].diskSizeGb
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.diskType
-                toFieldPath: spec.forProvider.disk[0].diskType
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.image
-                toFieldPath: spec.forProvider.disk[0].sourceImage
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.userData
-                toFieldPath: spec.forProvider.metadata[user-data]
-                transforms:
-                  - type: string
-                    string:
-                      type: Convert
-                      convert: FromBase64
               - type: ToCompositeFieldPath
                 fromFieldPath: status.atProvider.selfLinkUnique
                 toFieldPath: status.templateName
@@ -86,41 +111,7 @@ spec:
             base:
               apiVersion: compute.gcp.upbound.io/v1beta2
               kind: InstanceGroupManager
-              spec:
-                providerConfigRef:
-                  name: home-ops
-                deletionPolicy: Delete
-                forProvider:
-                  baseInstanceName: worker
-                  zone: australia-southeast1-b
-                  targetSize: 0
-                  version:
-                    - instanceTemplate: ""
             patches:
-              - type: FromCompositeFieldPath
-                fromFieldPath: metadata.name
-                toFieldPath: metadata.name
-                transforms:
-                  - type: string
-                    string:
-                      type: Format
-                      fmt: "%s-mig"
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.region
-                toFieldPath: spec.forProvider.zone
-                transforms:
-                  - type: string
-                    string:
-                      type: Format
-                      fmt: "%s-b"
-              - type: FromCompositeFieldPath
-                fromFieldPath: spec.targetSize
-                toFieldPath: spec.forProvider.targetSize
-              - type: FromCompositeFieldPath
-                fromFieldPath: status.templateName
-                toFieldPath: spec.forProvider.version[0].instanceTemplate
-                policy:
-                  fromFieldPath: Required
               - type: ToCompositeFieldPath
                 fromFieldPath: metadata.name
                 toFieldPath: status.groupName
