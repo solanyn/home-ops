@@ -20,10 +20,10 @@ spec:
               repository: ghcr.io/tailscale/tailscale
               tag: v1.96.5
             env:
-              # Connect to Headscale via internal service (avoids envoy/TLS issues)
-              TS_LOGIN_SERVER: http://headscale-app.network.svc.cluster.local:8080
+              # Connect to Headscale via external URL (noise protocol requires port 443)
+              TS_LOGIN_SERVER: https://headscale.goyangi.io
               # Advertise routes to cluster API server and pod/service CIDRs
-              TS_EXTRA_ARGS: "--login-server=http://headscale-app.network.svc.cluster.local:8080 --advertise-routes=192.168.42.0/24,10.43.0.0/16,10.42.0.0/16 --accept-routes --snat-subnet-routes=false"
+              TS_EXTRA_ARGS: "--login-server=https://headscale.goyangi.io --advertise-routes=192.168.42.0/24,10.43.0.0/16,10.42.0.0/16 --accept-routes --snat-subnet-routes=false"
               TS_USERSPACE: "false"
               TS_KUBE_SECRET: headscale-gateway-state
               TS_HOSTNAME: k8s-gateway
