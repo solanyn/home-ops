@@ -10,6 +10,11 @@ spec:
     - name: envoy-internal
       namespace: network
   rules:
-    - backendRefs:
+    - filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            remove:
+              - Content-Security-Policy
+      backendRefs:
         - name: opencode
           port: 4096
