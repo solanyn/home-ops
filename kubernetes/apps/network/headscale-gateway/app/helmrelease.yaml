@@ -41,6 +41,10 @@ spec:
               limits:
                 memory: 128Mi
     defaultPodOptions:
+      hostAliases:
+        - ip: 192.168.69.139
+          hostnames:
+            - hs.goyangi.io
       securityContext:
         runAsUser: 0
         runAsGroup: 0

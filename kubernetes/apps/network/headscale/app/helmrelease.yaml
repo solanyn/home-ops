@@ -120,6 +120,10 @@ spec:
             port: 443
             targetPort: 8080
             protocol: TCP
+          derp-tcp:
+            port: 18443
+            targetPort: 8080
+            protocol: TCP
       stun:
         type: LoadBalancer
         ipFamilies: [IPv4, IPv6]
