@@ -89,6 +89,8 @@ spec:
     substituteFrom:
       - kind: Secret
         name: crossplane
+      - kind: Secret
+        name: nodepool-config
   prune: true
   sourceRef:
     kind: GitRepository

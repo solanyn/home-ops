@@ -1,0 +1,15 @@
+---
+apiVersion: home-ops.io/v1alpha1
+kind: XComputeNodePool
+metadata:
+  name: nodepool
+spec:
+  region: australia-southeast1
+  machineType: e2-medium
+  spot: true
+  diskSizeGb: 20
+  diskType: pd-standard
+  image: projects/${GCP_PROJECT_ID}/global/images/talos-tailscale-v1-12-6
+  userData: ${NODEPOOL_USER_DATA}
+  targetSize: 0
+  maxSize: 8
