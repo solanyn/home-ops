@@ -22,14 +22,6 @@ spec:
           template: |
             {{- $spec := .observed.composite.resource.spec }}
             {{- $name := .observed.composite.resource.metadata.name }}
-            {{- $secretItems := (index .extraResources "user-data").items }}
-            {{- $secret := index $secretItems 0 }}
-            {{- $secretKey := $spec.userDataSecretRef.key | default "NODEPOOL_USER_DATA" }}
-            {{- $userData := index $secret.resource.data $secretKey | b64dec }}
-            {{- $templateSelfLink := "" }}
-            {{- if (index .observed.composed "instance-template") }}
-            {{- $templateSelfLink = (index .observed.composed "instance-template").resource.status.atProvider.selfLinkUnique | default "" }}
-            {{- end }}
             ---
             apiVersion: meta.gotemplating.fn.crossplane.io/v1alpha1
             kind: ExtraResources
@@ -38,6 +30,14 @@ spec:
                 apiVersion: v1
                 kind: Secret
                 matchName: {{ $spec.userDataSecretRef.name }}
+            {{- if and .extraResources (index .extraResources "user-data") (gt (len (index .extraResources "user-data").items) 0) }}
+            {{- $secret := index (index .extraResources "user-data").items 0 }}
+            {{- $secretKey := $spec.userDataSecretRef.key | default "NODEPOOL_USER_DATA" }}
+            {{- $userData := index $secret.resource.data $secretKey | b64dec }}
+            {{- $templateSelfLink := "" }}
+            {{- if (index .observed.composed "instance-template") }}
+            {{- $templateSelfLink = (index .observed.composed "instance-template").resource.status.atProvider.selfLinkUnique | default "" }}
+            {{- end }}
             ---
             apiVersion: compute.gcp.upbound.io/v1beta2
             kind: InstanceTemplate
@@ -92,6 +92,7 @@ spec:
                   {{- else }}
                   - instanceTemplate: ""
                   {{- end }}
+            {{- end }}
     - step: status-patches
       functionRef:
         name: function-patch-and-transform
