@@ -32,9 +32,9 @@ spec:
     template:
       spec:
         nodeSelector:
-          node-role.kubernetes.io/burst: "true"
+          node-role.kubernetes.io/worker: "true"
         tolerations:
-          - key: burst
+          - key: worker
             operator: Equal
             value: "true"
             effect: NoSchedule

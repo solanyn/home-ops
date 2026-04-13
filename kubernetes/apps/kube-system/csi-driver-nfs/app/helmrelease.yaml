@@ -19,7 +19,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - key: node-role.kubernetes.io/burst
+                  - key: node-role.kubernetes.io/worker
                     operator: DoesNotExist
     storageClass:
       create: true

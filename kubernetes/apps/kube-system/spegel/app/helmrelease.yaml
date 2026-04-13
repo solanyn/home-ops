@@ -20,10 +20,8 @@ spec:
     spegel:
       containerdSock: /run/containerd/containerd.sock
       containerdRegistryConfigPath: /etc/cri/conf.d/hosts
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: node-role.kubernetes.io/burst
-                  operator: DoesNotExist
+    tolerations:
+      - key: worker
+        operator: Equal
+        value: "true"
+        effect: NoSchedule
