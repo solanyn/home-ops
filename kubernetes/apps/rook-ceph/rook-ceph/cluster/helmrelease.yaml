@@ -110,6 +110,14 @@ spec:
         provider: host
         connections:
           requireMsgr2: true
+      placement:
+        all:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: node-role.kubernetes.io/nodepool
+                      operator: DoesNotExist
       storage:
         useAllNodes: true
         useAllDevices: false

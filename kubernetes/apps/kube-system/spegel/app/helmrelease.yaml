@@ -20,10 +20,8 @@ spec:
     spegel:
       containerdSock: /run/containerd/containerd.sock
       containerdRegistryConfigPath: /etc/cri/conf.d/hosts
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: liqo.io/type
-                  operator: DoesNotExist
+    tolerations:
+      - key: nodepool
+        operator: Equal
+        value: "true"
+        effect: NoSchedule

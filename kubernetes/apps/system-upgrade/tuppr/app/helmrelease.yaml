@@ -16,7 +16,5 @@ spec:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - key: liqo.io/type
-                  operator: NotIn
-                  values:
-                    - virtual-node
+                - key: node-role.kubernetes.io/nodepool
+                  operator: DoesNotExist

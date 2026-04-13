@@ -257,10 +257,6 @@ spec:
             - apiGroups: ["gateway.networking.k8s.io"]
               resources: ["gateways", "httproutes", "grpcroutes"]
               verbs: ["get", "list", "watch"]
-            # Liqo CRDs
-            - apiGroups: ["discovery.liqo.io", "net.liqo.io", "offloading.liqo.io", "sharing.liqo.io"]
-              resources: ["*"]
-              verbs: ["get", "list", "watch"]
         openclaw-write-restricted:
           type: Role
           rules:

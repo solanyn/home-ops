@@ -212,3 +212,33 @@ invite name="invite":
       -d '{"name": "{{ name }}", "flow": "enrollment-invitation"}')
     invite_id=$(echo "$response" | jq -r '.pk')
     echo "https://id.goyangi.io/if/flow/enrollment-invitation/?itoken=$invite_id"
+
+[doc('Delete the nodepool MIG and all GCP resources')]
+nodepool-teardown:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    gum confirm "Delete nodepool and all GCP resources?" --default="No" || exit 0
+    kubectl delete xcomputenodepools.home-ops.io nodepool
+    just kube nodepool-cleanup
+
+[doc('Clean up stale k8s and Headscale nodes')]
+nodepool-cleanup:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    nodes=$(kubectl get nodes -l node-role.kubernetes.io/burst=true --no-headers -o custom-columns=NAME:.metadata.name 2>/dev/null || true)
+    if [[ -n "$nodes" ]]; then
+        for node in $nodes; do
+            echo "Deleting node: $node"
+            kubectl delete node "$node"
+        done
+    else
+        echo "No stale k8s nodes"
+    fi
+    hs_nodes=$(kubectl exec -n network deploy/headscale -- headscale nodes list --user burst -o json 2>/dev/null | jq -r '.[].id' || true)
+    if [[ -n "$hs_nodes" ]]; then
+        for id in $hs_nodes; do
+            kubectl exec -n network deploy/headscale -- headscale nodes delete -i "$id" --force
+        done
+    else
+        echo "No stale Headscale nodes"
+    fi
