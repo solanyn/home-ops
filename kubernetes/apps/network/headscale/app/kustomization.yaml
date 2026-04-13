@@ -7,3 +7,4 @@ resources:
   - ./oidc.yaml
   - ./externalsecret.yaml
   - ./backendtrafficpolicy.yaml
+  - ./nginx-configmap.yaml
