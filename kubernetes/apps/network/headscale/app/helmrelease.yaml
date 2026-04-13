@@ -230,3 +230,15 @@ spec:
               - path: /etc/nginx/conf.d/default.conf
                 subPath: default.conf
                 readOnly: true
+      nginx-cache:
+        type: emptyDir
+        advancedMounts:
+          headscale:
+            tls-proxy:
+              - path: /var/cache/nginx
+      nginx-run:
+        type: emptyDir
+        advancedMounts:
+          headscale:
+            tls-proxy:
+              - path: /var/run
