@@ -23,7 +23,7 @@ spec:
             {{- $spec := .observed.composite.resource.spec }}
             {{- $name := .observed.composite.resource.metadata.name }}
             {{- $templateSelfLink := "" }}
-            {{- if (index .observed.composed "instance-template") }}
+            {{- if and .observed.composed (index .observed.composed "instance-template") }}
             {{- $templateSelfLink = (index .observed.composed "instance-template").resource.status.atProvider.selfLinkUnique | default "" }}
             {{- end }}
             ---
