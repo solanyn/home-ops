@@ -1,0 +1,20 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: opencode-mac
+spec:
+  hostnames:
+    - opencode-mac.goyangi.io
+  parentRefs:
+    - name: envoy-internal
+      namespace: network
+  rules:
+    - filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            remove:
+              - Content-Security-Policy
+      backendRefs:
+        - name: opencode-mac
+          port: 4096
