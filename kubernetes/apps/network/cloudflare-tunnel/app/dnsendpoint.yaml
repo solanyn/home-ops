@@ -10,7 +10,3 @@ spec:
       recordType: CNAME
       targets:
         - ${CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com
-    - dnsName: headscale.goyangi.io
-      recordType: CNAME
-      targets:
-        - ${CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com
