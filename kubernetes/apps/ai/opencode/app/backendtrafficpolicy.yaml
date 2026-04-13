@@ -7,9 +7,6 @@ spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      name: opencode
-    - group: gateway.networking.k8s.io
-      kind: HTTPRoute
       name: opencode-personal
   timeout:
     http:
