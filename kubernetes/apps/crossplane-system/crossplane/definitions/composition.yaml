@@ -51,8 +51,8 @@ spec:
                     accessConfig:
                       - networkTier: STANDARD
                 scheduling:
-                  - preemptible: {{ $spec.spot }}
-                    automaticRestart: false
+                  preemptible: {{ $spec.spot }}
+                  automaticRestart: false
                 metadata:
                   user-data: |
                     version: v1alpha1
@@ -143,8 +143,7 @@ spec:
                 version:
                   {{- if $templateSelfLink }}
                   - instanceTemplate: {{ $templateSelfLink }}
-                  {{- else }}
-                  - instanceTemplate: ""
+                    name: primary
                   {{- end }}
             ---
             apiVersion: home-ops.io/v1alpha1
