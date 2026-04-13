@@ -10,6 +10,7 @@ spec:
       labels:
         app.kubernetes.io/name: openclaw-sandbox
     spec:
+      serviceAccountName: openclaw
       securityContext:
         runAsUser: 0
         runAsGroup: 0
@@ -22,8 +23,6 @@ spec:
               name: ssh
               protocol: TCP
           env:
-            - name: KUBECONFIG
-              value: /workspace/.kube/config
             - name: KUBERNETES_SERVICE_HOST
               value: "10.43.0.1"
             - name: KUBERNETES_SERVICE_PORT
