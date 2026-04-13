@@ -13,5 +13,5 @@ spec:
       name: opencode-personal
   timeout:
     http:
-      requestTimeout: "0s"
-      idleTimeout: "3600s"
+      maxStreamDuration: "0s"
+      connectionIdleTimeout: "1h"
