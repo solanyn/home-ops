@@ -103,6 +103,9 @@ spec:
         ports:
           http:
             port: *port
+          noise:
+            port: 443
+            targetPort: 8080
           ui:
             port: 3000
           metrics:
