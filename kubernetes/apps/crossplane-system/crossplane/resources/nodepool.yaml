@@ -7,7 +7,7 @@ spec:
   region: australia-southeast1
   machineType: e2-medium
   spot: true
-  diskSizeGb: 20
+  diskSizeGb: 200
   diskType: pd-standard
   image: projects/${GCP_PROJECT_ID}/global/images/talos-tailscale-v1-12-6
   userData: ${NODEPOOL_USER_DATA}
