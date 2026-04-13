@@ -39,6 +39,7 @@ spec:
               deletionPolicy: Delete
               forProvider:
                 machineType: {{ $spec.machineType }}
+                region: australia-southeast1
                 disk:
                   - sourceImage: {{ $spec.image }}
                     diskSizeGb: {{ $spec.diskSizeGb }}
@@ -145,32 +146,17 @@ spec:
                   {{- else }}
                   - instanceTemplate: ""
                   {{- end }}
-    - step: status-patches
-      functionRef:
-        name: function-patch-and-transform
-      input:
-        apiVersion: pt.fn.crossplane.io/v1beta1
-        kind: Resources
-        resources:
-          - name: instance-template
-            base:
-              apiVersion: compute.gcp.upbound.io/v1beta2
-              kind: InstanceTemplate
-            patches:
-              - type: ToCompositeFieldPath
-                fromFieldPath: status.atProvider.selfLinkUnique
-                toFieldPath: status.templateName
-          - name: instance-group-manager
-            base:
-              apiVersion: compute.gcp.upbound.io/v1beta2
-              kind: InstanceGroupManager
-            patches:
-              - type: ToCompositeFieldPath
-                fromFieldPath: metadata.name
-                toFieldPath: status.groupName
-              - type: ToCompositeFieldPath
-                fromFieldPath: status.atProvider.targetSize
-                toFieldPath: status.currentSize
+            ---
+            apiVersion: home-ops.io/v1alpha1
+            kind: XComputeNodePool
+            status:
+              {{- if and .observed.composed (index .observed.composed "instance-template") }}
+              templateName: {{ (index .observed.composed "instance-template").resource.status.atProvider.selfLinkUnique | default "" }}
+              {{- end }}
+              {{- if and .observed.composed (index .observed.composed "instance-group-manager") }}
+              groupName: {{ (index .observed.composed "instance-group-manager").resource.metadata.name | default "" }}
+              currentSize: {{ (index .observed.composed "instance-group-manager").resource.status.atProvider.targetSize | default 0 }}
+              {{- end }}
     - step: auto-ready
       functionRef:
         name: function-auto-ready
