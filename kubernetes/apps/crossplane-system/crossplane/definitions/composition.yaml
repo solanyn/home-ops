@@ -26,9 +26,6 @@ spec:
             {{- if and .observed.composed (index .observed.composed "instance-template") }}
             {{- $templateSelfLink = (index .observed.composed "instance-template").resource.status.atProvider.selfLinkUnique | default "" }}
             {{- end }}
-            {{- if not $templateSelfLink }}
-            {{- $templateSelfLink = .observed.composite.resource.status.templateName | default "" }}
-            {{- end }}
             ---
             apiVersion: compute.gcp.upbound.io/v1beta2
             kind: InstanceTemplate
@@ -143,11 +140,13 @@ spec:
                 baseInstanceName: worker
                 zone: {{ $spec.region }}-b
                 targetSize: {{ $spec.targetSize }}
-                {{- if $templateSelfLink }}
                 version:
-                  - instanceTemplate: {{ $templateSelfLink }}
-                    name: primary
-                {{- end }}
+                  - name: primary
+                    {{- if $templateSelfLink }}
+                    instanceTemplate: {{ $templateSelfLink }}
+                    {{- end }}
+                    instanceTemplateRef:
+                      name: {{ $name }}-template
             ---
             apiVersion: home-ops.io/v1alpha1
             kind: XComputeNodePool
