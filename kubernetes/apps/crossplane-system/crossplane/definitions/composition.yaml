@@ -26,6 +26,9 @@ spec:
             {{- if and .observed.composed (index .observed.composed "instance-template") }}
             {{- $templateSelfLink = (index .observed.composed "instance-template").resource.status.atProvider.selfLinkUnique | default "" }}
             {{- end }}
+            {{- if not $templateSelfLink }}
+            {{- $templateSelfLink = .observed.composite.resource.status.templateName | default "" }}
+            {{- end }}
             ---
             apiVersion: compute.gcp.upbound.io/v1beta2
             kind: InstanceTemplate
