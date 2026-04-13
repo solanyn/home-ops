@@ -22,13 +22,11 @@ spec:
     defaultPodOptions:
       enableServiceLinks: false
       nodeSelector:
-        liqo.io/remote-cluster-id: worker
+        node-role.kubernetes.io/burst: "true"
       tolerations:
-        - key: virtual-node.liqo.io/not-allowed
-          operator: Exists
-          effect: NoExecute
-        - key: node.cilium.io/agent-not-ready
-          operator: Exists
+        - key: burst
+          operator: Equal
+          value: "true"
           effect: NoSchedule
     controllers:
       app:

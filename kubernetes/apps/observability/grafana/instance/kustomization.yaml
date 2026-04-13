@@ -12,6 +12,4 @@ resources:
   - ./servicemonitor.yaml
   - ./externalsecret-influxdb.yaml
   - ./grafanadashboard-health.yaml
-  - ./grafanadashboard-liqo.yaml
-  - ./prometheusrule-liqo.yaml
   - ./grafanadashboard-capacity.yaml

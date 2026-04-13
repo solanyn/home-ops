@@ -19,7 +19,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - key: liqo.io/type
+                  - key: node-role.kubernetes.io/burst
                     operator: DoesNotExist
     storageClass:
       create: true

@@ -3,5 +3,3 @@ kind: Kustomization
 resources:
   - ./definition.yaml
   - ./composition.yaml
-  - ./nodepool-definition.yaml
-  - ./nodepool-composition.yaml

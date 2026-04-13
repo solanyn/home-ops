@@ -235,7 +235,7 @@ data:
           },
           workerId: {
             pod: 'worker',
-            node: 'gke',
+            node: 'burst',
           },
         }],
       }],
