@@ -7,7 +7,7 @@ spec:
   chart:
     spec:
       chart: langfuse
-      version: 1.5.25
+      version: 1.5.26
       sourceRef:
         kind: HelmRepository
         name: langfuse
