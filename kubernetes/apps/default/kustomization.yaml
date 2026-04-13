@@ -39,7 +39,6 @@ resources:
   - ./mealie/ks.yaml
   - ./lake/ks.yaml
   - ./mlm/ks.yaml
-  - ./opencode/ks.yaml
   - ./buildkit/ks.yaml
   - ./pocket-id-operator/ks.yaml
   - ./plex/ks.yaml

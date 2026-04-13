@@ -11,6 +11,7 @@ spec:
     - https://opencode.goyangi.io
   allowedUserGroups:
     - name: admin
+      namespace: default
   secret:
     name: opencode-oidc
     keys:
