@@ -6,3 +6,6 @@ resources:
   - ./externalsecret.yaml
   - ./configmap.yaml
   - ./pvc.yaml
+  - ./httproute.yaml
+  - ./oidc.yaml
+  - ./securitypolicy.yaml

@@ -6,6 +6,9 @@ metadata:
   name: opencode
 spec:
   targetNamespace: ai
+  dependsOn:
+    - name: pocket-id-operator
+      namespace: default
   interval: 1h
   path: ./kubernetes/apps/ai/opencode/app
   postBuild:
