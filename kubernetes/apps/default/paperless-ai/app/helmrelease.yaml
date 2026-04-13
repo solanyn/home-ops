@@ -73,6 +73,11 @@ spec:
         sizeLimit: 100Mi
         globalMounts:
           - path: /tmp
+      logs:
+        type: emptyDir
+        sizeLimit: 50Mi
+        globalMounts:
+          - path: /app/logs
       home:
         type: emptyDir
         globalMounts:
