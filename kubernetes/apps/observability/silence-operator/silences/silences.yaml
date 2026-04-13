@@ -140,3 +140,18 @@ spec:
       value: CephNodeRootFilesystemFull
     - name: instance
       value: chisel.network.svc.cluster.local:9100
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+# Work laptop is not a server, text file collector errors are expected
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: work-mac-textfile-collector-scrape-error
+  namespace: observability
+spec:
+  matchers:
+    - name: alertname
+      value: NodeTextFileCollectorScrapeError
+    - name: instance
+      value: chisel.network.svc.cluster.local:9100

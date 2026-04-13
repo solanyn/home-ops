@@ -7,5 +7,8 @@ resources:
   - ./configmap.yaml
   - ./pvc.yaml
   - ./httproute.yaml
+  - ./httproute-personal.yaml
+  - ./service-personal.yaml
   - ./oidc.yaml
   - ./securitypolicy.yaml
+  - ./backendtrafficpolicy.yaml
