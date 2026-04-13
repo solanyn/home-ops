@@ -24,7 +24,8 @@ spec:
               TS_LOGIN_SERVER: http://headscale-app.network.svc.cluster.local:8080
               # Advertise routes to cluster API server and pod/service CIDRs
               TS_EXTRA_ARGS: "--login-server=http://headscale-app.network.svc.cluster.local:8080 --advertise-routes=192.168.42.0/24,10.43.0.0/16,10.42.0.0/16 --accept-routes --snat-subnet-routes=false"
-              TS_USERSPACE: "true"
+              TS_USERSPACE: "false"
+              TS_DEBUG_FIREWALL_MODE: nftables
               TS_KUBE_SECRET: headscale-gateway-state
               TS_HOSTNAME: k8s-gateway
             envFrom:
