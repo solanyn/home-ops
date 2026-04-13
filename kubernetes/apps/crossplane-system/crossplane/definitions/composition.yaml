@@ -89,6 +89,9 @@ spec:
                         kubePrism:
                           enabled: true
                           port: 7445
+                      sysctls:
+                        net.ipv6.conf.all.disable_ipv6: "1"
+                        net.ipv6.conf.default.disable_ipv6: "1"
                       kernel:
                         modules:
                           - name: nbd
