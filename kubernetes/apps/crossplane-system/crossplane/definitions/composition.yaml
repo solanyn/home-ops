@@ -94,12 +94,6 @@ spec:
                           content: |
                             [plugins."io.containerd.cri.v1.images"]
                               discard_unpacked_layers = false
-                        - op: create
-                          path: /var/etc/tailscale/auth.env
-                          permissions: 0o600
-                          content: |
-                            TS_AUTHKEY={{ $spec.headscaleAuthKey }}
-                            TS_EXTRA_ARGS=--login-server=https://headscale.goyangi.io --accept-routes
                     cluster:
                       id: {{ $spec.clusterId }}
                       secret: {{ $spec.clusterSecret }}
@@ -121,6 +115,13 @@ spec:
                         enabled: false
                       proxy:
                         disabled: true
+                    ---
+                    apiVersion: v1alpha1
+                    kind: ExtensionServiceConfig
+                    name: tailscale
+                    environment:
+                      - TS_AUTHKEY={{ $spec.headscaleAuthKey }}
+                      - TS_EXTRA_ARGS=--login-server=https://headscale.goyangi.io --accept-routes
                 tags:
                   - compute-worker
                 labels:
