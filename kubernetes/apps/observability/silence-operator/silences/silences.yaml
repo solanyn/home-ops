@@ -115,20 +115,6 @@ spec:
       value: 10.42.1.78:9633
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
-apiVersion: monitoring.giantswarm.io/v1alpha1
-kind: Silence
-metadata:
-  name: pocketid-reconcile-errors-liqo
-  namespace: observability
-spec:
-  matchers:
-    - name: alertname
-      value: PocketIDReconcileErrors
-    - name: namespace
-      value: liqo-tenant-worker
-
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
 # Work laptop is not Ceph storage, disk alerts are false positives
 apiVersion: monitoring.giantswarm.io/v1alpha1
 kind: Silence

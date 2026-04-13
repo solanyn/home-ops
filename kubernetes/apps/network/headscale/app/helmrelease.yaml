@@ -24,7 +24,7 @@ spec:
               HEADSCALE_DNS_BASE_DOMAIN: mesh.goyangi.io
               HEADSCALE_DNS_MAGIC_DNS: "true"
               HEADSCALE_DNS_NAMESERVERS_GLOBAL: 1.1.1.1 9.9.9.9
-              HEADSCALE_PREFIXES_V4: 100.64.0.0/10
+              HEADSCALE_PREFIXES_V4: 100.69.0.0/16
               HEADSCALE_PREFIXES_V6: fd7a:115c:a1e0::/48
               HEADSCALE_SERVER_URL: https://headscale.goyangi.io
               HEADSCALE_LISTEN_ADDR: 0.0.0.0:8080
