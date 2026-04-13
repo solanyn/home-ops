@@ -73,8 +73,8 @@ spec:
                         node-role.kubernetes.io/nodepool: "true"
                       network:
                         nameservers:
+                          - 169.254.169.254
                           - 8.8.8.8
-                          - 8.8.4.4
                       nodeTaints:
                         nodepool: "true:NoSchedule"
                       install:
