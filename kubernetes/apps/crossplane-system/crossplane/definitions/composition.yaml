@@ -125,6 +125,7 @@ spec:
                   - compute-worker
                 labels:
                   managed-by: crossplane
+            {{- if $templateSelfLink }}
             ---
             apiVersion: compute.gcp.upbound.io/v1beta2
             kind: InstanceGroupManager
@@ -141,10 +142,9 @@ spec:
                 zone: {{ $spec.region }}-b
                 targetSize: {{ $spec.targetSize }}
                 version:
-                  {{- if $templateSelfLink }}
                   - instanceTemplate: {{ $templateSelfLink }}
                     name: primary
-                  {{- end }}
+            {{- end }}
             ---
             apiVersion: home-ops.io/v1alpha1
             kind: XComputeNodePool
