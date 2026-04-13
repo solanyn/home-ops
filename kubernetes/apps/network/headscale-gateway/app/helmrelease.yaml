@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: headscale-gateway
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: headscale-gateway
+  interval: 10m
+  values:
+    controllers:
+      headscale-gateway:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/tailscale/tailscale
+              tag: v1.82.5
+            env:
+              # Connect to Headscale, not Tailscale SaaS
+              TS_LOGIN_SERVER: https://headscale.goyangi.io
+              # Advertise routes to cluster API server and pod/service CIDRs
+              TS_EXTRA_ARGS: "--advertise-routes=192.168.42.0/24,10.43.0.0/16,10.42.0.0/16 --accept-routes --snat-subnet-routes=false"
+              TS_USERSPACE: "false"
+              TS_KUBE_SECRET: headscale-gateway-state
+              TS_HOSTNAME: k8s-gateway
+            envFrom:
+              - secretRef:
+                  name: headscale-gateway-auth
+            securityContext:
+              capabilities:
+                add: ["NET_ADMIN", "NET_RAW"]
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+    persistence:
+      tun:
+        type: hostPath
+        hostPath: /dev/net/tun
+        globalMounts:
+          - path: /dev/net/tun

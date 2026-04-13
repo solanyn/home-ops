@@ -63,11 +63,16 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - key: liqo.io/type
+                  - key: node-role.kubernetes.io/nodepool
                     operator: DoesNotExist
     worker:
       nodeSelector:
-        liqo.io/type: virtual-node
+        node-role.kubernetes.io/nodepool: "true"
+      tolerations:
+        - key: nodepool
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
     catalogs:
       iceberg: |-
         connector.name=iceberg

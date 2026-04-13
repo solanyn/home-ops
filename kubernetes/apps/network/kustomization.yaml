@@ -17,6 +17,7 @@ resources:
   - ./envoy-gateway/ks.yaml
   - ./flux-operator-mcp/ks.yaml
   - ./headscale/ks.yaml
+  - ./headscale-gateway/ks.yaml
   - ./agentgateway/ks.yaml
   - ./notion-mcp/ks.yaml
   - ./smtp-relay/ks.yaml

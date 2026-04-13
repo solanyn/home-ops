@@ -2,14 +2,12 @@
 apiVersion: apiextensions.crossplane.io/v1
 kind: CompositeResourceDefinition
 metadata:
-  name: xgkeclusters.home-ops.io
+  name: xcomputenodepools.home-ops.io
 spec:
   group: home-ops.io
   names:
-    kind: XGKECluster
-    plural: xgkeclusters
-  connectionSecretKeys:
-    - kubeconfig
+    kind: XComputeNodePool
+    plural: xcomputenodepools
   versions:
     - name: v1alpha1
       served: true
@@ -21,61 +19,48 @@ spec:
             spec:
               type: object
               properties:
-                location:
+                region:
                   type: string
-                  default: asia-southeast1-b
-                serviceAccount:
+                  default: australia-southeast1
+                machineType:
                   type: string
-                  description: GCP service account for node pools
-                nodePools:
+                  default: e2-standard-8
+                spot:
+                  type: boolean
+                  default: true
+                diskSizeGb:
+                  type: integer
+                  default: 200
+                diskType:
+                  type: string
+                  default: pd-standard
+                image:
+                  type: string
+                  description: GCE boot image self-link
+                userDataSecretRef:
                   type: object
+                  description: Reference to Secret containing machine config
                   properties:
-                    system:
-                      type: object
-                      properties:
-                        count:
-                          type: integer
-                          default: 1
-                        machineType:
-                          type: string
-                          default: e2-micro
-                    gpu:
-                      type: object
-                      properties:
-                        minCount:
-                          type: integer
-                          default: 0
-                        maxCount:
-                          type: integer
-                          default: 8
-                        machineType:
-                          type: string
-                          default: g2-standard-8
-                        acceleratorType:
-                          type: string
-                          default: nvidia-l4
-                    cpu:
-                      type: object
-                      properties:
-                        minCount:
-                          type: integer
-                          default: 0
-                        maxCount:
-                          type: integer
-                          default: 4
-                        machineType:
-                          type: string
-                          default: e2-medium
+                    name:
+                      type: string
+                    key:
+                      type: string
+                      default: NODEPOOL_USER_DATA
+                  required:
+                    - name
+                targetSize:
+                  type: integer
+                  default: 0
+                  description: Desired number of instances (0-8)
+                maxSize:
+                  type: integer
+                  default: 8
             status:
               type: object
               properties:
-                clusterName:
+                currentSize:
+                  type: integer
+                templateName:
                   type: string
-                endpoint:
-                  type: string
-                podCIDR:
-                  type: string
-                serviceCIDR:
-                  type: string
-                connectionSecretName:
+                groupName:
                   type: string

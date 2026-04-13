@@ -3,5 +3,3 @@ kind: Kustomization
 resources:
   - ./definition.yaml
   - ./composition.yaml
-  - ./burst-definition.yaml
-  - ./burst-composition.yaml

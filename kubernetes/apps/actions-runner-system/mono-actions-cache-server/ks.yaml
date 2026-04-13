@@ -9,8 +9,6 @@ spec:
   dependsOn:
   - name: actions-runner-controller
     namespace: actions-runner-system
-  - name: liqo
-    namespace: liqo-system
   interval: 1h
   path: ./kubernetes/apps/actions-runner-system/mono-actions-cache-server/app
   prune: true
