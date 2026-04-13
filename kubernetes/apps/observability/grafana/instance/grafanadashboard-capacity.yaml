@@ -28,7 +28,7 @@ spec:
           "type": "gauge",
           "title": "Network Saturation (peak node)",
           "gridPos": {"h": 6, "w": 6, "x": 0, "y": 1},
-          "targets": [{"expr": "max(rate(node_network_receive_bytes_total{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|liqo.*|.*\\\\..*\"}[5m]) + rate(node_network_transmit_bytes_total{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|liqo.*|.*\\\\..*\"}[5m])) / max(node_network_speed_bytes{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|liqo.*|.*\\\\..*\"}) * 100", "refId": "A"}],
+          "targets": [{"expr": "max(rate(node_network_receive_bytes_total{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|.*\\\\..*\"}[5m]) + rate(node_network_transmit_bytes_total{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|.*\\\\..*\"}[5m])) / max(node_network_speed_bytes{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|.*\\\\..*\"}) * 100", "refId": "A"}],
           "fieldConfig": {"defaults": {"thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 50}, {"color": "orange", "value": 70}, {"color": "red", "value": 85}]}, "unit": "percent", "min": 0, "max": 100, "displayName": "→ 2.5GbE"}},
           "options": {"reduceOptions": {"calcs": ["lastNotNull"]}, "showThresholdLabels": false, "showThresholdMarkers": true},
           "description": "Peak bidirectional throughput as % of link speed. >70% = consider 2.5GbE upgrade"
@@ -70,7 +70,7 @@ spec:
           "type": "timeseries",
           "title": "Network Utilization %",
           "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
-          "targets": [{"expr": "(rate(node_network_receive_bytes_total{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|liqo.*|.*\\\\..*\"}[5m]) + rate(node_network_transmit_bytes_total{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|liqo.*|.*\\\\..*\"})) / node_network_speed_bytes{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|liqo.*|.*\\\\..*\"} * 100", "legendFormat": "{{instance}} {{device}}", "refId": "A"}],
+          "targets": [{"expr": "(rate(node_network_receive_bytes_total{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|.*\\\\..*\"}[5m]) + rate(node_network_transmit_bytes_total{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|.*\\\\..*\"})) / node_network_speed_bytes{instance=~\"192.168.42.*\",device!~\"veth.*|lxc.*|cali.*|cilium.*|lo|bond.*|dummy.*|.*\\\\..*\"} * 100", "legendFormat": "{{instance}} {{device}}", "refId": "A"}],
           "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0, "max": 100, "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "red", "value": 70}]}, "custom.thresholdsStyle": {"mode": "line"}}},
           "options": {"legend": {"displayMode": "table", "placement": "right", "calcs": ["mean", "max"]}}
         },
