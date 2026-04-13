@@ -110,6 +110,16 @@ spec:
             port: 3000
           metrics:
             port: 9090
+      noise:
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.69.139
+        externalTrafficPolicy: Local
+        ports:
+          noise-tcp:
+            port: 443
+            targetPort: 8080
+            protocol: TCP
       stun:
         type: LoadBalancer
         ipFamilies: [IPv4, IPv6]
