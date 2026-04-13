@@ -37,17 +37,27 @@ spec:
                 image:
                   type: string
                   description: GCE boot image self-link
-                userDataSecretRef:
-                  type: object
-                  description: Reference to Secret containing machine config
-                  properties:
-                    name:
-                      type: string
-                    key:
-                      type: string
-                      default: NODEPOOL_USER_DATA
-                  required:
-                    - name
+                machineToken:
+                  type: string
+                  description: Talos machine token
+                machineCaCrt:
+                  type: string
+                  description: Talos machine CA cert (base64 PEM)
+                clusterToken:
+                  type: string
+                  description: Talos cluster token
+                clusterCaCrt:
+                  type: string
+                  description: Talos cluster CA cert (base64 PEM)
+                clusterId:
+                  type: string
+                  description: Talos cluster ID
+                clusterSecret:
+                  type: string
+                  description: Talos cluster secret
+                headscaleAuthKey:
+                  type: string
+                  description: Headscale pre-auth key for tailscale
                 targetSize:
                   type: integer
                   default: 0
