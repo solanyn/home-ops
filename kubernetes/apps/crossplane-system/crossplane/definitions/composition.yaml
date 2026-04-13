@@ -128,7 +128,7 @@ spec:
                     name: tailscale
                     environment:
                       - TS_AUTHKEY={{ $spec.headscaleAuthKey }}
-                      - TS_EXTRA_ARGS=--login-server=https://headscale.goyangi.io --accept-routes
+                      - TS_EXTRA_ARGS=--login-server=https://hs.goyangi.io:8443 --accept-routes
                 tags:
                   - compute-worker
                 labels:
