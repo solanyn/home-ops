@@ -11,6 +11,7 @@ spec:
   httpUpgrade:
     - type: DERP
     - type: websocket
+    - type: tailscale-control-protocol
   timeout:
     http:
       connectionIdleTimeout: 1h
