@@ -10,6 +10,11 @@ spec:
   hostnames:
     - work.opencode.goyangi.io
   rules:
-    - backendRefs:
+    - filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            remove:
+              - Content-Security-Policy
+      backendRefs:
         - name: chisel
           port: 4097
