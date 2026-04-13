@@ -71,6 +71,12 @@ spec:
         data:
           config.yaml: |-
             ingress:
+              - hostname: headscale.goyangi.io
+                originRequest:
+                  http2Origin: false
+                  keepAliveTimeout: 3600s
+                  tcpKeepAlive: 7200s
+                service: http://headscale-app.{{ .Release.Namespace }}.svc.cluster.local:8080
               - hostname: "*.goyangi.io"
                 originRequest:
                   http2Origin: true
