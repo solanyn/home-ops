@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: headscale-nginx-config
+  namespace: network
+data:
+  default.conf: |
+    server {
+        listen 8443 ssl;
+        ssl_certificate /etc/nginx/tls/tls.crt;
+        ssl_certificate_key /etc/nginx/tls/tls.key;
+        ssl_protocols TLSv1.2 TLSv1.3;
+
+        location / {
+            proxy_pass http://127.0.0.1:8080;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+            proxy_set_header Host $host;
+            proxy_read_timeout 86400s;
+            proxy_send_timeout 86400s;
+        }
+    }
