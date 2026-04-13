@@ -26,7 +26,7 @@ spec:
               HEADSCALE_DNS_NAMESERVERS_GLOBAL: 1.1.1.1 9.9.9.9
               HEADSCALE_PREFIXES_V4: 100.69.0.0/16
               HEADSCALE_PREFIXES_V6: fd7a:115c:a1e0::/48
-              HEADSCALE_SERVER_URL: https://headscale.goyangi.io
+              HEADSCALE_SERVER_URL: http://hs.goyangi.io:18443
               HEADSCALE_LISTEN_ADDR: 0.0.0.0:8080
               HEADSCALE_METRICS_LISTEN_ADDR: 0.0.0.0:9090
               HEADSCALE_NOISE_PRIVATE_KEY_PATH: /var/lib/headscale/noise_private.key
