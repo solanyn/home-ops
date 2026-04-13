@@ -22,18 +22,6 @@ spec:
           template: |
             {{- $spec := .observed.composite.resource.spec }}
             {{- $name := .observed.composite.resource.metadata.name }}
-            ---
-            apiVersion: meta.gotemplating.fn.crossplane.io/v1alpha1
-            kind: ExtraResources
-            requirements:
-              user-data:
-                apiVersion: v1
-                kind: Secret
-                matchName: {{ $spec.userDataSecretRef.name }}
-            {{- if and .extraResources (index .extraResources "user-data") (gt (len (index .extraResources "user-data").items) 0) }}
-            {{- $secret := index (index .extraResources "user-data").items 0 }}
-            {{- $secretKey := $spec.userDataSecretRef.key | default "NODEPOOL_USER_DATA" }}
-            {{- $userData := index $secret.resource.data $secretKey | b64dec }}
             {{- $templateSelfLink := "" }}
             {{- if (index .observed.composed "instance-template") }}
             {{- $templateSelfLink = (index .observed.composed "instance-template").resource.status.atProvider.selfLinkUnique | default "" }}
@@ -66,7 +54,72 @@ spec:
                     automaticRestart: false
                 metadata:
                   user-data: |
-                    {{ $userData | nindent 12 }}
+                    version: v1alpha1
+                    machine:
+                      type: worker
+                      token: {{ $spec.machineToken }}
+                      ca:
+                        crt: {{ $spec.machineCaCrt }}
+                      kubelet:
+                        defaultRuntimeSeccompProfileEnabled: true
+                        disableManifestsDirectory: true
+                        extraArgs:
+                          rotate-server-certificates: "true"
+                        nodeIP:
+                          validSubnets:
+                            - 100.69.0.0/16
+                      nodeLabels:
+                        node-role.kubernetes.io/nodepool: "true"
+                      nodeTaints:
+                        nodepool: "true:NoSchedule"
+                      install:
+                        image: factory.talos.dev/installer/4a0d65c669d46663f377e7161e50cfd570c401f26fd9e7bda34a0216b6f1922b:v1.12.6
+                        wipe: false
+                      features:
+                        rbac: true
+                        hostDNS:
+                          enabled: true
+                          forwardKubeDNSToHost: true
+                          resolveMemberNames: true
+                        kubePrism:
+                          enabled: true
+                          port: 7445
+                      kernel:
+                        modules:
+                          - name: nbd
+                      files:
+                        - op: create
+                          path: /etc/cri/conf.d/20-customization.part
+                          content: |
+                            [plugins."io.containerd.cri.v1.images"]
+                              discard_unpacked_layers = false
+                        - op: create
+                          path: /var/etc/tailscale/auth.env
+                          permissions: 0o600
+                          content: |
+                            TS_AUTHKEY={{ $spec.headscaleAuthKey }}
+                            TS_EXTRA_ARGS=--login-server=https://headscale.goyangi.io --accept-routes
+                    cluster:
+                      id: {{ $spec.clusterId }}
+                      secret: {{ $spec.clusterSecret }}
+                      controlPlane:
+                        endpoint: https://192.168.42.120:6443
+                      clusterName: home
+                      network:
+                        cni:
+                          name: none
+                        dnsDomain: cluster.local
+                        podSubnets:
+                          - 10.42.0.0/16
+                        serviceSubnets:
+                          - 10.43.0.0/16
+                      token: {{ $spec.clusterToken }}
+                      ca:
+                        crt: {{ $spec.clusterCaCrt }}
+                      discovery:
+                        enabled: false
+                      proxy:
+                        disabled: true
                 tags:
                   - compute-worker
                 labels:
@@ -92,7 +145,6 @@ spec:
                   {{- else }}
                   - instanceTemplate: ""
                   {{- end }}
-            {{- end }}
     - step: status-patches
       functionRef:
         name: function-patch-and-transform
