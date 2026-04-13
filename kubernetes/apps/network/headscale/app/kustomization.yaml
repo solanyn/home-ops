@@ -6,3 +6,4 @@ resources:
   - ./ocirepository.yaml
   - ./oidc.yaml
   - ./externalsecret.yaml
+  - ./backendtrafficpolicy.yaml
