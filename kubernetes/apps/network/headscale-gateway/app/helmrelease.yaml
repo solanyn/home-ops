@@ -22,6 +22,7 @@ spec:
             env:
               # Connect to Headscale, not Tailscale SaaS
               TS_LOGIN_SERVER: https://headscale.goyangi.io
+              TS_TAILSCALED_EXTRA_ARGS: "--login-server=https://headscale.goyangi.io"
               # Advertise routes to cluster API server and pod/service CIDRs
               TS_EXTRA_ARGS: "--advertise-routes=192.168.42.0/24,10.43.0.0/16,10.42.0.0/16 --accept-routes --snat-subnet-routes=false"
               TS_USERSPACE: "false"
