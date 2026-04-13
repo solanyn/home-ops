@@ -68,6 +68,11 @@ spec:
         sizeLimit: 100Mi
         globalMounts:
           - path: /app/public/images
+      tmp:
+        type: emptyDir
+        sizeLimit: 100Mi
+        globalMounts:
+          - path: /tmp
       home:
         type: emptyDir
         globalMounts:
