@@ -116,7 +116,7 @@ spec:
             requiredDuringSchedulingIgnoredDuringExecution:
               nodeSelectorTerms:
                 - matchExpressions:
-                    - key: node-role.kubernetes.io/worker
+                    - key: node-role.kubernetes.io/nodepool
                       operator: DoesNotExist
       storage:
         useAllNodes: true

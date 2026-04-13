@@ -32,9 +32,9 @@ spec:
     template:
       spec:
         nodeSelector:
-          node-role.kubernetes.io/worker: "true"
+          node-role.kubernetes.io/nodepool: "true"
         tolerations:
-          - key: worker
+          - key: nodepool
             operator: Equal
             value: "true"
             effect: NoSchedule

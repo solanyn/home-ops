@@ -21,7 +21,7 @@ spec:
       containerdSock: /run/containerd/containerd.sock
       containerdRegistryConfigPath: /etc/cri/conf.d/hosts
     tolerations:
-      - key: worker
+      - key: nodepool
         operator: Equal
         value: "true"
         effect: NoSchedule
