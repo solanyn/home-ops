@@ -67,12 +67,12 @@ spec:
                         extraArgs:
                           rotate-server-certificates: "true"
                           register-with-taints: "nodepool=true:NoSchedule"
-                          node-labels: "node-role.kubernetes.io/nodepool=true"
+                          node-labels: "node.kubernetes.io/nodepool=true"
                         nodeIP:
                           validSubnets:
                             - 100.69.0.0/16
                       nodeLabels:
-                        node-role.kubernetes.io/nodepool: "true"
+                        node.kubernetes.io/nodepool: "true"
                       network:
                         nameservers:
                           - 169.254.169.254

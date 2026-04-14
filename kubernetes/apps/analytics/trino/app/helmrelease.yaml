@@ -63,11 +63,11 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - key: node-role.kubernetes.io/nodepool
+                  - key: node.kubernetes.io/nodepool
                     operator: DoesNotExist
     worker:
       nodeSelector:
-        node-role.kubernetes.io/nodepool: "true"
+        node.kubernetes.io/nodepool: "true"
       tolerations:
         - key: nodepool
           operator: Equal
