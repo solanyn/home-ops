@@ -178,6 +178,12 @@ spec:
             backendRefs:
               - identifier: app
                 port: 3000
+    configMaps:
+      config-file:
+        data:
+          config.yaml: |
+            acl:
+              policy_mode: db
     persistence:
       data:
         existingClaim: headscale
