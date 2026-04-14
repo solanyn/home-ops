@@ -8,6 +8,25 @@ spec:
   groups:
     - name: nodepool
       rules:
+        # XRD-based: detect when targetSize changes from 0
+        - alert: NodepoolScaledUp
+          expr: kube_customresource_nodepool_target_size > 0
+          for: 30s
+          labels:
+            severity: info
+          annotations:
+            summary: "Nodepool scaled to {{ $value }} workers"
+            description: "XComputeNodePool targetSize changed to {{ $value }}."
+        # XRD-based: detect when pool is at max capacity
+        - alert: NodepoolAtMaxCapacity
+          expr: kube_customresource_nodepool_target_size == kube_customresource_nodepool_max_size
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Nodepool at max capacity ({{ $value }})"
+            description: "XComputeNodePool targetSize equals maxSize. No more workers can be added."
+        # Node-based: worker joined and Ready
         - alert: NodepoolWorkerJoined
           expr: |
             kube_node_labels{label_node_kubernetes_io_nodepool="true"} == 1
@@ -19,6 +38,7 @@ spec:
           annotations:
             summary: "Nodepool worker {{ $labels.node }} joined"
             description: "Worker node {{ $labels.node }} has joined the cluster and is Ready."
+        # Node-based: worker not ready
         - alert: NodepoolWorkerNotReady
           expr: |
             kube_node_labels{label_node_kubernetes_io_nodepool="true"} == 1
@@ -30,3 +50,14 @@ spec:
           annotations:
             summary: "Nodepool worker {{ $labels.node }} not ready"
             description: "Worker node {{ $labels.node }} is in the cluster but NotReady for >2m."
+        # Mismatch: targetSize > 0 but no Ready nodes after 5m
+        - alert: NodepoolWorkersNotJoining
+          expr: |
+            kube_customresource_nodepool_target_size > 0
+            unless count(kube_node_labels{label_node_kubernetes_io_nodepool="true"} == 1 and on(node) kube_node_status_condition{condition="Ready", status="true"} == 1) > 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Nodepool expects {{ $value }} workers but none are Ready"
+            description: "targetSize is {{ $value }} but no nodepool workers have joined after 5m. Check MIG and Headscale."
