@@ -182,8 +182,8 @@ spec:
       config-file:
         data:
           config.yaml: |
-            acl:
-              policy_mode: db
+            policy:
+              mode: database
     persistence:
       data:
         existingClaim: headscale
