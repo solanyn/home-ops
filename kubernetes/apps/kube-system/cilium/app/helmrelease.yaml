@@ -41,6 +41,8 @@ spec:
     # NOTE: Divergence from onedr0p/home-ops - tailscale+ added for nodepool workers
     devices: "en+ eth+ tailscale+"
     enableIPv4BIGTCP: true
+    # NOTE: Required when using BIG TCP with tunnel mode
+    enableTunnelBigTCP: true
     endpointRoutes:
       enabled: true
     envoy:
