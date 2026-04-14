@@ -20,3 +20,4 @@ resources:
   - ./reloader/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./spegel/ks.yaml
+  - ./kubelet-csr-approver/ks.yaml
