@@ -128,14 +128,14 @@ spec:
                     name: tailscale
                     environment:
                       - TS_AUTHKEY={{ $spec.headscaleAuthKey }}
-                      - TS_EXTRA_ARGS=--login-server=http://hs.goyangi.io:18443 --accept-routes
+                      - TS_EXTRA_ARGS=--login-server=https://hs.goyangi.io:18443 --accept-routes
                 tags:
                   - compute-worker
                 labels:
                   managed-by: crossplane
             ---
-            apiVersion: compute.gcp.upbound.io/v1beta2
-            kind: InstanceGroupManager
+            apiVersion: compute.gcp.upbound.io/v1beta1
+            kind: RegionInstanceGroupManager
             metadata:
               name: {{ $name }}-mig
               annotations:
@@ -146,7 +146,7 @@ spec:
               deletionPolicy: Delete
               forProvider:
                 baseInstanceName: worker
-                zone: {{ $spec.region }}-b
+                region: {{ $spec.region }}
                 targetSize: {{ $spec.targetSize }}
                 version:
                   - name: primary
