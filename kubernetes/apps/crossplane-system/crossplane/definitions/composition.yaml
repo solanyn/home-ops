@@ -67,6 +67,7 @@ spec:
                         extraArgs:
                           rotate-server-certificates: "true"
                           register-with-taints: "nodepool=true:NoSchedule"
+                          node-labels: "node-role.kubernetes.io/nodepool=true"
                         nodeIP:
                           validSubnets:
                             - 100.69.0.0/16
