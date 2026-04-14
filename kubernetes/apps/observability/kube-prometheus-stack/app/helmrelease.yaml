@@ -94,6 +94,35 @@ spec:
       fullnameOverride: node-exporter
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
+      rbac:
+        extraRules:
+          - apiGroups: ["home-ops.io"]
+            resources: ["xcomputenodepools"]
+            verbs: ["list", "watch"]
+      customResourceState:
+        enabled: true
+        config:
+          spec:
+            resources:
+              - groupVersionKind:
+                  group: home-ops.io
+                  version: v1alpha1
+                  kind: XComputeNodePool
+                labelsFromPath:
+                  name: [metadata, name]
+                metrics:
+                  - name: nodepool_target_size
+                    help: Desired number of nodepool workers
+                    each:
+                      type: Gauge
+                      gauge:
+                        path: [spec, targetSize]
+                  - name: nodepool_max_size
+                    help: Maximum number of nodepool workers
+                    each:
+                      type: Gauge
+                      gauge:
+                        path: [spec, maxSize]
     grafana:
       enabled: false
       forceDeployDashboards: true
