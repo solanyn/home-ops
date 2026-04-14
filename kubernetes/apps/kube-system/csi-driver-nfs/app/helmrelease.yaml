@@ -19,7 +19,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                  - key: node-role.kubernetes.io/nodepool
+                  - key: node.kubernetes.io/nodepool
                     operator: DoesNotExist
     storageClass:
       create: true
