@@ -1,0 +1,32 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: nodepool-alerts
+  namespace: observability
+spec:
+  groups:
+    - name: nodepool
+      rules:
+        - alert: NodepoolWorkerJoined
+          expr: |
+            kube_node_labels{label_node_kubernetes_io_nodepool="true"} == 1
+            and on(node)
+            kube_node_status_condition{condition="Ready", status="true"} == 1
+          for: 1m
+          labels:
+            severity: info
+          annotations:
+            summary: "Nodepool worker {{ $labels.node }} joined"
+            description: "Worker node {{ $labels.node }} has joined the cluster and is Ready."
+        - alert: NodepoolWorkerNotReady
+          expr: |
+            kube_node_labels{label_node_kubernetes_io_nodepool="true"} == 1
+            and on(node)
+            kube_node_status_condition{condition="Ready", status="true"} == 0
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Nodepool worker {{ $labels.node }} not ready"
+            description: "Worker node {{ $labels.node }} is in the cluster but NotReady for >2m."
