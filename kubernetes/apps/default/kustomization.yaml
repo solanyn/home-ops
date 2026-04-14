@@ -66,4 +66,3 @@ resources:
   - ./zwave/ks.yaml
   - ./continuwuity/ks.yaml
   - ./paperless/ks.yaml
-  - ./paperless-ai/ks.yaml
