@@ -182,8 +182,30 @@ spec:
       config-file:
         data:
           config.yaml: |
+            # NOTE: Divergence from default - file-based policy for GitOps ACL management
             policy:
-              mode: database
+              mode: file
+              path: /etc/headscale/policy.json
+      # NOTE: Divergence - ACL policy for nodepool subnet route distribution
+      policy-file:
+        data:
+          policy.json: |
+            {
+              "acls": [
+                {
+                  "action": "accept",
+                  "src": ["*"],
+                  "dst": ["*:*"]
+                }
+              ],
+              "autoApprovers": {
+                "routes": {
+                  "10.42.0.0/16": ["nodepool@goyangi.io"],
+                  "10.43.0.0/16": ["nodepool@goyangi.io"],
+                  "192.168.42.0/24": ["nodepool@goyangi.io"]
+                }
+              }
+            }
     persistence:
       data:
         existingClaim: headscale
@@ -219,6 +241,15 @@ spec:
           - path: /etc/headscale/config.yaml
             subPath: config.yaml
             readOnly: true
+      policy:
+        type: configMap
+        name: headscale-policy-file
+        advancedMounts:
+          headscale:
+            app:
+              - path: /etc/headscale/policy.json
+                subPath: policy.json
+                readOnly: true
       tls:
         type: secret
         name: goyangi-io-tls
