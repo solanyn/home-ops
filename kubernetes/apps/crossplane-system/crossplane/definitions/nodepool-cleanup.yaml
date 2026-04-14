@@ -1,5 +1,4 @@
 ---
-# ServiceAccount + RBAC for nodepool cleanup
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -28,7 +27,6 @@ roleRef:
   name: nodepool-cleanup
   apiGroup: rbac.authorization.k8s.io
 ---
-# CronJob: delete NotReady nodepool nodes older than 5 minutes
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -48,25 +46,38 @@ spec:
           restartPolicy: Never
           containers:
             - name: cleanup
-              image: bitnami/kubectl:1.35.2
+              image: quay.io/curl/curl:8.19.0
               command:
                 - /bin/sh
                 - -c
                 - |
                   set -e
-                  # Find nodepool nodes that are NotReady
-                  STALE=$(kubectl get nodes -l node.kubernetes.io/nodepool=true \
-                    -o jsonpath='{range .items[*]}{.metadata.name}{" "}{range .status.conditions[?(@.type=="Ready")]}{.status}{end}{"\n"}{end}' 2>/dev/null \
-                    | grep -v "True" | awk '{print $1}' | grep -v '^$' || true)
+                  APISERVER=https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}
+                  TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+                  CACERT=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+
+                  # Get nodepool nodes
+                  NODES=$(curl -s --cacert $CACERT -H "Authorization: Bearer $TOKEN" \
+                    "$APISERVER/api/v1/nodes?labelSelector=node.kubernetes.io/nodepool=true")
+
+                  # Find NotReady nodes
+                  STALE=$(echo "$NODES" | sed -n 's/.*"name":"\([^"]*\)".*/\1/p' | while read node; do
+                    STATUS=$(echo "$NODES" | grep -A5 "$node" | grep -o '"Ready"' | head -1)
+                    READY=$(echo "$NODES" | grep -A20 "\"type\":\"Ready\"" | grep -o '"status":"True"' | head -1)
+                    if [ -z "$READY" ]; then
+                      echo "$node"
+                    fi
+                  done)
 
                   if [ -z "$STALE" ]; then
-                    echo "No stale nodepool nodes found"
+                    echo "No stale nodepool nodes"
                     exit 0
                   fi
 
                   for node in $STALE; do
-                    echo "Deleting stale nodepool node: $node"
-                    kubectl delete node "$node" --wait=false
+                    echo "Deleting stale node: $node"
+                    curl -s --cacert $CACERT -H "Authorization: Bearer $TOKEN" \
+                      -X DELETE "$APISERVER/api/v1/nodes/$node"
                   done
               resources:
                 requests:
