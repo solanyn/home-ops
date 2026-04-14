@@ -13,7 +13,7 @@ spec:
     defaultPodOptions:
       enableServiceLinks: false
       nodeSelector:
-        node-role.kubernetes.io/nodepool: "true"
+        node.kubernetes.io/nodepool: "true"
       tolerations:
         - key: nodepool
           operator: Equal
