@@ -66,6 +66,7 @@ spec:
                         disableManifestsDirectory: true
                         extraArgs:
                           rotate-server-certificates: "true"
+                          register-with-taints: "nodepool=true:NoSchedule"
                         nodeIP:
                           validSubnets:
                             - 100.69.0.0/16
@@ -75,8 +76,6 @@ spec:
                         nameservers:
                           - 169.254.169.254
                           - 8.8.8.8
-                      nodeTaints:
-                        nodepool: "true:NoSchedule"
                       install:
                         image: factory.talos.dev/installer/4a0d65c669d46663f377e7161e50cfd570c401f26fd9e7bda34a0216b6f1922b:v1.12.6
                         wipe: false
