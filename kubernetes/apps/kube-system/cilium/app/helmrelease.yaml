@@ -15,7 +15,7 @@ spec:
     autoDirectNodeRoutes: false
     ipv6:
       enabled: true
-    enableIPv6BIGTCP: true
+    enableIPv6BIGTCP: false
     ipv6NativeRoutingCIDR: fc69::/108
     bandwidthManager:
       enabled: true
@@ -40,9 +40,9 @@ spec:
       enabled: true
     # NOTE: Divergence from onedr0p/home-ops - tailscale+ added for nodepool workers
     devices: "en+ eth+ tailscale+"
-    enableIPv4BIGTCP: true
-    # NOTE: Required when using BIG TCP with tunnel mode
-    enableTunnelBigTCP: true
+    enableIPv4BIGTCP: false
+    # NOTE: Tunnel BIG TCP requires pending kernel support, disabled for now
+    enableTunnelBigTCP: false
     endpointRoutes:
       enabled: true
     envoy:
@@ -60,7 +60,8 @@ spec:
       enabled: false
     loadBalancer:
       algorithm: maglev
-      mode: dsr
+      # NOTE: DSR mode incompatible with VXLAN tunneling, using snat instead
+      mode: snat
       serviceTopology: true
     localRedirectPolicies:
       enabled: true
