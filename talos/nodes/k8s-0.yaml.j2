@@ -1,6 +1,12 @@
 ---
 machine:
   type: controlplane
+  network:
+    interfaces:
+      - interface: eno1
+        routes:
+          - network: 100.69.0.0/16
+            gateway: 192.168.42.12
   nodeLabels:
     topology.kubernetes.io/zone: m
 ---
