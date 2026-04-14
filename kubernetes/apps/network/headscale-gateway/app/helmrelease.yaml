@@ -19,6 +19,17 @@ spec:
             image:
               repository: ghcr.io/tailscale/tailscale
               tag: v1.96.5
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                # Swap iptables to nft backend (Talos has nf_tables in kernel, no legacy modules)
+                ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/iptables
+                ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/iptables-save
+                ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/iptables-restore
+                ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/ip6tables
+                ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/ip6tables-save
+                ln -sf /usr/sbin/xtables-nft-multi /usr/sbin/ip6tables-restore
+                exec /usr/local/bin/containerboot
             env:
               # Connect to Headscale via noise LB (TLS-terminated by nginx sidecar)
               TS_LOGIN_SERVER: https://hs.goyangi.io
