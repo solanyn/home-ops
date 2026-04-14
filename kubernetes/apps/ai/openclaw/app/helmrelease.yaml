@@ -124,7 +124,7 @@ spec:
                   printf 'apiVersion: v1\nkind: Config\nclusters:\n- cluster:\n    server: https://10.43.0.1:443\n    certificate-authority: /home/node/.openclaw/workspace/.kube/sa/ca.crt\n  name: cluster\ncontexts:\n- context:\n    cluster: cluster\n    user: sa\n  name: default\ncurrent-context: default\nusers:\n- name: sa\n  user:\n    tokenFile: /home/node/.openclaw/workspace/.kube/sa/token\n' > "$dir/config"
                 done
 
-                exec node dist/index.js gateway --bind 0.0.0.0 --port 18789 --allow-unconfigured
+                exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
             env:
               HOME: &homepath /home/node
               TERM: xterm-256color
