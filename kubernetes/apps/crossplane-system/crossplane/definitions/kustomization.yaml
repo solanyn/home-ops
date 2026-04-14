@@ -4,3 +4,4 @@ resources:
   - ./definition.yaml
   - ./composition.yaml
   - ./prometheusrule.yaml
+  - ./nodepool-cleanup.yaml

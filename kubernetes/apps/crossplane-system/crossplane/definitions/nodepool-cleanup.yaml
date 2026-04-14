@@ -1,0 +1,76 @@
+---
+# ServiceAccount + RBAC for nodepool cleanup
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nodepool-cleanup
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: nodepool-cleanup
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["get", "list", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: nodepool-cleanup
+subjects:
+  - kind: ServiceAccount
+    name: nodepool-cleanup
+    namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: nodepool-cleanup
+  apiGroup: rbac.authorization.k8s.io
+---
+# CronJob: delete NotReady nodepool nodes older than 5 minutes
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nodepool-cleanup
+  namespace: kube-system
+spec:
+  schedule: "*/5 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 300
+      template:
+        spec:
+          serviceAccountName: nodepool-cleanup
+          restartPolicy: Never
+          containers:
+            - name: cleanup
+              image: bitnami/kubectl:1.35
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+                  # Find nodepool nodes that are NotReady
+                  STALE=$(kubectl get nodes -l node.kubernetes.io/nodepool=true \
+                    -o jsonpath='{range .items[*]}{.metadata.name}{" "}{range .status.conditions[?(@.type=="Ready")]}{.status}{end}{"\n"}{end}' 2>/dev/null \
+                    | grep -v "True" | awk '{print $1}' | grep -v '^$' || true)
+
+                  if [ -z "$STALE" ]; then
+                    echo "No stale nodepool nodes found"
+                    exit 0
+                  fi
+
+                  for node in $STALE; do
+                    echo "Deleting stale nodepool node: $node"
+                    kubectl delete node "$node" --wait=false
+                  done
+              resources:
+                requests:
+                  cpu: 5m
+                  memory: 16Mi
+                limits:
+                  memory: 32Mi
