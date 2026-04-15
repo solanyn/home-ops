@@ -6,4 +6,4 @@ resources:
   - ./buildbarn/ks.yaml
   - ./scheduler/ks.yaml
   - ./browser/ks.yaml
-  - ./worker/ks.yaml
+  # - ./worker/ks.yaml  # disabled: using public runners

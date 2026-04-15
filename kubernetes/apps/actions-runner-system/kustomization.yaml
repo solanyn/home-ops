@@ -10,5 +10,5 @@ components:
 resources:
   - ./namespace.yaml
   - ./home-ops-actions-cache-server/ks.yaml
-  - ./mono-actions-cache-server/ks.yaml
+  # - ./mono-actions-cache-server/ks.yaml  # disabled: using public runners
   - ./actions-runner-controller/ks.yaml
