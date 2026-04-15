@@ -17,6 +17,7 @@ spec:
   dnsNames:
     - goyangi.io
     - "*.goyangi.io"
+    - "*.opencode.goyangi.io"
     - "*.work.goyangi.io"
     - "*.kobo.goyangi.io"
     - "*.s3.goyangi.io"
