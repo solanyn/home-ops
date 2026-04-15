@@ -4,5 +4,6 @@ kind: Namespace
 metadata:
   name: knative-serving
   labels:
+    goldilocks.fairwinds.com/enabled: "true"
     app.kubernetes.io/name: knative-serving
     app.kubernetes.io/version: "1.14.0"
