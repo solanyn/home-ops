@@ -14,6 +14,14 @@ spec:
       securityContext:
         runAsUser: 0
         runAsGroup: 0
+      # NOTE: Divergence from onedr0p/home-ops — co-locate with openclaw to share RWO PVC
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: openclaw
+              topologyKey: kubernetes.io/hostname
       containers:
         - name: sandbox
           image: ghcr.io/solanyn/openclaw-sandbox:4.0.0@sha256:0b890bf3088e0b9fd3dddd48b24678d696ae348052242670829227c1ab232d92
@@ -41,8 +49,10 @@ spec:
               mountPath: /etc/ssh/authorized_keys/node
               subPath: authorized_keys
               readOnly: true
+            # NOTE: Shares openclaw PVC workspace instead of separate sandbox PVC
             - name: workspace
               mountPath: /workspace
+              subPath: .openclaw/workspace
       volumes:
         - name: authorized-keys
           configMap:
@@ -53,4 +63,4 @@ spec:
             defaultMode: 0644
         - name: workspace
           persistentVolumeClaim:
-            claimName: openclaw-sandbox
+            claimName: openclaw
