@@ -124,7 +124,7 @@ spec:
                   printf 'apiVersion: v1\nkind: Config\nclusters:\n- cluster:\n    server: https://10.43.0.1:443\n    certificate-authority: /home/node/.openclaw/workspace/.kube/sa/ca.crt\n  name: cluster\ncontexts:\n- context:\n    cluster: cluster\n    user: sa\n  name: default\ncurrent-context: default\nusers:\n- name: sa\n  user:\n    tokenFile: /home/node/.openclaw/workspace/.kube/sa/token\n' > "$dir/config"
                 done
 
-                exec node dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
+                exec node --max-old-space-size=2048 dist/index.js gateway --bind lan --port 18789 --allow-unconfigured
             env:
               HOME: &homepath /home/node
               TERM: xterm-256color
@@ -166,8 +166,8 @@ spec:
                   failureThreshold: 3
             resources:
               requests:
-                cpu: 10m
-                memory: 64Mi
+                cpu: 100m
+                memory: 1500Mi
 
     defaultPodOptions:
       securityContext:
