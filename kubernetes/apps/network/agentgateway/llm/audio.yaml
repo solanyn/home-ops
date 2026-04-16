@@ -4,11 +4,25 @@ kind: Service
 metadata:
   name: mlx-audio
 spec:
-  type: ExternalName
-  externalName: mac.internal
   ports:
     - name: http
       port: 8000
+      targetPort: 8000
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: mlx-audio-1
+  labels:
+    kubernetes.io/service-name: mlx-audio
+addressType: IPv4
+ports:
+  - name: http
+    port: 8000
+    protocol: TCP
+endpoints:
+  - addresses:
+      - "192.168.10.30"
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
