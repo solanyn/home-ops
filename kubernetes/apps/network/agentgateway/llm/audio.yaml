@@ -16,7 +16,7 @@ metadata:
   name: llm-tts
 spec:
   parentRefs:
-    - name: ai
+    - name: envoy-internal
       namespace: network
   rules:
     - matches:
@@ -33,7 +33,7 @@ metadata:
   name: llm-stt
 spec:
   parentRefs:
-    - name: ai
+    - name: envoy-internal
       namespace: network
   rules:
     - matches:
@@ -50,7 +50,7 @@ metadata:
   name: llm-vad
 spec:
   parentRefs:
-    - name: ai
+    - name: envoy-internal
       namespace: network
   rules:
     - matches:
