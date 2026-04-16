@@ -68,7 +68,7 @@ spec:
           - path: /opt/data
       config:
         type: configMap
-        name: hermes-config
+        identifier: config
         globalMounts:
           - path: /config
             readOnly: true
