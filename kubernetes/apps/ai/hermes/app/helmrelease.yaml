@@ -41,6 +41,26 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
+    configMaps:
+      config:
+        data:
+          config.yaml: |-
+            model: openai/gpt-4
+            temperature: 0.7
+            terminal:
+              backend: local
+              timeout: 180
+            memory:
+              enabled: true
+            compression:
+              enabled: true
+              threshold: 0.7
+            gateway:
+              platforms:
+                matrix:
+                  enabled: true
+            cron:
+              enabled: true
     persistence:
       data:
         existingClaim: hermes
