@@ -15,7 +15,8 @@ spec:
   dependsOn:
     - name: continuwuity
       namespace: default
-    - name: external-secrets-stores
+    - name: onepassword
+      namespace: external-secrets
   path: ./kubernetes/apps/ai/hermes/app
   prune: true
   sourceRef:
