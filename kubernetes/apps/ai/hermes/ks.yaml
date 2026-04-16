@@ -28,6 +28,3 @@ spec:
     substitute:
       APP: hermes
       VOLSYNC_CAPACITY: 5Gi
-    substituteFrom:
-      - kind: ConfigMap
-        name: cluster-settings

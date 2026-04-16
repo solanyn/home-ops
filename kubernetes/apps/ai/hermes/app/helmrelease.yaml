@@ -5,23 +5,10 @@ kind: HelmRelease
 metadata:
   name: hermes
 spec:
+  chartRef:
+    kind: OCIRepository
+    name: hermes
   interval: 30m
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.3
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     controllers:
       hermes:
@@ -34,16 +21,10 @@ spec:
               - sh
               - -c
               - |
-                # Copy config files to data dir if they don't exist yet (first boot)
                 if [ ! -f /opt/data/config.yaml ]; then
                   cp /config/config.yaml /opt/data/config.yaml
                   echo "Copied initial config.yaml"
                 fi
-                if [ ! -f /opt/data/SOUL.md ]; then
-                  cp /config/SOUL.md /opt/data/SOUL.md
-                  echo "Copied initial SOUL.md"
-                fi
-                # Create directories
                 mkdir -p /opt/data/memories /opt/data/skills /opt/data/sessions /opt/data/cron /opt/data/logs
         containers:
           app:
@@ -56,10 +37,10 @@ spec:
                   name: hermes-secret
             resources:
               requests:
-                cpu: 100m
-                memory: 512Mi
+                cpu: 50m
+                memory: 256Mi
               limits:
-                memory: 2Gi
+                memory: 1Gi
     persistence:
       data:
         existingClaim: hermes
