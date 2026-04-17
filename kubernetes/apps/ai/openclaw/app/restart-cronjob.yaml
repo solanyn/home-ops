@@ -1,0 +1,51 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: openclaw-restart
+spec:
+  schedule: "0 18 * * *" # 4am AEST (UTC+10)
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: openclaw-restart
+          containers:
+            - name: restart
+              image: ghcr.io/fluxcd/flux-cli:v2.5.1
+              command:
+                - sh
+                - -c
+                - |
+                  kubectl rollout restart deployment/openclaw -n ai
+                  kubectl rollout status deployment/openclaw -n ai --timeout=120s
+          restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: openclaw-restart
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: openclaw-restart
+rules:
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    resourceNames: ["openclaw"]
+    verbs: ["get", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: openclaw-restart
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: openclaw-restart
+subjects:
+  - kind: ServiceAccount
+    name: openclaw-restart
