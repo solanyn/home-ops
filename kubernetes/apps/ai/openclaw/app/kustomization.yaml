@@ -4,4 +4,5 @@ resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
   - ./externalsecret.yaml
+  - ./restart-cronjob.yaml
 
