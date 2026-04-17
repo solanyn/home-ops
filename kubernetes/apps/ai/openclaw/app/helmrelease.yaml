@@ -99,11 +99,8 @@ spec:
                   chmod +x /home/node/.local/bin/gog
                 fi
 
-                # Install Matrix plugin if not present
-                if [ ! -d /home/node/.openclaw/extensions/matrix ]; then
-                  echo "Installing Matrix plugin..."
-                  openclaw plugins install @openclaw/matrix --dangerously-force-unsafe-install
-                fi
+                # Remove legacy Matrix plugin (now bundled in image)
+                rm -rf /home/node/.openclaw/extensions/matrix
 
         containers:
           app:
