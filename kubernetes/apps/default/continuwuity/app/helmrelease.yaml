@@ -20,7 +20,7 @@ spec:
           app:
             image:
               repository: forgejo.ellis.link/continuwuation/continuwuity
-              tag: v0.5.6
+              tag: v0.5.7
             env:
               CONTINUWUITY_CONFIG: /config/continuwuity.toml
               CONTINUWUITY_SERVER_NAME: goyangi.io
