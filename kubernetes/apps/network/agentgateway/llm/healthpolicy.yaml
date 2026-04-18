@@ -1,0 +1,17 @@
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayPolicy
+metadata:
+  name: llm-health-opus
+spec:
+  targetRefs:
+    - group: agentgateway.dev
+      kind: AgentgatewayBackend
+      name: claude-opus
+  backend:
+    ai:
+      healthPolicy:
+        unhealthyCondition: "response.code >= 500 || response.code == 429"
+        eviction:
+          duration: 30s
+          consecutiveFailures: 3
