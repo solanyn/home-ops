@@ -54,3 +54,179 @@ spec:
         model: mlx-community/gemma-4-e4b-it-4bit
       host: mac.internal
       port: 8080
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: kiro-auto
+spec:
+  ai:
+    provider:
+      openai:
+        model: auto-kiro
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: claude-opus-4-7
+spec:
+  ai:
+    provider:
+      openai:
+        model: claude-opus-4.7
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: claude-sonnet-4-6
+spec:
+  ai:
+    provider:
+      openai:
+        model: claude-sonnet-4.6
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: claude-opus-4-5
+spec:
+  ai:
+    provider:
+      openai:
+        model: claude-opus-4.5
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: claude-sonnet-4-5
+spec:
+  ai:
+    provider:
+      openai:
+        model: claude-sonnet-4.5
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: claude-sonnet-4
+spec:
+  ai:
+    provider:
+      openai:
+        model: claude-sonnet-4
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: deepseek-3-2
+spec:
+  ai:
+    provider:
+      openai:
+        model: deepseek-3.2
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: minimax-m2-5
+spec:
+  ai:
+    provider:
+      openai:
+        model: minimax-m2.5
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: minimax-m2-1
+spec:
+  ai:
+    provider:
+      openai:
+        model: minimax-m2.1
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: glm-5
+spec:
+  ai:
+    provider:
+      openai:
+        model: glm-5
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: qwen3-coder
+spec:
+  ai:
+    provider:
+      openai:
+        model: qwen3-coder-next
+      host: mac.internal
+      port: 8001
+      policies:
+        auth:
+          secretRef:
+            name: kiro-auth
