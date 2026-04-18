@@ -7,3 +7,4 @@ resources:
   - ./routes.yaml
   - ./audio.yaml
   - ./securitypolicy.yaml
+  - ./healthpolicy.yaml
