@@ -21,7 +21,7 @@ spec:
       - providers:
           - name: mlx-gemma
             openai:
-              model: gemma-4-e4b
+              model: mlx-community/gemma-4-e4b-it-4bit
             host: mac.internal
             port: 8080
 ---
@@ -51,6 +51,6 @@ spec:
   ai:
     provider:
       openai:
-        model: gemma-4-e4b
+        model: mlx-community/gemma-4-e4b-it-4bit
       host: mac.internal
       port: 8080
