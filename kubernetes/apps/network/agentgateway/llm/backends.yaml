@@ -58,24 +58,6 @@ spec:
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: kiro-auto
-spec:
-  ai:
-    groups:
-      - providers:
-          - name: kiro
-            openai:
-              model: auto-kiro
-            host: mac.internal
-            port: 8001
-            policies:
-              auth:
-                secretRef:
-                  name: kiro-auth
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
   name: claude-opus-4-7
 spec:
   ai:
