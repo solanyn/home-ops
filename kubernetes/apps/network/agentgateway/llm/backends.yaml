@@ -6,7 +6,7 @@ metadata:
 spec:
   ai:
     groups:
-      # Primary: Opus via kiro-gateway
+      # Primary: Opus 4.6 via kiro-gateway
       - providers:
           - name: kiro
             openai:
@@ -17,7 +17,29 @@ spec:
               auth:
                 secretRef:
                   name: kiro-auth
-      # Fallback: Gemma 4 local
+      # Fallback 1: GLM-5 via kiro-gateway
+      - providers:
+          - name: kiro
+            openai:
+              model: glm-5
+            host: mac.internal
+            port: 8001
+            policies:
+              auth:
+                secretRef:
+                  name: kiro-auth
+      # Fallback 2: MiniMax M2.5 via kiro-gateway
+      - providers:
+          - name: kiro
+            openai:
+              model: minimax-m2.5
+            host: mac.internal
+            port: 8001
+            policies:
+              auth:
+                secretRef:
+                  name: kiro-auth
+      # Fallback 3: Gemma 4 local
       - providers:
           - name: mlx-gemma
             openai:
