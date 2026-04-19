@@ -22,6 +22,45 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
+          daemon:
+            image:
+              repository: docker
+              tag: 29.4.0-dind
+            restartPolicy: Always
+            securityContext:
+              privileged: true
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
+            env:
+              - name: DOCKER_TLS_CERTDIR
+                value: /certs
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec: &dindProbe
+                  exec:
+                    command: ["docker", "info"]
+                  periodSeconds: 2
+                  timeoutSeconds: 3
+                  failureThreshold: 60
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  <<: *dindProbe
+                  periodSeconds: 5
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  <<: *dindProbe
+                  periodSeconds: 20
+                  timeoutSeconds: 3
+                  failureThreshold: 3
           install-tools:
             image:
               repository: ghcr.io/openclaw/openclaw
@@ -127,6 +166,9 @@ spec:
               TERM: xterm-256color
               PATH: /home/node/.local/bin:/home/node/.local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
               TZ: Australia/Sydney
+              DOCKER_HOST: tcp://localhost:2376
+              DOCKER_CERT_PATH: /certs/client
+              DOCKER_TLS_VERIFY: "1"
             envFrom:
               - secretRef:
                   name: openclaw
@@ -320,6 +362,10 @@ spec:
         path: /mnt/world/hawow
         globalMounts:
           - path: /home/node/hawow
+      certs:
+        type: emptyDir
+        globalMounts:
+          - path: /certs
       openclaw-config:
         type: secret
         name: openclaw-config
