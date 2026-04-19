@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: ghcr.io/element-hq/lk-jwt-service
-              tag: 0.4.2
+              tag: 0.4.3
             env:
               LIVEKIT_URL: ws://livekit-app.default.svc.cluster.local:7880
               LK_JWT_PORT: "8080"
