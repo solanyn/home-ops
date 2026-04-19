@@ -25,7 +25,12 @@ spec:
       containers:
         - name: sandbox
           image: ghcr.io/solanyn/openclaw-sandbox:4.0.0@sha256:0b890bf3088e0b9fd3dddd48b24678d696ae348052242670829227c1ab232d92
-          command: ["/usr/sbin/sshd", "-D", "-e", "-p", "2222"]
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "export OP_SERVICE_ACCOUNT_TOKEN='${OP_SERVICE_ACCOUNT_TOKEN}'" > /etc/profile.d/op.sh
+              exec /usr/sbin/sshd -D -e -p 2222
           ports:
             - containerPort: 2222
               name: ssh
