@@ -29,7 +29,7 @@ spec:
             - /bin/sh
             - -c
             - |
-              echo "export OP_SERVICE_ACCOUNT_TOKEN='${OP_SERVICE_ACCOUNT_TOKEN}'" > /etc/profile.d/op.sh
+              echo "OP_SERVICE_ACCOUNT_TOKEN=${OP_SERVICE_ACCOUNT_TOKEN}" >> /etc/environment
               exec /usr/sbin/sshd -D -e -p 2222
           ports:
             - containerPort: 2222
