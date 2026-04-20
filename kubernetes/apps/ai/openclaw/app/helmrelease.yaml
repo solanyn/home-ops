@@ -37,11 +37,11 @@ spec:
               - -c
               - |
                 for registry in docker.io ghcr.io gcr.io quay.io registry.k8s.io; do
-                  mkdir -p "/etc/containerd/certs.d/${registry}"
-                  cat > "/etc/containerd/certs.d/${registry}/hosts.toml" <<EOF
-                server = "https://${registry}"
+                  mkdir -p "/etc/containerd/certs.d/$${registry}"
+                  cat > "/etc/containerd/certs.d/$${registry}/hosts.toml" <<EOF
+                server = "https://$${registry}"
 
-                [host."http://${NODE_IP}:5000"]
+                [host."http://$${NODE_IP}:5000"]
                   capabilities = ["pull", "resolve"]
                 EOF
                 done
