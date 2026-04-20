@@ -45,7 +45,7 @@ spec:
                 dockerd-entrypoint.sh &
                 DOCKERD_PID=$!
                 until docker info >/dev/null 2>&1; do sleep 1; done
-                (sleep 5 && docker pull ghcr.io/solanyn/openclaw-sandbox:5.0.0) &
+                docker pull ghcr.io/solanyn/openclaw-sandbox:5.0.0 || true
                 wait $DOCKERD_PID
             env:
               - name: DOCKER_TLS_CERTDIR
