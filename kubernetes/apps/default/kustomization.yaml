@@ -17,7 +17,6 @@ resources:
   - ./brrpolice/ks.yaml
   - ./bazarr/ks.yaml
   - ./grimmory/ks.yaml
-  - ./booktree/ks.yaml
   - ./decluttarr/ks.yaml
   - ./deduparr/ks.yaml
   - ./ersatztv/ks.yaml
