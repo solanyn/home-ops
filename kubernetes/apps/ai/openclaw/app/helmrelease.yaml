@@ -85,54 +85,51 @@ spec:
             image:
               repository: ghcr.io/openclaw/openclaw
               tag: 2026.4.14@sha256:7ea070b04d1e70811fe8ba15feaad5890b1646021b24e00f4795bd4587a594ed
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
             command:
               - /bin/sh
               - -c
               - |
                 set -e
+                chown 1000:1000 /home/node
                 mkdir -p /home/node/.local/bin /home/node/.openclaw /home/node/.ssh /home/node/.config/fj
 
-                # Copy config from secret mount (writable copy on PVC)
                 cp /tmp/openclaw-config/openclaw.json /home/node/.openclaw/openclaw.json
                 chmod 600 /home/node/.openclaw/openclaw.json
 
-                # Write exec-approvals with full security (skip approval prompts)
                 printf '{"version":1,"defaults":{"security":"full"}}\n' > /home/node/.openclaw/exec-approvals.json
                 chmod 600 /home/node/.openclaw/exec-approvals.json
 
-                # Setup SSH
                 cp /tmp/ssh-secrets/ssh_private_key /home/node/.ssh/id_ed25519
                 cp /tmp/ssh-secrets/ssh_config /home/node/.ssh/config
                 cp /tmp/ssh-secrets/ssh_private_key /home/node/.ssh/sandbox_id
                 chmod 700 /home/node/.ssh
                 chmod 600 /home/node/.ssh/id_ed25519 /home/node/.ssh/config /home/node/.ssh/sandbox_id
 
-                # Copy SSH key to workspace for sandbox access
                 mkdir -p /home/node/.openclaw/workspace/.ssh
                 cp /home/node/.ssh/id_ed25519 /home/node/.openclaw/workspace/.ssh/id_ed25519
                 cp /home/node/.ssh/config /home/node/.openclaw/workspace/.ssh/config
                 chmod 700 /home/node/.openclaw/workspace/.ssh
                 chmod 600 /home/node/.openclaw/workspace/.ssh/id_ed25519 /home/node/.openclaw/workspace/.ssh/config
 
-                # Setup fj CLI config
                 cp /tmp/ssh-secrets/fj_config /home/node/.config/fj/config.toml
                 chmod 600 /home/node/.config/fj/config.toml
 
-                # Install fj CLI if not present
                 if [ ! -f /home/node/.local/bin/fj ]; then
                   echo "Installing fj CLI..."
                   curl -sL https://codeberg.org/forgejo/fj/releases/latest/download/fj-linux-amd64 -o /home/node/.local/bin/fj
                   chmod +x /home/node/.local/bin/fj
                 fi
 
-                # Install uv if not present on PVC
                 if [ ! -f /home/node/.local/bin/uv ]; then
                   echo "Installing uv..."
                   cd /tmp
                   curl -fsSL https://astral.sh/uv/install.sh | INSTALLER_NO_MODIFY_PATH=1 UV_INSTALL_DIR=/home/node/.local/bin sh
                 fi
 
-                # Install hippo-memory CLI and OpenClaw plugin
                 if ! command -v hippo >/dev/null 2>&1; then
                   echo "Installing hippo-memory..."
                   npm install -g hippo-memory --prefix /home/node/.local
@@ -145,12 +142,10 @@ spec:
                     cd /home/node/.openclaw/extensions/hippo-memory && npm install
                   fi
                 fi
-                # Init hippo in workspace if not already
                 if [ ! -d /home/node/.openclaw/workspace/.hippo ]; then
                   hippo init 2>/dev/null || true
                 fi
 
-                # Install gogcli if not present
                 if [ ! -f /home/node/.local/bin/gog ]; then
                   echo "Installing gogcli..."
                   curl -fsSL https://github.com/steipete/gogcli/releases/download/v0.12.0/gogcli_0.12.0_linux_amd64.tar.gz | tar xz -C /tmp
@@ -158,8 +153,8 @@ spec:
                   chmod +x /home/node/.local/bin/gog
                 fi
 
-                # Remove legacy Matrix plugin (now bundled in image)
                 rm -rf /home/node/.openclaw/extensions/matrix
+                chown -R 1000:1000 /home/node
 
           archive:
             image:
