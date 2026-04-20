@@ -10,11 +10,11 @@ spec:
     name: openclaw
   interval: 1h
   install:
-    timeout: 10m
+    timeout: 20m
     remediation:
       retries: -1
   upgrade:
-    timeout: 10m
+    timeout: 20m
     remediation:
       retries: 3
   values:
