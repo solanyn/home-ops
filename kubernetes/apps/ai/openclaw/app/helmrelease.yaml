@@ -159,6 +159,24 @@ spec:
                 # Remove legacy Matrix plugin (now bundled in image)
                 rm -rf /home/node/.openclaw/extensions/matrix
 
+          archive:
+            image:
+              repository: alpine
+              tag: 3.21
+            restartPolicy: Always
+            command:
+              - /bin/sh
+              - -c
+              - |
+                apk add --no-cache rsync
+                while true; do
+                  rsync -a /sessions/ /archive/
+                  sleep 900
+                done
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
         containers:
           app:
             image:
@@ -372,14 +390,31 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: *homepath
+        advancedMounts:
+          openclaw:
+            daemon:
+              - path: *homepath
+            install-tools:
+              - path: *homepath
+            app:
+              - path: *homepath
+            archive:
+              - path: /sessions
+                subPath: .openclaw/agents/main/sessions
       hawow:
         type: nfs
         server: nas.internal
         path: /mnt/world/hawow
         globalMounts:
           - path: /home/node/hawow
+      openclaw-archive:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/openclaw
+        advancedMounts:
+          openclaw:
+            archive:
+              - path: /archive
       certs:
         type: emptyDir
         globalMounts:
