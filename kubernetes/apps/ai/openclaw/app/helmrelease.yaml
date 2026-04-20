@@ -175,7 +175,9 @@ spec:
               - |
                 apk add --no-cache rsync su-exec
                 while true; do
-                  su-exec 1000:1000 rsync -a /sessions/ /archive/
+                  if [ -d /home/node/.openclaw/agents/main/sessions ]; then
+                    su-exec 1000:1000 rsync -a /home/node/.openclaw/agents/main/sessions/ /archive/
+                  fi
                   sleep 900
                 done
             resources:
@@ -404,8 +406,7 @@ spec:
             app:
               - path: *homepath
             archive:
-              - path: /sessions
-                subPath: .openclaw/agents/main/sessions
+              - path: /home/node
       hawow:
         type: nfs
         server: nas.internal
