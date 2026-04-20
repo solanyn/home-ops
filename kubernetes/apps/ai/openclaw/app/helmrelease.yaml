@@ -41,7 +41,7 @@ spec:
                   cat > "/etc/containerd/certs.d/$${registry}/hosts.toml" <<EOF
                 server = "https://$${registry}"
 
-                [host."http://$${NODE_IP}:5000"]
+                [host."http://$${NODE_IP}:29999"]
                   capabilities = ["pull", "resolve"]
                 EOF
                 done
