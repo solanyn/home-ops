@@ -36,15 +36,12 @@ spec:
               - /bin/sh
               - -c
               - |
-                for registry in docker.io ghcr.io gcr.io quay.io registry.k8s.io; do
-                  mkdir -p "/etc/containerd/certs.d/$${registry}"
-                  cat > "/etc/containerd/certs.d/$${registry}/hosts.toml" <<EOF
-                server = "https://$${registry}"
-
-                [host."http://$${NODE_IP}:29999"]
-                  capabilities = ["pull", "resolve"]
+                mkdir -p /etc/docker
+                cat > /etc/docker/daemon.json <<EOF
+                {
+                  "registry-mirrors": ["http://$${NODE_IP}:29999"]
+                }
                 EOF
-                done
                 exec dockerd-entrypoint.sh
             env:
               - name: DOCKER_TLS_CERTDIR
@@ -423,6 +420,15 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /certs
+      docker-data:
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 10Gi
+        advancedMounts:
+          openclaw:
+            daemon:
+              - path: /var/lib/docker
       openclaw-config:
         type: secret
         name: openclaw-config
