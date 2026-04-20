@@ -27,7 +27,7 @@ spec:
             image:
               repository: ghcr.io/solanyn/scrib-server
               tag: latest
-              digest: sha256:e8033242d76655a2d2d8f9c39239d504f97a2a30be0d940d5113cb3a422ea757
+              digest: sha256:6ef078ba1330f50c18334f0d406b7239702118da18664fcd51b43e89e0763e5a
             env:
               TZ: Australia/Sydney
               SCRIB_LISTEN: 0.0.0.0:8090
