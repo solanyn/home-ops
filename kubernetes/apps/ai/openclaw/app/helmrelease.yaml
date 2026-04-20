@@ -172,9 +172,9 @@ spec:
               - /bin/sh
               - -c
               - |
-                apk add --no-cache rsync
+                apk add --no-cache rsync su-exec
                 while true; do
-                  rsync -a /sessions/ /archive/
+                  su-exec 1000:1000 rsync -a /sessions/ /archive/
                   sleep 900
                 done
             resources:
