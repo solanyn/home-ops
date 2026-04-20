@@ -39,6 +39,8 @@ spec:
                 pluginName: postgres12_pgx
                 databaseName: temporal
                 connectAddr: "postgres-rw.storage.svc.cluster.local:5432"
+                connectProtocol: "tcp"
+                createDatabase: false
                 user: temporal
                 existingSecret: temporal-secret
                 secretKey: password
@@ -50,6 +52,8 @@ spec:
                 pluginName: postgres12_pgx
                 databaseName: temporal_visibility
                 connectAddr: "postgres-rw.storage.svc.cluster.local:5432"
+                connectProtocol: "tcp"
+                createDatabase: false
                 user: temporal
                 existingSecret: temporal-secret
                 secretKey: password
@@ -94,6 +98,7 @@ spec:
               name: temporal-oidc
               key: client_secret
     schema:
+      useHelmHooks: false
       backoffLimit: 100
     shims:
       dockerize: false
