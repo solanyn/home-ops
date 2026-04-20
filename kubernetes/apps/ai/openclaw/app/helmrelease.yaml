@@ -36,6 +36,7 @@ spec:
               - /bin/sh
               - -c
               - |
+                chown 1000:1000 /home/node
                 mkdir -p /etc/docker
                 cat > /etc/docker/daemon.json <<EOF
                 {
@@ -173,7 +174,6 @@ spec:
               - /bin/sh
               - -c
               - |
-                chown 1000:1000 /home/node
                 apk add --no-cache rsync su-exec
                 while true; do
                   if [ -d /home/node/.openclaw/agents/main/sessions ]; then
