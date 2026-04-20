@@ -32,9 +32,34 @@ spec:
               runAsUser: 0
               runAsGroup: 0
               runAsNonRoot: false
+            command:
+              - /bin/sh
+              - -c
+              - |
+                mkdir -p /etc/docker
+                cat > /etc/docker/daemon.json <<EOF
+                {
+                  "features": {"containerd-snapshotter": true},
+                  "containerd-registry-config-path": "/etc/containerd/certs.d"
+                }
+                EOF
+                for registry in docker.io ghcr.io gcr.io quay.io registry.k8s.io; do
+                  mkdir -p "/etc/containerd/certs.d/${registry}"
+                  cat > "/etc/containerd/certs.d/${registry}/hosts.toml" <<EOF
+                server = "https://${registry}"
+
+                [host."http://${NODE_IP}:5000"]
+                  capabilities = ["pull", "resolve"]
+                EOF
+                done
+                exec dockerd-entrypoint.sh
             env:
               - name: DOCKER_TLS_CERTDIR
                 value: /certs
+              - name: NODE_IP
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.hostIP
             probes:
               startup:
                 enabled: true
