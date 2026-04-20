@@ -154,7 +154,7 @@ spec:
                 fi
 
                 rm -rf /home/node/.openclaw/extensions/matrix
-                chown -R 1000:1000 /home/node
+                chown -R 1000:1000 /home/node || true
 
           archive:
             image:
