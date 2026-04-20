@@ -424,7 +424,7 @@ spec:
           - path: /certs
       docker-data:
         type: persistentVolumeClaim
-        nameOverride: docker-data
+        suffix: docker-data
         storageClass: openebs-hostpath
         accessMode: ReadWriteOnce
         size: 10Gi
