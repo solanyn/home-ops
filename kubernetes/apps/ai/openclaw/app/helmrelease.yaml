@@ -164,6 +164,10 @@ spec:
               repository: alpine
               tag: 3.21
             restartPolicy: Always
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
+              runAsNonRoot: false
             command:
               - /bin/sh
               - -c
