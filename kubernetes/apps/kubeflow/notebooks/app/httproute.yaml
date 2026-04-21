@@ -15,5 +15,5 @@ spec:
             type: PathPrefix
             value: /jupyter
       backendRefs:
-        - name: jupyter-web-app
+        - name: notebooks-jupyter-web-app
           port: 5000
