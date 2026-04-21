@@ -15,5 +15,5 @@ spec:
             type: PathPrefix
             value: /kfam
       backendRefs:
-        - name: kfam
+        - name: profiles
           port: 8081
