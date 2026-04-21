@@ -8,3 +8,7 @@ resources:
   - ./helmrelease.yaml
   - ./rbac.yaml
   - ./httproute.yaml
+  # Istio AuthorizationPolicy CRD stub — profiles-manager watches this resource
+  # but we use Envoy Gateway, not Istio. Installing the CRD alone stops the crash loop.
+  # renovate: datasource=github-releases depName=istio/istio
+  - https://raw.githubusercontent.com/istio/istio/1.27.2/manifests/charts/base/crds/crd-all.gen.yaml
