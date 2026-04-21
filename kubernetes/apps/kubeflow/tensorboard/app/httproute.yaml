@@ -15,5 +15,5 @@ spec:
             type: PathPrefix
             value: /tensorboards
       backendRefs:
-        - name: tensorboards-web-app
+        - name: tensorboard
           port: 5000
