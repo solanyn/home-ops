@@ -123,6 +123,12 @@ spec:
                 cp /tmp/ssh-secrets/fj_config /home/node/.config/fj/config.toml
                 chmod 600 /home/node/.config/fj/config.toml
 
+                if [ ! -f /home/node/.local/bin/docker ]; then
+                  echo "Installing docker CLI..."
+                  curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-27.5.1.tgz | tar xz --strip-components=1 -C /home/node/.local/bin docker/docker
+                  chmod +x /home/node/.local/bin/docker
+                fi
+
                 if [ ! -f /home/node/.local/bin/fj ]; then
                   echo "Installing fj CLI..."
                   curl -sL https://codeberg.org/forgejo/fj/releases/latest/download/fj-linux-amd64 -o /home/node/.local/bin/fj
