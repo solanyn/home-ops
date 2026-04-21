@@ -10,7 +10,7 @@ data:
     minio:
       default:
         endpoint: "garage.storage.svc.cluster.local:3900"
-        region: "garage"
+        region: "us-east-1"
         disableSSL: true
         forcePathStyle: true
         credentials:
