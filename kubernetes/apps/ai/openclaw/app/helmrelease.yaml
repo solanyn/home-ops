@@ -51,6 +51,7 @@ spec:
                 dockerd-entrypoint.sh &
                 DOCKERD_PID=$!
                 until docker info >/dev/null 2>&1; do sleep 1; done
+                # renovate: datasource=docker depName=ghcr.io/solanyn/openclaw-sandbox
                 docker pull ghcr.io/solanyn/openclaw-sandbox:5.0.0 || true
                 wait $DOCKERD_PID
             env:
