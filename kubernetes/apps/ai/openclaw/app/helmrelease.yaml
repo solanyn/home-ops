@@ -26,7 +26,7 @@ spec:
           daemon:
             image:
               repository: docker
-              tag: 29.4.0-dind
+              tag: 29.4.1-dind
             restartPolicy: Always
             securityContext:
               privileged: true
