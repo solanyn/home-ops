@@ -19,3 +19,17 @@ spec:
       workflowNamespaces:
         - kubeflow
     useDefaultArtifactRepo: true
+    executor:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        capabilities:
+          drop:
+            - ALL
+    workflowDefaults:
+      spec:
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
