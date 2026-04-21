@@ -1,0 +1,26 @@
+---
+# ScheduledWorkflow CRD — v1 port of the v1beta1 CRD from KFP
+# Original: backend/src/crd/install/manifests/scheduledworkflow-crd.yaml
+# The upstream CRD is still v1beta1 (removed in k8s 1.22+), so we maintain a v1 copy.
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: scheduledworkflows.kubeflow.org
+spec:
+  group: kubeflow.org
+  names:
+    kind: ScheduledWorkflow
+    listKind: ScheduledWorkflowList
+    plural: scheduledworkflows
+    shortNames:
+      - swf
+    singular: scheduledworkflow
+  scope: Namespaced
+  versions:
+    - name: v1beta1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          x-kubernetes-preserve-unknown-fields: true
