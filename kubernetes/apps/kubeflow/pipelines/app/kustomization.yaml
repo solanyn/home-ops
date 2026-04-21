@@ -14,3 +14,4 @@ resources:
   - https://raw.githubusercontent.com/kubeflow/pipelines/sdk-2.15.2/manifests/kustomize/base/crds/pipelines.kubeflow.org_pipelineversions.yaml
   - ./scheduledworkflow-crd.yaml
   - ./launcher-configmap.yaml
+  - ./limitrange.yaml
