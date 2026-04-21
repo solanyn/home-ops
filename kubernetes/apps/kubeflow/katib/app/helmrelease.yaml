@@ -144,7 +144,7 @@ spec:
                   type: PathPrefix
                   value: /katib
             backendRefs:
-              - name: katib-ui
+              - name: katib-katib-ui
                 port: 80
 
     persistence:
