@@ -6,4 +6,4 @@ resources:
   - ./rbac.yaml
   - ./externalsecret.yaml
   - ./database.yaml
-
+  - ./httproute.yaml
