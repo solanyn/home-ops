@@ -33,7 +33,7 @@ rules:
     resources: ["pods", "services", "secrets", "configmaps", "persistentvolumeclaims"]
     verbs: ["*"]
   - apiGroups: ["argoproj.io"]
-    resources: ["workflows", "workflowtemplates", "cronworkflows"]
+    resources: ["workflows", "workflowtemplates", "cronworkflows", "workflowtaskresults"]
     verbs: ["*"]
   - apiGroups: ["kubeflow.org"]
     resources: ["scheduledworkflows", "viewers", "poddefaults"]
