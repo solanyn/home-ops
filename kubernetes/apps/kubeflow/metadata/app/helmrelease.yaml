@@ -81,6 +81,7 @@ spec:
     
     service:
       grpc:
+        forceRename: metadata-grpc-service
         controller: grpc
         ports:
           grpc:
@@ -132,7 +133,7 @@ spec:
                     - endpoint:
                         address:
                           socket_address:
-                            address: metadata-grpc.kubeflow.svc.cluster.local
+                            address: metadata-grpc-service.kubeflow.svc.cluster.local
                             port_value: 8080
     persistence:
       envoy-config:
