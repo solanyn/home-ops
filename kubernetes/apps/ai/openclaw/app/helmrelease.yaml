@@ -38,6 +38,10 @@ spec:
               - -c
               - |
                 chown 1000:1000 /home/node
+                for d in dot-local dot-npm dot-cache workspace-bun workspace-venvs workspace-cache workspace-local workspace-node-modules; do
+                  mkdir -p "/transient-cache/$d"
+                done
+                chown -R 1000:1000 /transient-cache
                 mkdir -p /etc/docker
                 cat > /etc/docker/daemon.json <<EOF
                 {
@@ -430,6 +434,8 @@ spec:
         size: 15Gi
         advancedMounts:
           openclaw:
+            daemon:
+              - path: /transient-cache
             install-tools:
               - path: /home/node/.local
                 subPath: dot-local
