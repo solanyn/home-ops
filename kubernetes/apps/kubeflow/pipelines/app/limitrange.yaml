@@ -1,0 +1,14 @@
+---
+# Bump default memory for KFP task pods — kfp-launcher init container
+# hardcodes 128Mi limit which OOMs on some images.
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: kfp-container-defaults
+spec:
+  limits:
+    - type: Container
+      defaultRequest:
+        memory: 64Mi
+      default:
+        memory: 256Mi
