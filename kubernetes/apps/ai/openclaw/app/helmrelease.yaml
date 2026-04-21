@@ -422,6 +422,48 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /certs
+      transient-cache:
+        type: persistentVolumeClaim
+        suffix: transient-cache
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 15Gi
+        advancedMounts:
+          openclaw:
+            install-tools:
+              - path: /home/node/.local
+                subPath: dot-local
+              - path: /home/node/.npm
+                subPath: dot-npm
+              - path: /home/node/.cache
+                subPath: dot-cache
+              - path: /home/node/.openclaw/workspace/.bun
+                subPath: workspace-bun
+              - path: /home/node/.openclaw/workspace/.venvs
+                subPath: workspace-venvs
+              - path: /home/node/.openclaw/workspace/.cache
+                subPath: workspace-cache
+              - path: /home/node/.openclaw/workspace/.local
+                subPath: workspace-local
+              - path: /home/node/.openclaw/workspace/node_modules
+                subPath: workspace-node-modules
+            app:
+              - path: /home/node/.local
+                subPath: dot-local
+              - path: /home/node/.npm
+                subPath: dot-npm
+              - path: /home/node/.cache
+                subPath: dot-cache
+              - path: /home/node/.openclaw/workspace/.bun
+                subPath: workspace-bun
+              - path: /home/node/.openclaw/workspace/.venvs
+                subPath: workspace-venvs
+              - path: /home/node/.openclaw/workspace/.cache
+                subPath: workspace-cache
+              - path: /home/node/.openclaw/workspace/.local
+                subPath: workspace-local
+              - path: /home/node/.openclaw/workspace/node_modules
+                subPath: workspace-node-modules
       docker-data:
         type: persistentVolumeClaim
         suffix: docker-data
