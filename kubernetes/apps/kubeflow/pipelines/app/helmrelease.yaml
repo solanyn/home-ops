@@ -113,6 +113,8 @@ spec:
               MINIO_HOST: garage.storage.svc.cluster.local
               MINIO_PORT: "3900"
               MINIO_NAMESPACE: storage
+              ML_PIPELINE_SERVICE_HOST: ml-pipeline.kubeflow.svc.cluster.local
+              ML_PIPELINE_SERVICE_PORT: "8888"
             envFrom:
               - secretRef:
                   name: ml-pipeline-secret
