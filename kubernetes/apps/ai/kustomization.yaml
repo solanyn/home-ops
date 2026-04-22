@@ -12,5 +12,5 @@ resources:
   - ./openclaw/ks.yaml
   - ./opencode/ks.yaml
   - ./temporal/ks.yaml
-  - ./openclaw-webhook/ks.yaml
+  - ./openclaw/webhook-ks.yaml
 
