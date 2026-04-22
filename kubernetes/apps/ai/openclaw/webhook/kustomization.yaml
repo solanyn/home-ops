@@ -9,8 +9,7 @@ configMapGenerator:
   - name: openclaw-webhook-config
     files:
       - hooks.yaml=./resources/hooks.yaml
-      - github-ci.sh=./resources/github-ci.sh
-      - github-pr.sh=./resources/github-pr.sh
+      - github.sh=./resources/github.sh
       - grafana-alert.sh=./resources/grafana-alert.sh
       - alertmanager-alert.sh=./resources/alertmanager-alert.sh
 generatorOptions:
