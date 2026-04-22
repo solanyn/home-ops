@@ -10,7 +10,6 @@ configMapGenerator:
     files:
       - hooks.yaml=./resources/hooks.yaml
       - github.sh=./resources/github.sh
-      - alertmanager-alert.sh=./resources/alertmanager-alert.sh
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
