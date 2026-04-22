@@ -4,7 +4,7 @@ kind: PocketIDInstance
 metadata:
   name: pocket-id
 spec:
-  image: ghcr.io/pocket-id/pocket-id:v2.6.0-distroless
+  image: ghcr.io/pocket-id/pocket-id:v2.6.2-distroless
   appUrl: https://id.goyangi.io
   encryptionKey:
     valueFrom:
