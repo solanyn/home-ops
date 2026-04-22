@@ -64,3 +64,22 @@
       parameter:
         source: header
         name: Authorization
+
+- id: alertmanager
+  execute-command: /config/alertmanager-alert.sh
+  command-working-directory: /tmp
+  pass-body-to-command: true
+  pass-environment-to-command:
+    - envname: OPENCLAW_HOOKS_TOKEN
+      source: string
+      name: '{{ getenv "OPENCLAW_HOOKS_TOKEN" }}'
+    - envname: ALERTMANAGER_WEBHOOK_TOKEN
+      source: string
+      name: '{{ getenv "ALERTMANAGER_WEBHOOK_TOKEN" }}'
+  trigger-rule:
+    match:
+      type: value
+      value: 'Bearer {{ getenv "ALERTMANAGER_WEBHOOK_TOKEN" }}'
+      parameter:
+        source: header
+        name: Authorization
