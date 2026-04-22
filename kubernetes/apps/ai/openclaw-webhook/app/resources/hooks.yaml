@@ -27,6 +27,36 @@
         source: header
         name: X-Hub-Signature-256
 
+- id: github-pr
+  execute-command: /config/github-pr.sh
+  command-working-directory: /tmp
+  pass-environment-to-command:
+    - envname: OPENCLAW_HOOKS_TOKEN
+      source: string
+      name: '{{ getenv "OPENCLAW_HOOKS_TOKEN" }}'
+  pass-arguments-to-command:
+    - source: payload
+      name: action
+    - source: payload
+      name: pull_request.title
+    - source: payload
+      name: pull_request.number
+    - source: payload
+      name: repository.full_name
+    - source: payload
+      name: pull_request.user.login
+    - source: payload
+      name: pull_request.head.ref
+    - source: payload
+      name: pull_request.html_url
+  trigger-rule:
+    match:
+      type: payload-hmac-sha256
+      secret: '{{ getenv "GITHUB_WEBHOOK_SECRET" }}'
+      parameter:
+        source: header
+        name: X-Hub-Signature-256
+
 - id: flux
   execute-command: /config/flux-alert.sh
   command-working-directory: /tmp
