@@ -13,6 +13,7 @@ configMapGenerator:
       - github-ci.sh=./resources/github-ci.sh
       - flux-alert.sh=./resources/flux-alert.sh
       - grafana-alert.sh=./resources/grafana-alert.sh
+      - alertmanager-alert.sh=./resources/alertmanager-alert.sh
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
