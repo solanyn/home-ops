@@ -9,7 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: openclaw-webhook
-  path: ./kubernetes/apps/ai/openclaw-webhook/app
+  path: ./kubernetes/apps/ai/openclaw/webhook
   prune: true
   sourceRef:
     kind: GitRepository
