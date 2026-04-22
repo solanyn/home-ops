@@ -18,28 +18,6 @@
         source: header
         name: X-Hub-Signature-256
 
-- id: grafana
-  execute-command: /config/grafana-alert.sh
-  command-working-directory: /tmp
-  pass-body-to-command: true
-  pass-environment-to-command:
-    - envname: OPENCLAW_HOOKS_TOKEN
-      source: string
-      name: '{{ getenv "OPENCLAW_HOOKS_TOKEN" }}'
-    - envname: GRAFANA_WEBHOOK_TOKEN
-      source: string
-      name: '{{ getenv "GRAFANA_WEBHOOK_TOKEN" }}'
-  pass-arguments-to-command:
-    - source: header
-      name: Authorization
-  trigger-rule:
-    match:
-      type: value
-      value: 'Bearer {{ getenv "GRAFANA_WEBHOOK_TOKEN" }}'
-      parameter:
-        source: header
-        name: Authorization
-
 - id: alertmanager
   execute-command: /config/alertmanager-alert.sh
   command-working-directory: /tmp
