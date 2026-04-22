@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./resources/httproute-github.yaml
   - ./ocirepository.yaml
 configMapGenerator:
   - name: notifier-configmap
@@ -17,6 +18,7 @@ configMapGenerator:
       - readarr-pushover.sh=./resources/readarr-pushover.sh
       - sonarr-pushover.sh=./resources/sonarr-pushover.sh
       - whisparr-pushover.sh=./resources/whisparr-pushover.sh
+      - github-ci.sh=./resources/github-ci.sh
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
