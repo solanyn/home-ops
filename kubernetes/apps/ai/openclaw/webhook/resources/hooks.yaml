@@ -1,54 +1,15 @@
 ---
-- id: github-ci
-  execute-command: /config/github-ci.sh
+- id: github
+  execute-command: /config/github.sh
   command-working-directory: /tmp
+  pass-body-to-command: true
   pass-environment-to-command:
     - envname: OPENCLAW_HOOKS_TOKEN
       source: string
       name: '{{ getenv "OPENCLAW_HOOKS_TOKEN" }}'
   pass-arguments-to-command:
-    - source: payload
-      name: action
-    - source: payload
-      name: workflow_run.conclusion
-    - source: payload
-      name: workflow_run.name
-    - source: payload
-      name: repository.full_name
-    - source: payload
-      name: workflow_run.head_branch
-    - source: payload
-      name: workflow_run.head_sha
-  trigger-rule:
-    match:
-      type: payload-hmac-sha256
-      secret: '{{ getenv "GITHUB_WEBHOOK_SECRET" }}'
-      parameter:
-        source: header
-        name: X-Hub-Signature-256
-
-- id: github-pr
-  execute-command: /config/github-pr.sh
-  command-working-directory: /tmp
-  pass-environment-to-command:
-    - envname: OPENCLAW_HOOKS_TOKEN
-      source: string
-      name: '{{ getenv "OPENCLAW_HOOKS_TOKEN" }}'
-  pass-arguments-to-command:
-    - source: payload
-      name: action
-    - source: payload
-      name: pull_request.title
-    - source: payload
-      name: pull_request.number
-    - source: payload
-      name: repository.full_name
-    - source: payload
-      name: pull_request.user.login
-    - source: payload
-      name: pull_request.head.ref
-    - source: payload
-      name: pull_request.html_url
+    - source: header
+      name: X-GitHub-Event
   trigger-rule:
     match:
       type: payload-hmac-sha256
