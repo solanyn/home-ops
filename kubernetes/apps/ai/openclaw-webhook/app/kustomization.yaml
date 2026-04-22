@@ -11,6 +11,8 @@ configMapGenerator:
     files:
       - hooks.yaml=./resources/hooks.yaml
       - github-ci.sh=./resources/github-ci.sh
+      - flux-alert.sh=./resources/flux-alert.sh
+      - grafana-alert.sh=./resources/grafana-alert.sh
 generatorOptions:
   disableNameSuffixHash: true
   annotations:

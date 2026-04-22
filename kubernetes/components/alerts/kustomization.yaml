@@ -5,3 +5,4 @@ kind: Component
 resources:
   - ./alertmanager
   - ./github-status
+  - ./openclaw-webhook
