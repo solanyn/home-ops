@@ -16,7 +16,7 @@ COMMON_LABELS=$(echo "${PAYLOAD}" | jq -r '.commonLabels.alertname // "unknown"'
 
 echo "[INFO] Alertmanager ${STATUS}: ${COMMON_LABELS} (${NUM_ALERTS} alerts)"
 
-MESSAGE="Alertmanager ${STATUS}: ${COMMON_LABELS} (${NUM_ALERTS} alerts). ${ALERT_DETAILS}. TRANSIENT CHECK: wait 60s then verify alert still firing via: ssh mac.internal \"curl -s http://vmalertmanager-victoria-metrics.observability.svc.cluster.local:9093/api/v2/alerts?filter=alertname%3D${COMMON_LABELS}\". If resolved, log and skip. If still firing, triage with kubectl and report to Andrew on Matrix."
+MESSAGE="Alertmanager ${STATUS}: ${COMMON_LABELS} (${NUM_ALERTS} alerts). ${ALERT_DETAILS}. TRANSIENT CHECK: wait 60s then verify alert still firing via: ssh mac.internal \"KUBECONFIG=~/git/home-ops/kubeconfig kubectl exec -n observability alertmanager-kube-prometheus-stack-0 -- wget -qO- http://localhost:9093/api/v2/alerts?filter=alertname%3D${COMMON_LABELS}\". If resolved, log and skip. If still firing, triage with kubectl and report to Andrew on Matrix."
 
 curl -sf -X POST http://openclaw.ai.svc.cluster.local:18789/hooks/agent \
     -H "Authorization: Bearer ${OPENCLAW_HOOKS_TOKEN}" \
