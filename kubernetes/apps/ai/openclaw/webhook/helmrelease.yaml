@@ -51,6 +51,21 @@ spec:
         ports:
           http:
             port: *port
+    route:
+      app:
+        hostnames: ["webhook.goyangi.io"]
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /hooks/
+            backendRefs:
+              - name: openclaw-webhook
+                port: 80
     persistence:
       config:
         type: configMap
