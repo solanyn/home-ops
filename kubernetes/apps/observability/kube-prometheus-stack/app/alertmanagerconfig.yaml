@@ -22,12 +22,6 @@ spec:
           - name: alertname
             value: Watchdog
             matchType: =
-      - receiver: openclaw-webhook
-        continue: true
-        repeatInterval: 1h
-        matchers:
-          - name: severity
-            value: critical|warning
             matchType: =~
       - receiver: pushover
         matchers:
@@ -68,16 +62,6 @@ spec:
               credentials:
                 name: alertmanager-secret
                 key: GATUS_HEARTBEAT_TOKEN
-    - name: openclaw-webhook
-      webhookConfigs:
-        - url: http://openclaw-webhook.ai.svc.cluster.local/hooks/alertmanager
-          httpConfig:
-            authorization:
-              type: Bearer
-              credentials:
-                name: alertmanager-secret
-                key: ALERTMANAGER_WEBHOOK_TOKEN
-          sendResolved: true
     - name: pushover
       pushoverConfigs:
         - html: true
