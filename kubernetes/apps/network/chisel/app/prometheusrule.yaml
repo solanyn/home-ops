@@ -1,0 +1,26 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: chisel-work-laptop
+  namespace: network
+spec:
+  groups:
+    - name: work-laptop
+      rules:
+        - alert: WorkLaptopTunnelDown
+          expr: up{job="chisel-work-laptop"} == 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Work laptop chisel tunnel is down"
+            description: "node_exporter on work laptop has been unreachable for 5 minutes. Chisel tunnel may be disconnected."
+        - alert: WorkLaptopHighLoad
+          expr: node_load5{job="chisel-work-laptop"} > 20
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Work laptop load is high"
+            description: "5-minute load average is {{ $value }} (>20 for 10m)."

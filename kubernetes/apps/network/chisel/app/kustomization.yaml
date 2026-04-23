@@ -7,3 +7,5 @@ resources:
   - ./externalsecret.yaml
   - ./httproute-opencode.yaml
   - ./backendtrafficpolicy-opencode.yaml
+  - ./servicemonitor.yaml
+  - ./prometheusrule.yaml
