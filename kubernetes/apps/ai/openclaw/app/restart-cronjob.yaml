@@ -14,7 +14,7 @@ spec:
           serviceAccountName: openclaw-restart
           containers:
             - name: restart
-              image: ghcr.io/fluxcd/flux-cli:v2.8.5
+              image: ghcr.io/fluxcd/flux-cli:v2.8.6
               command:
                 - sh
                 - -c
