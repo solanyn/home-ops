@@ -14,5 +14,5 @@ spec:
       scrapeTimeout: 10s
       metricRelabelings:
         - sourceLabels: [__name__]
-          regex: "node_(cpu_seconds_total|memory_MemTotal_bytes|memory_MemAvailable_bytes|load1|load5|load15|filesystem_avail_bytes|filesystem_size_bytes|network_receive_bytes_total|network_transmit_bytes_total|uname_info)"
+          regex: "(up|node_cpu_seconds_total|node_memory_MemTotal_bytes|node_memory_MemAvailable_bytes|node_load1|node_load5|node_load15|node_filesystem_avail_bytes|node_filesystem_size_bytes|node_network_receive_bytes_total|node_network_transmit_bytes_total|node_uname_info)"
           action: keep
