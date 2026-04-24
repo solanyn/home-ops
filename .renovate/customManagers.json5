@@ -42,10 +42,10 @@
     },
     {
       customType: "regex",
-      description: "Track openclaw-sandbox image digest",
+      description: "Track openclaw-sandbox image version",
       managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
       matchStrings: [
-        "ghcr\\.io/solanyn/openclaw-sandbox:(?<currentValue>[^@]+)@(?<currentDigest>sha256:[a-f0-9]+)",
+        "ghcr\\.io/solanyn/openclaw-sandbox:(?<currentValue>[^\"@\\s]+)",
       ],
       depNameTemplate: "ghcr.io/solanyn/openclaw-sandbox",
       datasourceTemplate: "docker",
