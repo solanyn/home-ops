@@ -1,0 +1,157 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: ceph-node-nfsmount-diskspace-warning
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: CephNodeDiskspaceWarning
+    - name: mountpoint
+      value: /etc/nfsmount.conf
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: ceph-node-local-diskspace-warning
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: CephNodeDiskspaceWarning
+    - name: device
+      value: /dev/sd.*
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: nas-memory-high-utilization
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: NodeMemoryHighUtilization
+    - name: instance
+      value: nas.internal:9100
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+# TODO: remove when new drives or nodes run cooler
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: mounted-drive-high-temperature
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: SmartDeviceHighTemperature
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+# TODO: remove when new rook disks and/or network upgrade and/or node upgrade
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: ceph-node-network-packet-drops
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: CephNodeNetworkPacketDrops
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+# TODO: Remove when no more DockerHub images
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: dockerhub-rate-limit-risk
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: DockerhubRateLimitRisk
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: kube-hpa-maxed-out
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: KubeHpaMaxedOut
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+# mac.internal is not Ceph storage, disk alerts are false positives
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: ceph-node-mac-diskspace-warning
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: CephNodeDiskspaceWarning
+    - name: instance
+      value: mac.internal:9100
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: smart-device-test-failed-nvme0
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: SmartDeviceTestFailed
+    - name: device
+      value: nvme0
+    - name: instance
+      value: 10.42.1.78:9633
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+# Work laptop is not Ceph storage, disk alerts are false positives
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: ceph-node-work-mac-diskspace-warning
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: CephNodeDiskspaceWarning
+    - name: instance
+      value: chisel.network.svc.cluster.local:9100
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: ceph-node-work-mac-rootfs-full
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: CephNodeRootFilesystemFull
+    - name: instance
+      value: chisel.network.svc.cluster.local:9100
+
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+# Work laptop is not a server, text file collector errors are expected
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: work-mac-textfile-collector-scrape-error
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: NodeTextFileCollectorScrapeError
+    - name: instance
+      value: chisel.network.svc.cluster.local:9100
