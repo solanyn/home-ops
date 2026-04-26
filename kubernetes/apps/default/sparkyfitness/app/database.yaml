@@ -1,0 +1,13 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: sparkyfitness
+spec:
+  name: sparkyfitness
+  owner: sparkyfitness
+  cluster:
+    name: postgres
+  extensions:
+    - name: pg_stat_statements
+      ensure: present
