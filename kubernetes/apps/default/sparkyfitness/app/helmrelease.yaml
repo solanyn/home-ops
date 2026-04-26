@@ -32,7 +32,7 @@ spec:
               NODE_ENV: production
               SPARKY_FITNESS_LOG_LEVEL: info
               SPARKY_FITNESS_FRONTEND_URL: https://sparkyfitness.goyangi.io
-              SPARKY_FITNESS_DISABLE_SIGNUP: "false"
+              SPARKY_FITNESS_DISABLE_SIGNUP: "true"
               SPARKY_FITNESS_ADMIN_EMAIL: andrew@goyangi.io
               ALLOW_PRIVATE_NETWORK_CORS: "true"
               # OIDC
