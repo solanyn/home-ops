@@ -18,6 +18,7 @@ spec:
   postgresql:
     shared_preload_libraries:
       - "vchord.so"
+      - "pg_stat_statements"
     parameters:
       max_connections: "200"
       shared_buffers: 256MB
