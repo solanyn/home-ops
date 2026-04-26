@@ -95,7 +95,7 @@ spec:
         enabled: true
         urlPrefix: /
         ssl: false
-        prometheusEndpoint: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
+        prometheusEndpoint: http://vmauth-victoria-metrics-cluster.o11y.svc.cluster.local:8427
       mgr:
         modules:
           - name: diskprediction_local

@@ -3,7 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: nodepool-alerts
-  namespace: observability
+  namespace: o11y
 spec:
   groups:
     - name: nodepool
