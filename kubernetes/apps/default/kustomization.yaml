@@ -36,6 +36,7 @@ resources:
   - ./matter-server/ks.yaml
   - ./otbr/ks.yaml
   - ./mealie/ks.yaml
+  - ./sparkyfitness/ks.yaml
   - ./lake/ks.yaml
   - ./mlm/ks.yaml
   - ./buildkit/ks.yaml
