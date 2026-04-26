@@ -15,7 +15,7 @@ spec:
     isDefault: true
     jsonData:
       timeout: "300"
-    url: http://thanos-query-frontend.observability.svc.cluster.local:10902
+    url: http://vmauth-victoria-metrics-cluster.observability.svc.cluster.local:8427
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -32,7 +32,7 @@ spec:
     access: proxy
     jsonData:
       implementation: prometheus
-    url: http://alertmanager-operated.observability.svc.cluster.local:9093
+    url: http://vmalertmanager-victoria-metrics-cluster.observability.svc.cluster.local:9093
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1

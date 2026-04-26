@@ -34,7 +34,7 @@ spec:
         triggers:
           - type: prometheus
             metadata:
-              serverAddress: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
+              serverAddress: http://vmauth-victoria-metrics-cluster.observability.svc.cluster.local:8427
               query: trino_running_queries{service="trino"}
               threshold: "1"
     additionalConfigProperties:
