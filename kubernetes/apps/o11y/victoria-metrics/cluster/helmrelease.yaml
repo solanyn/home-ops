@@ -54,7 +54,7 @@ spec:
               - http_config:
                   authorization:
                     type: Bearer
-                    credentials_secret:
+                    credentials:
                       name: vmalertmanager-secret
                       key: GATUS_HEARTBEAT_TOKEN
                 url: http://gatus.o11y.svc.cluster.local/api/v1/endpoints/monitoring_alertmanager/external?success=true
