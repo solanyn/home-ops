@@ -9,13 +9,6 @@ spec:
     kind: OCIRepository
     name: sparkyfitness
   interval: 1h
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   values:
     controllers:
       server:
@@ -40,7 +33,7 @@ spec:
               SPARKY_FITNESS_LOG_LEVEL: info
               SPARKY_FITNESS_FRONTEND_URL: https://sparkyfitness.goyangi.io
               SPARKY_FITNESS_DISABLE_SIGNUP: "true"
-              SPARKY_FITNESS_ADMIN_EMAIL: andrewchen1520@gmail.com
+              SPARKY_FITNESS_ADMIN_EMAIL: andrew@goyangi.io
               ALLOW_PRIVATE_NETWORK_CORS: "true"
               # OIDC
               OIDC_ENABLED: "true"
