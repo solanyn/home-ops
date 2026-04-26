@@ -28,7 +28,7 @@ spec:
               tag: 1.4.33
             env:
               TZ: Australia/Sydney
-              ALERTMANAGER_BASE_URL: http://kube-prometheus-stack-alertmanager.observability.svc.cluster.local:9093
+              ALERTMANAGER_BASE_URL: http://vmalertmanager-victoria-metrics-cluster.observability.svc.cluster.local:9093
             probes:
               liveness:
                 enabled: true
