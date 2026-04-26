@@ -1,0 +1,15 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: sparkyfitness
+spec:
+  clientID: sparkyfitness
+  callbackUrls:
+    - https://sparkyfitness.goyangi.io/api/auth/callback/custom
+  logoutCallbackUrls:
+    - https://sparkyfitness.goyangi.io
+  secret:
+    name: sparkyfitness-oidc
+    keys:
+      clientSecret: client_secret
