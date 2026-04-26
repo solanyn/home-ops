@@ -186,3 +186,5 @@ spec:
                 subPath: nginx-cache
               - path: /var/run
                 subPath: nginx-run
+              - path: /etc/nginx/conf.d
+                subPath: nginx-conf
