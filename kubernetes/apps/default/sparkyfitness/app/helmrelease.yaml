@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: codewithcj/sparkyfitness_server
-              tag: v0.16.4.7
+              tag: v0.16.5.8
             env:
               TZ: Australia/Sydney
               NODE_ENV: production
