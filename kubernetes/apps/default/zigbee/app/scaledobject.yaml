@@ -17,7 +17,7 @@ spec:
   triggers:
     - type: prometheus
       metadata:
-        serverAddress: http://prometheus-operated.observability.svc.cluster.local:9090
+        serverAddress: http://vmauth-victoria-metrics-cluster.o11y.svc.cluster.local:8427
         query: max_over_time(probe_success{instance=~"zigbee-controller.+"}[1m])
         threshold: "1"
         ignoreNullValues: "0"
