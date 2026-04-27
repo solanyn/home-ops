@@ -143,12 +143,13 @@ cluster:
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"
-      feature-gates: MutatingAdmissionPolicy=true
+      feature-gates: MutatingAdmissionPolicy=true,HPAScaleToZero=true
       runtime-config: admissionregistration.k8s.io/v1beta1=true
     image: registry.k8s.io/kube-apiserver:v1.36.0
   controllerManager:
     extraArgs:
       bind-address: 0.0.0.0
+      feature-gates: HPAScaleToZero=true
       node-cidr-mask-size-ipv6: "112"
     image: registry.k8s.io/kube-controller-manager:v1.36.0
   coreDNS:
