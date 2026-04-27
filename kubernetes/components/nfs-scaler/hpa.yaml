@@ -14,10 +14,7 @@ spec:
     - type: External
       external:
         metric:
-          name: probe_success
-          selector:
-            matchLabels:
-              job: probe/o11y/nfs
+          name: nfs_available
         target:
           type: Value
           value: "1"
