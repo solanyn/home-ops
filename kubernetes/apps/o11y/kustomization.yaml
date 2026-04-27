@@ -17,6 +17,7 @@ resources:
   - ./grafana-mcp/ks.yaml
   - ./keda/ks.yaml
   - ./kromgo/ks.yaml
+  - ./prometheus-operator-crds/ks.yaml
   - ./victoria-metrics/ks.yaml
   - ./langfuse/ks.yaml
   - ./opentelemetry-collector/ks.yaml
