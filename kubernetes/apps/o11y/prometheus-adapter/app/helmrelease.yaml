@@ -11,14 +11,14 @@ spec:
   interval: 1h
   values:
     prometheus:
-      url: http://vmauth-victoria-metrics-cluster.o11y.svc.cluster.local
-      port: 8427
+      url: http://vmsingle-victoria-metrics-cluster.o11y.svc.cluster.local
+      port: 8428
     rules:
       default: false
       external:
-        - seriesQuery: '{__name__="probe_success"}'
+        - seriesQuery: 'probe_success{job="probe/o11y/nfs"}'
           resources:
             namespaced: false
           name:
-            as: probe_success
-          metricsQuery: max_over_time(<<.Series>>{<<.LabelMatchers>>}[1m])
+            as: nfs_available
+          metricsQuery: max_over_time(probe_success{job="probe/o11y/nfs"}[1m])
