@@ -93,10 +93,9 @@ Zero-trust security model with policy enforcement and centralised identity:
 
 ### Observability
 
-Full-stack monitoring with long-term metric retention, distributed tracing and LLM observability:
+Full-stack monitoring with unified metrics, distributed tracing and LLM observability:
 
-- [prometheus](https://github.com/prometheus/prometheus) via kube-prometheus-stack for metrics collection and alerting
-- [thanos](https://github.com/thanos-io/thanos) for highly available Prometheus with long-term object storage
+- [victoria-metrics](https://github.com/VictoriaMetrics/VictoriaMetrics) for metrics collection, storage and alerting (replaced Prometheus + Thanos — ~7x less memory, 90d local retention)
 - [grafana](https://github.com/grafana/grafana) for dashboarding across metrics, logs and traces
 - [opentelemetry](https://github.com/open-telemetry/opentelemetry-collector) collector with eBPF auto-instrumentation for distributed tracing
 - [clickhouse](https://github.com/ClickHouse/ClickHouse) for high-performance trace and log storage
@@ -136,7 +135,7 @@ Declarative cluster management with dependency-aware deployments:
 - [flux](https://github.com/fluxcd/flux2) for Git-based state reconciliation with drift detection and self-healing
 - [renovate](https://github.com/renovatebot/renovate) for automated dependency updates across the entire repository
 - [actions-runner-controller](https://github.com/actions/actions-runner-controller) for self-hosted CI/CD runners
-- [keda](https://github.com/kedacore/keda) for event-driven autoscaling
+- [prometheus-adapter](https://github.com/kubernetes-sigs/prometheus-adapter) for custom metrics-based autoscaling with native HPA and scale-to-zero
 - [spegel](https://github.com/spegel-org/spegel) for peer-to-peer OCI image distribution
 
 ---
