@@ -36,7 +36,6 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-          token: ${{ steps.app-token.outputs.token }}
 
       - name: Run OpenCode Review
         uses: anomalyco/opencode/github@latest
@@ -45,7 +44,7 @@ jobs:
           OPENAI_BASE_URL: http://agentgateway.network.svc.cluster.local:8080/v1/opus
         with:
           model: openai/claude-opus-4-0520
-          token: ${{ steps.app-token.outputs.token }}
+          use_github_token: true
           prompt: |
             Review this pull request focusing on Kubernetes manifest correctness:
             - Validate HelmRelease values against the app-template chart schema
