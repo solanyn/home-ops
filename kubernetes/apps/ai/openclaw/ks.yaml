@@ -8,9 +8,6 @@ spec:
   targetNamespace: ai
   components:
     - ../../../../components/volsync
-  dependsOn:
-    - name: agent-sandbox-extensions
-      namespace: agent-sandbox-system
   interval: 1h
   path: ./kubernetes/apps/ai/openclaw/app
   postBuild:
@@ -30,9 +27,6 @@ metadata:
   name: openclaw-webhook
 spec:
   targetNamespace: ai
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: openclaw-webhook
   path: ./kubernetes/apps/ai/openclaw/webhook
   prune: true
   sourceRef:
