@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: opencode-personal
+subsets:
+  - addresses:
+      - ip: 192.168.10.30
+    ports:
+      - port: 4096
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: opencode-work
+subsets:
+  - addresses:
+      - ip: 192.168.1.131
+    ports:
+      - port: 4096
