@@ -9,6 +9,8 @@ spec:
       namespace: network
   hostnames:
     - work.opencode.goyangi.io
+    - work.oc.goyangi.io
+    - w.oc.goyangi.io
   rules:
     - filters:
         - type: ResponseHeaderModifier
