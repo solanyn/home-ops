@@ -11,8 +11,8 @@ spec:
   interval: 1h
   values:
     prometheus:
-      url: http://vmauth-victoria-metrics-cluster.o11y.svc.cluster.local:8427
-      port: 9090
+      url: http://vmauth-victoria-metrics-cluster.o11y.svc.cluster.local
+      port: 8427
     rules:
       custom:
         # NFS availability — used by nfs-scaler component (10 apps)
@@ -41,13 +41,3 @@ spec:
           name:
             as: "zigbee_controller_available"
           metricsQuery: 'max_over_time(probe_success{instance=~"zigbee-controller.+"}[1m])'
-
-        # Trino running queries
-        - seriesQuery: 'trino_running_queries{service="trino"}'
-          resources:
-            overrides:
-              namespace: {resource: "namespace"}
-              service: {resource: "service"}
-          name:
-            as: "trino_running_queries"
-          metricsQuery: 'trino_running_queries{service="trino"}'
