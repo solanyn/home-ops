@@ -9,11 +9,10 @@ spec:
       targetPort: 4096
 ---
 apiVersion: v1
-kind: Endpoints
+kind: Service
 metadata:
-  name: opencode-personal
-subsets:
-  - addresses:
-      - ip: 192.168.10.30
-    ports:
-      - port: 4096
+  name: opencode-work
+spec:
+  ports:
+    - port: 4096
+      targetPort: 4096
