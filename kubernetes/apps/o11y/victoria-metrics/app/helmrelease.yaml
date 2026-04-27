@@ -23,4 +23,4 @@ spec:
     operator:
       enable_converter_ownership: true
     serviceMonitor:
-      enabled: false
+      enabled: true
