@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./hpa.yaml
   - ./ocirepository.yaml
 configMapGenerator:
   - name: zigbee-loki-rules
