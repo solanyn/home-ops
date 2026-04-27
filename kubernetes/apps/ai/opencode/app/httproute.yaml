@@ -7,6 +7,7 @@ spec:
   hostnames:
     - personal.opencode.goyangi.io
     - personal.oc.goyangi.io
+    - p.oc.goyangi.io
   parentRefs:
     - name: envoy-internal
       namespace: network
@@ -28,6 +29,7 @@ spec:
   hostnames:
     - work.opencode.goyangi.io
     - work.oc.goyangi.io
+    - w.oc.goyangi.io
   parentRefs:
     - name: envoy-internal
       namespace: network
