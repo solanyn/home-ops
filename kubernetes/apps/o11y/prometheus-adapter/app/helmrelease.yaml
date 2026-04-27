@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: prometheus-adapter
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: prometheus-adapter
+  interval: 1h
+  values:
+    prometheus:
+      url: http://vmauth-victoria-metrics-cluster.o11y.svc.cluster.local:8427
+      port: 9090
+    rules:
+      custom:
+        # NFS availability — used by nfs-scaler component (10 apps)
+        - seriesQuery: 'probe_success{instance=~".+:2049"}'
+          resources:
+            overrides:
+              namespace: {resource: "namespace"}
+          name:
+            as: "nfs_available"
+          metricsQuery: 'max_over_time(probe_success{instance=~".+:2049"}[1m])'
+
+        # Z-Wave controller availability
+        - seriesQuery: 'probe_success{instance=~"zwave-controller.+"}'
+          resources:
+            overrides:
+              namespace: {resource: "namespace"}
+          name:
+            as: "zwave_controller_available"
+          metricsQuery: 'max_over_time(probe_success{instance=~"zwave-controller.+"}[1m])'
+
+        # Zigbee controller availability
+        - seriesQuery: 'probe_success{instance=~"zigbee-controller.+"}'
+          resources:
+            overrides:
+              namespace: {resource: "namespace"}
+          name:
+            as: "zigbee_controller_available"
+          metricsQuery: 'max_over_time(probe_success{instance=~"zigbee-controller.+"}[1m])'
+
+        # Trino running queries
+        - seriesQuery: 'trino_running_queries{service="trino"}'
+          resources:
+            overrides:
+              namespace: {resource: "namespace"}
+              service: {resource: "service"}
+          name:
+            as: "trino_running_queries"
+          metricsQuery: 'trino_running_queries{service="trino"}'
