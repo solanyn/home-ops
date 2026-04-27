@@ -10,18 +10,26 @@ spec:
     name: ${APP}
   minReplicas: 0
   maxReplicas: 1
-  behavior:
-    scaleDown:
-      stabilizationWindowSeconds: 0
   metrics:
-    - type: Object
-      object:
-        describedObject:
-          apiVersion: v1
-          kind: Namespace
-          name: default
+    - type: External
+      external:
         metric:
           name: nfs_available
         target:
           type: Value
           value: "1"
+  behavior:
+    scaleDown:
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 15
+      selectPolicy: Max
+      stabilizationWindowSeconds: 0
+    scaleUp:
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 15
+      selectPolicy: Max
+      stabilizationWindowSeconds: 0
