@@ -45,6 +45,7 @@ data:
         "nsw_property_licences": {"description": "NSW property agent and corporation licences", "source_url": "https://api.onegov.nsw.gov.au/propertyregister/v1/browse", "source_name": "NSW Government", "update_frequency": "daily", "auth": "oauth2_client_credentials"},
         "nsw_trades_licences": {"description": "NSW trades and contractor licences", "source_url": "https://api.onegov.nsw.gov.au/tradesregister/v1/browse", "source_name": "NSW Government", "update_frequency": "daily", "auth": "oauth2_client_credentials"},
         "rss_feeds": {"description": "RSS/Atom feed articles with full extracted content from 50+ sources", "source_name": "Multiple (RSS/Atom feeds)", "update_frequency": "1h-24h per feed", "auth": "none"},
+        "bank": {"description": "Bank transactions from OFX files (Westpac offset/loan, CommBank shared)", "source_name": "Multiple banks", "update_frequency": "on-demand", "auth": "none"},
     }
 
     SILVER = {
