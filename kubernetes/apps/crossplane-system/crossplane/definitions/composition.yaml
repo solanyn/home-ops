@@ -127,8 +127,8 @@ spec:
                     kind: ExtensionServiceConfig
                     name: tailscale
                     environment:
-                      - TS_AUTHKEY={{ $spec.headscaleAuthKey }}
-                      - TS_EXTRA_ARGS=--login-server=https://hs.goyangi.io:18443 --accept-routes
+                      - TS_AUTHKEY={{ $spec.tailscaleAuthKey }}
+                      - TS_EXTRA_ARGS=--advertise-tags=tag:talos-nodes --accept-routes
                 tags:
                   - compute-worker
                 labels:
