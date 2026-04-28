@@ -5,6 +5,9 @@ metadata:
   name: _
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
-    volsync.backube/privileged-movers: "true"
+    volsync.backube/privileged-movers: 'true'
+    goldilocks.fairwinds.com/vpa-update-mode: Auto
+    goldilocks.fairwinds.com/vpa-resource-policy: '{"containerPolicies":[{"containerName":"*","maxAllowed":{"cpu":"250m","memory":"1Gi"}}]}'
   labels:
-    resource.kubernetes.io/admin-access: "true"
+    goldilocks.fairwinds.com/enabled: 'true'
+    resource.kubernetes.io/admin-access: 'true'
