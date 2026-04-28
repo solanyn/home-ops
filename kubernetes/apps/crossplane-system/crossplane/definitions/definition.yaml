@@ -55,9 +55,9 @@ spec:
                 clusterSecret:
                   type: string
                   description: Talos cluster secret
-                headscaleAuthKey:
+                tailscaleAuthKey:
                   type: string
-                  description: Headscale pre-auth key for tailscale
+                  description: Tailscale pre-auth key
                 targetSize:
                   type: integer
                   default: 0
