@@ -4,6 +4,9 @@ kind: Namespace
 metadata:
   name: knative-serving
   labels:
-    goldilocks.fairwinds.com/enabled: "true"
+    goldilocks.fairwinds.com/enabled: 'true'
     app.kubernetes.io/name: knative-serving
-    app.kubernetes.io/version: "1.14.0"
+    app.kubernetes.io/version: 1.14.0
+  annotations:
+    goldilocks.fairwinds.com/vpa-update-mode: Auto
+    goldilocks.fairwinds.com/vpa-resource-policy: '{"containerPolicies":[{"containerName":"*","maxAllowed":{"cpu":"100m","memory":"512Mi"}}]}'
