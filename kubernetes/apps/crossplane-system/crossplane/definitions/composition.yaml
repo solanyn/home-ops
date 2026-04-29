@@ -127,7 +127,7 @@ spec:
                     kind: ExtensionServiceConfig
                     name: tailscale
                     environment:
-                      - TS_AUTHKEY={{ $spec.tailscaleAuthKey }}
+                      - TS_AUTHKEY={{ $spec.tailscaleClientSecret }}
                       - TS_EXTRA_ARGS=--advertise-tags=tag:talos-nodes --accept-routes
                 tags:
                   - compute-worker

@@ -55,9 +55,9 @@ spec:
                 clusterSecret:
                   type: string
                   description: Talos cluster secret
-                tailscaleAuthKey:
+                tailscaleClientSecret:
                   type: string
-                  description: Tailscale pre-auth key
+                  description: Tailscale OAuth client secret
                 targetSize:
                   type: integer
                   default: 0
