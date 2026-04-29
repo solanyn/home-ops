@@ -6,11 +6,11 @@ metadata:
 spec:
   ai:
     groups:
-      # Primary: Opus 4.6 via kiro-gateway
+      # Primary: Opus 4.7 via kiro-gateway
       - providers:
           - name: kiro
             openai:
-              model: claude-opus-4.6
+              model: claude-opus-4.7
             host: mac.internal
             port: 8001
             policies:
