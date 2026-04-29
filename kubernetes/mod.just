@@ -221,7 +221,7 @@ nodepool-teardown:
     kubectl delete xcomputenodepools.home-ops.io nodepool
     just kube nodepool-cleanup
 
-[doc('Clean up stale k8s and Headscale nodes')]
+[doc('Clean up stale k8s burst nodes')]
 nodepool-cleanup:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -234,11 +234,4 @@ nodepool-cleanup:
     else
         echo "No stale k8s nodes"
     fi
-    hs_nodes=$(kubectl exec -n network deploy/headscale -- headscale nodes list --user burst -o json 2>/dev/null | jq -r '.[].id' || true)
-    if [[ -n "$hs_nodes" ]]; then
-        for id in $hs_nodes; do
-            kubectl exec -n network deploy/headscale -- headscale nodes delete -i "$id" --force
-        done
-    else
-        echo "No stale Headscale nodes"
-    fi
+    # Tailscale ephemeral nodes auto-expire — no manual cleanup needed

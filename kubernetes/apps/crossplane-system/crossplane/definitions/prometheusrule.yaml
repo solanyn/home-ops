@@ -60,4 +60,4 @@ spec:
             severity: warning
           annotations:
             summary: "Nodepool expects {{ $value }} workers but none are Ready"
-            description: "targetSize is {{ $value }} but no nodepool workers have joined after 5m. Check MIG and Headscale."
+            description: "targetSize is {{ $value }} but no nodepool workers have joined after 5m. Check MIG and Tailscale."

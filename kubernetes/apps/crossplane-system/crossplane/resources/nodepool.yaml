@@ -16,6 +16,6 @@ spec:
   clusterCaCrt: ${CLUSTER_CA_CRT}
   clusterId: ${CLUSTER_ID}
   clusterSecret: ${CLUSTER_SECRET}
-  tailscaleAuthKey: ${TAILSCALE_AUTHKEY}
+  tailscaleClientSecret: ${TAILSCALE_CLIENT_SECRET}
   targetSize: 0
   maxSize: 8
