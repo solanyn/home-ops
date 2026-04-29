@@ -5,7 +5,7 @@ kind: Kustomization
 metadata:
   name: opencode
 spec:
-  targetNamespace: ai
+  targetNamespace: network
   interval: 1h
   path: ./kubernetes/apps/network/opencode/app
   postBuild:
