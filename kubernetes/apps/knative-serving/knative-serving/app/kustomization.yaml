@@ -31,3 +31,34 @@ patches:
           - class: envoy-gateway.gateway.networking.k8s.io
             gateway: network/envoy-internal
             service: network/envoy-internal
+  - target:
+      kind: ConfigMap
+      name: config-observability
+    patch: |
+      - op: add
+        path: /data/metrics-protocol
+        value: http/protobuf
+      - op: add
+        path: /data/metrics-endpoint
+        value: http://vmauth-victoria-metrics-cluster.o11y.svc.cluster.local:8427/api/v1/otlp/v1/metrics
+      - op: add
+        path: /data/metrics-export-interval
+        value: 60s
+      - op: add
+        path: /data/request-metrics-protocol
+        value: http/protobuf
+      - op: add
+        path: /data/request-metrics-endpoint
+        value: http://vmauth-victoria-metrics-cluster.o11y.svc.cluster.local:8427/api/v1/otlp/v1/metrics
+      - op: add
+        path: /data/request-metrics-export-interval
+        value: 60s
+      - op: add
+        path: /data/tracing-protocol
+        value: http/protobuf
+      - op: add
+        path: /data/tracing-endpoint
+        value: http://jaeger-collector.o11y:4318/v1/traces
+      - op: add
+        path: /data/tracing-sampling-rate
+        value: "1"
