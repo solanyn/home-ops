@@ -1,15 +1,17 @@
 ---
 machine:
   type: controlplane
-  network:
-    interfaces:
-      - interface: eno1
-        routes:
-          - network: 100.69.0.0/16
-            gateway: 192.168.42.12
   nodeLabels:
     topology.kubernetes.io/zone: m
 ---
 apiVersion: v1alpha1
 kind: HostnameConfig
 hostname: k8s-1
+---
+apiVersion: v1alpha1
+kind: ExtensionServiceConfig
+name: tailscale
+environment:
+  - TS_AUTHKEY=op://kubernetes/tailscale/TAILSCALE_CLIENT_SECRET?ephemeral=false
+  - TS_HOSTNAME=k8s-1
+  - TS_EXTRA_ARGS=--advertise-tags=tag:talos-nodes

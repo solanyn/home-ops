@@ -7,3 +7,11 @@ machine:
 apiVersion: v1alpha1
 kind: HostnameConfig
 hostname: k8s-2
+---
+apiVersion: v1alpha1
+kind: ExtensionServiceConfig
+name: tailscale
+environment:
+  - TS_AUTHKEY=op://kubernetes/tailscale/TAILSCALE_CLIENT_SECRET?ephemeral=false
+  - TS_HOSTNAME=k8s-2
+  - TS_EXTRA_ARGS=--advertise-tags=tag:talos-nodes
