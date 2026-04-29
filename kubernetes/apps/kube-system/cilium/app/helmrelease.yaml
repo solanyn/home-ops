@@ -11,7 +11,7 @@ spec:
   interval: 1h
   values:
     # NOTE: Divergence from onedr0p/home-ops - disabled because we use tunnel mode
-    # for cross-network nodepool workers (GCP VMs via Headscale/Tailscale)
+    # for cross-network nodepool workers (GCP VMs via Tailscale)
     autoDirectNodeRoutes: false
     ipv6:
       enabled: true
@@ -84,7 +84,7 @@ spec:
     rollOutCiliumPods: true
     # NOTE: Divergence from onedr0p/home-ops - tunnel mode instead of native
     # Required for nodepool workers on different L2 segments (GCP VMs connected
-    # via Headscale). VXLAN encapsulates pod traffic so it traverses tailscale0.
+    # via Tailscale). VXLAN encapsulates pod traffic so it traverses tailscale0.
     routingMode: tunnel
     tunnelProtocol: vxlan
     securityContext:
