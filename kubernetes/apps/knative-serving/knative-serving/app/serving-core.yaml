@@ -9048,7 +9048,7 @@ spec:
         - name: controller
           # This is the Go import path for the binary that is containerized
           # and substituted here.
-          image: gcr.io/knative-releases/knative.dev/serving/cmd/controller@sha256:5ad17245c88d06fa36c20da2f8827268eb26f892b680f0869363df36e3b2e90f
+          image: gcr.io/knative-releases/knative.dev/serving/cmd/controller@sha256:6833f2c83e9f356c274ddb2de40e5471ad2b1c08882c9bd11f5afa240e86d574
           resources:
             requests:
               cpu: 100m
