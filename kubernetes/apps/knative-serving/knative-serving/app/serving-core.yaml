@@ -8495,6 +8495,8 @@ metadata:
     knative.dev/example-checksum: "f183bbc6"
 data:
   metrics-protocol: "http/protobuf"
+  metrics-endpoint: "http://vmauth-victoria-metrics-cluster.o11y.svc.cluster.local:8427/api/v1/otlp/v1/metrics"
+  metrics-export-interval: "60s"
   request-metrics-protocol: "http/protobuf"
   request-metrics-endpoint: "http://vmauth-victoria-metrics-cluster.o11y.svc.cluster.local:8427/api/v1/otlp/v1/metrics"
   request-metrics-export-interval: "60s"
@@ -8594,7 +8596,7 @@ data:
     #
     # When the protocol is prometheus the endpoint can accept a 'host:port' string to customize the
     # listening host interface and port.
-    request-metrics-endpoint: http://example.com/v1/metrics
+    request-metrics-endpoint: http://promstack-kube-prometheus-prometheus.observability:9090/api/v1/otlp/v1/metrics
 
     # request-metrics-export-interval specifies the global metrics reporting period for the queue-proxy.
     #
@@ -8616,7 +8618,7 @@ data:
     #
     # The endpoint MUST be set when the protocol is http/protobuf or grpc.
     # The endpoint MUST NOT be set when the protocol is none.
-    tracing-endpoint: http://jaeger-collector.jaeger:4318/v1/traces
+    tracing-endpoint: http://jaeger-collector.observability:4318/v1/traces
 
     # tracing-sampling-rate allows the user to specify what percentage of all traces should be exported
     # The value should be between 0 (never sample) to 1 (always sample)
