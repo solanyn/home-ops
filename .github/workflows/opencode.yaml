@@ -39,5 +39,5 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.AGENTGATEWAY_API_KEY }}
           OPENAI_BASE_URL: http://agentgateway.network.svc.cluster.local:8080/v1/opus
         with:
-          model: openai/claude-opus-4.7
+          model: claude-opus-4.7
           use_github_token: true
