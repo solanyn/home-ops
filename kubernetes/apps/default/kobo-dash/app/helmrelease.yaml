@@ -29,8 +29,6 @@ spec:
             args:
               - -file
               - /data/dashboard.md
-              - -bindir
-              - /data/bin
               - -width
               - "1072"
               - -height
