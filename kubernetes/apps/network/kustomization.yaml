@@ -20,3 +20,4 @@ resources:
   - ./smtp-relay/ks.yaml
   - ./unifi-dns/ks.yaml
   - ./chisel/ks.yaml
+  - ./opencode/ks.yaml
