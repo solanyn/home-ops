@@ -70,7 +70,7 @@ spec:
                           node-labels: "node.kubernetes.io/nodepool=true"
                         nodeIP:
                           validSubnets:
-                            - 100.69.0.0/16
+                            - 100.64.0.0/10
                       nodeLabels:
                         node.kubernetes.io/nodepool: "true"
                       network:
