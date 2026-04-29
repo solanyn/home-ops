@@ -48,6 +48,16 @@
       ],
     },
     {
+      description: "Ignore image digest updates inside upstream Knative manifests",
+      matchDatasources: ["docker"],
+      matchFileNames: [
+        "kubernetes/apps/knative-serving/knative-serving/app/serving-core.yaml",
+        "kubernetes/apps/knative-serving/knative-serving/app/net-gateway-api.yaml",
+        "kubernetes/apps/knative-serving/knative-serving/crds/serving-crds.yaml",
+      ],
+      enabled: false,
+    },
+    {
       description: "Sync Kubeflow manifests when version updates",
       matchDatasources: ["github-releases"],
       matchPackageNames: ["kubeflow/manifests"],
