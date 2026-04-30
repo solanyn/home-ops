@@ -109,10 +109,13 @@ spec:
               - |
                 set -e
                 chown 1000:1000 /home/node
-                mkdir -p /home/node/.local/bin /home/node/.openclaw /home/node/.ssh /home/node/.config/fj
+                mkdir -p /home/node/.local/bin /home/node/.openclaw /home/node/.ssh /home/node/.config/fj /home/node/.codex
 
                 cp /tmp/openclaw-config/openclaw.json /home/node/.openclaw/openclaw.json
                 chmod 600 /home/node/.openclaw/openclaw.json
+
+                cp /tmp/codex-config/config.toml /home/node/.codex/config.toml
+                chmod 600 /home/node/.codex/config.toml
 
                 printf '{"version":1,"defaults":{"security":"full"}}\n' > /home/node/.openclaw/exec-approvals.json
                 chmod 600 /home/node/.openclaw/exec-approvals.json
@@ -554,6 +557,14 @@ spec:
           openclaw:
             install-tools:
               - path: /tmp/openclaw-config
+                readOnly: true
+      codex-config:
+        type: configMap
+        name: openclaw-codex-config
+        advancedMounts:
+          openclaw:
+            install-tools:
+              - path: /tmp/codex-config
                 readOnly: true
       ssh-secrets:
         type: secret
