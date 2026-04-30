@@ -8,4 +8,4 @@ spec:
   interval: 1h
   url: oci://ghcr.io/kserve/charts/kserve-crd
   ref:
-    tag: v0.17.0
+    tag: v0.18.0
