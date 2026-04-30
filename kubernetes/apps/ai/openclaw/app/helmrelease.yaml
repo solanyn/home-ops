@@ -38,6 +38,15 @@ spec:
               - -c
               - |
                 chown 1000:1000 /home/node
+                for p in \
+                  /home/node/.cache \
+                  /home/node/.openclaw/workspace/.venvs \
+                  /home/node/.openclaw/workspace/.cache \
+                  /home/node/.openclaw/workspace/.bun \
+                  /home/node/.openclaw/workspace/.local \
+                  /home/node/.openclaw/workspace/node_modules; do
+                  [ -e "$p" ] && chown 1000:1000 "$p" || true
+                done
                 for d in dot-local dot-npm dot-cache workspace-bun workspace-venvs workspace-cache workspace-local workspace-node-modules; do
                   mkdir -p "/transient-cache/$d"
                 done
