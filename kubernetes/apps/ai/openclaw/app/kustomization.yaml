@@ -4,5 +4,4 @@ resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
   - ./externalsecret.yaml
-  - ./codex-config.yaml
   - ./cronjob.yaml
