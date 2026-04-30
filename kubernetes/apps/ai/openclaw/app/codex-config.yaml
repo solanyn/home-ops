@@ -6,11 +6,11 @@ metadata:
 data:
   config.toml: |
     model = "opus"
-    model_provider = "gateway"
+    model_provider = "agentgateway"
     approval_policy = "never"
     sandbox_mode = "danger-full-access"
 
-    [model_providers.gateway]
+    [model_providers.agentgateway]
     name = "agentgateway"
     base_url = "https://gateway.goyangi.io/v1/opus"
     wire_api = "responses"
