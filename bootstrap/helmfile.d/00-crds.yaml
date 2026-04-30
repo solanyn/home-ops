@@ -38,7 +38,7 @@ releases:
   - name: opentelemetry-operator
     namespace: o11y
     chart: oci://ghcr.io/open-telemetry/opentelemetry-helm-charts/opentelemetry-operator
-    version: 0.110.0
+    version: 0.111.0
 
   - name: rook-ceph-operator
     namespace: rook-ceph
