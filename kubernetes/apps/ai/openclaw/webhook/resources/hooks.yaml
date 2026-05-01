@@ -17,3 +17,11 @@
       parameter:
         source: header
         name: X-Hub-Signature-256
+- id: 'opencode-{{ getenv "OPENCODE_WEBHOOK_TOKEN" }}'
+  execute-command: /config/opencode.sh
+  command-working-directory: /tmp
+  pass-body-to-command: true
+  pass-environment-to-command:
+    - envname: OPENCLAW_HOOKS_TOKEN
+      source: string
+      name: '{{ getenv "OPENCLAW_HOOKS_TOKEN" }}'
