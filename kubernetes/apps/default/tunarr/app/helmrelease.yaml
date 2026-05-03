@@ -3,39 +3,46 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: ersatztv
+  name: tunarr
 spec:
   chartRef:
     kind: OCIRepository
-    name: ersatztv
+    name: tunarr
   interval: 15m
   values:
     controllers:
-      ersatztv:
+      tunarr:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/ersatztv/ersatztv
-              tag: v26.3.0@sha256:7c402e5f348184359e0951b44d55fb6db3df671fa77fc91dcbd609034d28778b
+              repository: ghcr.io/chrisbenincasa/tunarr
+              tag: "0.22.0"
             env:
               TZ: Australia/Sydney
-              XDG_DATA_HOME: /config
-              OIDC__AUTHORITY: https://id.goyangi.io
-              OIDC__CLIENTID: ersatztv
-              OIDC__CLIENTSECRET:
-                valueFrom:
-                  secretKeyRef:
-                    name: ersatztv-oidc
-                    key: client_secret
+              LOG_LEVEL: INFO
             probes:
-              liveness:
+              liveness: &probes
                 enabled: true
-              readiness:
-                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 8000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
               startup:
                 enabled: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+                  failureThreshold: 30
+                  periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -45,10 +52,12 @@ spec:
                 - name: gpu
               requests:
                 cpu: 10m
+              limits:
+                memory: 4Gi
     defaultPodOptions:
       resourceClaims:
         - name: gpu
-          resourceClaimTemplateName: ersatztv
+          resourceClaimTemplateName: tunarr
       automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
@@ -60,7 +69,7 @@ spec:
       app:
         ports:
           http:
-            port: 8409
+            port: *port
     route:
       app:
         hostnames:
@@ -72,6 +81,8 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /config/tunarr
       media:
         type: nfs
         server: nas.internal
@@ -82,11 +93,11 @@ spec:
       tmpfs:
         type: emptyDir
         advancedMounts:
-          ersatztv:
+          tunarr:
             app:
-              - path: /cache
-                subPath: cache
               - path: /tmp
                 subPath: tmp
               - path: /transcode
                 subPath: transcode
+              - path: /cache
+                subPath: cache
