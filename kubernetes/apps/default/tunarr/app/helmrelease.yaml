@@ -14,6 +14,14 @@ spec:
       tunarr:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-chown:
+            image:
+              repository: public.ecr.aws/docker/library/busybox
+              tag: "1.36"
+            command: ["sh", "-c", "chown -R 0:0 /config && chmod -R u+rwX /config"]
+            securityContext:
+              runAsUser: 0
         containers:
           app:
             image:
@@ -63,6 +71,10 @@ spec:
         - name: gpu
           resourceClaimTemplateName: tunarr
       automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
     service:
       app:
         ports:
