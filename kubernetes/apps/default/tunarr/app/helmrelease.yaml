@@ -50,7 +50,6 @@ spec:
                   periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               claims:
@@ -64,12 +63,6 @@ spec:
         - name: gpu
           resourceClaimTemplateName: tunarr
       automountServiceAccountToken: false
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         ports:
