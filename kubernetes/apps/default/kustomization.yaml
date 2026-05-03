@@ -19,7 +19,7 @@ resources:
   - ./grimmory/ks.yaml
   - ./decluttarr/ks.yaml
   - ./deduparr/ks.yaml
-  - ./ersatztv/ks.yaml
+  - ./tunarr/ks.yaml
   - ./element-web/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./forgejo/ks.yaml
