@@ -87,7 +87,7 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /config/tunarr
+          - path: /config
       media:
         type: nfs
         server: nas.internal
