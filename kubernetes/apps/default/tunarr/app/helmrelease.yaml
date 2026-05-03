@@ -22,10 +22,11 @@ spec:
             env:
               TZ: Australia/Sydney
               LOG_LEVEL: INFO
+              HOME: /config
+              XDG_DATA_HOME: /config
+              XDG_CONFIG_HOME: /config
             args:
               - server
-              - --database
-              - /config/tunarr
             probes:
               liveness: &probes
                 enabled: true
