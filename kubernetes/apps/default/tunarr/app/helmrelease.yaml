@@ -22,7 +22,10 @@ spec:
             env:
               TZ: Australia/Sydney
               LOG_LEVEL: INFO
-              TUNARR_DATABASE_NAME: /config/tunarr
+            args:
+              - server
+              - --database
+              - /config/tunarr
             probes:
               liveness: &probes
                 enabled: true
