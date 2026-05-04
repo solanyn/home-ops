@@ -190,7 +190,22 @@ spec:
                 fi
 
                 rm -rf /home/node/.openclaw/extensions/matrix
+
+                rm -rf /home/node/.openclaw/plugin-runtime-deps/openclaw-unknown-*
+                if [ -d /app/dist/extensions ]; then
+                  echo "Seeding plugin runtime mirror from /app/dist..."
+                  MIRROR=/home/node/.openclaw/plugin-runtime-deps/openclaw-bundled
+                  mkdir -p "$MIRROR"
+                  cp -Rf /app/dist "$MIRROR/"
+                fi
+
                 chown -R 1000:1000 /home/node || true
+
+                echo "Running openclaw doctor --fix..."
+                su node -s /bin/sh -c "/usr/local/bin/openclaw doctor --fix" 2>&1 | tail -20 || true
+                cp /tmp/openclaw-config/openclaw.json /home/node/.openclaw/openclaw.json
+                chown 1000:1000 /home/node/.openclaw/openclaw.json
+                chmod 600 /home/node/.openclaw/openclaw.json
 
           archive:
             image:
