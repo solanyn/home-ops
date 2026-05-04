@@ -8,7 +8,6 @@ spec:
     - targets:
         - nas.internal:9100
         - mac.internal:9100
-        - chisel.network.svc.cluster.local:9100
   metricsPath: /metrics
   relabelings:
     - action: replace
