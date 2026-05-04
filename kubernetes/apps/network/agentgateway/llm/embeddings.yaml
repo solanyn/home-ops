@@ -41,18 +41,6 @@ spec:
         - name: mlx-embeddings
           port: 8081
 ---
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: mlx-embeddings
-spec:
-  ai:
-    provider:
-      openai:
-        model: qwen3-embedding
-      host: mac.internal
-      port: 8081
----
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
@@ -74,5 +62,4 @@ spec:
               replacePrefixMatch: /v1
       backendRefs:
         - name: mlx-embeddings
-          group: agentgateway.dev
-          kind: AgentgatewayBackend
+          port: 8081
