@@ -10,6 +10,7 @@ customization:
     - intel_iommu=on # PCI Passthrough
     - iommu=pt # PCI Passthrough
     - mitigations=off # Less security, faster puter
+    - nvme_core.default_ps_max_latency_us=100000 # Enable NVMe APST for idle thermal management
     - pcie_aspm=off # Disable PCIe ASPM
     - security=none # Less security, faster puter
     - talos.auditd.disabled=1 # Less security, faster puter
