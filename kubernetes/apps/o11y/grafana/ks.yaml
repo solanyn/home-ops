@@ -27,8 +27,6 @@ spec:
       namespace: default
     - name: grafana
       namespace: o11y
-    - name: clickhouse
-      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/o11y/grafana/instance
   prune: true

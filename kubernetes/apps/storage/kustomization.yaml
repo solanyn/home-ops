@@ -9,8 +9,6 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./clickhouse/ks.yaml
-  - ./clickhouse-operator/ks.yaml
   - ./cloudnative-pg/ks.yaml
   - ./dragonfly/ks.yaml
   - ./duckdb-mcp/ks.yaml
