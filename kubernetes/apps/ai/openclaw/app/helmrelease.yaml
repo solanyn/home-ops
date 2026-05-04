@@ -111,6 +111,8 @@ spec:
                 chown 1000:1000 /home/node
                 mkdir -p /home/node/.local/bin /home/node/.openclaw /home/node/.ssh /home/node/.config/fj
 
+                rm -rf /home/node/.openclaw/plugin-runtime-deps/openclaw-*/.openclaw-*.lock 2>/dev/null || true
+
                 cp /tmp/openclaw-config/openclaw.json /home/node/.openclaw/openclaw.json
                 chmod 600 /home/node/.openclaw/openclaw.json
 
