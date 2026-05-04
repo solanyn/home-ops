@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlx-embeddings
+spec:
+  ports:
+    - name: http
+      port: 8081
+      targetPort: 8081
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: mlx-embeddings-1
+  labels:
+    kubernetes.io/service-name: mlx-embeddings
+addressType: IPv4
+ports:
+  - name: http
+    port: 8081
+    protocol: TCP
+endpoints:
+  - addresses:
+      - "192.168.10.30"
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: llm-embeddings
+spec:
+  parentRefs:
+    - name: envoy-internal
+      namespace: network
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/embeddings
+      backendRefs:
+        - name: mlx-embeddings
+          port: 8081
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: mlx-embeddings
+spec:
+  ai:
+    provider:
+      openai:
+        model: qwen3-embedding
+      host: mac.internal
+      port: 8081
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: llm-qwen3-embedding
+spec:
+  parentRefs:
+    - name: ai
+      namespace: network
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/qwen3-embedding
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /v1
+      backendRefs:
+        - name: mlx-embeddings
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
