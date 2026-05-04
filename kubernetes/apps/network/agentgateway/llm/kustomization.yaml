@@ -6,4 +6,5 @@ resources:
   - ./backends.yaml
   - ./routes.yaml
   - ./audio.yaml
+  - ./embeddings.yaml
   - ./securitypolicy.yaml
