@@ -38,6 +38,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.AGENTGATEWAY_API_KEY }}
           OPENAI_BASE_URL: https://gateway.goyangi.io/v1/opus
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         with:
           model: openai/opus
           use_github_token: true
