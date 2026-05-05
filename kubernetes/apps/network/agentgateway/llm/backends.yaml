@@ -86,24 +86,6 @@ spec:
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: claude-sonnet-4-6
-spec:
-  ai:
-    groups:
-      - providers:
-          - name: kiro
-            openai:
-              model: claude-sonnet-4.6
-            host: mac.internal
-            port: 8001
-            policies:
-              auth:
-                secretRef:
-                  name: kiro-auth
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
   name: minimax-m2-5
 spec:
   ai:
