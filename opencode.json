@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "agentgateway": {
+      "api": "openai",
+      "models": {
+        "opus": {
+          "name": "Claude Opus 4.6",
+          "options": {
+            "baseURL": "https://gateway.goyangi.io/v1/opus"
+          }
+        }
+      },
+      "options": {
+        "baseURL": "https://gateway.goyangi.io/v1/opus"
+      }
+    }
+  }
+}
