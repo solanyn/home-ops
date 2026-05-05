@@ -286,6 +286,8 @@ spec:
             namespace: network
             sectionName: https
       spec:
+        extraArgs:
+          search.maxConcurrentRequests: "8"
         retentionPeriod: 90d
         storage:
           accessModes:
