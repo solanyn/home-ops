@@ -12,3 +12,11 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: kuberay
+  values:
+    nodeSelector:
+      node.kubernetes.io/nodepool: "true"
+    tolerations:
+      - key: nodepool
+        operator: Equal
+        value: "true"
+        effect: NoSchedule

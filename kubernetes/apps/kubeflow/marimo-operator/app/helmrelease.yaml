@@ -59,6 +59,13 @@ spec:
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
     defaultPodOptions:
+      nodeSelector:
+        node.kubernetes.io/nodepool: "true"
+      tolerations:
+        - key: nodepool
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
       securityContext:
         runAsNonRoot: true
         seccompProfile:
