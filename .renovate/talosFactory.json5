@@ -7,5 +7,11 @@
       overrideDepName: "{{replace 'factory.talos.dev/metal-installer/[a-z]+' 'ghcr.io/siderolabs/installer' depName}}",
       overridePackageName: "ghcr.io/siderolabs/installer",
     },
+    {
+      description: "Pin Talos <1.13.0 until Cilium supports nftables-only",
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/siderolabs/installer", "/factory\\.talos\\.dev/"],
+      allowedVersions: "<1.13.0",
+    },
   ],
 }
