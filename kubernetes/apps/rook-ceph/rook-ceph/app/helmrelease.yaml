@@ -16,7 +16,7 @@ spec:
       enableCephfsSnapshotter: false
       enableLiveness: true
       serviceMonitor:
-        enabled: true
+        enabled: false
     image:
       repository: ghcr.io/rook/ceph
     monitoring:
