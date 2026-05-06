@@ -17,6 +17,14 @@ spec:
     remediation:
       retries: 3
   values:
+    defaultPodOptions:
+      nodeSelector:
+        node.kubernetes.io/nodepool: "true"
+      tolerations:
+        - key: nodepool
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
     controllers:
       notebook-controller:
         replicas: 1
@@ -119,7 +127,7 @@ spec:
               affinityConfig:
                 readOnly: true
                 options:
-                    displayName: "GCP (Liqo)"
+                    displayName: "GCP Nodepool"
                     affinity:
                       nodeAffinity:
                         requiredDuringSchedulingIgnoredDuringExecution:
@@ -127,14 +135,16 @@ spec:
                             - matchExpressions:
                                   operator: "In"
                                   values:
-                                    - "virtual-node"
+                                    - "true"
               tolerationGroup:
                 readOnly: true
                 options:
-                    displayName: "GCP (Liqo)"
+                    displayName: "GCP Nodepool"
                     tolerations:
-                        operator: "Exists"
-                        effect: "NoExecute"
+                        key: "nodepool"
+                        operator: "Equal"
+                        value: "true"
+                        effect: "NoSchedule"
               shm:
                 value: true
                 readOnly: false

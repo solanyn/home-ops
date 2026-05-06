@@ -832,220 +832,94 @@ dataFrom:
 
 **Operations:** External Secrets, cert-manager
 
-## Liqo Multi-Cluster Offloading
+## Crossplane GCP Nodepool
 
-Liqo enables one-way workload offloading from the home Talos cluster (master) to GKE (worker) via WireGuard tunnel. GKE is managed via Crossplane with autoscaling node pools.
+GCP compute nodes join the home Talos cluster directly via Tailscale, managed by a Crossplane `XComputeNodePool` composition. Nodes run Talos Linux with a Tailscale system extension and join the cluster control plane over the Tailscale network.
 
 ### Architecture
 
 ```
-Home Cluster (master)              GKE (worker)
+Home Cluster (Talos)               GCP (Crossplane-managed)
 ┌─────────────────────┐           ┌─────────────────────┐
-│ Talos k8s           │           │ Managed by Crossplane│
-│ - 3x control-plane  │           │ - 1x e2-micro (system)│
-│ - "worker" vnode ───┼──WireGuard──► 0-4x e2-medium (cpu)│
-│                     │           │   0-8x g2-standard-8 │
-│ Runs: Flux, ESO,    │           │   (nvidia-l4, spot)  │
-│ Prometheus, Liqo    │           │                     │
-└─────────────────────┘           │ Runs: Liqo only     │
+│ 3x control-plane    │           │ Managed Instance Group│
+│                     │◄──Tailscale──┤ 0-8x e2-medium     │
+│ Runs: Flux, ESO,    │           │   (spot, pd-standard)│
+│ Crossplane, etc.    │           │                     │
+└─────────────────────┘           │ Talos worker nodes   │
+                                  │ join cluster directly │
                                   └─────────────────────┘
 ```
 
 ### Workload Placement
 
-Any pod with `nodeSelector: liqo.io/remote-cluster-id: worker` offloads to GKE:
+Nodepool nodes register with:
+- **Label**: `node.kubernetes.io/nodepool: "true"`
+- **Taint**: `nodepool=true:NoSchedule`
+
+To schedule workloads on nodepool nodes:
 
 ```yaml
-# CPU workload → e2-medium pool (autoscales 0-4)
-spec:
+# app-template (defaultPodOptions)
+defaultPodOptions:
   nodeSelector:
-    liqo.io/remote-cluster-id: worker
+    node.kubernetes.io/nodepool: "true"
+  tolerations:
+    - key: nodepool
+      operator: Equal
+      value: "true"
+      effect: NoSchedule
 
-# GPU workload → g2-standard-8 + L4 pool (autoscales 0-8)
-spec:
-  nodeSelector:
-    liqo.io/remote-cluster-id: worker
-  resources:
-    limits:
-      nvidia.com/gpu: "1"
+# Upstream Helm charts
+nodeSelector:
+  node.kubernetes.io/nodepool: "true"
+tolerations:
+  - key: nodepool
+    operator: Equal
+    value: "true"
+    effect: NoSchedule
 ```
 
-Use cases for offloading:
-- GPU/ML workloads (training, inference)
+Use cases:
+- ML/AI workloads (Kubeflow, training, inference)
 - Burst compute for batch jobs
-- Workloads needing GCP service proximity (BigQuery, GCS, Vertex AI)
+- Workloads needing GCP service proximity
 - Spot instance cost savings
-- Isolating experimental workloads
 
-### Cluster Configuration
+### Configuration
 
-| Cluster | ID | Pod CIDR | Service CIDR | External CIDR |
-|---------|-----|----------|--------------|---------------|
-| Home (Talos) | `master` | 10.42.0.0/16 | 10.43.0.0/16 | 10.60.0.0/16 |
-| GKE | `worker` | 10.64.0.0/14 | N/A | 10.70.0.0/16 |
+The nodepool is defined in `kubernetes/apps/crossplane-system/crossplane/resources/nodepool.yaml` as an `XComputeNodePool` custom resource. The Crossplane composition creates:
+- A GCP `InstanceTemplate` with Talos machine config (including Tailscale extension)
+- A `RegionInstanceGroupManager` for autoscaling
 
-The external CIDR is remapped for cross-cluster communication:
-- GKE's 10.70.0.0/16 appears as 10.40.0.0/16 on home cluster
-- Home's 10.60.0.0/16 appears as configured on GKE
+Key parameters:
+- `targetSize`: Current desired node count (set to 0 when idle)
+- `maxSize`: Maximum nodes allowed (8)
+- `machineType`: `e2-medium`
+- `spot`: `true` (preemptible instances)
+- `region`: `australia-southeast1`
 
-### Directory Structure
+### Scaling
 
+To scale the nodepool, update `targetSize` in the `XComputeNodePool` resource:
+
+```yaml
+spec:
+  targetSize: 2  # Scale up to 2 nodes
 ```
-kubernetes/apps/
-├── liqo-system/liqo/                    # Liqo Helm chart (home cluster)
-├── liqo-tenant-worker/worker/           # GKE peering config (home cluster)
-│   └── config/
-│       ├── configuration.yaml           # Network CIDRs
-│       ├── gatewayclient.yaml           # WireGuard client
-│       ├── virtualnode.yaml             # VirtualNode for GKE GPUs
-│       ├── resourceslice.yaml           # Resources offered to GKE
-│       ├── quota.yaml                   # Quota for GKE service account
-│       ├── firewallconfiguration.yaml   # NAT rules for API server
-│       └── externalsecret.yaml          # WireGuard keys, kubeconfigs
-└── crossplane-system/liqo-cloud/        # GKE Liqo via Crossplane
-    └── app/objects/
-        ├── tenant.yaml                  # Tenant for home cluster
-        ├── gatewayserver.yaml           # WireGuard server
-        ├── resourceslice.yaml           # GPU resources offered to home
-        └── quota.yaml                   # Quota for home service account
+
+Commit and push, then reconcile:
+```bash
+flux reconcile ks crossplane-resources -n crossplane-system --with-source
 ```
 
 ### 1Password Secrets
 
-The `liqo` item in 1Password must contain:
-- `WG_MASTER_PUBLIC_KEY` / `WG_MASTER_PRIVATE_KEY` - Home cluster WireGuard keys
-- `WG_WORKER_PUBLIC_KEY` / `WG_WORKER_PRIVATE_KEY` - GKE WireGuard keys
-- `GATEWAY_IP` - GKE gateway external IP
-- `GKE_LIQO_TOKEN` - Long-lived token for `liqo-remote-admin` service account on GKE
+The `crossplane` item in 1Password provides:
+- `MACHINE_TOKEN` / `MACHINE_CA_CRT` - Talos machine secrets
+- `CLUSTER_TOKEN` / `CLUSTER_CA_CRT` - Cluster join credentials
+- `CLUSTER_ID` / `CLUSTER_SECRET` - Cluster identity
+- `TAILSCALE_CLIENT_SECRET` - Tailscale auth key for node registration
 
-### Testing GPU Offloading (Home → GKE)
+### Networking
 
-```bash
-# Create test namespace with offloading
-KUBECONFIG=/Users/andrew/git/home-ops/kubeconfig kubectl apply -f - <<'EOF'
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: gpu-offload
----
-apiVersion: offloading.liqo.io/v1beta1
-kind: NamespaceOffloading
-metadata:
-  name: offloading
-  namespace: gpu-offload
-spec:
-  namespaceMappingStrategy: EnforceSameName
-  podOffloadingStrategy: LocalAndRemote
-  clusterSelector:
-    nodeSelectorTerms:
-      - matchExpressions:
-          - key: liqo.io/remote-cluster-id
-            operator: In
-            values:
-              - worker
-EOF
-
-# Deploy GPU pod (triggers GKE autoscaler)
-KUBECONFIG=/Users/andrew/git/home-ops/kubeconfig kubectl apply -f - <<'EOF'
-apiVersion: v1
-kind: Pod
-metadata:
-  name: gpu-test
-  namespace: gpu-offload
-spec:
-  nodeSelector:
-    liqo.io/remote-cluster-id: worker
-  tolerations:
-  - key: "node.cilium.io/agent-not-ready"
-    operator: "Exists"
-    effect: "NoSchedule"
-  containers:
-  - name: cuda
-    image: nvidia/cuda:12.2.0-base-ubuntu22.04
-    command: ["sleep", "3600"]
-    resources:
-      limits:
-        nvidia.com/gpu: "1"
-EOF
-
-# Verify GPU access
-KUBECONFIG=/Users/andrew/git/home-ops/kubeconfig kubectl exec -n gpu-offload gpu-test -- nvidia-smi
-```
-
-### Monitoring
-
-Liqo metrics are enabled via ServiceMonitors and PodMonitors in `liqo-system`. Key metrics:
-- `liqo_virtual_kubelet_*` - Offloaded pod metrics
-- `liqo_gateway_*` - WireGuard tunnel metrics
-
-### Troubleshooting
-
-**ShadowPod creation fails with "failed getting quota":**
-1. Check Quota exists in tenant namespace on target cluster
-2. Restart `liqo-webhook` deployment to refresh quota cache
-3. Verify quota `user` field matches the service account name
-
-**API server connectivity timeout:**
-1. Check FirewallConfiguration is applied on gateway
-2. Verify WireGuard tunnel is up: `kubectl exec -n liqo-tenant-worker deploy/gw-worker -c gateway -- wg show`
-3. Test connectivity from gateway: `kubectl exec -n liqo-tenant-worker deploy/gw-worker -c gateway -- nc -v 10.70.0.1 443`
-
-**VirtualNode not Ready:**
-1. Check vk-worker pod logs: `kubectl logs -n liqo-tenant-worker deploy/vk-worker`
-2. Verify kubeconfig secret has correct API server address (use remapped IP)
-3. Check token hasn't expired (use non-expiring ServiceAccount token)
-
-### Bootstrap from Scratch
-
-GKE is managed via Crossplane from the home cluster - no ESO or Flux needed on GKE.
-
-**1. Generate WireGuard keypairs:**
-```bash
-wg genkey | tee master-private.key | wg pubkey > master-public.key
-wg genkey | tee worker-private.key | wg pubkey > worker-public.key
-```
-
-**2. Store in 1Password (`liqo` item in `kubernetes` vault):**
-- `WG_MASTER_PRIVATE_KEY` / `WG_MASTER_PUBLIC_KEY`
-- `WG_WORKER_PRIVATE_KEY` / `WG_WORKER_PUBLIC_KEY`
-- `GATEWAY_IP` - GKE gateway LoadBalancer IP (get after step 3)
-
-**3. Deploy GKE Liqo via Crossplane:**
-```bash
-flux reconcile ks liqo-cloud -n crossplane-system --with-source
-```
-
-**4. Get GKE gateway IP and update 1Password:**
-```bash
-kubectl get svc -n liqo-system liqo-gateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}'
-op item edit liqo --vault kubernetes "GATEWAY_IP=<ip>"
-```
-
-**5. Create non-expiring ServiceAccount token on GKE:**
-```bash
-kubectl apply -f - <<'EOF'
-apiVersion: v1
-kind: Secret
-metadata:
-  name: liqo-remote-admin-token
-  namespace: kube-system
-  annotations:
-    kubernetes.io/service-account.name: liqo-remote-admin
-type: kubernetes.io/service-account-token
-EOF
-
-# Get token and store in 1Password
-TOKEN=$(kubectl get secret liqo-remote-admin-token -n kube-system -o jsonpath='{.data.token}' | base64 -d)
-op item edit liqo --vault kubernetes "GKE_LIQO_TOKEN=$TOKEN"
-```
-
-**6. Deploy home cluster Liqo tenant config:**
-```bash
-flux reconcile ks liqo-tenant-worker -n liqo-tenant-worker --with-source
-```
-
-**7. Verify peering:**
-```bash
-KUBECONFIG=/Users/andrew/git/home-ops/kubeconfig kubectl get nodes
-# Should show "worker" virtual node
-```
+Nodes connect to the cluster API server at `192.168.42.120:6443` over Tailscale (100.64.0.0/10 subnet). DNS uses GCP metadata server (169.254.169.254) with 8.8.8.8 fallback. IPv6 is disabled on nodepool nodes.
