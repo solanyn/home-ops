@@ -17,6 +17,14 @@ spec:
     remediation:
       retries: 3
   values:
+    defaultPodOptions:
+      nodeSelector:
+        node.kubernetes.io/nodepool: "true"
+      tolerations:
+        - key: nodepool
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
     controllers:
       admission-webhook:
         replicas: 1

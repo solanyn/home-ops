@@ -13,20 +13,13 @@ spec:
         kind: HelmRepository
         name: spark-operator
   values:
-    # Operator Config
-    sparkJobNamespace: "" # Watch all namespaces
+    sparkJobNamespace: ""
     webhook:
       enable: true
-    # We could try to inject default affinity via MutatingWebhook or PodDefaults later.
-    # For the operator itself, we can move it to Liqo too if requested.
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                  operator: In
-                  values:
-                    - virtual-node
+    nodeSelector:
+      node.kubernetes.io/nodepool: "true"
     tolerations:
-        operator: Exists
-        effect: NoExecute
+      - key: nodepool
+        operator: Equal
+        value: "true"
+        effect: NoSchedule
