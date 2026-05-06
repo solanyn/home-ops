@@ -23,9 +23,13 @@ spec:
         serviceAccount:
           name: training-operator
         pod:
+          nodeSelector:
+            node.kubernetes.io/nodepool: "true"
           tolerations:
-            - operator: Exists
-              effect: NoExecute
+            - key: nodepool
+              operator: Equal
+              value: "true"
+              effect: NoSchedule
         containers:
           training-operator:
             image:
