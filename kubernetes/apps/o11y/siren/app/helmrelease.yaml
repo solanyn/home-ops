@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: ghcr.io/shamubernetes/siren
-              tag: 1.4.33
+              tag: 1.4.34
             env:
               TZ: Australia/Sydney
               ALERTMANAGER_BASE_URL: http://vmalertmanager-victoria-metrics-cluster.o11y.svc.cluster.local:9093
