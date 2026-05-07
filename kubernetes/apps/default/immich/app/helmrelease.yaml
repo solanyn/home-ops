@@ -87,6 +87,8 @@ spec:
         ports:
           http:
             port: &port 2283
+          metrics:
+            port: 8081
       immich-ml:
         controller: ml
         ports:
@@ -97,7 +99,7 @@ spec:
         enabled: true
         serviceName: immich
         endpoints:
-          - port: http
+          - port: metrics
             scheme: http
             path: /metrics
     route:
