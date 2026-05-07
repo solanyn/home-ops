@@ -275,7 +275,8 @@ spec:
               url_prefix: http://vmsingle-victoria-metrics-cluster.o11y.svc.cluster.local:8428
             - src_paths:
                 - /api/v1/otlp/.*
-              url_prefix: http://vmsingle-victoria-metrics-cluster.o11y.svc.cluster.local:8428
+              drop_src_path_prefix_parts: 3
+              url_prefix: http://vmsingle-victoria-metrics-cluster.o11y.svc.cluster.local:8428/opentelemetry
             - src_paths:
                 - /select/logsql/.*
               url_prefix: http://victoria-logs-server.o11y.svc.cluster.local:9428
