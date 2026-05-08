@@ -16,6 +16,7 @@ spec:
     ipv6:
       enabled: true
     enableIPv6BIGTCP: false
+    enableIPv6Masquerade: false
     ipv6NativeRoutingCIDR: fc69::/108
     bandwidthManager:
       enabled: true
@@ -25,6 +26,7 @@ spec:
       masquerade: true
       preallocateMaps: true
     bpfClockProbe: true
+    installIptablesRules: false
     bgpControlPlane:
       enabled: true
     cgroup:
