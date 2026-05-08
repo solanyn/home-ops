@@ -21,5 +21,14 @@ spec:
             sectionName: https
         hostnames:
           - flux.goyangi.io
+    instance:
+      httpRoute:
+        enabled: true
+        hostnames:
+          - flux.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
     serviceMonitor:
       create: true
