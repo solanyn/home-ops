@@ -12,6 +12,7 @@ customization:
     - mitigations=off # Less security, faster puter
     - pcie_aspm=off # Disable PCIe ASPM
     - security=none # Less security, faster puter
+    - sysctl.kernel.kexec_load_disabled=1 # Disable kexec for safer upgrades
     - talos.auditd.disabled=1 # Less security, faster puter
     - i915.enable_guc=3 # Meteor Lake CPU & Intel iGPU
   systemExtensions:
@@ -22,4 +23,3 @@ customization:
       - siderolabs/nfsrahead # NFS Performance
       - siderolabs/tailscale # Tailscale VPN
       - siderolabs/util-linux-tools # Disk utilities
-      - siderolabs/tailscale # Tailscale
