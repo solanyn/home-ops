@@ -12,3 +12,4 @@ resources:
   - ./externalsecret-influxdb.yaml
   - ./grafanadashboard-health.yaml
   - ./grafanadashboard-capacity.yaml
+  - ./mutatingadmissionpolicy.yaml
