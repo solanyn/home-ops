@@ -16,9 +16,9 @@ spec:
     rules:
       default: false
       external:
-        - seriesQuery: 'probe_success{job="probe/o11y/nfs"}'
+        - seriesQuery: '{__name__="probe_success"}'
           resources:
             namespaced: false
           name:
-            as: nfs_available
-          metricsQuery: max_over_time(probe_success{job="probe/o11y/nfs"}[1m])
+            as: probe_success
+          metricsQuery: max_over_time(<<.Series>>{<<.LabelMatchers>>}[1m])
