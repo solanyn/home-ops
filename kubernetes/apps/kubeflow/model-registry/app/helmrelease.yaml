@@ -18,6 +18,7 @@ spec:
       retries: 3
   values:
     defaultPodOptions:
+      automountServiceAccountToken: true
       nodeSelector:
         node.kubernetes.io/nodepool: "true"
       tolerations:

@@ -75,7 +75,8 @@ spec:
                     port: 8081
                   initialDelaySeconds: 10
                   periodSeconds: 15
-    
+    defaultPodOptions:
+      automountServiceAccountToken: true
     service:
       app:
         controller: training-operator
