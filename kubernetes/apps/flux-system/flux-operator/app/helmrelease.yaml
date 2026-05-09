@@ -12,7 +12,13 @@ spec:
   values:
     web:
       enabled: true
-      configSecretName: flux-operator-secret
+      config:
+        authentication:
+          type: Anonymous
+          anonymous:
+            username: flux
+            groups:
+              - flux-admin
       httpRoute:
         enabled: true
         parentRefs:
@@ -21,19 +27,7 @@ spec:
             sectionName: https
         hostnames:
           - flux.goyangi.io
-    livenessProbe:
-      httpGet:
-        path: /healthz
-        port: 8081
-      initialDelaySeconds: 15
-      periodSeconds: 20
-      timeoutSeconds: 5
-    readinessProbe:
-      httpGet:
-        path: /readyz
-        port: 8081
-      initialDelaySeconds: 5
-      periodSeconds: 10
-      timeoutSeconds: 5
+    livenessProbe: null
+    readinessProbe: null
     serviceMonitor:
       create: true
