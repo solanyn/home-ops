@@ -49,7 +49,7 @@ spec:
               tag: v2.7.5@sha256:c15bff75068effb03f4355997d03dc7e0fc58720c2b54ad6f7f10d1bc57efaa5
             env:
               TZ: Australia/Sydney
-              IMMICH_METRICS: "true"
+              IMMICH_TELEMETRY_INCLUDE: all
               IMMICH_TRUSTED_PROXIES: "192.168.0.0/16"
               IMMICH_MACHINE_LEARNING_URL: http://immich-ml:3003
               IMMICH_MEDIA_LOCATION: &media /library
