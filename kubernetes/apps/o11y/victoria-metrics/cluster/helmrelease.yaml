@@ -138,6 +138,12 @@ spec:
     grafana:
       enabled: false
       forceDeployDatasource: true
+    defaultRules:
+      rules:
+        kubeHpaMaxedOut:
+          create: false
+        etcdMemberCommunicationSlow:
+          create: false
     kube-state-metrics:
       fullnameOverride: kube-state-metrics
       rbac:
