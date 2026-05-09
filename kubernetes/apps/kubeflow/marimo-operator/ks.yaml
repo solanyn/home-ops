@@ -5,6 +5,8 @@ kind: Kustomization
 metadata:
   name: marimo-operator-crds
 spec:
+  # Enable when nodepool is up
+  suspend: true
   targetNamespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/marimo-operator/crds
@@ -21,6 +23,8 @@ kind: Kustomization
 metadata:
   name: marimo-operator
 spec:
+  # Enable when nodepool is up
+  suspend: true
   targetNamespace: kubeflow
   dependsOn:
     - name: marimo-operator-crds
