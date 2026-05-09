@@ -6,6 +6,8 @@ metadata:
   name: &app metadata
   namespace: kubeflow
 spec:
+  # Enable when nodepool is up
+  suspend: true
   targetNamespace: kubeflow
   dependsOn:
     - name: mariadb-cluster
