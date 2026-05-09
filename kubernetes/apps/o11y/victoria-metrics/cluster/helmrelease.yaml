@@ -140,7 +140,7 @@ spec:
       forceDeployDatasource: true
     defaultRules:
       rules:
-        kubeHpaMaxedOut:
+        KubeHpaMaxedOut:
           create: false
         etcdMemberCommunicationSlow:
           create: false
