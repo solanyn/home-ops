@@ -59,6 +59,7 @@ spec:
         serviceAccount:
           identifier: *app
     defaultPodOptions:
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -70,8 +71,6 @@ spec:
             port: *port
           metrics:
             port: 8080
-    serviceAccount:
-      dragonfly-operator: {}
     serviceMonitor:
       app:
         endpoints:

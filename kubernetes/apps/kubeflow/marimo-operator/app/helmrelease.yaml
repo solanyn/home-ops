@@ -59,6 +59,7 @@ spec:
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
     defaultPodOptions:
+      automountServiceAccountToken: true
       nodeSelector:
         node.kubernetes.io/nodepool: "true"
       tolerations:
