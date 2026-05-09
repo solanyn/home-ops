@@ -61,7 +61,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      lbipam.cilium.io/ips: 192.168.69.126,fd5d:a293:f321:69::126
+      lbipam.cilium.io/ips: 192.168.69.126
   listeners:
     - name: http
       protocol: HTTP
@@ -98,7 +98,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
-      lbipam.cilium.io/ips: 192.168.69.121,fd5d:a293:f321:69::121
+      lbipam.cilium.io/ips: 192.168.69.121
   listeners:
     - name: http
       protocol: HTTP
@@ -155,7 +155,6 @@ spec:
     xForwardedFor:
       trustedCIDRs:
         - 10.42.0.0/16
-        - fc69::/108
   http2:
     onInvalidMessage: TerminateStream
   http3: {}
