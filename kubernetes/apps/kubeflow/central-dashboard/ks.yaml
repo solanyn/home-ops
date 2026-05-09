@@ -6,6 +6,8 @@ metadata:
   name: &app central-dashboard
   namespace: kubeflow
 spec:
+  # Enable when nodepool is up
+  suspend: true
   targetNamespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/central-dashboard/app

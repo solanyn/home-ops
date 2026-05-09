@@ -6,6 +6,8 @@ metadata:
   name: &app kubeflow-auth
   namespace: kubeflow
 spec:
+  # Enable when nodepool is up
+  suspend: true
   targetNamespace: kubeflow
   dependsOn:
     - name: pocket-id-operator

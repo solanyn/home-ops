@@ -6,6 +6,8 @@ metadata:
   name: &app tensorboard
   namespace: kubeflow
 spec:
+  # Enable when nodepool is up
+  suspend: true
   targetNamespace: kubeflow
   interval: 1h
   path: ./kubernetes/apps/kubeflow/tensorboard/app
