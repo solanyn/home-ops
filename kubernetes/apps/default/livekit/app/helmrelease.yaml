@@ -49,7 +49,7 @@ spec:
         type: LoadBalancer
         controller: livekit
         annotations:
-          lbipam.cilium.io/ips: 192.168.69.137,fd5d:a293:f321:69::137
+          lbipam.cilium.io/ips: 192.168.69.137
         externalTrafficPolicy: Local
         ports:
           turn-udp:
