@@ -39,9 +39,9 @@ jobs:
         run: |
           VERSION=$(gh api repos/anomalyco/opencode/releases/latest --jq .tag_name)
           mkdir -p "$HOME/.opencode/bin"
-          gh release download "$VERSION" --repo anomalyco/opencode --pattern "opencode-linux-x64" --dir "$HOME/.opencode/bin"
-          chmod +x "$HOME/.opencode/bin/opencode-linux-x64"
-          mv "$HOME/.opencode/bin/opencode-linux-x64" "$HOME/.opencode/bin/opencode"
+          gh release download "$VERSION" --repo anomalyco/opencode --pattern "opencode-linux-x64.tar.gz" --dir /tmp
+          tar -xzf /tmp/opencode-linux-x64.tar.gz -C "$HOME/.opencode/bin"
+          chmod +x "$HOME/.opencode/bin/opencode"
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
 
       - name: Run OpenCode
