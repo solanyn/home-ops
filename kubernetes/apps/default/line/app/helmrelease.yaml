@@ -1,0 +1,128 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: line
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: line
+  values:
+    controllers:
+      capture:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/solanyn/line-capture
+              tag: latest
+            env:
+              KAFKA_BROKERS: redpanda.streaming.svc.cluster.local:9093
+              KAFKA_TOPIC: line.telemetry.raw
+            envFrom:
+              - configMapRef:
+                  name: line-config
+      assembler:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          migrate:
+            image:
+              repository: ghcr.io/solanyn/line-migrate
+              tag: latest
+            envFrom:
+              - secretRef:
+                  name: line-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/solanyn/line-assembler
+              tag: latest
+            env:
+              KAFKA_BROKERS: redpanda.streaming.svc.cluster.local:9093
+              KAFKA_TOPIC: line.telemetry.raw
+              KAFKA_GROUP: line.assembler
+              KAFKA_LAP_TOPIC: line.lap.written
+              KAFKA_SESSION_TOPIC: line.session.complete
+              S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
+              S3_REGION: us-east-1
+              S3_BUCKET: line-bronze
+            envFrom:
+              - secretRef:
+                  name: line-secret
+      api:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          migrate:
+            image:
+              repository: ghcr.io/solanyn/line-migrate
+              tag: latest
+            envFrom:
+              - secretRef:
+                  name: line-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/solanyn/line-api
+              tag: latest
+            env:
+              ADDR: :8080
+              KAFKA_BROKERS: redpanda.streaming.svc.cluster.local:9093
+              KAFKA_TOPIC: line.telemetry.raw
+              KAFKA_GROUP: line.api
+              S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
+              S3_REGION: us-east-1
+              S3_BUCKET: line-bronze
+              S3_SILVER_BUCKET: line-silver
+              S3_GOLD_BUCKET: line-gold
+              TTS_ENDPOINT: http://192.168.10.30:8000
+              LLM_ENDPOINT: http://192.168.10.30:8080
+              LLM_MODEL: mlx-community/gemma-4-e4b-it-4bit
+              COACH_VOICE: af_heart
+              COACH_USE_LLM: "true"
+              WEB_DIR: /web
+              TRACKS_DATA: /data/tracks.json
+            envFrom:
+              - secretRef:
+                  name: line-secret
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8080
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8080
+    service:
+      capture:
+        type: LoadBalancer
+        controller: capture
+        annotations:
+          lbipam.cilium.io/ips: 192.168.69.138
+        externalTrafficPolicy: Local
+        ports:
+          udp:
+            port: 5606
+            protocol: UDP
+      api:
+        controller: api
+        ports:
+          http:
+            port: 8080
+    route:
+      api:
+        hostnames:
+          - line.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+
