@@ -33,27 +33,16 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Get opencode version
-        id: version
+      - name: Install opencode
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           VERSION=$(gh api repos/anomalyco/opencode/releases/latest --jq .tag_name)
-          echo "version=${VERSION:-latest}" >> $GITHUB_OUTPUT
-
-      - name: Cache opencode
-        id: cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.opencode/bin
-          key: opencode-${{ runner.os }}-${{ runner.arch }}-${{ steps.version.outputs.version }}
-
-      - name: Install opencode
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: curl -fsSL https://opencode.ai/install | bash
-
-      - name: Add opencode to PATH
-        run: echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+          mkdir -p "$HOME/.opencode/bin"
+          gh release download "$VERSION" --repo anomalyco/opencode --pattern "opencode-linux-x64" --dir "$HOME/.opencode/bin"
+          chmod +x "$HOME/.opencode/bin/opencode-linux-x64"
+          mv "$HOME/.opencode/bin/opencode-linux-x64" "$HOME/.opencode/bin/opencode"
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
 
       - name: Run OpenCode
         env:
