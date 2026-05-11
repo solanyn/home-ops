@@ -98,8 +98,7 @@ spec:
               LLM_MODEL: mlx-community/gemma-4-e4b-it-4bit
               COACH_VOICE: af_heart
               COACH_USE_LLM: "true"
-              WEB_DIR: /web
-              TRACKS_DATA: /data/tracks.json
+              WEB_DIR: /web/dist
             envFrom:
               - secretRef:
                   name: line-secret
@@ -118,6 +117,42 @@ spec:
                   httpGet:
                     path: /health
                     port: 8080
+      analytics:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/solanyn/line-analytics
+              tag: latest
+            env:
+              KAFKA_BROKERS: redpanda.streaming.svc.cluster.local:9093
+              KAFKA_GROUP: line.analytics
+              KAFKA_TOPICS: line.lap.written,line.session.complete
+              S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
+              S3_REGION: us-east-1
+              S3_BRONZE_BUCKET: line-bronze
+              S3_SILVER_BUCKET: line-silver
+              S3_GOLD_BUCKET: line-gold
+            envFrom:
+              - secretRef:
+                  name: line-secret
+      refdata:
+        type: cronjob
+        cronjob:
+          schedule: "0 4 * * 1"
+          successfulJobsHistory: 3
+          failedJobsHistory: 3
+        containers:
+          app:
+            image:
+              repository: ghcr.io/solanyn/line-refdata
+              tag: latest
+            env:
+              S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
+              S3_REGION: us-east-1
+              S3_BUCKET: line-bronze
+            envFrom:
+              - secretRef:
+                  name: line-secret
     service:
       capture:
         type: LoadBalancer
@@ -127,7 +162,7 @@ spec:
         externalTrafficPolicy: Local
         ports:
           udp:
-            port: 5606
+            port: 33740
             protocol: UDP
       api:
         controller: api
