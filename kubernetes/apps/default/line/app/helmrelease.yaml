@@ -119,8 +119,3 @@ spec:
           http:
             port: 8080
 
-        rules:
-          - backendRefs:
-              - identifier: api
-                port: 8080
-
