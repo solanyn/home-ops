@@ -51,6 +51,7 @@ jobs:
       - name: Run OpenCode Review
         env:
           AGENTGATEWAY_API_KEY: ${{ secrets.AGENTGATEWAY_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.AGENTGATEWAY_API_KEY }}
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           MODEL: agentgateway/opus
           USE_GITHUB_TOKEN: "true"
