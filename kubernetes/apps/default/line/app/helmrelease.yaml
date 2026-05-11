@@ -118,11 +118,9 @@ spec:
         ports:
           http:
             port: 8080
-    route:
-      api:
-        hostnames:
-          - line.goyangi.io
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
+
+        rules:
+          - backendRefs:
+              - identifier: api
+                port: 8080
 
