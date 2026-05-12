@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/autoscaling.home-ops.io/nodepoolscaler_v1alpha1.json
+apiVersion: autoscaling.home-ops.io/v1alpha1
+kind: NodePoolScaler
+metadata:
+  name: nodepool
+spec:
+  targetRef:
+    apiVersion: home-ops.io/v1alpha1
+    kind: XComputeNodePool
+    name: nodepool
+    sizeField: spec.targetSize
+    maxSizeField: spec.maxSize
+  selector:
+    nodeSelector:
+      node.kubernetes.io/instance-type: e2-medium-8
+    tolerations:
+      - key: nodepool
+        effect: NoSchedule
+  scaling:
+    allocatableCPUMillis: 7900
+    maxSize: 8
+    minSize: 0
+    scaleUpDebounce: 30s
+    idleTimeout: 300s
