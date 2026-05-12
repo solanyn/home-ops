@@ -12,13 +12,15 @@ spec:
   values:
     controllers:
       capture:
-        pod:
-          hostNetwork: true
         containers:
           app:
             image:
               repository: ghcr.io/solanyn/line-capture
               tag: latest
+            ports:
+              - containerPort: 33740
+                hostPort: 33740
+                protocol: UDP
             env:
               KAFKA_BROKERS: redpanda.streaming.svc.cluster.local:9093
               KAFKA_TOPIC: line.telemetry.raw
