@@ -53,6 +53,11 @@ spec:
                 memory: 64Mi
               limits:
                 memory: 128Mi
+    persistence:
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
