@@ -12,8 +12,6 @@ spec:
   values:
     controllers:
       capture:
-        pod:
-          hostNetwork: true
         containers:
           app:
             image:
