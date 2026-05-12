@@ -59,7 +59,8 @@ spec:
         runAsGroup: 65534
         seccompProfile: { type: RuntimeDefault }
     serviceAccount:
-      name: nodepool-autoscaler
+      nodepool-autoscaler:
+        enabled: true
     service:
       app:
         ports:
