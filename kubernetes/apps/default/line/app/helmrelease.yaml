@@ -12,6 +12,21 @@ spec:
   values:
     controllers:
       capture:
+        initContainers:
+          init-topics:
+            image:
+              repository: docker.redpanda.com/redpandadata/redpanda
+              tag: v24.3.7
+            command: ["rpk"]
+            args:
+              - topic
+              - create
+              - line.telemetry.raw
+              - line.lap.written
+              - line.session.complete
+              - --brokers=redpanda.streaming.svc.cluster.local:9093
+              - --partitions=1
+              - --replicas=1
         containers:
           app:
             image:
