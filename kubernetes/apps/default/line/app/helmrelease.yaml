@@ -17,16 +17,13 @@ spec:
             image:
               repository: docker.redpanda.com/redpandadata/redpanda
               tag: v24.3.7
-            command: ["rpk"]
+            command: ["/bin/sh", "-c"]
             args:
-              - topic
-              - create
-              - line.telemetry.raw
-              - line.lap.written
-              - line.session.complete
-              - --brokers=redpanda.streaming.svc.cluster.local:9093
-              - --partitions=1
-              - --replicas=1
+              - |
+                rpk topic create line.telemetry.raw line.lap.written line.session.complete \
+                  --brokers=redpanda.streaming.svc.cluster.local:9093 \
+                  --partitions=1 \
+                  --replicas=1 || true
         containers:
           app:
             image:
