@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/nodepool-autoscaler
-              tag: latest@sha256:28686f5d8b798c2a06aaacfa5bd20fd7d3677885dec733b93a6e5ff28070a9e3
+              tag: latest@sha256:349ff9a3667e64b3d9aa355db237b39e813f3e1b9ffcc01e8ef6d4521085f99f
               pullPolicy: Always
             args:
               - --leader-elect
