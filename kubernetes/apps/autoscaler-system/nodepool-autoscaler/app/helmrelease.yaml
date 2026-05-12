@@ -19,6 +19,7 @@ spec:
             image:
               repository: ghcr.io/solanyn/nodepool-autoscaler
               tag: latest
+              pullPolicy: Always
             args:
               - --leader-elect
             probes:
