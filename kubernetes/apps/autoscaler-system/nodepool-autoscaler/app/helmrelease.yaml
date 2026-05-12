@@ -1,0 +1,70 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nodepool-autoscaler
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: nodepool-autoscaler
+  interval: 10m
+  values:
+    controllers:
+      nodepool-autoscaler:
+        strategy: RollingUpdate
+        replicas: 1
+        containers:
+          app:
+            image:
+              repository: ghcr.io/solanyn/nodepool-autoscaler
+              tag: latest
+            args:
+              - --leader-elect
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8081
+                  initialDelaySeconds: 15
+                  periodSeconds: 20
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: 8081
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+              seccompProfile:
+                type: RuntimeDefault
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile: { type: RuntimeDefault }
+      serviceAccountName: nodepool-autoscaler
+    service:
+      app:
+        ports:
+          metrics:
+            port: 8080
+    serviceMonitor:
+      app:
+        endpoints:
+          - port: metrics
