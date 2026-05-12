@@ -12,6 +12,8 @@ spec:
   values:
     controllers:
       capture:
+        pod:
+          hostNetwork: true
         containers:
           app:
             image:
@@ -154,16 +156,6 @@ spec:
               - secretRef:
                   name: line-secret
     service:
-      capture:
-        type: LoadBalancer
-        controller: capture
-        annotations:
-          lbipam.cilium.io/ips: 192.168.69.138
-        externalTrafficPolicy: Local
-        ports:
-          udp:
-            port: 33740
-            protocol: UDP
       api:
         controller: api
         ports:
