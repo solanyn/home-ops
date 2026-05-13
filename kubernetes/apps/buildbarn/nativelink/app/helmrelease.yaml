@@ -73,7 +73,7 @@ spec:
         - name: default
           initImage: ghcr.io/tracemachina/nativelink-worker-init
           replicas: 1
-          podImage: ubuntu:22.04
+          podImage: ubuntu:26.04
           imagePullPolicy: IfNotPresent
           logLevel: info
           nodeSelector:
@@ -97,7 +97,7 @@ spec:
               memory: 12Gi
           platformProperties:
             osFamily: Linux
-            containerImage: ubuntu:22.04
+            containerImage: ubuntu:26.04
             cpuCount: 5000
             memoryKb: 16000000
             gpuCount: 0
