@@ -16,7 +16,7 @@ spec:
           init-topics:
             image:
               repository: docker.redpanda.com/redpandadata/redpanda
-              tag: v24.3.18
+              tag: v26.1.7
             command: ["/bin/sh", "-c"]
             args:
               - |
