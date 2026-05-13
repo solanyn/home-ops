@@ -13,7 +13,7 @@ spec:
     maxSizeField: spec.maxSize
   selector:
     nodeSelector:
-      node.kubernetes.io/instance-type: e2-medium-8
+      node.kubernetes.io/nodepool: "true"
     tolerations:
       - key: nodepool
         effect: NoSchedule
