@@ -16,6 +16,7 @@ spec:
       node.kubernetes.io/nodepool: "true"
     tolerations:
       - key: nodepool
+        value: "true"
         effect: NoSchedule
   scaling:
     allocatableCPUMillis: 7900
