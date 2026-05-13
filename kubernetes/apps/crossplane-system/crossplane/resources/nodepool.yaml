@@ -17,5 +17,4 @@ spec:
   clusterId: ${CLUSTER_ID}
   clusterSecret: ${CLUSTER_SECRET}
   tailscaleClientSecret: ${TAILSCALE_CLIENT_SECRET}
-  targetSize: 0
   maxSize: 8
