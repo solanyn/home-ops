@@ -60,7 +60,6 @@ spec:
                   description: Tailscale OAuth client secret
                 targetSize:
                   type: integer
-                  default: 0
                   description: Desired number of instances (0-8)
                 maxSize:
                   type: integer
