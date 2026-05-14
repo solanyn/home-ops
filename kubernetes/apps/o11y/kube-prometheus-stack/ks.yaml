@@ -6,9 +6,6 @@ metadata:
   name: kube-prometheus-stack
 spec:
   targetNamespace: o11y
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/o11y/kube-prometheus-stack/app
   prune: true
