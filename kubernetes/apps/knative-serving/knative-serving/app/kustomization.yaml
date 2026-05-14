@@ -40,7 +40,7 @@ patches:
         value: http/protobuf
       - op: add
         path: /data/metrics-endpoint
-        value: http://vmauth-victoria-metrics-cluster.o11y.svc.cluster.local:8427/api/v1/otlp/v1/metrics
+        value: http://kube-prometheus-stack-prometheus.o11y.svc.cluster.local:9090/api/v1/otlp/v1/metrics
       - op: add
         path: /data/metrics-export-interval
         value: 60s
@@ -49,7 +49,7 @@ patches:
         value: http/protobuf
       - op: add
         path: /data/request-metrics-endpoint
-        value: http://vmauth-victoria-metrics-cluster.o11y.svc.cluster.local:8427/api/v1/otlp/v1/metrics
+        value: http://kube-prometheus-stack-prometheus.o11y.svc.cluster.local:9090/api/v1/otlp/v1/metrics
       - op: add
         path: /data/request-metrics-export-interval
         value: 60s
