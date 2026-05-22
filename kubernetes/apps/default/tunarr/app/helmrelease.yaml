@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: docker.io/chrisbenincasa/tunarr
-              tag: 1.3.2@sha256:8c5fb3b3c14beac065360100d783e25cfd3f33bf641728c3d639bc9c650bebb0
+              tag: 1.3.3@sha256:0185047bf46c9efb1280d60a2f3cae69479a515607b41dbdac6400dac7187983
             env:
               TZ: Australia/Sydney
               LOG_LEVEL: INFO
