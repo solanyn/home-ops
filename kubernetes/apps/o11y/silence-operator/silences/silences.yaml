@@ -150,3 +150,17 @@ spec:
       value: KubeDeploymentReplicasMismatch
     - name: namespace
       value: kubeflow
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
+# TODO: remove when k8s-1 NVMe replaced or thermals resolved
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: smart-device-critical-warning-nvme0
+  namespace: o11y
+spec:
+  matchers:
+    - name: alertname
+      value: SmartDeviceCriticalWarning
+    - name: device
+      value: nvme0
