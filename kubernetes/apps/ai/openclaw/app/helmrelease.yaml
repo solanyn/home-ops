@@ -189,8 +189,6 @@ spec:
                   chmod +x /home/node/.local/bin/gog
                 fi
 
-                rm -rf /home/node/.openclaw/extensions/matrix
-
                 rm -rf /home/node/.openclaw/plugin-runtime-deps/openclaw-unknown-*
                 if [ -d /app/dist/extensions ]; then
                   echo "Seeding plugin runtime mirror from /app/dist..."
