@@ -189,6 +189,11 @@ spec:
                   chmod +x /home/node/.local/bin/gog
                 fi
 
+                if [ ! -d /home/node/.openclaw/npm/node_modules/@openclaw/matrix ]; then
+                  echo "Installing @openclaw/matrix plugin..."
+                  su node -s /bin/sh -c "openclaw plugins install @openclaw/matrix" 2>&1 | tail -5 || true
+                fi
+
                 rm -rf /home/node/.openclaw/plugin-runtime-deps/openclaw-unknown-*
                 if [ -d /app/dist/extensions ]; then
                   echo "Seeding plugin runtime mirror from /app/dist..."
