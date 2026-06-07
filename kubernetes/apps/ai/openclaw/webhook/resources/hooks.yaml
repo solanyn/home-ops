@@ -20,7 +20,6 @@
 - id: forgejo
   execute-command: /config/forgejo.sh
   command-working-directory: /tmp
-  pass-body-to-command: true
   include-command-output-in-response: true
   pass-environment-to-command:
     - envname: PUSHOVER_USER_KEY
@@ -32,6 +31,7 @@
   pass-arguments-to-command:
     - source: header
       name: X-Forgejo-Event
+    - source: entire-payload
   trigger-rule:
     match:
       type: payload-hash-sha256
