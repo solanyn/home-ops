@@ -80,6 +80,9 @@ spec:
           ALLOW_LOCALNETWORKS: true
           SKIP_TLS_VERIFY: true
 
+        webhook:
+          ALLOWED_HOST_LIST: "webhook.goyangi.io,mac.internal,*.goyangi.io,private"
+
         storage:
           STORAGE_TYPE: minio
           MINIO_ENDPOINT: garage.storage.svc.cluster.local:3900
