@@ -20,7 +20,7 @@
 - id: forgejo
   execute-command: /config/forgejo.sh
   command-working-directory: /tmp
-  pass-body-to-command: true
+  pass-body-to-stdin: true
   pass-environment-to-command:
     - envname: PUSHOVER_USER_KEY
       source: string
