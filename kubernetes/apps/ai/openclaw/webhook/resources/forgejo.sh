@@ -7,25 +7,24 @@ set -euo pipefail
 EVENT_TYPE="${1:-}"
 PAYLOAD="${2:-}"
 
-# Debug
-echo "DEBUG: argc=$# arg1=${EVENT_TYPE} payload_len=${#PAYLOAD}" >&2
-[[ -n "${PAYLOAD}" ]] && echo "DEBUG: keys=$(echo "${PAYLOAD}" | jq -r 'keys[0:5] | join(",")' 2>&1)" >&2
+[[ -z "${PAYLOAD}" ]] && exit 0
 
 TITLE=""
 MESSAGE=""
 PRIORITY=0
 URL=""
+NL=$'\n'
 
 case "${EVENT_TYPE}" in
     push)
-        REPO=$(echo "${PAYLOAD}" | jq -r '.repository.full_name // .repository.name // ""')
+        REPO=$(echo "${PAYLOAD}" | jq -r '.repository.full_name // ""')
         BRANCH=$(echo "${PAYLOAD}" | jq -r '.ref // "" | split("/") | last')
-        PUSHER=$(echo "${PAYLOAD}" | jq -r '.pusher.username // .pusher.login // .sender.login // ""')
+        PUSHER=$(echo "${PAYLOAD}" | jq -r '.pusher.login // .pusher.username // .sender.login // ""')
         COMMITS=$(echo "${PAYLOAD}" | jq -r '.commits | length')
         LAST_MSG=$(echo "${PAYLOAD}" | jq -r '(.commits[-1].message // "") | split("\n")[0]')
         COMPARE=$(echo "${PAYLOAD}" | jq -r '.compare_url // ""')
         TITLE="Push: ${REPO}"
-        MESSAGE="${PUSHER} pushed ${COMMITS} commit(s) to ${BRANCH}\n${LAST_MSG}"
+        MESSAGE="${PUSHER} pushed ${COMMITS} commit(s) to ${BRANCH}${NL}${LAST_MSG}"
         URL="${COMPARE}"
         ;;
     pull_request)
@@ -40,7 +39,7 @@ case "${EVENT_TYPE}" in
         PR_USER=$(echo "${PAYLOAD}" | jq -r '.pull_request.user.login // .pull_request.user.username // .sender.login // ""')
         PR_URL=$(echo "${PAYLOAD}" | jq -r '.pull_request.html_url // .pull_request.url // ""')
         TITLE="PR ${ACTION}: ${REPO}#${PR_NUMBER}"
-        MESSAGE="${PR_TITLE}\nby ${PR_USER}"
+        MESSAGE="${PR_TITLE}${NL}by ${PR_USER}"
         URL="${PR_URL}"
         ;;
     create)
@@ -68,19 +67,17 @@ case "${EVENT_TYPE}" in
         PRIORITY=-1
         ;;
     *)
-        # Ignore unknown events (ping, etc)
         exit 0
         ;;
 esac
 
 [[ -z "${MESSAGE}" ]] && exit 0
 
-# Send to Pushover
 curl -sf -X POST https://api.pushover.net/1/messages.json \
     -d "token=${FORGEJO_PUSHOVER_TOKEN}" \
     -d "user=${PUSHOVER_USER_KEY}" \
     -d "title=${TITLE}" \
-    -d "message=${MESSAGE}" \
+    --data-urlencode "message=${MESSAGE}" \
     -d "priority=${PRIORITY}" \
     ${URL:+-d "url=${URL}"} \
     ${URL:+-d "url_title=View on Forgejo"}
