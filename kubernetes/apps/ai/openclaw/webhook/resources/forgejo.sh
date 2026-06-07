@@ -5,22 +5,11 @@ set -euo pipefail
 : "${FORGEJO_PUSHOVER_TOKEN:?}"
 
 EVENT_TYPE="${1:-}"
+PAYLOAD="${2:-}"
 
-# Try all possible body sources
-ARG_BODY="${2:-}"
-STDIN_BODY=$(cat 2>/dev/null || true)
-REQ_BODY="${HOOK_BODY:-}"
-
-echo "DEBUG: argc=$# arg1=${1:-} arg2_len=${#ARG_BODY} stdin_len=${#STDIN_BODY} hookbody_len=${#REQ_BODY}" >&2
-echo "DEBUG: all_args=$*" >&2
-
-# Use whichever has content
-PAYLOAD="${STDIN_BODY}"
-[[ -z "${PAYLOAD}" ]] && PAYLOAD="${ARG_BODY}"
-[[ -z "${PAYLOAD}" ]] && PAYLOAD="${REQ_BODY}"
-
-echo "DEBUG: payload_len=${#PAYLOAD}" >&2
-[[ -n "${PAYLOAD}" ]] && echo "DEBUG: payload_keys=$(echo "${PAYLOAD}" | jq -r 'keys[0:5] | join(",")' 2>&1)" >&2
+# Debug
+echo "DEBUG: argc=$# arg1=${EVENT_TYPE} payload_len=${#PAYLOAD}" >&2
+[[ -n "${PAYLOAD}" ]] && echo "DEBUG: keys=$(echo "${PAYLOAD}" | jq -r 'keys[0:5] | join(",")' 2>&1)" >&2
 
 TITLE=""
 MESSAGE=""
