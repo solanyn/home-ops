@@ -14,11 +14,11 @@ URL=""
 
 case "${EVENT_TYPE}" in
     push)
-        REPO=$(echo "${PAYLOAD}" | jq -r '.repository.full_name // ""')
-        BRANCH=$(echo "${PAYLOAD}" | jq -r '.ref // ""' | sed 's|refs/heads/||')
-        PUSHER=$(echo "${PAYLOAD}" | jq -r '.pusher.login // ""')
+        REPO=$(echo "${PAYLOAD}" | jq -r '.repository.full_name // .repository.name // ""')
+        BRANCH=$(echo "${PAYLOAD}" | jq -r '.ref // "" | split("/") | last')
+        PUSHER=$(echo "${PAYLOAD}" | jq -r '.pusher.username // .pusher.login // .sender.login // ""')
         COMMITS=$(echo "${PAYLOAD}" | jq -r '.commits | length')
-        LAST_MSG=$(echo "${PAYLOAD}" | jq -r '.commits[-1].message // "" | split("\n")[0]')
+        LAST_MSG=$(echo "${PAYLOAD}" | jq -r '(.commits[-1].message // "") | split("\n")[0]')
         COMPARE=$(echo "${PAYLOAD}" | jq -r '.compare_url // ""')
         TITLE="Push: ${REPO}"
         MESSAGE="${PUSHER} pushed ${COMMITS} commit(s) to ${BRANCH}\n${LAST_MSG}"
@@ -33,8 +33,8 @@ case "${EVENT_TYPE}" in
         REPO=$(echo "${PAYLOAD}" | jq -r '.repository.full_name // ""')
         PR_TITLE=$(echo "${PAYLOAD}" | jq -r '.pull_request.title // ""')
         PR_NUMBER=$(echo "${PAYLOAD}" | jq -r '.pull_request.number // ""')
-        PR_USER=$(echo "${PAYLOAD}" | jq -r '.pull_request.user.login // ""')
-        PR_URL=$(echo "${PAYLOAD}" | jq -r '.pull_request.html_url // ""')
+        PR_USER=$(echo "${PAYLOAD}" | jq -r '.pull_request.user.login // .pull_request.user.username // .sender.login // ""')
+        PR_URL=$(echo "${PAYLOAD}" | jq -r '.pull_request.html_url // .pull_request.url // ""')
         TITLE="PR ${ACTION}: ${REPO}#${PR_NUMBER}"
         MESSAGE="${PR_TITLE}\nby ${PR_USER}"
         URL="${PR_URL}"
