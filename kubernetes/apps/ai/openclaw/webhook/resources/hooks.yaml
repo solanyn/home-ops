@@ -20,7 +20,7 @@
 - id: forgejo
   execute-command: /config/forgejo.sh
   command-working-directory: /tmp
-  pass-body-to-stdin: true
+  pass-body-to-command: true
   pass-environment-to-command:
     - envname: PUSHOVER_USER_KEY
       source: string
@@ -31,13 +31,6 @@
   pass-arguments-to-command:
     - source: header
       name: X-Forgejo-Event
-  trigger-rule:
-    match:
-      type: payload-hmac-sha256
-      secret: '{{ getenv "FORGEJO_WEBHOOK_SECRET" }}'
-      parameter:
-        source: header
-        name: X-Forgejo-Signature
 - id: 'opencode-{{ getenv "OPENCODE_WEBHOOK_TOKEN" }}'
   execute-command: /config/opencode.sh
   command-working-directory: /tmp
