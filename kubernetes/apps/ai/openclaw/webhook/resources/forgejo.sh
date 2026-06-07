@@ -5,7 +5,10 @@ set -euo pipefail
 : "${FORGEJO_PUSHOVER_TOKEN:?}"
 
 EVENT_TYPE="${1:-}"
-PAYLOAD=$(cat)
+PAYLOAD="${2:-}"
+if [[ -z "${PAYLOAD}" ]]; then
+    PAYLOAD=$(cat)
+fi
 
 # Debug: log payload keys
 echo "DEBUG EVENT=${EVENT_TYPE} KEYS=$(echo "${PAYLOAD}" | jq -r 'keys | join(",")' 2>&1)" >&2
