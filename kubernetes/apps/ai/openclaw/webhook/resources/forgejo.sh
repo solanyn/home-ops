@@ -24,7 +24,7 @@ case "${EVENT_TYPE}" in
         LAST_MSG=$(echo "${PAYLOAD}" | jq -r '(.commits[-1].message // "") | split("\n")[0]')
         COMPARE=$(echo "${PAYLOAD}" | jq -r '.compare_url // ""')
         TITLE="Push: ${REPO}"
-        MESSAGE="${PUSHER} pushed ${COMMITS} commit(s) to ${BRANCH}${NL}${LAST_MSG}"
+        MESSAGE="<b>${PUSHER}</b> pushed ${COMMITS} commit(s) to <b>${BRANCH}</b>${NL}<i>${LAST_MSG}</i>"
         URL="${COMPARE}"
         ;;
     pull_request)
@@ -39,7 +39,7 @@ case "${EVENT_TYPE}" in
         PR_USER=$(echo "${PAYLOAD}" | jq -r '.pull_request.user.login // .pull_request.user.username // .sender.login // ""')
         PR_URL=$(echo "${PAYLOAD}" | jq -r '.pull_request.html_url // .pull_request.url // ""')
         TITLE="PR ${ACTION}: ${REPO}#${PR_NUMBER}"
-        MESSAGE="${PR_TITLE}${NL}by ${PR_USER}"
+        MESSAGE="<b>${PR_TITLE}</b>${NL}by ${PR_USER}"
         URL="${PR_URL}"
         ;;
     create)
@@ -56,7 +56,7 @@ case "${EVENT_TYPE}" in
         TAG=$(echo "${PAYLOAD}" | jq -r '.release.tag_name // ""')
         REL_URL=$(echo "${PAYLOAD}" | jq -r '.release.html_url // ""')
         TITLE="Release: ${REPO}"
-        MESSAGE="${TAG}"
+        MESSAGE="<b>${TAG}</b>"
         URL="${REL_URL}"
         ;;
     repository)
@@ -78,6 +78,7 @@ curl -sf -X POST https://api.pushover.net/1/messages.json \
     -d "user=${PUSHOVER_USER_KEY}" \
     -d "title=${TITLE}" \
     --data-urlencode "message=${MESSAGE}" \
+    -d "html=1" \
     -d "priority=${PRIORITY}" \
     ${URL:+-d "url=${URL}"} \
     ${URL:+-d "url_title=View on Forgejo"}
