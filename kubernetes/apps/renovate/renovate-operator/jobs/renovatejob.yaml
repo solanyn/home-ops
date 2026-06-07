@@ -19,3 +19,28 @@ spec:
       value: "false"
     - name: RENOVATE_REPOSITORIES
       value: '["solanyn/mono","solanyn/home-ops","solanyn/containers"]'
+---
+apiVersion: renovate-operator.mogenius.com/v1alpha1
+kind: RenovateJob
+metadata:
+  name: forgejo
+spec:
+  schedule: "30 * * * *"
+  provider:
+    name: gitea
+  secretRef: renovate-forgejo-secret
+  image: ghcr.io/renovatebot/renovate:latest
+  parallelism: 1
+  extraEnv:
+    - name: LOG_LEVEL
+      value: debug
+    - name: RENOVATE_PLATFORM
+      value: gitea
+    - name: RENOVATE_ENDPOINT
+      value: https://forgejo.goyangi.io
+    - name: RENOVATE_PLATFORM_COMMIT
+      value: "true"
+    - name: RENOVATE_AUTODISCOVER
+      value: "false"
+    - name: RENOVATE_REPOSITORIES
+      value: '["andrew/nix-darwin"]'
