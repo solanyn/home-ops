@@ -7,6 +7,11 @@ set -euo pipefail
 EVENT_TYPE="${1:-}"
 PAYLOAD=$(cat)
 
+# Debug: log payload keys
+echo "DEBUG EVENT=${EVENT_TYPE} KEYS=$(echo "${PAYLOAD}" | jq -r 'keys | join(",")' 2>&1)" >&2
+echo "DEBUG REPO=$(echo "${PAYLOAD}" | jq -r '.repository.full_name // "NULL"' 2>&1)" >&2
+echo "DEBUG PUSHER=$(echo "${PAYLOAD}" | jq -r '.pusher // "NULL"' 2>&1)" >&2
+
 TITLE=""
 MESSAGE=""
 PRIORITY=0
