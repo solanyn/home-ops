@@ -5,15 +5,22 @@ set -euo pipefail
 : "${FORGEJO_PUSHOVER_TOKEN:?}"
 
 EVENT_TYPE="${1:-}"
-PAYLOAD="${2:-}"
-if [[ -z "${PAYLOAD}" ]]; then
-    PAYLOAD=$(cat)
-fi
 
-# Debug: log payload keys
-echo "DEBUG EVENT=${EVENT_TYPE} KEYS=$(echo "${PAYLOAD}" | jq -r 'keys | join(",")' 2>&1)" >&2
-echo "DEBUG REPO=$(echo "${PAYLOAD}" | jq -r '.repository.full_name // "NULL"' 2>&1)" >&2
-echo "DEBUG PUSHER=$(echo "${PAYLOAD}" | jq -r '.pusher // "NULL"' 2>&1)" >&2
+# Try all possible body sources
+ARG_BODY="${2:-}"
+STDIN_BODY=$(cat 2>/dev/null || true)
+REQ_BODY="${HOOK_BODY:-}"
+
+echo "DEBUG: argc=$# arg1=${1:-} arg2_len=${#ARG_BODY} stdin_len=${#STDIN_BODY} hookbody_len=${#REQ_BODY}" >&2
+echo "DEBUG: all_args=$*" >&2
+
+# Use whichever has content
+PAYLOAD="${STDIN_BODY}"
+[[ -z "${PAYLOAD}" ]] && PAYLOAD="${ARG_BODY}"
+[[ -z "${PAYLOAD}" ]] && PAYLOAD="${REQ_BODY}"
+
+echo "DEBUG: payload_len=${#PAYLOAD}" >&2
+[[ -n "${PAYLOAD}" ]] && echo "DEBUG: payload_keys=$(echo "${PAYLOAD}" | jq -r 'keys[0:5] | join(",")' 2>&1)" >&2
 
 TITLE=""
 MESSAGE=""
