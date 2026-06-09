@@ -1,0 +1,14 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: bookorbit
+spec:
+  clientID: bookorbit
+  isPublic: false
+  callbackUrls:
+    - https://bookorbit.goyangi.io/api/v1/auth/oidc/callback
+  logoutCallbackUrls:
+    - https://bookorbit.goyangi.io
+  secret:
+    name: bookorbit-oidc
