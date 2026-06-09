@@ -53,12 +53,12 @@ jobs:
           echo "name=${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
 
       - name: Authenticate to GCP
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
           credentials_json: "${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}"
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
 
       - name: Check if image already exists
         id: check
