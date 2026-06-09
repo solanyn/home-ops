@@ -15,7 +15,7 @@ resources:
   - ./autobrr/ks.yaml
   - ./brrpolice/ks.yaml
   - ./bazarr/ks.yaml
-  - ./grimmory/ks.yaml
+  - ./bookorbit/ks.yaml
   - ./decluttarr/ks.yaml
   - ./deduparr/ks.yaml
   - ./tunarr/ks.yaml
