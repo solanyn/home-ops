@@ -3,37 +3,47 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: grimmory
+  name: bookorbit
 spec:
   chartRef:
     kind: OCIRepository
-    name: grimmory
-  interval: 1h
+    name: bookorbit
+  interval: 10m
   values:
     controllers:
-      grimmory:
+      bookorbit:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom: &envFrom
+              - secretRef:
+                  name: bookorbit-secret
         containers:
           app:
             image:
-              repository: ghcr.io/grimmory-tools/grimmory
-              tag: v3.2.0@sha256:a228db61f0898ab7268664093b2a17b08d80387ed7f1c39c1c7bc30fd7360022
+              repository: ghcr.io/bookorbit/bookorbit
+              tag: v1.9.0
             env:
               TZ: Australia/Sydney
-              USER_ID: "1000"
-              GROUP_ID: "1000"
-            envFrom:
-              - secretRef:
-                  name: grimmory-secret
+              NODE_ENV: production
+              PORT: &port 3000
+              APP_URL: https://bookorbit.goyangi.io
+              PUID: "1000"
+              PGID: "1000"
+              OIDC_ALLOW_LOCAL_ISSUERS: "true"
+            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/v1/healthcheck
-                    port: &port 6060
+                    path: /api/v1/health
+                    port: *port
                   initialDelaySeconds: 30
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -44,7 +54,7 @@ spec:
                 cpu: 10m
                 memory: 256Mi
               limits:
-                memory: 1Gi
+                memory: 2Gi
     service:
       app:
         ports:
@@ -56,7 +66,6 @@ spec:
           gatus.home-operations.com/enabled: "true"
         hostnames:
           - "{{ .Release.Name }}.goyangi.io"
-          - booklore.goyangi.io
         parentRefs:
           - name: envoy-internal
             namespace: network
@@ -65,7 +74,7 @@ spec:
       data:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /app/data
+          - path: /data
       books:
         type: nfs
         server: nas.internal
@@ -78,9 +87,3 @@ spec:
         path: /mnt/world/media/bookdrop
         globalMounts:
           - path: /bookdrop
-      mlm-ebooks:
-        type: nfs
-        server: nas.internal
-        path: /mnt/world/media/downloads/torrents/complete/mlm-ebooks
-        globalMounts:
-          - path: /mlm-ebooks
