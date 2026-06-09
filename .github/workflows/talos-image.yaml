@@ -1,0 +1,107 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Talos GCE Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      talos_version:
+        description: "Talos version (e.g. v1.13.2)"
+        required: true
+      schematic_id:
+        description: "Talos Image Factory schematic ID"
+        required: true
+        default: "4a0d65c669d46663f377e7161e50cfd570c401f26fd9e7bda34a0216b6f1922b"
+  push:
+    branches: [main]
+    paths:
+      - kubernetes/apps/crossplane-system/crossplane/resources/nodepool.yaml
+
+jobs:
+  upload:
+    name: Upload Talos GCE Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3
+        id: app-token
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ -n "${{ inputs.talos_version }}" ]; then
+            echo "version=${{ inputs.talos_version }}" >> "$GITHUB_OUTPUT"
+            echo "schematic=${{ inputs.schematic_id }}" >> "$GITHUB_OUTPUT"
+          else
+            VERSION=$(grep '# talos-version:' kubernetes/apps/crossplane-system/crossplane/resources/nodepool.yaml | awk '{print $3}')
+            echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+            echo "schematic=4a0d65c669d46663f377e7161e50cfd570c401f26fd9e7bda34a0216b6f1922b" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Compute image name
+        id: image
+        run: |
+          IMAGE_NAME="talos-tailscale-$(echo '${{ steps.version.outputs.version }}' | tr '.' '-')"
+          echo "name=${IMAGE_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: "${{ secrets.GCP_SERVICE_ACCOUNT_JSON }}"
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Check if image already exists
+        id: check
+        run: |
+          if gcloud compute images describe "${{ steps.image.outputs.name }}" --project="${{ secrets.GCP_PROJECT_ID }}" &>/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Download GCE image from Talos Image Factory
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          curl -sfL -o /tmp/talos-gcp.raw.tar.gz \
+            "https://factory.talos.dev/image/${{ steps.version.outputs.schematic }}/${{ steps.version.outputs.version }}/gcp-amd64.raw.tar.gz"
+
+      - name: Upload to GCS and create image
+        if: steps.check.outputs.exists == 'false'
+        run: |
+          gcloud storage cp /tmp/talos-gcp.raw.tar.gz \
+            "gs://${{ secrets.GCP_IMAGE_BUCKET_PATH }}/talos-gcp-${{ steps.version.outputs.version }}.raw.tar.gz"
+          gcloud compute images create "${{ steps.image.outputs.name }}" \
+            --project="${{ secrets.GCP_PROJECT_ID }}" \
+            --source-uri="gs://${{ secrets.GCP_IMAGE_BUCKET_PATH }}/talos-gcp-${{ steps.version.outputs.version }}.raw.tar.gz" \
+            --storage-location=australia-southeast1
+          gcloud storage rm \
+            "gs://${{ secrets.GCP_IMAGE_BUCKET_PATH }}/talos-gcp-${{ steps.version.outputs.version }}.raw.tar.gz"
+
+      - name: Update nodepool image reference
+        if: github.event_name == 'push'
+        run: |
+          sed -i "s|images/talos-tailscale-[a-z0-9-]*|images/${{ steps.image.outputs.name }}|" \
+            kubernetes/apps/crossplane-system/crossplane/resources/nodepool.yaml
+
+      - name: Commit changes
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "bot-goyangi[bot]"
+          git config user.email "bot-goyangi[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "No changes to commit"
+          else
+            git add kubernetes/apps/crossplane-system/crossplane/resources/nodepool.yaml
+            git commit -m "chore(nodepool): update GCE image to ${{ steps.image.outputs.name }}"
+            git push
+          fi
