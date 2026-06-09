@@ -14,5 +14,5 @@ spec:
     - line.goyangi.io
   rules:
     - backendRefs:
-        - name: line-api
+        - name: line
           port: 8080
