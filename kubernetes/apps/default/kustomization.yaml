@@ -54,7 +54,7 @@ resources:
   - ./scrib/ks.yaml
   - ./seasonpackerr/ks.yaml
   - ./seerr/ks.yaml
-  - ./sftpgo/ks.yaml
+  - ./dufs/ks.yaml
   - ./sonarr/ks.yaml
   - ./stash/ks.yaml
   - ./tautulli/ks.yaml
