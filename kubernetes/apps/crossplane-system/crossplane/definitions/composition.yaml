@@ -106,7 +106,7 @@ spec:
                           permissions: 0o600
                           content: |
                             TS_AUTHKEY={{ $spec.tailscaleClientSecret }}
-                            TS_EXTRA_ARGS=--advertise-tags=tag:talos-nodes --accept-routes
+                            TS_EXTRA_ARGS=--accept-routes
                     cluster:
                       id: {{ $spec.clusterId }}
                       secret: {{ $spec.clusterSecret }}
@@ -134,7 +134,7 @@ spec:
                     name: tailscale
                     environment:
                       - TS_AUTHKEY={{ $spec.tailscaleClientSecret }}
-                      - TS_EXTRA_ARGS=--advertise-tags=tag:talos-nodes --accept-routes
+                      - TS_EXTRA_ARGS=--accept-routes
                 tags:
                   - compute-worker
                 labels:
