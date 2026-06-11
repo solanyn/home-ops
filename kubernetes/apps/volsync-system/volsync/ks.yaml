@@ -7,15 +7,15 @@ metadata:
 spec:
   targetNamespace: volsync-system
   dependsOn:
-  - name: openebs
-    namespace: openebs-system
-  - name: snapshot-controller
-    namespace: kube-system
+    - name: openebs
+      namespace: openebs-system
+    - name: snapshot-controller
+      namespace: kube-system
   healthChecks:
-  - apiVersion: helm.toolkit.fluxcd.io/v2
-    kind: HelmRelease
-    name: volsync
-    namespace: volsync-system
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: volsync
+      namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/volsync-system/volsync/app
   prune: true
@@ -31,8 +31,8 @@ metadata:
 spec:
   targetNamespace: volsync-system
   dependsOn:
-  - name: volsync
-    namespace: volsync-system
+    - name: volsync
+      namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/volsync-system/volsync/maintenance
   prune: true

@@ -45,7 +45,7 @@ spec:
               runAsUser: 65532
               capabilities:
                 drop: ["ALL"]
-    
+
     service:
       app:
         controller: admission-webhook

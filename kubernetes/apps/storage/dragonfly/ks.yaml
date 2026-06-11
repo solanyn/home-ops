@@ -22,21 +22,21 @@ metadata:
 spec:
   targetNamespace: storage
   dependsOn:
-  - name: crossplane-configs
-    namespace: crossplane-system
-  - name: dragonfly
-    namespace: storage
-  - name: garage
-    namespace: storage
+    - name: crossplane-configs
+      namespace: crossplane-system
+    - name: dragonfly
+      namespace: storage
+    - name: garage
+      namespace: storage
   healthChecks:
-  - apiVersion: dragonflies.dragonflydb.io
-    kind: dragonflies
-    name: dragonfly-cluster
+    - apiVersion: dragonflies.dragonflydb.io
+      kind: dragonflies
+      name: dragonfly-cluster
   healthCheckExprs:
-  - apiVersion: dragonflies.dragonflydb.io
-    kind: dragonflies
-    failed: status.conditions.filter(e, e.type == 'Phase').all(e, e.status != 'ready')
-    current: status.conditions.filter(e, e.type == 'Phase').all(e, e.status == 'ready')
+    - apiVersion: dragonflies.dragonflydb.io
+      kind: dragonflies
+      failed: status.conditions.filter(e, e.type == 'Phase').all(e, e.status != 'ready')
+      current: status.conditions.filter(e, e.type == 'Phase').all(e, e.status == 'ready')
   interval: 1h
   path: ./kubernetes/apps/storage/dragonfly/cluster
   prune: true

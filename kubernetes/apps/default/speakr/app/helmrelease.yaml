@@ -34,7 +34,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /health
+                    path: /login
                     port: &port 8899
                   initialDelaySeconds: 10
                   periodSeconds: 30

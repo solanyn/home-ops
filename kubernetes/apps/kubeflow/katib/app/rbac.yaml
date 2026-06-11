@@ -40,7 +40,7 @@ rules:
     resources: ["tfjobs", "pytorchjobs", "mpijobs", "xgboostjobs"]
     verbs: ["get", "list", "watch", "create", "delete"]
   - apiGroups: ["kubeflow.org"]
-    resources: 
+    resources:
       - experiments
       - experiments/status
       - experiments/finalizers
