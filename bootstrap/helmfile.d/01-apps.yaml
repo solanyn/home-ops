@@ -70,7 +70,7 @@ releases:
     needs:
       - cert-manager/cert-manager
 
-  - name: onepassword
+  - name: onepassword-connect
     namespace: external-secrets
     chart: oci://ghcr.io/bjw-s-labs/helm/app-template
     version: 5.0.1
