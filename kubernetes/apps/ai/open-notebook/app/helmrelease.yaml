@@ -69,7 +69,8 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - port: 8502
+              - identifier: app
+                port: 8502
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
