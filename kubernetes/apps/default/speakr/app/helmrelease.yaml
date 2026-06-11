@@ -27,7 +27,7 @@ spec:
               ASR_RETURN_SPEAKER_EMBEDDINGS: "true"
             envFrom:
               - secretRef:
-                  name: speakr-secret
+                  name: "{{ .Release.Name }}-secret"
             probes:
               liveness: &probes
                 enabled: true
@@ -71,6 +71,6 @@ spec:
             sectionName: https
     persistence:
       data:
-        existingClaim: speakr
+        existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /data

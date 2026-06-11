@@ -6,11 +6,14 @@ metadata:
   name: speakr
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/volsync
   interval: 1h
   path: ./kubernetes/apps/default/speakr/app
   postBuild:
     substitute:
       APP: speakr
+      VOLSYNC_CAPACITY: 10Gi
   prune: true
   sourceRef:
     kind: GitRepository
