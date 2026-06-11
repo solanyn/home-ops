@@ -167,10 +167,10 @@ spec:
       additionalPrinterColumns:
         - name: Ready
           type: string
-          jsonPath: ".status.conditions[?(@.type==\"Ready\")].status"
+          jsonPath: '.status.conditions[?(@.type=="Ready")].status'
         - name: Reason
           type: string
-          jsonPath: ".status.conditions[?(@.type==\"Ready\")].reason"
+          jsonPath: '.status.conditions[?(@.type=="Ready")].reason'
   names:
     kind: Certificate
     plural: certificates
@@ -623,7 +623,7 @@ spec:
                                     type: object
                                     properties:
                                       host:
-                                        description: 'Optional: Host name to connect to, defaults to the pod IP.'
+                                        description: "Optional: Host name to connect to, defaults to the pod IP."
                                         type: string
                                       port:
                                         description: |-
@@ -791,7 +791,7 @@ spec:
                                     type: object
                                     properties:
                                       host:
-                                        description: 'Optional: Host name to connect to, defaults to the pod IP.'
+                                        description: "Optional: Host name to connect to, defaults to the pod IP."
                                         type: string
                                       port:
                                         description: |-
@@ -1056,7 +1056,7 @@ spec:
                                     type: object
                                     properties:
                                       host:
-                                        description: 'Optional: Host name to connect to, defaults to the pod IP.'
+                                        description: "Optional: Host name to connect to, defaults to the pod IP."
                                         type: string
                                       port:
                                         description: |-
@@ -1476,7 +1476,7 @@ spec:
                                                   - path
                                                 properties:
                                                   fieldRef:
-                                                    description: 'Required: Selects a field of the pod: only annotations, labels, name, namespace and uid are supported.'
+                                                    description: "Required: Selects a field of the pod: only annotations, labels, name, namespace and uid are supported."
                                                     type: object
                                                     required:
                                                       - fieldPath
@@ -1499,7 +1499,7 @@ spec:
                                                     type: integer
                                                     format: int32
                                                   path:
-                                                    description: 'Required: Path is  the relative path name of the file to be created. Must not be absolute or contain the ''..'' path. Must be utf-8 encoded. The first item of the relative path must not start with ''..'''
+                                                    description: "Required: Path is  the relative path name of the file to be created. Must not be absolute or contain the '..' path. Must be utf-8 encoded. The first item of the relative path must not start with '..'"
                                                     type: string
                                                   resourceFieldRef:
                                                     description: |-
@@ -1510,7 +1510,7 @@ spec:
                                                       - resource
                                                     properties:
                                                       containerName:
-                                                        description: 'Container name: required for volumes, optional for env vars'
+                                                        description: "Container name: required for volumes, optional for env vars"
                                                         type: string
                                                       divisor:
                                                         description: Specifies the output format of the exposed resources, defaults to "1"
@@ -1520,7 +1520,7 @@ spec:
                                                           - type: string
                                                         x-kubernetes-int-or-string: true
                                                       resource:
-                                                        description: 'Required: resource to select'
+                                                        description: "Required: resource to select"
                                                         type: string
                                                     x-kubernetes-map-type: atomic
                                               x-kubernetes-list-type: atomic
@@ -3177,7 +3177,7 @@ spec:
                             type: object
                             properties:
                               host:
-                                description: 'Optional: Host name to connect to, defaults to the pod IP.'
+                                description: "Optional: Host name to connect to, defaults to the pod IP."
                                 type: string
                               port:
                                 description: |-
@@ -3345,7 +3345,7 @@ spec:
                             type: object
                             properties:
                               host:
-                                description: 'Optional: Host name to connect to, defaults to the pod IP.'
+                                description: "Optional: Host name to connect to, defaults to the pod IP."
                                 type: string
                               port:
                                 description: |-
@@ -3610,7 +3610,7 @@ spec:
                             type: object
                             properties:
                               host:
-                                description: 'Optional: Host name to connect to, defaults to the pod IP.'
+                                description: "Optional: Host name to connect to, defaults to the pod IP."
                                 type: string
                               port:
                                 description: |-
@@ -4030,7 +4030,7 @@ spec:
                                           - path
                                         properties:
                                           fieldRef:
-                                            description: 'Required: Selects a field of the pod: only annotations, labels, name, namespace and uid are supported.'
+                                            description: "Required: Selects a field of the pod: only annotations, labels, name, namespace and uid are supported."
                                             type: object
                                             required:
                                               - fieldPath
@@ -4053,7 +4053,7 @@ spec:
                                             type: integer
                                             format: int32
                                           path:
-                                            description: 'Required: Path is  the relative path name of the file to be created. Must not be absolute or contain the ''..'' path. Must be utf-8 encoded. The first item of the relative path must not start with ''..'''
+                                            description: "Required: Path is  the relative path name of the file to be created. Must not be absolute or contain the '..' path. Must be utf-8 encoded. The first item of the relative path must not start with '..'"
                                             type: string
                                           resourceFieldRef:
                                             description: |-
@@ -4064,7 +4064,7 @@ spec:
                                               - resource
                                             properties:
                                               containerName:
-                                                description: 'Container name: required for volumes, optional for env vars'
+                                                description: "Container name: required for volumes, optional for env vars"
                                                 type: string
                                               divisor:
                                                 description: Specifies the output format of the exposed resources, defaults to "1"
@@ -4074,7 +4074,7 @@ spec:
                                                   - type: string
                                                 x-kubernetes-int-or-string: true
                                               resource:
-                                                description: 'Required: resource to select'
+                                                description: "Required: resource to select"
                                                 type: string
                                             x-kubernetes-map-type: atomic
                                       x-kubernetes-list-type: atomic
@@ -5284,7 +5284,7 @@ spec:
                                     type: object
                                     properties:
                                       host:
-                                        description: 'Optional: Host name to connect to, defaults to the pod IP.'
+                                        description: "Optional: Host name to connect to, defaults to the pod IP."
                                         type: string
                                       port:
                                         description: |-
@@ -5452,7 +5452,7 @@ spec:
                                     type: object
                                     properties:
                                       host:
-                                        description: 'Optional: Host name to connect to, defaults to the pod IP.'
+                                        description: "Optional: Host name to connect to, defaults to the pod IP."
                                         type: string
                                       port:
                                         description: |-
@@ -5717,7 +5717,7 @@ spec:
                                     type: object
                                     properties:
                                       host:
-                                        description: 'Optional: Host name to connect to, defaults to the pod IP.'
+                                        description: "Optional: Host name to connect to, defaults to the pod IP."
                                         type: string
                                       port:
                                         description: |-
@@ -6137,7 +6137,7 @@ spec:
                                                   - path
                                                 properties:
                                                   fieldRef:
-                                                    description: 'Required: Selects a field of the pod: only annotations, labels, name, namespace and uid are supported.'
+                                                    description: "Required: Selects a field of the pod: only annotations, labels, name, namespace and uid are supported."
                                                     type: object
                                                     required:
                                                       - fieldPath
@@ -6160,7 +6160,7 @@ spec:
                                                     type: integer
                                                     format: int32
                                                   path:
-                                                    description: 'Required: Path is  the relative path name of the file to be created. Must not be absolute or contain the ''..'' path. Must be utf-8 encoded. The first item of the relative path must not start with ''..'''
+                                                    description: "Required: Path is  the relative path name of the file to be created. Must not be absolute or contain the '..' path. Must be utf-8 encoded. The first item of the relative path must not start with '..'"
                                                     type: string
                                                   resourceFieldRef:
                                                     description: |-
@@ -6171,7 +6171,7 @@ spec:
                                                       - resource
                                                     properties:
                                                       containerName:
-                                                        description: 'Container name: required for volumes, optional for env vars'
+                                                        description: "Container name: required for volumes, optional for env vars"
                                                         type: string
                                                       divisor:
                                                         description: Specifies the output format of the exposed resources, defaults to "1"
@@ -6181,7 +6181,7 @@ spec:
                                                           - type: string
                                                         x-kubernetes-int-or-string: true
                                                       resource:
-                                                        description: 'Required: resource to select'
+                                                        description: "Required: resource to select"
                                                         type: string
                                                     x-kubernetes-map-type: atomic
                                               x-kubernetes-list-type: atomic

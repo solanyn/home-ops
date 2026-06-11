@@ -7,15 +7,15 @@ metadata:
 spec:
   targetNamespace: volsync-system
   components:
-  - ../../../../components/zeroscaler
+    - ../../../../components/zeroscaler
   dependsOn:
-  - name: volsync
-    namespace: volsync-system
+    - name: volsync
+      namespace: volsync-system
   healthChecks:
-  - apiVersion: helm.toolkit.fluxcd.io/v2
-    kind: HelmRelease
-    name: kopia
-    namespace: volsync-system
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: kopia
+      namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/volsync-system/kopia/app
   postBuild:

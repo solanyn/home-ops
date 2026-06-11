@@ -37,7 +37,7 @@ rules:
     resources: ["horizontalpodautoscalers"]
     verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
   - apiGroups: ["kubeflow.org"]
-    resources: 
+    resources:
       - jaxjobs
       - mpijobs
       - paddlejobs
@@ -46,7 +46,7 @@ rules:
       - xgboostjobs
     verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
   - apiGroups: ["kubeflow.org"]
-    resources: 
+    resources:
       - jaxjobs/finalizers
       - mpijobs/finalizers
       - paddlejobs/finalizers
@@ -55,7 +55,7 @@ rules:
       - xgboostjobs/finalizers
     verbs: ["update"]
   - apiGroups: ["kubeflow.org"]
-    resources: 
+    resources:
       - jaxjobs/status
       - mpijobs/status
       - paddlejobs/status

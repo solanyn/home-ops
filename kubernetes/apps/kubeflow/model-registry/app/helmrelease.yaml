@@ -58,7 +58,7 @@ spec:
               capabilities:
                 drop: ["ALL"]
               runAsNonRoot: true
-    
+
     service:
       app:
         controller: model-registry

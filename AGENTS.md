@@ -41,27 +41,30 @@ Update authentication policy for MLMD compatibility.
 The cluster supports dual-stack IPv4/IPv6 networking with ULA (Unique Local Addresses) for internal communication.
 
 ### IPv6 Subnets
+
 - **Nodes**: `fd5d:a293:f321:42::/64`
 - **LoadBalancer**: `fd5d:a293:f321:69::/80`
 - **Pods**: `fc69::/108`
 - **Services**: `fc96::/108`
 
 ### Dual-Stack Services
+
 For services that need both IPv4 and IPv6 access:
 
 ```yaml
 service:
-  app:
-    type: LoadBalancer
-    ipFamilies: [IPv4, IPv6]
-    ipFamilyPolicy: PreferDualStack
-    externalTrafficPolicy: Local
-    annotations:
-      external-dns.alpha.kubernetes.io/hostname: app.goyangi.io
-      lbipam.cilium.io/ips: 192.168.69.122,fc69::122
+    app:
+        type: LoadBalancer
+        ipFamilies: [IPv4, IPv6]
+        ipFamilyPolicy: PreferDualStack
+        externalTrafficPolicy: Local
+        annotations:
+            external-dns.alpha.kubernetes.io/hostname: app.goyangi.io
+            lbipam.cilium.io/ips: 192.168.69.122,fc69::122
 ```
 
 ### Key Configuration Points
+
 - **ipFamilies**: `[IPv4, IPv6]` enables dual-stack
 - **ipFamilyPolicy**: `PreferDualStack` prefers dual-stack but falls back to single-stack
 - **lbipam.cilium.io/ips**: Comma-separated IPv4,IPv6 addresses
@@ -102,7 +105,6 @@ apps/<namespace>/<app-name>/
 #### Creating New Applications
 
 1. **Choose namespace** based on application type:
-
     - `default` - General applications, home automation
     - `ai` - Conversational AI, agents, chat interfaces
     - `ml` - Machine learning services, feature stores
@@ -119,94 +121,98 @@ apps/<namespace>/<app-name>/
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: app-name
+    name: app-name
 spec:
-  interval: 1h
-  path: ./kubernetes/apps/namespace/app-name/app
-  postBuild:
-    substitute:
-      APP: app-name
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: target-namespace
-  wait: false
-  dependsOn:  # Optional - for dependencies
-    - name: dependency-name
-      namespace: target-namespace
-  components:  # Optional - for VolSync backups
-    - ../../../../components/volsync
+    interval: 1h
+    path: ./kubernetes/apps/namespace/app-name/app
+    postBuild:
+        substitute:
+            APP: app-name
+    prune: true
+    sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+    targetNamespace: target-namespace
+    wait: false
+    dependsOn: # Optional - for dependencies
+        - name: dependency-name
+          namespace: target-namespace
+    components: # Optional - for VolSync backups
+        - ../../../../components/volsync
 ```
 
 **For apps with CRDs (like kagent):**
+
 ```yaml
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: app-crds
+    name: app-crds
 spec:
-  targetNamespace: target-namespace
-  interval: 1h
-  path: ./kubernetes/apps/namespace/app-name/crds
-  prune: false  # Never prune CRDs
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: true    # Wait for CRDs to be ready
+    targetNamespace: target-namespace
+    interval: 1h
+    path: ./kubernetes/apps/namespace/app-name/crds
+    prune: false # Never prune CRDs
+    sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+    wait: true # Wait for CRDs to be ready
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: app-name
+    name: app-name
 spec:
-  targetNamespace: target-namespace
-  dependsOn:
-    - name: app-crds
-      namespace: target-namespace
-  interval: 1h
-  path: ./kubernetes/apps/namespace/app-name/app
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
+    targetNamespace: target-namespace
+    dependsOn:
+        - name: app-crds
+          namespace: target-namespace
+    interval: 1h
+    path: ./kubernetes/apps/namespace/app-name/app
+    sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
 ```
 
 **Field ordering in ks.yaml** (follow this order strictly):
+
 ```yaml
 metadata:
-  name: app-name
+    name: app-name
 spec:
-  targetNamespace: namespace     # Always first
-  components:                    # Optional - before dependsOn
-    - ../../../../components/volsync
-  dependsOn:                     # Dependencies (always include namespace)
-    - name: cloudnative-pg-cluster
-      namespace: storage
-  interval: 1h                   # Standard fields
-  path: ./kubernetes/apps/...
-  postBuild:                     # Substitutions
-    substitute:
-      APP: app-name
-      VOLSYNC_CAPACITY: 5Gi
-  prune: true
-  sourceRef:                     # Git source (always flux-system)
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: false
+    targetNamespace: namespace # Always first
+    components: # Optional - before dependsOn
+        - ../../../../components/volsync
+    dependsOn: # Dependencies (always include namespace)
+        - name: cloudnative-pg-cluster
+          namespace: storage
+    interval: 1h # Standard fields
+    path: ./kubernetes/apps/...
+    postBuild: # Substitutions
+        substitute:
+            APP: app-name
+            VOLSYNC_CAPACITY: 5Gi
+    prune: true
+    sourceRef: # Git source (always flux-system)
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+    wait: false
 ```
 
 **ks.yaml conventions:**
+
 - **No `namespace` in metadata** - inherited from the parent namespace kustomization
 - **`sourceRef.name` is always `flux-system`** (not `home-ops-kubernetes`)
 - **`dependsOn` always includes `namespace`** on every entry
 - **Resources in namespace `kustomization.yaml` must be in alphabetical order**
 
 **Common dependencies:**
+
 - **Database apps**: `cloudnative-pg-cluster` (namespace: storage)
 - **Storage apps**: `rook-ceph-cluster` (namespace: rook-ceph)
 - **AI apps**: May depend on model serving or gateway services
@@ -227,18 +233,20 @@ components:
 ```
 
 **Simplified pattern (most common):**
+
 ```yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./ocirepository.yaml
-  - ./helmrelease.yaml
-  - ./externalsecret.yaml  # Optional
-  - ./pvc.yaml             # Optional - for persistent storage
-  - ./prometheusrule.yaml  # Optional for monitoring
+    - ./ocirepository.yaml
+    - ./helmrelease.yaml
+    - ./externalsecret.yaml # Optional
+    - ./pvc.yaml # Optional - for persistent storage
+    - ./prometheusrule.yaml # Optional for monitoring
 ```
 
-**Note**: 
+**Note**:
+
 - App-level kustomizations don't need `namespace:` field - they inherit from Flux Kustomization's `targetNamespace`
 - VolSync component is added at the **ks.yaml level**, not in app kustomization
 - PVC is only needed if the application requires persistent storage beyond what the Helm chart provides
@@ -246,36 +254,39 @@ resources:
 #### Repository Patterns
 
 **OCIRepository (preferred):**
+
 ```yaml
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: app-name
+    name: app-name
 spec:
-  interval: 15m
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 4.5.0
-  url: oci://ghcr.io/bjw-s-labs/helm/app-template
+    interval: 15m
+    layerSelector:
+        mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+        operation: copy
+    ref:
+        tag: 4.5.0
+    url: oci://ghcr.io/bjw-s-labs/helm/app-template
 ```
 
 **HelmRepository (fallback when OCI not available):**
+
 ```yaml
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
-  name: app-name
+    name: app-name
 spec:
-  interval: 1h
-  url: https://charts.example.com/
+    interval: 1h
+    url: https://charts.example.com/
 ```
 
 **HelmRelease references:**
+
 - OCIRepository: `chartRef: {kind: OCIRepository, name: app-name}`
 - HelmRepository: `chart: {spec: {chart: chart-name, sourceRef: {kind: HelmRepository, name: app-name}}}`
 
@@ -287,32 +298,32 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: "{{ .Release.Name }}"
+    name: "{{ .Release.Name }}"
 spec:
-  chartRef:
-    kind: OCIRepository
-    name: app-name
-  interval: 10m
-  values:
-    controllers:
-      app:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          app:
-            image:
-              repository: ghcr.io/example/app
-              tag: latest@sha256:digest  # Use digests for security and reproducibility
-            env:
-              TZ: Australia/Sydney
-    service:
-      app:
-        ports:
-          http:
-            port: 80
-    persistence:
-      config:
-        existingClaim: "{{ .Release.Name }}"
+    chartRef:
+        kind: OCIRepository
+        name: app-name
+    interval: 10m
+    values:
+        controllers:
+            app:
+                annotations:
+                    reloader.stakater.com/auto: "true"
+                containers:
+                    app:
+                        image:
+                            repository: ghcr.io/example/app
+                            tag: latest@sha256:digest # Use digests for security and reproducibility
+                        env:
+                            TZ: Australia/Sydney
+        service:
+            app:
+                ports:
+                    http:
+                        port: 80
+        persistence:
+            config:
+                existingClaim: "{{ .Release.Name }}"
 ```
 
 **Do not add `install`, `upgrade`, or `rollback` remediation blocks to HelmRelease** - these are applied automatically by the cluster `ks.yaml` patches. Only add them if the app needs non-standard remediation.
@@ -320,55 +331,58 @@ spec:
 **Default HelmRelease interval is `10m`** (not `1h` or `30m`).
 
 **Reference upstream documentation:**
+
 - **App-template**: https://bjw-s.github.io/helm-charts/docs/app-template/
 - **Container images**: Check GitHub/Docker Hub for environment variables and configuration
 - **Helm charts**: Review `values.yaml` in chart repository for available options
 - **Official docs**: Always check application's official documentation for configuration options
 
 **Database apps with init containers:**
+
 ```yaml
 # ExternalSecret template
 target:
-  name: app-name-secret
-  template:
-    data:
-      POSTGRES_HOST: &dbHost postgres-rw.storage.svc.cluster.local
-      POSTGRES_DB: &dbName app-name
-      POSTGRES_USER: &dbUser "{{ .APP_POSTGRES_USER }}"
-      POSTGRES_PASS: &dbPass "{{ .APP_POSTGRES_PASSWORD }}"
-      # Init container
-      INIT_POSTGRES_HOST: *dbHost
-      INIT_POSTGRES_DBNAME: *dbName
-      INIT_POSTGRES_USER: *dbUser
-      INIT_POSTGRES_PASS: *dbPass
-      INIT_POSTGRES_SUPER_USER: postgres
-      INIT_POSTGRES_SUPER_PASS: "{{ .POSTGRES_SUPER_PASS }}"
+    name: app-name-secret
+    template:
+        data:
+            POSTGRES_HOST: &dbHost postgres-rw.storage.svc.cluster.local
+            POSTGRES_DB: &dbName app-name
+            POSTGRES_USER: &dbUser "{{ .APP_POSTGRES_USER }}"
+            POSTGRES_PASS: &dbPass "{{ .APP_POSTGRES_PASSWORD }}"
+            # Init container
+            INIT_POSTGRES_HOST: *dbHost
+            INIT_POSTGRES_DBNAME: *dbName
+            INIT_POSTGRES_USER: *dbUser
+            INIT_POSTGRES_PASS: *dbPass
+            INIT_POSTGRES_SUPER_USER: postgres
+            INIT_POSTGRES_SUPER_PASS: "{{ .POSTGRES_SUPER_PASS }}"
 dataFrom:
-  - extract:
-      key: app-name
-  - extract:
-      key: cloudnative-pg
+    - extract:
+          key: app-name
+    - extract:
+          key: cloudnative-pg
 
 # HelmRelease values
 values:
-  controllers:
-    app-name:
-      annotations:
-        reloader.stakater.com/auto: "true"
-      initContainers:
-        init-db:
-          image:
-            repository: ghcr.io/home-operations/postgres-init
-            tag: 18
-          envFrom: &envFrom
-            - secretRef:
-                name: "{{ .Release.Name }}-secret"
-      containers:
-        app:
-          envFrom: *envFrom  # Same secrets as init container
+    controllers:
+        app-name:
+            annotations:
+                reloader.stakater.com/auto: "true"
+            initContainers:
+                init-db:
+                    image:
+                        repository: ghcr.io/home-operations/postgres-init
+                        tag: 18
+                    envFrom: &envFrom
+                        - secretRef:
+                              name: "{{ .Release.Name }}-secret"
+            containers:
+                app:
+                    envFrom: *envFrom # Same secrets as init container
 ```
 
 **1Password requirements:**
+
 - Create `app-name` item with `APP_POSTGRES_USER` and `APP_POSTGRES_PASSWORD`
 - Existing `cloudnative-pg` secret provides `POSTGRES_SUPER_PASS`
 
@@ -379,13 +393,13 @@ values:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: "{{ .Release.Name }}"
+    name: "{{ .Release.Name }}"
 spec:
-  accessModes: ["ReadWriteOnce"]
-  resources:
-    requests:
-      storage: 5Gi
-  storageClassName: ceph-block
+    accessModes: ["ReadWriteOnce"]
+    resources:
+        requests:
+            storage: 5Gi
+    storageClassName: ceph-block
 ```
 
 **Note**: Only create separate `pvc.yaml` for cache/temp storage that doesn't need backup. For critical data, use VolSync component which creates PVCs automatically and provides backup/restore capabilities.
@@ -398,16 +412,16 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: "{{ .Release.Name }}-rules"
+    name: "{{ .Release.Name }}-rules"
 spec:
-  groups:
-    - name: "{{ .Release.Name }}.rules"
-      rules:
-        - alert: AppDown
-          expr: up{job="{{ .Release.Name }}"} == 0
-          for: 5m
-          labels:
-            severity: critical
+    groups:
+        - name: "{{ .Release.Name }}.rules"
+          rules:
+              - alert: AppDown
+                expr: up{job="{{ .Release.Name }}"} == 0
+                for: 5m
+                labels:
+                    severity: critical
 ```
 
 7. **Add to namespace kustomization.yaml**:
@@ -424,23 +438,24 @@ resources:
 - **Access modes**: Typically `["ReadWriteOnce"]`
 
 **Volume types:**
+
 ```yaml
 # Persistent storage
 persistence:
-  config:
-    existingClaim: "{{ .Release.Name }}"
-  
-  # NFS mounts
-  media:
-    type: nfs
-    server: nas.internal
-    path: /mnt/world/media
-    globalMounts:
-      - path: /media
-  
-  # Temporary storage
-  tmp:
-    type: emptyDir
+    config:
+        existingClaim: "{{ .Release.Name }}"
+
+    # NFS mounts
+    media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+            - path: /media
+
+    # Temporary storage
+    tmp:
+        type: emptyDir
 ```
 
 #### Networking Patterns
@@ -454,15 +469,16 @@ persistence:
 ```yaml
 # In HelmRelease values:
 route:
-  app:
-    hostnames:
-      - "{{ .Release.Name }}.goyangi.io"
-    parentRefs:
-      - name: envoy-internal
-        namespace: network
+    app:
+        hostnames:
+            - "{{ .Release.Name }}.goyangi.io"
+        parentRefs:
+            - name: envoy-internal
+              namespace: network
 ```
 
 **Service types:**
+
 ```yaml
 # LoadBalancer with Cilium IPAM (dual-stack)
 service:
@@ -495,61 +511,65 @@ service:
 #### Configuration Patterns
 
 **ConfigMapGenerator (for files):**
+
 ```yaml
 # app/kustomization.yaml
 configMapGenerator:
-  - name: app-configmap
-    files:
-      - config.yaml=./resources/config.yaml
-      - script.sh=./resources/script.sh
+    - name: app-configmap
+      files:
+          - config.yaml=./resources/config.yaml
+          - script.sh=./resources/script.sh
 generatorOptions:
-  disableNameSuffixHash: true
-  annotations:
-    kustomize.toolkit.fluxcd.io/substitute: disabled
+    disableNameSuffixHash: true
+    annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
 ```
 
 **App-template configMaps (for inline config):**
+
 ```yaml
 # In HelmRelease values:
 configMaps:
-  config:
-    data:
-      config.toml: |-
-        [section]
-        key = "value"
+    config:
+        data:
+            config.toml: |-
+                [section]
+                key = "value"
 persistence:
-  config-file:
-    type: configMap
-    identifier: config
-    globalMounts:
-      - path: /app/config.toml
-        subPath: config.toml
+    config-file:
+        type: configMap
+        identifier: config
+        globalMounts:
+            - path: /app/config.toml
+              subPath: config.toml
 ```
 
 **Kustomize patches:**
+
 ```yaml
 # app/kustomization.yaml
 patches:
-  - target:
-      kind: Deployment
-    patch: |
-      apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: this-is-ignored
-      spec:
-        template:
+    - target:
+          kind: Deployment
+      patch: |
+          apiVersion: apps/v1
+          kind: Deployment
           metadata:
-            annotations:
-              reloader.stakater.com/auto: "true"
+            name: this-is-ignored
+          spec:
+            template:
+              metadata:
+                annotations:
+                  reloader.stakater.com/auto: "true"
 ```
 
 **Third-party manifests:**
+
 ```yaml
 # app/kustomization.yaml
 resources:
-  - ../../../../../third_party/kubeflow/manifests/apps/kserve/kserve
-  - ./helmrelease.yaml
+    - ../../../../../third_party/kubeflow/manifests/apps/kserve/kserve
+    - ./helmrelease.yaml
 ```
 
 #### Security Patterns
@@ -559,6 +579,7 @@ resources:
 - **Always use template**: Makes value mapping clear
 
 **ExternalSecret template pattern (always use this):**
+
 ```yaml
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
@@ -603,16 +624,19 @@ just kube backup-and-suspend              # Full backup + suspend workflow
 When recreating a CNPG cluster (e.g., to fix plugin issues), follow this sequence to avoid data loss:
 
 **1. Hibernate the cluster** (stops PostgreSQL gracefully, prevents WAL generation):
+
 ```bash
 kubectl annotate cluster -n storage postgres cnpg.io/hibernation=on
 ```
 
 **2. Wait for pods to terminate**:
+
 ```bash
 kubectl get pods -n storage | grep postgres
 ```
 
 **3. Delete the cluster object**:
+
 ```bash
 kubectl delete cluster -n storage postgres --wait=false
 ```
@@ -621,19 +645,20 @@ kubectl delete cluster -n storage postgres --wait=false
 
 ```yaml
 spec:
-  bootstrap:
-    recovery:
-      source: source
-  externalClusters:
-    - name: source
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: garage
-          serverName: postgres18-v1
+    bootstrap:
+        recovery:
+            source: source
+    externalClusters:
+        - name: source
+          plugin:
+              name: barman-cloud.cloudnative-pg.io
+              parameters:
+                  barmanObjectName: garage
+                  serverName: postgres18-v1
 ```
 
 **5. Reconcile to recreate**:
+
 ```bash
 flux reconcile ks cloudnative-pg-cluster -n storage --with-source
 ```
@@ -643,20 +668,22 @@ flux reconcile ks cloudnative-pg-cluster -n storage --with-source
 **Recovery from incomplete backup** (if cluster was deleted without hibernation):
 
 Find the most recent completed backup:
+
 ```bash
 kubectl get backup.postgresql.cnpg.io -n storage -l cnpg.io/cluster=postgres -o json | \
   jq -r '.items[] | select(.spec.pluginConfiguration.parameters.barmanObjectName == "garage") | select(.status.phase == "completed") | "\(.metadata.name) \(.status.backupId) \(.status.stoppedAt)"' | tail -5
 ```
 
 Use `targetImmediate` to stop at backup end without requiring missing WALs:
+
 ```yaml
 spec:
-  bootstrap:
-    recovery:
-      source: source
-      recoveryTarget:
-        backupID: 20260116T000003  # From backup object's status.backupId
-        targetImmediate: true       # Stop at backup end
+    bootstrap:
+        recovery:
+            source: source
+            recoveryTarget:
+                backupID: 20260116T000003 # From backup object's status.backupId
+                targetImmediate: true # Stop at backup end
 ```
 
 ### 1Password CLI
@@ -686,15 +713,15 @@ Create a `PocketIDOIDCClient` CRD in `kubernetes/apps/default/pocket-id/app/oidc
 apiVersion: pocketid.internal/v1alpha1
 kind: PocketIDOIDCClient
 metadata:
-  name: app-name
+    name: app-name
 spec:
-  callbackUrls:
-    - https://app-name.goyangi.io/oauth2/callback
-  logoutCallbackUrls:
-    - https://app-name.goyangi.io
-  isPublic: false  # Set true for public clients (no secret)
-  secret:
-    name: app-name-oidc  # Generated secret name
+    callbackUrls:
+        - https://app-name.goyangi.io/oauth2/callback
+    logoutCallbackUrls:
+        - https://app-name.goyangi.io
+    isPublic: false # Set true for public clients (no secret)
+    secret:
+        name: app-name-oidc # Generated secret name
 ```
 
 The operator automatically generates a secret with `client_id` and `client_secret` fields.
@@ -702,41 +729,43 @@ The operator automatically generates a secret with `client_id` and `client_secre
 ### Referencing OIDC Secrets
 
 **For apps with native OIDC support:**
+
 ```yaml
 # In ExternalSecret
 spec:
-  target:
-    template:
-      data:
-        OIDC_CLIENT_ID: app-name
-        OIDC_CLIENT_SECRET: "{{ .client_secret }}"
-        OIDC_ISSUER_URL: https://id.goyangi.io/
-  data:
-    - secretKey: client_secret
-      remoteRef:
-        key: app-name-oidc
-        property: client_secret
+    target:
+        template:
+            data:
+                OIDC_CLIENT_ID: app-name
+                OIDC_CLIENT_SECRET: "{{ .client_secret }}"
+                OIDC_ISSUER_URL: https://id.goyangi.io/
+    data:
+        - secretKey: client_secret
+          remoteRef:
+              key: app-name-oidc
+              property: client_secret
 ```
 
 **For apps using Envoy SecurityPolicy:**
+
 ```yaml
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: app-name
+    name: app-name
 spec:
-  oidc:
-    clientID: app-name
-    clientSecret:
-      name: app-name-oidc
-    provider:
-      issuer: https://id.goyangi.io/
-    redirectURL: https://app-name.goyangi.io/oauth2/callback
-    scopes: [openid, profile, email]
-  targetRefs:
-    - group: gateway.networking.k8s.io
-      kind: HTTPRoute
-      name: app-name
+    oidc:
+        clientID: app-name
+        clientSecret:
+            name: app-name-oidc
+        provider:
+            issuer: https://id.goyangi.io/
+        redirectURL: https://app-name.goyangi.io/oauth2/callback
+        scopes: [openid, profile, email]
+    targetRefs:
+        - group: gateway.networking.k8s.io
+          kind: HTTPRoute
+          name: app-name
 ```
 
 ### Key Endpoints
@@ -767,17 +796,18 @@ SMTP_AUTH_STRATEGY: NONE
 
 # In HelmRelease values (application-specific)
 smtp:
-  enabled: true
-  address: smtp-relay.network.svc.cluster.local
-  port: 25
-  domain: goyangi.io
-  authentication: none
-  starttls_auto: false
+    enabled: true
+    address: smtp-relay.network.svc.cluster.local
+    port: 25
+    domain: goyangi.io
+    authentication: none
+    starttls_auto: false
 ```
 
 ### Storage Integration
 
 **Garage S3 credentials** (use existing shared credentials):
+
 ```yaml
 # In ExternalSecret template
 S3_ACCESS_KEY: "{{ .GARAGE_ROOT_USER }}"
@@ -786,11 +816,12 @@ S3_ENDPOINT: garage.storage.svc.cluster.local:3900
 
 # In dataFrom
 dataFrom:
-  - extract:
-      key: garage
+    - extract:
+          key: garage
 ```
 
 **Database credentials** (use existing shared credentials):
+
 ```yaml
 # PostgreSQL
 POSTGRES_USER: "{{ .POSTGRES_USER }}"
@@ -803,10 +834,10 @@ REDIS_HOST: dragonfly.storage.svc.cluster.local
 
 # In dataFrom
 dataFrom:
-  - extract:
-      key: cloudnative-pg
-  - extract:
-      key: dragonfly
+    - extract:
+          key: cloudnative-pg
+    - extract:
+          key: dragonfly
 ```
 
 ## Security
@@ -853,6 +884,7 @@ Home Cluster (Talos)               GCP (Crossplane-managed)
 ### Workload Placement
 
 Nodepool nodes register with:
+
 - **Label**: `node.kubernetes.io/nodepool: "true"`
 - **Taint**: `nodepool=true:NoSchedule`
 
@@ -861,25 +893,26 @@ To schedule workloads on nodepool nodes:
 ```yaml
 # app-template (defaultPodOptions)
 defaultPodOptions:
-  nodeSelector:
+    nodeSelector:
+        node.kubernetes.io/nodepool: "true"
+    tolerations:
+        - key: nodepool
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
+
+# Upstream Helm charts
+nodeSelector:
     node.kubernetes.io/nodepool: "true"
-  tolerations:
+tolerations:
     - key: nodepool
       operator: Equal
       value: "true"
       effect: NoSchedule
-
-# Upstream Helm charts
-nodeSelector:
-  node.kubernetes.io/nodepool: "true"
-tolerations:
-  - key: nodepool
-    operator: Equal
-    value: "true"
-    effect: NoSchedule
 ```
 
 Use cases:
+
 - ML/AI workloads (Kubeflow, training, inference)
 - Burst compute for batch jobs
 - Workloads needing GCP service proximity
@@ -888,10 +921,12 @@ Use cases:
 ### Configuration
 
 The nodepool is defined in `kubernetes/apps/crossplane-system/crossplane/resources/nodepool.yaml` as an `XComputeNodePool` custom resource. The Crossplane composition creates:
+
 - A GCP `InstanceTemplate` with Talos machine config (including Tailscale extension)
 - A `RegionInstanceGroupManager` for autoscaling
 
 Key parameters:
+
 - `targetSize`: Current desired node count (set to 0 when idle)
 - `maxSize`: Maximum nodes allowed (8)
 - `machineType`: `e2-medium`
@@ -904,10 +939,11 @@ To scale the nodepool, update `targetSize` in the `XComputeNodePool` resource:
 
 ```yaml
 spec:
-  targetSize: 2  # Scale up to 2 nodes
+    targetSize: 2 # Scale up to 2 nodes
 ```
 
 Commit and push, then reconcile:
+
 ```bash
 flux reconcile ks crossplane-resources -n crossplane-system --with-source
 ```
@@ -915,6 +951,7 @@ flux reconcile ks crossplane-resources -n crossplane-system --with-source
 ### 1Password Secrets
 
 The `crossplane` item in 1Password provides:
+
 - `MACHINE_TOKEN` / `MACHINE_CA_CRT` - Talos machine secrets
 - `CLUSTER_TOKEN` / `CLUSTER_CA_CRT` - Cluster join credentials
 - `CLUSTER_ID` / `CLUSTER_SECRET` - Cluster identity

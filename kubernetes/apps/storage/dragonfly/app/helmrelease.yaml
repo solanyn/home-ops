@@ -86,23 +86,19 @@ spec:
           rules:
             - apiGroups: ["coordination.k8s.io"]
               resources: ["leases"]
-              verbs:
-                ["get", "list", "watch", "create", "update", "patch", "delete"]
+              verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
             - apiGroups: [""]
               resources: ["events"]
               verbs: ["create", "patch"]
             - apiGroups: [""]
               resources: ["pods", "services"]
-              verbs:
-                ["create", "delete", "get", "list", "patch", "update", "watch"]
+              verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
             - apiGroups: ["apps"]
               resources: ["statefulsets"]
-              verbs:
-                ["create", "delete", "get", "list", "patch", "update", "watch"]
+              verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
             - apiGroups: ["dragonflydb.io"]
               resources: ["dragonflies"]
-              verbs:
-                ["create", "delete", "get", "list", "patch", "update", "watch"]
+              verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
             - apiGroups: ["dragonflydb.io"]
               resources: ["dragonflies/finalizers"]
               verbs: ["update"]

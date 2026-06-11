@@ -2,15 +2,16 @@
 parallel = true
 
 [pre-commit.commands.format-yaml]
-run = "yamlfmt {staged_files}"
-glob = ["*.yaml"]
+run = "oxfmt {staged_files}"
+glob = ["*.yaml", "*.yml"]
+stage_fixed = true
+
+[pre-commit.commands.format-json]
+run = "oxfmt {staged_files}"
+glob = ["*.json", "*.json5", "*.jsonc"]
 stage_fixed = true
 
 [pre-commit.commands.format-just]
-run = """
-for file in {staged_files}; do
-    just --justfile "$file" --fmt --unstable
-done
-"""
+run = 'for f in {staged_files}; do just --justfile "$f" --fmt; done'
 glob = ["*.just", ".justfile"]
 stage_fixed = true

@@ -7,10 +7,10 @@ metadata:
 spec:
   targetNamespace: external-secrets
   healthChecks:
-  - apiVersion: helm.toolkit.fluxcd.io/v2
-    kind: HelmRelease
-    name: external-secrets
-    namespace: external-secrets
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: external-secrets
+      namespace: external-secrets
   interval: 1h
   path: ./kubernetes/apps/external-secrets/external-secrets/app
   prune: true
