@@ -48,7 +48,7 @@ spec:
               runAsUser: 1000
               capabilities:
                 drop: ["ALL"]
-    
+
     service:
       app:
         controller: volumes-web-app
@@ -84,7 +84,7 @@ spec:
               - name: volume
                 persistentVolumeClaim:
                   claimName: "{pvc}"
-    
+
     persistence:
       viewer-spec:
         type: configMap

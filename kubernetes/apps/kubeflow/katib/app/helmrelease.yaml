@@ -52,7 +52,7 @@ spec:
               runAsUser: 1000
               capabilities:
                 drop: ["ALL"]
-      
+
       katib-db-manager:
         replicas: 1
         serviceAccount:

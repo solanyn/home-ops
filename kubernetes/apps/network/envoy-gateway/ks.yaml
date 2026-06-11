@@ -7,7 +7,7 @@ metadata:
 spec:
   targetNamespace: network
   dependsOn:
-  - name: certificates-import
+    - name: certificates-import
   interval: 1h
   path: ./kubernetes/apps/network/envoy-gateway/app
   prune: true

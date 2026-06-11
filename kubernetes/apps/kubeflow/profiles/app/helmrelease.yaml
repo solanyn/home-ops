@@ -106,7 +106,7 @@ spec:
             # If the value is empty, the label is not added.
             # If the value is not empty, the label is added.
             app.kubernetes.io/part-of: kubeflow-profile
-    
+
     persistence:
       namespace-labels:
         type: configMap

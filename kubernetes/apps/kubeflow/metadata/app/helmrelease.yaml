@@ -70,7 +70,7 @@ spec:
               runAsUser: 1000
               capabilities:
                 drop: ["ALL"]
-      
+
       envoy:
         replicas: 1
         containers:
@@ -87,7 +87,7 @@ spec:
               runAsUser: 1000
               capabilities:
                 drop: ["ALL"]
-    
+
     service:
       grpc:
         forceRename: metadata-grpc-service
