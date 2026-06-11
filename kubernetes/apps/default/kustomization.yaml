@@ -51,7 +51,6 @@ resources:
   - ./redlib/ks.yaml
   - ./romm/ks.yaml
   - ./searxng/ks.yaml
-  - ./scrib/ks.yaml
   - ./speakr/ks.yaml
   - ./seasonpackerr/ks.yaml
   - ./seerr/ks.yaml

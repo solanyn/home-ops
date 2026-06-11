@@ -27,7 +27,7 @@ endpoints:
 apiVersion: v1
 kind: Service
 metadata:
-  name: scrib-audio
+  name: speakr-asr
 spec:
   ports:
     - name: http
@@ -37,9 +37,9 @@ spec:
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
 metadata:
-  name: scrib-audio-1
+  name: speakr-asr-1
   labels:
-    kubernetes.io/service-name: scrib-audio
+    kubernetes.io/service-name: speakr-asr
 addressType: IPv4
 ports:
   - name: http
