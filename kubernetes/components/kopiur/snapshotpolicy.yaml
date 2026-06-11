@@ -1,0 +1,19 @@
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: ${APP}
+spec:
+  repository:
+    kind: ClusterRepository
+    name: nas
+  credentialProjection:
+    enabled: true
+  sources:
+    - pvc:
+        name: ${APP}
+  copyMethod: Snapshot
+  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-ceph-blockpool}
+  retention:
+    keepDaily: 7
+    keepWeekly: 4

@@ -1,0 +1,35 @@
+---
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: ClusterRepository
+metadata:
+  name: nas
+spec:
+  backend:
+    filesystem:
+      path: /repo
+      volume:
+        nfs:
+          server: nas.internal
+          path: /mnt/world/kopiur
+  encryption:
+    passwordSecretRef:
+      name: kopiur-nas-secret
+      namespace: kopiur-system
+      key: KOPIA_PASSWORD
+  create:
+    enabled: true
+  allowedNamespaces:
+    all: true
+  identityDefaults:
+    hostnameExpr: namespace
+    usernameExpr: namespace + '-' + policyName
+  moverDefaults:
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+    podSecurityContext:
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+    ttlSecondsAfterFinished: 86400
+  maintenance:
+    enabled: true
