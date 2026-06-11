@@ -56,6 +56,11 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
     service:
       app:
         controller: surrealdb
