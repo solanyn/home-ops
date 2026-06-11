@@ -22,7 +22,7 @@ spec:
             env:
               TZ: Australia/Sydney
               LOG_LEVEL: ERROR
-              ASR_BASE_URL: http://scrib-audio.network.svc.cluster.local:8002
+              ASR_BASE_URL: http://speakr-asr.network.svc.cluster.local:8002
               ASR_DIARIZE: "true"
               ASR_RETURN_SPEAKER_EMBEDDINGS: "true"
             envFrom:
