@@ -1,11 +1,13 @@
 mutation {
-  metadataCleanGenerated(input: {
-    blobFiles: true,
-    sprites: true,
-    screenshots: true,
-    transcodes: true,
-    markers: true,
-    imageThumbnails: true,
-    dryRun: false
-  })
+  metadataCleanGenerated(
+    input: {
+      blobFiles: true
+      sprites: true
+      screenshots: true
+      transcodes: true
+      markers: true
+      imageThumbnails: true
+      dryRun: false
+    }
+  )
 }

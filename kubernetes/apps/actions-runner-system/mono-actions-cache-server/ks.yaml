@@ -7,8 +7,8 @@ metadata:
 spec:
   targetNamespace: actions-runner-system
   dependsOn:
-  - name: actions-runner-controller
-    namespace: actions-runner-system
+    - name: actions-runner-controller
+      namespace: actions-runner-system
   interval: 1h
   path: ./kubernetes/apps/actions-runner-system/mono-actions-cache-server/app
   prune: true

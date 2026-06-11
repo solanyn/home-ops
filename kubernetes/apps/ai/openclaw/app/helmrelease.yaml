@@ -352,8 +352,7 @@ spec:
               resources: ["pods/exec"]
               verbs: ["create"]
             - apiGroups: ["apps"]
-              resources:
-                ["deployments", "daemonsets", "statefulsets", "replicasets"]
+              resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
               verbs: ["get", "list", "watch"]
             - apiGroups: ["apps"]
               resources: ["deployments/scale"]
@@ -368,8 +367,7 @@ spec:
               resources: ["storageclasses"]
               verbs: ["get", "list", "watch"]
             - apiGroups: ["rbac.authorization.k8s.io"]
-              resources:
-                ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
+              resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
               verbs: ["get", "list", "watch"]
             - apiGroups: ["metrics.k8s.io"]
               resources: ["nodes", "pods"]
@@ -382,28 +380,15 @@ spec:
               resources: ["kustomizations"]
               verbs: ["get", "list", "watch", "patch"]
             - apiGroups: ["source.toolkit.fluxcd.io"]
-              resources:
-                [
-                  "gitrepositories",
-                  "ocirepositories",
-                  "helmrepositories",
-                  "helmcharts",
-                ]
+              resources: ["gitrepositories", "ocirepositories", "helmrepositories", "helmcharts"]
               verbs: ["get", "list", "watch"]
             # Grafana operator CRDs
             - apiGroups: ["grafana.integreatly.org"]
-              resources:
-                [
-                  "grafanadashboards",
-                  "grafanadatasources",
-                  "grafanas",
-                  "grafanafolders",
-                ]
+              resources: ["grafanadashboards", "grafanadatasources", "grafanas", "grafanafolders"]
               verbs: ["get", "list", "watch"]
             # External Secrets CRDs
             - apiGroups: ["external-secrets.io"]
-              resources:
-                ["externalsecrets", "clustersecretstores", "secretstores"]
+              resources: ["externalsecrets", "clustersecretstores", "secretstores"]
               verbs: ["get", "list", "watch"]
             # Crossplane / GCP provider CRDs
             - apiGroups: ["container.gcp.upbound.io"]
@@ -412,12 +397,7 @@ spec:
             # Prometheus operator CRDs
             - apiGroups: ["monitoring.coreos.com"]
               resources:
-                [
-                  "prometheusrules",
-                  "servicemonitors",
-                  "podmonitors",
-                  "alertmanagerconfigs",
-                ]
+                ["prometheusrules", "servicemonitors", "podmonitors", "alertmanagerconfigs"]
               verbs: ["get", "list", "watch"]
             # Gateway API CRDs
             - apiGroups: ["gateway.networking.k8s.io"]
@@ -428,16 +408,13 @@ spec:
           rules:
             - apiGroups: ["apps"]
               resources: ["deployments"]
-              verbs:
-                ["get", "list", "watch", "create", "patch", "update", "delete"]
+              verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
             - apiGroups: [""]
               resources: ["services", "configmaps"]
-              verbs:
-                ["get", "list", "watch", "create", "patch", "update", "delete"]
+              verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
             - apiGroups: ["gateway.networking.k8s.io"]
               resources: ["httproutes"]
-              verbs:
-                ["get", "list", "watch", "create", "patch", "update", "delete"]
+              verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
         openclaw-pod-manage:
           type: ClusterRole
           rules:
@@ -449,8 +426,7 @@ spec:
           rules:
             - apiGroups: ["agents.x-k8s.io"]
               resources: ["sandboxes"]
-              verbs:
-                ["get", "list", "watch", "create", "patch", "update", "delete"]
+              verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
       bindings:
         openclaw-read-all:
           type: ClusterRoleBinding

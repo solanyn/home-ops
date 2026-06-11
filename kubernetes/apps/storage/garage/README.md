@@ -34,7 +34,8 @@ kubectl exec -n storage garage-dc68cd697-cr5g8 -- /garage key info shared-key
 ```
 
 Store the Key ID and Secret key in 1Password under `garage` entry as:
-- `GARAGE_ROOT_USER` = Key ID  
+
+- `GARAGE_ROOT_USER` = Key ID
 - `GARAGE_ROOT_PASSWORD` = Secret key
 
 ### 4. Create Buckets

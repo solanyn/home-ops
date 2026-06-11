@@ -1,0 +1,71 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: surrealdb
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: surrealdb
+  interval: 10m
+  values:
+    controllers:
+      surrealdb:
+        containers:
+          app:
+            image:
+              repository: docker.io/surrealdb/surrealdb
+              tag: v2
+            args:
+              - start
+              - --log
+              - info
+              - rocksdb:/mydata/mydatabase.db
+            env:
+              SURREAL_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: surrealdb-secret
+                    key: SURREAL_USER
+              SURREAL_PASS:
+                valueFrom:
+                  secretKeyRef:
+                    name: surrealdb-secret
+                    key: SURREAL_PASS
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: &port 8000
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: *port
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    service:
+      app:
+        controller: surrealdb
+        ports:
+          http:
+            port: 8000
+    persistence:
+      data:
+        existingClaim: surrealdb
+        advancedMounts:
+          surrealdb:
+            app:
+              - path: /mydata

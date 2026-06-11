@@ -66,9 +66,7 @@
       semanticCommitType: "feat",
       semanticCommitScope: "kubeflow",
       postUpgradeTasks: {
-        commands: [
-          "bash .github/scripts/sync-kubeflow.sh {{{newValue}}}",
-        ],
+        commands: ["bash .github/scripts/sync-kubeflow.sh {{{newValue}}}"],
         fileFilters: ["third_party/kubeflow/manifests/**"],
         executionMode: "branch",
       },

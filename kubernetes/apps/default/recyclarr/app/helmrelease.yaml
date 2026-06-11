@@ -68,4 +68,3 @@ spec:
                 subPath: repositories
               - path: /tmp
                 subPath: tmp
-

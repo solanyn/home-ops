@@ -3,6 +3,7 @@
 ## IPv6 Dual-Stack Configuration
 
 ### Subnets
+
 - **Nodes**: `fd5d:a293:f321:42::/64`
 - **LoadBalancer**: `fd5d:a293:f321:69::/80`
 - **Pods**: `fc69::/108`

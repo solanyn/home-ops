@@ -7,10 +7,10 @@ metadata:
 spec:
   targetNamespace: actions-runner-system
   healthChecks:
-  - apiVersion: helm.toolkit.fluxcd.io/v2
-    kind: HelmRelease
-    name: actions-runner-controller
-    namespace: actions-runner-system
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: actions-runner-controller
+      namespace: actions-runner-system
   interval: 1h
   path: ./kubernetes/apps/actions-runner-system/actions-runner-controller/app
   prune: true
@@ -26,8 +26,8 @@ metadata:
 spec:
   targetNamespace: actions-runner-system
   dependsOn:
-  - name: actions-runner-controller
-    namespace: actions-runner-system
+    - name: actions-runner-controller
+      namespace: actions-runner-system
   interval: 1h
   path: ./kubernetes/apps/actions-runner-system/actions-runner-controller/runners
   prune: true

@@ -71,7 +71,7 @@ spec:
               runAsUser: 1000
               capabilities:
                 drop: ["ALL"]
-      
+
       persistenceagent:
         replicas: 1
         serviceAccount:
