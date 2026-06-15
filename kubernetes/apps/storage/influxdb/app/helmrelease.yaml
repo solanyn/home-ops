@@ -39,6 +39,11 @@ spec:
             image:
               repository: influxdb
               tag: 2.9-alpine
+            command: ["influxd"]
+            args:
+              - --bolt-path=/var/lib/influxdb2/influxd.bolt
+              - --engine-path=/var/lib/influxdb2/engine
+              - --sqlite-path=/var/lib/influxdb2/influxd.sqlite
             env:
               DOCKER_INFLUXDB_INIT_MODE: setup
             envFrom:
@@ -48,6 +53,26 @@ spec:
               allowPrivilegeEscalation: false
               capabilities:
                 drop: ["ALL"]
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8086
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8086
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
             resources:
               requests:
                 cpu: 10m
