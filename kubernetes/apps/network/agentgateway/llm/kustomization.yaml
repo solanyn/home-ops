@@ -5,6 +5,7 @@ resources:
   - ./externalsecret.yaml
   - ./backends.yaml
   - ./routes.yaml
+  - ./router.yaml
   - ./audio.yaml
   - ./embeddings.yaml
   - ./securitypolicy.yaml
