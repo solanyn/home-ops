@@ -1,0 +1,183 @@
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayPolicy
+metadata:
+  name: router
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: ai
+  traffic:
+    phase: PreRouting
+    transformation:
+      request:
+        set:
+          - name: "x-model"
+            value: 'coalesce(json(request.body).model, "")'
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: llm
+spec:
+  parentRefs:
+    - name: ai
+      namespace: network
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^claude-opus-4-6.*"
+      backendRefs:
+        - name: claude-opus
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^claude-opus-4-7.*"
+      backendRefs:
+        - name: claude-opus-4-7
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^claude-opus-4-5.*"
+      backendRefs:
+        - name: claude-opus-4-5
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^claude-sonnet-4-6.*"
+      backendRefs:
+        - name: claude-sonnet-4-6
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^claude-sonnet-4-5.*"
+      backendRefs:
+        - name: claude-sonnet-4-5
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^claude-sonnet-4$"
+      backendRefs:
+        - name: claude-sonnet-4
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^claude-haiku.*"
+      backendRefs:
+        - name: claude-haiku
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^gemma.*"
+      backendRefs:
+        - name: mlx-gemma
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^deepseek.*"
+      backendRefs:
+        - name: deepseek-3-2
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^minimax-m2\\.5.*"
+      backendRefs:
+        - name: minimax-m2-5
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^minimax-m2\\.1.*"
+      backendRefs:
+        - name: minimax-m2-1
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^glm-5.*"
+      backendRefs:
+        - name: glm-5
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^qwen3-coder.*"
+      backendRefs:
+        - name: qwen3-coder-next
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
