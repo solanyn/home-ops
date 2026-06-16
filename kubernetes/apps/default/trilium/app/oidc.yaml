@@ -1,0 +1,11 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: trilium
+spec:
+  callbackUrls:
+    - https://trilium.goyangi.io/callback
+  logoutCallbackUrls:
+    - https://trilium.goyangi.io
+  isPublic: false
