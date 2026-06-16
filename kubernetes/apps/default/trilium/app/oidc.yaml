@@ -8,4 +8,7 @@ spec:
     - https://trilium.goyangi.io/callback
   logoutCallbackUrls:
     - https://trilium.goyangi.io
+  clientID: trilium
   isPublic: false
+  secret:
+    name: trilium-oidc
