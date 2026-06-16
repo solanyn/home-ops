@@ -20,6 +20,7 @@ spec:
               repository: docker.io/lfnovo/open_notebook
               tag: v1-latest
             env:
+              API_URL: https://open-notebook.goyangi.io
               SURREAL_URL: ws://surrealdb.ai.svc.cluster.local:8000/rpc
               SURREAL_NAMESPACE: open_notebook
               SURREAL_DATABASE: open_notebook
