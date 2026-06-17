@@ -1,0 +1,29 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: agentgateway-models-sync
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Replace
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 300
+      template:
+        spec:
+          serviceAccountName: agentgateway-models
+          restartPolicy: OnFailure
+          containers:
+            - name: sync
+              image: registry.k8s.io/kubectl:v1.36.0
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  set -e
+                  MODELS=$(kubectl get httproute llm -o json | \
+                    jq -c '[.spec.rules[].matches[].headers[] | select(.name=="x-model") | .value | ltrimstr("^") | rtrimstr(".*") | rtrimstr("$")] | unique | {object:"list", data: [.[] | {id:., object:"model", owned_by:"agentgateway", created: 0}]}')
+                  kubectl create configmap agentgateway-models \
+                    --from-literal=models.json="$MODELS" \
+                    --dry-run=client -o yaml | kubectl apply -f -
