@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agentgateway-models
+data:
+  models.json: |
+    {"object": "list", "data": []}

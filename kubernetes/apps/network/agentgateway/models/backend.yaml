@@ -1,0 +1,14 @@
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: agentgateway-models
+spec:
+  ai:
+    groups:
+      - providers:
+          - name: models
+            openai:
+              model: models
+            host: agentgateway-models.network.svc.cluster.local
+            port: 8080
