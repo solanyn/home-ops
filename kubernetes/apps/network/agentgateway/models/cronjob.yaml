@@ -23,7 +23,7 @@ spec:
                 - |
                   set -e
                   MODELS=$(kubectl get httproute llm -o json | \
-                    jq -c '[.spec.rules[].matches[].headers[] | select(.name=="x-model") | .value | ltrimstr("^") | rtrimstr(".*") | rtrimstr("$")] | unique | {object:"list", data: [.[] | {id:., object:"model", owned_by:"agentgateway", created: 0}]}')
+                    jq -c '[.spec.rules[].matches[].headers[] | select(.name=="x-model") | .value | ltrimstr("^") | rtrimstr(".*") | rtrimstr("$") | split("\\.") | join(".") | gsub("(?<a>[0-9])-(?<b>[0-9])"; "\(.a).\(.b)")] | unique | {object:"list", data: [.[] | {id:., object:"model", owned_by:"agentgateway", created: 0}]}')
                   kubectl create configmap agentgateway-models \
                     --from-literal=models.json="$MODELS" \
                     --dry-run=client -o yaml | kubectl apply -f -
