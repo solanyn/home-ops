@@ -8,5 +8,6 @@ resources:
   - ./cronjob.yaml
   - ./deployment.yaml
   - ./httproute.yaml
+  - ./policy.yaml
   - ./rbac.yaml
   - ./service.yaml
