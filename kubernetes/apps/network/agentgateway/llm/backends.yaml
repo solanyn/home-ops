@@ -43,7 +43,7 @@ spec:
   ai:
     provider:
       openai:
-        model: mlx-community/gemma-4-e4b-it-4bit
+        model: mlx-community/gemma-4-12B-it-qat-4bit
       host: mac.internal
       port: 8080
 ---
