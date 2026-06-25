@@ -8,3 +8,4 @@ resources:
   - ./audio.yaml
   - ./embeddings.yaml
   - ./securitypolicy.yaml
+  - ./promptguard.yaml
