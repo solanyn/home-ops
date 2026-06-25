@@ -1,7 +1,6 @@
 ---
 # PII protection for external LLM providers
 # Masks sensitive data before it leaves the cluster
-# Does NOT apply to local models (mlx-gemma on mac.internal:8080)
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayPolicy
 metadata:
@@ -11,25 +10,25 @@ spec:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
       name: llm
-  ai:
-    promptGuard:
-      request:
-        # Mask phone numbers (AU + international)
-        - regex:
-            action: Mask
-            rules:
-              - builtin: phoneNumber
-              - builtin: email
-              - builtin: creditCard
-              # Australian TFN (9 digits with optional spaces)
-              - pattern: "\\b\\d{3}\\s?\\d{3}\\s?\\d{3}\\b"
-              # Australian Medicare number
-              - pattern: "\\b\\d{4}\\s?\\d{5}\\s?\\d{1}\\b"
-      response:
-        # Also mask any PII that leaks back in responses
-        - regex:
-            action: Mask
-            rules:
-              - builtin: phoneNumber
-              - builtin: email
-              - builtin: creditCard
+  backend:
+    ai:
+      promptGuard:
+        request:
+          - regex:
+              action: Mask
+              builtins:
+                - PhoneNumber
+                - Email
+                - CreditCard
+              matches:
+                # Australian TFN (9 digits with optional spaces)
+                - "\\b\\d{3}\\s?\\d{3}\\s?\\d{3}\\b"
+                # Australian Medicare number
+                - "\\b\\d{4}\\s?\\d{5}\\s?\\d{1}\\b"
+        response:
+          - regex:
+              action: Mask
+              builtins:
+                - PhoneNumber
+                - Email
+                - CreditCard
