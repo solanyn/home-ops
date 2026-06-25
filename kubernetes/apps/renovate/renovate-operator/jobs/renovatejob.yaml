@@ -19,6 +19,21 @@ spec:
       value: "false"
     - name: RENOVATE_REPOSITORIES
       value: '["solanyn/mono","solanyn/home-ops","solanyn/containers"]'
+    - name: RENOVATE_APP_ID
+      valueFrom:
+        secretKeyRef:
+          name: renovate-secret
+          key: APP_ID
+    - name: RENOVATE_APP_PRIVATE_KEY
+      valueFrom:
+        secretKeyRef:
+          name: renovate-secret
+          key: APP_PRIVATE_KEY
+    - name: RENOVATE_APP_INSTALLATION_ID
+      valueFrom:
+        secretKeyRef:
+          name: renovate-secret
+          key: APP_INSTALLATION_ID
 ---
 apiVersion: renovate-operator.mogenius.com/v1alpha1
 kind: RenovateJob
@@ -44,3 +59,8 @@ spec:
       value: "false"
     - name: RENOVATE_REPOSITORIES
       value: '["andrew/nix-darwin"]'
+    - name: RENOVATE_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: renovate-forgejo-secret
+          key: TOKEN
