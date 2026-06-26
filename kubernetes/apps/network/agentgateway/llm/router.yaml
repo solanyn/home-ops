@@ -56,7 +56,7 @@ spec:
           headers:
             - type: RegularExpression
               name: x-model
-              value: "^gemma.*"
+              value: "^qwen.*"
       backendRefs:
         - name: mlx-qwen
           group: agentgateway.dev
