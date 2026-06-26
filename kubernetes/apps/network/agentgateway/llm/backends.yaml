@@ -38,12 +38,12 @@ spec:
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: mlx-gemma
+  name: mlx-qwen
 spec:
   ai:
     provider:
       openai:
-        model: mlx-community/gemma-4-12B-it-qat-4bit
+        model: mlx-community/Qwen3.5-9B-4bit
       host: mac.internal
       port: 8080
 ---
