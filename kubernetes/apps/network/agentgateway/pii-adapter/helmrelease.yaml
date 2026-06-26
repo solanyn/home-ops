@@ -17,23 +17,41 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/pii-adapter
-              tag: latest
+              tag: 2026.06.22
             env:
               PRESIDIO_ANALYZER_URL: http://localhost:3000
               LISTEN_ADDR: :8000
             probes:
-              liveness: &probes
+              startup:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /health
                     port: 8000
-                  initialDelaySeconds: 5
                   periodSeconds: 10
-                  timeoutSeconds: 1
+                  timeoutSeconds: 6
+                  failureThreshold: 30
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8000
+                  periodSeconds: 20
+                  timeoutSeconds: 6
                   failureThreshold: 3
-              readiness: *probes
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8000
+                  periodSeconds: 10
+                  timeoutSeconds: 6
+                  failureThreshold: 3
             resources:
               requests:
                 cpu: 50m
@@ -42,8 +60,8 @@ spec:
                 memory: 64Mi
           presidio:
             image:
-              repository: mcr.microsoft.com/presidio-analyzer
-              tag: latest
+              repository: ghcr.io/solanyn/presidio-analyzer-sm
+              tag: 2.2.362
             probes:
               startup:
                 enabled: true
@@ -53,6 +71,7 @@ spec:
                     path: /health
                     port: 3000
                   periodSeconds: 10
+                  timeoutSeconds: 5
                   failureThreshold: 30
               readiness:
                 enabled: true
@@ -62,14 +81,14 @@ spec:
                     path: /health
                     port: 3000
                   periodSeconds: 10
-                  timeoutSeconds: 1
+                  timeoutSeconds: 5
                   failureThreshold: 3
             resources:
               requests:
                 cpu: 100m
-                memory: 1Gi
+                memory: 256Mi
               limits:
-                memory: 2560Mi
+                memory: 512Mi
     service:
       app:
         controller: pii-adapter
