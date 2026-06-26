@@ -58,7 +58,7 @@ spec:
               name: x-model
               value: "^gemma.*"
       backendRefs:
-        - name: mlx-gemma
+        - name: mlx-qwen
           group: agentgateway.dev
           kind: AgentgatewayBackend
     - matches:
