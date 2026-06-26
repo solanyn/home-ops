@@ -32,30 +32,6 @@ spec:
           headers:
             - type: RegularExpression
               name: x-model
-              value: "^claude-opus-4.6.*"
-      backendRefs:
-        - name: claude-opus
-          group: agentgateway.dev
-          kind: AgentgatewayBackend
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /v1/chat/completions
-          headers:
-            - type: RegularExpression
-              name: x-model
-              value: "^claude-haiku.*"
-      backendRefs:
-        - name: claude-haiku
-          group: agentgateway.dev
-          kind: AgentgatewayBackend
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /v1/chat/completions
-          headers:
-            - type: RegularExpression
-              name: x-model
               value: "^qwen.*"
       backendRefs:
         - name: mlx-qwen
