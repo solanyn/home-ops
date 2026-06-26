@@ -50,71 +50,17 @@ spec:
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend
 metadata:
-  name: claude-sonnet-4-6
+  name: minimax
 spec:
   ai:
     groups:
       - providers:
-          - name: kiro
-            openai:
-              model: claude-sonnet-4.6
-            host: mac.internal
-            port: 8001
+          - name: minimax
+            openai: {}
+            host: api.minimaxi.chat
+            port: 443
             policies:
               auth:
                 secretRef:
-                  name: kiro-auth
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: claude-opus-4-5
-spec:
-  ai:
-    groups:
-      - providers:
-          - name: kiro
-            openai:
-              model: claude-opus-4.5
-            host: mac.internal
-            port: 8001
-            policies:
-              auth:
-                secretRef:
-                  name: kiro-auth
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: minimax-m2-5
-spec:
-  ai:
-    groups:
-      - providers:
-          - name: kiro
-            openai:
-              model: minimax-m2.5
-            host: mac.internal
-            port: 8001
-            policies:
-              auth:
-                secretRef:
-                  name: kiro-auth
----
-apiVersion: agentgateway.dev/v1alpha1
-kind: AgentgatewayBackend
-metadata:
-  name: qwen3-coder-next
-spec:
-  ai:
-    groups:
-      - providers:
-          - name: kiro
-            openai:
-              model: qwen3-coder-next
-            host: mac.internal
-            port: 8001
-            policies:
-              auth:
-                secretRef:
-                  name: kiro-auth
+                  name: minimax-auth
+              tls: {}
