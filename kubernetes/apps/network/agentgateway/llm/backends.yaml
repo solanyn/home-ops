@@ -28,3 +28,21 @@ spec:
                 secretRef:
                   name: minimax-auth
               tls: {}
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: deepseek
+spec:
+  ai:
+    groups:
+      - providers:
+          - name: deepseek
+            openai: {}
+            host: api.deepseek.com
+            port: 443
+            policies:
+              auth:
+                secretRef:
+                  name: deepseek-auth
+              tls: {}
