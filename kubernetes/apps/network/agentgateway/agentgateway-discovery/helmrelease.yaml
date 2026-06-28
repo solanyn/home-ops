@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: agentgateway-discovery
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: agentgateway-discovery
+  values:
+    controllers:
+      agentgateway-discovery:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/solanyn/agentgateway-discovery
+              tag: 2026.06.27
+            env:
+              - name: DISCOVERY_PROVIDER_MLX_URL
+                value: "http://mac.internal:8080/v1/models"
+              - name: DISCOVERY_PROVIDER_MINIMAX_URL
+                value: "https://api.minimaxi.chat/v1/models"
+              - name: DISCOVERY_PROVIDER_MINIMAX_API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: minimax-auth
+                    key: MINIMAX_API_KEY
+              - name: DISCOVERY_PROVIDER_DEEPSEEK_URL
+                value: "https://api.deepseek.com/v1/models"
+              - name: DISCOVERY_PROVIDER_DEEPSEEK_API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: deepseek-auth
+                    key: DEEPSEEK_API_KEY
+            probes:
+              liveness:
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8080
+                  periodSeconds: 20
+                  failureThreshold: 3
+              readiness:
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8080
+                  periodSeconds: 10
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+            securityContext:
+              runAsNonRoot: true
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+              seccompProfile:
+                type: RuntimeDefault
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+    service:
+      app:
+        controller: agentgateway-discovery
+        ports:
+          http:
+            port: 8080
