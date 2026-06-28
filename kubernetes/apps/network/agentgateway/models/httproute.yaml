@@ -13,6 +13,5 @@ spec:
             type: Exact
             value: /v1/models
       backendRefs:
-        - name: agentgateway-models
-          group: agentgateway.dev
-          kind: AgentgatewayBackend
+        - name: agentgateway-discovery
+          port: 8080
