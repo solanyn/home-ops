@@ -9,4 +9,5 @@ components:
 
 resources:
   - ./namespace.yaml
+  - ./hermes/ks.yaml
   - ./open-notebook/ks.yaml
