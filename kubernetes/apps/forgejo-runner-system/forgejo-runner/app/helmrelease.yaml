@@ -26,8 +26,11 @@ spec:
 
     runner:
       config:
-        create: true
-        existingInitSecret: forgejo-runner-init
+        # Pre-registered against Forgejo as a system-scope runner via the
+        # admin API. The .runner file lives in the forgejo-runner-config
+        # Secret (managed out-of-band by the bootstrap one-shot).
+        create: false
+        existingSecret: forgejo-runner-config
         instance: https://forgejo.goyangi.io
         name: forgejo-runner
         file:
