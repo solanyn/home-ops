@@ -17,7 +17,7 @@ resources:
   - ./envoy-gateway/ks.yaml
   - ./flux-operator-mcp/ks.yaml
   - ./agentgateway/ks.yaml
-  - ./agentgateway/models-sync/ks.yaml
+  - ./agentgateway/discovery/ks.yaml
   - ./smtp-relay/ks.yaml
   - ./unifi-dns/ks.yaml
   - ./opencode/ks.yaml

@@ -6,8 +6,8 @@ resources:
     - ./ocirepository.yaml
     - ./helmrelease.yaml
 configMapGenerator:
-    - name: sync-config
+    - name: discovery-config
       files:
-          - sync.sh=./resources/sync.sh
+          - discovery.sh=./resources/discovery.sh
 generatorOptions:
     disableNameSuffixHash: true
