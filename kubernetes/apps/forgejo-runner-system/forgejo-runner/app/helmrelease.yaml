@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: forgejo-runner
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: forgejo-runner
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    knownLastVersion: true
+    replicaCount: 1
+
+    image:
+      # Use chart defaults (code.forgejo.org/forgejo/runner:<appVersion>)
+      pullPolicy: IfNotPresent
+
+    runner:
+      config:
+        create: true
+        existingInitSecret: forgejo-runner-init
+        instance: https://forgejo.goyangi.io
+        name: forgejo-runner
+        file:
+          log:
+            level: info
+            job_level: info
+          runner:
+            file: .runner
+            capacity: 1
+            insecure: false
+            timeout: 3h
+
+    securityContext:
+      privileged: true
+
+    dind:
+      image:
+        registry: docker
+        repository: docker
+        tag: 27-dind
+        pullPolicy: IfNotPresent
+      resources:
+        requests:
+          cpu: 50m
+          memory: 256Mi
+        limits:
+          cpu: 500m
+          memory: 1Gi
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 256Mi
+
+    nodeSelector:
+      kubernetes.io/os: linux
