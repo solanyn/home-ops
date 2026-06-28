@@ -22,8 +22,20 @@ spec:
               args:
                 - |
                   set -e
-                  MODELS=$(kubectl get httproute llm -o json | \
-                    jq -c '[.spec.rules[].matches[].headers[] | select(.name=="x-model") | .value | ltrimstr("^") | rtrimstr(".*") | rtrimstr("$") | split("\\.") | join(".") | gsub("(?<a>[0-9])-(?<b>[0-9])"; "\(.a).\(.b)")] | unique | {object:"list", data: [.[] | {id:., object:"model", owned_by:"agentgateway", created: 0}]}')
+                  MODELS='{"object":"list","data":[
+                    {"id":"mlx-community/Qwen3.5-9B-4bit","object":"model","owned_by":"agentgateway","created":0},
+                    {"id":"MiniMax-M3","object":"model","owned_by":"agentgateway","created":0},
+                    {"id":"MiniMax-M2.7","object":"model","owned_by":"agentgateway","created":0},
+                    {"id":"MiniMax-M2.7-highspeed","object":"model","owned_by":"agentgateway","created":0},
+                    {"id":"MiniMax-M2.5","object":"model","owned_by":"agentgateway","created":0},
+                    {"id":"MiniMax-M2.5-highspeed","object":"model","owned_by":"agentgateway","created":0},
+                    {"id":"MiniMax-M2.1","object":"model","owned_by":"agentgateway","created":0},
+                    {"id":"MiniMax-M2.1-highspeed","object":"model","owned_by":"agentgateway","created":0},
+                    {"id":"MiniMax-M2","object":"model","owned_by":"agentgateway","created":0},
+                    {"id":"deepseek-v4-flash","object":"model","owned_by":"agentgateway","created":0},
+                    {"id":"deepseek-v4-pro","object":"model","owned_by":"agentgateway","created":0}
+                  ]}'
+                  echo "$MODELS" | jq -e . > /dev/null
                   kubectl create configmap agentgateway-models \
                     --from-literal=models.json="$MODELS" \
                     --dry-run=client -o yaml | kubectl apply -f -
