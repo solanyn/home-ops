@@ -10,4 +10,3 @@ resources:
   - ./securitypolicy.yaml
   - ./promptguard.yaml
   - ./hermes.yaml
-  - ./hermes-goyangi-io.yaml
