@@ -10,7 +10,7 @@ spec:
   diskSizeGb: 200
   diskType: pd-standard
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-  # talos-version: v1.13.2
+  # talos-version: v1.13.5
   image: projects/${GCP_PROJECT_ID}/global/images/talos-tailscale-v1-13-2
   machineToken: ${MACHINE_TOKEN}
   machineCaCrt: ${MACHINE_CA_CRT}
