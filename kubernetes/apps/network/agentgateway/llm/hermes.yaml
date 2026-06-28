@@ -1,0 +1,58 @@
+---
+# Hermes Agent — public ingress for the bluebubbles webhook.
+# The Mac (192.168.10.30 = mac-mini) runs the Hermes gateway process. The cluster
+# gateway (`ai` Gateway on gateway.goyangi.io) terminates TLS with the
+# `goyangi-io-tls` wildcard cert and routes inbound traffic to the Mac over LAN.
+#
+# Hermes's gateway is a daemon, NOT an HTTP server. The bluebubbles webhook
+# listener is the only inbound HTTP path it exposes (bound on 0.0.0.0:8645 via
+# BLUEBUBBLES_WEBHOOK_HOST/PORT in ~/.hermes/.env, configured by modules/hermes.nix).
+#
+# BlueBubbles server (running on the bridge Mac) pushes events to
+# https://bluebubbles.goyangi.io/bluebubbles-webhook?password=... — the gateway
+# terminates TLS, forwards to the Mac, and Hermes authenticates the password
+# from the query string against ~/.hermes/.env.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: bluebubbles-webhook
+spec:
+  ports:
+    - name: http
+      port: 8645
+      targetPort: 8645
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: bluebubbles-webhook-1
+  labels:
+    kubernetes.io/service-name: bluebubbles-webhook
+addressType: IPv4
+ports:
+  - name: http
+    port: 8645
+    protocol: TCP
+endpoints:
+  - addresses:
+      - "192.168.10.30"
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: bluebubbles-goyangi-io
+spec:
+  hostnames:
+    - "bluebubbles.goyangi.io"
+  parentRefs:
+    - name: ai
+      namespace: network
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /bluebubbles-webhook
+      backendRefs:
+        - name: bluebubbles-webhook
+          port: 8645
