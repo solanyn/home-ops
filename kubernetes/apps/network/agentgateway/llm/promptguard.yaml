@@ -25,6 +25,11 @@ spec:
                 - "\\b\\d{3}\\s?\\d{3}\\s?\\d{3}\\b"
                 # Australian Medicare number
                 - "\\b\\d{4}\\s?\\d{5}\\s?\\d{1}\\b"
+          - webhook:
+              failureMode: FailOpen
+              backendRef:
+                name: pii-adapter
+                port: 8000
         response:
           - regex:
               action: Mask
@@ -32,3 +37,8 @@ spec:
                 - PhoneNumber
                 - Email
                 - CreditCard
+          - webhook:
+              failureMode: FailOpen
+              backendRef:
+                name: pii-adapter
+                port: 8000
