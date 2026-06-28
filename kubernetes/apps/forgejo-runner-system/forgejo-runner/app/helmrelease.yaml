@@ -48,8 +48,8 @@ spec:
 
     dind:
       image:
-        registry: docker
-        repository: docker
+        registry: docker.io
+        repository: library/docker
         tag: 27-dind
         pullPolicy: IfNotPresent
       resources:
