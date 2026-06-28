@@ -49,3 +49,15 @@ spec:
         - name: minimax
           group: agentgateway.dev
           kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^deepseek.*"
+      backendRefs:
+        - name: deepseek
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
