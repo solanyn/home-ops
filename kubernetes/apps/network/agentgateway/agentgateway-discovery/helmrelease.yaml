@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/agentgateway-discovery
-              tag: latest
+              tag: 2026.06.26
             env:
               - name: DISCOVERY_PROVIDER_MLX_URL
                 value: "http://mac.internal:8080/v1/models"
