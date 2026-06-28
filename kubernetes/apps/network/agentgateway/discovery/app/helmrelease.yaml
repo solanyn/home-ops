@@ -41,7 +41,8 @@ spec:
                                 memory: 64Mi
                 pod:
                     restartPolicy: OnFailure
-                    serviceAccountName: agentgateway-models
+                serviceAccount:
+                    name: agentgateway-models
         defaultPodOptions:
             securityContext:
                 seccompProfile: { type: RuntimeDefault }
