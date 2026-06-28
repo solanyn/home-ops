@@ -9,4 +9,3 @@ resources:
   - ./embeddings.yaml
   - ./securitypolicy.yaml
   - ./promptguard.yaml
-  - ./hermes.yaml
