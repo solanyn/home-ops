@@ -22,20 +22,31 @@ spec:
               args:
                 - |
                   set -e
-                  MODELS='{"object":"list","data":[
-                    {"id":"mlx-community/Qwen3.5-9B-4bit","object":"model","owned_by":"agentgateway","created":0},
-                    {"id":"MiniMax-M3","object":"model","owned_by":"agentgateway","created":0},
-                    {"id":"MiniMax-M2.7","object":"model","owned_by":"agentgateway","created":0},
-                    {"id":"MiniMax-M2.7-highspeed","object":"model","owned_by":"agentgateway","created":0},
-                    {"id":"MiniMax-M2.5","object":"model","owned_by":"agentgateway","created":0},
-                    {"id":"MiniMax-M2.5-highspeed","object":"model","owned_by":"agentgateway","created":0},
-                    {"id":"MiniMax-M2.1","object":"model","owned_by":"agentgateway","created":0},
-                    {"id":"MiniMax-M2.1-highspeed","object":"model","owned_by":"agentgateway","created":0},
-                    {"id":"MiniMax-M2","object":"model","owned_by":"agentgateway","created":0},
-                    {"id":"deepseek-v4-flash","object":"model","owned_by":"agentgateway","created":0},
-                    {"id":"deepseek-v4-pro","object":"model","owned_by":"agentgateway","created":0}
-                  ]}'
-                  echo "$MODELS" | jq -e . > /dev/null
+                  # Query each upstream /v1/models and merge results
+                  fetch_models() {
+                    local url="$1"
+                    local auth_header="$2"
+                    if [ -n "$auth_header" ]; then
+                      curl -fsSL --max-time 10 -H "Authorization: Bearer $auth_header" "$url"
+                    else
+                      curl -fsSL --max-time 10 "$url"
+                    fi
+                  }
+                  MLX=$(fetch_models "http://mac.internal:8080/v1/models" "")
+                  MINIMAX=$(fetch_models "https://api.minimaxi.chat/v1/models" "$(echo "$MINIMAX_AUTH" | sed 's/^Bearer //')")
+                  DEEPSEEK=$(fetch_models "https://api.deepseek.com/v1/models" "$(echo "$DEEPSEEK_AUTH" | sed 's/^Bearer //')")
+                  MODELS=$(jq -s '{object:"list", data: [.[].data[] | {id:.id, object:"model", owned_by:(.owned_by // "agentgateway"), created:(.created // 0)}] | unique_by(.id)}' <<<"$MLX"$'\n'"$MINIMAX"$'\n'"$DEEPSEEK")
                   kubectl create configmap agentgateway-models \
                     --from-literal=models.json="$MODELS" \
                     --dry-run=client -o yaml | kubectl apply -f -
+              env:
+                - name: MINIMAX_AUTH
+                  valueFrom:
+                    secretKeyRef:
+                      name: minimax-auth
+                      key: Authorization
+                - name: DEEPSEEK_AUTH
+                  valueFrom:
+                    secretKeyRef:
+                      name: deepseek-auth
+                      key: Authorization
