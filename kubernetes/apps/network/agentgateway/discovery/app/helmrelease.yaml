@@ -13,7 +13,7 @@ spec:
             discovery:
                 type: cronjob
                 cronjob:
-                    schedule: "*/5 * * * *"
+                    schedule: "*/15 * * * *"
                     concurrencyPolicy: Replace
                     successfulJobsHistory: 1
                     failedJobsHistory: 3
