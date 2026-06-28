@@ -17,7 +17,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/pii-adapter
-              tag: 2026.06.22
+              tag: 2026.06.23
             env:
               PRESIDIO_ANALYZER_URL: http://localhost:3000
               LISTEN_ADDR: :8000
