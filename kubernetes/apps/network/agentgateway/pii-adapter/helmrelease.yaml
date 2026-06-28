@@ -1,0 +1,97 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pii-adapter
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: pii-adapter
+  interval: 1h
+  values:
+    controllers:
+      pii-adapter:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/solanyn/pii-adapter
+              tag: 2026.06.23
+            env:
+              PRESIDIO_ANALYZER_URL: http://localhost:3000
+              LISTEN_ADDR: :8000
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8000
+                  periodSeconds: 10
+                  timeoutSeconds: 6
+                  failureThreshold: 30
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8000
+                  periodSeconds: 20
+                  timeoutSeconds: 6
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8000
+                  periodSeconds: 10
+                  timeoutSeconds: 6
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 50m
+                memory: 64Mi
+              limits:
+                memory: 64Mi
+          presidio:
+            image:
+              repository: ghcr.io/solanyn/presidio-analyzer-sm
+              tag: 2.2.362
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3000
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 30
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3000
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 512Mi
+    service:
+      app:
+        controller: pii-adapter
+        ports:
+          http:
+            port: 8000
