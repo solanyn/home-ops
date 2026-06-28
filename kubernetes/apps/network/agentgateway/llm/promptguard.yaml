@@ -1,6 +1,4 @@
 ---
-# PII protection for external LLM providers
-# Masks sensitive data before it leaves the cluster
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayPolicy
 metadata:
