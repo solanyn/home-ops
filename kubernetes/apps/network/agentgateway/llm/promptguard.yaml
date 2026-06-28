@@ -26,7 +26,7 @@ spec:
                 # Australian Medicare number
                 - "\\b\\d{4}\\s?\\d{5}\\s?\\d{1}\\b"
           - webhook:
-              failureMode: FailOpen
+              failureMode: FailClosed
               backendRef:
                 name: pii-adapter
                 port: 8000
@@ -38,7 +38,7 @@ spec:
                 - Email
                 - CreditCard
           - webhook:
-              failureMode: FailOpen
+              failureMode: FailClosed
               backendRef:
                 name: pii-adapter
                 port: 8000
