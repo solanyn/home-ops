@@ -65,6 +65,8 @@ spec:
   dependsOn:
     - name: agentgateway-gateway
       namespace: network
+    - name: agentgateway-pii-adapter
+      namespace: network
   interval: 1h
   path: ./kubernetes/apps/network/agentgateway/llm
   prune: true
@@ -86,6 +88,25 @@ spec:
       namespace: network
   interval: 1h
   path: ./kubernetes/apps/network/agentgateway/models
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: agentgateway-pii-adapter
+spec:
+  targetNamespace: network
+  dependsOn:
+    - name: agentgateway-gateway
+      namespace: network
+  interval: 1h
+  path: ./kubernetes/apps/network/agentgateway/pii-adapter
   prune: true
   sourceRef:
     kind: GitRepository
