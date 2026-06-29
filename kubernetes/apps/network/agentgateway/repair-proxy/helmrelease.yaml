@@ -17,12 +17,13 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/repair-grpc
-              tag: 2026.06.38
+              tag: 2026.06.39
             env:
               LOG_LEVEL: debug
               METRICS_ADDR: 0.0.0.0:9090
-              MODE: webhook
-              WEBHOOK_ADDR: 0.0.0.0:8080
+              MODE: proxy
+              PROXY_ADDR: 0.0.0.0:8080
+              UPSTREAM: https://agentgateway-proxy.network.svc:443
             probes:
               liveness:
                 enabled: true

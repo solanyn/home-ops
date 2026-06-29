@@ -12,11 +12,6 @@ spec:
     ai:
       promptGuard:
         request:
-          - webhook:
-              failureMode: FailOpen
-              backendRef:
-                name: repair-grpc
-                port: 8080
           - regex:
               action: Mask
               builtins:
