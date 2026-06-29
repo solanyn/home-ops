@@ -13,7 +13,7 @@ spec:
       promptGuard:
         request:
           - webhook:
-              failureMode: Ignore
+              failureMode: FailOpen
               backendRef:
                 name: repair-grpc
                 port: 8080
