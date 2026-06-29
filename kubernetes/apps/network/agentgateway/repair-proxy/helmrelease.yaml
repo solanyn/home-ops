@@ -17,7 +17,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/repair-grpc
-              tag: 2026.06.34
+              tag: 2026.06.35@sha256:f836ee2d9c567dc922934e4c3cfe703179f46a218baac2f79eb29d0731c33ebe
             env:
               LISTEN_ADDR: 0.0.0.0:4444
               LOG_LEVEL: debug
