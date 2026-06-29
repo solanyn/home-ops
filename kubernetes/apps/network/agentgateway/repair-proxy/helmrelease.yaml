@@ -17,11 +17,11 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/repair-grpc
-              tag: 2026.06.35@sha256:f836ee2d9c567dc922934e4c3cfe703179f46a218baac2f79eb29d0731c33ebe
+              tag: 2026.06.36@sha256:af2f97c931eddc63302878a634bdb4e478044e4e4b87f083e4cdf2d92e6c1ac3
             env:
-              LISTEN_ADDR: 0.0.0.0:4444
               LOG_LEVEL: debug
               METRICS_ADDR: 0.0.0.0:9090
+              MODE: webhook
               WEBHOOK_ADDR: 0.0.0.0:8080
             probes:
               liveness:
@@ -64,10 +64,6 @@ spec:
       app:
         controller: repair-grpc
         ports:
-          grpc:
-            port: 4444
-            protocol: TCP
-            appProtocol: kubernetes.io/h2c
           webhook:
             port: 8080
           metrics:
