@@ -1,0 +1,22 @@
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayPolicy
+metadata:
+  name: repair-tool-calls
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: ai
+  traffic:
+    extProc:
+      backendRef:
+        name: repair-grpc
+        port: 4444
+      processingOptions:
+        requestHeaderMode: Skip
+        responseHeaderMode: Skip
+        requestBodyMode: FullDuplexStreamed
+        responseBodyMode: FullDuplexStreamed
+        requestTrailerMode: Skip
+        responseTrailerMode: Skip
