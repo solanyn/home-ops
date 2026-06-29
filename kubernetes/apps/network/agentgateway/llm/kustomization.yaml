@@ -9,3 +9,4 @@ resources:
   - ./embeddings.yaml
   - ./securitypolicy.yaml
   - ./promptguard.yaml
+  - ./repair-policy.yaml
