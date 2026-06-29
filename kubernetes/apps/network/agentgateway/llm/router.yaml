@@ -61,3 +61,21 @@ spec:
         - name: deepseek
           group: agentgateway.dev
           kind: AgentgatewayBackend
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v1/chat/completions
+          headers:
+            - type: RegularExpression
+              name: x-model
+              value: "^opencode-go/"
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /zen/go/v1/chat/completions
+      backendRefs:
+        - name: opencode
+          group: agentgateway.dev
+          kind: AgentgatewayBackend
