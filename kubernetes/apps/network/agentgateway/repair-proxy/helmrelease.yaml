@@ -22,6 +22,7 @@ spec:
               LISTEN_ADDR: 0.0.0.0:4444
               LOG_LEVEL: debug
               METRICS_ADDR: 0.0.0.0:9090
+              WEBHOOK_ADDR: 0.0.0.0:8080
             probes:
               liveness:
                 enabled: true
@@ -67,6 +68,8 @@ spec:
             port: 4444
             protocol: TCP
             appProtocol: kubernetes.io/h2c
+          webhook:
+            port: 8080
           metrics:
             port: 9090
     serviceMonitor:
