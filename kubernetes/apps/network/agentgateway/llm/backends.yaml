@@ -46,3 +46,21 @@ spec:
                 secretRef:
                   name: deepseek-auth
               tls: {}
+---
+apiVersion: agentgateway.dev/v1alpha1
+kind: AgentgatewayBackend
+metadata:
+  name: opencode
+spec:
+  ai:
+    groups:
+      - providers:
+          - name: opencode
+            openai: {}
+            host: opencode.ai
+            port: 443
+            policies:
+              auth:
+                secretRef:
+                  name: opencode-auth
+              tls: {}
