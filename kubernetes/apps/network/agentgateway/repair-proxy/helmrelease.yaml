@@ -17,7 +17,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/repair-grpc
-              tag: d7714de
+              tag: latest
             env:
               LOG_LEVEL: debug
               METRICS_ADDR: 0.0.0.0:9090
