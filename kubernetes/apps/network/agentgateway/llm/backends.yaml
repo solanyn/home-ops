@@ -7,9 +7,9 @@ spec:
   ai:
     provider:
       openai:
-        model: mlx-community/Qwen3.5-9B-4bit
-      host: mac.internal
-      port: 8080
+        model: Qwen3.5-9B-4bit
+      host: qwen3.5-9b.ai.svc.cluster.local
+      port: 8000
 ---
 apiVersion: agentgateway.dev/v1alpha1
 kind: AgentgatewayBackend

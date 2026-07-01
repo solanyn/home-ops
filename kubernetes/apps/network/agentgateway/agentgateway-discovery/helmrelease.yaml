@@ -19,7 +19,7 @@ spec:
               tag: 2026.06.27
             env:
               - name: DISCOVERY_PROVIDER_MLX_URL
-                value: "http://mac.internal:8080/v1/models"
+                value: "http://qwen3.5-9b.ai.svc.cluster.local:8000/v1/models"
               - name: DISCOVERY_PROVIDER_MINIMAX_URL
                 value: "https://api.minimaxi.chat/v1/models"
               - name: DISCOVERY_PROVIDER_MINIMAX_API_KEY
