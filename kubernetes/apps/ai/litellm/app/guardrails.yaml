@@ -2,6 +2,30 @@
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMGuardrail
 metadata:
+    name: presidio-pre
+spec:
+    guardrailName: presidio-pii-pre
+    guardrail: presidio
+    mode: pre_call
+    defaultOn: true
+    apiBase: http://presidio.ai.svc.cluster.local:3000
+    params:
+        pii_entities_config:
+            CREDIT_CARD: MASK
+            IBAN_CODE: MASK
+            AU_TFN: MASK
+            AU_MEDICARE: MASK
+            EMAIL_ADDRESS: MASK
+            PHONE_NUMBER: MASK
+            US_SSN: MASK
+            US_DRIVER_LICENSE: MASK
+            AWS_ACCESS_KEY: MASK
+            AWS_SECRET_KEY: MASK
+            GITHUB_TOKEN: MASK
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMGuardrail
+metadata:
     name: presidio-post
 spec:
     guardrailName: presidio-pii-post
@@ -11,19 +35,14 @@ spec:
     apiBase: http://presidio.ai.svc.cluster.local:3000
     params:
         pii_entities_config:
-            # Financial
             CREDIT_CARD: MASK
             IBAN_CODE: MASK
-            # Australian
             AU_TFN: MASK
             AU_MEDICARE: MASK
-            # Contact
             EMAIL_ADDRESS: MASK
             PHONE_NUMBER: MASK
-            # US IDs
             US_SSN: MASK
             US_DRIVER_LICENSE: MASK
-            # Credentials
             AWS_ACCESS_KEY: MASK
             AWS_SECRET_KEY: MASK
             GITHUB_TOKEN: MASK
