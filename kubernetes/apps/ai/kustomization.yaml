@@ -10,4 +10,8 @@ components:
 resources:
   - ./namespace.yaml
   - ./hermes/ks.yaml
+  - ./litellm-operator/ks.yaml
+  - ./litellm/ks.yaml
+  - ./mlx/ks.yaml
   - ./open-notebook/ks.yaml
+  - ./presidio/ks.yaml
