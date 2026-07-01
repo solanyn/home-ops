@@ -33,7 +33,7 @@ spec:
               ICEBERG_CATALOG_URI: http://lakekeeper.storage.svc.cluster.local:8181/catalog
               R2_ENDPOINT: https://$(CLOUDFLARE_ACCOUNT_ID).r2.cloudflarestorage.com
               VGC_CALC_URL: http://vgc-calc.default.svc.cluster.local:8080
-              AGENTGATEWAY_URL: https://gateway.goyangi.io/v1/qwen3-9b
+              AGENTGATEWAY_URL: https://gateway.goyangi.io/v1
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"

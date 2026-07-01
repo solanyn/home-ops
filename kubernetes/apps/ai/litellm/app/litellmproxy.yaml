@@ -1,0 +1,24 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMProxy
+metadata:
+    name: main
+spec:
+    replicas: 2
+    generalSettings:
+        master_key: os.environ/LITELLM_MASTER_KEY
+        database_url: os.environ/DATABASE_URL
+    routerSettings:
+        routing_strategy: simple-shuffle
+    callbacks:
+        success:
+            - prometheus
+    envFrom:
+        - secretRef:
+              name: litellm-secret
+    route:
+        hostnames:
+            - litellm.goyangi.io
+        parentRefs:
+            - name: envoy-external
+              namespace: network
