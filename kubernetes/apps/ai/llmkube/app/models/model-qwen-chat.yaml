@@ -18,4 +18,5 @@ metadata:
     name: qwen3.5-9b
 spec:
     modelRef: qwen3.5-9b-mlx
+    mode: chat
     replicas: 1
