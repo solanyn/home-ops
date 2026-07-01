@@ -8,10 +8,7 @@ spec:
     guardrail: presidio
     mode: pre_call
     defaultOn: true
-    apiBase: http://pii-adapter.network.svc.cluster.local:3000
-    params:
-        mock_redacted_text:
-            DEFAULT: "[REDACTED]"
+    apiBase: http://presidio.ai.svc.cluster.local:3000
 ---
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMGuardrail
@@ -22,7 +19,4 @@ spec:
     guardrail: presidio
     mode: post_call
     defaultOn: true
-    apiBase: http://pii-adapter.network.svc.cluster.local:3000
-    params:
-        mock_redacted_text:
-            DEFAULT: "[REDACTED]"
+    apiBase: http://presidio.ai.svc.cluster.local:3000
