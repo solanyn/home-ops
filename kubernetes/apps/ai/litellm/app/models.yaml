@@ -24,7 +24,41 @@ metadata:
 spec:
     modelName: minimax-m2.5
     params:
-        model: openai/minimax-m2.5
+        model: minimax/MiniMax-M2.5
+        apiBase: https://api.minimaxi.chat/v1
+        apiKeyRef:
+            name: minimax-auth
+            key: MINIMAX_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: minimax-m3
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: minimax-m3
+    params:
+        model: minimax/MiniMax-M3
+        apiBase: https://api.minimaxi.chat/v1
+        apiKeyRef:
+            name: minimax-auth
+            key: MINIMAX_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: minimax-m2.7
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: minimax-m2.7
+    params:
+        model: minimax/MiniMax-M2.7
         apiBase: https://api.minimaxi.chat/v1
         apiKeyRef:
             name: minimax-auth
@@ -41,7 +75,44 @@ metadata:
 spec:
     modelName: deepseek-chat
     params:
-        model: openai/deepseek-chat
+        # Note: LiteLLM deepseek/ provider maps deepseek-chat for all models
+        # To use v4-pro or v4-flash, set model: deepseek-chat and pass
+        # the specific model name in the request body's model field
+        model: deepseek/deepseek-chat
+        apiBase: https://api.deepseek.com
+        apiKeyRef:
+            name: deepseek-auth
+            key: DEEPSEEK_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: deepseek-v4-pro
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: deepseek-v4-pro
+    params:
+        model: deepseek/deepseek-chat
+        apiBase: https://api.deepseek.com
+        apiKeyRef:
+            name: deepseek-auth
+            key: DEEPSEEK_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: deepseek-v4-flash
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: deepseek-v4-flash
+    params:
+        model: deepseek/deepseek-chat
         apiBase: https://api.deepseek.com
         apiKeyRef:
             name: deepseek-auth
