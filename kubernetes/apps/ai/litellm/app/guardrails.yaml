@@ -10,30 +10,7 @@ spec:
     defaultOn: true
     apiBase: http://presidio.ai.svc.cluster.local:3000
     params:
-        pii_entities_config:
-            CREDIT_CARD: MASK
-            IBAN_CODE: MASK
-            AU_TFN: MASK
-            AU_MEDICARE: MASK
-            EMAIL_ADDRESS: MASK
-            PHONE_NUMBER: MASK
-            US_SSN: MASK
-            US_DRIVER_LICENSE: MASK
-            AWS_ACCESS_KEY: MASK
-            AWS_SECRET_KEY: MASK
-            GITHUB_TOKEN: MASK
----
-apiVersion: litellm.home-operations.com/v1alpha1
-kind: LiteLLMGuardrail
-metadata:
-    name: presidio-post
-spec:
-    guardrailName: presidio-pii-post
-    guardrail: presidio
-    mode: post_call
-    defaultOn: true
-    apiBase: http://presidio.ai.svc.cluster.local:3000
-    params:
+        output_parse_pii: true
         pii_entities_config:
             CREDIT_CARD: MASK
             IBAN_CODE: MASK
