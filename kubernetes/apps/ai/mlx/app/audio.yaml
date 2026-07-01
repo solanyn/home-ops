@@ -54,7 +54,7 @@ spec:
               - path:
                     type: PathPrefix
                     value: /v1/audio/transcriptions
-              backendRefs:
+          backendRefs:
               - name: mlx-audio
                 port: 8001
 ---
