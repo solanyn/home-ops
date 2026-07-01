@@ -1,0 +1,21 @@
+---
+apiVersion: inference.llmkube.dev/v1alpha1
+kind: Model
+metadata:
+    name: qwen3.5-9b-mlx
+spec:
+    source: /Users/andrew/.omlx/models/Qwen3.5-9B-4bit
+    format: mlx
+    hardware:
+        accelerator: metal
+        gpu:
+            enabled: true
+            count: 1
+---
+apiVersion: inference.llmkube.dev/v1alpha1
+kind: InferenceService
+metadata:
+    name: qwen3.5-9b
+spec:
+    modelRef: qwen3.5-9b-mlx
+    replicas: 1

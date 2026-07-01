@@ -109,9 +109,9 @@ spec:
               S3_BUCKET: line-bronze
               S3_SILVER_BUCKET: line-silver
               S3_GOLD_BUCKET: line-gold
-              TTS_ENDPOINT: http://192.168.10.30:8000
-              LLM_ENDPOINT: http://192.168.10.30:8080
-              LLM_MODEL: mlx-community/Qwen3.5-9B-4bit
+              TTS_ENDPOINT: http://192.168.10.30:8001
+              LLM_ENDPOINT: http://qwen3.5-9b.ai.svc.cluster.local:8000
+              LLM_MODEL: Qwen3.5-9B-4bit
               COACH_VOICE: af_heart
               COACH_USE_LLM: "true"
               WEB_DIR: /web/dist
