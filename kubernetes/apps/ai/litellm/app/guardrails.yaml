@@ -9,9 +9,6 @@ spec:
     mode: pre_call
     defaultOn: true
     apiBase: http://presidio.ai.svc.cluster.local:3000
-    params:
-        mock_redacted_text:
-            text: "[REDACTED]"
 ---
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMGuardrail
@@ -23,6 +20,3 @@ spec:
     mode: post_call
     defaultOn: true
     apiBase: http://presidio.ai.svc.cluster.local:3000
-    params:
-        mock_redacted_text:
-            text: "[REDACTED]"
