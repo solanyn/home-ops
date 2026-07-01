@@ -15,9 +15,9 @@ spec:
             - prometheus
     env:
         - name: PRESIDIO_ANALYZER_API_BASE
-          value: http://pii-adapter.network.svc.cluster.local:3000
+          value: http://presidio.ai.svc.cluster.local:3000
         - name: PRESIDIO_ANONYMIZER_API_BASE
-          value: http://pii-adapter.network.svc.cluster.local:3001
+          value: http://presidio.ai.svc.cluster.local:3001
         - name: PROXY_BASE_URL
           value: https://litellm.goyangi.io
         - name: GENERIC_CLIENT_ID
