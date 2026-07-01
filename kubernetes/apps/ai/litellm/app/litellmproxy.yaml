@@ -18,6 +18,21 @@ spec:
           value: http://presidio.ai.svc.cluster.local:3000
         - name: PRESIDIO_ANONYMIZER_API_BASE
           value: http://presidio.ai.svc.cluster.local:3000
+        - name: PROXY_BASE_URL
+          value: https://litellm.goyangi.io
+        - name: GENERIC_CLIENT_ID
+          value: litellm
+        - name: GENERIC_CLIENT_SECRET
+          valueFrom:
+              secretKeyRef:
+                  name: litellm-oidc
+                  key: client_secret
+        - name: GENERIC_AUTHORIZATION_ENDPOINT
+          value: https://id.goyangi.io/authorize
+        - name: GENERIC_TOKEN_ENDPOINT
+          value: https://id.goyangi.io/api/oidc/token
+        - name: GENERIC_USERINFO_ENDPOINT
+          value: https://id.goyangi.io/api/oidc/userinfo
     envFrom:
         - secretRef:
               name: litellm-secret
