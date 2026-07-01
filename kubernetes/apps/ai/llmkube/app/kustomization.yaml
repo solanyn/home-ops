@@ -5,5 +5,3 @@ kind: Kustomization
 resources:
     - ./helmrepository.yaml
     - ./helmrelease.yaml
-    - ./model-qwen-chat.yaml
-    - ./model-qwen-embedding.yaml
