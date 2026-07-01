@@ -11,3 +11,5 @@ spec:
         - https://litellm.goyangi.io
     secret:
         name: litellm-oidc
+        keys:
+            clientSecret: client_secret
