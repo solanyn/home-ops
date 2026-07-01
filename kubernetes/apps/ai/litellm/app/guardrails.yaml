@@ -8,7 +8,7 @@ spec:
     guardrail: presidio
     mode: pre_call
     defaultOn: true
-    apiBase: http://presidio.ai.svc.cluster.local:3000
+    apiBase: http://pii-adapter.network.svc.cluster.local:3000
     params:
         mock_redacted_text:
             DEFAULT: "[REDACTED]"
@@ -22,7 +22,7 @@ spec:
     guardrail: presidio
     mode: post_call
     defaultOn: true
-    apiBase: http://presidio.ai.svc.cluster.local:3000
+    apiBase: http://pii-adapter.network.svc.cluster.local:3000
     params:
         mock_redacted_text:
             DEFAULT: "[REDACTED]"
