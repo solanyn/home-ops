@@ -7,7 +7,7 @@ spec:
     guardrailName: presidio-pii-pre
     guardrail: presidio
     mode: pre_call
-    defaultOn: true
+    defaultOn: false
     apiBase: http://pii-adapter.network.svc.cluster.local:3000
     params:
         mock_redacted_text:
@@ -21,7 +21,7 @@ spec:
     guardrailName: presidio-pii-post
     guardrail: presidio
     mode: post_call
-    defaultOn: true
+    defaultOn: false
     apiBase: http://pii-adapter.network.svc.cluster.local:3000
     params:
         mock_redacted_text:
