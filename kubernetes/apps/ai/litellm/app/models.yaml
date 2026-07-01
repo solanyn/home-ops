@@ -52,6 +52,74 @@ spec:
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMModel
 metadata:
+    name: minimax-m2.5-highspeed
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: minimax-m2.5-highspeed
+    params:
+        model: minimax/MiniMax-M2.5
+        apiBase: https://api.minimaxi.chat/v1
+        apiKeyRef:
+            name: minimax-auth
+            key: MINIMAX_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: minimax-m2.7-highspeed
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: minimax-m2.7-highspeed
+    params:
+        model: minimax/MiniMax-M2.7
+        apiBase: https://api.minimaxi.chat/v1
+        apiKeyRef:
+            name: minimax-auth
+            key: MINIMAX_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: minimax-m2.1
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: minimax-m2.1
+    params:
+        model: minimax/MiniMax-M2.1
+        apiBase: https://api.minimaxi.chat/v1
+        apiKeyRef:
+            name: minimax-auth
+            key: MINIMAX_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: minimax-m2
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: minimax-m2
+    params:
+        model: minimax/MiniMax-M2
+        apiBase: https://api.minimaxi.chat/v1
+        apiKeyRef:
+            name: minimax-auth
+            key: MINIMAX_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
     name: minimax-m2.7
     labels:
         litellm.home-operations.com/managed-by: home-ops
