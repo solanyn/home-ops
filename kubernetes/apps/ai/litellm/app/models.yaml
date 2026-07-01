@@ -8,8 +8,8 @@ metadata:
 spec:
     modelName: qwen3-9b
     params:
-        model: openai/mlx-community/Qwen3.5-9B-4bit
-        apiBase: http://mac.internal:8080
+        model: openai/Qwen3.5-9B-4bit
+        apiBase: http://qwen3.5-9b.ai.svc.cluster.local:8000
         apiKey: sk-placeholder
     info:
         maxInputTokens: 32768
@@ -58,8 +58,8 @@ metadata:
 spec:
     modelName: qwen3-embedding
     params:
-        model: openai/mlx-community/Qwen3-Embedding-0.6B
-        apiBase: http://mac.internal:8081
+        model: openai/Qwen3-Embedding-0.6B-4bit-DWQ
+        apiBase: http://qwen3-embedding.ai.svc.cluster.local:8000
         apiKey: sk-placeholder
     info:
         mode: embedding

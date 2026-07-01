@@ -3,4 +3,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-    - ./audio.yaml
+    - ./helmrepository.yaml
+    - ./helmrelease.yaml
+    - ./model-qwen-chat.yaml
+    - ./model-qwen-embedding.yaml
