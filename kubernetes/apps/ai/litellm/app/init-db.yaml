@@ -1,0 +1,16 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+    name: litellm-db-init
+spec:
+    ttlSecondsAfterFinished: 3600
+    template:
+        spec:
+            restartPolicy: Never
+            containers:
+                - name: init-db
+                  image: ghcr.io/home-operations/postgres-init:18
+                  envFrom:
+                      - secretRef:
+                            name: litellm-secret

@@ -1,0 +1,30 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMGuardrail
+metadata:
+    name: presidio-pre
+spec:
+    guardrailName: presidio-pii-pre
+    guardrail: presidio
+    mode: pre_call
+    defaultOn: true
+    apiBase: http://presidio.ai.svc.cluster.local:3000
+    params:
+        presidio_ad_hoc_recognizers: |
+            AU TFN=\b\d{3}\s?\d{3}\s?\d{3}\b,AU Medicare=\b\d{4}\s?\d{5}\s?\d{1}\b
+        mock_redacted_text: "[REDACTED]"
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMGuardrail
+metadata:
+    name: presidio-post
+spec:
+    guardrailName: presidio-pii-post
+    guardrail: presidio
+    mode: post_call
+    defaultOn: true
+    apiBase: http://presidio.ai.svc.cluster.local:3000
+    params:
+        presidio_ad_hoc_recognizers: |
+            AU TFN=\b\d{3}\s?\d{3}\s?\d{3}\b,AU Medicare=\b\d{4}\s?\d{5}\s?\d{1}\b
+        mock_redacted_text: "[REDACTED]"

@@ -1,0 +1,81 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: mlx-qwen
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: qwen3-9b
+    params:
+        model: openai/mlx-community/Qwen3.5-9B-4bit
+        apiBase: http://mac.internal:8080
+        apiKey: sk-placeholder
+    info:
+        maxInputTokens: 32768
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: minimax
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: minimax-m2.5
+    params:
+        model: openai/minimax-m2.5
+        apiBase: https://api.minimaxi.chat/v1
+        apiKeyRef:
+            name: minimax-auth
+            key: MINIMAX_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: deepseek
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: deepseek-chat
+    params:
+        model: openai/deepseek-chat
+        apiBase: https://api.deepseek.com
+        apiKeyRef:
+            name: deepseek-auth
+            key: DEEPSEEK_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: mlx-qwen3-embedding
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: qwen3-embedding
+    params:
+        model: openai/mlx-community/Qwen3-Embedding-0.6B
+        apiBase: http://mac.internal:8081
+        apiKey: sk-placeholder
+    info:
+        mode: embedding
+        maxInputTokens: 32768
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go
+    params:
+        model: openai/opencode-go
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
