@@ -13,6 +13,9 @@ spec:
     callbacks:
         success:
             - prometheus
+    env:
+        - name: PRESIDIO_ANALYZER_API_BASE
+          value: http://presidio.ai.svc.cluster.local:3000
     envFrom:
         - secretRef:
               name: litellm-secret
