@@ -2,21 +2,39 @@
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMGuardrail
 metadata:
-    name: presidio-pre
+    name: pii-filter
 spec:
-    guardrailName: presidio-pii-pre
-    guardrail: presidio
+    guardrailName: pii-filter
+    guardrail: litellm_content_filter
     mode: pre_call
-    defaultOn: false
-    apiBase: http://presidio.ai.svc.cluster.local:3000
----
-apiVersion: litellm.home-operations.com/v1alpha1
-kind: LiteLLMGuardrail
-metadata:
-    name: presidio-post
-spec:
-    guardrailName: presidio-pii-post
-    guardrail: presidio
-    mode: post_call
-    defaultOn: false
-    apiBase: http://presidio.ai.svc.cluster.local:3000
+    defaultOn: true
+    params:
+        patterns:
+            - pattern_type: prebuilt
+              pattern_name: email
+              action: MASK
+            - pattern_type: prebuilt
+              pattern_name: phone
+              action: MASK
+            - pattern_type: prebuilt
+              pattern_name: visa
+              action: MASK
+            - pattern_type: prebuilt
+              pattern_name: mastercard
+              action: MASK
+            - pattern_type: prebuilt
+              pattern_name: amex
+              action: MASK
+            - pattern_type: prebuilt
+              pattern_name: aws_access_key
+              action: MASK
+            - pattern_type: prebuilt
+              pattern_name: aws_secret_key
+              action: MASK
+            - pattern_type: prebuilt
+              pattern_name: github_token
+              action: MASK
+        blocked_words:
+            - keyword: confidential
+              action: BLOCK
+              description: Internal confidential information
