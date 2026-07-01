@@ -6,8 +6,8 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 8000
-      targetPort: 8000
+      port: 8001
+      targetPort: 8001
 ---
 apiVersion: discovery.k8s.io/v1
 kind: EndpointSlice
@@ -18,7 +18,7 @@ metadata:
 addressType: IPv4
 ports:
   - name: http
-    port: 8000
+    port: 8001
     protocol: TCP
 endpoints:
   - addresses:
@@ -39,7 +39,7 @@ spec:
             value: /v1/audio/speech
       backendRefs:
         - name: mlx-audio
-          port: 8000
+          port: 8001
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -56,7 +56,7 @@ spec:
             value: /v1/audio/transcriptions
       backendRefs:
         - name: mlx-audio
-          port: 8000
+          port: 8001
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -73,4 +73,4 @@ spec:
             value: /v1/audio/vad
       backendRefs:
         - name: mlx-audio
-          port: 8000
+          port: 8001
