@@ -20,6 +20,7 @@ spec:
               tag: 2026.06.23
             env:
               PRESIDIO_ANALYZER_URL: http://localhost:3000
+              PRESIDIO_ANONYMIZER_URL: http://localhost:3001
               LISTEN_ADDR: :8000
             probes:
               startup:
@@ -89,9 +90,45 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 1Gi
+          anonymizer:
+            image:
+              repository: mcr.microsoft.com/presidio-anonymizer
+              tag: 2.2.4
+              digest: sha256:607c5a8f7918c956fe6385a8d6888075b7198ae2329574cbb37526e851521d20
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3001
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 30
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3001
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+            resources:
+              requests:
+                cpu: 500m
+                memory: 512Mi
+              limits:
+                memory: 1Gi
     service:
       app:
         controller: pii-adapter
         ports:
           http:
             port: 8000
+          presidio:
+            port: 3000
+          anonymizer:
+            port: 3001
