@@ -18,4 +18,5 @@ metadata:
     name: qwen3-embedding
 spec:
     modelRef: qwen3-embedding-mlx
+    mode: embedding
     replicas: 1
