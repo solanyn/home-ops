@@ -7,7 +7,7 @@ spec:
     guardrailName: presidio-pii-pre
     guardrail: presidio
     mode: pre_call
-    defaultOn: true
+    defaultOn: false
     apiBase: http://presidio.ai.svc.cluster.local:3000
 ---
 apiVersion: litellm.home-operations.com/v1alpha1
@@ -18,5 +18,5 @@ spec:
     guardrailName: presidio-pii-post
     guardrail: presidio
     mode: post_call
-    defaultOn: true
+    defaultOn: false
     apiBase: http://presidio.ai.svc.cluster.local:3000
