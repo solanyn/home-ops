@@ -10,8 +10,6 @@ spec:
     defaultOn: true
     apiBase: http://presidio.ai.svc.cluster.local:3000
     params:
-        presidio_ad_hoc_recognizers: |
-            AU TFN=\b\d{3}\s?\d{3}\s?\d{3}\b,AU Medicare=\b\d{4}\s?\d{5}\s?\d{1}\b
         mock_redacted_text:
             DEFAULT: "[REDACTED]"
 ---
@@ -26,7 +24,5 @@ spec:
     defaultOn: true
     apiBase: http://presidio.ai.svc.cluster.local:3000
     params:
-        presidio_ad_hoc_recognizers: |
-            AU TFN=\b\d{3}\s?\d{3}\s?\d{3}\b,AU Medicare=\b\d{4}\s?\d{5}\s?\d{1}\b
         mock_redacted_text:
             DEFAULT: "[REDACTED]"
