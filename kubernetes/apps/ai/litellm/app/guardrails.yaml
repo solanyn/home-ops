@@ -11,11 +11,19 @@ spec:
     apiBase: http://presidio.ai.svc.cluster.local:3000
     params:
         pii_entities_config:
+            # Financial
+            CREDIT_CARD: MASK
+            IBAN_CODE: MASK
+            # Australian
+            AU_TFN: MASK
+            AU_MEDICARE: MASK
+            # Contact
             EMAIL_ADDRESS: MASK
             PHONE_NUMBER: MASK
-            CREDIT_CARD: MASK
+            # US IDs
             US_SSN: MASK
             US_DRIVER_LICENSE: MASK
+            # Credentials
             AWS_ACCESS_KEY: MASK
             AWS_SECRET_KEY: MASK
             GITHUB_TOKEN: MASK
