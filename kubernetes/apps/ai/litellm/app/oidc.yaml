@@ -9,7 +9,5 @@ spec:
         - https://litellm.goyangi.io/sso/callback
     logoutCallbackUrls:
         - https://litellm.goyangi.io
-    allowedUserGroups:
-        - name: user
     secret:
         name: litellm-oidc
