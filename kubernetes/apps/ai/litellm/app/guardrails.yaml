@@ -18,8 +18,6 @@ spec:
             AU_MEDICARE: MASK
             EMAIL_ADDRESS: MASK
             PHONE_NUMBER: MASK
-            US_SSN: MASK
-            US_DRIVER_LICENSE: MASK
             AWS_ACCESS_KEY: MASK
             AWS_SECRET_KEY: MASK
             GITHUB_TOKEN: MASK
