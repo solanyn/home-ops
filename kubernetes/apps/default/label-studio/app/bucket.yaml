@@ -1,10 +1,10 @@
 ---
-apiVersion: garage.crossplane.io/v1alpha1
-kind: Bucket
+apiVersion: garage.rajsingh.info/v1beta1
+kind: GarageBucket
 metadata:
-  name: label-studio
+    name: label-studio
 spec:
-  forProvider:
+    clusterRef:
+        name: garage
     globalAlias: label-studio
-  providerConfigRef:
-    name: default
+    bucketId: 52c8dcc9e81e4438d520806de9637f672f325ce89670745b1ff1127de80bf6df
