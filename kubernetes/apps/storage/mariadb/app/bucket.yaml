@@ -1,10 +1,10 @@
 ---
-apiVersion: garage.crossplane.io/v1alpha1
-kind: Bucket
+apiVersion: garage.rajsingh.info/v1beta1
+kind: GarageBucket
 metadata:
-  name: mariadb
+    name: mariadb
 spec:
-  forProvider:
+    clusterRef:
+        name: garage
     globalAlias: mariadb
-  providerConfigRef:
-    name: default
+    bucketId: 763797b285d2372b4f47628840ec2857b01ca90654ea014fa86bad3f6f46b2e9

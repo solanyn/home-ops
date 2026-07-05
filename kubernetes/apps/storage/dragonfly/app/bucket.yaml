@@ -1,10 +1,10 @@
 ---
-apiVersion: garage.crossplane.io/v1alpha1
-kind: Bucket
+apiVersion: garage.rajsingh.info/v1beta1
+kind: GarageBucket
 metadata:
-  name: dragonflydb
+    name: dragonflydb
 spec:
-  forProvider:
+    clusterRef:
+        name: garage
     globalAlias: dragonflydb
-  providerConfigRef:
-    name: default
+    bucketId: f98bcdcc45de4087e45d7f81f5225df4b52e7ad2195382e41d926da74e4ed44c
