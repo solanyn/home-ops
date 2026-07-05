@@ -1,10 +1,10 @@
 ---
-apiVersion: garage.crossplane.io/v1alpha1
-kind: Bucket
+apiVersion: garage.rajsingh.info/v1beta1
+kind: GarageBucket
 metadata:
-  name: cloudnative-pg
+    name: cloudnative-pg
 spec:
-  forProvider:
+    clusterRef:
+        name: garage
     globalAlias: cloudnative-pg
-  providerConfigRef:
-    name: default
+    bucketId: 061c75762c080ebb4c2a7b70bd5166a87996e6df418860a40a8fcb282a785a4e

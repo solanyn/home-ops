@@ -2,14 +2,6 @@
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
-  name: provider-garage
-spec:
-  # renovate: datasource=docker depName=xpkg.upbound.io/useful/provider-garage
-  package: xpkg.upbound.io/useful/provider-garage:v1.0.4
----
-apiVersion: pkg.crossplane.io/v1
-kind: Provider
-metadata:
   name: provider-gcp-compute
 spec:
   # renovate: datasource=docker depName=xpkg.upbound.io/upbound/provider-gcp-compute
