@@ -14,7 +14,7 @@ spec:
     targetNamespace: garage-operator-system
     dependsOn:
         - name: garage-operator
-          namespace: garage-operator-system
+          namespace: storage
     postBuild:
         substitute:
             APP: garage-operator
