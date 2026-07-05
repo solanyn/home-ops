@@ -1,0 +1,32 @@
+---
+# Grants GarageBucket/GarageKey/AdminToken CRs in the listed source namespaces
+# permission to reference the management-handle GarageCluster named 'garage'
+# in this namespace. Update the from[] namespaces when adding apps that
+# create bucket/key CRs in new namespaces.
+apiVersion: garage.rajsingh.info/v1beta1
+kind: GarageReferenceGrant
+metadata:
+    name: allow-cluster-references
+spec:
+    from:
+        - kind: GarageBucket
+          namespace: default
+        - kind: GarageBucket
+          namespace: storage
+        - kind: GarageBucket
+          namespace: kubeflow
+        - kind: GarageKey
+          namespace: default
+        - kind: GarageKey
+          namespace: storage
+        - kind: GarageKey
+          namespace: kubeflow
+        - kind: GarageAdminToken
+          namespace: default
+        - kind: GarageAdminToken
+          namespace: storage
+        - kind: GarageAdminToken
+          namespace: kubeflow
+    to:
+        - kind: GarageCluster
+          name: garage

@@ -13,6 +13,7 @@ resources:
   - ./dragonfly/ks.yaml
   - ./duckdb-mcp/ks.yaml
   - ./garage/ks.yaml
+  - ./garage-operator/ks.yaml
   - ./influxdb/ks.yaml
   - ./lakekeeper/ks.yaml
   - ./mariadb/ks.yaml
