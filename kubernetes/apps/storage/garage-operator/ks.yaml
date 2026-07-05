@@ -12,9 +12,6 @@ spec:
         name: flux-system
         namespace: flux-system
     targetNamespace: garage-operator-system
-    dependsOn:
-        - name: namespace
-          namespace: flux-system
     postBuild:
         substitute:
             APP: garage-operator
