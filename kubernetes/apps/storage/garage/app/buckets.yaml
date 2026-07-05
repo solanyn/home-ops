@@ -1,30 +1,30 @@
 ---
-apiVersion: garage.crossplane.io/v1alpha1
-kind: Bucket
+apiVersion: garage.rajsingh.info/v1beta1
+kind: GarageBucket
 metadata:
-  name: bronze
+    name: bronze
 spec:
-  forProvider:
+    clusterRef:
+        name: garage
     globalAlias: bronze
-  providerConfigRef:
-    name: default
+    bucketId: 33a77e196c9d8cc95577ac2b3c4118d124244672cf8863dc4efa71c5956bbecc
 ---
-apiVersion: garage.crossplane.io/v1alpha1
-kind: Bucket
+apiVersion: garage.rajsingh.info/v1beta1
+kind: GarageBucket
 metadata:
-  name: silver
+    name: silver
 spec:
-  forProvider:
+    clusterRef:
+        name: garage
     globalAlias: silver
-  providerConfigRef:
-    name: default
+    bucketId: 2702a200b4f79b91d995566fff176067d5f23a36e5b5f51c189c803f02ad0e49
 ---
-apiVersion: garage.crossplane.io/v1alpha1
-kind: Bucket
+apiVersion: garage.rajsingh.info/v1beta1
+kind: GarageBucket
 metadata:
-  name: gold
+    name: gold
 spec:
-  forProvider:
+    clusterRef:
+        name: garage
     globalAlias: gold
-  providerConfigRef:
-    name: default
+    bucketId: c5edb9f41c5720afcaa6126ac37d536eaf672d6618f811cfae2201ca2592a96b
