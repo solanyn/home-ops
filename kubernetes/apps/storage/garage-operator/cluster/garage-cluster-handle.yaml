@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/rajsinghtech/garage-operator/main/charts/garage-operator/crds/garagecluster.yaml
+apiVersion: garage.rajsingh.info/v1beta2
+kind: GarageCluster
+metadata:
+    name: garage
+spec:
+    image: dxflrs/garage:v2.3.0
+    connectTo:
+        adminApiEndpoint: http://garage.storage.svc.cluster.local:3903
+        adminTokenSecretRef:
+            name: garage-admin-token
+            key: admin-token
