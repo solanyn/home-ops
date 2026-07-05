@@ -1,0 +1,21 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+    name: garage-operator-cluster
+spec:
+    interval: 1h
+    path: ./kubernetes/apps/storage/garage-operator/cluster
+    prune: true
+    sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+    targetNamespace: garage-operator-system
+    dependsOn:
+        - name: garage-operator
+          namespace: garage-operator-system
+    postBuild:
+        substitute:
+            APP: garage-operator
+    wait: false
