@@ -6,5 +6,6 @@ metadata:
 spec:
     clusterRef:
         name: garage
+        namespace: garage-operator-system
     globalAlias: mariadb
     bucketId: 763797b285d2372b4f47628840ec2857b01ca90654ea014fa86bad3f6f46b2e9

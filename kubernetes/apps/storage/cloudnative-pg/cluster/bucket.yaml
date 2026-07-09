@@ -6,5 +6,6 @@ metadata:
 spec:
     clusterRef:
         name: garage
+        namespace: garage-operator-system
     globalAlias: cloudnative-pg
     bucketId: 061c75762c080ebb4c2a7b70bd5166a87996e6df418860a40a8fcb282a785a4e
