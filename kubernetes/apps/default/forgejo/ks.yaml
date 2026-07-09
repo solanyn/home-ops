@@ -10,8 +10,6 @@ spec:
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage
-    - name: crossplane-configs
-      namespace: crossplane-system
     - name: dragonfly
       namespace: storage
     - name: garage

@@ -22,8 +22,6 @@ metadata:
 spec:
   targetNamespace: storage
   dependsOn:
-    - name: crossplane-configs
-      namespace: crossplane-system
     - name: dragonfly
       namespace: storage
     - name: garage
