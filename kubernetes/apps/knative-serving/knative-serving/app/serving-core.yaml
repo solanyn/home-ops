@@ -7161,7 +7161,7 @@ metadata:
 spec:
   # This is the Go import path for the binary that is containerized
   # and substituted here.
-  image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:73b2ff4b6435f3e878a8563d55ba46534c3d947b6356ea8feed596fc8355d1ff
+  image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:00ee4fa30c4ae21799edd702616890680c95499a306ec2bcdb8229e0cc05f0f8
 
 ---
 # Copyright 2018 The Knative Authors
@@ -7628,7 +7628,7 @@ metadata:
 data:
   # This is the Go import path for the binary that is containerized
   # and substituted here.
-  queue-sidecar-image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:73b2ff4b6435f3e878a8563d55ba46534c3d947b6356ea8feed596fc8355d1ff
+  queue-sidecar-image: gcr.io/knative-releases/knative.dev/serving/cmd/queue@sha256:00ee4fa30c4ae21799edd702616890680c95499a306ec2bcdb8229e0cc05f0f8
   _example: |-
     ################################
     #                              #
