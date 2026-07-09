@@ -21,6 +21,7 @@ spec:
           effect: NoSchedule
     controllers:
       app:
+        replicas: 0
         containers:
           app:
             image:
