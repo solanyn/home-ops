@@ -4,6 +4,7 @@ kind: XComputeNodePool
 metadata:
   name: nodepool
 spec:
+  targetSize: 0
   region: australia-southeast1
   machineType: e2-standard-8
   spot: true
