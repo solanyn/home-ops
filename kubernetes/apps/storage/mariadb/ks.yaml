@@ -49,8 +49,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: crossplane-configs
-      namespace: crossplane-system
     - name: mariadb-operator
       namespace: storage
   interval: 1h
