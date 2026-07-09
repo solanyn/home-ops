@@ -42,6 +42,7 @@ spec:
                   upgrade:
                     cleanupOnFail: true
                     crds: CreateReplace
+                    historyMax: 3
                     strategy:
                       name: RemediateOnFailure
                     remediation:
