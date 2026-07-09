@@ -12,7 +12,8 @@ spec:
         apiBase: http://qwen3.5-9b.ai.svc.cluster.local:8000
         apiKey: sk-placeholder
     info:
-        maxInputTokens: 32768
+        maxInputTokens: 131072
+        maxOutputTokens: 32768
         supportsFunctionCalling: true
 ---
 apiVersion: litellm.home-operations.com/v1alpha1
@@ -187,14 +188,254 @@ spec:
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMModel
 metadata:
-    name: opencode
+    name: opencode-go-kimi-k2-7-code
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go
+    modelName: opencode-go/kimi-k2.7-code
     params:
-        model: openai/opencode-go
+        model: openai/kimi-k2.7-code
         apiBase: https://opencode.ai/zen/go
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-kimi-k2-6
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/kimi-k2.6
+    params:
+        model: openai/kimi-k2.6
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-kimi-k2-5
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/kimi-k2.5
+    params:
+        model: openai/kimi-k2.5
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-glm-5-2
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/glm-5.2
+    params:
+        model: openai/glm-5.2
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-glm-5-1
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/glm-5.1
+    params:
+        model: openai/glm-5.1
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-glm-5
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/glm-5
+    params:
+        model: openai/glm-5
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-qwen3-7-max
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/qwen3.7-max
+    params:
+        model: openai/qwen3.7-max
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-qwen3-7-plus
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/qwen3.7-plus
+    params:
+        model: openai/qwen3.7-plus
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-qwen3-6-plus
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/qwen3.6-plus
+    params:
+        model: openai/qwen3.6-plus
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-qwen3-5-plus
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/qwen3.5-plus
+    params:
+        model: openai/qwen3.5-plus
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-mimo-v2-pro
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/mimo-v2-pro
+    params:
+        model: openai/mimo-v2-pro
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-mimo-v2-omni
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/mimo-v2-omni
+    params:
+        model: openai/mimo-v2-omni
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-mimo-v2-5-pro
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/mimo-v2.5-pro
+    params:
+        model: openai/mimo-v2.5-pro
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-mimo-v2-5
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/mimo-v2.5
+    params:
+        model: openai/mimo-v2.5
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-hy3-preview
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/hy3-preview
+    params:
+        model: openai/hy3-preview
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
