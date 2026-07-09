@@ -33,11 +33,12 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/linuxserver-labs/prarr
-              tag: whisparr-eros-3.1.0.2116@sha256:fc09513b2c18ef77f2dca40051deaadf8eaf7a7abfc6d8bd6e292cea5a82ad5e
+              repository: ghcr.io/hotio/whisparr
+              tag: v3-v3.3.4
             env:
               WHISPARR__APP__INSTANCENAME: Whisparr
               WHISPARR__APP__THEME: dark
+              WHISPARR__SERVER__PORT: &port 6969
               WHISPARR__AUTH__METHOD: External
               WHISPARR__AUTH__REQUIRED: DisabledForLocalAddresses
               WHISPARR__LOG__DBENABLED: "False"
