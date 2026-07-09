@@ -28,3 +28,12 @@ spec:
         name: garage
     globalAlias: gold
     bucketId: c5edb9f41c5720afcaa6126ac37d536eaf672d6618f811cfae2201ca2592a96b
+---
+apiVersion: garage.rajsingh.info/v1beta1
+kind: GarageBucket
+metadata:
+    name: kopiur
+spec:
+    clusterRef:
+        name: garage
+    globalAlias: kopiur
