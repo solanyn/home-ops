@@ -1,31 +1,43 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    "config:recommended",
-    "docker:enableMajor",
-    "helpers:pinGitHubActionDigests",
-    "github>solanyn/home-ops//.renovate/autoMerge.json5",
-    "github>solanyn/home-ops//.renovate/changelogs.json5",
-    "github>solanyn/home-ops//.renovate/customManagers.json5",
-    "github>solanyn/home-ops//.renovate/grafanaDashboards.json5",
-    "github>solanyn/home-ops//.renovate/groups.json5",
-    "github>solanyn/home-ops//.renovate/labels.json5",
-    "github>solanyn/home-ops//.renovate/overrides.json5",
-    "github>solanyn/home-ops//.renovate/semanticCommits.json5",
-    "github>solanyn/home-ops//.renovate/talosFactory.json5",
-    ":automergeBranch",
-    ":disableRateLimiting",
-    ":dependencyDashboard",
-    ":semanticCommits",
+    "github>home-operations/renovate-presets#2.1.0",
     ":timezone(Australia/Sydney)",
   ],
-  dependencyDashboardTitle: "Renovate Dashboard 🤖",
-  suppressNotifications: ["prEditedNotification", "prIgnoreNotification"],
+  prConcurrentLimit: 20,
+  branchConcurrentLimit: 20,
   ignorePaths: ["**/resources/**", "third_party/"],
-  flux: {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
-  },
-  kubernetes: {
-    managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
-  },
+  customManagers: [
+    {
+      customType: "regex",
+      fileMatch: ["kubernetes/apps/crossplane-system/crossplane/resources/nodepool\\.yaml$"],
+      matchStrings: ["# talos-version: (?<currentValue>v\\d+\\.\\d+\\.\\d+)"],
+      depNameTemplate: "ghcr.io/siderolabs/installer",
+      datasourceTemplate: "docker",
+      versioningTemplate: "semver",
+    },
+  ],
+  packageRules: [
+    {
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/siderolabs/installer"],
+      groupName: "talos",
+    },
+    {
+      matchUpdateTypes: ["major"],
+      addLabels: ["type/major"],
+    },
+    {
+      matchUpdateTypes: ["minor"],
+      addLabels: ["type/minor"],
+    },
+    {
+      matchUpdateTypes: ["patch"],
+      addLabels: ["type/patch"],
+    },
+    {
+      matchUpdateTypes: ["digest"],
+      addLabels: ["type/digest"],
+    },
+  ],
 }
