@@ -15,9 +15,6 @@ spec:
       prComments: true
       statusChecks: true
       publicUrl: https://konflate.goyangi.io
-      # Replace with the GitHub App client id after registering the konflate App.
-      # Required permissions on the App: Checks (R/W), Pull requests (R/W).
-      appClientId: REPLACE_ME_WITH_KONFLATE_APP_CLIENT_ID
     secret:
       existingSecret: konflate-webhook-token-secret
     httpRoute:
