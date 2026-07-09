@@ -14,6 +14,7 @@ resources:
   - ./duckdb-mcp/ks.yaml
   - ./garage/ks.yaml
   - ./garage-operator/ks.yaml
+  - ./garage-operator/cluster/ks.yaml
   - ./influxdb/ks.yaml
   - ./lakekeeper/ks.yaml
   - ./mariadb/ks.yaml
