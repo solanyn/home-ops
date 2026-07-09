@@ -17,8 +17,6 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/repair-grpc
-            image:
-              repository: ghcr.io/solanyn/repair-grpc
               tag: 2026.07.0
               digest: sha256:9d630696b543d7fd21e4987441c0aebfe5f771175c314ce361b52683124974b9
             env:
