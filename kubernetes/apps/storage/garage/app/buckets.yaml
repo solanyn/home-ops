@@ -6,6 +6,7 @@ metadata:
 spec:
     clusterRef:
         name: garage
+        namespace: garage-operator-system
     globalAlias: bronze
     bucketId: 33a77e196c9d8cc95577ac2b3c4118d124244672cf8863dc4efa71c5956bbecc
 ---
@@ -16,6 +17,7 @@ metadata:
 spec:
     clusterRef:
         name: garage
+        namespace: garage-operator-system
     globalAlias: silver
     bucketId: 2702a200b4f79b91d995566fff176067d5f23a36e5b5f51c189c803f02ad0e49
 ---
@@ -26,6 +28,7 @@ metadata:
 spec:
     clusterRef:
         name: garage
+        namespace: garage-operator-system
     globalAlias: gold
     bucketId: c5edb9f41c5720afcaa6126ac37d536eaf672d6618f811cfae2201ca2592a96b
 ---
@@ -36,4 +39,5 @@ metadata:
 spec:
     clusterRef:
         name: garage
+        namespace: garage-operator-system
     globalAlias: kopiur

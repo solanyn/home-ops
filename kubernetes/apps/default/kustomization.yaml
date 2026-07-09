@@ -32,7 +32,6 @@ resources:
   - ./lidarr/ks.yaml
   - ./line/ks.yaml
   - ./livekit/ks.yaml
-  - ./lubelogger/ks.yaml
   - ./matter-server/ks.yaml
   - ./otbr/ks.yaml
   - ./mealie/ks.yaml
