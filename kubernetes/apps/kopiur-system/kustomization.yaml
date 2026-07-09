@@ -5,8 +5,9 @@ kind: Kustomization
 namespace: kopiur-system
 
 components:
-  - ../../components/alerts
+    - ../../components/alerts
+    - ../../components/kopiur/secret
 
 resources:
-  - ./namespace.yaml
-  - ./kopiur/ks.yaml
+    - ./namespace.yaml
+    - ./kopiur/ks.yaml
