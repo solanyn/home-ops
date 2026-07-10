@@ -35,7 +35,7 @@ spec:
           anonymizer:
             image:
               repository: mcr.microsoft.com/presidio-anonymizer
-              tag: 2.2.4@sha256:607c5a8f7918c956fe6385a8d6888075b7198ae2329574cbb37526e851521d20
+              tag: 2.2.362@sha256:652493f687c1b7e58655e1dee7ee355494ef2fba5d17c2506bf28db77cb10b67
             env:
               - name: PORT
                 value: "3001"
