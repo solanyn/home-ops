@@ -1,11 +1,14 @@
 _config_version: 27
 model:
   default: minimax-m3
-  provider: litellm
+  provider: agentgateway
+  reasoning_effort: medium
 providers:
-  litellm:
-    base_url: http://litellm.ai.svc.cluster.local:4000/v1
-    api_key: $${LITELLM_API_KEY}
+  agentgateway:
+    api: https://litellm.goyangi.io/v1
+    key_env: OPENAI_API_KEY
+    default_model: minimax-m3
+    transport: chat_completions
 toolsets:
   - hermes-cli
 terminal:
@@ -13,6 +16,7 @@ terminal:
   cwd: /opt/data/workspace
   timeout: 180
   persistent_shell: true
+  lifetime_seconds: 300
 memory:
   provider: memini
   auto_migrate: true
@@ -22,7 +26,7 @@ compression:
   target_ratio: 0.20
   protect_last_n: 20
 agent:
-  max_turns: 90
+  max_turns: 60
   gateway_timeout: 1800
   restart_drain_timeout: 60
   api_max_retries: 2
@@ -33,22 +37,35 @@ security:
   redact_secrets: true
 privacy:
   redact_pii: true
+max_concurrent_sessions: 5
+group_sessions_per_user: true
+skills:
+  creation_nudge_interval: 15
+tool_loop_guardrails:
+  warnings_enabled: true
+  hard_stop_enabled: false
+  warn_after:
+    exact_failure: 2
+    same_tool_failure: 3
+    idempotent_no_progress: 2
+  hard_stop_after:
+    exact_failure: 5
+    same_tool_failure: 8
+    idempotent_no_progress: 5
 platform_toolsets:
   cli:
     - hermes-cli
 auxiliary:
   vision:
-    provider: litellm
-    model: vision
-  compression:
-    provider: litellm
-    model: minimax-m3
-    timeout: 180
+    provider: main
+    timeout: 30
   web_extract:
-    provider: litellm
-    model: minimax-m3
+    provider: main
     timeout: 120
+  tts_audio_tags:
+    provider: main
+    timeout: 30
   session_search:
-    provider: litellm
-    model: minimax-m3
-    timeout: 120
+    provider: main
+    timeout: 30
+    max_concurrency: 3
