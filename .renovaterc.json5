@@ -7,22 +7,7 @@
   prConcurrentLimit: 20,
   branchConcurrentLimit: 20,
   ignorePaths: ["**/resources/**", "third_party/"],
-  customManagers: [
-    {
-      customType: "regex",
-      fileMatch: ["kubernetes/apps/crossplane-system/crossplane/resources/nodepool\\.yaml$"],
-      matchStrings: ["# talos-version: (?<currentValue>v\\d+\\.\\d+\\.\\d+)"],
-      depNameTemplate: "ghcr.io/siderolabs/installer",
-      datasourceTemplate: "docker",
-      versioningTemplate: "semver",
-    },
-  ],
   packageRules: [
-    {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/siderolabs/installer"],
-      groupName: "talos",
-    },
     {
       matchUpdateTypes: ["major"],
       addLabels: ["type/major"],
