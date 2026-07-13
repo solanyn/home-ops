@@ -6,16 +6,16 @@ metadata:
   name: hermes
 spec:
   targetNamespace: ai
+  components:
+    - ../../../../components/volsync
   interval: 1h
   path: ./kubernetes/apps/ai/hermes/app
+  postBuild:
+    substitute:
+      VOLSYNC_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   wait: false
-  components:
-    - ../../../../components/volsync
-  postBuild:
-    substitute:
-      VOLSYNC_CAPACITY: 5Gi
