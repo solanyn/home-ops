@@ -6,8 +6,7 @@ metadata:
 spec:
   chartRef:
     kind: OCIRepository
-    name: app-template
-    namespace: flux-system
+    name: hermes
   interval: 10m
   values:
     defaultPodOptions:
