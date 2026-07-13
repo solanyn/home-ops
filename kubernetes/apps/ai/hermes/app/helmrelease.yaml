@@ -12,8 +12,6 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 10000
-        runAsGroup: 10000
         fsGroup: 10000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
@@ -25,20 +23,19 @@ spec:
           init:
             image:
               repository: docker.io/library/alpine
-              tag: "3.22"
+              tag: "3.24"
             command:
               - sh
               - -c
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
-                chown 10000:10000 /run
         containers:
           app:
             image: &image
               repository: nousresearch/hermes-agent
               tag: v2026.7.7@sha256:ce3b39adf33fffae8cb19dcae74f971975b972efe91207f7d7539f80a0aae66a
-            args: ["gateway", "run"]
+            args: ["gateway", "run", "--no-supervise"]
             env:
               HERMES_HOME: /opt/data
               HOME: /opt/data
@@ -46,10 +43,6 @@ spec:
             envFrom:
               - secretRef:
                   name: hermes
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 100m
@@ -95,10 +88,6 @@ spec:
               - identifier: dashboard
                 port: http
     persistence:
-      run:
-        type: emptyDir
-        globalMounts:
-          - path: /run
       config:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
