@@ -75,22 +75,11 @@ spec:
         ports:
           http:
             port: 8642
-          webhook:
+      webhook:
+        controller: hermes
+        ports:
+          http:
             port: 8645
-    route:
-      app:
-        hostnames: ["{{ .Release.Name }}.goyangi.io"]
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /bluebubbles-webhook
-            backendRefs:
-              - identifier: webhook
-                port: webhook
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
