@@ -2,7 +2,6 @@ _config_version: 27
 model:
   default: minimax-m3
   provider: agentgateway
-  reasoning_effort: medium
 providers:
   agentgateway:
     api: https://litellm.goyangi.io/v1
@@ -27,7 +26,6 @@ agent:
   gateway_timeout: 1800
   restart_drain_timeout: 60
   api_max_retries: 2
-  reasoning_effort: medium
 streaming:
   enabled: true
 security:
