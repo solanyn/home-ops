@@ -32,7 +32,7 @@ spec:
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
-                chown 10000:10000 /opt/data/config.yaml /run
+                chown 10000:10000 /opt/data/config.yaml
         containers:
           app:
             image: &image
@@ -48,10 +48,10 @@ spec:
                   name: hermes
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
+                cpu: 100m
                 memory: 512Mi
               limits:
                 memory: 2Gi
@@ -98,10 +98,6 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /opt/data
-      run:
-        type: emptyDir
-        globalMounts:
-          - path: /run
       configmap:
         type: configMap
         name: "{{ .Release.Name }}-config"
