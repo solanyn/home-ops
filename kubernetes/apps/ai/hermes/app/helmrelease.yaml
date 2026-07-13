@@ -43,7 +43,8 @@ spec:
               - secretRef:
                   name: hermes
             securityContext:
-              runAsNonRoot: true
+              runAsUser: 10000
+              runAsGroup: 10000
             resources:
               requests:
                 cpu: 100m
@@ -64,7 +65,8 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-              runAsNonRoot: true
+              runAsUser: 10000
+              runAsGroup: 10000
             resources:
               limits:
                 memory: 512Mi
