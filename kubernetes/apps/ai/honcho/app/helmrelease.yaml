@@ -1,0 +1,87 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: honcho
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 10m
+  values:
+    controllers:
+      honcho:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: "18"
+            env: &env
+              - name: TZ
+                value: Australia/Sydney
+            envFrom:
+              - secretRef:
+                  name: honcho-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/plastic-labs/honcho
+              tag: v3.0.11@sha256:423dc96fd3034408d66e5381c184c9ea824610acdb5581898dd00b0b1ab096d6
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -e
+                echo "Running database migrations..."
+                /app/.venv/bin/python scripts/provision_db.py
+                echo "Starting API server..."
+                exec /app/.venv/bin/fastapi run --host "::" src/main.py
+            env: *env
+            envFrom:
+              - secretRef:
+                  name: honcho-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8000
+                  initialDelaySeconds: 10
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: ["ALL"]
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+    service:
+      app:
+        ports:
+          http:
+            port: 80
+            targetPort: *port
+    persistence:
+      tmp:
+        type: emptyDir
