@@ -98,6 +98,10 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /opt/data
+      run:
+        type: emptyDir
+        globalMounts:
+          - path: /run
       configmap:
         type: configMap
         name: "{{ .Release.Name }}-config"
