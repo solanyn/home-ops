@@ -5,8 +5,6 @@ kind: Kustomization
 resources:
     - ./helmrelease.yaml
     - ./externalsecret.yaml
-    - ./memini-helmrelease.yaml
-    - ./memini-externalsecret.yaml
 configMapGenerator:
     - name: hermes-config
       files:

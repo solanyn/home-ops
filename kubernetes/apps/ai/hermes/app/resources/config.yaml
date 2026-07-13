@@ -17,9 +17,6 @@ terminal:
   timeout: 180
   persistent_shell: true
   lifetime_seconds: 300
-memory:
-  provider: memini
-  auto_migrate: true
 compression:
   enabled: true
   threshold: 0.50

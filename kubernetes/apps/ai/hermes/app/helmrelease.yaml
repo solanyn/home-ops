@@ -31,19 +31,6 @@ spec:
                                 set -euo pipefail
                                 cp /tmp/config.yaml /opt/data/config.yaml
                                 chown 10000:10000 /opt/data/config.yaml
-                                MEMINI_PLUGIN_REF=c36842f6e2fa4a5e89f689d78d6d2daa2bf73219
-                                PLUGIN_DIR=/opt/data/plugins/memini
-                                if [ "$(cat "$PLUGIN_DIR/.ref" 2>/dev/null)" != "$MEMINI_PLUGIN_REF" ]; then
-                                  BASE="https://raw.githubusercontent.com/eleboucher/memini-hermes/$MEMINI_PLUGIN_REF"
-                                  if wget -qO /tmp/memini-init.py "$BASE/__init__.py" && wget -qO /tmp/memini-plugin.yaml "$BASE/plugin.yaml"; then
-                                    rm -rf "$PLUGIN_DIR"
-                                    mkdir -p "$PLUGIN_DIR"
-                                    mv /tmp/memini-init.py "$PLUGIN_DIR/__init__.py"
-                                    mv /tmp/memini-plugin.yaml "$PLUGIN_DIR/plugin.yaml"
-                                    printf '%s' "$MEMINI_PLUGIN_REF" > "$PLUGIN_DIR/.ref"
-                                    chown -R 10000:10000 "$PLUGIN_DIR"
-                                  fi
-                                fi
                 containers:
                     app:
                         image: &image
@@ -51,8 +38,6 @@ spec:
                             tag: v2026.7.7@sha256:ce3b39adf33fffae8cb19dcae74f971975b972efe91207f7d7539f80a0aae66a
                         args: ["gateway", "run"]
                         env:
-                            MEMINI_URL: http://memini.ai.svc.cluster.local:8080
-                            MEMINI_NAMESPACE: andrew
                             HERMES_HOME: /opt/data
                             HOME: /opt/data
                             TZ: Australia/Sydney
