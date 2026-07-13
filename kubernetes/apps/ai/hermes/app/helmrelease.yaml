@@ -11,7 +11,6 @@ spec:
   values:
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: true
         fsGroup: 10000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
@@ -43,6 +42,8 @@ spec:
             envFrom:
               - secretRef:
                   name: hermes
+            securityContext:
+              runAsNonRoot: true
             resources:
               requests:
                 cpu: 100m
@@ -63,6 +64,7 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+              runAsNonRoot: true
             resources:
               limits:
                 memory: 512Mi
