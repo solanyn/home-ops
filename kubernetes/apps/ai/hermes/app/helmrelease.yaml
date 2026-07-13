@@ -32,6 +32,7 @@ spec:
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
+                chown 10000:10000 /run
         containers:
           app:
             image: &image
@@ -39,7 +40,6 @@ spec:
               tag: v2026.7.7@sha256:ce3b39adf33fffae8cb19dcae74f971975b972efe91207f7d7539f80a0aae66a
             args: ["gateway", "run"]
             env:
-              S6_READ_ONLY_ROOT: "1"
               HERMES_HOME: /opt/data
               HOME: /opt/data
               TZ: Australia/Sydney
@@ -95,6 +95,10 @@ spec:
               - identifier: dashboard
                 port: http
     persistence:
+      run:
+        type: emptyDir
+        globalMounts:
+          - path: /run
       config:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
