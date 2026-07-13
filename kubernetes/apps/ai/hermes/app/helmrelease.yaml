@@ -26,13 +26,15 @@ spec:
             image:
               repository: docker.io/library/alpine
               tag: "3.22"
+            securityContext:
+              runAsUser: 0
             command:
               - sh
               - -c
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
-                chown 10000:10000 /opt/data/config.yaml
+                chown 10000:10000 /opt/data/config.yaml /run /tmp
         containers:
           app:
             image: &image
@@ -94,6 +96,14 @@ spec:
               - identifier: dashboard
                 port: http
     persistence:
+      run:
+        type: emptyDir
+        globalMounts:
+          - path: /run
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
       config:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
