@@ -2,6 +2,8 @@ _config_version: 27
 model:
   default: minimax-m3
   provider: agentgateway
+  base_url: https://litellm.goyangi.io/v1
+  fallback: []
 providers:
   agentgateway:
     api: https://litellm.goyangi.io/v1
@@ -15,6 +17,7 @@ terminal:
   cwd: /opt/data/workspace
   timeout: 180
   persistent_shell: true
+  home_mode: auto
   lifetime_seconds: 300
 compression:
   enabled: true
@@ -32,6 +35,17 @@ security:
   redact_secrets: true
 privacy:
   redact_pii: true
+memory:
+  memory_enabled: true
+  user_profile_enabled: true
+  memory_char_limit: 2200
+  user_char_limit: 1375
+  nudge_interval: 10
+  flush_min_turns: 6
+session_reset:
+  mode: both
+  idle_minutes: 1440
+  at_hour: 4
 max_concurrent_sessions: 5
 group_sessions_per_user: true
 skills:
@@ -47,6 +61,12 @@ tool_loop_guardrails:
     exact_failure: 5
     same_tool_failure: 8
     idempotent_no_progress: 5
+stt:
+  enabled: true
+  local:
+    model: base
+delegation:
+  max_iterations: 50
 platform_toolsets:
   cli:
     - hermes-cli
@@ -64,3 +84,6 @@ auxiliary:
     provider: main
     timeout: 30
     max_concurrency: 3
+onboarding:
+  seen:
+    profile_build_offered: true
