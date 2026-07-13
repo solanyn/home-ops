@@ -9,5 +9,5 @@ configMapGenerator:
   - name: hermes-config
     files:
       - ./resources/config.yaml
-configurations:
-  - ./resources/kustomizeconfig.yaml
+    options:
+      disableNameSuffixHash: true
