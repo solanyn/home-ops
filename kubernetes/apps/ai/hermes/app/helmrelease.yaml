@@ -61,7 +61,7 @@ spec:
             args:
               - dashboard
               - --host
-              - "::"
+              - 127.0.0.1
               - --insecure
             securityContext:
               runAsUser: 10000
