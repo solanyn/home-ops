@@ -62,9 +62,6 @@ spec:
               - "::"
               - --insecure
             securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
               runAsUser: 10000
               runAsGroup: 10000
             resources:
