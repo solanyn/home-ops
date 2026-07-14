@@ -1,9 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ./ocirepository.yaml
-  - ./helmrelease.yaml
-  - ./rbac.yaml
-  - ./httproute.yaml
-  # renovate: datasource=github-tags depName=kubeflow/kubeflow
-  - https://raw.githubusercontent.com/kubeflow/kubeflow/v1.10.0/components/notebook-controller/config/crd/bases/kubeflow.org_notebooks.yaml

@@ -113,45 +113,6 @@ spec:
       value: nvme0
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
-apiVersion: monitoring.giantswarm.io/v1alpha1
-kind: Silence
-metadata:
-  name: kubeflow-pods-not-ready
-  namespace: o11y
-spec:
-  matchers:
-    - name: alertname
-      value: KubePodNotReady
-    - name: namespace
-      value: kubeflow
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
-apiVersion: monitoring.giantswarm.io/v1alpha1
-kind: Silence
-metadata:
-  name: kubeflow-containers-waiting
-  namespace: o11y
-spec:
-  matchers:
-    - name: alertname
-      value: KubeContainerWaiting
-    - name: namespace
-      value: kubeflow
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
-apiVersion: monitoring.giantswarm.io/v1alpha1
-kind: Silence
-metadata:
-  name: kubeflow-deployment-replicas-mismatch
-  namespace: o11y
-spec:
-  matchers:
-    - name: alertname
-      value: KubeDeploymentReplicasMismatch
-    - name: namespace
-      value: kubeflow
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/observability.giantswarm.io/silence_v1alpha2.json
 # TODO: remove when k8s-1 NVMe replaced or thermals resolved
 apiVersion: monitoring.giantswarm.io/v1alpha1
 kind: Silence

@@ -3,24 +3,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: kubeflow
-
 components:
-  - ../../components/alerts
-
+    - ../../components/alerts
 resources:
-  - ./namespace.yaml
-  - ./auth/ks.yaml
-  - ./admission-webhook/ks.yaml
-  - ./profiles/ks.yaml
-  - ./central-dashboard/ks.yaml
-  - ./notebooks/ks.yaml
-  - ./volumes-web-app/ks.yaml
-  - ./tensorboard/ks.yaml
-  - ./training-operator/ks.yaml
-  - ./katib/ks.yaml
-  - ./model-registry/ks.yaml
-  - ./metadata/ks.yaml
-  - ./pipelines/ks.yaml
-  - ./spark-operator/ks.yaml
-  - ./kuberay-operator/ks.yaml
-  - ./marimo-operator/ks.yaml
+    - ./namespace.yaml
