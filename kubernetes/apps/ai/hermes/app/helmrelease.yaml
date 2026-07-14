@@ -38,25 +38,38 @@ spec:
               - -c
               - |
                 set -euo pipefail
-                apt-get update -qq && apt-get install -y -qq curl ca-certificates >/dev/null 2>&1
+                apt-get update -qq && apt-get install -y -qq curl ca-certificates git >/dev/null 2>&1
+
                 TOOLS="/opt/data/homebrew/bin"
                 mkdir -p "$TOOLS"
 
-                install_zb() {
-                  echo "Installing zerobrew..."
-                  mkdir -p /tmp/zb
-                  curl -fsSL https://zerobrew.rs/install 2>/dev/null | ZB_HOME=/tmp/zb bash 2>&1 || return 1
-                  echo "zb binary installed, running zb install..."
-                  /tmp/zb/zb install kubectl --dir "$TOOLS" 2>&1 || true
-                  /tmp/zb/zb install flux --dir "$TOOLS" 2>&1 || true
-                  /tmp/zb/zb install bat --dir "$TOOLS" 2>&1 || true
-                  /tmp/zb/zb install shellcheck --dir "$TOOLS" 2>&1 || true
-                }
+                # zerobrew refuses to run as root. Drop privileges to UID 10000 (hermes user)
+                # for the install, then copy binaries to the persistent tools directory.
+                ZB_HOME="/tmp/zbuser-home"
+                mkdir -p "$ZB_HOME"
+                chown 10000:10000 "$ZB_HOME"
 
-                install_zb || echo "WARNING: tool installation failed (non-fatal)"
+                setpriv --reuid=10000 --regid=10000 --clear-groups env \
+                  HOME="$ZB_HOME" \
+                  ZEROBREW_DIR="$ZB_HOME/.zerobrew" \
+                  ZEROBREW_BIN="$ZB_HOME/.local/bin" \
+                  bash -c '
+                    set -euo pipefail
+                    curl -fsSL https://zerobrew.rs/install | bash >/dev/null 2>&1
+                    export PATH="$ZB_HOME/.local/bin:$PATH"
+                    zb install kubectl 2>/dev/null || true
+                    zb install flux 2>/dev/null || true
+                    zb install bat 2>/dev/null || true
+                    zb install shellcheck 2>/dev/null || true
+                  '
 
-                echo "Tools in $TOOLS:"
-                ls -la "$TOOLS" 2>/dev/null || echo "(empty)"
+                # Copy binaries from zerobrew prefix to persistent tools directory
+                cp "$ZB_HOME/.local/bin/"zb "$TOOLS/" 2>/dev/null || true
+                cp "$ZB_HOME/.local/share/zerobrew/prefix/bin/"* "$TOOLS/" 2>/dev/null || true
+                chmod -R a+rx "$TOOLS"
+
+                echo "Tools installed:"
+                ls -la "$TOOLS"
         containers:
           app:
             image: &image
