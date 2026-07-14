@@ -1,0 +1,12 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/gitrepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: kubeflow-distribution
+  namespace: kubeflow
+spec:
+  interval: 1h
+  ref:
+    tag: release-26.03
+  url: https://github.com/kubeflow/community-distribution

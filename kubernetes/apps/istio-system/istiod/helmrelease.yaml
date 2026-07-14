@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: istiod
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: istiod
+  interval: 1h
+  values:
+    global:
+      istioNamespace: istio-system
+    meshConfig:
+      enableAutoMtls: true
+      defaultConfig:
+        proxyMetadata:
+          ISTIO_META_ENABLE_HB_CHECK: "true"
+    pilot:
+      env:
+        PILOT_ENABLE_CONFIG_DISTRIBUTION_VALIDATION: "true"
+    sidecar:
+      istioInjectorEnabled: true

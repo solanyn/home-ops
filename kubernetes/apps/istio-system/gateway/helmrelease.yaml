@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ingressgateway
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: istio-ingressgateway
+  interval: 1h
+  values:
+    service:
+      type: LoadBalancer
+      annotations:
+        lbipam.cilium.io/ips: 192.168.69.150
+        external-dns.alpha.kubernetes.io/hostname: istio.goyangi.io,kubeflow.goyangi.io
+      externalTrafficPolicy: Local
+      ports:
+        - name: status-port
+          port: 15021
+          targetPort: 15021
+        - name: http2
+          port: 80
+          targetPort: 8080
+        - name: https
+          port: 443
+          targetPort: 8443
+    labels:
+      app: istio-ingressgateway
+      istio: ingressgateway

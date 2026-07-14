@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kubeflow-notebook-controller
+spec:
+  targetNamespace: kubeflow
+  dependsOn:
+    - name: kubeflow-distribution
+    - name: kubeflow-profiles
+      namespace: kubeflow
+  interval: 1h
+  path: ./applications/jupyter/notebook-controller/upstream
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-distribution
+    namespace: kubeflow
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kubeflow-jupyter-web-app
+spec:
+  targetNamespace: kubeflow
+  dependsOn:
+    - name: kubeflow-distribution
+    - name: kubeflow-profiles
+      namespace: kubeflow
+  interval: 1h
+  path: ./applications/jupyter/jupyter-web-app/upstream
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-distribution
+    namespace: kubeflow
+  wait: false

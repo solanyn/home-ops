@@ -2,9 +2,11 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: kubeflow
-components:
-    - ../../components/alerts
+
 resources:
-    - ./namespace.yaml
-    - ./distribution/ks.yaml
+  - ./source.yaml
+  - ./istio-resources/ks.yaml
+  - ./admission-webhook/ks.yaml
+  - ./profiles/ks.yaml
+  - ./notebooks/ks.yaml
+  - ./dashboard/ks.yaml
