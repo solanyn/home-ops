@@ -45,17 +45,18 @@ spec:
                 install_zb() {
                   echo "Installing zerobrew..."
                   mkdir -p /tmp/zb
-                  curl -fsSL https://zerobrew.rs/install | ZB_HOME=/tmp/zb bash >/dev/null 2>&1
-                  /tmp/zb/zb install kubectl --dir "$TOOLS" 2>/dev/null || true
-                  /tmp/zb/zb install flux --dir "$TOOLS" 2>/dev/null || true
-                  /tmp/zb/zb install bat --dir "$TOOLS" 2>/dev/null || true
-                  /tmp/zb/zb install shellcheck --dir "$TOOLS" 2>/dev/null || true
+                  curl -fsSL https://zerobrew.rs/install 2>/dev/null | ZB_HOME=/tmp/zb bash 2>&1 || return 1
+                  echo "zb binary installed, running zb install..."
+                  /tmp/zb/zb install kubectl --dir "$TOOLS" 2>&1 || true
+                  /tmp/zb/zb install flux --dir "$TOOLS" 2>&1 || true
+                  /tmp/zb/zb install bat --dir "$TOOLS" 2>&1 || true
+                  /tmp/zb/zb install shellcheck --dir "$TOOLS" 2>&1 || true
                 }
 
-                install_zb
+                install_zb || echo "WARNING: tool installation failed (non-fatal)"
 
-                echo "Tools installed:"
-                ls -la "$TOOLS"
+                echo "Tools in $TOOLS:"
+                ls -la "$TOOLS" 2>/dev/null || echo "(empty)"
         containers:
           app:
             image: &image
