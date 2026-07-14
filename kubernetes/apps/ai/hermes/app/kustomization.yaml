@@ -12,8 +12,3 @@ configMapGenerator:
       - ./resources/config.yaml
     options:
       disableNameSuffixHash: true
-  - name: hermes-brewfile
-    files:
-      - ./resources/Brewfile
-    options:
-      disableNameSuffixHash: true

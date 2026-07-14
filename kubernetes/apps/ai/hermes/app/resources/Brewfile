@@ -1,5 +1,0 @@
-tap "homebrew/core"
-brew "kubectl"
-brew "fluxcd/tap/flux"
-brew "bat"
-brew "shellcheck"
