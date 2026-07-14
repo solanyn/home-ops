@@ -51,6 +51,7 @@ spec:
 
                 setpriv --reuid=10000 --regid=10000 --clear-groups env \
                   HOME="$ZB_HOME" \
+                  ZB_HOME="$ZB_HOME" \
                   ZEROBREW_DIR="$ZB_HOME/.zerobrew" \
                   ZEROBREW_BIN="$ZB_HOME/.local/bin" \
                   bash -c '
