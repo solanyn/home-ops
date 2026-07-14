@@ -25,6 +25,24 @@ spec:
             envFrom:
               - secretRef:
                   name: honcho-secret
+          init-extensions:
+            dependsOn: init-db
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: "18"
+            env:
+              PGHOST: postgres-rw.storage.svc.cluster.local
+              PGUSER: postgres
+              PGPASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: honcho-secret
+                    key: INIT_POSTGRES_SUPER_PASS
+              PGDATABASE: honcho
+            command: ["/bin/bash", "-c"]
+            args:
+              - |
+                psql -c "CREATE EXTENSION IF NOT EXISTS vector CASCADE;"
         containers:
           app:
             image:
