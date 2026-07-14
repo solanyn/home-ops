@@ -29,6 +29,46 @@ spec:
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
+          install-tools:
+            image: &installImage
+              repository: ghcr.io/lucasgelfond/zerobrew
+              tag: latest
+            command:
+              - sh
+              - -c
+              - |
+                set -euo pipefail
+                TOOLS="/opt/data/bin"
+                mkdir -p "$TOOLS"
+                export PATH="$TOOLS:$PATH"
+
+                if [ ! -x "$TOOLS/kubectl" ]; then
+                  echo "Installing kubectl..."
+                  zerobrew install kubectl --prefix "$TOOLS" 2>/dev/null || \
+                    curl -sLo "$TOOLS/kubectl" "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+                    chmod +x "$TOOLS/kubectl"
+                fi
+                if [ ! -x "$TOOLS/flux" ]; then
+                  echo "Installing flux..."
+                  zerobrew install flux --prefix "$TOOLS" 2>/dev/null || \
+                    curl -s https://fluxcd.io/install.sh | bash -s -- "$TOOLS" 2>/dev/null
+                fi
+                if [ ! -x "$TOOLS/bat" ]; then
+                  echo "Installing bat..."
+                  zerobrew install bat --prefix "$TOOLS" 2>/dev/null || \
+                    curl -sLo "$TOOLS/bat.tar.gz" "https://github.com/sharkdp/bat/releases/latest/download/bat-v0.25.0-x86_64-unknown-linux-gnu.tar.gz" && \
+                    tar -xzf "$TOOLS/bat.tar.gz" -C "$TOOLS" --strip-components=1 "bat-v0.25.0-x86_64-unknown-linux-gnu/bat" && \
+                    rm "$TOOLS/bat.tar.gz"
+                fi
+                if [ ! -x "$TOOLS/shellcheck" ]; then
+                  echo "Installing shellcheck..."
+                  zerobrew install shellcheck --prefix "$TOOLS" 2>/dev/null || \
+                    curl -sLo "$TOOLS/shellcheck.tar.xz" "https://github.com/koalaman/shellcheck/releases/download/v0.10.0/shellcheck-v0.10.0.linux.x86_64.tar.xz" && \
+                    tar -xJf "$TOOLS/shellcheck.tar.xz" -C "$TOOLS" --strip-components=1 "shellcheck-v0.10.0/shellcheck" && \
+                    rm "$TOOLS/shellcheck.tar.xz"
+                fi
+                echo "Tools installed:"
+                ls -la "$TOOLS"
         containers:
           app:
             image: &image
