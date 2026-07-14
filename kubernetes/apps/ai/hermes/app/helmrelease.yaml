@@ -38,23 +38,40 @@ spec:
               - -c
               - |
                 set -euo pipefail
-                BREW="/opt/data/homebrew"
-                mkdir -p "$BREW"
-                export PATH="$BREW/bin:$PATH"
+                apt-get update -qq && apt-get install -y -qq curl ca-certificates >/dev/null 2>&1
+                TOOLS="/opt/data/homebrew/bin"
+                mkdir -p "$TOOLS"
+                export PATH="$TOOLS:$PATH"
 
-                if [ ! -x "$BREW/bin/brew" ]; then
-                  echo "Installing Homebrew to $BREW..."
-                  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-                  echo "Homebrew installed."
+                if [ ! -x "$TOOLS/kubectl" ]; then
+                  echo "Installing kubectl..."
+                  KUBE_VERSION=$(curl -sL https://dl.k8s.io/release/stable.txt)
+                  curl -sLo "$TOOLS/kubectl" "https://dl.k8s.io/release/${KUBE_VERSION}/bin/linux/amd64/kubectl"
+                  chmod +x "$TOOLS/kubectl"
                 fi
 
-                eval "$("$BREW/bin/brew" shellenv)"
-                echo "Running brew bundle..."
-                cp /tmp/Brewfile /tmp/Brewfile.bundle
-                brew bundle --file=/tmp/Brewfile.bundle --no-lock || true
+                if [ ! -x "$TOOLS/flux" ]; then
+                  echo "Installing flux..."
+                  curl -sLo "$TOOLS/flux" "https://github.com/fluxcd/flux2/releases/latest/download/flux_linux_amd64"
+                  chmod +x "$TOOLS/flux"
+                fi
 
-                echo "Tools installed:"
-                ls -la "$BREW/bin/kubectl" "$BREW/bin/flux" "$BREW/bin/bat" "$BREW/bin/shellcheck" 2>&1 || true
+                if [ ! -x "$TOOLS/bat" ]; then
+                  echo "Installing bat..."
+                  curl -sLo /tmp/bat.tar.gz "https://github.com/sharkdp/bat/releases/latest/download/bat-v0.25.0-x86_64-unknown-linux-gnu.tar.gz"
+                  tar -xzf /tmp/bat.tar.gz -C "$TOOLS" --strip-components=1 "bat-v0.25.0-x86_64-unknown-linux-gnu/bat"
+                  rm /tmp/bat.tar.gz
+                fi
+
+                if [ ! -x "$TOOLS/shellcheck" ]; then
+                  echo "Installing shellcheck..."
+                  curl -sLo /tmp/shc.tar.xz "https://github.com/koalaman/shellcheck/releases/download/v0.10.0/shellcheck-v0.10.0.linux.x86_64.tar.xz"
+                  tar -xJf /tmp/shc.tar.xz -C "$TOOLS" --strip-components=1 "shellcheck-v0.10.0/shellcheck"
+                  rm /tmp/shc.tar.xz
+                fi
+
+                echo "Tools installed in $TOOLS:"
+                ls -la "$TOOLS"
         containers:
           app:
             image: &image
@@ -118,12 +135,3 @@ spec:
         globalMounts:
           - path: /tmp/config.yaml
             subPath: config.yaml
-      brewfile:
-        type: configMap
-        name: "{{ .Release.Name }}-brewfile"
-        defaultMode: 0755
-        advancedMounts:
-          hermes:
-            install-tools:
-              - path: /tmp/Brewfile
-                subPath: Brewfile
