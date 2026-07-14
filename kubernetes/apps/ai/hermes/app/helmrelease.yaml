@@ -42,36 +42,22 @@ spec:
                 TOOLS="/opt/data/homebrew/bin"
                 mkdir -p "$TOOLS"
                 export PATH="$TOOLS:$PATH"
+                ZB_HOME="/opt/data/homebrew/zb"
 
-                if [ ! -x "$TOOLS/kubectl" ]; then
-                  echo "Installing kubectl..."
-                  KUBE_VERSION=$(curl -sL https://dl.k8s.io/release/stable.txt)
-                  curl -sLo "$TOOLS/kubectl" "https://dl.k8s.io/release/${KUBE_VERSION}/bin/linux/amd64/kubectl"
-                  chmod +x "$TOOLS/kubectl"
+                if [ ! -x "$ZB_HOME/zb" ]; then
+                  echo "Installing zerobrew..."
+                  mkdir -p "$ZB_HOME"
+                  curl -fsSL https://zerobrew.rs/install | ZB_HOME="$ZB_HOME" bash
                 fi
+                export PATH="$ZB_HOME:$PATH"
 
-                if [ ! -x "$TOOLS/flux" ]; then
-                  echo "Installing flux..."
-                  curl -sLo "$TOOLS/flux" "https://github.com/fluxcd/flux2/releases/latest/download/flux_linux_amd64"
-                  chmod +x "$TOOLS/flux"
-                fi
+                zb install kubectl 2>/dev/null || true
+                zb install flux 2>/dev/null || true
+                zb install bat 2>/dev/null || true
+                zb install shellcheck 2>/dev/null || true
 
-                if [ ! -x "$TOOLS/bat" ]; then
-                  echo "Installing bat..."
-                  curl -sLo /tmp/bat.tar.gz "https://github.com/sharkdp/bat/releases/latest/download/bat-v0.25.0-x86_64-unknown-linux-gnu.tar.gz"
-                  tar -xzf /tmp/bat.tar.gz -C "$TOOLS" --strip-components=1 "bat-v0.25.0-x86_64-unknown-linux-gnu/bat"
-                  rm /tmp/bat.tar.gz
-                fi
-
-                if [ ! -x "$TOOLS/shellcheck" ]; then
-                  echo "Installing shellcheck..."
-                  curl -sLo /tmp/shc.tar.xz "https://github.com/koalaman/shellcheck/releases/download/v0.10.0/shellcheck-v0.10.0.linux.x86_64.tar.xz"
-                  tar -xJf /tmp/shc.tar.xz -C "$TOOLS" --strip-components=1 "shellcheck-v0.10.0/shellcheck"
-                  rm /tmp/shc.tar.xz
-                fi
-
-                echo "Tools installed in $TOOLS:"
-                ls -la "$TOOLS"
+                echo "Tools installed in $ZB_HOME:"
+                ls -la "$ZB_HOME"
         containers:
           app:
             image: &image
