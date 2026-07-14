@@ -41,23 +41,21 @@ spec:
                 apt-get update -qq && apt-get install -y -qq curl ca-certificates >/dev/null 2>&1
                 TOOLS="/opt/data/homebrew/bin"
                 mkdir -p "$TOOLS"
-                export PATH="$TOOLS:$PATH"
-                ZB_HOME="/opt/data/homebrew/zb"
 
-                if [ ! -x "$ZB_HOME/zb" ]; then
+                install_zb() {
                   echo "Installing zerobrew..."
-                  mkdir -p "$ZB_HOME"
-                  curl -fsSL https://zerobrew.rs/install | ZB_HOME="$ZB_HOME" bash
-                fi
-                export PATH="$ZB_HOME:$PATH"
+                  mkdir -p /tmp/zb
+                  curl -fsSL https://zerobrew.rs/install | ZB_HOME=/tmp/zb bash >/dev/null 2>&1
+                  /tmp/zb/zb install kubectl --dir "$TOOLS" 2>/dev/null || true
+                  /tmp/zb/zb install flux --dir "$TOOLS" 2>/dev/null || true
+                  /tmp/zb/zb install bat --dir "$TOOLS" 2>/dev/null || true
+                  /tmp/zb/zb install shellcheck --dir "$TOOLS" 2>/dev/null || true
+                }
 
-                zb install kubectl 2>/dev/null || true
-                zb install flux 2>/dev/null || true
-                zb install bat 2>/dev/null || true
-                zb install shellcheck 2>/dev/null || true
+                install_zb
 
-                echo "Tools installed in $ZB_HOME:"
-                ls -la "$ZB_HOME"
+                echo "Tools installed:"
+                ls -la "$TOOLS"
         containers:
           app:
             image: &image
