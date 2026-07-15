@@ -92,7 +92,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-promote
-              tag: "2026.06.10"
+              tag: "2026.07.0"
               pullPolicy: Always
             env:
               <<: *env
