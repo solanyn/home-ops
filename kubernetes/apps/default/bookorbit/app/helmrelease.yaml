@@ -44,7 +44,7 @@ spec:
           app:
             image:
               repository: ghcr.io/bookorbit/bookorbit
-              tag: 1.12.0@sha256:1e16c70ec3bcb2d3fd88327fb5cd49b9b0feed373fc33ef0cd14940f4b96fda1
+              tag: 2.2.0@sha256:c2b01e655562dd95d785b515890c4c8c31325d90671efd1ae7db5b9f378a80ce
             env:
               TZ: Australia/Sydney
               NODE_ENV: production
