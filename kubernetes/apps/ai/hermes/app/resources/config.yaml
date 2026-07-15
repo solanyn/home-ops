@@ -48,6 +48,9 @@ session_reset:
   mode: both
   idle_minutes: 1440
   at_hour: 4
+approvals:
+  mode: "off"
+  cron_mode: "approve"
 max_concurrent_sessions: 5
 group_sessions_per_user: true
 skills:
