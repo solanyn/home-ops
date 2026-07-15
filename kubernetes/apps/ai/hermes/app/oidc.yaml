@@ -1,0 +1,12 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+    name: hermes-dashboard
+spec:
+    clientID: hermes-dashboard
+    isPublic: true
+    callbackUrls:
+        - https://hermes.goyangi.io/auth/callback
+    logoutCallbackUrls:
+        - https://hermes.goyangi.io
