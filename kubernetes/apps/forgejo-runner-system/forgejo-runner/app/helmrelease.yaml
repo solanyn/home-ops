@@ -50,7 +50,7 @@ spec:
       image:
         registry: docker.io
         repository: library/docker
-        tag: 27-dind
+        tag: 29-dind
         pullPolicy: IfNotPresent
       resources:
         requests:
