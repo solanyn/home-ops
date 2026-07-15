@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: docker.io/surrealdb/surrealdb
-              tag: v2
+              tag: v3
             args:
               - start
               - --log
