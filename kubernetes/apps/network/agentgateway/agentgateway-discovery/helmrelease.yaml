@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/agentgateway-discovery
-              tag: 2026.06.27
+              tag: 2026.07.0
             env:
               - name: DISCOVERY_PROVIDER_MLX_URL
                 value: "http://qwen3.5-9b.ai.svc.cluster.local:8000/v1/models"
