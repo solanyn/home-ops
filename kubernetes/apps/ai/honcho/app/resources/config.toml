@@ -1,0 +1,22 @@
+[app]
+LOG_LEVEL = "INFO"
+
+[db]
+SCHEMA = "public"
+
+[llm]
+OPENAI_API_KEY = "sk-not-used"
+
+[embedding]
+VECTOR_DIMENSIONS = 1024
+
+[embedding.model_config]
+transport = "openai"
+model = "Qwen3-Embedding-0.6B-4bit-DWQ"
+
+[embedding.model_config.overrides]
+base_url = "http://qwen3-embedding.ai.svc.cluster.local:8080/v1"
+
+[vector_store]
+TYPE = "pgvector"
+NAMESPACE = "honcho"
