@@ -100,5 +100,12 @@ spec:
             port: 80
             targetPort: *port
     persistence:
+      config-toml:
+        type: configMap
+        name: honcho-configmap
+        globalMounts:
+          - path: /app/config.toml
+            subPath: config.toml
+            readOnly: true
       tmp:
         type: emptyDir
