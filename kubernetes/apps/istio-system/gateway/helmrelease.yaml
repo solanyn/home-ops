@@ -8,6 +8,10 @@ spec:
   chartRef:
     kind: OCIRepository
     name: istio-ingressgateway
+  install:
+    disableSchemaValidation: true
+  upgrade:
+    disableSchemaValidation: true
   interval: 1h
   values:
     service:
