@@ -13,3 +13,7 @@ spec:
                 kind: HelmRepository
                 name: llmkube
     interval: 10m
+    values:
+        modelSource:
+            allowedHostPathRoots:
+                - /Users/andrew/.omlx/models
