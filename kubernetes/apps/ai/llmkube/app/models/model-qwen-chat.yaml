@@ -19,5 +19,5 @@ metadata:
 spec:
     modelRef: qwen3.5-9b-mlx
     mode: chat
-    runtime: omlx
+    runtime: llamacpp
     replicas: 1
