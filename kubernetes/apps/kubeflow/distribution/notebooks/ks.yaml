@@ -11,7 +11,7 @@ spec:
     - name: kubeflow-profiles
       namespace: kubeflow
   interval: 1h
-  path: ./applications/jupyter/notebook-controller/upstream
+  path: ./applications/jupyter/notebook-controller/upstream/overlays/kubeflow
   prune: true
   sourceRef:
     kind: GitRepository
@@ -30,7 +30,7 @@ spec:
     - name: kubeflow-profiles
       namespace: kubeflow
   interval: 1h
-  path: ./applications/jupyter/jupyter-web-app/upstream
+  path: ./applications/jupyter/jupyter-web-app/upstream/overlays/istio
   prune: true
   sourceRef:
     kind: GitRepository
