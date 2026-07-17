@@ -22,6 +22,8 @@ spec:
             env: &env
               - name: TZ
                 value: Australia/Sydney
+              - name: EMBEDDING_VECTOR_DIMENSIONS
+                value: "1024"
             envFrom:
               - secretRef:
                   name: honcho-secret
