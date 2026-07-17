@@ -7,16 +7,25 @@ spec:
     replicas: 1
     resources:
         requests:
-            cpu: 10m
-            memory: 1Gi
-        limits:
-            cpu: 500m
+            cpu: 250m
             memory: 2Gi
+        limits:
+            cpu: 2000m
+            memory: 4Gi
     generalSettings:
         master_key: os.environ/LITELLM_MASTER_KEY
         database_url: os.environ/DATABASE_URL
     routerSettings:
         routing_strategy: simple-shuffle
+        num_retries: 3
+        timeout: 60
+        request_timeout: 120
+        retry_policy:
+            BadRequestErrorRetries: 1
+            AuthenticationErrorRetries: 1
+            TimeoutErrorRetries: 3
+            RateLimitErrorRetries: 3
+            InternalServerErrorRetries: 3
     callbacks:
         success:
             - prometheus
