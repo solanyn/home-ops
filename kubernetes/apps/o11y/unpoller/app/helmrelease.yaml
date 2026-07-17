@@ -21,7 +21,7 @@ spec:
               TZ: Australia/Sydney
               UP_UNIFI_DEFAULT_URL: https://192.168.1.1
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
-              UP_UNIFI_DEFAULT_TIMEOUT: 10s
+              UP_UNIFI_DEFAULT_TIMEOUT: 30s
               UP_UNIFI_DEFAULT_SAVE_SITES: false
               UP_PROMETHEUS_HTTP_LISTEN: 0.0.0.0:9090
               UP_INFLUXDB_DISABLE: true
