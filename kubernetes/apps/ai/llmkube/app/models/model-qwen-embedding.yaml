@@ -19,4 +19,5 @@ metadata:
 spec:
     modelRef: qwen3-embedding-mlx
     mode: embedding
+    runtime: omlx
     replicas: 1
