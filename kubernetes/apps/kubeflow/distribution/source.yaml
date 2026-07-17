@@ -8,5 +8,5 @@ metadata:
 spec:
   interval: 1h
   ref:
-    tag: release-26.03
+    tag: 26.03
   url: https://github.com/kubeflow/community-distribution
