@@ -19,5 +19,5 @@ metadata:
 spec:
     modelRef: qwen3-embedding-mlx
     mode: embedding
-    runtime: omlx
+    runtime: llamacpp
     replicas: 1
