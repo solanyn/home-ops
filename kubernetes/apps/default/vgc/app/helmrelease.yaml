@@ -57,6 +57,7 @@ spec:
               repository: ghcr.io/solanyn/vgc-calc
               tag: latest
               pullPolicy: Always
+            command: ["node", "/vgc/calc/bundle.js"]
             env:
               PORT: "8080"
             probes:

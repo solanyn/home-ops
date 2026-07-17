@@ -8,10 +8,10 @@ spec:
     resources:
         requests:
             cpu: 10m
-            memory: 512Mi
+            memory: 1Gi
         limits:
             cpu: 500m
-            memory: 1Gi
+            memory: 2Gi
     generalSettings:
         master_key: os.environ/LITELLM_MASTER_KEY
         database_url: os.environ/DATABASE_URL
