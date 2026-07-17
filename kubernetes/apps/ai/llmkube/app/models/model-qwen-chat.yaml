@@ -19,4 +19,5 @@ metadata:
 spec:
     modelRef: qwen3.5-9b-mlx
     mode: chat
+    runtime: omlx
     replicas: 1
