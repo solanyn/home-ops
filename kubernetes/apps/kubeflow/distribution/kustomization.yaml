@@ -19,3 +19,4 @@ resources:
   - ./pvcviewer/ks.yaml
   - ./model-registry/ks.yaml
   - ./metadata/ks.yaml
+  - ./secrets/ks.yaml
