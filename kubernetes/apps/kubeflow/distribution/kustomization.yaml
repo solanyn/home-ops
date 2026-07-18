@@ -20,3 +20,4 @@ resources:
   - ./model-registry/ks.yaml
   - ./metadata/ks.yaml
   - ./secrets/ks.yaml
+  - ./edge/ks.yaml

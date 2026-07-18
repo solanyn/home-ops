@@ -1,0 +1,28 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/securitypolicy_v1alpha1.json
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: kubeflow
+spec:
+  oidc:
+    clientID: kubeflow
+    clientSecret:
+      name: kubeflow-oidc
+    logoutPath: /logout
+    provider:
+      issuer: https://id.goyangi.io/
+    redirectURL: https://kubeflow.goyangi.io/oauth2/callback
+    refreshToken: true
+    scopes:
+      - openid
+      - profile
+      - email
+    forwardAccessToken: true
+    headers:
+      - name: X-Auth-Request-User
+        value: '%JWT(email)%'
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: kubeflow
