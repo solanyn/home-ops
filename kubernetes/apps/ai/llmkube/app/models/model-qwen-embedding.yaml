@@ -2,10 +2,10 @@
 apiVersion: inference.llmkube.dev/v1alpha1
 kind: Model
 metadata:
-    name: qwen3-embedding-mlx
+    name: qwen3-embedding
 spec:
-    source: /Users/andrew/.omlx/models/Qwen3-Embedding-0.6B-4bit-DWQ
-    format: mlx
+    source: /Users/andrew/.omlx/models/Qwen3-Embedding-0.6B-Q8_0.gguf
+    format: gguf
     hardware:
         accelerator: metal
         gpu:
@@ -17,7 +17,7 @@ kind: InferenceService
 metadata:
     name: qwen3-embedding
 spec:
-    modelRef: qwen3-embedding-mlx
+    modelRef: qwen3-embedding
     mode: embedding
     runtime: llamacpp
     replicas: 1
