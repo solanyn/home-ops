@@ -18,4 +18,5 @@ resources:
   - ./flux-operator-mcp/ks.yaml
   - ./smtp-relay/ks.yaml
   - ./unifi-dns/ks.yaml
+  - ./unifi-mcp/ks.yaml
   - ./opencode/ks.yaml

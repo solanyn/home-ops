@@ -1,0 +1,54 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+    name: unifi-mcp
+spec:
+    chartRef:
+        kind: OCIRepository
+        name: unifi-mcp
+    interval: 1h
+    values:
+        controllers:
+            unifi-mcp:
+                annotations:
+                    reloader.stakater.com/auto: "true"
+                containers:
+                    app:
+                        image:
+                            repository: ghcr.io/sirkirby/unifi-network-mcp
+                            tag: 0.24.0@sha256:b212059aaf707c0d3764a32bf348bdfa948ed6418883e8bb7e9bddadfc9eafa5
+                        envFrom:
+                            - secretRef:
+                                  name: unifi-mcp-secret
+                        resources:
+                            requests:
+                                cpu: 10m
+                                memory: 64Mi
+                            limits:
+                                memory: 256Mi
+                        securityContext:
+                            allowPrivilegeEscalation: false
+                            readOnlyRootFilesystem: true
+                            capabilities:
+                                drop: ["ALL"]
+        defaultPodOptions:
+            securityContext:
+                runAsNonRoot: true
+                runAsUser: 1000
+                runAsGroup: 1000
+                seccompProfile:
+                    type: RuntimeDefault
+        service:
+            app:
+                ports:
+                    http:
+                        port: 3000
+        route:
+            app:
+                hostnames:
+                    - unifi-mcp.goyangi.io
+                parentRefs:
+                    - name: envoy-internal
+                      namespace: network
