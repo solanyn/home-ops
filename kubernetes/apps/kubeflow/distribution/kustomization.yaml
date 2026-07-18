@@ -10,3 +10,12 @@ resources:
   - ./profiles/ks.yaml
   - ./notebooks/ks.yaml
   - ./dashboard/ks.yaml
+  - ./katib/ks.yaml
+  - ./pipelines/ks.yaml
+  - ./training-operator/ks.yaml
+  - ./spark/ks.yaml
+  - ./tensorboard/ks.yaml
+  - ./volumes-web-app/ks.yaml
+  - ./pvcviewer/ks.yaml
+  - ./model-registry/ks.yaml
+  - ./metadata/ks.yaml
