@@ -27,7 +27,7 @@ spec:
 
     image:
       repository: code.forgejo.org/forgejo/forgejo
-      tag: 15.0.5-rootless@sha256:cad7e87cf59167020414ce7aee287f54db7afc1bdf84137c2af7e49c78effb1d
+      tag: 16.0.0-rootless@sha256:9ff74ea3a61b44c6e2ce3de96950647086ad513d4df81bb024486f71b4d93604
 
     deployment:
       annotations:
