@@ -17,7 +17,7 @@ spec:
             AU_TFN: MASK
             AU_MEDICARE: MASK
             EMAIL_ADDRESS: MASK
-            IP_ADDRESS: MASK
+            PHONE_NUMBER: MASK
             AWS_ACCESS_KEY: MASK
             AWS_SECRET_KEY: MASK
             GITHUB_TOKEN: MASK
