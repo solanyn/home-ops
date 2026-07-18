@@ -2,10 +2,10 @@
 apiVersion: inference.llmkube.dev/v1alpha1
 kind: Model
 metadata:
-    name: qwen3.5-9b-mlx
+    name: qwen3.5-9b
 spec:
-    source: /Users/andrew/.omlx/models/Qwen3.5-9B-4bit
-    format: mlx
+    source: /Users/andrew/.omlx/models/Qwen3.5-9B-Q4_K_M.gguf
+    format: gguf
     hardware:
         accelerator: metal
         gpu:
@@ -17,7 +17,7 @@ kind: InferenceService
 metadata:
     name: qwen3.5-9b
 spec:
-    modelRef: qwen3.5-9b-mlx
+    modelRef: qwen3.5-9b
     mode: chat
     runtime: llamacpp
     replicas: 1
