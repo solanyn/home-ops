@@ -21,7 +21,6 @@ spec:
       masquerade: true
       preallocateMaps: true
     bpfClockProbe: true
-    installIptablesRules: false
     bgpControlPlane:
       enabled: true
     cgroup:
