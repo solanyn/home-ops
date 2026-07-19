@@ -38,13 +38,13 @@ spec:
               - -c
               - |
                 set -euo pipefail
-                apt-get update -qq && apt-get install -y -qq curl ca-certificates git >/dev/null 2>&1
+                apt-get update -qq && apt-get install -y -qq curl ca-certificates git util-linux >/dev/null 2>&1
 
                 TOOLS="/opt/data/homebrew/bin"
                 mkdir -p "$TOOLS"
 
-                # zerobrew refuses to run as root. Drop privileges to UID 10000 (hermes user)
-                # for the install, then copy binaries to the persistent tools directory.
+                # zerobrew refuses to run as root. Bootstrap it as UID 10000 (hermes user);
+                # the agent then installs tools itself via the entrypoint.
                 ZB_HOME="/tmp/zbuser-home"
                 mkdir -p "$ZB_HOME"
                 chown 10000:10000 "$ZB_HOME"
@@ -57,36 +57,29 @@ spec:
                   bash -c '
                     set -euo pipefail
                     curl -fsSL https://zerobrew.rs/install | bash >/dev/null 2>&1
-                    export PATH="$ZB_HOME/.local/bin:$PATH"
-                    zb install kubectl 2>/dev/null || true
-                    zb install flux 2>/dev/null || true
-                    zb install bat 2>/dev/null || true
-                    zb install shellcheck 2>/dev/null || true
                   '
 
-                # Copy binaries from zerobrew prefix to persistent tools directory
                 cp "$ZB_HOME/.local/bin/"zb "$TOOLS/" 2>/dev/null || true
-                shopt -s nullglob
-                for bin in "$ZB_HOME/.local/share/zerobrew/prefix/bin/"*; do
-                    cp "$bin" "$TOOLS/"
-                done
-                shopt -u nullglob
-                chown -R 10000:10000 "$TOOLS"
+
+                chown -R 10000:10000 /opt/data/homebrew
                 chmod -R a+rx "$TOOLS"
 
-                echo "Tools installed:"
+                echo "Bootstrapped:"
                 ls -la "$TOOLS"
         containers:
           app:
             image: &image
               repository: nousresearch/hermes-agent
               tag: v2026.7.7@sha256:ce3b39adf33fffae8cb19dcae74f971975b972efe91207f7d7539f80a0aae66a
-            command: ["/opt/hermes/bin/hermes"]
+            command: ["/tmp/hermes-entrypoint.sh"]
             args: ["gateway", "run"]
             env:
               HERMES_HOME: /opt/data
               HOME: /opt/data
               PATH: /opt/data/homebrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+              ZEROBREW_BIN: /opt/data/homebrew/bin
+              ZEROBREW_DIR: /opt/data/homebrew/.zerobrew
+              ZEROBREW_PREFIX: /opt/data/homebrew
               TZ: Australia/Sydney
             envFrom:
               - secretRef:
@@ -145,3 +138,5 @@ spec:
         globalMounts:
           - path: /tmp/config.yaml
             subPath: config.yaml
+          - path: /tmp/hermes-entrypoint.sh
+            subPath: entrypoint.sh
