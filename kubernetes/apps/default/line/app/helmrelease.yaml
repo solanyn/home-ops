@@ -151,24 +151,6 @@ spec:
             envFrom:
               - secretRef:
                   name: line-secret
-      refdata:
-        type: cronjob
-        cronjob:
-          schedule: "0 4 * * 1"
-          successfulJobsHistory: 3
-          failedJobsHistory: 3
-        containers:
-          app:
-            image:
-              repository: ghcr.io/solanyn/line-refdata
-              tag: latest
-            env:
-              S3_ENDPOINT: http://garage.storage.svc.cluster.local:3900
-              S3_REGION: us-east-1
-              S3_BUCKET: line-bronze
-            envFrom:
-              - secretRef:
-                  name: line-secret
     service:
       api:
         controller: api
