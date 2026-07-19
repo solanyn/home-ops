@@ -4,3 +4,4 @@ resources:
     - ./externalsecret.yaml
     - ./workspace.yaml
     - ./agentconfig.yaml
+    - ./session.yaml

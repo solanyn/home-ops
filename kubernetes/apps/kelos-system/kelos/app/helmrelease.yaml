@@ -23,3 +23,5 @@ spec:
             enabled: true
             secretName: kelos-session-auth
             defaultNamespace: ai
+            service:
+                type: ClusterIP
