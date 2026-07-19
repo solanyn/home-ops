@@ -38,34 +38,44 @@ spec:
               - -c
               - |
                 set -euo pipefail
-                apt-get update -qq && apt-get install -y -qq curl ca-certificates git util-linux >/dev/null 2>&1
+                apt-get update -qq && apt-get install -y -qq curl ca-certificates git build-essential file unzip util-linux >/dev/null 2>&1
 
-                TOOLS="/opt/data/homebrew/bin"
-                mkdir -p "$TOOLS"
-
-                # zerobrew refuses to run as root. Bootstrap it as UID 10000 (hermes user);
-                # the agent then installs tools itself via the entrypoint.
-                ZB_HOME="/tmp/zbuser-home"
-                mkdir -p "$ZB_HOME"
-                chown 10000:10000 "$ZB_HOME"
+                # linuxbrew refuses to run as root and needs a writable $HOME.
+                # Install at /opt/data/homebrew/.linuxbrew (PVC-backed, persists across pod restarts)
+                # and use /opt/data/homebrew/.homebrew-user as the non-root $HOME.
+                BREW_PREFIX="/opt/data/homebrew/.linuxbrew"
+                BREW_USER_HOME="/opt/data/homebrew/.homebrew-user"
+                mkdir -p "$BREW_PREFIX" "$BREW_USER_HOME"
+                chown -R 10000:10000 "$BREW_PREFIX" "$BREW_USER_HOME"
 
                 setpriv --reuid=10000 --regid=10000 --clear-groups env \
-                  HOME="$ZB_HOME" \
-                  ZB_HOME="$ZB_HOME" \
-                  ZEROBREW_DIR="$ZB_HOME/.zerobrew" \
-                  ZEROBREW_BIN="$ZB_HOME/.local/bin" \
+                  HOME="$BREW_USER_HOME" \
+                  HOMEBREW_PREFIX="$BREW_PREFIX" \
+                  HOMEBREW_NO_ANALYTICS=1 \
+                  HOMEBREW_NO_AUTO_UPDATE=1 \
+                  NONINTERACTIVE=1 \
                   bash -c '
                     set -euo pipefail
-                    curl -fsSL https://zerobrew.rs/install | bash >/dev/null 2>&1
+
+                    # Bootstrap linuxbrew if not already present (cache hit on warm starts)
+                    if [[ ! -x "$HOMEBREW_PREFIX/bin/brew" ]]; then
+                      echo "[install-tools] Bootstrapping linuxbrew at $HOMEBREW_PREFIX (cold)..."
+                      curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
+                    else
+                      echo "[install-tools] linuxbrew already installed (warm cache hit)"
+                    fi
+
+                    eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
+
+                    brew install kubectl flux bat shellcheck
+                    # 1password-cli is a cask; supported by linuxbrew 4.x+
+                    brew install --cask 1password-cli || echo "[install-tools] WARN: 1password-cli cask install failed"
                   '
 
-                cp "$ZB_HOME/.local/bin/"zb "$TOOLS/" 2>/dev/null || true
+                chmod -R a+rx "$BREW_PREFIX/bin"
 
-                chown -R 10000:10000 /opt/data/homebrew
-                chmod -R a+rx "$TOOLS"
-
-                echo "Bootstrapped:"
-                ls -la "$TOOLS"
+                echo "[install-tools] Available binaries:"
+                ls -la "$BREW_PREFIX/bin"
         containers:
           app:
             image: &image
@@ -76,10 +86,11 @@ spec:
             env:
               HERMES_HOME: /opt/data
               HOME: /opt/data
-              PATH: /opt/data/homebrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-              ZEROBREW_BIN: /opt/data/homebrew/bin
-              ZEROBREW_DIR: /opt/data/homebrew/.zerobrew
-              ZEROBREW_PREFIX: /opt/data/homebrew
+              PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+              HOMEBREW_PREFIX: /opt/data/homebrew/.linuxbrew
+              HOMEBREW_CELLAR: /opt/data/homebrew/.linuxbrew/Cellar
+              HOMEBREW_NO_ANALYTICS: "1"
+              HOMEBREW_NO_AUTO_UPDATE: "1"
               TZ: Australia/Sydney
             envFrom:
               - secretRef:
