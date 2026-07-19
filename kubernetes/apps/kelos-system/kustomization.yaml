@@ -6,4 +6,5 @@ namespace: kelos-system
 
 resources:
     - ./namespace.yaml
+    - ./kelos/bootstrap/ks.yaml
     - ./kelos/ks.yaml
