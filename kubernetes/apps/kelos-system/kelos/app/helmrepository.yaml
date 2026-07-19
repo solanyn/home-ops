@@ -1,0 +1,9 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+    name: kelos
+spec:
+    interval: 1h
+    url: oci://ghcr.io/kelos-dev/charts
+    type: oci

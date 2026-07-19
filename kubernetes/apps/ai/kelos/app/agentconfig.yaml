@@ -1,0 +1,29 @@
+---
+apiVersion: kelos.dev/v1alpha2
+kind: AgentConfig
+metadata:
+    name: cluster-default
+spec:
+    agentsMD: |
+        # Cluster Agent Instructions
+
+        You are an AI coding agent running in the home-ops Kubernetes cluster via Kelos.
+        All work happens on feature branches via the github-bot GitHub App. Open PRs for review.
+
+        ## Available models
+
+        Use the LiteLLM proxy at https://litellm.goyangi.io/v1. The secret `kelos-secret` carries `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, and `CURSOR_API_KEY` mapped from the LiteLLM master key, plus `OPENCODE_API_KEY` for OpenCode Go models.
+
+        Prefer minimax-m3 for complex tasks, deepseek-v4-flash for quick iterations. OpenCode Go models (kimi-k2.7, glm-5.2, qwen3.7-max) are available via the opencode-go/ prefix.
+
+        ## Conventions
+
+        - British English in documentation, American English in code
+        - Conventional commits with scope tags
+        - Never attribute agents in commit messages
+        - Avoid unnecessary comments and emojis
+        - Edit Flux manifests, never live cluster resources
+    mcpServers:
+        - name: agentgateway
+          type: http
+          url: https://gateway.goyangi.io/mcp
