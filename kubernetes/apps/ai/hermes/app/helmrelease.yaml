@@ -66,7 +66,12 @@ spec:
 
                 # Copy binaries from zerobrew prefix to persistent tools directory
                 cp "$ZB_HOME/.local/bin/"zb "$TOOLS/" 2>/dev/null || true
-                cp "$ZB_HOME/.local/share/zerobrew/prefix/bin/"* "$TOOLS/" 2>/dev/null || true
+                shopt -s nullglob
+                for bin in "$ZB_HOME/.local/share/zerobrew/prefix/bin/"*; do
+                    cp "$bin" "$TOOLS/"
+                done
+                shopt -u nullglob
+                chown -R 10000:10000 "$TOOLS"
                 chmod -R a+rx "$TOOLS"
 
                 echo "Tools installed:"
@@ -81,6 +86,7 @@ spec:
             env:
               HERMES_HOME: /opt/data
               HOME: /opt/data
+              PATH: /opt/data/homebrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
               TZ: Australia/Sydney
             envFrom:
               - secretRef:
