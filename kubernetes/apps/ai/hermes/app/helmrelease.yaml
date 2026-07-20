@@ -48,6 +48,12 @@ spec:
                 mkdir -p "$BREW_PREFIX" "$BREW_USER_HOME"
                 chown -R 10000:10000 "$BREW_PREFIX" "$BREW_USER_HOME"
 
+                # brew casks require a passwd entry for the running UID.
+                # Inject a synthetic entry for UID 10000 so 'op' cask can install.
+                if ! getent passwd 10000 >/dev/null; then
+                  echo "brewuser:x:10000:10000:brewuser:${BREW_USER_HOME}:/bin/bash" >> /etc/passwd
+                fi
+
                 setpriv --reuid=10000 --regid=10000 --clear-groups env \
                   HOME="$BREW_USER_HOME" \
                   HOMEBREW_PREFIX="$BREW_PREFIX" \
