@@ -1,0 +1,25 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/raw.githubusercontent.com/flux-iac/tofu-controller/main/docs/api/v1alpha2/terraform.json
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+    name: unifi
+spec:
+    sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+    path: ./opentofu/unifi
+    interval: 10m
+    planOnly: true
+    vars:
+        - name: unifi_api_url
+          value: https://192.168.10.1
+        - name: unifi_insecure
+          value: "true"
+    destroyResourcesOnDeletion: false
+    runnerPodTemplate:
+        spec:
+            envFrom:
+                - secretRef:
+                      name: unifi-secret
