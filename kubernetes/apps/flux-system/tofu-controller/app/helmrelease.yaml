@@ -11,7 +11,7 @@ spec:
     interval: 1h
     values:
         watchAllNamespaces: true
-        allowCrossNamespaceRefs: false
+        allowCrossNamespaceRefs: true
         eventsAddress: http://notification-controller.flux-system.svc.cluster.local./
         runner:
             serviceAccount:
