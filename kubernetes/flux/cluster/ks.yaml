@@ -42,6 +42,8 @@ spec:
                     remediation:
                       remediateLastFailure: true
                       retries: 2
+                  # Generous timeout: cold linuxbrew bootstrap + brew install takes ~10min
+                  timeout: 15m
               target:
                 group: helm.toolkit.fluxcd.io
                 kind: HelmRelease
