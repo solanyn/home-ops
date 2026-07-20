@@ -2,23 +2,6 @@
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMModel
 metadata:
-    name: mlx-qwen
-    labels:
-        litellm.home-operations.com/managed-by: home-ops
-spec:
-    modelName: qwen3-9b
-    params:
-        model: openai/Qwen3.5-9B-4bit
-        apiBase: http://qwen3.5-9b.ai.svc.cluster.local:8000
-        apiKey: sk-placeholder
-    info:
-        maxInputTokens: 131072
-        maxOutputTokens: 32768
-        supportsFunctionCalling: true
----
-apiVersion: litellm.home-operations.com/v1alpha1
-kind: LiteLLMModel
-metadata:
     name: minimax
     labels:
         litellm.home-operations.com/managed-by: home-ops
