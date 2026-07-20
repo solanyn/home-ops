@@ -12,7 +12,7 @@ VECTOR_DIMENSIONS = 1024
 
 [embedding.model_config]
 transport = "openai"
-model = "Qwen3-Embedding-0.6B-4bit-DWQ"
+model = "Qwen3-Embedding-0.6B-Q8_0"
 
 [embedding.model_config.overrides]
 base_url = "http://qwen3-embedding.ai.svc.cluster.local:8080/v1"

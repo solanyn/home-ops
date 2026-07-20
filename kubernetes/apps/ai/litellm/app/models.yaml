@@ -172,14 +172,14 @@ spec:
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMModel
 metadata:
-    name: mlx-qwen3-embedding
+    name: gguf-qwen3-embedding
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
     modelName: qwen3-embedding
     params:
-        model: openai/Qwen3-Embedding-0.6B-4bit-DWQ
-        apiBase: http://qwen3-embedding.ai.svc.cluster.local:8000
+        model: openai/Qwen3-Embedding-0.6B-Q8_0
+        apiBase: http://qwen3-embedding.ai.svc.cluster.local:8080
         apiKey: sk-placeholder
     info:
         mode: embedding
