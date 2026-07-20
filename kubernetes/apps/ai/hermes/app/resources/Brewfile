@@ -1,0 +1,30 @@
+# Minimal Brewfile for the Hermes AI agent.
+#
+# Install order is determined by Homebrew (formulae first, casks after).
+# Tapped repositories must be declared before their formulae are referenced.
+#
+# Add to this file only when a concrete use case requires the tool.
+# The init container runs `brew bundle install --no-upgrade`, so any change
+# here creates a reviewable diff in git and triggers a one-time reinstall
+# via the next pod roll.
+
+# --- Cluster + agent runtime ---
+tap "fluxcd/tap"
+brew "kubernetes-cli"      # kubectl — k8s API + cluster self-inspection
+brew "fluxcd/tap/flux"     # flux — GitOps CLI (status, reconcile, suspend)
+brew "1password-cli"       # op — secret retrieval from kubernetes vault
+
+# --- Data shaping (every API skill needs these) ---
+brew "jq"                  # JSON in, JSON out — GitHub API, k8s API
+brew "yq"                  # Same but YAML — Flux manifests, app configs
+
+# --- Secrets / config-as-code ---
+brew "sops"                # Encrypted YAML/JSON in Git; unprivileged decrypt
+
+# --- External services ---
+brew "gh"                  # GitHub CLI — weekly-commits digest cron
+brew "opentofu"            # Unifi config-as-code via ubiquiti-community/unifi
+
+# --- Linting (entrypoint.sh warns if missing) ---
+brew "shellcheck"          # Lint shell scripts before committing
+brew "bat"                 # Nicer cat for config dumps, logs, YAML
