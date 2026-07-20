@@ -7,6 +7,11 @@ resources:
     - ./httproute.yaml
     - ./ocirepository.yaml
     - ./oidc.yaml
+    - ./serviceaccount.yaml
+    - ./role.yaml
+    - ./rolebinding.yaml
+    - ./clusterrole.yaml
+    - ./clusterrolebinding.yaml
 configMapGenerator:
   - name: hermes-config
     files:

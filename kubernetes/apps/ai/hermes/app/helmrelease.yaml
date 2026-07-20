@@ -16,6 +16,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     controllers:
       hermes:
+        serviceAccountName: hermes
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
