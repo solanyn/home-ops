@@ -1,23 +1,5 @@
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/rbac.authorization.k8s.io/role_v1.json
-#
-# Least-privilege RBAC for the Hermes AI agent running in the `ai` namespace.
-#
-# Design:
-#   - Role (namespace-scoped): read everything in `ai/` plus log access on
-#     the hermes pod for self-diagnostics. Plus full read on Flux kinds so
-#     the agent can answer "what's the current reconcile state?" without
-#     needing cluster-wide permissions for those.
-#   - ClusterRole: read-only across the cluster for cluster-wide inspection
-#     (nodes, namespaces, CRDs, workloads, Flux sources/HRs/Kustomizations,
-#     external-secrets). NO secrets cluster-wide, NO exec, NO writes.
-#
-# Deliberately excluded:
-#   - pods/exec, pods/portforward: privilege-escalation vector if the agent
-#     mis-execs into another pod. Self-debug uses kubectl logs only.
-#   - secrets cluster-wide: only namespace-scoped secrets are readable.
-#   - create/update/patch/delete on any resource: GitOps via Flux is the
-#     apply path. The agent proposes; humans + Flux apply.
-#   - node proxy: kubelet API = cluster root.
+# Namespace-scoped read access for the Hermes agent.
+# See clusterrole.yaml for cluster-wide reads and exclusion rationale.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -27,7 +9,7 @@ metadata:
     app.kubernetes.io/name: hermes
     app.kubernetes.io/part-of: hermes
 rules:
-  # Core k8s resources in our own namespace (read + watch for live state).
+  # Core k8s resources in `ai/` — incl. secrets here (namespace-scoped only).
   - apiGroups: [""]
     resources:
       - pods
@@ -44,61 +26,28 @@ rules:
       - replicasets
     verbs: ["get", "list", "watch"]
 
-  # Workloads in our own namespace (Helm/Flux-managed deployments).
+  # Workloads + batch + networking within `ai/`.
   - apiGroups: ["apps"]
-    resources:
-      - deployments
-      - statefulsets
-      - daemonsets
+    resources: [deployments, statefulsets, daemonsets]
     verbs: ["get", "list", "watch"]
-
-  # Batch jobs in our own namespace.
   - apiGroups: ["batch"]
-    resources:
-      - jobs
-      - cronjobs
+    resources: [jobs, cronjobs]
     verbs: ["get", "list", "watch"]
-
-  # Networking in our own namespace.
   - apiGroups: ["networking.k8s.io"]
-    resources:
-      - ingresses
-      - networkpolicies
-      - gateways
-      - httproutes
-      - tlsroutes
-      - grpcroutes
+    resources: [ingresses, networkpolicies, gateways, httproutes, tlsroutes, grpcroutes]
     verbs: ["get", "list", "watch"]
 
-  # Flux source controller — GitRepository, OCIRepository, HelmRepository, etc.
-  - apiGroups: ["source.toolkit.fluxcd.io"]
+  # All Flux controllers (read-only) — Kustomizations, HelmReleases, sources, etc.
+  - apiGroups:
+      - source.toolkit.fluxcd.io
+      - kustomize.toolkit.fluxcd.io
+      - helm.toolkit.fluxcd.io
+      - notification.toolkit.fluxcd.io
+      - image.toolkit.fluxcd.io
     resources: ["*"]
     verbs: ["get", "list", "watch"]
 
-  # Flux kustomize-controller — Kustomizations.
-  - apiGroups: ["kustomize.toolkit.fluxcd.io"]
-    resources: ["*"]
-    verbs: ["get", "list", "watch"]
-
-  # Flux helm-controller — HelmReleases (we have one: hermes itself).
-  - apiGroups: ["helm.toolkit.fluxcd.io"]
-    resources: ["*"]
-    verbs: ["get", "list", "watch"]
-
-  # Flux notification-controller — Alerts, Providers, Receivers.
-  - apiGroups: ["notification.toolkit.fluxcd.io"]
-    resources: ["*"]
-    verbs: ["get", "list", "watch"]
-
-  # Flux image-automation-controller.
-  - apiGroups: ["image.toolkit.fluxcd.io"]
-    resources: ["*"]
-    verbs: ["get", "list", "watch"]
-
-  # External Secrets (read-only — so the agent can see what 1Password items
-  # are being projected where, without the ability to create new ones).
+  # External Secrets — namespaced only. ClusterSecretStore is in clusterrole.yaml.
   - apiGroups: ["external-secrets.io"]
-    resources:
-      - externalSecrets
-      - secretStores
+    resources: [externalSecrets, secretStores]
     verbs: ["get", "list", "watch"]
