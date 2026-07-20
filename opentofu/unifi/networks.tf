@@ -2,6 +2,36 @@ locals {
     dhcp_24h = "86400s"
 }
 
+import {
+    to = unifi_network.default
+    id = "677fb0df1ba9a91370f7eed2"
+}
+
+import {
+    to = unifi_network.trusted
+    id = "679c2c6ad05e5917b0e59457"
+}
+
+import {
+    to = unifi_network.servers
+    id = "679c2c3dd05e5917b0e5943c"
+}
+
+import {
+    to = unifi_network.guest
+    id = "68b32a7b837ef51624765d60"
+}
+
+import {
+    to = unifi_network.iot
+    id = "68b32aba837ef51624765d95"
+}
+
+import {
+    to = unifi_network.vpn
+    id = "68dce56f4e52f6793f1d3fc3"
+}
+
 resource "unifi_network" "default" {
     name        = "Default"
     purpose     = "corporate"
