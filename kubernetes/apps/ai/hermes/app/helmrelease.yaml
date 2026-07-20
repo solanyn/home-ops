@@ -38,7 +38,7 @@ spec:
               - -c
               - |
                 set -euo pipefail
-                apt-get update -qq && apt-get install -y -qq curl ca-certificates git build-essential file unzip util-linux >/dev/null 2>&1
+                apt-get update -qq && apt-get install -y -qq curl ca-certificates git build-essential file unzip util-linux patch bzip2 >/dev/null 2>&1
 
                 # linuxbrew refuses to run as root and needs a writable $HOME.
                 # Install at /opt/data/homebrew/.linuxbrew (PVC-backed, persists across pod restarts)
@@ -54,13 +54,22 @@ spec:
                   HOMEBREW_NO_ANALYTICS=1 \
                   HOMEBREW_NO_AUTO_UPDATE=1 \
                   NONINTERACTIVE=1 \
+                  PATH="/opt/data/homebrew/.linuxbrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
                   bash -c '
                     set -euo pipefail
 
-                    # Bootstrap linuxbrew if not already present (cache hit on warm starts)
-                    if [[ ! -x "$HOMEBREW_PREFIX/bin/brew" ]]; then
+                    # The upstream install.sh ignores HOMEBREW_PREFIX on Linux and
+                    # always tries to write to /home/linuxbrew/.linuxbrew via sudo.
+                    # Bootstrap manually from the official brew tarball instead.
+                    if [[ ! -x "$HOMEBREW_PREFIX/Homebrew/bin/brew" ]]; then
                       echo "[install-tools] Bootstrapping linuxbrew at $HOMEBREW_PREFIX (cold)..."
-                      curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
+                      cd "$HOMEBREW_PREFIX"
+                      curl -fsSL https://github.com/Homebrew/brew/tarball/main -o brew.tgz
+                      mkdir -p Homebrew
+                      tar -xzf brew.tgz -C Homebrew --strip-components 1
+                      rm brew.tgz
+                      mkdir -p bin
+                      ln -sf ../Homebrew/bin/brew bin/brew
                     else
                       echo "[install-tools] linuxbrew already installed (warm cache hit)"
                     fi
