@@ -12,5 +12,6 @@ configMapGenerator:
     files:
       - ./resources/config.yaml
       - ./resources/entrypoint.sh
+      - ./resources/Brewfile
     options:
       disableNameSuffixHash: true

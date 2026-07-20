@@ -16,5 +16,20 @@ fi
 if ! command -v op >/dev/null 2>&1; then
     echo "[hermes-entrypoint] WARN: op not on PATH"
 fi
+if ! command -v gh >/dev/null 2>&1; then
+    echo "[hermes-entrypoint] WARN: gh not on PATH"
+fi
+if ! command -v tofu >/dev/null 2>&1; then
+    echo "[hermes-entrypoint] WARN: tofu not on PATH"
+fi
+if ! command -v jq >/dev/null 2>&1; then
+    echo "[hermes-entrypoint] WARN: jq not on PATH"
+fi
+if ! command -v yq >/dev/null 2>&1; then
+    echo "[hermes-entrypoint] WARN: yq not on PATH"
+fi
+if ! command -v sops >/dev/null 2>&1; then
+    echo "[hermes-entrypoint] WARN: sops not on PATH"
+fi
 
 exec /opt/hermes/bin/hermes "$@"
