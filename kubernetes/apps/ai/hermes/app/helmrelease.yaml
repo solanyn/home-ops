@@ -82,9 +82,10 @@ spec:
 
                     eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
 
-                    brew install kubectl flux bat shellcheck
-                    # 1password-cli is a cask; supported by linuxbrew 4.x+
-                    brew install --cask 1password-cli || echo "[install-tools] WARN: 1password-cli cask install failed"
+                    # Declarative toolset lives in /tmp/Brewfile (mounted from the
+                    # hermes-config ConfigMap). --no-upgrade keeps the init
+                    # deterministic; version bumps land as follow-up commits.
+                    brew bundle install --no-upgrade --file=/tmp/Brewfile
                   '
 
                 chmod -R a+rx "$BREW_PREFIX/bin"
@@ -166,3 +167,5 @@ spec:
             subPath: config.yaml
           - path: /tmp/hermes-entrypoint.sh
             subPath: entrypoint.sh
+          - path: /tmp/Brewfile
+            subPath: Brewfile
