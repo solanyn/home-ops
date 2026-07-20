@@ -1,0 +1,123 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/rbac.authorization.k8s.io/clusterrole_v1.json
+#
+# Cluster-wide read-only role for the Hermes AI agent.
+# See rbac.md for the rationale behind every exclusion.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hermes
+  labels:
+    app.kubernetes.io/name: hermes
+    app.kubernetes.io/part-of: hermes
+rules:
+  # Cluster primitives.
+  - apiGroups: [""]
+    resources:
+      - namespaces
+      - nodes
+    verbs: ["get", "list", "watch"]
+
+  # All workloads cluster-wide, no secrets.
+  - apiGroups: [""]
+    resources:
+      - pods
+      - pods/log
+      - services
+      - configmaps
+      - events
+      - persistentvolumeclaims
+      - serviceaccounts
+      - resourcequotas
+      - limitranges
+      - replicasets
+      - replicationcontrollers
+    verbs: ["get", "list", "watch"]
+
+  # Workloads cluster-wide.
+  - apiGroups: ["apps"]
+    resources:
+      - deployments
+      - statefulsets
+      - daemonsets
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["batch"]
+    resources:
+      - jobs
+      - cronjobs
+    verbs: ["get", "list", "watch"]
+
+  # Networking cluster-wide.
+  - apiGroups: ["networking.k8s.io"]
+    resources:
+      - ingresses
+      - networkpolicies
+      - gateways
+      - gatewayclasses
+      - httproutes
+      - tlsroutes
+      - grpcroutes
+    verbs: ["get", "list", "watch"]
+
+  # All CRDs cluster-wide (so the agent can introspect any custom kind).
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: ["customresourcedefinitions"]
+    verbs: ["get", "list", "watch"]
+
+  # Flux kinds cluster-wide.
+  - apiGroups:
+      - source.toolkit.fluxcd.io
+      - kustomize.toolkit.fluxcd.io
+      - helm.toolkit.fluxcd.io
+      - notification.toolkit.fluxcd.io
+      - image.toolkit.fluxcd.io
+    resources: ["*"]
+    verbs: ["get", "list", "watch"]
+
+  # External Secrets cluster-wide (ClusterSecretStores).
+  - apiGroups: ["external-secrets.io"]
+    resources:
+      - clusterExternalSecrets
+      - clusterSecretStores
+    verbs: ["get", "list", "watch"]
+
+  # Metrics (if metrics-server is installed — harmless if absent).
+  - apiGroups: ["metrics.k8s.io"]
+    resources:
+      - nodes
+      - pods
+    verbs: ["get", "list"]
+
+  # Policy (PDBs).
+  - apiGroups: ["policy"]
+    resources:
+      - poddisruptionbudgets
+    verbs: ["get", "list", "watch"]
+
+  # Storage.
+  - apiGroups: ["storage.k8s.io"]
+    resources:
+      - storageclasses
+      - volumeattachments
+      - csidrivers
+      - csinodes
+    verbs: ["get", "list", "watch"]
+
+  # cert-manager (read-only cert state).
+  - apiGroups: ["cert-manager.io"]
+    resources:
+      - certificates
+      - certificaterequests
+      - issuers
+      - clusterissuers
+      - orders
+      - challenges
+    verbs: ["get", "list", "watch"]
+
+  # NOT included (see rbac.md):
+  #   - secrets cluster-wide (privilege boundary)
+  #   - pods/exec, pods/portforward, pods/eviction (escalation vectors)
+  #   - nodes/proxy (kubelet API = cluster root)
+  #   - any verb beyond get/list/watch
+  #   - cert-manager approve/deny/sign
+  #   - admissionregistration
