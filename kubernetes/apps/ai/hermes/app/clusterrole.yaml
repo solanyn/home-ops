@@ -1,0 +1,85 @@
+# Cluster-wide read access for the Hermes agent.
+# Deliberately excluded: secrets cluster-wide, pods/exec, pods/portforward,
+# nodes/proxy, cert-manager approve/deny/sign, admissionregistration,
+# and any verb beyond get/list/watch. GitOps via Flux + humans is the
+# apply path; the agent only proposes.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: hermes
+  labels:
+    app.kubernetes.io/name: hermes
+    app.kubernetes.io/part-of: hermes
+rules:
+  # Cluster primitives.
+  - apiGroups: [""]
+    resources: [namespaces, nodes]
+    verbs: ["get", "list", "watch"]
+
+  # Workloads cluster-wide (no secrets — see exclusions).
+  - apiGroups: [""]
+    resources:
+      - pods
+      - pods/log
+      - services
+      - configmaps
+      - events
+      - persistentvolumeclaims
+      - serviceaccounts
+      - resourcequotas
+      - limitranges
+      - replicasets
+      - replicationcontrollers
+    verbs: ["get", "list", "watch"]
+
+  # Controllers, batch, networking cluster-wide.
+  - apiGroups: ["apps"]
+    resources: [deployments, statefulsets, daemonsets]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["batch"]
+    resources: [jobs, cronjobs]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["networking.k8s.io"]
+    resources:
+      - ingresses
+      - networkpolicies
+      - gateways
+      - gatewayclasses
+      - httproutes
+      - tlsroutes
+      - grpcroutes
+    verbs: ["get", "list", "watch"]
+
+  # CRDs (introspect any custom kind).
+  - apiGroups: ["apiextensions.k8s.io"]
+    resources: [customresourcedefinitions]
+    verbs: ["get", "list", "watch"]
+
+  # All Flux kinds cluster-wide.
+  - apiGroups:
+      - source.toolkit.fluxcd.io
+      - kustomize.toolkit.fluxcd.io
+      - helm.toolkit.fluxcd.io
+      - notification.toolkit.fluxcd.io
+      - image.toolkit.fluxcd.io
+    resources: ["*"]
+    verbs: ["get", "list", "watch"]
+
+  # External Secrets cluster-scoped kinds.
+  - apiGroups: ["external-secrets.io"]
+    resources: [clusterExternalSecrets, clusterSecretStores]
+    verbs: ["get", "list", "watch"]
+
+  # Optional integrations (harmless if absent).
+  - apiGroups: ["metrics.k8s.io"]
+    resources: [nodes, pods]
+    verbs: ["get", "list"]
+  - apiGroups: ["policy"]
+    resources: [poddisruptionbudgets]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: [storageclasses, volumeattachments, csidrivers, csinodes]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["cert-manager.io"]
+    resources: [certificates, certificaterequests, issuers, clusterissuers, orders, challenges]
+    verbs: ["get", "list", "watch"]
