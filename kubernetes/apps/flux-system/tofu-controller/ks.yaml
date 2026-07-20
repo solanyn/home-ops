@@ -12,3 +12,23 @@ spec:
         kind: GitRepository
         name: flux-system
         namespace: flux-system
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+    name: unifi
+spec:
+    targetNamespace: network
+    dependsOn:
+        - name: namespace
+          namespace: network
+        - name: tofu-controller
+          namespace: flux-system
+    interval: 1h
+    path: ./kubernetes/apps/flux-system/tofu-controller/unifi
+    prune: true
+    sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+    wait: false
