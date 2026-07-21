@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kubeflow-model-registry
+spec:
+  targetNamespace: kubeflow
+  dependsOn:
+    - name: kubeflow-distribution
+  interval: 1h
+  path: ./applications/model-registry/upstream/overlays/postgres
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: kubeflow-distribution
+    namespace: kubeflow
+  wait: true

@@ -1,0 +1,46 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: kubeflow
+spec:
+  groups:
+    - name: kubeflow.rules
+      rules:
+        - alert: KubeflowPodNotReady
+          expr: |
+            kube_pod_status_ready{namespace="kubeflow", condition="true"} == 0
+          for: 15m
+          annotations:
+            summary: >-
+              Pod {{ $labels.pod }} in kubeflow namespace has been unready for 15 minutes
+          labels:
+            severity: warning
+        - alert: KubeflowContainerWaiting
+          expr: |
+            kube_pod_container_status_waiting_reason{namespace="kubeflow"} == 1
+          for: 15m
+          annotations:
+            summary: >-
+              Container {{ $labels.container }} in pod {{ $labels.pod }} has been waiting for 15 minutes
+          labels:
+            severity: warning
+        - alert: KubeflowDeploymentReplicasMismatch
+          expr: |
+            kube_deployment_spec_replicas{namespace="kubeflow"} != kube_deployment_status_replicas_available{namespace="kubeflow"}
+          for: 15m
+          annotations:
+            summary: >-
+              Deployment {{ $labels.deployment }} has been missing replicas for 15 minutes
+          labels:
+            severity: warning
+        - alert: IstioControlPlaneDown
+          expr: |
+            up{job="istiod"} == 0
+          for: 5m
+          annotations:
+            summary: >-
+              istiod is down in istio-system
+          labels:
+            severity: critical

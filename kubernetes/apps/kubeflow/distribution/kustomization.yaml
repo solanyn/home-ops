@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./source.yaml
+  - ./istio-resources/ks.yaml
+  - ./admission-webhook/ks.yaml
+  - ./profiles/ks.yaml
+  - ./notebooks/ks.yaml
+  - ./dashboard/ks.yaml
+  - ./katib/ks.yaml
+  - ./pipelines/ks.yaml
+  - ./training-operator/ks.yaml
+  - ./spark/ks.yaml
+  - ./tensorboard/ks.yaml
+  - ./volumes-web-app/ks.yaml
+  - ./pvcviewer/ks.yaml
+  - ./model-registry/ks.yaml
+  - ./metadata/ks.yaml
+  - ./secrets/ks.yaml
+  - ./edge/ks.yaml
