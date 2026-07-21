@@ -1,0 +1,30 @@
+---
+apiVersion: kelos.dev/v1alpha2
+kind: Session
+metadata:
+    name: home-ops-interactive
+spec:
+    worker:
+        type: opencode
+        credentials:
+            type: api-key
+            secretRef:
+                name: kelos-secret
+        model: minimax-m3
+        workspaceRef:
+            name: home-ops
+        agentConfigRefs:
+            - name: cluster-default
+        podOverrides:
+            resources:
+                requests:
+                    cpu: 50m
+                    memory: 256Mi
+                limits:
+                    memory: 1Gi
+    volumeClaimTemplate:
+        accessModes: [ReadWriteOnce]
+        storageClassName: openebs-hostpath
+        resources:
+            requests:
+                storage: 20Gi
