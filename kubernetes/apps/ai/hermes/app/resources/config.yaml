@@ -1,14 +1,14 @@
 _config_version: 27
 model:
-  default: minimax-m3
-  provider: agentgateway
+  default: deepseek-v4-flash
+  provider: litellm
   base_url: https://litellm.goyangi.io/v1
   fallback: []
 providers:
-  agentgateway:
+  litellm:
     api: https://litellm.goyangi.io/v1
     key_env: OPENAI_API_KEY
-    default_model: minimax-m3
+    default_model: deepseek-v4-flash
     transport: chat_completions
 toolsets:
   - hermes-cli
