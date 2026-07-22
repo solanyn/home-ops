@@ -12,6 +12,7 @@ spec:
     path: ./opentofu/unifi
     interval: 10m
     planOnly: true
+    approvePlan: plan-refs/heads/main-1e92f66dd1
     vars:
         - name: unifi_api_url
           value: https://192.168.10.1
