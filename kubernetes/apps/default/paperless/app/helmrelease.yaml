@@ -47,6 +47,13 @@ spec:
               PAPERLESS_ENABLE_COMPRESSION: false
               PAPERLESS_ENABLE_FLOWER: true
               PAPERLESS_OCR_SKIP_ARCHIVE_FILE: with_text
+              PAPERLESS_AI_ENABLED: true
+              PAPERLESS_AI_LLM_BACKEND: openai-like
+              PAPERLESS_AI_LLM_MODEL: deepseek-v4-flash
+              PAPERLESS_AI_LLM_ENDPOINT: https://litellm.goyangi.io/v1
+              PAPERLESS_AI_LLM_EMBEDDING_BACKEND: openai-like
+              PAPERLESS_AI_LLM_EMBEDDING_MODEL: qwen3-embedding
+              PAPERLESS_AI_LLM_OUTPUT_LANGUAGE: en
               USERMAP_UID: 1000
               USERMAP_GID: 1000
             envFrom:
