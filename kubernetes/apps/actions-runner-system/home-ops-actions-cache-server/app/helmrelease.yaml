@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/falcondev-oss/github-actions-cache-server
-              tag: 9.6.1@sha256:3a6cf1937f13a9b4a3303db96794770d2ab7f97c038fcb92a7477d4e92607f4c
+              tag: 9.6.2@sha256:a473eded701722b816fd17899570f3055a4393a181507021961e61cf4e739a60
             env:
               API_BASE_URL: http://home-ops-actions-cache-server.actions-runner-system.svc.cluster.local:3000
               STORAGE_DRIVER: filesystem
