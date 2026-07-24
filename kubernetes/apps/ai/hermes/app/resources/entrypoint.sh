@@ -3,7 +3,7 @@ set -euo pipefail
 
 # op expects its config directory to have restricted permissions (700).
 # The PVC may have been created with broader perms; ensure safety here.
-OP_CONFIG="${OP_CONFIG_DIR:-${HOME}/.config/op}"
+OP_CONFIG="${OP_CONFIG_DIR:-/opt/data/.config/op}"
 mkdir -p "$OP_CONFIG"
 chmod 700 "$OP_CONFIG"
 
