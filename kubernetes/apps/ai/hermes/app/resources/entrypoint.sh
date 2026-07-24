@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# op expects its config directory to have restricted permissions (700).
+# The PVC may have been created with broader perms; ensure safety here.
+OP_CONFIG="${OP_CONFIG_DIR:-${HOME}/.config/op}"
+mkdir -p "$OP_CONFIG"
+chmod 700 "$OP_CONFIG"
+
 if ! command -v kubectl >/dev/null 2>&1; then
     echo "[hermes-entrypoint] WARN: kubectl not on PATH"
 fi
