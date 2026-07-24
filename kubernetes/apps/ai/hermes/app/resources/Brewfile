@@ -12,7 +12,7 @@
 tap "fluxcd/tap"
 brew "kubernetes-cli"      # kubectl — k8s API + cluster self-inspection
 brew "fluxcd/tap/flux"     # flux — GitOps CLI (status, reconcile, suspend)
-brew "1password-cli"       # op — secret retrieval from kubernetes vault
+cask "1password-cli"       # op — secret retrieval from kubernetes vault
 
 # --- Data shaping (every API skill needs these) ---
 brew "jq"                  # JSON in, JSON out — GitHub API, k8s API
