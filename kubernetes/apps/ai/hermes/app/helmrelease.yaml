@@ -88,6 +88,9 @@ spec:
 
                     eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
 
+                    # brew 4.x refuses to load formulae from untrusted taps.
+                    brew trust fluxcd/tap 2>/dev/null || true
+
                     # Declarative toolset lives in /tmp/Brewfile (mounted from the
                     # hermes-config ConfigMap). --no-upgrade keeps the init
                     # deterministic; version bumps land as follow-up commits.
