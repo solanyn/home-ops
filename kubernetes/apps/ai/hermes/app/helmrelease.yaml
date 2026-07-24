@@ -10,6 +10,7 @@ spec:
   interval: 10m
   values:
     defaultPodOptions:
+      automountServiceAccountToken: true
       securityContext:
         fsGroup: 10000
         fsGroupChangePolicy: OnRootMismatch
