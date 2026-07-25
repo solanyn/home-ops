@@ -155,6 +155,23 @@ spec:
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMModel
 metadata:
+    name: opencode-go-deepseek-v4-flash
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: opencode-go/deepseek-v4-flash
+    params:
+        model: openai/deepseek-v4-flash
+        apiBase: https://opencode.ai/zen/go
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
     name: gguf-qwen3-embedding
     labels:
         litellm.home-operations.com/managed-by: home-ops
