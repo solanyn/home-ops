@@ -15,7 +15,6 @@ configMapGenerator:
   - name: hermes-config
     files:
       - ./resources/config.yaml
-      - ./resources/entrypoint.sh
       - ./resources/Brewfile
     options:
       disableNameSuffixHash: true
