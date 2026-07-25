@@ -159,7 +159,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/deepseek-v4-flash
+    modelName: oc-deepseek-v4-flash
     params:
         model: openai/deepseek-v4-flash
         apiBase: https://opencode.ai/zen/go
@@ -192,7 +192,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/kimi-k2.7-code
+    modelName: oc-kimi-k2.7-code
     params:
         model: openai/kimi-k2.7-code
         apiBase: https://opencode.ai/zen/go
@@ -209,7 +209,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/kimi-k2.6
+    modelName: oc-kimi-k2.6
     params:
         model: openai/kimi-k2.6
         apiBase: https://opencode.ai/zen/go
@@ -226,7 +226,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/kimi-k2.5
+    modelName: oc-kimi-k2.5
     params:
         model: openai/kimi-k2.5
         apiBase: https://opencode.ai/zen/go
@@ -243,7 +243,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/glm-5.2
+    modelName: oc-glm-5.2
     params:
         model: openai/glm-5.2
         apiBase: https://opencode.ai/zen/go
@@ -260,7 +260,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/glm-5.1
+    modelName: oc-glm-5.1
     params:
         model: openai/glm-5.1
         apiBase: https://opencode.ai/zen/go
@@ -277,7 +277,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/glm-5
+    modelName: oc-glm-5
     params:
         model: openai/glm-5
         apiBase: https://opencode.ai/zen/go
@@ -294,7 +294,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/qwen3.7-max
+    modelName: oc-qwen3.7-max
     params:
         model: openai/qwen3.7-max
         apiBase: https://opencode.ai/zen/go
@@ -311,7 +311,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/qwen3.7-plus
+    modelName: oc-qwen3.7-plus
     params:
         model: openai/qwen3.7-plus
         apiBase: https://opencode.ai/zen/go
@@ -328,7 +328,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/qwen3.6-plus
+    modelName: oc-qwen3.6-plus
     params:
         model: openai/qwen3.6-plus
         apiBase: https://opencode.ai/zen/go
@@ -345,7 +345,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/qwen3.5-plus
+    modelName: oc-qwen3.5-plus
     params:
         model: openai/qwen3.5-plus
         apiBase: https://opencode.ai/zen/go
@@ -362,7 +362,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/mimo-v2-pro
+    modelName: oc-mimo-v2-pro
     params:
         model: openai/mimo-v2-pro
         apiBase: https://opencode.ai/zen/go
@@ -379,7 +379,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/mimo-v2-omni
+    modelName: oc-mimo-v2-omni
     params:
         model: openai/mimo-v2-omni
         apiBase: https://opencode.ai/zen/go
@@ -396,7 +396,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/mimo-v2.5-pro
+    modelName: oc-mimo-v2.5-pro
     params:
         model: openai/mimo-v2.5-pro
         apiBase: https://opencode.ai/zen/go
@@ -413,7 +413,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/mimo-v2.5
+    modelName: oc-mimo-v2.5
     params:
         model: openai/mimo-v2.5
         apiBase: https://opencode.ai/zen/go
@@ -430,7 +430,7 @@ metadata:
     labels:
         litellm.home-operations.com/managed-by: home-ops
 spec:
-    modelName: opencode-go/hy3-preview
+    modelName: oc-hy3-preview
     params:
         model: openai/hy3-preview
         apiBase: https://opencode.ai/zen/go
