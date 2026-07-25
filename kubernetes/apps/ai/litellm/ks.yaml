@@ -9,8 +9,6 @@ spec:
     dependsOn:
         - name: litellm-operator
           namespace: ai
-        - name: presidio
-          namespace: ai
     interval: 1h
     path: ./kubernetes/apps/ai/litellm/app
     prune: true
