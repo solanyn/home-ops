@@ -1,0 +1,139 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Tofu Plan
+
+on:
+    pull_request:
+        branches:
+            - main
+        paths:
+            - opentofu/**
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+    pull-requests: write
+
+jobs:
+    filter:
+        name: Filter
+        runs-on: ubuntu-latest
+        outputs:
+            changed: ${{ steps.changed-files.outputs.changed_files != '[]' }}
+        steps:
+            - name: Get Changed Files
+              id: changed-files
+              uses: bjw-s-labs/action-changed-files@a9a36fb08ce06db9b02fbd8026cc2c0945eb9841 # v0.6.0
+              with:
+                  patterns: opentofu/**
+
+    validate:
+        if: ${{ needs.filter.outputs.changed == 'true' }}
+        needs: filter
+        name: Validate
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  persist-credentials: false
+
+            - name: Setup Mise
+              uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4.2.1
+              with:
+                  cache: false
+                  tool_versions: |
+                      opentofu latest
+
+            - name: Init (no backend)
+              working-directory: ./opentofu/unifi
+              run: tofu init -backend=false
+
+            - name: Validate
+              working-directory: ./opentofu/unifi
+              run: tofu validate -no-color
+
+    plan:
+        if: ${{ needs.filter.outputs.changed == 'true' }}
+        needs: [filter, validate]
+        name: Plan
+        runs-on: ${{ github.event.repository.name }}-runner
+        steps:
+            - name: Checkout
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  persist-credentials: false
+
+            - name: Setup Mise
+              uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4.2.1
+              with:
+                  cache: false
+                  tool_versions: |
+                      opentofu latest
+
+            - name: Load Secrets
+              id: load-secrets
+              uses: 1password/load-secrets-action@3a12b0ab99d9cd590a3e9b5a90ea017210ed9556 # v4.0.1 # zizmor: ignore[unpinned-tools]
+              env:
+                  OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+                  UNIFI_API_KEY: op://kubernetes/unifi/UNIFI_API_KEY
+
+            - name: Init (K8s backend)
+              working-directory: ./opentofu/unifi
+              run: |
+                  tofu init -reconfigure \
+                      -backend-config="secret_suffix=unifi" \
+                      -backend-config="namespace=network" \
+                      -backend-config="config_path=${KUBECONFIG:-~/.kube/config}"
+
+            - name: Plan
+              id: plan
+              working-directory: ./opentofu/unifi
+              env:
+                  UNIFI_API_KEY: ${{ steps.load-secrets.outputs.UNIFI_API_KEY }}
+              shell: bash
+              continue-on-error: true
+              run: |
+                  tofu plan -no-color \
+                      -var="unifi_api_url=https://192.168.10.1" \
+                      -var="unifi_insecure=true" \
+                      2>&1 | tee plan-output.txt
+
+            - name: Post Plan Comment
+              uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+              env:
+                  PLAN_FILE: plan-output.txt
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  script: |
+                      const fs = require('fs');
+                      const plan = fs.readFileSync(process.env.PLAN_FILE, 'utf8');
+
+                      const tag = '## Tofu Plan';
+                      const { data: comments } = await github.rest.issues.listComments({
+                          ...context.repo,
+                          issue_number: context.issue.number,
+                      });
+
+                      const existing = comments.find(c =>
+                          c.user.type === 'Bot' && c.body?.includes(tag)
+                      );
+
+                      const body = `${tag}\n\n\`\`\`\n${plan}\n\`\`\``;
+
+                      if (existing) {
+                          await github.rest.issues.updateComment({
+                              ...context.repo,
+                              comment_id: existing.id,
+                              body,
+                          });
+                      } else {
+                          await github.rest.issues.createComment({
+                              ...context.repo,
+                              issue_number: context.issue.number,
+                              body,
+                          });
+                      }
