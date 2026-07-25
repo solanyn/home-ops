@@ -125,7 +125,7 @@ spec:
               HOMEBREW_NO_AUTO_UPDATE: "1"
               TZ: Australia/Sydney
               API_SERVER_ENABLED: "true"
-              API_SERVER_HOST: 127.0.0.1
+              API_SERVER_KEY: CFE1B842-AEF8-4704-A51D-1E885A5C7967
               HONCHO_WORKSPACE_ID: "hermes"
               BLUEBUBBLES_SERVER_URL: http://bluebubbles.internal:1234
               BLUEBUBBLES_WEBHOOK_HOST: 0.0.0.0
