@@ -1,14 +1,16 @@
 _config_version: 27
 model:
-  default: opencode-go/deepseek-v4-flash
+  default: oc-deepseek-v4-flash
   provider: litellm
   base_url: https://litellm.goyangi.io/v1
-  fallback: [opencode-go/mimo-v2.5, opencode-go/qwen3.6-plus]
+  fallback:
+    - oc-mimo-v2.5
+    - oc-qwen3.6-plus
 providers:
   litellm:
     api: https://litellm.goyangi.io/v1
     key_env: OPENAI_API_KEY
-    default_model: opencode-go/deepseek-v4-flash
+    default_model: oc-deepseek-v4-flash
     transport: chat_completions
 toolsets:
   - hermes-cli
@@ -35,6 +37,14 @@ security:
   redact_secrets: true
 privacy:
   redact_pii: true
+secrets:
+  onepassword:
+    enabled: true
+    env:
+      OPENAI_API_KEY: "op://kubernetes/litellm/LITELLM_MASTER_KEY"
+      HONCHO_API_KEY: "op://kubernetes/honcho/HONCHO_API_KEY"
+      BLUEBUBBLES_PASSWORD: "op://kubernetes/bluebubbles/BLUEBUBBLES_PASSWORD"
+      MATRIX_ACCESS_TOKEN: "op://kubernetes/matrix/MATRIX_BOT_ACCESS_TOKEN"
 memory:
   provider: honcho
   honcho_url: http://honcho.ai.svc.cluster.local
@@ -74,10 +84,16 @@ tool_loop_guardrails:
     exact_failure: 5
     same_tool_failure: 8
     idempotent_no_progress: 5
+tts:
+  provider: openai
+  openai:
+    model: mlx-community/Kokoro-82M-4bit
+    base_url: http://mac.internal:8001/v1
 stt:
-  enabled: true
-  local:
-    model: base
+  provider: openai
+  openai:
+    model: parakeet-tdt-0.6b-v2
+    base_url: http://mac.internal:8000/v1
 delegation:
   max_iterations: 50
 platform_toolsets:
@@ -97,6 +113,9 @@ auxiliary:
     provider: main
     timeout: 30
     max_concurrency: 3
+matrix:
+  allowed_users:
+    - "@andrew:goyangi.io"
 onboarding:
   seen:
     profile_build_offered: true

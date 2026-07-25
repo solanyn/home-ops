@@ -117,6 +117,15 @@ spec:
               HOMEBREW_NO_ANALYTICS: "1"
               HOMEBREW_NO_AUTO_UPDATE: "1"
               TZ: Australia/Sydney
+              HONCHO_WORKSPACE_ID: "hermes"
+              BLUEBUBBLES_SERVER_URL: http://bluebubbles.internal:1234
+              BLUEBUBBLES_WEBHOOK_HOST: 0.0.0.0
+              BLUEBUBBLES_WEBHOOK_PORT: "8645"
+              BLUEBUBBLES_WEBHOOK_PATH: /bluebubbles-webhook
+              BLUEBUBBLES_REQUIRE_MENTION: "true"
+              MATRIX_HOMESERVER: https://matrix.goyangi.io
+              MATRIX_USER_ID: "@hermes:goyangi.io"
+              MATRIX_ALLOWED_USERS: "@andrew:goyangi.io"
             envFrom:
               - secretRef:
                   name: hermes
