@@ -9,7 +9,7 @@ model:
 providers:
   litellm:
     api: https://litellm.goyangi.io/v1
-    key_env: OPENAI_API_KEY
+    api_key: ${OPENAI_API_KEY}
     default_model: oc-deepseek-v4-flash
     transport: chat_completions
 toolsets:
