@@ -11,7 +11,7 @@ spec:
         namespace: flux-system
     path: ./opentofu/unifi
     interval: 10m
-    planOnly: true
+    approvePlan: auto
     vars:
         - name: unifi_api_url
           value: https://192.168.10.1
