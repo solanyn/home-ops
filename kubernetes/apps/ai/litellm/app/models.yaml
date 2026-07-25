@@ -162,7 +162,7 @@ spec:
     modelName: oc-deepseek-v4-flash
     params:
         model: openai/deepseek-v4-flash
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -195,7 +195,7 @@ spec:
     modelName: oc-kimi-k2.7-code
     params:
         model: openai/kimi-k2.7-code
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -212,7 +212,7 @@ spec:
     modelName: oc-kimi-k2.6
     params:
         model: openai/kimi-k2.6
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -229,7 +229,7 @@ spec:
     modelName: oc-kimi-k2.5
     params:
         model: openai/kimi-k2.5
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -246,7 +246,7 @@ spec:
     modelName: oc-glm-5.2
     params:
         model: openai/glm-5.2
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -263,7 +263,7 @@ spec:
     modelName: oc-glm-5.1
     params:
         model: openai/glm-5.1
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -280,7 +280,7 @@ spec:
     modelName: oc-glm-5
     params:
         model: openai/glm-5
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -297,7 +297,7 @@ spec:
     modelName: oc-qwen3.7-max
     params:
         model: openai/qwen3.7-max
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -314,7 +314,7 @@ spec:
     modelName: oc-qwen3.7-plus
     params:
         model: openai/qwen3.7-plus
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -331,7 +331,7 @@ spec:
     modelName: oc-qwen3.6-plus
     params:
         model: openai/qwen3.6-plus
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -348,7 +348,7 @@ spec:
     modelName: oc-qwen3.5-plus
     params:
         model: openai/qwen3.5-plus
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -365,7 +365,7 @@ spec:
     modelName: oc-mimo-v2-pro
     params:
         model: openai/mimo-v2-pro
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -382,7 +382,7 @@ spec:
     modelName: oc-mimo-v2-omni
     params:
         model: openai/mimo-v2-omni
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -399,7 +399,7 @@ spec:
     modelName: oc-mimo-v2.5-pro
     params:
         model: openai/mimo-v2.5-pro
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -416,7 +416,7 @@ spec:
     modelName: oc-mimo-v2.5
     params:
         model: openai/mimo-v2.5
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
@@ -433,7 +433,7 @@ spec:
     modelName: oc-hy3-preview
     params:
         model: openai/hy3-preview
-        apiBase: https://opencode.ai/zen/go
+        apiBase: https://opencode.ai/zen/go/v1
         apiKeyRef:
             name: opencode-auth
             key: OPENCODE_API_KEY
