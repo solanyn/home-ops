@@ -132,68 +132,59 @@ resource "unifi_client" "nas" {
     name       = "NAS"
 }
 
-# Default VLAN — consumer devices
+# Default VLAN — consumer devices (no network_id - can't override on non-VLAN networks)
 resource "unifi_client" "ps5" {
-    mac        = "5c:84:3c:a6:4d:e3"
-    fixed_ip   = "192.168.1.189"
-    network_id = unifi_network.default.id
-    name       = "PlayStation 5"
+    mac      = "5c:84:3c:a6:4d:e3"
+    fixed_ip = "192.168.1.189"
+    name     = "PlayStation 5"
 }
 
 resource "unifi_client" "andrews_kobo" {
-    mac        = "a4:3c:d7:31:1c:bf"
-    fixed_ip   = "192.168.1.181"
-    network_id = unifi_network.default.id
-    name       = "Andrew's Kobo"
+    mac      = "a4:3c:d7:31:1c:bf"
+    fixed_ip = "192.168.1.181"
+    name     = "Andrew's Kobo"
 }
 
 resource "unifi_client" "bluebubbles" {
-    mac        = "6c:40:08:a4:6f:6c"
-    fixed_ip   = "192.168.1.109"
-    network_id = unifi_network.default.id
-    name       = "bluebubbles"
+    mac      = "6c:40:08:a4:6f:6c"
+    fixed_ip = "192.168.1.109"
+    name     = "bluebubbles"
 }
 
 resource "unifi_client" "living_room" {
-    mac        = "c4:f7:c1:68:2d:f7"
-    fixed_ip   = "192.168.1.199"
-    network_id = unifi_network.default.id
-    name       = "Living-Room"
+    mac      = "c4:f7:c1:68:2d:f7"
+    fixed_ip = "192.168.1.199"
+    name     = "Living-Room"
 }
 
 resource "unifi_client" "playstation_portal" {
-    mac        = "9c:37:cb:31:fc:51"
-    fixed_ip   = "192.168.1.190"
-    network_id = unifi_network.default.id
-    name       = "PlayStation Portal"
+    mac      = "9c:37:cb:31:fc:51"
+    fixed_ip = "192.168.1.190"
+    name     = "PlayStation Portal"
 }
 
 resource "unifi_client" "slzb_mr2u" {
-    mac        = "82:b5:4e:97:a3:4c"
-    fixed_ip   = "192.168.1.90"
-    network_id = unifi_network.default.id
-    name       = "SLZB-MR2U"
+    mac      = "82:b5:4e:97:a3:4c"
+    fixed_ip = "192.168.1.90"
+    name     = "SLZB-MR2U"
 }
 
 resource "unifi_client" "work_laptop" {
-    mac        = "10:bd:3a:60:67:7a"
-    fixed_ip   = "192.168.1.94"
-    network_id = unifi_network.default.id
-    name       = "Work Laptop"
+    mac      = "10:bd:3a:60:67:7a"
+    fixed_ip = "192.168.1.94"
+    name     = "Work Laptop"
 }
 
 resource "unifi_client" "yeelight_lamp_1" {
-    mac        = "78:11:dc:8f:eb:2d"
-    fixed_ip   = "192.168.1.93"
-    network_id = unifi_network.default.id
-    name       = "Yeelight Lamp 1"
+    mac      = "78:11:dc:8f:eb:2d"
+    fixed_ip = "192.168.1.93"
+    name     = "Yeelight Lamp 1"
 }
 
 resource "unifi_client" "yeelight_lamp_2" {
-    mac        = "50:ec:50:c2:47:c3"
-    fixed_ip   = "192.168.1.92"
-    network_id = unifi_network.default.id
-    name       = "Yeelight Lamp 2"
+    mac      = "50:ec:50:c2:47:c3"
+    fixed_ip = "192.168.1.92"
+    name     = "Yeelight Lamp 2"
 }
 
 # Trusted VLAN — personal admin devices
