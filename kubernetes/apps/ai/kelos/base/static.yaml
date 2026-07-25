@@ -1,0 +1,63 @@
+---
+# Dummy secret — the Kelos chart requires a non-empty session-server token.
+# Real auth happens at the edge via Envoy SecurityPolicy + Pocket ID OIDC.
+apiVersion: v1
+kind: Secret
+metadata:
+    name: kelos-session-auth
+type: Opaque
+stringData:
+    token: disabled
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+    name: kelos-session-ui
+spec:
+    hostnames:
+        - kelos.goyangi.io
+    parentRefs:
+        - name: envoy-internal
+          namespace: network
+    rules:
+        - backendRefs:
+              - name: kelos-session-server
+                port: 80
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+    name: kelos-session-ui
+spec:
+    oidc:
+        clientID: kelos-session-ui
+        clientSecret:
+            name: kelos-session-ui-oidc
+        provider:
+            issuer: https://id.goyangi.io/
+        redirectURL: https://kelos.goyangi.io/oauth2/callback
+        refreshToken: true
+        scopes:
+            - openid
+            - profile
+            - email
+        logoutPath: /logout
+    targetRefs:
+        - group: gateway.networking.k8s.io
+          kind: HTTPRoute
+          name: kelos-session-ui
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+    name: kelos-session-ui
+spec:
+    clientID: kelos-session-ui
+    callbackUrls:
+        - https://kelos.goyangi.io/oauth2/callback
+    logoutCallbackUrls:
+        - https://kelos.goyangi.io
+    secret:
+        name: kelos-session-ui-oidc
+        keys:
+            clientSecret: client-secret

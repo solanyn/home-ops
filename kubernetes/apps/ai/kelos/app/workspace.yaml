@@ -1,0 +1,10 @@
+---
+apiVersion: kelos.dev/v1alpha2
+kind: Workspace
+metadata:
+    name: home-ops
+spec:
+    repo: https://github.com/solanyn/home-ops.git
+    ref: main
+    secretRef:
+        name: workspace-auth
