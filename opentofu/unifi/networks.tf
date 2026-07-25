@@ -44,6 +44,7 @@ resource "unifi_network" "default" {
     third_party_gateway            = false
     ipv6_client_address_assignment = "slaac"
     ipv6_interface_type            = "none"
+    ipv6_pd_interface              = "wan"
     ipv6_ra                        = false
     ipv6_ra_preferred_lifetime     = "4h0m0s"
     ipv6_ra_priority               = "high"
@@ -166,6 +167,7 @@ resource "unifi_network" "guest" {
     ipv6_client_address_assignment = "slaac"
     ipv6_interface_type            = "static"
     ipv6_static_subnet             = "2404:e80:414e:50::/64"
+    ipv6_pd_interface              = "wan"
     ipv6_pd_auto_prefixid_enabled = true
     ipv6_ra                        = true
     ipv6_ra_preferred_lifetime     = "4h0m0s"
