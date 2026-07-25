@@ -6,6 +6,9 @@ set -euo pipefail
 OP_CONFIG="${OP_CONFIG_DIR:-/opt/data/.config/op}"
 mkdir -p "$OP_CONFIG"
 chmod 700 "$OP_CONFIG"
+if [ -f "$OP_CONFIG/config" ]; then
+    chmod 600 "$OP_CONFIG/config"
+fi
 
 if ! command -v kubectl >/dev/null 2>&1; then
     echo "[hermes-entrypoint] WARN: kubectl not on PATH"
