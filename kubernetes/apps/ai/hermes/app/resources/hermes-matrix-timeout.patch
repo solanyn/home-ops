@@ -1,0 +1,40 @@
+From: Hermes Agent <hermes@goyangi.io>
+Date: Tue, 28 Jul 2026 12:00:00 +1100
+Subject: [PATCH] fix(matrix): use asyncio.wait_for instead of aiohttp ClientTimeout
+
+_standalone_send passed timeout=aiohttp.ClientTimeout() directly to aiohttp,
+which creates a TimerContext that needs an active asyncio.Task. When cron jobs
+deliver via asyncio.run() in a worker thread, current_task() returns None and
+aiohttp raises RuntimeError("Timeout context manager should be used inside a task").
+
+Same pattern already used by the WeChat adapter (gateway/platforms/weixin.py).
+
+Apply with: cd /opt/hermes && patch -p1 < kubernetes/apps/ai/hermes/app/resources/hermes-matrix-timeout.patch
+
+--- a/plugins/platforms/matrix/adapter.py
++++ b/plugins/platforms/matrix/adapter.py
+@@ -4580,13 +4580,18 @@
+         except ImportError:
+             pass
+ 
+-        async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=30)) as session:
+-            async with session.put(url, headers=headers, json=payload) as resp:
+-                if resp.status not in {200, 201}:
+-                    body = await resp.text()
+-                    return {"error": f"Matrix API error ({resp.status}): {body}"}
+-                data = await resp.json()
+-        return {"success": True, "platform": "matrix", "chat_id": chat_id, "message_id": data.get("event_id")}
++        # Use asyncio.wait_for() instead of aiohttp ClientTimeout to avoid
++        # "Timeout context manager should be used inside a task" errors when
++        # invoked via asyncio.run() from cron job worker threads.
++        async def _send() -> dict:
++            async with aiohttp.ClientSession() as session:
++                async with session.put(url, headers=headers, json=payload) as resp:
++                    if resp.status not in {200, 201}:
++                        body = await resp.text()
++                        return {"error": f"Matrix API error ({resp.status}): {body}"}
++                    data = await resp.json()
++            return {"success": True, "platform": "matrix", "chat_id": chat_id, "message_id": data.get("event_id")}
++        return await asyncio.wait_for(_send(), timeout=30)
+     except Exception as e:
+         return {"error": f"Matrix send failed: {e}"}
