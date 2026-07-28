@@ -35,6 +35,18 @@ spec:
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
+          patch-hermes:
+            image:
+              repository: docker.io/library/alpine
+              tag: "3.24"
+            command:
+              - sh
+              - -c
+              - |
+                set -euo pipefail
+                echo "[patch-hermes] Applying Hermes Matrix timeout fix..."
+                patch -p1 -d /opt/hermes < /tmp/hermes-matrix-timeout.patch
+                echo "[patch-hermes] Done"
           install-tools:
             image:
               repository: docker.io/library/debian
@@ -194,3 +206,5 @@ spec:
             subPath: config.yaml
           - path: /tmp/Brewfile
             subPath: Brewfile
+          - path: /tmp/hermes-matrix-timeout.patch
+            subPath: hermes-matrix-timeout.patch
