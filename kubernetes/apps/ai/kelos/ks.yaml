@@ -7,8 +7,10 @@ metadata:
 spec:
     targetNamespace: ai
     dependsOn:
-        - name: kelos-base
+        - name: kelos-static
           namespace: ai
+        - name: cert-manager
+          namespace: cert-manager
     interval: 1h
     path: ./kubernetes/apps/ai/kelos/app
     prune: true
