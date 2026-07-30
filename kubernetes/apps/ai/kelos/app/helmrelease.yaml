@@ -5,16 +5,10 @@ kind: HelmRelease
 metadata:
     name: kelos
 spec:
-    chart:
-        spec:
-            chart: kelos
-            version: 0.47.0
-            sourceRef:
-                kind: HelmRepository
-                name: kelos
-                namespace: ai
-            interval: 1h
-    interval: 10m
+    chartRef:
+        kind: OCIRepository
+        name: kelos
+    interval: 1h
     values:
         crds:
             install: true
