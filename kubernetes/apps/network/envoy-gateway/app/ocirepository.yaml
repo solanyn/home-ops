@@ -11,4 +11,4 @@ spec:
     operation: copy
   ref:
     tag: 1.8.3
-  url: oci://mirror.gcr.io/envoyproxy/gateway-helm
+  url: oci://ocharted.goyangi.io/envoyproxy.github.io/gateway-helm/envoy-gateway
