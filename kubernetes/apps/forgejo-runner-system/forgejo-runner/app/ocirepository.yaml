@@ -11,4 +11,4 @@ spec:
     operation: copy
   ref:
     tag: 0.7.6
-  url: oci://codeberg.org/wrenix/helm-charts/forgejo-runner
+  url: oci://ocharted.goyangi.io/wrenix.github.io/helm-charts/forgejo-runner

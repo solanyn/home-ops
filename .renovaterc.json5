@@ -7,6 +7,15 @@
   prConcurrentLimit: 20,
   branchConcurrentLimit: 20,
   ignorePaths: ["**/resources/**", "third_party/"],
+  hostRules: [
+    {
+      description: "Authenticate against the ocharted OCI registry",
+      matchHost: "ocharted.goyangi.io",
+      hostType: "docker",
+      username: "{{ secrets.OCHARTED_USERNAME }}",
+      password: "{{ secrets.OCHARTED_PASSWORD }}",
+    },
+  ],
   packageRules: [
     {
       matchUpdateTypes: ["major"],
