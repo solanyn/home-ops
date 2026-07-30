@@ -1,16 +1,14 @@
 _config_version: 27
 model:
-  default: oc-deepseek-v4-flash
+  default: oc-mimo-v2.5
   provider: litellm
   base_url: https://litellm.goyangi.io/v1
-  fallback:
-    - oc-mimo-v2.5
-    - oc-qwen3.6-plus
+  fallback: '["oc-hy3-preview","oc-deepseek-v4-flash"]'
 providers:
   litellm:
     api: https://litellm.goyangi.io/v1
     api_key: ${OPENAI_API_KEY}
-    default_model: oc-deepseek-v4-flash
+    default_model: oc-mimo-v2.5
     transport: chat_completions
 toolsets:
   - hermes-cli
