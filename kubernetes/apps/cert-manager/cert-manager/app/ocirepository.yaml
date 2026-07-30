@@ -11,4 +11,4 @@ spec:
     operation: copy
   ref:
     tag: v1.21.0
-  url: oci://quay.io/jetstack/charts/cert-manager
+  url: oci://ocharted.goyangi.io/charts.jetstack.io/cert-manager
