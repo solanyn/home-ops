@@ -4,13 +4,11 @@ kind: Restore
 metadata:
   name: ${APP}
 spec:
+  policy:
+    onMissingSnapshot: Continue
   source:
     fromPolicy:
       name: ${APP}
       offset: 0
   target:
     populator: {}
-  policy:
-    onMissingSnapshot: Continue
-  credentialProjection:
-    enabled: true

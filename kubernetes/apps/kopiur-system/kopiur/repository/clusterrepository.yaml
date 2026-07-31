@@ -5,6 +5,8 @@ kind: ClusterRepository
 metadata:
     name: garage
 spec:
+    allowedNamespaces:
+        all: true
     backend:
         s3:
             auth:
@@ -23,19 +25,6 @@ spec:
             key: KOPIA_PASSWORD
     create:
         enabled: true
-    allowedNamespaces:
-        all: true
-    identityDefaults:
-        hostnameExpr: namespace
-        usernameExpr: namespace + '-' + policyName
-    moverDefaults:
-        securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-        podSecurityContext:
-            fsGroup: 1000
-            fsGroupChangePolicy: OnRootMismatch
-        ttlSecondsAfterFinished: 86400
     maintenance:
         enabled: true
     scheduleDefaults:
