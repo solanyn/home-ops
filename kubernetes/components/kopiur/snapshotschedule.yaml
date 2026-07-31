@@ -8,6 +8,4 @@ spec:
     name: ${APP}
   schedule:
     cron: "H 2 * * *"
-    jitter: 2m
     timezone: Australia/Sydney
-    runOnCreate: false
