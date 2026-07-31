@@ -7,7 +7,7 @@ metadata:
 spec:
   targetNamespace: ai
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur
   interval: 1h
   path: ./kubernetes/apps/ai/open-notebook/surrealdb
   postBuild:
@@ -29,7 +29,7 @@ metadata:
 spec:
   targetNamespace: ai
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur
   dependsOn:
     - name: open-notebook-surrealdb
       namespace: ai

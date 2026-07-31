@@ -6,7 +6,7 @@ metadata:
 spec:
   targetNamespace: default
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage
