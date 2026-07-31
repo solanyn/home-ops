@@ -11,4 +11,4 @@ spec:
     operation: copy
   ref:
     tag: 4.13.4
-  url: oci://ocharted.goyangi.io/kubernetes-csi.github.io/driver/csi-driver-nfs
+  url: oci://ocharted.goyangi.io/kubernetes-csi.github.io/csi-driver-nfs/csi-driver-nfs
