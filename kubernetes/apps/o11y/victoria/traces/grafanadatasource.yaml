@@ -15,7 +15,7 @@ spec:
         jsonData:
             maxLines: 250
             tracesToLogsV2:
-                datasourceUid: "loki"
+                datasourceUid: prometheus
             tracesToMetrics:
-                datasourceUid: "prometheus"
+                datasourceUid: prometheus
         url: http://vtsingle-goyangi.o11y.svc.cluster.local:10428/select/jaeger
