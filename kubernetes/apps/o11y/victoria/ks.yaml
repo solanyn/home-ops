@@ -5,6 +5,7 @@ kind: Kustomization
 metadata:
     name: victoria-operator-crds
 spec:
+    targetNamespace: o11y
     path: ./kubernetes/apps/o11y/victoria/crds
     prune: false
     sourceRef:
@@ -21,6 +22,7 @@ kind: Kustomization
 metadata:
     name: victoria-operator
 spec:
+    targetNamespace: o11y
     dependsOn:
         - name: victoria-operator-crds
           namespace: o11y
@@ -40,6 +42,7 @@ kind: Kustomization
 metadata:
     name: victoria-metrics
 spec:
+    targetNamespace: o11y
     dependsOn:
         - name: victoria-operator
           namespace: o11y
@@ -59,6 +62,7 @@ kind: Kustomization
 metadata:
     name: victoria-logs-datasource
 spec:
+    targetNamespace: o11y
     dependsOn:
         - name: victoria-operator
           namespace: o11y
@@ -80,6 +84,7 @@ kind: Kustomization
 metadata:
     name: victoria-traces
 spec:
+    targetNamespace: o11y
     dependsOn:
         - name: victoria-operator
           namespace: o11y
