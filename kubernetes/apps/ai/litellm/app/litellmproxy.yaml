@@ -29,6 +29,7 @@ spec:
     callbacks:
         success:
             - prometheus
+            - otel
     env:
         - name: PROXY_BASE_URL
           value: https://litellm.goyangi.io
@@ -45,6 +46,21 @@ spec:
           value: https://id.goyangi.io/api/oidc/token
         - name: GENERIC_USERINFO_ENDPOINT
           value: https://id.goyangi.io/api/oidc/userinfo
+        # OpenTelemetry V2 — traces to VTSingle
+        - name: LITELLM_OTEL_V2
+          value: "true"
+        - name: OTEL_EXPORTER
+          value: otlp_grpc
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: http://vtsingle-goyangi-otel.o11y.svc:4317
+        - name: OTEL_SERVICE_NAME
+          value: litellm
+        - name: OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT
+          value: span_and_event
+        - name: LITELLM_OTEL_INTEGRATION_ENABLE_METRICS
+          value: "true"
+        - name: LITELLM_OTEL_INTEGRATION_ENABLE_EVENTS
+          value: "true"
     envFrom:
         - secretRef:
               name: litellm-secret

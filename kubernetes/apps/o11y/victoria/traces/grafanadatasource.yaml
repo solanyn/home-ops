@@ -15,7 +15,7 @@ spec:
         jsonData:
             maxLines: 250
             tracesToLogsV2:
-                datasourceUid: prometheus
+                datasourceUid: victoria-logs
             tracesToMetrics:
                 datasourceUid: prometheus
         url: http://vtsingle-goyangi.o11y.svc.cluster.local:10428/select/jaeger

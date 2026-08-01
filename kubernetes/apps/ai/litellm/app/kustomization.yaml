@@ -8,3 +8,4 @@ resources:
     - ./litellmproxy.yaml
     - ./models.yaml
     - ./oidc.yaml
+    - ./servicemonitor.yaml
