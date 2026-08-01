@@ -1,0 +1,27 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAlert
+metadata:
+    name: goyangi
+spec:
+    datasource:
+        url: http://vmsingle-goyangi.o11y.svc:8429
+    evaluationInterval: 1m
+    externalLabels:
+        cluster: goyangi
+    extraArgs:
+        external.url: https://victoria-metrics.goyangi.io
+    notifiers:
+        - url: http://vmalertmanager-goyangi.o11y.svc:9093
+    remoteRead:
+        url: http://vmsingle-goyangi.o11y.svc:8429
+    remoteWrite:
+        url: http://vmsingle-goyangi.o11y.svc:8429
+    replicaCount: 1
+    selectAllByDefault: true
+    useDefaultResources: false
+    resources:
+        requests:
+            cpu: 10m
+        limits:
+            memory: 256Mi

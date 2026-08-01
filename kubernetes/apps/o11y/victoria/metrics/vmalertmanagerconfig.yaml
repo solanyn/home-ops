@@ -1,0 +1,57 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAlertmanagerConfig
+metadata:
+    name: goyangi
+spec:
+    route:
+        receiver: pushover
+        repeatInterval: 12h
+        routes:
+            - receiver: blackhole
+              matchers:
+                  - alertname=InfoInhibitor
+            - receiver: heartbeat
+              groupInterval: 2m
+              groupWait: 0s
+              repeatInterval: 2m30s
+              matchers:
+                  - alertname=Watchdog
+            - receiver: pushover
+              matchers:
+                  - severity=critical
+        groupBy:
+            - alertname
+            - cluster
+            - job
+        groupInterval: 5m
+        groupWait: 1m
+    inhibitRules:
+        - equal:
+              - alertname
+              - namespace
+          sourceMatch:
+              - severity=critical
+          targetMatch:
+              - severity=warning
+    receivers:
+        - name: blackhole
+        - name: heartbeat
+          webhookConfigs:
+              - url_secret:
+                    name: alertmanager-secret
+                    key: ALERTMANAGER_HEARTBEAT_URL
+        - name: pushover
+          pushoverConfigs:
+              - sendResolved: true
+                sound: gamelan
+                title: >-
+                    [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+                ttl: 86400s
+                token:
+                    name: alertmanager-secret
+                    key: ALERTMANAGER_PUSHOVER_TOKEN
+                userKey:
+                    name: alertmanager-secret
+                    key: PUSHOVER_USER_KEY
+                urlTitle: View in Alertmanager
