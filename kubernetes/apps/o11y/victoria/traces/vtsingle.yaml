@@ -1,0 +1,28 @@
+---
+apiVersion: operator.victoriametrics.com/v1
+kind: VTSingle
+metadata:
+    name: goyangi
+spec:
+    extraArgs:
+        otlpGRPCListenAddr: ":4317"
+        otlpGRPC.tls: "false"
+    retentionPeriod: 30d
+    retentionMaxDiskSpaceUsageBytes: 20GB
+    serviceSpec:
+        metadata:
+            name: vtsingle-goyangi-otel
+        spec:
+            ports:
+                - name: grpc
+                  port: 4317
+                  protocol: TCP
+                  targetPort: 4317
+    storage:
+        accessModes:
+            - ReadWriteOnce
+        resources:
+            requests:
+                storage: 20Gi
+        storageClassName: ceph-block
+    useStrictSecurity: true

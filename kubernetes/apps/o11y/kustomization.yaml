@@ -22,4 +22,5 @@ resources:
   - ./smartctl-exporter/ks.yaml
   - ./unpoller/ks.yaml
   - ./victoria-logs/ks.yaml
+  - ./victoria/ks.yaml
   - ./vpa/ks.yaml
