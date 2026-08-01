@@ -3,6 +3,8 @@ apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAlertmanagerConfig
 metadata:
     name: goyangi
+    labels:
+        app.kubernetes.io/instance: goyangi
 spec:
     route:
         receiver: pushover
