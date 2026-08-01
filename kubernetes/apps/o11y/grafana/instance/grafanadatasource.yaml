@@ -3,77 +3,77 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: prometheus
-spec:
-  instanceSelector:
-    matchLabels:
-      grafana.internal/instance: grafana
-  datasource:
-    type: prometheus
     name: prometheus
-    access: proxy
-    isDefault: true
-    jsonData:
-      timeout: "300"
-    url: http://kube-prometheus-stack-prometheus.o11y.svc.cluster.local:9090
+spec:
+    instanceSelector:
+        matchLabels:
+            grafana.internal/instance: grafana
+    datasource:
+        type: prometheus
+        name: prometheus
+        access: proxy
+        isDefault: true
+        jsonData:
+            timeout: "300"
+        url: http://vmsingle-goyangi.o11y.svc.cluster.local:8428
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: alertmanager
-spec:
-  instanceSelector:
-    matchLabels:
-      grafana.internal/instance: grafana
-  datasource:
-    type: alertmanager
     name: alertmanager
-    access: proxy
-    jsonData:
-      implementation: prometheus
-    url: http://kube-prometheus-stack-alertmanager.o11y.svc.cluster.local:9093
+spec:
+    instanceSelector:
+        matchLabels:
+            grafana.internal/instance: grafana
+    datasource:
+        type: alertmanager
+        name: alertmanager
+        access: proxy
+        jsonData:
+            implementation: prometheus
+        url: http://vmalertmanager-goyangi.o11y.svc.cluster.local:9093
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: victoria-logs
-spec:
-  instanceSelector:
-    matchLabels:
-      grafana.internal/instance: grafana
-  datasource:
-    type: victoriametrics-logs-datasource
     name: victoria-logs
-    access: proxy
-    url: http://victoria-logs-server.o11y.svc.cluster.local:9428
+spec:
+    instanceSelector:
+        matchLabels:
+            grafana.internal/instance: grafana
+    datasource:
+        type: victoriametrics-logs-datasource
+        name: victoria-logs
+        access: proxy
+        url: http://victoria-logs.o11y.svc.cluster.local:9428
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: influxdb
-  namespace: o11y
+    name: influxdb
+    namespace: o11y
 spec:
-  allowCrossNamespaceImport: true
-  instanceSelector:
-    matchLabels:
-      grafana.internal/instance: grafana
-  datasource:
-    type: influxdb
-    name: InfluxDB
-    access: proxy
-    url: http://influxdb.storage.svc.cluster.local:8086
-    jsonData:
-      version: Flux
-      organization: home
-      defaultBucket: health
-    secureJsonData:
-      token: ${token}
-  valuesFrom:
-    - targetPath: "secureJsonData.token"
-      valueFrom:
-        secretKeyRef:
-          name: health-influxdb-grafana
-          key: INFLUXDB_TOKEN
+    allowCrossNamespaceImport: true
+    instanceSelector:
+        matchLabels:
+            grafana.internal/instance: grafana
+    datasource:
+        type: influxdb
+        name: InfluxDB
+        access: proxy
+        url: http://influxdb.storage.svc.cluster.local:8086
+        jsonData:
+            version: Flux
+            organization: home
+            defaultBucket: health
+        secureJsonData:
+            token: ${token}
+    valuesFrom:
+        - targetPath: "secureJsonData.token"
+          valueFrom:
+            secretKeyRef:
+                name: health-influxdb-grafana
+                key: INFLUXDB_TOKEN

@@ -6,52 +6,51 @@ metadata:
 spec:
     route:
         receiver: pushover
-        repeatInterval: 12h
+        repeat_interval: 12h
         routes:
             - receiver: blackhole
               matchers:
                   - alertname=InfoInhibitor
             - receiver: heartbeat
-              groupInterval: 2m
-              groupWait: 0s
-              repeatInterval: 2m30s
+              group_interval: 2m
+              group_wait: 0s
+              repeat_interval: 2m30s
               matchers:
                   - alertname=Watchdog
             - receiver: pushover
               matchers:
                   - severity=critical
-        groupBy:
+        group_by:
             - alertname
             - cluster
             - job
-        groupInterval: 5m
-        groupWait: 1m
-    inhibitRules:
+        group_interval: 5m
+        group_wait: 1m
+    inhibit_rules:
         - equal:
               - alertname
               - namespace
-          sourceMatch:
+          source_matchers:
               - severity=critical
-          targetMatch:
+          target_matchers:
               - severity=warning
     receivers:
         - name: blackhole
         - name: heartbeat
-          webhookConfigs:
+          webhook_configs:
               - url_secret:
                     name: alertmanager-secret
                     key: ALERTMANAGER_HEARTBEAT_URL
         - name: pushover
-          pushoverConfigs:
-              - sendResolved: true
+          pushover_configs:
+              - send_resolved: true
                 sound: gamelan
-                title: >-
-                    [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
-                ttl: 86400s
+                title: "VMAlert"
+                priority: "0"
+                url_title: View in Alertmanager
                 token:
                     name: alertmanager-secret
                     key: ALERTMANAGER_PUSHOVER_TOKEN
-                userKey:
+                user_key:
                     name: alertmanager-secret
                     key: PUSHOVER_USER_KEY
-                urlTitle: View in Alertmanager
