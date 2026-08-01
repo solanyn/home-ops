@@ -197,6 +197,13 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /opt/data
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          - path: /media
+            readOnly: true
       configmap:
         type: configMap
         name: "{{ .Release.Name }}-config"
