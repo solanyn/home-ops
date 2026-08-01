@@ -1,0 +1,17 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAlertmanager
+metadata:
+    name: goyangi
+spec:
+    configSelector:
+        matchLabels:
+            app.kubernetes.io/instance: goyangi
+    disableNamespaceMatcher: true
+    storage:
+        volumeClaimTemplate:
+            spec:
+                storageClassName: ceph-block
+                resources:
+                    requests:
+                        storage: 1Gi

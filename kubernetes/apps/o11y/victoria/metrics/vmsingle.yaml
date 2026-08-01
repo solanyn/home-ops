@@ -1,0 +1,21 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMSingle
+metadata:
+    name: goyangi
+spec:
+    extraArgs:
+        opentelemetry.usePrometheusNaming: "true"
+        search.minStalenessInterval: 5m
+        vmalert.proxyURL: http://vmalert-goyangi.o11y.svc:8080
+    replicaCount: 1
+    retentionPeriod: "30d"
+    storage:
+        accessModes:
+            - ReadWriteOnce
+        resources:
+            requests:
+                storage: 50Gi
+        storageClassName: ceph-block
+    useDefaultResources: false
+    useStrictSecurity: true

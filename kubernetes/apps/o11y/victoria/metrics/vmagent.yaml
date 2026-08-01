@@ -1,0 +1,20 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAgent
+metadata:
+    name: goyangi
+spec:
+    extraArgs:
+        opentelemetry.usePrometheusNaming: "true"
+        promscrape.maxScrapeSize: "33554432"
+    remoteWrite:
+        - url: "http://vmsingle-goyangi.o11y.svc:8428/api/v1/write"
+    remoteWriteSettings:
+        label:
+            cluster: goyangi
+    selectAllByDefault: true
+    resources:
+        requests:
+            cpu: 100m
+        limits:
+            memory: 512Mi
