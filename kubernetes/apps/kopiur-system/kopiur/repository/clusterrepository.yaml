@@ -12,14 +12,14 @@ spec:
             path: /repository
             volume:
                 nfs:
-                    path: /mnt/world/kopiur
+                    path: /mnt/world/volsynckopia
                     server: nas.internal
     catalog:
         fallbackNamespace: kopiur-system
         periodicRefresh: true
         refreshInterval: 1h
     create:
-        enabled: true
+        enabled: false
     credentialProjection:
         allowed: true
     encryption:
