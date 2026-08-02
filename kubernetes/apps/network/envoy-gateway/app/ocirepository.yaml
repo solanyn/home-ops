@@ -10,5 +10,5 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 1.8.3
-  url: oci://ocharted.goyangi.io/docker.io/envoyproxy/gateway-helm
+    tag: v1.8.3
+  url: oci://docker.io/envoyproxy/gateway-helm
