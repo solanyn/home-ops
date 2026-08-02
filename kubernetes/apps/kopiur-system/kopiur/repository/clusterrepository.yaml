@@ -8,24 +8,35 @@ spec:
     allowedNamespaces:
         all: true
     backend:
-        s3:
-            auth:
-                secretRef:
-                    name: kopiur-repository-secret
-                    namespace: kopiur-system
-            bucket: kopiur
-            endpoint: garage.storage.svc.cluster.local:3900
-            region: us-east-1
-            tls:
-                disableTls: true
+        filesystem:
+            path: /repository
+            volume:
+                nfs:
+                    path: /mnt/world/volsynckopia
+                    server: nas.internal
+    catalog:
+        fallbackNamespace: kopiur-system
+        periodicRefresh: true
+        refreshInterval: 1h
+    create:
+        enabled: false
+    credentialProjection:
+        allowed: true
     encryption:
         passwordSecretRef:
             name: kopiur-repository-secret
             namespace: kopiur-system
             key: KOPIA_PASSWORD
-    create:
-        enabled: true
+    identityDefaults:
+        hostnameExpr: "'volsync.volsync-system.svc.cluster.local'"
+        usernameExpr: "'volsync'"
     maintenance:
         enabled: true
-    scheduleDefaults:
-        timezone: Australia/Sydney
+        namespace: kopiur-system
+        scheduleDefaults:
+            timezone: Australia/Sydney
+    moverDefaults:
+        securityContext:
+            runAsGroup: 1000
+            runAsUser: 1000
+    mode: ReadWrite
