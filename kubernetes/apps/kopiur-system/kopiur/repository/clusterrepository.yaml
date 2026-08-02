@@ -19,7 +19,7 @@ spec:
         periodicRefresh: true
         refreshInterval: 1h
     create:
-        enabled: false
+        enabled: true
     credentialProjection:
         allowed: true
     encryption:
