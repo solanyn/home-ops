@@ -5,9 +5,14 @@ kind: HelmRelease
 metadata:
   name: volsync
 spec:
-  chartRef:
-    kind: OCIRepository
-    name: volsync
+  chart:
+    spec:
+      chart: volsync
+      sourceRef:
+        kind: HelmRepository
+        name: volsync
+        namespace: volsync-system
+      version: "*"
   interval: 1h
   values:
     fullnameOverride: volsync # Required for volsync-perfectra1n fork
