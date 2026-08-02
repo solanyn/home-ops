@@ -33,8 +33,9 @@ spec:
         cpu: 100m
       limits:
         memory: 2Gi
-    secretProjection:
-      enabled: true
+    features:
+      credentialProjection:
+        enabled: true
     webhook:
       tls:
         mode: self
