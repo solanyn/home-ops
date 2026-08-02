@@ -12,7 +12,7 @@ spec:
             path: /repository
             volume:
                 nfs:
-                    path: /mnt/world/volsynckopia
+                    path: /mnt/world/kopiur
                     server: nas.internal
     catalog:
         fallbackNamespace: kopiur-system
