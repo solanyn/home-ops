@@ -8,9 +8,6 @@ spec:
   targetNamespace: default
   components:
     - ../../../../components/kopiur
-  dependsOn:
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/recyclarr/app
   postBuild:

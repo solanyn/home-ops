@@ -11,7 +11,7 @@ spec:
     storage:
         volumeClaimTemplate:
             spec:
-                storageClassName: ceph-block
+                storageClassName: miroir-replicated
                 resources:
                     requests:
                         storage: 1Gi

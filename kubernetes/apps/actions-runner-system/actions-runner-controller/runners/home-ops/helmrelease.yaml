@@ -32,7 +32,7 @@ spec:
       type: kubernetes
       kubernetesModeWorkVolumeClaim:
         accessModes: ["ReadWriteOnce"]
-        storageClassName: openebs-hostpath
+        storageClassName: miroir-local
         resources:
           requests:
             storage: 25Gi

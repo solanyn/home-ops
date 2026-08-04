@@ -21,5 +21,5 @@ spec:
     repository: ${APP}-volsync-r2-secret
     retain:
       daily: 7
-    storageClassName: ${VOLSYNC_STORAGECLASS:=ceph-block}
-    volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=csi-ceph-blockpool}
+    storageClassName: ${VOLSYNC_STORAGECLASS:=miroir-replicated}
+    volumeSnapshotClassName: ${VOLSYNC_SNAPSHOTCLASS:=miroir-snap}
