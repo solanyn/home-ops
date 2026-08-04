@@ -69,7 +69,7 @@ spec:
           runner:
             image:
               repository: ghcr.io/catthehacker/ubuntu
-              tag: act-22.04@sha256:b40b8af93baee90b83f29c834440873300c8478809535786dbf79fa836c086ac
+              tag: act-22.04@sha256:d835beacc9a56cbf3027e2ad4d1ed89ed36127db115a32f299281dd41a0e8d12
             command:
               - /bb/bb_runner
             args:
