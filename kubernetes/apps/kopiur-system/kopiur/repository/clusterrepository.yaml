@@ -28,8 +28,8 @@ spec:
             namespace: kopiur-system
             key: KOPIA_PASSWORD
     identityDefaults:
-        hostnameExpr: "'volsync.volsync-system.svc.cluster.local'"
-        usernameExpr: "'volsync'"
+        hostnameExpr: "'kopiur.kopiur-system.svc.cluster.local'"
+        usernameExpr: "'kopiur'"
     maintenance:
         enabled: true
         namespace: kopiur-system
