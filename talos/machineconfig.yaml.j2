@@ -50,10 +50,15 @@ machine:
   install:
     diskSelector:
       model: SAMSUNG MZ7LM960
-    image: factory.talos.dev/metal-installer/647f46cf63e07a449ad6457ba98ac40d19944ce304f3fb5c9a636e00a928a52f:v1.13.6
+    image: factory.talos.dev/metal-installer/cf3088ba8d6081404185a56add7b352190b4586986297358ae399a47278c5f57:v1.13.6
     wipe: false
   kernel:
     modules:
+      - name: dm_thin_pool
+      - name: drbd
+        parameters:
+          - usermode_helper=disabled
+      - name: drbd_transport_tcp
       - name: nbd
   kubelet:
     defaultRuntimeSeccompProfileEnabled: true
@@ -223,6 +228,14 @@ name: eno1.90
 vlanID: 90
 parent: eno1
 mtu: 9000
+---
+apiVersion: v1alpha1
+kind: RawVolumeConfig
+name: miroir
+provisioning:
+  diskSelector:
+    match: disk.model == "Micron_7450_MTFDKBA960TFR" && !system_disk
+  minSize: 960GB
 ---
 apiVersion: v1alpha1
 kind: WatchdogTimerConfig
