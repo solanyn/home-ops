@@ -6,14 +6,11 @@ metadata:
   name: radarr
 spec:
   targetNamespace: default
-  components:
   dependsOn:
     - name: pocket-id-resources
       namespace: default
     - name: cloudnative-pg-cluster
       namespace: storage
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/radarr/app
   postBuild:

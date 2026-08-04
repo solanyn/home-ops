@@ -6,7 +6,6 @@ metadata:
   name: label-studio
 spec:
   targetNamespace: default
-  components:
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage

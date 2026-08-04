@@ -12,7 +12,7 @@ spec:
     cache:
       capacity: ${KOPIUR_CAPACITY:=5Gi}
       mode: Persistent
-      storageClassName: ${KOPIUR_CACHE_STORAGECLASS:=ceph-block}
+      storageClassName: ${KOPIUR_CACHE_STORAGECLASS:=miroir-replicated}
     securityContext:
       runAsUser: ${KOPIUR_PUID:=1000}
       runAsGroup: ${KOPIUR_PGID:=1000}
@@ -27,4 +27,4 @@ spec:
   sources:
     - pvc:
         name: ${APP}
-  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=csi-ceph-blockpool}
+  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=miroir-snap}
