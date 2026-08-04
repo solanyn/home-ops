@@ -80,7 +80,7 @@ releases:
     needs:
       - cert-manager/cert-manager
 
-  - name: onepassword
+  - name: onepassword-connect
     namespace: external-secrets
     inherit:
       - template: default
@@ -113,7 +113,7 @@ releases:
     inherit:
       - template: default
     needs:
-      - external-secrets/onepassword
+      - external-secrets/onepassword-connect
 
   - name: flux-instance
     namespace: flux-system
