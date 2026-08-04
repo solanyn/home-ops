@@ -11,8 +11,6 @@ spec:
   dependsOn:
     - name: vernemq
       namespace: storage
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/zigbee/app
   postBuild:

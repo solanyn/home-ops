@@ -13,8 +13,6 @@ spec:
       namespace: default
     - name: cloudnative-pg-cluster
       namespace: storage
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/romm/app
   postBuild:

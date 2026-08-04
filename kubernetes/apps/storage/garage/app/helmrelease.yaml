@@ -86,7 +86,7 @@ spec:
           - path: /data
       meta:
         type: persistentVolumeClaim
-        storageClass: ceph-block
+        storageClass: miroir-replicated
         accessMode: ReadWriteOnce
         size: 5Gi
         globalMounts:

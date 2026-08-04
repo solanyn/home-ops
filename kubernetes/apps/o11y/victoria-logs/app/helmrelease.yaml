@@ -21,7 +21,7 @@ spec:
             fullnameOverride: victoria-logs
             persistentVolume:
                 enabled: true
-                storageClassName: ceph-block
+                storageClassName: miroir-replicated
                 size: 20Gi
             retentionPeriod: 14d
             route:

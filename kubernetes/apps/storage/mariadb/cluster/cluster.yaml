@@ -10,7 +10,7 @@ spec:
   replicas: 1
   storage:
     size: 10Gi
-    storageClassName: openebs-hostpath
+    storageClassName: miroir-local
   port: 3306
   myCnf: |
     [mariadb]
@@ -42,7 +42,7 @@ spec:
             storage: 1Gi
         accessModes:
           - ReadWriteOnce
-        storageClassName: openebs-hostpath
+        storageClassName: miroir-local
   resources:
     requests:
       cpu: 10m
