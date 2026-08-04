@@ -10,7 +10,7 @@ spec:
     schedule: 0 */12 * * *
   kopia:
     accessModes:
-      - ${VOLSYNC_SNAP_ACCESSMODES:=ReadWriteOnce} # Use ReadOnlyMany for CephFS
+      - ${VOLSYNC_SNAP_ACCESSMODES:=ReadWriteOnce}
     compression: zstd-fastest
     copyMethod: Snapshot
     moverSecurityContext:

@@ -20,7 +20,4 @@ spec:
           kind: Restore
           expr: |-
               !(status.phase in ['Resolving', 'Restoring'])
-        - apiVersion: ceph.rook.io/v1
-          kind: CephCluster
-          expr: |-
-              status.ceph.health in ['HEALTH_OK']
+

@@ -106,7 +106,7 @@ spec:
         },
         {
           "type": "timeseries",
-          "title": "Ceph OSD Disk Utilization",
+          "title": "Node Disk Utilization",
           "gridPos": {"h": 8, "w": 12, "x": 0, "y": 25},
           "targets": [{"expr": "rate(node_disk_io_time_seconds_total{instance=~\"192.168.42.*\",device=~\"nvme.*|sd.*\"}[5m]) * 100", "legendFormat": "{{instance}} {{device}}", "refId": "A"}],
           "fieldConfig": {"defaults": {"custom": {"drawStyle": "line", "lineInterpolation": "smooth", "fillOpacity": 10}, "unit": "percent", "min": 0}},
