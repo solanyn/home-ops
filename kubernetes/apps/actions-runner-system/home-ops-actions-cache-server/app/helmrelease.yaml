@@ -40,7 +40,7 @@ spec:
     persistence:
       data:
         type: persistentVolumeClaim
-        storageClass: openebs-hostpath
+        storageClass: miroir-local
         accessMode: ReadWriteOnce
         size: 10Gi
         globalMounts:

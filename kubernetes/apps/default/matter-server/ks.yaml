@@ -13,8 +13,6 @@ spec:
       namespace: kube-system
     - name: home-assistant
       namespace: default
-    - name: rook-ceph-cluster
-      namespace: rook-ceph
   interval: 1h
   path: ./kubernetes/apps/default/matter-server/app
   postBuild:
