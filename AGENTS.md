@@ -214,7 +214,7 @@ spec:
 **Common dependencies:**
 
 - **Database apps**: `cloudnative-pg-cluster` (namespace: storage)
-- **Storage apps**: `rook-ceph-cluster` (namespace: rook-ceph)
+- **Storage apps**: `miroir-config` (namespace: miroir-system)
 - **AI apps**: May depend on model serving or gateway services
 
 3. **Create app/kustomization.yaml**:
@@ -399,7 +399,7 @@ spec:
     resources:
         requests:
             storage: 5Gi
-    storageClassName: ceph-block
+    storageClassName: miroir-replicated
 ```
 
 **Note**: Only create separate `pvc.yaml` for cache/temp storage that doesn't need backup. For critical data, use VolSync component which creates PVCs automatically and provides backup/restore capabilities.
@@ -433,7 +433,7 @@ resources:
 
 #### Storage Patterns
 
-- **PVC**: Use `storageClassName: ceph-block` or `openebs-hostpath`
+- **PVC**: Use `storageClassName: miroir-replicated` or `miroir-local`
 - **VolSync**: Add component for automatic backups
 - **Access modes**: Typically `["ReadWriteOnce"]`
 
@@ -859,7 +859,7 @@ dataFrom:
 
 **ML/Data:** Kubeflow, KServe, Ray, Airflow, Kafka, Flink, Milvus
 
-**Storage:** Rook-Ceph, OpenEBS, VolSync
+**Storage:** Miroir, VolSync
 
 **Operations:** External Secrets, cert-manager
 

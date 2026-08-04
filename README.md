@@ -108,14 +108,14 @@ Full-stack monitoring with unified metrics, distributed tracing and LLM observab
 
 Distributed and local storage with operator-managed databases:
 
-- [rook-ceph](https://github.com/rook/rook) for distributed block, object and filesystem storage
+- [miroir](https://github.com/home-operations/miroir) for distributed block storage with DRBD replication
 - [cloudnative-pg](https://github.com/cloudnative-pg/cloudnative-pg) for production PostgreSQL with automated backups and failover
 - [dragonfly](https://github.com/dragonflydb/dragonfly) as a high-performance Redis-compatible in-memory store
 - [garage](https://github.com/deuxfleurs-org/garage) for S3-compatible distributed object storage (backups, Thanos, CNPG WAL archival)
 - [mariadb](https://github.com/mariadb-operator/mariadb-operator) operator for MySQL-compatible workloads
 - [influxdb](https://github.com/influxdata/influxdb) for time-series data and IoT metrics
 - [vernemq](https://github.com/vernemq/vernemq) as an MQTT broker for IoT device communication
-- [openebs](https://github.com/openebs/openebs) for local PV provisioning
+- [openebs](https://github.com/openebs/openebs) for local PV provisioning (removed in favour of miroir-local)
 - [volsync](https://github.com/backube/volsync) and [kopia](https://github.com/kopia/kopia) for encrypted backup orchestration
 
 ### Multi-Cluster & Cloud Burst
@@ -156,11 +156,11 @@ Applications deploy in dependency order based on infrastructure requirements, pr
 
 ```mermaid
 graph TD
-    A>Kustomization: rook-ceph] -->|Creates| B[HelmRelease: rook-ceph]
-    A>Kustomization: rook-ceph] -->|Creates| C[HelmRelease: rook-ceph-cluster]
-    C>HelmRelease: rook-ceph-cluster] -->|Depends on| B>HelmRelease: rook-ceph]
-    D>Kustomization: atuin] -->|Creates| E(HelmRelease: atuin)
-    E>HelmRelease: atuin] -->|Depends on| C>HelmRelease: rook-ceph-cluster]
+    A[Kustomization: miroir] -->|Creates| B[HelmRelease: miroir]
+    A[Kustomization: miroir] -->|Creates| C[HelmRelease: miroir-config]
+    C[HelmRelease: miroir-config] -->|Depends on| B[HelmRelease: miroir]
+    D[Kustomization: atuin] -->|Creates| E(HelmRelease: atuin)
+    E[HelmRelease: atuin] -->|Depends on| C[HelmRelease: miroir-config]
 ```
 
 ---
