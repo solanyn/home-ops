@@ -7,8 +7,6 @@ metadata:
 spec:
   targetNamespace: volsync-system
   dependsOn:
-    - name: openebs
-      namespace: openebs-system
     - name: snapshot-controller
       namespace: kube-system
   healthChecks:
