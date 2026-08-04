@@ -10,8 +10,9 @@ spec:
     name: flux-operator
   interval: 1h
   values:
+    serviceMonitor:
+      create: true
     web:
-      enabled: true
       config:
         authentication:
           type: Anonymous
@@ -21,13 +22,10 @@ spec:
               - flux-admin
       httpRoute:
         enabled: true
+        hostnames:
+          - flux.goyangi.io
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
-        hostnames:
-          - flux.goyangi.io
-    livenessProbe: null
-    readinessProbe: null
-    serviceMonitor:
-      create: true
+      networkPolicy:
+        create: false
