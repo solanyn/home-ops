@@ -11,4 +11,3 @@ spec:
   ref:
     tag: 1.98.9
   url: oci://ocharted.goyangi.io/tailscale.com/charts/tailscale-operator
-        subject: ^https://github.com/home-operations/charts-mirror.*$
