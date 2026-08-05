@@ -11,9 +11,9 @@ resources:
     - ./namespace.yaml
     - ./hermes/ks.yaml
     - ./honcho/ks.yaml
-# kelos removed - directory does not exist
+    - ./kelos/static/ks.yaml
+    - ./kelos/ks.yaml
     - ./litellm-operator/ks.yaml
     - ./litellm/ks.yaml
     - ./llmkube/ks.yaml
     - ./open-notebook/ks.yaml
-# presidio removed - presidio-masking caused false positives and latency issues

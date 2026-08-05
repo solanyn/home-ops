@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kelos-dev/kelos/main/internal/manifests/charts/kelos/values.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+    name: kelos
+spec:
+    chartRef:
+        kind: OCIRepository
+        name: kelos
+    interval: 1h
+    values:
+        crds:
+            install: true
+            keep: true
+        sessionServer:
+            enabled: true
+            secretName: kelos-session-auth
+            defaultNamespace: ai
+            service:
+                type: ClusterIP
