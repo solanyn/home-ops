@@ -28,8 +28,8 @@ spec:
             namespace: kopiur-system
             key: KOPIA_PASSWORD
     identityDefaults:
-        hostnameExpr: "'kopiur.kopiur-system.svc.cluster.local'"
-        usernameExpr: "'kopiur'"
+        hostnameExpr: namespace
+        usernameExpr: policyName
     maintenance:
         enabled: true
         namespace: kopiur-system
