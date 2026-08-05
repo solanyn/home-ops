@@ -5,9 +5,12 @@ metadata:
   name: tailscale-operator
 spec:
   interval: 1h
-  chartRef:
-    kind: OCIRepository
-    name: tailscale-operator
+  chart:
+    spec:
+      chart: tailscale-operator
+      sourceRef:
+        kind: HelmRepository
+        name: tailscale-operator
   valuesFrom:
     - kind: Secret
       name: tailscale-operator-oauth
