@@ -10,6 +10,7 @@ spec:
     name: miroir
   interval: 1h
   values:
+    autoDiskfulAfter: 1h
     autoEvictAfter: 1h
     drbd:
       alExtents: 6007
