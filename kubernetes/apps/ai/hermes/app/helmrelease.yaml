@@ -35,6 +35,11 @@ spec:
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
+
+                # .config/op may be owned by a stale UID from a restored snapshot;
+                # op refuses to read a config owned by another user. Fix ownership
+                # here as root so the app (runAsUser 10000) can use the CLI.
+                chown -R 10000:10000 /opt/data/.config 2>/dev/null || true
           install-tools:
             image:
               repository: docker.io/library/debian
