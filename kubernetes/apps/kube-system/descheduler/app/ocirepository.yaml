@@ -12,4 +12,3 @@ spec:
   ref:
     tag: 0.36.0
   url: oci://ocharted.goyangi.io/kubernetes-sigs.github.io/descheduler/descheduler
-        subject: ^https://github.com/home-operations/charts-mirror.*$
