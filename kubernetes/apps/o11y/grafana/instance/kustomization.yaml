@@ -10,7 +10,4 @@ resources:
   - ./grafanaserviceaccount.yaml
   - ./servicemonitor.yaml
   - ./externalsecret-influxdb.yaml
-  - ./grafanadashboard-health.yaml
-  - ./grafanadashboard-llm.yaml
-  - ./grafanadashboard-capacity.yaml
   - ./mutatingadmissionpolicy.yaml
