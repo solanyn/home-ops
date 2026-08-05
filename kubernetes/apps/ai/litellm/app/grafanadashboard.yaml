@@ -14,7 +14,7 @@ spec:
         - datasourceName: prometheus
           inputName: DS_PROMETHEUS
     json: |
-{
+      {
       "annotations": {
         "list": [
           {
@@ -964,4 +964,4 @@ spec:
       "title": "LLM Observability",
       "uid": "llm-observability",
       "version": 1
-    }
+      }
