@@ -110,9 +110,9 @@ spec:
 
                     # Ensure op CLI config has restricted permissions
                     mkdir -p /opt/data/.config/op
-                    chmod 700 /opt/data/.config/op
+                    chmod 700 /opt/data/.config/op || true
                     if [ -f /opt/data/.config/op/config ]; then
-                        chmod 600 /opt/data/.config/op/config
+                        chmod 600 /opt/data/.config/op/config || true
                     fi
                   '
 
