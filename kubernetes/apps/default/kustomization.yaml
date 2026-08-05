@@ -22,7 +22,6 @@ resources:
   - ./element-web/ks.yaml
   - ./flaresolverr/ks.yaml
   - ./forgejo/ks.yaml
-  - ./gitlab-proxy/ks.yaml
   - ./fusion/ks.yaml
   - ./go2rtc/ks.yaml
   - ./apple-health-ingester/ks.yaml
@@ -30,7 +29,6 @@ resources:
   - ./immich/ks.yaml
   - ./label-studio/ks.yaml
   - ./lidarr/ks.yaml
-  - ./line/ks.yaml
   - ./livekit/ks.yaml
   - ./matter-server/ks.yaml
   - ./otbr/ks.yaml
