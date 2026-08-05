@@ -3,6 +3,39 @@
 # Using legacy unifi_firewall_rule instead. Migrate to zones after firmware update.
 # ################################################################################
 
+import {
+    to = unifi_firewall_group.local_networks
+    id = "6a731746eedf1cb17e331484"
+}
+
+import {
+    to = unifi_firewall_rule.drop_iot_intervlan
+    id = "6a64235eaaa1766c27a0c0ed"
+}
+
+import {
+    to = unifi_firewall_rule.allow_default_to_nas_smb
+    id = "6a6dacbdeedf1cb17e31843e"
+}
+
+import {
+    to = unifi_firewall_rule.drop_default_to_servers
+    id = "6a64235eaaa1766c27a0c0ea"
+}
+
+resource "unifi_firewall_group" "local_networks" {
+    name = "RFC1918 Local Networks"
+    type = "address-group"
+
+    members = [
+        "192.168.1.0/24",
+        "192.168.10.0/24",
+        "192.168.42.0/24",
+        "192.168.50.0/24",
+        "192.168.90.0/24",
+    ]
+}
+
 resource "unifi_firewall_rule" "drop_iot_intervlan" {
     name       = "Block IoT inter-VLAN"
     action     = "drop"
@@ -10,9 +43,9 @@ resource "unifi_firewall_rule" "drop_iot_intervlan" {
     rule_index = 20000
     protocol   = "all"
 
-    src_network_id = unifi_network.iot.id
-    # dst = all (omitted) — blocks IoT to every other VLAN
-    state_new = true
+    src_network_id        = unifi_network.iot.id
+    dst_firewall_group_ids = [unifi_firewall_group.local_networks.id]
+    state_new             = true
 
     enabled = true
 }
