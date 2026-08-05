@@ -4,6 +4,8 @@ apiVersion: kopiur.home-operations.com/v1alpha1
 kind: ClusterRepository
 metadata:
     name: kopiur
+    annotations:
+        kopiur.home-operations.com/allow-identity-change: intentional
 spec:
     allowedNamespaces:
         all: true
@@ -28,8 +30,8 @@ spec:
             namespace: kopiur-system
             key: KOPIA_PASSWORD
     identityDefaults:
-        hostnameExpr: "'kopiur.kopiur-system.svc.cluster.local'"
-        usernameExpr: "'kopiur'"
+        hostnameExpr: namespace
+        usernameExpr: policyName
     maintenance:
         enabled: true
         namespace: kopiur-system
