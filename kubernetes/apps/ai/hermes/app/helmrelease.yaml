@@ -44,6 +44,7 @@ spec:
               - -c
               - |
                 set -euo pipefail
+                apk add --no-cache patch >/dev/null 2>&1
                 echo "[patch-hermes] Applying Hermes Matrix timeout fix..."
                 patch -p1 -d /opt/hermes < /tmp/hermes-matrix-timeout.patch
                 echo "[patch-hermes] Done"
