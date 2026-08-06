@@ -40,9 +40,7 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4a1/512.gif" alt="💡" width="20" height="20"> Overview
 
-This is a mono repository for my home infrastructure and Kubernetes cluster. It doubles as a production-grade platform engineering reference, running enterprise tooling on bare metal to validate real-world patterns for AI/ML platforms, data engineering and platform operations.
-
-The cluster manages ~100 applications across 24 namespaces, covering everything from a full Kubeflow ML platform and real-time streaming pipelines to home automation and media services -- all deployed through GitOps with FluxCD.
+This is a mono repository for my home infrastructure and Kubernetes cluster. Everything runs on a three-node Talos Linux cluster at home, deployed through GitOps with FluxCD and configured as infrastructure as code with OpenTofu.
 
 There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/cluster-template) if you want to follow along with some of the practices used here.
 
@@ -50,37 +48,16 @@ There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/clu
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f331/512.gif" alt="🌱" width="20" height="20"> Platform Capabilities
 
-### AI/ML Platform
-
-A complete machine learning platform built on [Kubeflow](https://github.com/kubeflow/kubeflow), providing end-to-end ML lifecycle management from data annotation through to production model serving:
-
-- [kserve](https://github.com/kserve/kserve) and [knative](https://github.com/knative/serving) for serverless model inference with autoscaling and scale-to-zero
-- [agentgateway](https://github.com/agentgateway-dev/agentgateway) as an AI-native API gateway with LLM routing, MCP server integration and security policies
-- [spark-operator](https://github.com/kubeflow/spark-operator) for large-scale data processing within ML pipelines
-- [katib](https://github.com/kubeflow/katib) for automated hyperparameter tuning and neural architecture search
-- [feast](https://github.com/feast-dev/feast) as a feature store for online/offline feature serving
-- [mlflow](https://github.com/mlflow/mlflow) for experiment tracking and model registry
-- [label-studio](https://github.com/heartexlabs/label-studio) for data annotation and dataset preparation
-- [agent-sandbox](https://github.com/anomalyco/agent-sandbox) for sandboxed AI agent execution
-
-### Data Engineering & Streaming
-
-Production data infrastructure for real-time and batch processing:
-
-- [kafka](https://github.com/apache/kafka) for event streaming and real-time data ingestion
-- [flink](https://github.com/apache/flink) for stateful stream processing and real-time analytics
-- [trino](https://github.com/trinodb/trino) as a distributed SQL query engine across heterogeneous data sources
-- [argo-workflows](https://github.com/argoproj/argo-workflows) for DAG-based workflow orchestration
-
-### Networking & Service Mesh
+### Networking
 
 Dual-stack IPv4/IPv6 networking with BGP-based load balancing and Kubernetes Gateway API:
 
 - [cilium](https://github.com/cilium/cilium) as the CNI with eBPF-based network policies, BGP peering and L2/L3 load balancing
 - [envoy](https://github.com/envoyproxy/envoy) gateway with Kubernetes Gateway API for north-south traffic management
-- [agentgateway](https://github.com/agentgateway-dev/agentgateway) for AI/LLM-aware routing with MCP tool proxying
 - [multus](https://github.com/k8snetworkplumbingwg/multus-cni) for cross-VLAN pod networking
 - [external-dns](https://github.com/kubernetes-sigs/external-dns) for automated split-horizon DNS across Cloudflare and UniFi
+- [spegel](https://github.com/spegel-org/spegel) for peer-to-peer OCI image distribution
+- [tailscale](https://github.com/tailscale/tailscale) for remote access and cluster mesh
 
 ### Security & Identity
 
@@ -92,14 +69,11 @@ Zero-trust security model with policy enforcement and centralised identity:
 
 ### Observability
 
-Full-stack monitoring with unified metrics, distributed tracing and LLM observability:
+Full-stack monitoring with unified metrics, logs and tracing:
 
 - [victoria-metrics](https://github.com/VictoriaMetrics/VictoriaMetrics) for metrics collection, storage and alerting (replaced Prometheus + Thanos — ~7x less memory, 90d local retention)
+- [victoria-logs](https://github.com/VictoriaMetrics/VictoriaMetrics) for log aggregation and storage
 - [grafana](https://github.com/grafana/grafana) for dashboarding across metrics, logs and traces
-- [opentelemetry](https://github.com/open-telemetry/opentelemetry-collector) collector with eBPF auto-instrumentation for distributed tracing
-- [clickhouse](https://github.com/ClickHouse/ClickHouse) for high-performance trace and log storage
-- [langfuse](https://github.com/langfuse/langfuse) for LLM observability, prompt management and evaluation
-- [victoria-logs](https://github.com/VictoriaMetrics/VictoriaMetrics) and [fluent-bit](https://github.com/fluent/fluent-bit) for log aggregation
 - [gatus](https://github.com/TwiN/gatus) for endpoint health monitoring and status pages
 - [blackbox-exporter](https://github.com/prometheus/blackbox_exporter), [smartctl-exporter](https://github.com/prometheus-community/smartctl_exporter) and [unpoller](https://github.com/unpoller/unpoller) for infrastructure probing
 - [silence-operator](https://github.com/giantswarm/silence-operator) and [kromgo](https://github.com/kashalls/kromgo) for alert management and badge generation
@@ -109,33 +83,23 @@ Full-stack monitoring with unified metrics, distributed tracing and LLM observab
 Distributed and local storage with operator-managed databases:
 
 - [miroir](https://github.com/home-operations/miroir) for distributed block storage with DRBD replication
+- [kopiur](https://github.com/home-operations/kopiur) for encrypted backup orchestration with kopia
 - [cloudnative-pg](https://github.com/cloudnative-pg/cloudnative-pg) for production PostgreSQL with automated backups and failover
 - [dragonfly](https://github.com/dragonflydb/dragonfly) as a high-performance Redis-compatible in-memory store
 - [garage](https://github.com/deuxfleurs-org/garage) for S3-compatible distributed object storage (backups, Thanos, CNPG WAL archival)
 - [mariadb](https://github.com/mariadb-operator/mariadb-operator) operator for MySQL-compatible workloads
 - [influxdb](https://github.com/influxdata/influxdb) for time-series data and IoT metrics
 - [vernemq](https://github.com/vernemq/vernemq) as an MQTT broker for IoT device communication
-- [openebs](https://github.com/openebs/openebs) for local PV provisioning (removed in favour of miroir-local)
-- [volsync](https://github.com/backube/volsync) and [kopia](https://github.com/kopia/kopia) for encrypted backup orchestration
-
-### Multi-Cluster & Cloud Burst
-
-On-demand GPU/CPU capacity via workload offloading to GKE:
-
-- [liqo](https://github.com/liqotech/liqo) for transparent multi-cluster workload offloading over WireGuard
-- [crossplane](https://github.com/crossplane/crossplane) for declarative GKE cluster provisioning as Kubernetes CRDs
-- One-way offloading from home cluster to GKE for GPU workloads
-- Autoscaling node pools with scale-to-zero when idle (spot instances for cost efficiency)
 
 ### Infrastructure Provisioning & GitOps
 
 Declarative cluster management with dependency-aware deployments:
 
 - [flux](https://github.com/fluxcd/flux2) for Git-based state reconciliation with drift detection and self-healing
+- [tofu-controller](https://github.com/flux-iac/tofu-controller) for OpenTofu infrastructure as code (UniFi networking)
 - [renovate](https://github.com/renovatebot/renovate) for automated dependency updates across the entire repository
 - [actions-runner-controller](https://github.com/actions/actions-runner-controller) for self-hosted CI/CD runners
-- [prometheus-adapter](https://github.com/kubernetes-sigs/prometheus-adapter) for custom metrics-based autoscaling with native HPA and scale-to-zero
-- [spegel](https://github.com/spegel-org/spegel) for peer-to-peer OCI image distribution
+- [konflate](https://github.com/solanyn/konflate) for rendering Kubernetes manifests on pull requests
 
 ---
 
@@ -143,9 +107,10 @@ Declarative cluster management with dependency-aware deployments:
 
 ```sh
 📁 kubernetes
-├── 📁 apps           # applications across 24 namespaces
-├── 📁 components     # reusable Kustomize components (volsync, alerts, nfs-scaler)
+├── 📁 apps           # applications across namespaces
+├── 📁 components     # reusable Kustomize components (alerts)
 └── 📁 flux           # Flux system configuration
+📁 opentofu           # OpenTofu infrastructure as code
 📁 talos              # Talos Linux node configuration (Jinja2 templates)
 📁 bootstrap          # cluster bootstrapping resources
 ```
@@ -177,24 +142,6 @@ The setup maximises self-hosted infrastructure whilst using cloud services where
 | [Pushover](https://pushover.net/)           | Kubernetes Alerts and application notifications                   | $5 OTP        |
 | [healthchecks.io](https://healthchecks.io/) | Monitoring internet connectivity and external facing applications | Free          |
 |                                             |                                                                   | Total: ~$7/mo |
-
-```mermaid
-graph LR
-  subgraph Home["Home Cluster (Talos)"]
-    API[API Server]
-    N1[Node 1]
-    N2[Node 2]
-    N3[Node 3]
-    VN[Virtual Node]
-  end
-  subgraph GKE["GKE (Remote)"]
-    GPU1[GPU Spot Node]
-    GPU2[Compute Spot Node]
-  end
-  API --> VN
-  VN -.->|Liqo Tunnel| GPU1
-  VN -.->|Liqo Tunnel| GPU2
-```
 
 ---
 
