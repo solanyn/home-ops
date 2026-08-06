@@ -1,0 +1,197 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/home-operations/charts/main/charts/other/chaski/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: chaski
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: chaski
+  interval: 1h
+  values:
+    replicaCount: 2
+    deploymentAnnotations:
+      reloader.stakater.com/auto: "true"
+    env:
+      TZ: Australia/Sydney
+    envFrom:
+      - secretRef:
+          name: chaski-secret
+    config:
+      targets:
+        radarr:
+          apprise:
+            url: pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "RADARR_PUSHOVER_TOKEN" }}
+        sonarr:
+          apprise:
+            url: pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "SONARR_PUSHOVER_TOKEN" }}
+        readarr:
+          apprise:
+            url: pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "READARR_PUSHOVER_TOKEN" }}
+        whisparr:
+          apprise:
+            url: pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "WHISPARR_PUSHOVER_TOKEN" }}
+        seerr:
+          apprise:
+            url: pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "SEERR_PUSHOVER_TOKEN" }}
+      routes:
+        radarr-download:
+          target: radarr
+          title: Movie {{ if .payload.isUpgrade }}Upgraded{{ else }}Added{{ end }}
+          message: |-
+            <b>{{ .payload.movie.title }} ({{ .payload.movie.year }})</b>
+            <small>{{ .payload.movie.overview | ellipsis 300 }}</small>
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
+          params:
+            format: html
+            priority: low
+            url: "{{ .payload.applicationUrl }}/movie/{{ .payload.movie.tmdbId }}"
+            url_title: View Movie
+          whenExpr: payload.eventType == "Download"
+        radarr-manual:
+          target: radarr
+          title: Movie Requires Manual Interaction
+          message: |-
+            <b>{{ .payload.movie.title }} ({{ .payload.movie.year }})</b>
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
+          params:
+            format: html
+            priority: high
+            url: "{{ .payload.applicationUrl }}/activity/queue"
+            url_title: View Queue
+          whenExpr: payload.eventType == "ManualInteractionRequired"
+        radarr-test:
+          target: radarr
+          title: Test Notification
+          message: Howdy this is a test notification
+          params:
+            format: html
+            priority: low
+            url: "{{ .payload.applicationUrl }}"
+            url_title: View Movies
+          whenExpr: payload.eventType == "Test"
+        sonarr-download:
+          target: sonarr
+          title: Episode {{ if .payload.isUpgrade }}Upgraded{{ else }}Added{{ end }}
+          message: |-
+            <b>{{ .payload.series.title }} ({{ printf "S%02dE%02d" (toInt (index .payload.episodes 0).seasonNumber) (toInt (index .payload.episodes 0).episodeNumber) }})</b>
+            <small>{{ (index .payload.episodes 0).title }}</small>
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
+          params:
+            format: html
+            priority: low
+            url: "{{ .payload.applicationUrl }}/series/{{ .payload.series.titleSlug }}"
+            url_title: View Series
+          whenExpr: payload.eventType == "Download"
+        sonarr-manual:
+          target: sonarr
+          title: Episode Requires Manual Interaction
+          message: |-
+            <b>{{ .payload.series.title }}</b>
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
+          params:
+            format: html
+            priority: high
+            url: "{{ .payload.applicationUrl }}/activity/queue"
+            url_title: View Queue
+          whenExpr: payload.eventType == "ManualInteractionRequired"
+        sonarr-test:
+          target: sonarr
+          title: Test Notification
+          message: Howdy this is a test notification
+          params:
+            format: html
+            priority: low
+            url: "{{ .payload.applicationUrl }}"
+            url_title: View Series
+          whenExpr: payload.eventType == "Test"
+        readarr-download:
+          target: readarr
+          title: Book {{ if .payload.isUpgrade }}Upgraded{{ else }}Added{{ end }}
+          message: |-
+            <b>{{ .payload.book.title }}</b>
+            <small><b>Author:</b> {{ .payload.author.name }}</small>
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
+          params:
+            format: html
+            priority: low
+            url: "{{ .payload.applicationUrl }}/book/{{ .payload.book.id }}"
+            url_title: View Book
+          whenExpr: payload.eventType == "Download"
+        readarr-manual:
+          target: readarr
+          title: Book Requires Manual Interaction
+          message: |-
+            <b>{{ .payload.book.title }}</b>
+            <small><b>Author:</b> {{ .payload.author.name }}</small>
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
+          params:
+            format: html
+            priority: high
+            url: "{{ .payload.applicationUrl }}/activity/queue"
+            url_title: View Queue
+          whenExpr: payload.eventType == "ManualInteractionRequired"
+        readarr-test:
+          target: readarr
+          title: Test Notification
+          message: Howdy this is a test notification
+          params:
+            format: html
+            priority: low
+            url: "{{ .payload.applicationUrl }}"
+            url_title: View Books
+          whenExpr: payload.eventType == "Test"
+        whisparr-download:
+          target: whisparr
+          title: Movie {{ if .payload.isUpgrade }}Upgraded{{ else }}Added{{ end }}
+          message: |-
+            <b>{{ .payload.movie.title }} ({{ .payload.movie.year }})</b>
+            <small>{{ .payload.movie.overview | ellipsis 300 }}</small>
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
+          params:
+            format: html
+            priority: low
+            url: "{{ .payload.applicationUrl }}/movie/{{ .payload.movie.tmdbId }}"
+            url_title: View Movie
+          whenExpr: payload.eventType == "Download"
+        whisparr-manual:
+          target: whisparr
+          title: Movie Requires Manual Interaction
+          message: |-
+            <b>{{ .payload.movie.title }} ({{ .payload.movie.year }})</b>
+            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
+          params:
+            format: html
+            priority: high
+            url: "{{ .payload.applicationUrl }}/activity/queue"
+            url_title: View Queue
+          whenExpr: payload.eventType == "ManualInteractionRequired"
+        whisparr-test:
+          target: whisparr
+          title: Test Notification
+          message: Howdy this is a test notification
+          params:
+            format: html
+            priority: low
+            url: "{{ .payload.applicationUrl }}"
+            url_title: View Movies
+          whenExpr: payload.eventType == "Test"
+        seerr-test:
+          target: seerr
+          title: Test Notification
+          message: Howdy this is a test notification from <b>Seerr</b>
+          params:
+            format: html
+            priority: low
+            url: https://requests.goyangi.io
+            url_title: Open Seerr
+          whenExpr: payload.notification_type == "TEST_NOTIFICATION"
+    monitoring:
+      serviceMonitor:
+        enabled: true
+    resources:
+      requests:
+        cpu: 10m
+      limits:
+        memory: 128Mi
