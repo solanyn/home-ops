@@ -51,3 +51,47 @@ resource "unifi_port_forward" "ps5_remote_play" {
         ip      = "any"
     }
 }
+
+resource "unifi_port_forward" "livekit_turn_tcp" {
+    name     = "LiveKit TURN TCP"
+    protocol = "tcp"
+    logging  = false
+
+    forward = {
+        ip   = "192.168.69.137"
+        port = "7881"
+    }
+
+    wan = {
+        interface  = "wan"
+        ip_address = "any"
+        port       = "7881"
+    }
+
+    source_limiting = {
+        enabled = false
+        ip      = "any"
+    }
+}
+
+resource "unifi_port_forward" "livekit_turn_udp" {
+    name     = "LiveKit TURN UDP"
+    protocol = "udp"
+    logging  = false
+
+    forward = {
+        ip   = "192.168.69.137"
+        port = "3478"
+    }
+
+    wan = {
+        interface  = "wan"
+        ip_address = "any"
+        port       = "3478"
+    }
+
+    source_limiting = {
+        enabled = false
+        ip      = "any"
+    }
+}
