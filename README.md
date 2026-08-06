@@ -10,17 +10,19 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 
 <div align="center">
 
-[![Talos](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.goyangi.io%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&color=blue&label=%20)](https://talos.dev)&nbsp;&nbsp;
-[![Kubernetes](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.goyangi.io%2Fkubernetes_version&style=for-the-badge&logo=kubernetes&logoColor=white&color=blue&label=%20)](https://kubernetes.io)&nbsp;&nbsp;
-[![Flux](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.goyangi.io%2Fflux_version&style=for-the-badge&logo=flux&logoColor=white&color=blue&label=%20)](https://fluxcd.io)&nbsp;&nbsp;
+[![Home-Internet](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.goyangi.io%2Fapi%2Fv1%2Fendpoints%2Fconnectivity_cloudflare%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=ubiquiti&logoColor=white&label=Home%20Internet)](https://status.goyangi.io)&nbsp;&nbsp;
+[![Status-Page](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.goyangi.io%2Fapi%2Fv1%2Fendpoints%2Fexternal_echo%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=statuspage&logoColor=white&label=Status%20Page)](https://status.goyangi.io)&nbsp;&nbsp;
+[![Alertmanager](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.goyangi.io%2Fapi%2Fv1%2Fendpoints%2Fmonitoring_alertmanager%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://status.goyangi.io)
 
 </div>
 
 <div align="center">
 
-[![Home-Internet](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.goyangi.io%2Fapi%2Fv1%2Fendpoints%2Fconnectivity_cloudflare%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=ubiquiti&logoColor=white&label=Home%20Internet)](https://status.goyangi.io)&nbsp;&nbsp;
-[![Status-Page](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.goyangi.io%2Fapi%2Fv1%2Fendpoints%2Fexternal_echo%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=statuspage&logoColor=white&label=Status%20Page)](https://status.goyangi.io)&nbsp;&nbsp;
-[![Alertmanager](https://img.shields.io/endpoint?url=https%3A%2F%2Fstatus.goyangi.io%2Fapi%2Fv1%2Fendpoints%2Fmonitoring_alertmanager%2Fhealth%2Fbadge.shields&style=for-the-badge&logo=prometheus&logoColor=white&label=Alertmanager)](https://status.goyangi.io)
+[![Discord](https://img.shields.io/discord/673534664354430999?label&logo=discord&logoColor=white&color=blue)](https://discord.gg/home-operations)&nbsp;&nbsp;
+[![Talos](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.goyangi.io%2Ftalos_version&style=for-the-badge&logo=talos&logoColor=white&color=blue&label=%20)](https://talos.dev)&nbsp;&nbsp;
+[![Kubernetes](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.goyangi.io%2Fkubernetes_version&style=for-the-badge&logo=kubernetes&logoColor=white&color=blue&label=%20)](https://kubernetes.io)&nbsp;&nbsp;
+[![Flux](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.goyangi.io%2Fflux_version&style=for-the-badge&logo=flux&logoColor=white&color=blue&label=%20)](https://fluxcd.io)&nbsp;&nbsp;
+[![Renovate](https://img.shields.io/github/actions/workflow/status/solanyn/home-ops/renovate.yaml?branch=main&label&logo=renovate&color=blue)](https://github.com/solanyn/home-ops/actions/workflows/renovate.yaml)
 
 </div>
 
@@ -40,99 +42,60 @@ _... managed with Flux, Renovate, and GitHub Actions_ <img src="https://fonts.gs
 
 ## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4a1/512.gif" alt="💡" width="20" height="20"> Overview
 
-This is a mono repository for my home infrastructure and Kubernetes cluster. Everything runs on a three-node Talos Linux cluster at home, deployed through GitOps with FluxCD and configured as infrastructure as code with OpenTofu.
-
-There is a template at [onedr0p/cluster-template](https://github.com/onedr0p/cluster-template) if you want to follow along with some of the practices used here.
+This is a mono repository for my home infrastructure and Kubernetes cluster. I try to adhere to Infrastructure as Code (IaC) and GitOps practices using tools like [OpenTofu](https://opentofu.org/), [Kubernetes](https://kubernetes.io/), [Flux](https://github.com/fluxcd/flux2), [Renovate](https://github.com/renovatebot/renovate), and [GitHub Actions](https://github.com/features/actions).
 
 ---
 
-## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f331/512.gif" alt="🌱" width="20" height="20"> Platform Capabilities
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f331/512.gif" alt="🌱" width="20" height="20"> Kubernetes
 
-### Networking
+My Kubernetes cluster is deployed with [Talos](https://www.talos.dev). This is a semi-hyper-converged cluster, workloads and block storage are sharing the same available resources on my nodes while I have a separate server with ZFS for NFS shares, bulk file storage and backups.
 
-Dual-stack IPv4/IPv6 networking with BGP-based load balancing and Kubernetes Gateway API:
+There is a template over at [onedr0p/cluster-template](https://github.com/onedr0p/cluster-template) if you want to try and follow along with some of the practices I use here.
 
-- [cilium](https://github.com/cilium/cilium) as the CNI with eBPF-based network policies, BGP peering and L2/L3 load balancing
-- [envoy](https://github.com/envoyproxy/envoy) gateway with Kubernetes Gateway API for north-south traffic management
-- [multus](https://github.com/k8snetworkplumbingwg/multus-cni) for cross-VLAN pod networking
-- [external-dns](https://github.com/kubernetes-sigs/external-dns) for automated split-horizon DNS across Cloudflare and UniFi
-- [spegel](https://github.com/spegel-org/spegel) for peer-to-peer OCI image distribution
-- [tailscale](https://github.com/tailscale/tailscale) for remote access and cluster mesh
+### Core Components
 
-### Security & Identity
+- **Networking & Service Mesh**: [cilium](https://github.com/cilium/cilium) provides eBPF-based networking, BGP peering and load balancing, while [envoy](https://github.com/envoyproxy/envoy) powers north-south traffic management via the Kubernetes Gateway API. [multus](https://github.com/k8snetworkplumbingwg/multus-cni) enables cross-VLAN pod networking, and [external-dns](https://github.com/kubernetes-sigs/external-dns) keeps DNS records in sync automatically.
+- **Security & Secrets**: [cert-manager](https://github.com/cert-manager/cert-manager) automates SSL/TLS certificate management. [pocket-id](https://github.com/pocket-id/pocket-id) provides passkey-based SSO as my OIDC provider. For secrets, I use [external-secrets](https://github.com/external-secrets/external-secrets) with [1Password Connect](https://github.com/1Password/connect) to inject secrets into Kubernetes.
+- **Storage & Data Protection**: [miroir](https://github.com/home-operations/miroir) provides distributed block storage with DRBD replication, with [kopiur](https://github.com/home-operations/kopiur) handling backups and restores. [spegel](https://github.com/spegel-org/spegel) improves reliability by running a stateless, cluster-local OCI image mirror.
+- **Automation & CI/CD**: [actions-runner-controller](https://github.com/actions/actions-runner-controller) runs self-hosted GitHub Actions runners directly in the cluster for continuous integration workflows.
 
-Zero-trust security model with policy enforcement and centralised identity:
+### GitOps
 
-- [pocket-id](https://github.com/pocket-id/pocket-id) as the OIDC provider with passkey-based SSO (no passwords)
-- [external-secrets](https://github.com/external-secrets/external-secrets) with [1Password Connect](https://github.com/1Password/connect) for secret injection
-- [cert-manager](https://github.com/cert-manager/cert-manager) for automated TLS certificate lifecycle
+[Flux](https://github.com/fluxcd/flux2) watches the cluster in my [kubernetes](./kubernetes/) folder (see Directories below) and makes the changes to my cluster based on the state of my Git repository.
 
-### Observability
+The way Flux works for me here is it will recursively search the `kubernetes/apps` folder until it finds the most top level `kustomization.yaml` per directory and then apply all the resources listed in it. That aforementioned `kustomization.yaml` will generally only have a namespace resource and one or many Flux kustomizations (`ks.yaml`). Under the control of those Flux kustomizations there will be a `HelmRelease` or other resources related to the application which will be applied.
 
-Full-stack monitoring with unified metrics, logs and tracing:
+[Renovate](https://github.com/renovatebot/renovate) watches my **entire** repository looking for dependency updates, when they are found a PR is automatically created. When some PRs are merged Flux applies the changes to my cluster.
 
-- [victoria-metrics](https://github.com/VictoriaMetrics/VictoriaMetrics) for metrics collection, storage and alerting (replaced Prometheus + Thanos — ~7x less memory, 90d local retention)
-- [victoria-logs](https://github.com/VictoriaMetrics/VictoriaMetrics) for log aggregation and storage
-- [grafana](https://github.com/grafana/grafana) for dashboarding across metrics, logs and traces
-- [gatus](https://github.com/TwiN/gatus) for endpoint health monitoring and status pages
-- [blackbox-exporter](https://github.com/prometheus/blackbox_exporter), [smartctl-exporter](https://github.com/prometheus-community/smartctl_exporter) and [unpoller](https://github.com/unpoller/unpoller) for infrastructure probing
-- [silence-operator](https://github.com/giantswarm/silence-operator) and [kromgo](https://github.com/kashalls/kromgo) for alert management and badge generation
+### Directories
 
-### Storage & Databases
-
-Distributed and local storage with operator-managed databases:
-
-- [miroir](https://github.com/home-operations/miroir) for distributed block storage with DRBD replication
-- [kopiur](https://github.com/home-operations/kopiur) for encrypted backup orchestration with kopia
-- [cloudnative-pg](https://github.com/cloudnative-pg/cloudnative-pg) for production PostgreSQL with automated backups and failover
-- [dragonfly](https://github.com/dragonflydb/dragonfly) as a high-performance Redis-compatible in-memory store
-- [garage](https://github.com/deuxfleurs-org/garage) for S3-compatible distributed object storage (backups, Thanos, CNPG WAL archival)
-- [mariadb](https://github.com/mariadb-operator/mariadb-operator) operator for MySQL-compatible workloads
-- [influxdb](https://github.com/influxdata/influxdb) for time-series data and IoT metrics
-- [vernemq](https://github.com/vernemq/vernemq) as an MQTT broker for IoT device communication
-
-### Infrastructure Provisioning & GitOps
-
-Declarative cluster management with dependency-aware deployments:
-
-- [flux](https://github.com/fluxcd/flux2) for Git-based state reconciliation with drift detection and self-healing
-- [tofu-controller](https://github.com/flux-iac/tofu-controller) for OpenTofu infrastructure as code (UniFi networking)
-- [renovate](https://github.com/renovatebot/renovate) for automated dependency updates across the entire repository
-- [actions-runner-controller](https://github.com/actions/actions-runner-controller) for self-hosted CI/CD runners
-- [konflate](https://github.com/solanyn/konflate) for rendering Kubernetes manifests on pull requests
-
----
-
-## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f5c2_fe0f/512.gif" alt="🗂" width="20" height="20"> Repository Structure
+This Git repository contains the following directories under [Kubernetes](./kubernetes/).
 
 ```sh
 📁 kubernetes
-├── 📁 apps           # applications across namespaces
-├── 📁 components     # reusable Kustomize components (alerts)
-└── 📁 flux           # Flux system configuration
-📁 opentofu           # OpenTofu infrastructure as code
-📁 talos              # Talos Linux node configuration (Jinja2 templates)
-📁 bootstrap          # cluster bootstrapping resources
+├── 📁 apps       # applications
+├── 📁 components # re-useable kustomize components
+└── 📁 flux       # flux system configuration
 ```
 
-### Dependency Management
+### Flux Workflow
 
-Applications deploy in dependency order based on infrastructure requirements, preventing race conditions.
+This is a high-level look how Flux deploys my applications with dependencies. In most cases a `HelmRelease` will depend on other `HelmRelease`'s, in other cases a `Kustomization` will depend on other `Kustomization`'s, and in rare situations an app can depend on a `HelmRelease` and a `Kustomization`. The example below shows that `atuin` won't be deployed or upgrade until the `miroir` Helm release is installed or in a healthy state.
 
 ```mermaid
 graph TD
-    A[Kustomization: miroir] -->|Creates| B[HelmRelease: miroir]
-    A[Kustomization: miroir] -->|Creates| C[HelmRelease: miroir-config]
-    C[HelmRelease: miroir-config] -->|Depends on| B[HelmRelease: miroir]
-    D[Kustomization: atuin] -->|Creates| E(HelmRelease: atuin)
-    E[HelmRelease: atuin] -->|Depends on| C[HelmRelease: miroir-config]
+    A>Kustomization: miroir] -->|Creates| B[HelmRelease: miroir]
+    A>Kustomization: miroir] -->|Creates| C[HelmRelease: miroir-config]
+    C>HelmRelease: miroir-config] -->|Depends on| B>HelmRelease: miroir]
+    D>Kustomization: atuin] -->|Creates| E(HelmRelease: atuin)
+    E>HelmRelease: atuin] -->|Depends on| C>HelmRelease: miroir-config]
 ```
 
 ---
 
-## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f636_200d_1f32b_fe0f/512.gif" alt="😶" width="20" height="20"> Hybrid Cloud Strategy
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f636_200d_1f32b_fe0f/512.gif" alt="😶" width="20" height="20"> Cloud Dependencies
 
-The setup maximises self-hosted infrastructure whilst using cloud services where appropriate.
+While most of my infrastructure and workloads are self-hosted I do rely upon the cloud for certain key parts of my setup. This saves me from having to worry about three things. (1) Dealing with chicken/egg scenarios, (2) services I critically need whether my cluster is online or not and (3) The "hit by a bus factor" - what happens to critical apps that my family relies on when I no longer around.
 
 | Service                                     | Use                                                               | Cost (AUD)    |
 | ------------------------------------------- | ----------------------------------------------------------------- | ------------- |
@@ -145,17 +108,9 @@ The setup maximises self-hosted infrastructure whilst using cloud services where
 
 ---
 
-## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f30e/512.gif" alt="🌎" width="20" height="20"> DNS Architecture
+## <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f30e/512.gif" alt="🌎" width="20" height="20"> DNS
 
-The cluster implements automated split-horizon DNS across multiple zones:
-
-- Internal zone management via UniFi controller integration using webhook providers
-- Public DNS automation with Cloudflare API integration
-- Dynamic DNS updates for public IP tracking via cloudflare-ddns
-- Traffic segmentation through gateway-based routing (`envoy-internal`/`envoy-external`)
-- Zero-touch operations with automatic record lifecycle management
-
-This pattern enables secure service exposure whilst maintaining internal network isolation.
+In my cluster there are two instances of [ExternalDNS](https://github.com/kubernetes-sigs/external-dns) running. One for syncing private DNS records to my [UniFi](https://ui.com/) controller using [ExternalDNS webhook provider for UniFi](https://github.com/kashalls/external-dns-unifi-webhook), while another instance syncs public DNS to `Cloudflare`. This setup is managed by creating ingresses with two specific classes: `internal` for private DNS and `external` for public DNS. The `external-dns` instances then sync the DNS records to their respective platforms accordingly.
 
 ---
 
