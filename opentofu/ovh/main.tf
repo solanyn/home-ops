@@ -20,4 +20,18 @@ resource "ovh_vps" "edge" {
             ]
         }
     ]
+    plan_option = [
+        {
+            duration     = "P1M"
+            plan_code    = "option-auto-backup-2027-1-model1"
+            pricing_mode = "default"
+            quantity     = 1
+        },
+        {
+            duration     = "P1M"
+            plan_code    = "option-storage-local-2027-model1"
+            pricing_mode = "default"
+            quantity     = 1
+        }
+    ]
 }
