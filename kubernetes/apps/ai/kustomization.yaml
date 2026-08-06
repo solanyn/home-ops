@@ -15,5 +15,4 @@ resources:
     - ./litellm-operator/ks.yaml
     - ./litellm/ks.yaml
     - ./llmkube/ks.yaml
-    - ./open-notebook/ks.yaml
 # presidio removed - presidio-masking caused false positives and latency issues
