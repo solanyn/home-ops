@@ -46,8 +46,6 @@ spec:
             image: ghcr.io/home-operations/actions-runner:2.336.0@sha256:281a9a090522fafbf4967f158b8c97d03552b1978b688893c5f7cb1944bc5fe5
             command: ["/home/runner/run.sh"]
             env:
-              - name: ACTIONS_RESULTS_URL
-                value: http://home-ops-actions-cache-server.actions-runner-system.svc.cluster.local:3000/
               - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
                 value: "false"
               - name: NODE
