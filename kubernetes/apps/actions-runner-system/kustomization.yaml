@@ -9,5 +9,4 @@ components:
 
 resources:
   - ./namespace.yaml
-  - ./home-ops-actions-cache-server/ks.yaml
   - ./actions-runner-controller/ks.yaml

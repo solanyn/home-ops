@@ -35,13 +35,3 @@ releases:
     namespace: o11y
     inherit:
       - template: default
-
-  - name: opentelemetry-operator
-    namespace: o11y
-    inherit:
-      - template: default
-
-  - name: victoria-metrics-operator
-    namespace: o11y
-    inherit:
-      - template: default
