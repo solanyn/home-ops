@@ -14,6 +14,7 @@ resources:
   - ./brrpolice/ks.yaml
   - ./bazarr/ks.yaml
   - ./bookorbit/ks.yaml
+  - ./chaski/ks.yaml
   - ./decluttarr/ks.yaml
   - ./deduparr/ks.yaml
   - ./element-web/ks.yaml
@@ -46,7 +47,6 @@ resources:
   - ./thelounge/ks.yaml
   - ./vgc/ks.yaml
   - ./whisparr/ks.yaml
-  - ./notifier/ks.yaml
   - ./wizarr/ks.yaml
   - ./zigbee/ks.yaml
   - ./zwave/ks.yaml
