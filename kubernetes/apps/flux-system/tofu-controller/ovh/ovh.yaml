@@ -11,7 +11,7 @@ spec:
         namespace: flux-system
     path: ./opentofu/ovh
     interval: 10m
-    planOnly: true
+    approvePlan: auto
     destroyResourcesOnDeletion: false
     runnerPodTemplate:
         spec:
