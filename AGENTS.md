@@ -107,9 +107,6 @@ apps/<namespace>/<app-name>/
 1. **Choose namespace** based on application type:
     - `default` - General applications, home automation
     - `ai` - Conversational AI, agents, chat interfaces
-    - `ml` - Machine learning services, feature stores
-    - `kubeflow` - ML platform components (core)
-    - `analytics` - Data engineering (Airflow, Superset)
     - `storage` - Databases and storage systems
     - `observability` - Monitoring tools
 
@@ -568,7 +565,7 @@ patches:
 ```yaml
 # app/kustomization.yaml
 resources:
-    - ../../../../../third_party/kubeflow/manifests/apps/kserve/kserve
+    - ../../../../../components/kopiur/backup
     - ./helmrelease.yaml
 ```
 
