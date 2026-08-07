@@ -1,0 +1,30 @@
+---
+# Renovate: ghcr.io/twin/gatus
+name: gatus
+services:
+  gatus:
+    container_name: gatus
+    image: ghcr.io/twin/gatus:v5.36.0@sha256:c5f210d095fa78e6efaa20ffeb14803f2ba4f10615e16a6d12087697149617f0
+    restart: unless-stopped
+    environment:
+      GATUS_DELAY_START_SECONDS: "5"
+      GATUS_CONFIG_PATH: /config
+      GATUS_WEB_PORT: "8080"
+      PUSHOVER_TOKEN: ${GATUS_PUSHOVER_TOKEN}
+      PUSHOVER_USER_KEY: ${GATUS_PUSHOVER_USER_KEY}
+    volumes:
+      - gatus-config:/config
+    configs:
+      - source: gatus_config
+        target: /config/config.yaml
+    networks:
+      - default
+volumes:
+  gatus-config:
+configs:
+  gatus_config:
+    file: ./config/config.yaml
+networks:
+  default:
+    name: edge
+    external: true
