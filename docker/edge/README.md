@@ -24,11 +24,13 @@ Public values (`TOWONEL_PUBLIC_URL`, `CADDY_ACME_EMAIL`) are hardcoded in the co
 
 Create a 1Password service account scoped to read the `kubernetes` vault. Its token, plus an API secret and webhook secret, become `/opt/doco-cd/{1pw_token,api_secret,webhook_secret}`.
 
+Reuse the existing shared service account token from the `1password` item (`op://kubernetes/1password/OP_SERVICE_ACCOUNT_TOKEN`) — it already has read access to the `kubernetes` vault and is used by hermes and the GitHub Actions workflows.
+
 ## Bootstrap
 
 ```bash
 # 1. Run the bootstrap playbook (installs Docker + writes doco-cd secrets)
-export OP_EDGE_SERVICE_ACCOUNT_TOKEN="$(op read "op://..." )"
+export OP_EDGE_SERVICE_ACCOUNT_TOKEN="$(op read "op://kubernetes/1password/OP_SERVICE_ACCOUNT_TOKEN")"
 export DOCO_CD_API_SECRET="$(openssl rand -base64 32)"
 export DOCO_CD_WEBHOOK_SECRET="$(openssl rand -base64 32)"
 ansible-playbook -i ansible/edge/hosts.ini ansible/edge/playbook.yaml
