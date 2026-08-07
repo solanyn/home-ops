@@ -1,0 +1,35 @@
+---
+# Renovate: ghcr.io/bjw-s-labs/caddy-l4
+name: caddy-l4
+services:
+  caddy-l4:
+    container_name: caddy-l4
+    image: ghcr.io/bjw-s-labs/caddy-l4:2.11.4
+    restart: unless-stopped
+    environment:
+      CADDY_ACME_EMAIL: ${CADDY_ACME_EMAIL}
+      VPS_LOCAL_HOSTS: |-
+        twnl.goyangi.io
+        edge-doco-cd.goyangi.io
+        edge-gatus.goyangi.io
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - caddy-data:/data
+      - caddy-config:/config
+    configs:
+      - source: caddyfile
+        target: /etc/caddy/Caddyfile
+    networks:
+      - default
+volumes:
+  caddy-data:
+  caddy-config:
+configs:
+  caddyfile:
+    file: ./config/Caddyfile
+networks:
+  default:
+    name: edge
+    external: true

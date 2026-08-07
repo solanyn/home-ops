@@ -1,0 +1,50 @@
+---
+# Renovate: codeberg.org/towonel/towonel-node
+name: tunnel
+services:
+  towonel-hub:
+    container_name: towonel-hub
+    image: codeberg.org/towonel/towonel-node:1.5.2
+    restart: unless-stopped
+    environment:
+      RUST_LOG: info
+      TOWONEL_INVITE_HASH_KEY: ${TOWONEL_INVITE_HASH_KEY}
+      TOWONEL_HUB_ENABLED: "true"
+      TOWONEL_HUB_ALLOW_PRIVILEGED_PORTS: "true"
+      TOWONEL_HUB_PUBLIC_URL: ${TOWONEL_PUBLIC_URL}
+      TOWONEL_EDGE_ENABLED: "true"
+      TOWONEL_EDGE_HEALTH_LISTEN_ADDR: 0.0.0.0:9092
+      TOWONEL_EDGE_IROH_PORT: "51820"
+      TOWONEL_EDGE_LISTEN_ADDR: 0.0.0.0:4443
+      TOWONEL_EDGE_PROXY_PROTOCOL: "true"
+    expose:
+      - 4443
+      - 8443
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - http://127.0.0.1:8443/v1/health
+      start_period: 30s
+    ports:
+      - 22:22
+      - 51820:51820/udp
+    user: 10001:10001
+    volumes:
+      - /opt/towonel:/data
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 512M
+    logging:
+      driver: json-file
+      options:
+        max-file: "3"
+        max-size: 10m
+    networks:
+      - default
+networks:
+  default:
+    name: edge
+    external: true
