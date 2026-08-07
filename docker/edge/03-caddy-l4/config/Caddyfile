@@ -38,7 +38,7 @@
 	}
 }
 
-twnl.goyangi.io {
+towonel.goyangi.io {
 	reverse_proxy towonel-hub:8443
 }
 
