@@ -8,10 +8,10 @@ Public edge host for towonel tunnelling, caddy layer-4 ingress and gatus monitor
    - Datacenter: **SYD**
    - OS: **Ubuntu 24.04 LTS** (x64)
 2. Attach the **Personal SSH Key** (1Password `kubernetes/Personal SSH Key`, ed25519) at order time.
-3. On first boot, verify access: `ssh root@<VPS_IP>`
+3. On first boot, verify access: `ssh ubuntu@<VPS_IP>`
 4. Keep exactly one VPS subscription. If duplicate paid orders exist (e.g. from the abandoned Terraform flow), open a support ticket to cancel/refund the extras.
 5. Add DNS records in Cloudflare (all unproxied, TTL 60, A → VPS_IP):
-   - `twnl.goyangi.io`
+   - `towonel.goyangi.io`
    - `edge-doco-cd.goyangi.io`
    - `edge-gatus.goyangi.io`
 
@@ -20,7 +20,7 @@ Public edge host for towonel tunnelling, caddy layer-4 ingress and gatus monitor
 | Item | Field | Value |
 |------|-------|-------|
 | `towonel-tunnel` (new) | `TOWONEL_INVITE_HASH_KEY` | `openssl rand -base64 32` |
-| `towonel-tunnel` | `TOWONEL_PUBLIC_URL` | `https://twnl.goyangi.io` |
+| `towonel-tunnel` | `TOWONEL_PUBLIC_URL` | `https://towonel.goyangi.io` |
 | `towonel-tunnel` | `CADDY_ACME_EMAIL` | `andrewchen1520@gmail.com` |
 | `towonel-tunnel` | `VPS_IP` | VPS public IP |
 | `pushover` (add) | `GATUS_PUSHOVER_TOKEN` | new Pushover application token (pushover.net) |
@@ -40,7 +40,7 @@ export DOCO_CD_WEBHOOK_SECRET="$(openssl rand -base64 32)"
 ansible-playbook -i ansible/edge/hosts.ini ansible/edge/playbook.yaml
 
 # 3. Create the external docker network all stacks attach to
-ssh root@<VPS_IP> 'docker network create edge'
+ssh ubuntu@<VPS_IP> 'docker network create edge'
 
 # 4. Start doco-cd (deploys docker/edge/* from this repo)
 docker compose -f docker/edge/.doco-cd/docker-compose.app.yaml up -d
@@ -50,7 +50,7 @@ doco-cd polls this repo every hour and applies `docker/edge/01-04` stacks: crowd
 
 ## Verification
 
-- `ssh root@<VPS_IP>` — key auth only, password auth disabled
+- `ssh ubuntu@<VPS_IP>` — key auth only, password auth disabled
 - `docker ps` — towonel-hub, caddy-l4, crowdsec, gatus running
 - `https://edge-doco-cd.goyangi.io` — doco-cd UI
 - `https://edge-gatus.goyangi.io` — status page
