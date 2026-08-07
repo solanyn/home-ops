@@ -43,29 +43,62 @@
       register: compose_version
       changed_when: false
 
-    - name: Create doco-cd secrets directory
+    - name: Create doco-cd directory
       ansible.builtin.file:
         path: "{{ doco_cd_secrets_dir }}"
         state: directory
-        mode: "0700"
+        owner: ubuntu
+        group: ubuntu
+        mode: "0755"
+
+    - name: Copy doco-cd compose file
+      ansible.builtin.copy:
+        src: ../../docker/edge/.doco-cd/docker-compose.app.yaml
+        dest: "{{ doco_cd_secrets_dir }}/docker-compose.yaml"
+        owner: ubuntu
+        group: ubuntu
+        mode: "0644"
+      register: compose_file
 
     - name: Write 1Password service account token
       ansible.builtin.copy:
         content: "{{ lookup('env', 'OP_EDGE_SERVICE_ACCOUNT_TOKEN') }}"
         dest: "{{ doco_cd_secrets_dir }}/1pw_token"
+        owner: ubuntu
+        group: ubuntu
         mode: "0600"
 
     - name: Write doco-cd API secret
       ansible.builtin.copy:
         content: "{{ lookup('env', 'DOCO_CD_API_SECRET') }}"
         dest: "{{ doco_cd_secrets_dir }}/api_secret"
+        owner: ubuntu
+        group: ubuntu
         mode: "0600"
 
     - name: Write doco-cd webhook secret
       ansible.builtin.copy:
         content: "{{ lookup('env', 'DOCO_CD_WEBHOOK_SECRET') }}"
         dest: "{{ doco_cd_secrets_dir }}/webhook_secret"
+        owner: ubuntu
+        group: ubuntu
         mode: "0600"
+
+    - name: Run doco-cd
+      community.docker.docker_compose_v2:
+        project_src: "{{ doco_cd_secrets_dir }}"
+        files:
+          - docker-compose.yaml
+        pull: always
+        state: present
+
+    - name: Wait for doco-cd healthy
+      community.docker.docker_container_info:
+        name: doco-cd
+      register: dococd_info
+      until: dococd_info.container.State.Health.Status == "healthy"
+      retries: 30
+      delay: 10
 
     - name: Create towonel data directory
       ansible.builtin.file:

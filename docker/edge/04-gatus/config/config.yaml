@@ -21,18 +21,18 @@ endpoints:
     conditions:
       - '[STATUS] == 200'
     alerts:
-      - pushover
+      - type: pushover
 external-endpoints:
   - name: home-heartbeat
     token: ${GATUS_HEARTBEAT_TOKEN}
     heartbeat:
       interval: 5m
     alerts:
-      - pushover
+      - type: pushover
 storage:
-  sqlite:
-    caching: true
-    path: ${GATUS_CONFIG_PATH}/gatus.db
+  type: sqlite
+  caching: true
+  path: ${GATUS_CONFIG_PATH}/gatus.db
 ui:
   title: Status | Edge
   header: Status
