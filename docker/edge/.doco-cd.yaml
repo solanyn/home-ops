@@ -5,10 +5,7 @@ auto_discover_opts:
   depth: 1
   delete: true
 external_secrets:
-  CADDY_ACME_EMAIL: op://kubernetes/towonel-tunnel/CADDY_ACME_EMAIL
-  GATUS_HEARTBEAT_TOKEN: op://kubernetes/towonel-tunnel/GATUS_HEARTBEAT_TOKEN
+  GATUS_HEARTBEAT_TOKEN: op://kubernetes/towonel/GATUS_HEARTBEAT_TOKEN
   GATUS_PUSHOVER_TOKEN: op://kubernetes/pushover/GATUS_PUSHOVER_TOKEN
   GATUS_PUSHOVER_USER_KEY: op://kubernetes/pushover/PUSHOVER_USER_KEY
-  TOWONEL_INVITE_HASH_KEY: op://kubernetes/towonel-tunnel/TOWONEL_INVITE_HASH_KEY
-  TOWONEL_PUBLIC_URL: op://kubernetes/towonel-tunnel/TOWONEL_PUBLIC_URL
-  VPS_IP: op://kubernetes/towonel-tunnel/VPS_IP
+  TOWONEL_INVITE_HASH_KEY: op://kubernetes/towonel/TOWONEL_INVITE_HASH_KEY

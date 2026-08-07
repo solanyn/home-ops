@@ -7,7 +7,7 @@ services:
     image: ghcr.io/bjw-s-labs/caddy-l4:2.11.4
     restart: unless-stopped
     environment:
-      CADDY_ACME_EMAIL: ${CADDY_ACME_EMAIL}
+      CADDY_ACME_EMAIL: andrewchen1520@gmail.com
       VPS_LOCAL_HOSTS: |-
         towonel.goyangi.io
         edge-doco-cd.goyangi.io
