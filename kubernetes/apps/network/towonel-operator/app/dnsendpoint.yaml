@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: towonel-edge
+spec:
+  endpoints:
+    - dnsName: towonel.goyangi.io
+      recordType: A
+      targets:
+        - &vps_ip 139.99.135.40
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
+    - dnsName: edge-doco-cd.goyangi.io
+      recordType: A
+      targets:
+        - *vps_ip
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
+    - dnsName: edge-gatus.goyangi.io
+      recordType: A
+      targets:
+        - *vps_ip
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
