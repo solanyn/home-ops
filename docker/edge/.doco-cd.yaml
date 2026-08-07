@@ -5,7 +5,7 @@ auto_discovery:
   depth: 1
   delete: true
 external_secrets:
-  GATUS_HEARTBEAT_TOKEN: op://kubernetes/towonel/GATUS_HEARTBEAT_TOKEN
-  GATUS_PUSHOVER_TOKEN: op://kubernetes/pushover/GATUS_PUSHOVER_TOKEN
+  GATUS_HEARTBEAT_TOKEN: op://kubernetes/gatus/GATUS_HEARTBEAT_TOKEN
+  GATUS_PUSHOVER_TOKEN: op://kubernetes/gatus/GATUS_PUSHOVER_TOKEN
   GATUS_PUSHOVER_USER_KEY: op://kubernetes/pushover/PUSHOVER_USER_KEY
   TOWONEL_INVITE_HASH_KEY: op://kubernetes/towonel/TOWONEL_INVITE_HASH_KEY

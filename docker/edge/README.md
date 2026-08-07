@@ -17,8 +17,8 @@ DNS is managed as IaC via the `towonel-edge` DNSEndpoint in `kubernetes/apps/net
 | Item | Field | Value |
 |------|-------|-------|
 | `towonel` (new) | `TOWONEL_INVITE_HASH_KEY` | `openssl rand -base64 32` |
-| `towonel` | `GATUS_HEARTBEAT_TOKEN` | `openssl rand -base64 32` |
-| `pushover` (add) | `GATUS_PUSHOVER_TOKEN` | new Pushover application token (pushover.net) |
+| `gatus` (exists) | `GATUS_HEARTBEAT_TOKEN` | `openssl rand -base64 32` |
+| `gatus` (exists) | `GATUS_PUSHOVER_TOKEN` | Pushover application token (pushover.net) |
 
 Public values (`TOWONEL_PUBLIC_URL`, `CADDY_ACME_EMAIL`) are hardcoded in the compose files, not stored in 1Password.
 
