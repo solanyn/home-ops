@@ -1,0 +1,126 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: romarr
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: romarr
+  interval: 10m
+  values:
+    controllers:
+      romarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          install-rom-hub:
+            image:
+              repository: python
+              tag: 3.13-alpine
+            command:
+              - python
+            args:
+              - -m
+              - pip
+              - install
+              - --target
+              - /hub
+              - https://github.com/BlizzHacker/rom-hub/archive/f6ff33af6afd29b1d3536641dddd62bd952dee42.tar.gz
+        containers:
+          app:
+            image:
+              repository: ghcr.io/blizzhacker/romarr
+              tag: 0.8.0
+            env:
+              HOME: /config
+              LIBRARY_KIND: romm
+              LIBRARY_PATH: /media/games
+              LIBRARY_URL: http://romm.default.svc.cluster.local
+              LOG_LEVEL: INFO
+              PROWLARR_URL: http://prowlarr.default.svc.cluster.local
+              PYTHONPATH: /hub
+              QBITTORRENT_CATEGORY: romarr
+              QBITTORRENT_URL: http://qbittorrent.default.svc.cluster.local
+              ROM_HUB_HOME: /config/.rom-hub
+              ROMARR_AUTH: disabled
+              ROMARR_DATA: /config/romarr.json
+              PUID: "1000"
+              PGID: "1000"
+              TZ: Australia/Sydney
+            envFrom:
+              - secretRef:
+                  name: romarr-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: 6868
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        ports:
+          http:
+            port: 6868
+    route:
+      app:
+        hostnames:
+          - romarr.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      config:
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        advancedMounts:
+          romarr:
+            app:
+              - path: /config
+      hub:
+        type: emptyDir
+        advancedMounts:
+          romarr:
+            install-rom-hub:
+              - path: /hub
+            app:
+              - path: /hub
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          - path: /media
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          romarr:
+            app:
+              - path: /tmp
