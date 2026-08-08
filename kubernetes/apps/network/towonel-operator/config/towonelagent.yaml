@@ -3,7 +3,7 @@
 apiVersion: towonel.io/v1alpha1
 kind: TowonelAgent
 metadata:
-  name: towonel
+  name: towonel-edge
 spec:
   tunnelRef:
     name: towonel
