@@ -1,6 +1,7 @@
 ---
 name: custom/home-allowlist
-description: Allow home ISP (Launtel - AS134697)
+description: "Allow home ISP (Launtel - AS134697)"
 whitelist:
-  reason: home ISP (Launtel)
-  expression: evt.Meta.ASNumber == "134697"
+  reason: "home ISP (Launtel)"
+  expression:
+    - evt.Meta.ASNumber == "134697"
