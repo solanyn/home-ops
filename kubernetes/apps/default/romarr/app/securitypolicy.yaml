@@ -3,6 +3,8 @@ apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
   name: romarr
+  annotations:
+    reconcile.fluxcd.io/requestedAt: "2026-08-08T18:00:00Z"
 spec:
   oidc:
     clientID: romarr
