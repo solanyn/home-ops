@@ -61,13 +61,6 @@ spec:
               credentials:
                 name: alertmanager-secret
                 key: GATUS_HEARTBEAT_TOKEN
-        - url: https://edge-gatus.goyangi.io/api/v1/endpoints/_home-heartbeat/external?success=true
-          httpConfig:
-            authorization:
-              type: Bearer
-              credentials:
-                name: alertmanager-secret
-                key: GATUS_HEARTBEAT_TOKEN
     - name: pushover
       pushoverConfigs:
         - html: true
