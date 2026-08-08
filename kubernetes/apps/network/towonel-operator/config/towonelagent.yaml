@@ -11,3 +11,4 @@ spec:
     - hostname: "*.goyangi.io"
       origin: envoy-external.network.svc.cluster.local:443
       edgeTLSMode: passthrough
+      proxyProtocol: none
