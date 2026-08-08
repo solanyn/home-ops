@@ -4,6 +4,7 @@ configs:
     content: |
       - run_once: true
         url: https://github.com/solanyn/home-ops.git
+        ref: main
 secrets:
   1pw_token:
     file: /home/truenas_admin/.config/doco-cd/1pw_token
