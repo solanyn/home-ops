@@ -29,3 +29,10 @@ spec:
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
+    - dnsName: external.goyangi.io
+      recordType: CNAME
+      targets:
+        - towonel.goyangi.io
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
