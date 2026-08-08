@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/towonel.io/towoneltunnel_v1alpha1.json
+apiVersion: towonel.io/v1alpha1
+kind: TowonelTunnel
+metadata:
+  name: towonel
+spec:
+  apiKeySecretRef:
+    name: towonel-operator-secret
+    key: TOWONEL_API_KEY
+  deletionPolicy: Retain
+  region: CA
+  extraHostnames:
+    - towonel.goyangi.io
