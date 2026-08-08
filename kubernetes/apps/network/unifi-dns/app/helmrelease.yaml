@@ -43,7 +43,6 @@ spec:
       - --ignore-ingress-tls-spec
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
-      - --label-filter=dns.goyangi.io/internal=true
     triggerLoopOnEvent: true
     policy: sync
     sources: ["crd", "gateway-httproute", "service", "ingress"]
