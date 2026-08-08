@@ -43,6 +43,11 @@ spec:
               - url_secret:
                     name: alertmanager-secret
                     key: ALERTMANAGER_HEARTBEAT_URL
+              - url: https://edge-gatus.goyangi.io/api/v1/endpoints/_home-heartbeat/external?success=true
+                http_config:
+                    bearer_token_secret:
+                        name: alertmanager-secret
+                        key: GATUS_HEARTBEAT_TOKEN
         - name: pushover
           pushover_configs:
               - send_resolved: true
