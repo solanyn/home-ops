@@ -28,7 +28,7 @@ spec:
   bootstrapFrom:
     s3:
       bucket: mariadb
-      endpoint: garage.storage.svc.cluster.local:3900
+      endpoint: nas.internal:3900
       accessKeyIdSecretKeyRef:
         name: mariadb-secret
         key: AWS_ACCESS_KEY_ID

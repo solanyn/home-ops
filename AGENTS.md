@@ -809,7 +809,7 @@ smtp:
 # In ExternalSecret template
 S3_ACCESS_KEY: "{{ .GARAGE_ROOT_USER }}"
 S3_SECRET_KEY: "{{ .GARAGE_ROOT_PASSWORD }}"
-S3_ENDPOINT: garage.storage.svc.cluster.local:3900
+    S3_ENDPOINT: nas.internal:3900
 
 # In dataFrom
 dataFrom:

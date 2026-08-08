@@ -1,6 +1,20 @@
 ---
 http:
   routers:
+    garage-s3:
+      entryPoints:
+        - websecure
+      rule: Host(`s3.goyangi.io`)
+      service: garage-s3
+      tls:
+        certResolver: cf
+    garage-admin:
+      entryPoints:
+        - websecure
+      rule: Host(`garage-admin.goyangi.io`)
+      service: garage-admin
+      tls:
+        certResolver: cf
     truenas:
       entryPoints:
         - websecure
@@ -9,6 +23,14 @@ http:
       tls:
         certResolver: cf
   services:
+    garage-admin:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:3903
+    garage-s3:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:3900
     truenas:
       loadBalancer:
         servers:

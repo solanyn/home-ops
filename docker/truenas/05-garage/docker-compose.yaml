@@ -1,0 +1,20 @@
+---
+services:
+  garage:
+    command:
+      - /garage
+      - -c
+      - /etc/garage/garage.toml
+      - server
+    environment:
+      GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
+      GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
+      TZ: Australia/Sydney
+    image: dxflrs/garage:v2.3.0
+    network_mode: host
+    restart: unless-stopped
+    user: "1000:1000"
+    volumes:
+      - ./config/garage.toml:/etc/garage/garage.toml:ro
+      - /mnt/world/garage:/data
+      - /mnt/world/garage-meta:/meta

@@ -5,4 +5,6 @@ auto_discovery:
   depth: 1
   delete: true
 external_secrets:
+  GARAGE_ADMIN_TOKEN: op://kubernetes/garage/GARAGE_ADMIN_TOKEN
+  GARAGE_RPC_SECRET: op://kubernetes/garage/GARAGE_RPC_SECRET
   TRAEFIK_CF_DNS_API_TOKEN: op://kubernetes/cloudflare/CLOUDFLARE_DNS_TOKEN
