@@ -19,6 +19,9 @@ spec:
       namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/romarr/app
+  postBuild:
+    substitute:
+      APP: romarr
   prune: true
   sourceRef:
     kind: GitRepository
