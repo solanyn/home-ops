@@ -26,6 +26,13 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
 
+  - name: Edge VPS
+    group: connectivity
+    url: icmp://139.99.135.40
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+
 external-endpoints:
   - name: Alertmanager
     group: monitoring
