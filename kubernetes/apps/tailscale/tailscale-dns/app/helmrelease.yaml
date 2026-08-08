@@ -12,6 +12,8 @@ spec:
     domain: goyangi.io
     ttl: 1
     service:
+      annotations:
+        tailscale.com/hostname: dns
       ipFamily: IPv4
       ipFamilyPolicy: SingleStack
       loadBalancerClass: tailscale

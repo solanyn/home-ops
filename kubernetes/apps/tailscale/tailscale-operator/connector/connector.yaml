@@ -4,7 +4,6 @@ kind: Connector
 metadata:
   name: home-cluster
 spec:
-  hostname: k8s-connector
   subnetRouter:
     advertiseRoutes:
       - 10.42.0.0/16
