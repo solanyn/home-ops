@@ -3,101 +3,101 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-    name: gamarr
+  name: gamarr
 spec:
-    chartRef:
-        kind: OCIRepository
-        name: gamarr
-    interval: 1h
-    values:
-        controllers:
-            gamarr:
-                annotations:
-                    reloader.stakater.com/auto: "true"
-                containers:
-                    app:
-                        image:
-                            repository: gamarr/gamarr
-                            tag: nightly
-                        env:
-                            GAMARR_PORT: &port 5001
-                            QB_URL: "http://qbittorrent.default.svc.cluster.local"
-                            QB_USER: "andrew"
-                            DATA_DIR: "/data/gamarr"
-                            TZ: "Australia/Sydney"
-                        envFrom:
-                            - secretRef:
-                                  name: gamarr-secret
-                        probes:
-                            liveness: &probes
-                                enabled: true
-                                custom: true
-                                spec:
-                                    httpGet:
-                                        path: /api/health
-                                        port: *port
-                                    initialDelaySeconds: 0
-                                    periodSeconds: 10
-                                    timeoutSeconds: 1
-                                    failureThreshold: 3
-                            readiness: *probes
-                        securityContext:
-                            allowPrivilegeEscalation: false
-                            readOnlyRootFilesystem: true
-                            capabilities: { drop: ["ALL"] }
-                        resources:
-                            requests:
-                                cpu: 10m
-                                memory: 64Mi
-                            limits:
-                                memory: 256Mi
-        defaultPodOptions:
+  chartRef:
+    kind: OCIRepository
+    name: gamarr
+  interval: 1h
+  values:
+    controllers:
+      gamarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: gamarr/gamarr
+              tag: nightly
+            env:
+              GAMARR_PORT: &port 5001
+              QB_URL: "http://qbittorrent.default.svc.cluster.local"
+              QB_USER: "andrew"
+              DATA_DIR: "/data/gamarr"
+              TZ: "Australia/Sydney"
+            envFrom:
+              - secretRef:
+                  name: gamarr-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             securityContext:
-                runAsNonRoot: true
-                runAsUser: 1000
-                runAsGroup: 1000
-                fsGroup: 1000
-                fsGroupChangePolicy: OnRootMismatch
-                seccompProfile: { type: RuntimeDefault }
-        service:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "gamarr.goyangi.io"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      config:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        advancedMounts:
+          gamarr:
             app:
-                ports:
-                    http:
-                        port: *port
-        route:
+              - path: /data/gamarr
+                subPath: gamarr
+      incoming:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 50Gi
+        advancedMounts:
+          gamarr:
             app:
-                hostnames:
-                    - "gamarr.goyangi.io"
-                parentRefs:
-                    - name: envoy-internal
-                      namespace: network
-                      sectionName: https
-        persistence:
-            config:
-                type: persistentVolumeClaim
-                accessMode: ReadWriteOnce
-                size: 1Gi
-                advancedMounts:
-                    gamarr:
-                        app:
-                            - path: /data/gamarr
-                              subPath: gamarr
-            incoming:
-                type: persistentVolumeClaim
-                accessMode: ReadWriteOnce
-                size: 50Gi
-                advancedMounts:
-                    gamarr:
-                        app:
-                            - path: /data/incoming
-                              subPath: incoming
-            roms:
-                type: nfs
-                server: nas.internal
-                path: /mnt/world/media/games/roms
-                advancedMounts:
-                    gamarr:
-                        app:
-                            - path: /data/roms
-            tmp:
-                type: emptyDir
+              - path: /data/incoming
+                subPath: incoming
+      roms:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media/games/roms
+        advancedMounts:
+          gamarr:
+            app:
+              - path: /data/roms
+      tmp:
+        type: emptyDir
