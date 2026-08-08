@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/towonel.io/towonelagent_v1alpha1.json
+apiVersion: towonel.io/v1alpha1
+kind: TowonelAgent
+metadata:
+  name: towonel
+spec:
+  tunnelRef:
+    name: towonel
+  services:
+    - hostname: towonel.goyangi.io
+      origin: envoy-external.network.svc.cluster.local:443
+      edgeTLSMode: passthrough
