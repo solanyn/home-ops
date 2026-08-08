@@ -67,7 +67,7 @@ dashboard:
     provider: self-hosted
     self_hosted:
       issuer: https://id.goyangi.io/
-      client_id: hermes-serve
+      client_id: hermes-dashboard
       scopes: "openid profile email"
 skills:
   creation_nudge_interval: 15
