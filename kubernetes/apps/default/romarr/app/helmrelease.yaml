@@ -97,8 +97,7 @@ spec:
             sectionName: https
     persistence:
       config:
-        accessMode: ReadWriteOnce
-        size: 1Gi
+        existingClaim: "{{ .Release.Name }}"
         advancedMounts:
           romarr:
             app:

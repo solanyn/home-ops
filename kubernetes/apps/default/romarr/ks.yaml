@@ -6,12 +6,16 @@ metadata:
   name: romarr
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/kopiur
   dependsOn:
     - name: romm
       namespace: default
     - name: prowlarr
       namespace: default
     - name: qbittorrent
+      namespace: default
+    - name: pocket-id-resources
       namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/romarr/app

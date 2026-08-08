@@ -78,9 +78,7 @@ spec:
             sectionName: https
     persistence:
       config:
-        type: persistentVolumeClaim
-        accessMode: ReadWriteOnce
-        size: 1Gi
+        existingClaim: "{{ .Release.Name }}"
         advancedMounts:
           gamarr:
             app:
