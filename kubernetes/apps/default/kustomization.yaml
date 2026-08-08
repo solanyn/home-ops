@@ -53,3 +53,4 @@ resources:
   - ./zwave/ks.yaml
   - ./continuwuity/ks.yaml
   - ./paperless/ks.yaml
+  - ./gamarr/ks.yaml
