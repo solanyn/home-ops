@@ -104,6 +104,8 @@
       ansible.builtin.file:
         path: /opt/towonel
         state: directory
+        owner: "10001"
+        group: "10001"
         mode: "0755"
 
     - name: Harden SSH password authentication
@@ -111,6 +113,13 @@
         path: /etc/ssh/sshd_config
         regexp: "^PasswordAuthentication"
         line: "PasswordAuthentication no"
+      notify: Restart ssh
+
+    - name: Move SSH to non-standard port
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^Port"
+        line: "Port 22222"
       notify: Restart ssh
 
     - name: Lock root password
