@@ -8,6 +8,6 @@ spec:
   tunnelRef:
     name: towonel
   services:
-    - hostname: towonel.goyangi.io
+    - hostname: "*.goyangi.io"
       origin: envoy-external.network.svc.cluster.local:443
       edgeTLSMode: passthrough
