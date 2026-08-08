@@ -10,8 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../components/kopiur
   interval: 1h
   timeout: 5m
   path: ./kubernetes/apps/storage/garage/app
