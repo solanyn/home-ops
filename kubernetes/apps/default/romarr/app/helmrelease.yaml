@@ -37,7 +37,7 @@ spec:
               HOME: /config
               LIBRARY_KIND: romm
               LIBRARY_PATH: /media/games
-              LIBRARY_URL: http://romm.default.svc.cluster.local
+              LIBRARY_URL: http://romm.default.svc.cluster.local:8080
               LOG_LEVEL: INFO
               PROWLARR_URL: http://prowlarr.default.svc.cluster.local
               PYTHONPATH: /hub
