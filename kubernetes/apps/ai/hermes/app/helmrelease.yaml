@@ -169,6 +169,37 @@ spec:
             resources:
               limits:
                 memory: 512Mi
+          serve:
+            image: *image
+            command: ["/opt/hermes/bin/hermes"]
+            args:
+              - serve
+              - --host
+              - 0.0.0.0
+              - --port
+              - "9120"
+            env:
+              HERMES_HOME: /opt/data
+              HOME: /opt/data
+              PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+              HOMEBREW_PREFIX: /opt/data/homebrew/.linuxbrew
+              HOMEBREW_CELLAR: /opt/data/homebrew/.linuxbrew/Cellar
+              HOMEBREW_NO_ANALYTICS: "1"
+              HOMEBREW_NO_AUTO_UPDATE: "1"
+              TZ: Australia/Sydney
+              HERMES_DASHBOARD_OIDC_CLIENT_ID: hermes-serve
+            envFrom:
+              - secretRef:
+                  name: hermes
+            securityContext:
+              runAsUser: 10000
+              runAsGroup: 10000
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 512Mi
     service:
       app:
         controller: hermes
@@ -185,6 +216,11 @@ spec:
         ports:
           http:
             port: 8645
+      serve:
+        controller: hermes
+        ports:
+          http:
+            port: 9120
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
