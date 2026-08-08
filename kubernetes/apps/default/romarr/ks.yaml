@@ -21,7 +21,7 @@ spec:
   path: ./kubernetes/apps/default/romarr/app
   postBuild:
     substitute:
-      APP: romarr-data
+      APP: romarr-persist
   prune: true
   sourceRef:
     kind: GitRepository
