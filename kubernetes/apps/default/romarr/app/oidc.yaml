@@ -13,3 +13,5 @@ spec:
     - name: user
   secret:
     name: romarr-oidc
+    keys:
+      clientSecret: client-secret
