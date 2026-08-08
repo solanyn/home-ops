@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: towonel-operator
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: towonel-operator
+  interval: 10m
+  values:
+    agentNamespace: network
+    credentials:
+      existingSecret: towonel-operator-secret
+      tokenKey: TOWONEL_API_KEY
+    gatewayAPI:
+      enabled: true
+    towonel:
+      apiURL: https://towonel.goyangi.io

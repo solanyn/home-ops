@@ -13,4 +13,21 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
+  wait: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: towonel-tunnel
+spec:
+  targetNamespace: network
+  dependsOn:
+    - name: towonel-operator
+  interval: 1h
+  path: ./kubernetes/apps/network/towonel-operator/config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
   wait: false
