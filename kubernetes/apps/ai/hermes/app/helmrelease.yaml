@@ -138,7 +138,7 @@ spec:
               BLUEBUBBLES_WEBHOOK_PATH: /bluebubbles-webhook
               BLUEBUBBLES_REQUIRE_MENTION: "true"
               MATRIX_HOMESERVER: https://matrix.goyangi.io
-              MATRIX_USER_ID: "@hermes:goyangi.io"
+              MATRIX_USER_ID: "@hawow:goyangi.io"
               MATRIX_ALLOWED_USERS: "@andrew:goyangi.io"
             envFrom:
               - secretRef:
