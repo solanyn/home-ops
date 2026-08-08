@@ -439,3 +439,20 @@ spec:
             key: OPENCODE_API_KEY
     info:
         supportsFunctionCalling: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+    name: opencode-go-gpt-5-6-luna
+    labels:
+        litellm.home-operations.com/managed-by: home-ops
+spec:
+    modelName: oc-gpt-5.6-luna
+    params:
+        model: openai/gpt-5.6-luna
+        apiBase: https://opencode.ai/zen/go/v1
+        apiKeyRef:
+            name: opencode-auth
+            key: OPENCODE_API_KEY
+    info:
+        supportsFunctionCalling: true
