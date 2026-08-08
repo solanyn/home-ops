@@ -15,6 +15,18 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
+          migrate-config:
+            image:
+              repository: busybox
+              tag: 1.37
+            command:
+              - sh
+              - -c
+            args:
+              - >-
+                if [ ! -f /config/romarr.json ]; then
+                  cp -a /legacy/. /config/;
+                fi
           install-rom-hub:
             image:
               repository: python
@@ -97,11 +109,19 @@ spec:
             sectionName: https
     persistence:
       config:
+        existingClaim: "{{ .Release.Name }}-data"
+        advancedMounts:
+          romarr:
+            migrate-config:
+              - path: /config
+            app:
+              - path: /config
+      legacy:
         existingClaim: "{{ .Release.Name }}"
         advancedMounts:
           romarr:
-            app:
-              - path: /config
+            migrate-config:
+              - path: /legacy
       hub:
         type: emptyDir
         advancedMounts:
