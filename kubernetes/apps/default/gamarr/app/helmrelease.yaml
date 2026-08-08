@@ -17,13 +17,17 @@ spec:
         containers:
           app:
             image:
-              repository: gamarr/gamarr
-              tag: nightly
+              repository: ghcr.io/gamarr-app/gamarr
+              tag: 1.0.1
+            command:
+              - /app/gamarr/bin/Gamarr
+            args:
+              - -nobrowser
+              - -data=/config
             env:
-              GAMARR_PORT: &port 5001
+              TMPDIR: /tmp
               QB_URL: "http://qbittorrent.default.svc.cluster.local"
               QB_USER: "andrew"
-              DATA_DIR: "/data/gamarr"
               TZ: "Australia/Sydney"
             envFrom:
               - secretRef:
@@ -34,8 +38,8 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/health
-                    port: *port
+                    path: /ping
+                    port: 6767
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -63,7 +67,7 @@ spec:
       app:
         ports:
           http:
-            port: *port
+            port: 6767
     route:
       app:
         hostnames:
@@ -80,7 +84,7 @@ spec:
         advancedMounts:
           gamarr:
             app:
-              - path: /data/gamarr
+              - path: /config
                 subPath: gamarr
       incoming:
         type: persistentVolumeClaim
