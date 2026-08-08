@@ -97,7 +97,7 @@ spec:
             sectionName: https
     persistence:
       config:
-        existingClaim: "{{ .Release.Name }}-data"
+        existingClaim: "{{ .Release.Name }}-persist"
         advancedMounts:
           romarr:
             app:
