@@ -18,6 +18,8 @@ services:
       - --entrypoints.websecure.http.tls=true
       - --entrypoints.websecure.http.tls.certResolver=cf
       - --entrypoints.websecure.http.tls.domains[0].main=nas.goyangi.io
+      - --entrypoints.websecure.http.tls.domains[1].main=s3.goyangi.io
+      - --entrypoints.websecure.http.tls.domains[2].main=garage-admin.goyangi.io
       - --providers.docker=true
       - --providers.docker.exposedByDefault=false
       - --providers.docker.network=apps
