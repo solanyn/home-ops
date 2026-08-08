@@ -38,7 +38,6 @@ resources:
   - ./qui/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
-  - ./romarr/ks.yaml
   - ./romm/ks.yaml
   - ./seasonpackerr/ks.yaml
   - ./seerr/ks.yaml
@@ -54,4 +53,3 @@ resources:
   - ./zwave/ks.yaml
   - ./continuwuity/ks.yaml
   - ./paperless/ks.yaml
-  - ./gamarr/ks.yaml
