@@ -4,6 +4,8 @@ apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
   name: towonel-edge
+  labels:
+    dns.goyangi.io/internal: "true"
 spec:
   endpoints:
     - dnsName: towonel.goyangi.io
