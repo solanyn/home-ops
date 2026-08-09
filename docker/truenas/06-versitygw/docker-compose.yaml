@@ -1,0 +1,27 @@
+---
+services:
+  versitygw:
+    image: ghcr.io/versity/versitygw:latest
+    ports:
+      - "3910:3910"
+      - "3911:3911"
+      - "3912:3912"
+    environment:
+      ROOT_ACCESS_KEY: ${VERSITYGW_ROOT_ACCESS_KEY}
+      ROOT_SECRET_KEY: ${VERSITYGW_ROOT_SECRET_KEY}
+      VGW_PORT: ":3910"
+      VGW_IAM_DIR: /mnt/iam
+      VGW_VERSIONING_DIR: /mnt/versioning
+      VGW_BACKEND: posix
+      VGW_BACKEND_ARGS: /mnt/data
+      VGW_ADMIN_PORT: ":3911"
+      VGW_WEBUI_PORT: ":3912"
+      VGW_WEBUI_GATEWAYS: "http://localhost:3910"
+      VGW_WEBUI_ADMIN_GATEWAYS: "http://localhost:3911"
+      TZ: Australia/Sydney
+    restart: unless-stopped
+    user: "1000:1000"
+    volumes:
+      - /mnt/world/versitygw/data:/mnt/data
+      - /mnt/world/versitygw/iam:/mnt/iam
+      - /mnt/world/versitygw/versioning:/mnt/versioning
