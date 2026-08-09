@@ -28,7 +28,7 @@ spec:
   bootstrapFrom:
     s3:
       bucket: mariadb
-      endpoint: nas.internal:3900
+      endpoint: s3.goyangi.io:3900
       accessKeyIdSecretKeyRef:
         name: mariadb-secret
         key: AWS_ACCESS_KEY_ID
