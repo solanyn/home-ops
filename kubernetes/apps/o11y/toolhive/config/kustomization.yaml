@@ -8,3 +8,4 @@ resources:
   - mcpgroup.yaml
   - mcp-telemetry.yaml
   - virtualmcpserver.yaml
+  - ./httproute.yaml
