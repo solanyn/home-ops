@@ -1,0 +1,24 @@
+---
+apiVersion: toolhive.stacklok.dev/v1alpha1
+kind: MCPServer
+metadata:
+  name: kubesearch
+  namespace: o11y
+spec:
+  image: ghcr.io/perfectra1n/kubesearch-mcp:latest
+  transport: streamable-http
+  proxyMode: streamable-http
+  proxyPort: 8080
+  mcpPort: 8000
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+  env:
+    - name: KUBESEARCH_ENABLE_CLONE
+      value: "true"
+  groupRef:
+    name: mcp-tools

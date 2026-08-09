@@ -1,0 +1,9 @@
+---
+apiVersion: toolhive.stacklok.dev/v1alpha1
+kind: MCPTelemetryConfig
+metadata:
+  name: prometheus
+  namespace: o11y
+spec:
+  prometheus:
+    enabled: true
