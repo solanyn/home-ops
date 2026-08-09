@@ -14,7 +14,7 @@ spec:
   storage:
     s3:
       bucket: mariadb
-      endpoint: s3.goyangi.io:3900
+      endpoint: s3.goyangi.io
       accessKeyIdSecretKeyRef:
         name: mariadb-secret
         key: AWS_ACCESS_KEY_ID

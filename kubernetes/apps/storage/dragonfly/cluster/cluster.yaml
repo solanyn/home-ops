@@ -26,7 +26,7 @@ spec:
     - name: AWS_DEFAULT_REGION
       value: "us-east-1"
     - name: DFLY_s3_endpoint
-      value: "s3.goyangi.io:3900"
+      value: "s3.goyangi.io"
     - name: DFLY_s3_use_https
       value: "false"
     - name: DFLY_s3_sign_payload
