@@ -1,0 +1,13 @@
+---
+# Register the existing standalone grafana-mcp deployment with toolhive.
+# The actual deployment lives at kubernetes/apps/o11y/grafana-mcp/ (HelmRelease).
+apiVersion: toolhive.stacklok.dev/v1alpha1
+kind: MCPServerEntry
+metadata:
+  name: grafana
+  namespace: o11y
+spec:
+  remoteUrl: http://grafana-mcp.o11y.svc:8000/sse
+  transport: sse
+  groupRef:
+    name: mcp-tools
