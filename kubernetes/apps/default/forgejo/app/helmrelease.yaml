@@ -89,7 +89,7 @@ spec:
 
         storage:
           STORAGE_TYPE: minio
-          MINIO_ENDPOINT: nas.internal:3900
+          MINIO_ENDPOINT: s3.goyangi.io:3900
           MINIO_BUCKET: forgejo
           MINIO_LOCATION: us-east-1
           MINIO_USE_SSL: false
