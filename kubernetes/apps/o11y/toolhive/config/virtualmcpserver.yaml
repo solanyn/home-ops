@@ -1,0 +1,20 @@
+---
+# VirtualMCPServer aggregating all MCP workloads in the mcp-tools group.
+# Uses prefix-based conflict resolution to namespace each tool.
+apiVersion: toolhive.stacklok.dev/v1alpha1
+kind: VirtualMCPServer
+metadata:
+  name: mcp-gateway
+  namespace: o11y
+spec:
+  groupRef:
+    name: mcp-tools
+  config:
+    aggregation:
+      conflictResolution: prefix
+      conflictResolutionConfig:
+        prefixFormat: "{workload}_"
+  incomingAuth:
+    type: anonymous
+  outgoingAuth:
+    source: discovered
