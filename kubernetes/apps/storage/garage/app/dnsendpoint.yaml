@@ -20,3 +20,24 @@ spec:
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
+    - dnsName: s3-versitygw.goyangi.io
+      recordType: A
+      targets:
+        - 192.168.42.9
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
+    - dnsName: versitygw-admin.goyangi.io
+      recordType: A
+      targets:
+        - 192.168.42.9
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
+    - dnsName: versitygw.goyangi.io
+      recordType: A
+      targets:
+        - 192.168.42.9
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"

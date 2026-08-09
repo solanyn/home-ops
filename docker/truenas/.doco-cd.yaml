@@ -8,3 +8,5 @@ external_secrets:
   GARAGE_ADMIN_TOKEN: op://kubernetes/garage/GARAGE_ADMIN_TOKEN
   GARAGE_RPC_SECRET: op://kubernetes/garage/GARAGE_RPC_SECRET
   TRAEFIK_CF_DNS_API_TOKEN: op://kubernetes/cloudflare/CLOUDFLARE_DNS_TOKEN
+  VERSITYGW_ROOT_ACCESS_KEY: op://kubernetes/versitygw/VERSITYGW_ROOT_ACCESS_KEY
+  VERSITYGW_ROOT_SECRET_KEY: op://kubernetes/versitygw/VERSITYGW_ROOT_SECRET_KEY
