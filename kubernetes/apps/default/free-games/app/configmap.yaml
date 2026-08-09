@@ -1,0 +1,85 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: free-games-webhook-proxy
+data:
+  proxy.py: |
+    #!/usr/bin/env python3
+    """Webhook proxy: translates Discord webhook payloads to Pushover notifications."""
+    import json, logging, os, re, urllib.request, urllib.parse
+    from http.server import HTTPServer, BaseHTTPRequestHandler
+
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    log = logging.getLogger("webhook-proxy")
+
+    PUSHOVER_USER_KEY = os.environ.get("PUSHOVER_USER_KEY", "")
+    PUSHOVER_API_TOKEN = os.environ.get("PUSHOVER_API_TOKEN", "")
+    PORT = int(os.environ.get("PORT", "9000"))
+
+    def send_pushover(title, message, url="", url_title=""):
+        if not PUSHOVER_USER_KEY or not PUSHOVER_API_TOKEN:
+            log.error("Pushover credentials not set")
+            return False
+        data = {
+            "token": PUSHOVER_API_TOKEN,
+            "user": PUSHOVER_USER_KEY,
+            "title": title,
+            "message": message,
+        }
+        if url: data["url"] = url
+        if url_title: data["url_title"] = url_title
+        encoded = urllib.parse.urlencode(data).encode("utf-8")
+        req = urllib.request.Request(
+            "https://api.pushover.net/1/messages.json",
+            data=encoded,
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                result = json.loads(resp.read())
+                if result.get("status") == 1:
+                    log.info("Pushover sent: %s", title)
+                    return True
+                log.error("Pushover error: %s", result)
+                return False
+        except Exception as e:
+            log.error("Pushover request failed: %s", e)
+            return False
+
+    def format_embed(embed):
+        title = embed.get("title", "Free Game")
+        desc = embed.get("description", "")
+        parts = [desc] if desc else []
+        for f in embed.get("fields", []):
+            n, v = f.get("name", ""), f.get("value", "")
+            if n and v:
+                v = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", v)
+                parts.append(f"{n}: {v}")
+        return title, "\n".join(parts) if parts else "New free game!"
+
+    class Handler(BaseHTTPRequestHandler):
+        def do_POST(self):
+            try:
+                payload = json.loads(self.rfile.read(int(self.headers.get("Content-Length", 0))))
+            except:
+                self.send_response(400); self.end_headers(); return
+            embeds = payload.get("embeds", [])
+            if not embeds:
+                self.send_response(204); self.end_headers(); return
+            sent = 0
+            for e in embeds:
+                t, m = format_embed(e)
+                if send_pushover(t, m, e.get("url", ""), "View Game"): sent += 1
+            self.send_response(200); self.end_headers()
+            self.wfile.write(json.dumps({"ok": True, "sent": sent}).encode())
+        def do_GET(self):
+            self.send_response(200); self.end_headers(); self.wfile.write(b'{"status":"ok"}')
+        def log_message(self, fmt, *a): log.info(fmt, *a)
+
+    if __name__ == "__main__":
+        if not PUSHOVER_USER_KEY or not PUSHOVER_API_TOKEN:
+            log.warning("Pushover credentials not configured")
+        s = HTTPServer(("0.0.0.0", PORT), Handler)
+        log.info("Webhook proxy listening on %d", PORT)
+        s.serve_forever()
