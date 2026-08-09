@@ -1,0 +1,97 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: free-games
+  labels:
+    app.kubernetes.io/name: free-games
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: free-games
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: free-games
+    spec:
+      containers:
+        # Main scraper container — uses built-in robfig/cron scheduler
+        - name: free-games
+          image: ghcr.io/ctrl-research/free-games:v0.0.5
+          env:
+            # Discord webhook points to local sidecar -> Pushover
+            - name: DISCORD_WEBHOOK_URL
+              value: "http://localhost:9000"
+            - name: ENABLE_STEAM
+              value: "true"
+            - name: ENABLE_TWITCH_DROPS
+              value: "true"
+            - name: TWITCH_DROPS_PLATFORMS
+              value: "steam,gog,epic,amazon"
+            - name: EPIC_COUNTRY
+              value: "AU"
+            - name: EPIC_LOCALE
+              value: "en-AU"
+            # Default schedules: Epic=Thu midnight, Steam=daily 9am, Twitch=daily noon
+            - name: NOTIFICATION_STORE_PATH
+              value: "/data/.free-games-store.json"
+          volumeMounts:
+            - name: store
+              mountPath: /data
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+
+        # Sidecar: translates Discord webhook -> Pushover
+        - name: webhook-proxy
+          image: python:3.12-alpine
+          command: ["python3", "-u", "/app/proxy.py"]
+          ports:
+            - name: proxy
+              containerPort: 9000
+              protocol: TCP
+          env:
+            - name: PUSHOVER_USER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: free-games-pushover
+                  key: PUSHOVER_USER_KEY
+            - name: PUSHOVER_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: free-games-pushover
+                  key: PUSHOVER_API_TOKEN
+            - name: PORT
+              value: "9000"
+          volumeMounts:
+            - name: proxy-script
+              mountPath: /app/proxy.py
+              subPath: proxy.py
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /
+              port: proxy
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 5m
+              memory: 16Mi
+            limits:
+              memory: 64Mi
+
+      volumes:
+        - name: store
+          persistentVolumeClaim:
+            claimName: free-games-store
+        - name: proxy-script
+          configMap:
+            name: free-games-webhook-proxy
+            defaultMode: 0444
