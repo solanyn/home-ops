@@ -92,7 +92,7 @@ spec:
           MINIO_ENDPOINT: s3.goyangi.io
           MINIO_BUCKET: forgejo
           MINIO_LOCATION: us-east-1
-          MINIO_USE_SSL: false
+          MINIO_USE_SSL: true
 
         mailer:
           ENABLED: true
