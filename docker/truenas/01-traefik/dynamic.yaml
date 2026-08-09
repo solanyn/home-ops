@@ -22,20 +22,6 @@ http:
       service: truenas
       tls:
         certResolver: cf
-  services:
-    garage-admin:
-      loadBalancer:
-        servers:
-          - url: http://host.docker.internal:3903
-    garage-s3:
-      loadBalancer:
-        servers:
-          - url: http://host.docker.internal:3900
-    truenas:
-      loadBalancer:
-        servers:
-          - url: https://host.docker.internal:10443
-        serversTransport: insecure
     versitygw-s3:
       entryPoints:
         - websecure
@@ -58,14 +44,27 @@ http:
       tls:
         certResolver: cf
   services:
-    versitygw-admin:
+    garage-s3:
       loadBalancer:
         servers:
-          - url: http://host.docker.internal:3911
+          - url: http://host.docker.internal:3900
+    garage-admin:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:3903
+    truenas:
+      loadBalancer:
+        servers:
+          - url: https://host.docker.internal:10443
+        serversTransport: insecure
     versitygw-s3:
       loadBalancer:
         servers:
           - url: http://host.docker.internal:3910
+    versitygw-admin:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:3911
     versitygw-webui:
       loadBalancer:
         servers:
