@@ -1,8 +1,8 @@
 # Cluster-wide read access for the Hermes agent.
 # Deliberately excluded: secrets cluster-wide, pods/exec, pods/portforward,
-# nodes/proxy, cert-manager approve/deny/sign, admissionregistration,
-# and any verb beyond get/list/watch. GitOps via Flux + humans is the
-# apply path; the agent only proposes.
+# nodes/proxy, cert-manager approve/deny/sign, admissionregistration.
+# Write access: pods/delete only (for stuck pod cleanup). GitOps via
+# Flux + humans is the apply path; the agent only proposes.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -31,6 +31,9 @@ rules:
       - replicasets
       - replicationcontrollers
     verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: [pods]
+    verbs: ["delete"]
 
   # Controllers, batch, networking cluster-wide.
   - apiGroups: ["apps"]
