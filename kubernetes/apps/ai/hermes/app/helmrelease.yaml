@@ -188,6 +188,7 @@ spec:
               HOMEBREW_NO_AUTO_UPDATE: "1"
               TZ: Australia/Sydney
               HERMES_DASHBOARD_OIDC_CLIENT_ID: hermes-serve
+              HERMES_DASHBOARD_PUBLIC_URL: https://hermes-serve.goyangi.io
             envFrom:
               - secretRef:
                   name: hermes
