@@ -1,16 +1,77 @@
 ---
-# Top-level Flux Kustomization for the toolhive operator stack.
-# Deploys CRDs, the operator Helm release, configuration resources,
-# and MCP server workloads in the correct order.
-apiVersion: kustomize.config.k8s.io/v1beta1
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: toolhive
-  namespace: o11y
+  name: toolhive-crds
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: toolhive
+  targetNamespace: o11y
+  path: ./kubernetes/apps/o11y/toolhive/crds
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
   interval: 1h
+  retryInterval: 2m
   timeout: 5m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: toolhive-operator
+spec:
+  targetNamespace: o11y
+  dependsOn:
+    - name: toolhive-crds
+      namespace: o11y
   path: ./kubernetes/apps/o11y/toolhive/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: toolhive-config
+spec:
+  targetNamespace: o11y
+  dependsOn:
+    - name: toolhive-operator
+      namespace: o11y
+  path: ./kubernetes/apps/o11y/toolhive/config
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: toolhive-mcp-servers
+spec:
+  targetNamespace: o11y
+  dependsOn:
+    - name: toolhive-config
+      namespace: o11y
+  path: ./kubernetes/apps/o11y/toolhive/mcp-servers
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
