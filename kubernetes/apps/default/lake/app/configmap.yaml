@@ -60,7 +60,7 @@ data:
 
     def get_catalog(warehouse):
         uri = os.environ.get("ICEBERG_CATALOG_URI", "http://lakekeeper.storage.svc.cluster.local:8181/catalog")
-        ep = os.environ.get("AWS_ENDPOINT_URL", "http://nas.internal:3900")
+        ep = os.environ.get("AWS_ENDPOINT_URL", "http://s3.goyangi.io:3900")
         ak = os.environ.get("AWS_ACCESS_KEY_ID", os.environ.get("S3_ACCESS_KEY", ""))
         sk = os.environ.get("AWS_SECRET_ACCESS_KEY", os.environ.get("S3_SECRET_KEY", ""))
         return load_catalog(f"lk-{warehouse}", **{

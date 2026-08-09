@@ -36,7 +36,7 @@ spec:
               - "/scripts/register_tables.py"
             env:
               ICEBERG_CATALOG_URI: http://lakekeeper.storage.svc.cluster.local:8181/catalog
-              AWS_ENDPOINT_URL: http://nas.internal:3900
+              AWS_ENDPOINT_URL: http://s3.goyangi.io:3900
               AWS_REGION: us-east-1
               HOME: /tmp
               UV_CACHE_DIR: /tmp/uv-cache
@@ -50,7 +50,7 @@ spec:
               tag: "2026.07.0"
               pullPolicy: Always
             env: &env
-              S3_ENDPOINT: http://nas.internal:3900
+              S3_ENDPOINT: http://s3.goyangi.io:3900
               S3_REGION: us-east-1
               KAFKA_BROKERS: redpanda.streaming.svc.cluster.local:9093
             envFrom: &envFrom
