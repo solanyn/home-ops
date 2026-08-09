@@ -2,13 +2,13 @@
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:
-  name: garage
+  name: versitygw
 spec:
   configuration:
     data:
       compression: bzip2
     destinationPath: s3://cloudnative-pg/
-    endpointURL: https://s3.goyangi.io
+    endpointURL: https://s3-versitygw.goyangi.io
     s3Credentials:
       accessKeyId:
         name: cloudnative-pg-secret

@@ -47,7 +47,7 @@ spec:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
-        barmanObjectName: garage
+        barmanObjectName: versitygw
         serverName: postgres18-v1
   bootstrap:
     recovery:
@@ -57,5 +57,5 @@ spec:
       plugin:
         name: barman-cloud.cloudnative-pg.io
         parameters:
-          barmanObjectName: garage
+          barmanObjectName: versitygw
           serverName: postgres18-v1
