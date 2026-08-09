@@ -53,8 +53,6 @@ spec:
       namespace: storage
     - name: cloudnative-pg-barman-cloud
       namespace: storage
-    - name: garage
-      namespace: storage
   healthChecks:
     - apiVersion: postgresql.cnpg.io/v1
       kind: Cluster
