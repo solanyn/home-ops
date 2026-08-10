@@ -33,6 +33,7 @@ resources:
   - ./pocket-id-operator/ks.yaml
   - ./plex/ks.yaml
   - ./print/ks.yaml
+  - ./qui/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
