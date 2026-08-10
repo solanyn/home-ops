@@ -62,7 +62,7 @@ rules:
     resources: [customresourcedefinitions]
     verbs: ["get", "list", "watch"]
 
-  # All Flux kinds cluster-wide.
+  # All Flux kinds cluster-wide (read-only).
   - apiGroups:
       - source.toolkit.fluxcd.io
       - kustomize.toolkit.fluxcd.io
@@ -71,6 +71,10 @@ rules:
       - image.toolkit.fluxcd.io
     resources: ["*"]
     verbs: ["get", "list", "watch"]
+  # Flux reconcile trigger: annotate kustomizations to force reconciliation.
+  - apiGroups: [kustomize.toolkit.fluxcd.io]
+    resources: [kustomizations]
+    verbs: ["patch"]
 
   # External Secrets cluster-scoped kinds.
   - apiGroups: ["external-secrets.io"]
