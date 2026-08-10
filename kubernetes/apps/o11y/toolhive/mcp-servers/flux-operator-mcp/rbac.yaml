@@ -1,0 +1,15 @@
+---
+# flux-operator-mcp needs cluster-admin to query Flux resources via KustomizeAPI.
+# The toolhive operator creates a ServiceAccount named after the MCPServer.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: flux-operator-mcp
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: flux-operator-mcp
+    namespace: o11y
