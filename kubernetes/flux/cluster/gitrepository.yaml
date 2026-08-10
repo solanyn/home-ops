@@ -3,7 +3,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: home-ops-private
+  name: flux-system-private
   namespace: flux-system
 spec:
   interval: 1h
