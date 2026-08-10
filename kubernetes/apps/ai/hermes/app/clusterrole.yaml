@@ -34,6 +34,10 @@ rules:
   - apiGroups: [""]
     resources: [pods]
     verbs: ["delete"]
+  # PVC delete for restore recreation (kopiur dataSourceRef triggers restore on new PVC creation).
+  - apiGroups: [""]
+    resources: [persistentvolumeclaims]
+    verbs: ["delete"]
 
   # Controllers, batch, networking cluster-wide.
   - apiGroups: ["apps"]
