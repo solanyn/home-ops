@@ -240,7 +240,6 @@ spec:
         path: /mnt/world/volsynckopia
         globalMounts:
           - path: /volsynckopia
-            readOnly: true
       configmap:
         type: configMap
         name: "{{ .Release.Name }}-config"
