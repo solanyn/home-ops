@@ -1,0 +1,24 @@
+---
+apiVersion: toolhive.stacklok.dev/v1alpha1
+kind: MCPServer
+metadata:
+  name: flux-operator-mcp
+  namespace: o11y
+spec:
+  image: ghcr.io/controlplaneio-fluxcd/flux-operator-mcp:0.57.0
+  transport: streamable-http
+  proxyMode: streamable-http
+  proxyPort: 8080
+  mcpPort: 9090
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+  env:
+    - name: RUNTIME_NAMESPACE
+      value: o11y
+  groupRef:
+    name: mcp-tools
