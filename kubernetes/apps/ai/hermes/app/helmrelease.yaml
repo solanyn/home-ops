@@ -234,6 +234,13 @@ spec:
         globalMounts:
           - path: /media
             readOnly: true
+      kopia-repo:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/volsynckopia
+        globalMounts:
+          - path: /volsynckopia
+            readOnly: true
       configmap:
         type: configMap
         name: "{{ .Release.Name }}-config"
