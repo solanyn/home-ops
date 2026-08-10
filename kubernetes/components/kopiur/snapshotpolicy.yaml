@@ -29,4 +29,5 @@ spec:
   sources:
     - pvc:
         name: ${APP}
+      sourcePathOverride: /data
   volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=miroir-snap}
