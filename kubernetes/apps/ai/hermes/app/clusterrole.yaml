@@ -74,7 +74,7 @@ rules:
   # Flux reconcile trigger: annotate kustomizations to force reconciliation.
   - apiGroups: [kustomize.toolkit.fluxcd.io]
     resources: [kustomizations]
-    verbs: ["patch"]
+    verbs: ["patch", "update"]
 
   # External Secrets cluster-scoped kinds.
   - apiGroups: ["external-secrets.io"]
