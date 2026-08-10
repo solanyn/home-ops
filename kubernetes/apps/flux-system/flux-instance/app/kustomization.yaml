@@ -6,7 +6,6 @@ resources:
   - ./externalsecret.yaml
   - ./forgejo-webhook-externalsecret.yaml
   - ./forgejo-webhook-receiver.yaml
-  - ./forgejo-webhook-secret.yaml
   - ./grafanadashboard.yaml
   - ./helmrelease.yaml
   - ./httproute.yaml
