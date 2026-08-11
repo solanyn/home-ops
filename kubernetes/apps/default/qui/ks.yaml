@@ -17,6 +17,7 @@ spec:
   postBuild:
     substitute:
       APP: qui
+      KOPIUR_RESTORE_OFFSET: "1"
   prune: true
   sourceRef:
     kind: GitRepository
