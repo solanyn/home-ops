@@ -2,7 +2,8 @@
 configs:
   poll-config.yml:
     content: |
-      - run_once: true
+      - run_once: false
+        interval: 180s
         url: https://github.com/solanyn/home-ops.git
         reference: main
 secrets:
