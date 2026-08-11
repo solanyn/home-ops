@@ -17,6 +17,8 @@ spec:
     s3:
       bucket: mariadb
       endpoint: s3-versitygw.goyangi.io
+      tls:
+        enabled: true
       accessKeyIdSecretKeyRef:
         name: mariadb-secret
         key: AWS_ACCESS_KEY_ID
