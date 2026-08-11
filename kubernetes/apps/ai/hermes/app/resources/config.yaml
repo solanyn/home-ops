@@ -11,7 +11,9 @@ providers:
     default_model: oc-mimo-v2.5
     transport: chat_completions
 moa:
-  enabled: false
+  presets:
+    default:
+      enabled: false
 toolsets:
   - hermes-cli
 terminal:
