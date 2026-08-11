@@ -14,7 +14,7 @@ spec:
             litellm:
                 annotations:
                     reloader.stakater.com/auto: "true"
-                replicas: 1
+                replicas: 3
                 strategy: RollingUpdate
                 containers:
                     app:
@@ -25,7 +25,6 @@ spec:
                             - --config=/app/config.yaml
                         env:
                             AUTO_REDIRECT_UI_LOGIN_TO_SSO: "true"
-                            CHATGPT_TOKEN_DIR: /app/chatgpt_tokens
                             DATABASE_URL:
                                 valueFrom:
                                     secretKeyRef:
@@ -101,10 +100,6 @@ spec:
                     litellm:
                         app:
                             - path: /app/cache
-            ui:
-                existingClaim: litellm-data
-                globalMounts:
-                    - path: /app/chatgpt_tokens
         route:
             app:
                 hostnames:
