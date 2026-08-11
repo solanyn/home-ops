@@ -14,6 +14,14 @@ data:
               model: minimax/MiniMax-M2.5
               api_base: https://api.minimaxi.chat/v1
               api_key: os.environ/MINIMAX_API_KEY
+          - model_name: oc-minimax-m2.5
+            model_info:
+              mode: chat
+              supports_function_calling: true
+            litellm_params:
+              model: openai/minimax-m2.5
+              api_base: https://opencode.ai/zen/go/v1
+              api_key: os.environ/OPENCODE_API_KEY
           - model_name: minimax-m3
             model_info:
               mode: chat
@@ -22,6 +30,14 @@ data:
               model: minimax/MiniMax-M3
               api_base: https://api.minimaxi.chat/v1
               api_key: os.environ/MINIMAX_API_KEY
+          - model_name: oc-minimax-m3
+            model_info:
+              mode: chat
+              supports_function_calling: true
+            litellm_params:
+              model: openai/minimax-m3
+              api_base: https://opencode.ai/zen/go/v1
+              api_key: os.environ/OPENCODE_API_KEY
           - model_name: minimax-m2.5-highspeed
             model_info:
               mode: chat
@@ -62,6 +78,14 @@ data:
               model: minimax/MiniMax-M2.7
               api_base: https://api.minimaxi.chat/v1
               api_key: os.environ/MINIMAX_API_KEY
+          - model_name: oc-minimax-m2.7
+            model_info:
+              mode: chat
+              supports_function_calling: true
+            litellm_params:
+              model: openai/minimax-m2.7
+              api_base: https://opencode.ai/zen/go/v1
+              api_key: os.environ/OPENCODE_API_KEY
           - model_name: deepseek-v4-pro
             model_info:
               mode: chat
@@ -70,6 +94,14 @@ data:
               model: deepseek/deepseek-chat
               api_base: https://api.deepseek.com
               api_key: os.environ/DEEPSEEK_API_KEY
+          - model_name: oc-deepseek-v4-pro
+            model_info:
+              mode: chat
+              supports_function_calling: true
+            litellm_params:
+              model: openai/deepseek-v4-pro
+              api_base: https://opencode.ai/zen/go/v1
+              api_key: os.environ/OPENCODE_API_KEY
           - model_name: deepseek-v4-flash
             model_info:
               mode: chat
