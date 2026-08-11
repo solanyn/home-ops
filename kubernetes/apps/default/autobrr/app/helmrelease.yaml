@@ -39,6 +39,9 @@ spec:
                   secretKeyRef:
                     name: autobrr-oidc
                     key: client_secret
+              AUTOBRR__OIDC_PROVIDER_URL: https://id.goyangi.io
+              AUTOBRR__OIDC_CLIENT_ID: autobrr
+              AUTOBRR__OIDC_REDIRECT_URL: https://autobrr.goyangi.io/api/auth/oidc/callback
             envFrom: *envFrom
             probes:
               liveness:
