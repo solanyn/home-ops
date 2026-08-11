@@ -16,21 +16,15 @@ spec:
       memory: 64Mi
     limits:
       memory: 256Mi
-  env:
-    - name: UNIFI_API_KEY
-      valueFrom:
-        secretKeyRef:
-          name: unifi-mcp-secret
-          key: UNIFI_API_KEY
-    - name: UNIFI_HOST
-      valueFrom:
-        secretKeyRef:
-          name: unifi-mcp-secret
-          key: UNIFI_HOST
-    - name: UNIFI_VERIFY_SSL
-      valueFrom:
-        secretKeyRef:
-          name: unifi-mcp-secret
-          key: UNIFI_VERIFY_SSL
+  secrets:
+    - name: unifi-mcp-secret
+      key: UNIFI_API_KEY
+      targetEnvName: UNIFI_API_KEY
+    - name: unifi-mcp-secret
+      key: UNIFI_HOST
+      targetEnvName: UNIFI_HOST
+    - name: unifi-mcp-secret
+      key: UNIFI_VERIFY_SSL
+      targetEnvName: UNIFI_VERIFY_SSL
   groupRef:
     name: mcp-tools
