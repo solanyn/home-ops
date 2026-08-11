@@ -3,6 +3,8 @@ apiVersion: k8s.mariadb.com/v1alpha1
 kind: MariaDB
 metadata:
   name: mariadb
+  annotations:
+    kustomize.toolkit.fluxcd.io/force: enabled
 spec:
   rootPasswordSecretKeyRef:
     name: mariadb-secret
