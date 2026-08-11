@@ -6,5 +6,6 @@ resources:
   - ./externalsecret.yaml
   - ./objectstore.yaml
   - ./prometheusrule.yaml
+  - ./s3-versitygw-ca.yaml
   - ./scheduledbackup.yaml
   - ./service.yaml
