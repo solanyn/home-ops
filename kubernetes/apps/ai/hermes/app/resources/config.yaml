@@ -10,6 +10,8 @@ providers:
     api_key: ${OPENAI_API_KEY}
     default_model: oc-mimo-v2.5
     transport: chat_completions
+moa:
+  enabled: false
 toolsets:
   - hermes-cli
 terminal:
