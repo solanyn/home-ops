@@ -9,9 +9,6 @@ spec:
       compression: bzip2
     destinationPath: s3://cloudnative-pg/
     endpointURL: https://s3-versitygw.goyangi.io
-    endpointCA:
-      name: s3-versitygw-ca
-      key: ca.crt
     s3Credentials:
       accessKeyId:
         name: cloudnative-pg-secret

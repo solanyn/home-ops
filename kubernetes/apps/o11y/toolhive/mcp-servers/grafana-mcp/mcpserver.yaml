@@ -19,10 +19,9 @@ spec:
   env:
     - name: GRAFANA_URL
       value: http://grafana-service.o11y.svc:3000
-    - name: GRAFANA_SERVICE_ACCOUNT_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: grafana-sa-token
-          key: token
+  secrets:
+    - name: grafana-sa-token
+      key: token
+      targetEnvName: GRAFANA_SERVICE_ACCOUNT_TOKEN
   groupRef:
     name: mcp-tools
