@@ -20,11 +20,10 @@ spec:
     - name: unifi-mcp-secret
       key: UNIFI_API_KEY
       targetEnvName: UNIFI_API_KEY
-    - name: unifi-mcp-secret
-      key: UNIFI_HOST
-      targetEnvName: UNIFI_HOST
-    - name: unifi-mcp-secret
-      key: UNIFI_VERIFY_SSL
-      targetEnvName: UNIFI_VERIFY_SSL
+  env:
+    - name: UNIFI_HOST
+      value: https://192.168.1.1
+    - name: UNIFI_VERIFY_SSL
+      value: "false"
   groupRef:
     name: mcp-tools
