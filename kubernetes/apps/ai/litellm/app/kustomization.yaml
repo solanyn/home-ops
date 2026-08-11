@@ -11,5 +11,4 @@ resources:
     - ./ocirepository.yaml
     - ./oidc.yaml
     - ./prometheusrule.yaml
-    - ./pvc.yaml
     - ./servicemonitor.yaml
