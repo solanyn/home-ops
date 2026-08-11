@@ -1,6 +1,6 @@
 _config_version: 27
 model:
-  default: oc-mimo-v2.5
+  default: oc-gpt-5.6-luna
   provider: litellm
   base_url: https://litellm.goyangi.io/v1
   fallback: '["oc-hy3-preview","oc-deepseek-v4-flash"]'
@@ -8,7 +8,7 @@ providers:
   litellm:
     api: https://litellm.goyangi.io/v1
     api_key: ${OPENAI_API_KEY}
-    default_model: oc-mimo-v2.5
+    default_model: oc-gpt-5.6-luna
     transport: chat_completions
 moa:
   presets:
