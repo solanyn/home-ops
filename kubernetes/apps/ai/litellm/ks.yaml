@@ -6,6 +6,8 @@ metadata:
     name: litellm
 spec:
     targetNamespace: ai
+    components:
+        - ../../../../components/volsync
     dependsOn:
         - name: cloudnative-pg-cluster
           namespace: storage
@@ -13,6 +15,10 @@ spec:
           namespace: storage
     interval: 1h
     path: ./kubernetes/apps/ai/litellm/app
+    postBuild:
+        substitute:
+            APP: litellm
+            VOLSYNC_CAPACITY: 1Gi
     prune: true
     sourceRef:
         kind: GitRepository

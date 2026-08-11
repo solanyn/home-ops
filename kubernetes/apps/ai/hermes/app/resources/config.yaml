@@ -1,14 +1,14 @@
 _config_version: 27
 model:
-  default: oc-gpt-5.6-luna
+  default: reasoning-pool
   provider: litellm
-  base_url: https://litellm.goyangi.io/v1
-  fallback: '["oc-hy3-preview","oc-deepseek-v4-flash"]'
+  base_url: http://litellm.ai.svc.cluster.local:4000/v1
+  fallback: '["oc-deepseek-v4-flash","minimax-m2.7"]'
 providers:
   litellm:
-    api: https://litellm.goyangi.io/v1
+    api: http://litellm.ai.svc.cluster.local:4000/v1
     api_key: ${OPENAI_API_KEY}
-    default_model: oc-gpt-5.6-luna
+    default_model: reasoning-pool
     transport: chat_completions
 moa:
   presets:

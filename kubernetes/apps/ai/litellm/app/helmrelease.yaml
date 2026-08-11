@@ -14,7 +14,7 @@ spec:
             litellm:
                 annotations:
                     reloader.stakater.com/auto: "true"
-                replicas: 3
+                replicas: 1
                 strategy: RollingUpdate
                 containers:
                     app:
@@ -37,6 +37,7 @@ spec:
                             GENERIC_USER_ROLE_ATTRIBUTE: litellm_role
                             LITELLM_LOG: INFO
                             LITELLM_MODE: PRODUCTION
+                            CHATGPT_TOKEN_DIR: /var/lib/litellm/chatgpt
                             PROXY_BASE_URL: https://litellm.goyangi.io
                             REDIS_HOST: redis.storage.svc.cluster.local
                             REDIS_PORT: "6379"
@@ -100,6 +101,12 @@ spec:
                     litellm:
                         app:
                             - path: /app/cache
+            chatgpt-auth:
+                existingClaim: "{{ .Release.Name }}"
+                advancedMounts:
+                    litellm:
+                        app:
+                            - path: /var/lib/litellm/chatgpt
         route:
             app:
                 hostnames:
