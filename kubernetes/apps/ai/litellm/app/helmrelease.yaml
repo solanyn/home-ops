@@ -14,7 +14,7 @@ spec:
             litellm:
                 annotations:
                     reloader.stakater.com/auto: "true"
-                replicas: 3
+                replicas: 1
                 strategy: RollingUpdate
                 containers:
                     app:
@@ -102,7 +102,7 @@ spec:
                         app:
                             - path: /app/cache
             ui:
-                existingClaim: litellm
+                existingClaim: litellm-data
                 globalMounts:
                     - path: /app/chatgpt_tokens
         route:
