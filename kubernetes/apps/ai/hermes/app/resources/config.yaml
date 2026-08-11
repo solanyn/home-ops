@@ -1,14 +1,14 @@
 _config_version: 27
 model:
-  default: oc-mimo-v2.5
-  provider: litellm
-  base_url: https://litellm.goyangi.io/v1
-  fallback: '["oc-hy3-preview","oc-deepseek-v4-flash"]'
+  default: mimo-v2.5
+  provider: opencode-go
+  base_url: https://opencode.ai/zen/go/v1
+  fallback: '["hy3-preview","deepseek-v4-flash"]'
 providers:
-  litellm:
-    api: https://litellm.goyangi.io/v1
-    api_key: ${OPENAI_API_KEY}
-    default_model: oc-mimo-v2.5
+  opencode-go:
+    api: https://opencode.ai/zen/go/v1
+    api_key: ${OPENCODE_API_KEY}
+    default_model: mimo-v2.5
     transport: chat_completions
 moa:
   presets:
@@ -43,7 +43,7 @@ secrets:
   onepassword:
     enabled: true
     env:
-      OPENAI_API_KEY: "op://kubernetes/litellm/LITELLM_MASTER_KEY"
+      OPENCODE_API_KEY: "op://kubernetes/opencode/OPENCODE_API_KEY"
       HONCHO_API_KEY: "op://kubernetes/honcho/HONCHO_API_KEY"
       BLUEBUBBLES_PASSWORD: "op://kubernetes/bluebubbles/BLUEBUBBLES_PASSWORD"
       MATRIX_ACCESS_TOKEN: "op://kubernetes/matrix/MATRIX_BOT_ACCESS_TOKEN"
