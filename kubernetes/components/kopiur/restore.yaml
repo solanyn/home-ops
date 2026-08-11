@@ -11,6 +11,6 @@ spec:
   source:
     fromPolicy:
       name: ${APP}
-      offset: 0
+      offset: ${KOPIUR_RESTORE_OFFSET:=0}
   target:
     populator: {}
