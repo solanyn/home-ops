@@ -51,9 +51,12 @@ jobs:
       - name: Extract Images
         id: extract
         run: |
-          echo 'images<<EOF' >> $GITHUB_OUTPUT
-          flate diff images -p ./kubernetes/flux/cluster --allow-missing-secrets -o json >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          images=$(flate diff images -p ./kubernetes/flux/cluster --allow-missing-secrets -o json)
+          {
+            echo 'images<<EOF'
+            printf '%s\n' "$images"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
 
   pull:
     if: ${{ needs.extract.outputs.images != '[]' }}
