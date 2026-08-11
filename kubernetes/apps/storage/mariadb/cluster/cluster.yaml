@@ -27,24 +27,6 @@ spec:
     innodb_flush_log_at_trx_commit=1
     slow_query_log=1
     long_query_time=2
-  bootstrapFrom:
-    s3:
-      bucket: mariadb
-      endpoint: s3-versitygw.goyangi.io
-      accessKeyIdSecretKeyRef:
-        name: mariadb-secret
-        key: AWS_ACCESS_KEY_ID
-      secretAccessKeySecretKeyRef:
-        name: mariadb-secret
-        key: AWS_SECRET_ACCESS_KEY
-    stagingStorage:
-      persistentVolumeClaim:
-        resources:
-          requests:
-            storage: 1Gi
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: miroir-local
   resources:
     requests:
       cpu: 10m
