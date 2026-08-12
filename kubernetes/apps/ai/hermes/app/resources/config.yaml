@@ -3,7 +3,7 @@ model:
   default: reasoning-pool
   provider: litellm
   base_url: http://litellm.ai.svc.cluster.local:4000/v1
-  fallback: '["dsv4f","qwen3.7-plus"]'
+  fallback: '["deepseek-v4-flash","qwen3.7-plus"]'
 providers:
   litellm:
     api: http://litellm.ai.svc.cluster.local:4000/v1
