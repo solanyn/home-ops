@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/toolhive.stacklok.dev/mcpserver_v1alpha1.json
+apiVersion: toolhive.stacklok.dev/v1alpha1
+kind: MCPServer
+metadata:
+  name: ha
+spec:
+  image: ghcr.io/homeassistant-ai/ha-mcp:8.2.0
+  transport: streamable-http
+  env:
+    - name: HOMEASSISTANT_URL
+      value: http://home-assistant.default.svc.cluster.local:8123
+  secrets:
+    - name: toolhive-home-assistant
+      key: HOMEASSISTANT_TOKEN
+      targetEnvName: HOMEASSISTANT_TOKEN
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      memory: 256Mi
+  podTemplateSpec:
+    spec:
+      containers:
+        - name: mcp
+          command:
+            - ha-mcp-web
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
+  groupRef:
+    name: mcp-tools
