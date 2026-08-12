@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/toolhive.stacklok.dev/mcpserver_v1alpha1.json
+apiVersion: toolhive.stacklok.dev/v1alpha1
+kind: MCPServer
+metadata:
+  name: kubectl
+spec:
+  image: ghcr.io/stacklok/toolhive/mcp-kubectl:latest
+  transport: streamable-http
+  serviceAccount: kubectl-mcp
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      memory: 256Mi
+  groupRef:
+    name: mcp-tools
