@@ -160,7 +160,7 @@ data:
         router_settings:
           redis_host: os.environ/REDIS_HOST
           redis_port: os.environ/REDIS_PORT
-          routing_strategy: priority-based-routing
+          routing_strategy: simple-shuffle
           cooldown_time: 30
           enable_pre_call_checks: true
           fallbacks:
