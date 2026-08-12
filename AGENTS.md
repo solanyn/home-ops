@@ -135,8 +135,8 @@ spec:
     dependsOn: # Optional - for dependencies
         - name: dependency-name
           namespace: target-namespace
-    components: # Optional - for VolSync backups
-        - ../../../../components/volsync
+    components: # Optional - for Kopiur snapshots and restores
+        - ../../../../components/kopiur
 ```
 
 **For apps with CRDs (like kagent):**
@@ -183,7 +183,7 @@ metadata:
 spec:
     targetNamespace: namespace # Always first
     components: # Optional - before dependsOn
-        - ../../../../components/volsync
+        - ../../../../components/kopiur
     dependsOn: # Dependencies (always include namespace)
         - name: cloudnative-pg-cluster
           namespace: storage
@@ -192,7 +192,7 @@ spec:
     postBuild: # Substitutions
         substitute:
             APP: app-name
-            VOLSYNC_CAPACITY: 5Gi
+            KOPIUR_CAPACITY: 5Gi
     prune: true
     sourceRef: # Git source (always flux-system)
         kind: GitRepository
@@ -225,8 +225,6 @@ resources:
     - externalsecret.yaml # If needed
     - pvc.yaml # If needed
     - httproute.yaml # If web app
-components:
-    - ../../../../components/volsync # For backups
 ```
 
 **Simplified pattern (most common):**
@@ -245,7 +243,8 @@ resources:
 **Note**:
 
 - App-level kustomizations don't need `namespace:` field - they inherit from Flux Kustomization's `targetNamespace`
-- VolSync component is added at the **ks.yaml level**, not in app kustomization
+- The Kopiur component is added at the **ks.yaml level**, not in the app kustomization
+- Use `KOPIUR_CAPACITY`, `KOPIUR_STORAGECLASS`, `KOPIUR_ACCESSMODES` and other `KOPIUR_*` substitutions. Old `VOLSYNC_*` names are ignored and silently fall back to Kopiur defaults.
 - PVC is only needed if the application requires persistent storage beyond what the Helm chart provides
 
 #### Repository Patterns
@@ -399,7 +398,7 @@ spec:
     storageClassName: miroir-replicated
 ```
 
-**Note**: Only create separate `pvc.yaml` for cache/temp storage that doesn't need backup. For critical data, use VolSync component which creates PVCs automatically and provides backup/restore capabilities.
+**Note**: Only create a separate `pvc.yaml` for cache or temporary storage that does not need snapshots. For critical data, use the Kopiur component, which creates the PVC, `Restore`, `SnapshotPolicy` and `SnapshotSchedule` automatically. The generated PVC uses a Kopiur `Restore` data source and continues with an empty volume when no prior snapshot exists.
 
 6. **Create monitoring (if needed)**:
 
@@ -431,8 +430,15 @@ resources:
 #### Storage Patterns
 
 - **PVC**: Use `storageClassName: miroir-replicated` or `miroir-local`
-- **VolSync**: Add component for automatic backups
+- **Kopiur**: Add `../../../../components/kopiur` for automatic snapshots and restores
 - **Access modes**: Typically `["ReadWriteOnce"]`
+
+**Kopiur checks:**
+
+- Confirm the live PVC has `dataSourceRef.apiGroup: kopiur.home-operations.com`, `kind: Restore` and the application name.
+- Confirm `kopiur-controller` and `kopiur-webhook` are ready before diagnosing a restore or Pending PVC.
+- Do not use the retired `components/volsync` component. VolSync is not deployed; leftover CRDs do not mean its controller is available.
+- For a new application, verify the rendered PVC capacity rather than assuming a substitution was consumed.
 
 **Volume types:**
 
@@ -611,10 +617,10 @@ spec:
 just kube browse-pvc <namespace> <claim>  # Mount PVC to temp container
 just kube prune-pods                      # Delete failed/pending/succeeded pods
 just kube sync-es                         # Sync ExternalSecrets
-just kube snapshot                        # Snapshot VolSync PVCs
 just kube cnpg-backup                     # Backup CNPG cluster
-just kube backup-and-suspend              # Full backup + suspend workflow
 ```
+
+Kopiur snapshots are driven by each application's `SnapshotSchedule`. Inspect or trigger Kopiur resources directly rather than using the legacy VolSync `snapshot` and `backup-and-suspend` recipes.
 
 ### CloudNative-PG Cluster Backup and Restore
 
@@ -850,13 +856,38 @@ dataFrom:
 3. PR validation with kubeconform and linting
 4. Renovate automation for updates
 
+### Runtime verification
+
+- A Flux Kustomization with `wait: false` can report `Ready=True` after applying resources while a child HelmRelease or workload is unhealthy. Check the HelmRelease, Deployment rollout, pods and recent logs before declaring an application working.
+- A live ConfigMap containing new configuration does not prove the serving pod loaded it. Confirm the ready pod belongs to the current ReplicaSet and inspect its startup logs or API model inventory.
+- During a failed rollout, Services may continue routing to an older ready ReplicaSet. Compare the ready pod's template hash and mounted configuration with the intended revision.
+- Before diagnosing a custom resource, verify both its CRD and controller are installed and ready. Orphaned CRDs and objects can remain after an operator has been removed.
+
+### Public and private repositories
+
+- The public repository is the `flux-system` GitRepository and is reconciled by `cluster-apps` from `./kubernetes/apps`.
+- The private Forgejo repository is the `flux-system-private` GitRepository and is independently reconciled by `cluster-apps-private` from its own `./kubernetes/apps` tree.
+- Konflate provides checks, image verification, PR comments and webhook automation for the repository configured in its HelmRelease. It does not merge the public and private Flux sources.
+- Put generally reusable, non-sensitive infrastructure in the public repository. Put manifests whose contents or operational context must remain private in `home-ops-private`. Secrets still belong in 1Password and ExternalSecrets, not either Git repository.
+- Avoid defining the same Kubernetes object identity (`apiVersion`, `kind`, namespace and name) in both repositories. Independent Flux Kustomizations can otherwise fight over fields or prune resources owned by the other tree.
+- Check both `cluster-apps` and `cluster-apps-private` when diagnosing cluster state. A healthy public reconciliation says nothing about the private source.
+
+### Local rendering with Flate
+
+- Flate renders Flux Kustomizations locally using `FLATE_PATH=kubernetes/flux/cluster` from `.mise.toml`.
+- Install repository tools with `mise install` before rendering.
+- Use `just kube render-local-ks <namespace> <kustomization>` to render a child Kustomization. The recipe runs Flate through `mise exec` with `--allow-missing-secrets` because source authentication and generated application secrets only exist in the live cluster.
+- Rendering `cluster-apps-private` locally validates the root graph but cannot prove the private source contents are current without its Forgejo credentials. Use the live `flux-system-private` GitRepository and `cluster-apps-private` status for that check.
+- Use `just kube apply-ks` or `just kube delete-ks` only when that direct cluster action is explicitly intended. Normal changes must follow GitOps: edit, commit, push and reconcile.
+- Flate is a local renderer. Konflate is repository automation. Neither combines the public and private repositories.
+
 ## Technologies
 
 **Core:** FluxCD v2, Talos Linux, Cilium CNI, Envoy Gateway
 
 **ML/Data:** Kubeflow, KServe, Ray, Airflow, Kafka, Flink, Milvus
 
-**Storage:** Miroir, VolSync
+**Storage:** Miroir, Kopiur
 
 **Operations:** External Secrets, cert-manager
 
