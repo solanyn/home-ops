@@ -114,7 +114,7 @@ view-secret namespace secret:
 
 [private]
 render-local-ks ns ks:
-    flux-local build ks --namespace "{{ ns }}" --path "{{ kubernetes_dir }}/flux/cluster" "{{ ks }}"
+    mise exec -- flate build ks --allow-missing-secrets --namespace "{{ ns }}" --output yaml "{{ ks }}"
 
 [doc('Add OIDC credentials to 1Password item (creates if missing)')]
 create-oidc app:
