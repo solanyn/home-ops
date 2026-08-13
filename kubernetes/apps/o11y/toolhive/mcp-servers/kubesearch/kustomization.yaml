@@ -6,3 +6,4 @@ metadata:
   namespace: o11y
 resources:
   - mcpserver.yaml
+  - pvc.yaml
