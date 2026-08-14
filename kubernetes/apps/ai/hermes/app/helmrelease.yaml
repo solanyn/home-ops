@@ -228,19 +228,20 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /opt/data
+      home-cache:
+        type: emptyDir
+        globalMounts:
+          - path: /opt/data/home/.cache
+      npm-cache:
+        type: emptyDir
+        globalMounts:
+          - path: /opt/data/home/.npm
       media:
         type: nfs
         server: nas.internal
         path: /mnt/world/media
         globalMounts:
           - path: /media
-            readOnly: true
-      kopia-repo:
-        type: nfs
-        server: nas.internal
-        path: /mnt/world/volsynckopia
-        globalMounts:
-          - path: /volsynckopia
             readOnly: true
       configmap:
         type: configMap
