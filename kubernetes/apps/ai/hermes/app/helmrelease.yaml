@@ -140,8 +140,7 @@ spec:
               MATRIX_HOMESERVER: https://matrix.goyangi.io
               MATRIX_USER_ID: "@hawow:goyangi.io"
               MATRIX_ALLOWED_USERS: "@andrew:goyangi.io"
-              MATRIX_ENCRYPTION: "true"
-              MATRIX_DEVICE_ID: IpTjv8DTWU
+              MATRIX_E2EE_MODE: required
             envFrom:
               - secretRef:
                   name: hermes
