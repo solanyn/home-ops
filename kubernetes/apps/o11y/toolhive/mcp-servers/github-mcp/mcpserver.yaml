@@ -7,12 +7,10 @@ metadata:
 spec:
   image: ghcr.io/github/github-mcp-server:latest
   transport: streamable-http
-  env:
-    - name: GITHUB_TOKEN
-      valueFrom:
-        secretKeyRef:
-          name: toolhive-github
-          key: GITHUB_TOKEN
+  secrets:
+    - name: toolhive-github
+      key: GITHUB_TOKEN
+      targetEnvName: GITHUB_TOKEN
   resources:
     requests:
       cpu: 50m
