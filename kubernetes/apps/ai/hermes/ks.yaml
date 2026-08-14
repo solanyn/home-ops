@@ -14,6 +14,8 @@ spec:
     substitute:
       APP: hermes
       VOLSYNC_CAPACITY: 10Gi
+      KOPIUR_PUID: "10000"
+      KOPIUR_PGID: "10000"
       BREW_PREFIX: /opt/data/homebrew/.linuxbrew
       BREW_USER_HOME: /opt/data/homebrew/.homebrew-user
       # These are bash variables in the install-tools init script.
