@@ -141,7 +141,7 @@ spec:
               MATRIX_USER_ID: "@hawow:goyangi.io"
               MATRIX_ALLOWED_USERS: "@andrew:goyangi.io"
               MATRIX_ENCRYPTION: "true"
-              MATRIX_DEVICE_ID: HERMES_BOT
+              MATRIX_DEVICE_ID: IpTjv8DTWU
             envFrom:
               - secretRef:
                   name: hermes
