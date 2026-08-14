@@ -39,13 +39,6 @@ security:
   redact_secrets: true
 privacy:
   redact_pii: true
-secrets:
-  onepassword:
-    enabled: true
-    env:
-      HONCHO_API_KEY: "op://kubernetes/honcho/HONCHO_API_KEY"
-      BLUEBUBBLES_PASSWORD: "op://kubernetes/bluebubbles/BLUEBUBBLES_PASSWORD"
-      MATRIX_ACCESS_TOKEN: "op://kubernetes/matrix/MATRIX_BOT_ACCESS_TOKEN"
 memory:
   provider: honcho
   honcho_url: http://honcho.ai.svc.cluster.local
