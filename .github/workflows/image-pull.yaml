@@ -59,7 +59,8 @@ jobs:
           OCHARTED_PASSWORD: ${{ steps.load-secrets.outputs.OCHARTED_PASSWORD }}
         run: |
           mkdir -p "$RUNNER_TEMP/ocharted"
-          printf '%s' "$OCHARTED_PASSWORD" | docker login ocharted.goyangi.io --username "$OCHARTED_USERNAME" --password-stdin --config "$RUNNER_TEMP/ocharted"
+          export DOCKER_CONFIG="$RUNNER_TEMP/ocharted"
+          printf '%s' "$OCHARTED_PASSWORD" | docker login ocharted.goyangi.io --username "$OCHARTED_USERNAME" --password-stdin
 
       - name: Setup Mise
         uses: jdx/mise-action@7e36c90d9ab29c415a2384db3006f3ec8a8cc654 # v4.2.4
