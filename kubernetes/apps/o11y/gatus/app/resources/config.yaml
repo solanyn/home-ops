@@ -33,9 +33,15 @@ endpoints:
     conditions:
       - "[CONNECTED] == true"
 
-external-endpoints:
   - name: Alertmanager
     group: monitoring
+    url: http://vmalertmanager-goyangi.o11y.svc.cluster.local:9093/-/healthy
+    interval: 1m
+    conditions:
+      - "[STATUS] == 200"
+
+external-endpoints:
+  - name: home-heartbeat
     token: ${GATUS_HEARTBEAT_TOKEN}
     heartbeat:
       interval: 5m
