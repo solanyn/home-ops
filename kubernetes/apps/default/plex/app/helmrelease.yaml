@@ -77,7 +77,8 @@ spec:
         annotations:
           gatus.home-operations.com/enabled: "true"
           gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 401"]
+            path: /identity
+            conditions: ["[STATUS] == 200"]
         hostnames:
           - "{{ .Release.Name }}.goyangi.io"
         parentRefs:
