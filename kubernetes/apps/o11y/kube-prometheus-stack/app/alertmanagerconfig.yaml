@@ -54,7 +54,7 @@ spec:
         - urlSecret:
             name: alertmanager-secret
             key: ALERTMANAGER_HEARTBEAT_URL
-        - url: http://gatus.o11y.svc.cluster.local/api/v1/endpoints/monitoring_alertmanager/external?success=true
+        - url: http://gatus.o11y.svc.cluster.local/api/v1/endpoints/_home-heartbeat/external?success=true
           httpConfig:
             authorization:
               type: Bearer
