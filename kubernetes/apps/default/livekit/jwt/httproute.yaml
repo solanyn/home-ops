@@ -6,6 +6,10 @@ metadata:
   name: lk-jwt
   annotations:
     external-dns.alpha.kubernetes.io/hostname: livekit-jwt.goyangi.io
+    gatus.home-operations.com/enabled: "true"
+    gatus.home-operations.com/endpoint: |-
+      path: /healthz
+      conditions: ["[STATUS] == 200"]
 spec:
   parentRefs:
     - name: envoy-external
