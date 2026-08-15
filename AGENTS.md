@@ -577,7 +577,7 @@ resources:
 
 #### Security Patterns
 
-- **ExternalSecret**: Reference `onepassword` ClusterSecretStore
+- **ExternalSecret**: Reference `onepassword-connect` ClusterSecretStore
 - **Target secret**: Name as `app-name-secret`
 - **Always use template**: Makes value mapping clear
 
@@ -591,7 +591,7 @@ metadata:
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
-    name: onepassword
+    name: onepassword-connect
   target:
     name: app-name-secret
     creationPolicy: Owner
