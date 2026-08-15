@@ -5,7 +5,7 @@ metadata:
   name: unifi-mcp
   namespace: o11y
 spec:
-  image: ghcr.io/sirkirby/unifi-network-mcp:0.24.1@sha256:7033f372d7a9292eeea361821a37f68a2a235e7e63183fd13fe9a78da7072030
+  image: ghcr.io/sirkirby/unifi-network-mcp:0.27.0@sha256:d6603cf82c13357b3b146bd2b1eee467aba068b0cf200c377fe7e58e0498145b
   transport: streamable-http
   proxyMode: streamable-http
   proxyPort: 8080
