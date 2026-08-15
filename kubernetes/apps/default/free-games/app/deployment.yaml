@@ -50,7 +50,7 @@ spec:
 
         # Sidecar: translates Discord webhook -> Pushover
         - name: webhook-proxy
-          image: python:3.12-alpine
+          image: python:3.14-alpine
           command: ["python3", "-u", "/app/proxy.py"]
           ports:
             - name: proxy
