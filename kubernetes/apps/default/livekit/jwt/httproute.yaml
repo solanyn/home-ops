@@ -15,5 +15,5 @@ spec:
     - livekit-jwt.goyangi.io
   rules:
     - backendRefs:
-        - name: lk-jwt-app
+        - name: lk-jwt
           port: 8080
