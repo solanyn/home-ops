@@ -15,7 +15,7 @@ spec:
                 annotations:
                     reloader.stakater.com/auto: "true"
                 replicas: 1
-                strategy: RollingUpdate
+                strategy: Recreate
                 containers:
                     app:
                         image:
@@ -107,6 +107,15 @@ spec:
                     litellm:
                         app:
                             - path: /app/cache
+            chatgpt-auth:
+                type: secret
+                name: litellm-chatgpt-auth
+                advancedMounts:
+                    litellm:
+                        app:
+                            - path: /var/lib/litellm/chatgpt/auth.json
+                              subPath: auth.json
+                              readOnly: true
         route:
             app:
                 hostnames:
