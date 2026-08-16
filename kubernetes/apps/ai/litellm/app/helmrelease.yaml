@@ -88,12 +88,6 @@ spec:
                                     periodSeconds: 10
                                     failureThreshold: 30
         persistence:
-            chatgpt-auth:
-                existingClaim: litellm-chatgpt-auth
-                advancedMounts:
-                    litellm:
-                        app:
-                            - path: /var/lib/litellm/chatgpt
             config:
                 type: configMap
                 name: litellm-configmap
