@@ -18,7 +18,12 @@ spec:
     remoteWrite:
         url: http://vmsingle-goyangi.o11y.svc:8429
     replicaCount: 1
-    selectAllByDefault: true
+    ruleSelector:
+        matchExpressions:
+            - key: vmalert.datasource
+              operator: NotIn
+              values: [victoria-logs]
+    selectAllByDefault: false
     useDefaultResources: false
     resources:
         requests:
