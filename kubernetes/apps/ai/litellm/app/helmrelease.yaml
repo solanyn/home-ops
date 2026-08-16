@@ -15,11 +15,7 @@ spec:
                 annotations:
                     reloader.stakater.com/auto: "true"
                 replicas: 1
-                strategy:
-                    type: RollingUpdate
-                    rollingUpdate:
-                        maxSurge: 0
-                        maxUnavailable: 1
+                strategy: RollingUpdate
                 containers:
                     app:
                         image:
