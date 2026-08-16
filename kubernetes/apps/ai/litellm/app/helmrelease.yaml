@@ -87,6 +87,18 @@ spec:
                                     initialDelaySeconds: 5
                                     periodSeconds: 10
                                     failureThreshold: 30
+                initContainers:
+                    seed-chatgpt-auth:
+                        image:
+                            repository: busybox
+                            tag: 1.37.0
+                        command:
+                            - sh
+                            - -c
+                            - cp /run/chatgpt-auth/auth.json /var/lib/litellm/chatgpt/auth.json
+                        securityContext:
+                            runAsUser: 0
+                            runAsGroup: 0
         persistence:
             config:
                 type: configMap
@@ -102,13 +114,20 @@ spec:
                         app:
                             - path: /app/cache
             chatgpt-auth:
+                existingClaim: "{{ .Release.Name }}"
+                advancedMounts:
+                    litellm:
+                        seed-chatgpt-auth:
+                            - path: /var/lib/litellm/chatgpt
+                        app:
+                            - path: /var/lib/litellm/chatgpt
+            chatgpt-auth-secret:
                 type: secret
                 name: litellm-chatgpt-auth
                 advancedMounts:
                     litellm:
-                        app:
-                            - path: /var/lib/litellm/chatgpt/auth.json
-                              subPath: auth.json
+                        seed-chatgpt-auth:
+                            - path: /run/chatgpt-auth
                               readOnly: true
         route:
             app:
