@@ -35,6 +35,8 @@ spec:
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
+                mkdir -p /opt/data/.codex
+                chown -R 10000:10000 /opt/data/.codex
 
                 # .config/op may be owned by a stale UID from a restored snapshot;
                 # op refuses to read a config owned by another user. Fix ownership
@@ -49,7 +51,7 @@ spec:
               - -c
               - |
                 set -euo pipefail
-                apt-get update -qq && apt-get install -y -qq curl ca-certificates git build-essential file unzip util-linux patch bzip2 >/dev/null 2>&1
+                apt-get update -qq && apt-get install -y -qq curl ca-certificates git build-essential file unzip util-linux patch bzip2 nodejs npm >/dev/null 2>&1
 
                 # linuxbrew refuses to run as root and needs a writable $HOME.
                 # Install at /opt/data/homebrew/.linuxbrew (PVC-backed, persists across pod restarts)
@@ -107,6 +109,16 @@ spec:
                     if [ -f /opt/data/.config/op/config ]; then
                         chmod 600 /opt/data/.config/op/config || true
                     fi
+
+                    # Stage a pinned Codex CLI in the PVC-backed tool directory.
+                    # Hermes launches codex app-server as its child process.
+                    CODEX_PREFIX="/opt/data/codex"
+                    mkdir -p "$CODEX_PREFIX"
+                    export PATH="$HOMEBREW_PREFIX/bin:$CODEX_PREFIX/bin:$PATH"
+                    npm install --global --prefix "$CODEX_PREFIX" --no-update-notifier --no-fund \
+                      @openai/codex@0.130.0
+                    "$CODEX_PREFIX/bin/codex" --version
+                    "$CODEX_PREFIX/bin/codex" app-server --help >/dev/null
                   '
 
                 chmod -R a+rx "$BREW_PREFIX/bin"
@@ -123,7 +135,8 @@ spec:
             env:
               HERMES_HOME: /opt/data
               HOME: /opt/data
-              PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+              PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/data/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+              CODEX_HOME: /opt/data/.codex
               HOMEBREW_PREFIX: /opt/data/homebrew/.linuxbrew
               HOMEBREW_CELLAR: /opt/data/homebrew/.linuxbrew/Cellar
               HOMEBREW_NO_ANALYTICS: "1"
@@ -235,7 +248,16 @@ spec:
       npm-cache:
         type: emptyDir
         globalMounts:
-          - path: /opt/data/home/.npm
+          - path: /opt/data/.npm
+      runtime-cache:
+        type: emptyDir
+        globalMounts:
+          - path: /opt/data/.cache
+          - path: /opt/data/homebrew/.homebrew-user/.cache
+      codex:
+        type: emptyDir
+        globalMounts:
+          - path: /opt/data/codex
       media:
         type: nfs
         server: nas.internal
