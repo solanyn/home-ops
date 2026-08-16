@@ -2,6 +2,7 @@ _config_version: 27
 model:
   default: reasoning-pool
   provider: litellm
+  openai_runtime: codex_app_server
   base_url: http://litellm.ai.svc.cluster.local:4000/v1
   fallback: '["qwen3.7-plus","mimo-v2.5"]'
 providers:
@@ -33,6 +34,8 @@ agent:
   gateway_timeout: 1800
   restart_drain_timeout: 60
   api_max_retries: 2
+updates:
+  pre_update_backup: false
 streaming:
   enabled: true
 security:
