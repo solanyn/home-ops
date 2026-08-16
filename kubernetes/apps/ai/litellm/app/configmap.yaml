@@ -100,6 +100,16 @@ data:
               model: openai/qwen3.8-max
               api_base: https://opencode.ai/zen/go/v1
               api_key: os.environ/OPENCODE_API_KEY
+          - model_name: chatgpt/gpt-5.4
+            model_info:
+              mode: responses
+              input_cost_per_token: 0.000005
+              cache_creation_input_token_cost: 0.00000625
+              cache_read_input_token_cost: 0.0000005
+              output_cost_per_token: 0.00003
+              max_input_tokens: 1050000
+            litellm_params:
+              model: chatgpt/gpt-5.4
           - model_name: gpt-5.6-luna
             model_info:
               mode: chat
@@ -135,19 +145,17 @@ data:
               order: 2
           - model_name: reasoning-pool
             model_info:
-              mode: chat
+              mode: responses
               supports_function_calling: true
             litellm_params:
-              model: openai/gpt-5.6-luna
-              api_base: https://opencode.ai/zen/go/v1
-              api_key: os.environ/OPENCODE_API_KEY
+              model: chatgpt/gpt-5.4
               order: 1
           - model_name: reasoning-pool
             model_info:
               mode: chat
               supports_function_calling: true
             litellm_params:
-              model: openai/qwen3.7-plus
+              model: openai/gpt-5.6-luna
               api_base: https://opencode.ai/zen/go/v1
               api_key: os.environ/OPENCODE_API_KEY
               order: 2
@@ -156,10 +164,19 @@ data:
               mode: chat
               supports_function_calling: true
             litellm_params:
-              model: openai/mimo-v2.5
+              model: openai/qwen3.7-plus
               api_base: https://opencode.ai/zen/go/v1
               api_key: os.environ/OPENCODE_API_KEY
               order: 3
+          - model_name: reasoning-pool
+            model_info:
+              mode: chat
+              supports_function_calling: true
+            litellm_params:
+              model: openai/mimo-v2.5
+              api_base: https://opencode.ai/zen/go/v1
+              api_key: os.environ/OPENCODE_API_KEY
+              order: 4
           - model_name: frontier-pool
             model_info:
               mode: chat
