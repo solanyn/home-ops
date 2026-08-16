@@ -2,15 +2,15 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAlert
 metadata:
-    name: goyangi
+    name: logs
 spec:
     datasource:
-        url: http://vmsingle-goyangi.o11y.svc:8429
-    evaluationInterval: 1m
+        url: http://victoria-logs.o11y.svc:9428
+    evaluationInterval: 30s
     externalLabels:
         cluster: goyangi
     extraArgs:
-        external.url: https://victoria-metrics.goyangi.io
+        external.url: https://victoria-logs.goyangi.io
     notifiers:
         - url: http://vmalertmanager-goyangi.o11y.svc:9093
     remoteRead:
@@ -18,15 +18,14 @@ spec:
     remoteWrite:
         url: http://vmsingle-goyangi.o11y.svc:8429
     replicaCount: 1
+    ruleNamespaceSelector: {}
     ruleSelector:
-        matchExpressions:
-            - key: vmalert.datasource
-              operator: NotIn
-              values: [victoria-logs]
+        matchLabels:
+            vmalert.datasource: victoria-logs
     selectAllByDefault: false
     useDefaultResources: false
     resources:
         requests:
             cpu: 10m
         limits:
-            memory: 256Mi
+            memory: 128Mi

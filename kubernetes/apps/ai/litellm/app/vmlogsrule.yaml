@@ -1,0 +1,29 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMRule
+metadata:
+    name: litellm-chatgpt-auth
+    labels:
+        vmalert.datasource: victoria-logs
+spec:
+    groups:
+        - name: litellm-auth.rules
+          type: vlogs
+          interval: 30s
+          rules:
+              - alert: LiteLLMChatGPTAuthenticationRequired
+                expr: |-
+                    kubernetes.pod_name:~"litellm-.*" "Enter code:"
+                    | extract "2) Enter code: <device_code>" from _msg
+                    | stats by (device_code, kubernetes.pod_name) count() as matches
+                    | filter matches:>0
+                keep_firing_for: 15m
+                annotations:
+                    summary: LiteLLM requires ChatGPT authentication
+                    description: Authenticate at https://auth.openai.com/codex/device with code {{ $labels.device_code }}
+                    auth_url: https://auth.openai.com/codex/device
+                    device_code: "{{ $labels.device_code }}"
+                    pod: '{{ index $labels "kubernetes.pod_name" }}'
+                labels:
+                    severity: critical
+                    category: authentication
