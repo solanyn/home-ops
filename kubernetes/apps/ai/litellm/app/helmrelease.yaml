@@ -16,8 +16,10 @@ spec:
                     reloader.stakater.com/auto: "true"
                 replicas: 1
                 strategy:
-                    type: Recreate
-                    rollingUpdate: null
+                    type: RollingUpdate
+                    rollingUpdate:
+                        maxSurge: 0
+                        maxUnavailable: 1
                 containers:
                     app:
                         image:
