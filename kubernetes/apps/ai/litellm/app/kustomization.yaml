@@ -12,4 +12,4 @@ resources:
     - ./oidc.yaml
     - ./prometheusrule.yaml
     - ./servicemonitor.yaml
-    - ./vmlogsrule.yaml
+    - ./vmrule.yaml
