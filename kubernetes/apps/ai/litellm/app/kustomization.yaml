@@ -6,7 +6,6 @@ resources:
     - ./configmap.yaml
     - ./dashboard
     - ./externalsecret.yaml
-    - ./chatgpt-externalsecret.yaml
     - ./grafanadashboard.yaml
     - ./helmrelease.yaml
     - ./ocirepository.yaml
