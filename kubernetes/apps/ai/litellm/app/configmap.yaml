@@ -195,6 +195,16 @@ data:
               api_base: https://opencode.ai/zen/go/v1
               api_key: os.environ/OPENCODE_API_KEY
               order: 2
+          - model_name: chatgpt/gpt-5.4
+            model_info:
+              mode: responses
+            litellm_params:
+              model: chatgpt/gpt-5.4
+          - model_name: chatgpt/gpt-5.3-codex
+            model_info:
+              mode: responses
+            litellm_params:
+              model: chatgpt/gpt-5.3-codex
         general_settings:
           health_check_endpoint: /v1/health
           store_model_in_db: false
