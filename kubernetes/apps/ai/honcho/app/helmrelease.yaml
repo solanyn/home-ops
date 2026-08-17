@@ -24,6 +24,8 @@ spec:
                 value: Australia/Sydney
               - name: EMBEDDING_VECTOR_DIMENSIONS
                 value: "1024"
+              - name: AUTH_USE_AUTH
+                value: "false"
             envFrom:
               - secretRef:
                   name: honcho-secret
