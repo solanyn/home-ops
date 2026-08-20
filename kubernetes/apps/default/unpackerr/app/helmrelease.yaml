@@ -77,8 +77,8 @@ spec:
       media:
         type: nfs
         server: nas.internal
-        path: /mnt/world/media
+        path: /mnt/world/media/downloads
         globalMounts:
-          - path: /media
+          - path: /downloads
       tmp:
         type: emptyDir
