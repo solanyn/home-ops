@@ -4,7 +4,7 @@ model:
   provider: litellm
   openai_runtime: codex_app_server
   base_url: http://litellm.ai.svc.cluster.local:4000/v1
-  fallback: '["qwen3.7-plus","mimo-v2.5"]'
+  fallback: '["chatgpt/gpt-5.6-luna"]'
 providers:
   litellm:
     api: http://litellm.ai.svc.cluster.local:4000/v1
