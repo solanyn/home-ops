@@ -26,9 +26,11 @@ terminal:
   lifetime_seconds: 300
 compression:
   enabled: true
-  threshold: 0.50
+  threshold: 0.35
   target_ratio: 0.20
-  protect_last_n: 20
+  tail_mode: lean
+  protect_last_n: 12
+  min_tail_user_messages: 3
 agent:
   max_turns: 60
   gateway_timeout: 1800
