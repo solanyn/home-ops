@@ -38,14 +38,14 @@ data:
               mode: responses
               supports_function_calling: true
             litellm_params:
-              model: chatgpt/gpt-5.6-sol
+              model: chatgpt/gpt-5.6-luna
               order: 1
           - model_name: reasoning-pool
             model_info:
               mode: responses
               supports_function_calling: true
             litellm_params:
-              model: chatgpt/gpt-5.6-luna
+              model: chatgpt/gpt-5.6-sol
               order: 2
           - model_name: frontier-pool
             model_info:
