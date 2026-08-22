@@ -79,6 +79,6 @@ spec:
         server: nas.internal
         path: /mnt/world/media/downloads
         globalMounts:
-          - path: /downloads
+          - path: /media/downloads
       tmp:
         type: emptyDir
