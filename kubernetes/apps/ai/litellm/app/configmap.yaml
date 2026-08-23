@@ -31,7 +31,7 @@ data:
               mode: chat
               supports_function_calling: true
             litellm_params:
-              model: openai/deepseek-v4-flash
+              model: openai/mimo-v2.5
               api_base: os.environ/OPENCODE_GO_API_BASE
               api_key: os.environ/OPENCODE_API_KEY
               order: 1
@@ -40,19 +40,10 @@ data:
               mode: chat
               supports_function_calling: true
             litellm_params:
-              model: openai/mimo-v2.5
+              model: openai/deepseek-v4-flash
               api_base: os.environ/OPENCODE_GO_API_BASE
               api_key: os.environ/OPENCODE_API_KEY
               order: 2
-          - model_name: cron-pool
-            model_info:
-              mode: chat
-              supports_function_calling: true
-            litellm_params:
-              model: openai/deepseek-v4-flash
-              api_base: os.environ/OPENCODE_ZEN_API_BASE
-              api_key: os.environ/OPENCODE_API_KEY
-              order: 3
           - model_name: reasoning-pool
             model_info:
               mode: responses
