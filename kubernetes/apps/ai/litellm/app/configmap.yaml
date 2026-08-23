@@ -28,11 +28,31 @@ data:
               model: chatgpt/gpt-5.6-sol
           - model_name: cron-pool
             model_info:
-              mode: responses
+              mode: chat
               supports_function_calling: true
             litellm_params:
-              model: chatgpt/gpt-5.6-luna
+              model: openai/deepseek-v4-flash
+              api_base: os.environ/OPENCODE_GO_API_BASE
+              api_key: os.environ/OPENCODE_API_KEY
               order: 1
+          - model_name: cron-pool
+            model_info:
+              mode: chat
+              supports_function_calling: true
+            litellm_params:
+              model: openai/mimo-v2.5
+              api_base: os.environ/OPENCODE_GO_API_BASE
+              api_key: os.environ/OPENCODE_API_KEY
+              order: 2
+          - model_name: cron-pool
+            model_info:
+              mode: chat
+              supports_function_calling: true
+            litellm_params:
+              model: openai/deepseek-v4-flash
+              api_base: os.environ/OPENCODE_ZEN_API_BASE
+              api_key: os.environ/OPENCODE_API_KEY
+              order: 3
           - model_name: reasoning-pool
             model_info:
               mode: responses
@@ -81,6 +101,7 @@ data:
           cooldown_time: 30
           enable_pre_call_checks: true
           fallbacks:
+            - cron-pool: [chatgpt/gpt-5.6-luna]
             - reasoning-pool: [cron-pool]
             - frontier-pool: [reasoning-pool]
         litellm_settings:
