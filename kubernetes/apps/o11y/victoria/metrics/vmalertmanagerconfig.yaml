@@ -52,9 +52,11 @@ spec:
           pushover_configs:
               - send_resolved: true
                 sound: gamelan
-                title: "VMAlert"
+                title: "Home Ops Alert"
+                message: "An alert is firing or has resolved. Open Siren to inspect the current alert state and details."
+                url: https://siren.goyangi.io
+                url_title: Open in Siren
                 priority: "0"
-                url_title: View in Alertmanager
                 token:
                     name: alertmanager-secret
                     key: ALERTMANAGER_PUSHOVER_TOKEN
