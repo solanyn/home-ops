@@ -41,6 +41,8 @@ spec:
                             PROXY_BASE_URL: https://litellm.goyangi.io
                             REDIS_HOST: redis.storage.svc.cluster.local
                             REDIS_PORT: "6379"
+                            OPENCODE_GO_API_BASE: https://opencode.ai/zen/go/v1
+                            OPENCODE_ZEN_API_BASE: https://opencode.ai/zen/v1
                             GENERIC_CLIENT_ID: litellm
                             GENERIC_CLIENT_SECRET:
                                 valueFrom:
