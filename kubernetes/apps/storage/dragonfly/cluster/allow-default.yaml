@@ -1,0 +1,19 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: dragonfly-cluster-default
+spec:
+  endpointSelector:
+    matchLabels:
+      app: dragonfly-cluster
+      app.kubernetes.io/name: dragonfly
+      app.kubernetes.io/part-of: dragonfly
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: default
+      toPorts:
+        - ports:
+            - protocol: TCP
+              port: "6379"
