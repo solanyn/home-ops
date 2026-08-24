@@ -91,7 +91,7 @@ tts:
 stt:
   provider: openai
   openai:
-    model: parakeet-tdt-0.6b-v2
+    model: mlx-community--parakeet-tdt-0.6b-v3
     base_url: http://mac.internal:8000/v1
 delegation:
   max_iterations: 50
