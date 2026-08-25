@@ -26,8 +26,6 @@ spec:
               CLEANRR_SERVERS__RADARR__URL: http://radarr.default.svc.cluster.local
               CLEANRR_SERVERS__SONARR__URL: http://sonarr.default.svc.cluster.local
               TZ: Australia/Sydney
-              CLEANRR_SERVERS__RADARR__ENABLED: true
-              CLEANRR_SERVERS__SONARR__ENABLED: true
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
