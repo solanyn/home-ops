@@ -20,7 +20,7 @@ spec:
         image:
           url: oci://ghcr.io/ishioni/eep:0.3.0
       config:
-        theme: lost-in-space
+        theme: cats
         showDetails: true
         locale: auto
       failOpen: false
