@@ -4,7 +4,10 @@ kind: RenovateJob
 metadata:
   name: solanyn
 spec:
-  discoveryFilters: ["solanyn/*"]
+  discoveryFilters:
+    - solanyn/containers
+    - solanyn/mono
+    - solanyn/home-ops
   skipForks: true
   githubAppReference:
     secretName: renovate-github-bot
