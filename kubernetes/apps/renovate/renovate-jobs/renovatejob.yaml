@@ -1,0 +1,64 @@
+---
+apiVersion: renovate-operator.mogenius.com/v1alpha1
+kind: RenovateJob
+metadata:
+  name: solanyn
+spec:
+  discoveryFilters: ["solanyn/*"]
+  skipForks: true
+  githubAppReference:
+    secretName: renovate-github-bot
+    appIdSecretKey: APP_ID
+    installationIdSecretKey: INSTALL_ID
+    pemSecretKey: PEM
+  extraEnv:
+    - name: LOG_LEVEL
+      value: debug
+    - name: RENOVATE_ALLOWED_COMMANDS
+      value: |-
+        ["pnpm run bundle", "^mise install && mise lock$"]
+    - name: RENOVATE_ALLOWED_UNSAFE_EXECUTIONS
+      value: |-
+        ["mise"]
+    - name: RENOVATE_PLATFORM_COMMIT_ENABLED
+      value: "true"
+    - name: OCHARTED_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: renovate-ocharted
+          key: OCHARTED_USERNAME
+    - name: OCHARTED_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: renovate-ocharted
+          key: OCHARTED_PASSWORD
+    - name: RENOVATE_HOST_RULES
+      value: >-
+        [
+          {
+            "hostType": "docker",
+            "matchHost": "ocharted.goyangi.io",
+            "username": "$(OCHARTED_USERNAME)",
+            "password": "$(OCHARTED_PASSWORD)"
+          }
+        ]
+    - name: RENOVATE_SECRETS
+      value: >-
+        {
+          "OCHARTED_USERNAME": "$(OCHARTED_USERNAME)",
+          "OCHARTED_PASSWORD": "$(OCHARTED_PASSWORD)"
+        }
+  image: ghcr.io/renovatebot/renovate:44.48.3
+  parallelism: 5
+  provider:
+    name: github
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  schedule: 20 * * * *
+
+  webhook:
+    enabled: true
+    authentication:
+      enabled: false
