@@ -4,5 +4,4 @@ kind: Kustomization
 namespace: renovate
 resources:
   - ./namespace.yaml
-  - ./renovate-operator/ks.yaml
-  - ./renovate-jobs/ks.yaml
+  - ./ks.yaml
