@@ -21,6 +21,8 @@ spec:
       enabled: true
     policy:
       enabled: true
+      allowedHosts:
+        - forgejo.goyangi.io
       allowedImages:
         - renovate/renovate
         - docker.io/renovate/renovate

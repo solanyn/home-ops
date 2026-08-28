@@ -65,3 +65,24 @@ spec:
     enabled: true
     authentication:
       enabled: false
+---
+apiVersion: renovate-operator.mogenius.com/v1alpha1
+kind: RenovateJob
+metadata:
+  name: forgejo
+spec:
+  discoveryFilters:
+    - andrew/nix-darwin
+  skipForks: true
+  secretRef: renovate-forgejo
+  provider:
+    name: forgejo
+    endpoint: https://forgejo.goyangi.io
+    publicEndpoint: https://forgejo.goyangi.io
+  image: ghcr.io/renovatebot/renovate:44.48.3
+  parallelism: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  schedule: 40 * * * *
