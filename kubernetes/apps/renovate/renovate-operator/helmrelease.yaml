@@ -22,7 +22,10 @@ spec:
     policy:
       enabled: true
       allowedHosts:
+        - api.github.com
         - forgejo.goyangi.io
+        - github.com
+        - ocharted.goyangi.io
       allowedImages:
         - renovate/renovate
         - docker.io/renovate/renovate
