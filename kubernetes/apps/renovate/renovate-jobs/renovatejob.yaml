@@ -10,7 +10,7 @@ spec:
     - solanyn/home-ops
   skipForks: true
   githubAppReference:
-    secretName: renovate-github-bot
+    secretName: renovate
     appIdSecretKey: APP_ID
     installationIdSecretKey: INSTALL_ID
     pemSecretKey: PEM
@@ -28,12 +28,12 @@ spec:
     - name: OCHARTED_USERNAME
       valueFrom:
         secretKeyRef:
-          name: renovate-ocharted
+          name: renovate
           key: OCHARTED_USERNAME
     - name: OCHARTED_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: renovate-ocharted
+          name: renovate
           key: OCHARTED_PASSWORD
     - name: RENOVATE_HOST_RULES
       value: >-
@@ -74,7 +74,7 @@ spec:
   discoveryFilters:
     - andrew/nix-darwin
   skipForks: true
-  secretRef: renovate-forgejo
+  secretRef: renovate
   provider:
     name: forgejo
     endpoint: https://forgejo.goyangi.io
