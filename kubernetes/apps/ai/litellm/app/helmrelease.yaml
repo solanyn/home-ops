@@ -39,7 +39,7 @@ spec:
                             LITELLM_LOG: INFO
                             LITELLM_MODE: PRODUCTION
                             PROXY_BASE_URL: https://litellm.goyangi.io
-                            REDIS_HOST: redis.storage.svc.cluster.local
+                            REDIS_HOST: dragonfly-cluster.storage.svc.cluster.local
                             REDIS_PORT: "6379"
                             OPENCODE_GO_API_BASE: https://opencode.ai/zen/go/v1
                             GENERIC_CLIENT_ID: litellm

@@ -9,11 +9,6 @@ spec:
     - solanyn/mono
     - solanyn/home-ops
   skipForks: true
-  githubAppReference:
-    secretName: renovate
-    appIdSecretKey: APP_ID
-    installationIdSecretKey: INSTALL_ID
-    pemSecretKey: PEM
   extraEnv:
     - name: LOG_LEVEL
       value: debug
@@ -28,12 +23,12 @@ spec:
     - name: OCHARTED_USERNAME
       valueFrom:
         secretKeyRef:
-          name: renovate
+          name: renovate-ocharted
           key: OCHARTED_USERNAME
     - name: OCHARTED_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: renovate
+          name: renovate-ocharted
           key: OCHARTED_PASSWORD
     - name: RENOVATE_HOST_RULES
       value: >-
@@ -45,13 +40,7 @@ spec:
             "password": "$(OCHARTED_PASSWORD)"
           }
         ]
-    - name: RENOVATE_SECRETS
-      value: >-
-        {
-          "OCHARTED_USERNAME": "$(OCHARTED_USERNAME)",
-          "OCHARTED_PASSWORD": "$(OCHARTED_PASSWORD)"
-        }
-  image: ghcr.io/renovatebot/renovate:44.48.3
+  image: ghcr.io/renovatebot/renovate:44.50.3
   parallelism: 5
   provider:
     name: github
@@ -60,6 +49,7 @@ spec:
       cpu: 100m
       memory: 128Mi
   schedule: 20 * * * *
+  secretRef: renovate-github-auth-token
 
   webhook:
     enabled: true
@@ -74,12 +64,12 @@ spec:
   discoveryFilters:
     - andrew/nix-darwin
   skipForks: true
-  secretRef: renovate
+  secretRef: renovate-forgejo
   provider:
     name: forgejo
     endpoint: https://forgejo.goyangi.io
     publicEndpoint: https://forgejo.goyangi.io
-  image: ghcr.io/renovatebot/renovate:44.48.3
+  image: ghcr.io/renovatebot/renovate:44.50.3
   parallelism: 1
   resources:
     requests:
