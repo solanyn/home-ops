@@ -6,13 +6,14 @@
     "github>home-operations/renovate-presets//apps/talosFactory.json5#8.1.0",
     ":timezone(Australia/Sydney)",
   ],
-  lockFileMaintenance: {
-    enabled: true,
-    schedule: ["before 3am on the first day of the month"],
-    commitMessageExtra: "({{manager}})",
-    additionalBranchPrefix: "{{manager}}-",
+  ignorePaths: ["**/*.sops.*", "**/resources/**"],
+  flux: {
+    managerFilePatterns: ["/^kubernetes/.+\\.yaml(?:\\.j2)?$/"],
   },
-  ignorePaths: ["**/resources/**", "third_party/"],
+  forkProcessing: "disabled",
+  kubernetes: {
+    managerFilePatterns: ["/^kubernetes/.+\\.yaml(?:\\.j2)?$/"],
+  },
   hostRules: [
     {
       description: "Authenticate against the ocharted OCI registry",
