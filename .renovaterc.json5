@@ -1,10 +1,19 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: [
-    "github>home-operations/renovate-presets#8.1.0",
-    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5#8.1.0",
-    "github>home-operations/renovate-presets//apps/talosFactory.json5#8.1.0",
-    ":timezone(Australia/Sydney)",
+    "abandonments:recommended",
+    ":skipStatusChecks",
+    "github>joryirving/renovate-config",
+    "github>joryirving/home-ops//.renovate/autoMerge.json5",
+    "github>joryirving/home-ops//.renovate/changelogs.json5",
+    "github>joryirving/home-ops//.renovate/customManagers.json5",
+    "github>joryirving/home-ops//.renovate/grafanaDashboards.json5",
+    "github>joryirving/home-ops//.renovate/groups.json5",
+    "github>joryirving/home-ops//.renovate/minecraft.json5",
+    "github>joryirving/home-ops//.renovate/overrides.json5",
+    "github>joryirving/home-ops//.renovate/packageRules.json5",
+    "github>joryirving/home-ops//.renovate/talosFactory.json5",
+    ":semanticCommits",
   ],
   ignorePaths: ["**/*.sops.*", "**/resources/**"],
   flux: {
@@ -14,107 +23,4 @@
   kubernetes: {
     managerFilePatterns: ["/^kubernetes/.+\\.yaml(?:\\.j2)?$/"],
   },
-  hostRules: [
-    {
-      description: "Authenticate against the ocharted OCI registry",
-      matchHost: "ocharted.goyangi.io",
-      hostType: "docker",
-      username: "{{ secrets.OCHARTED_USERNAME }}",
-      password: "{{ secrets.OCHARTED_PASSWORD }}",
-    },
-  ],
-  packageRules: [
-    // Auto-merge rules
-    {
-      description: "Auto-merge trusted OCI digests",
-      matchDatasources: ["docker"],
-      matchUpdateTypes: ["digest"],
-      matchPackageNames: ["/home-operations/"],
-      automerge: true,
-      automergeType: "pr",
-      ignoreTests: false,
-    },
-    {
-      description: "Auto-merge GitHub Actions",
-      matchManagers: ["github-actions"],
-      matchUpdateTypes: ["minor", "patch", "digest"],
-      automerge: true,
-      automergeType: "branch",
-      minimumReleaseAge: "3 days",
-      ignoreTests: true,
-    },
-    {
-      description: "Auto-merge trusted GitHub Actions",
-      matchManagers: ["github-actions"],
-      matchPackageNames: ["/^actions\\//", "/^renovatebot\\//"],
-      matchUpdateTypes: ["minor", "patch", "digest"],
-      automerge: true,
-      automergeType: "branch",
-      minimumReleaseAge: "1 minute",
-      ignoreTests: true,
-    },
-    {
-      description: "Auto-merge Grafana dashboards",
-      matchDatasources: ["custom.grafana-dashboards"],
-      matchUpdateTypes: ["major"],
-      automerge: true,
-      automergeType: "branch",
-      ignoreTests: true,
-    },
-    {
-      description: "Auto-merge Renovate Presents",
-      matchManagers: ["renovate-config"],
-      matchUpdateTypes: ["minor", "patch"],
-      automerge: true,
-      automergeType: "branch",
-      ignoreTests: true,
-    },
-    // Grouping rules
-    {
-      description: "Actions Runner Controller Group",
-      groupName: "actions-runner-controller",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/gha-runner-scale-set-controller/", "/gha-runner-scale-set/"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      minimumGroupSize: 2,
-    },
-    {
-      description: "Flux Operator Group",
-      groupName: "flux-operator",
-      matchDatasources: ["docker"],
-      matchPackageNames: ["/flux-operator/", "/flux-instance/"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      minimumGroupSize: 2,
-    },
-    {
-      description: "Talos Group",
-      groupName: "talos",
-      matchPackageNames: ["siderolabs/talos"],
-      group: {
-        commitMessageTopic: "{{{groupName}}} group",
-      },
-      minimumGroupSize: 2,
-    },
-    // Labeling rules
-    {
-      matchUpdateTypes: ["major"],
-      addLabels: ["type/major"],
-    },
-    {
-      matchUpdateTypes: ["minor"],
-      addLabels: ["type/minor"],
-    },
-    {
-      matchUpdateTypes: ["patch"],
-      addLabels: ["type/patch"],
-    },
-    {
-      matchUpdateTypes: ["digest"],
-      addLabels: ["type/digest"],
-    },
-  ],
 }
