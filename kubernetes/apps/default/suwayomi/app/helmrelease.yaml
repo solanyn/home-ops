@@ -1,0 +1,145 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: suwayomi
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: suwayomi
+  interval: 1h
+  values:
+    controllers:
+      suwayomi:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-config:
+            image:
+              repository: docker.io/library/busybox
+              tag: 1.38
+            command:
+              - sh
+              - -c
+              - |
+                set -e
+                cp /configmap/server.conf /tachidesk-data/server.conf
+                mkdir -p /media/downloads
+        containers:
+          app:
+            image:
+              repository: ghcr.io/suwayomi/tachidesk
+              tag: v2.3.2333@sha256:ddbe2ca6294a6f19fea094a2e372153adc6053ba34a361719fabcd1d10045bd8
+            env:
+              TZ: Australia/Sydney
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 4567
+                  initialDelaySeconds: 60
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+    service:
+      app:
+        controller: suwayomi
+        ports:
+          http:
+            port: 4567
+    route:
+      app:
+        hostnames:
+          - suwayomi.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          suwayomi:
+            init-config:
+              - path: /tachidesk-data
+            app:
+              - path: /home/suwayomi/.local/share/Tachidesk
+      config-file:
+        type: configMap
+        name: suwayomi
+        advancedMounts:
+          suwayomi:
+            init-config:
+              - path: /configmap
+                readOnly: true
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media/suwayomi
+        globalMounts:
+          - path: /media
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
+    configMaps:
+      config:
+        data:
+          server.conf: |
+            server.ip = "0.0.0.0"
+            server.port = 4567
+            server.authMode = "none"
+            server.downloadAsCbz = true
+            server.downloadsPath = "/media/downloads"
+            server.autoDownloadNewChapters = false
+            server.autoDownloadNewChaptersLimit = 0
+            server.autoDownloadIgnoreReUploads = true
+            server.globalUpdateInterval = 12
+            server.excludeUnreadChapters = false
+            server.excludeNotStarted = false
+            server.excludeCompleted = false
+            server.updateMangas = true
+            server.flareSolverrEnabled = true
+            server.flareSolverrUrl = "http://flaresolverr.default.svc.cluster.local:8191"
+            server.flareSolverrTimeout = 60
+            server.flareSolverrSessionName = "suwayomi"
+            server.flareSolverrSessionTtl = 15
+            server.webUIEnabled = true
+            server.initialOpenInBrowserEnabled = false
+            server.webUIInterface = "browser"
+            server.webUIFlavor = "WebUI"
+            server.webUIChannel = "STABLE"
+            server.webUIUpdateCheckInterval = 23
+            server.extensionRepos = [
+              "https://raw.githubusercontent.com/keiyoushi/extensions/repo/index.min.json",
+              "https://raw.githubusercontent.com/yuzonomanga/yuzono-extensions/repo/index.min.json"
+            ]
+            server.debugLogsEnabled = false
+            server.maxSourcesInParallel = 6
+            server.maxLogFiles = 14
+            server.maxLogFileSize = "10mb"
+            server.maxLogFolderSize = "100mb"

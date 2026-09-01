@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
@@ -7,12 +7,5 @@ resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
   - ./oidc.yaml
+  - ./route.yaml
   - ./securitypolicy.yaml
-configMapGenerator:
-  - name: sonarr-configmap
-    files:
-      - refresh-series.sh=./resources/refresh-series.sh
-generatorOptions:
-  disableNameSuffixHash: true
-  annotations:
-    kustomize.toolkit.fluxcd.io/substitute: disabled

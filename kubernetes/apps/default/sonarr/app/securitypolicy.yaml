@@ -9,7 +9,7 @@ spec:
       name: sonarr-oidc
     logoutPath: /logout
     provider:
-      issuer: https://id.goyangi.io/
+      issuer: https://kanidm.goyangi.io/
     redirectURL: https://sonarr.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:

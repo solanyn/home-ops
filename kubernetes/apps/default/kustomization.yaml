@@ -45,6 +45,7 @@ resources:
   - ./seerr/ks.yaml
   - ./dufs/ks.yaml
   - ./sonarr/ks.yaml
+  - ./suwayomi/ks.yaml
   - ./tautulli/ks.yaml
   - ./thelounge/ks.yaml
   - ./vgc/ks.yaml
