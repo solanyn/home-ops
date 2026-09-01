@@ -4,7 +4,7 @@ name: tunnel
 services:
   towonel-hub:
     container_name: towonel-hub
-    image: codeberg.org/towonel/towonel-node:1.5.3
+    image: codeberg.org/towonel/towonel-node:1.6.0
     restart: unless-stopped
     environment:
       RUST_LOG: info
