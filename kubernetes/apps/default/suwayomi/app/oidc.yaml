@@ -1,0 +1,17 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: suwayomi
+spec:
+  clientID: suwayomi
+  callbackUrls:
+    - https://suwayomi.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://suwayomi.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: suwayomi-oidc
+    keys:
+      clientSecret: client-secret

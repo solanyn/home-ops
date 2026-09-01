@@ -1,0 +1,50 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kanidm
+spec:
+  secretName: kanidm-tls
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  dnsNames:
+    - kanidm.goyangi.io
+---
+apiVersion: kaniop.rs/v1beta1
+kind: Kanidm
+metadata:
+  name: kanidm
+spec:
+  domain: kanidm.goyangi.io
+  origin: https://kanidm.goyangi.io
+  image: kanidm/server:1.11.1
+  tlsSecretName: kanidm-tls
+  replicaGroups:
+    - name: default
+      replicas: 1
+      primaryNode: true
+      resources:
+        requests:
+          cpu: 10m
+        limits:
+          memory: 1Gi
+  storage:
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: miroir-replicated
+        resources:
+          requests:
+            storage: 5Gi
+  gateway:
+    parentRefs:
+      - name: envoy-internal
+        namespace: network
+        sectionName: https
+    hostnames:
+      - kanidm.goyangi.io

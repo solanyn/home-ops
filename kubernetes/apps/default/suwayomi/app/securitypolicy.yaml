@@ -1,16 +1,17 @@
+---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: SecurityPolicy
 metadata:
-  name: sonarr
+  name: suwayomi
 spec:
   oidc:
-    clientID: sonarr
+    clientID: suwayomi
     clientSecret:
-      name: sonarr-oidc
+      name: suwayomi-oidc
     logoutPath: /logout
     provider:
-      issuer: https://kanidm.goyangi.io/
-    redirectURL: https://sonarr.goyangi.io/oauth2/callback
+      issuer: https://id.goyangi.io/
+    redirectURL: https://suwayomi.goyangi.io/oauth2/callback
     refreshToken: true
     scopes:
       - openid
@@ -19,4 +20,4 @@ spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
-      name: sonarr
+      name: suwayomi
