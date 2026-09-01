@@ -13,7 +13,7 @@ spec:
         replicaCount: 1
         image:
             repository: ghcr.io/rajsinghtech/garage-operator
-            tag: v0.7.5
+            tag: v0.7.6
         webhooks:
             enabled: false
         leaderElection:
