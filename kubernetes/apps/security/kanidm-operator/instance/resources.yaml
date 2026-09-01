@@ -1,0 +1,29 @@
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmGroup
+metadata:
+  name: sonarr-users
+  namespace: security
+spec:
+  kanidmRef:
+    name: kanidm
+  members:
+    - andrew-poc
+  accountPolicy:
+    credentialTypeMinimum: passkey
+    allowPrimaryCredFallback: false
+    authSessionExpiry: 86400
+---
+apiVersion: kaniop.rs/v1beta1
+kind: KanidmPersonAccount
+metadata:
+  name: andrew-poc
+  namespace: security
+spec:
+  kanidmRef:
+    name: kanidm
+  personAttributes:
+    displayname: Andrew POC
+    mail:
+      - andrew-poc@goyangi.io
+  credentialsTokenTtl: 3600
