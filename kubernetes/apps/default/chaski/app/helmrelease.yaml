@@ -23,9 +23,6 @@ spec:
         radarr:
           apprise:
             url: pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "RADARR_PUSHOVER_TOKEN" }}
-        sonarr:
-          apprise:
-            url: pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "SONARR_PUSHOVER_TOKEN" }}
         readarr:
           apprise:
             url: pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "READARR_PUSHOVER_TOKEN" }}
@@ -70,41 +67,6 @@ spec:
             priority: low
             url: "{{ .payload.applicationUrl }}"
             url_title: View Movies
-          whenExpr: payload.eventType == "Test"
-        sonarr-download:
-          target: sonarr
-          title: Episode {{ if .payload.isUpgrade }}Upgraded{{ else }}Added{{ end }}
-          message: |-
-            <b>{{ .payload.series.title }} ({{ printf "S%02dE%02d" (toInt (index .payload.episodes 0).seasonNumber) (toInt (index .payload.episodes 0).episodeNumber) }})</b>
-            <small>{{ (index .payload.episodes 0).title }}</small>
-            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
-          params:
-            format: html
-            priority: low
-            url: "{{ .payload.applicationUrl }}/series/{{ .payload.series.titleSlug }}"
-            url_title: View Series
-          whenExpr: payload.eventType == "Download"
-        sonarr-manual:
-          target: sonarr
-          title: Episode Requires Manual Interaction
-          message: |-
-            <b>{{ .payload.series.title }}</b>
-            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
-          params:
-            format: html
-            priority: high
-            url: "{{ .payload.applicationUrl }}/activity/queue"
-            url_title: View Queue
-          whenExpr: payload.eventType == "ManualInteractionRequired"
-        sonarr-test:
-          target: sonarr
-          title: Test Notification
-          message: Howdy this is a test notification
-          params:
-            format: html
-            priority: low
-            url: "{{ .payload.applicationUrl }}"
-            url_title: View Series
           whenExpr: payload.eventType == "Test"
         readarr-download:
           target: readarr
