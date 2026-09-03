@@ -36,7 +36,6 @@ resources:
   - ./print/ks.yaml
   - ./qui/ks.yaml
   - ./prowlarr/ks.yaml
-  - ./unpackerr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
@@ -48,7 +47,6 @@ resources:
   - ./suwayomi/ks.yaml
   - ./tautulli/ks.yaml
   - ./thelounge/ks.yaml
-# - ./vgc/ks.yaml
   - ./wizarr/ks.yaml
   - ./zigbee/ks.yaml
   - ./zwave/ks.yaml
