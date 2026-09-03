@@ -59,7 +59,13 @@ metadata:
 spec:
   discoveryFilters:
     - andrew/nix-darwin
+    - andrew/home-ops-private
   skipForks: true
+  extraEnv:
+    - name: RENOVATE_AUTOMERGE
+      value: "true"
+    - name: RENOVATE_AUTOMERGE_TYPE
+      value: branch
   secretRef: renovate-forgejo
   provider:
     name: forgejo
