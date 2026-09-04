@@ -8,6 +8,7 @@ resources:
   - ./ocirepository.yaml
   - ./oidc.yaml
   - ./securitypolicy.yaml
+  - ./sonarr-oauth2.yaml
 configMapGenerator:
   - name: sonarr-configmap
     files:
