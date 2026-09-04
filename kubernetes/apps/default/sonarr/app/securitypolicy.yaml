@@ -6,7 +6,7 @@ spec:
   oidc:
     clientID: sonarr
     clientSecret:
-      name: sonarr-oidc
+      name: sonarr-kanidm-oauth2-credentials
     logoutPath: /logout
     provider:
       issuer: https://kanidm.goyangi.io/oauth2/openid/sonarr
