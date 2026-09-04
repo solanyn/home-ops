@@ -1,15 +1,15 @@
 apiVersion: kaniop.rs/v1beta1
 kind: KanidmPersonAccount
 metadata:
-  name: andrew-poc
+  name: andrew
   namespace: security
 spec:
   kanidmRef:
     name: kanidm
   personAttributes:
-    displayname: Andrew POC
+    displayname: Andrew
     mail:
-      - andrew-poc@goyangi.io
+      - andrew@goyangi.io
   credentialsTokenTtl: 3600
 
 ---
@@ -22,4 +22,4 @@ spec:
   kanidmRef:
     name: kanidm
   members:
-    - andrew-poc
+    - andrew
