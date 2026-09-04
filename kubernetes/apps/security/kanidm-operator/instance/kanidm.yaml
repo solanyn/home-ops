@@ -48,3 +48,7 @@ spec:
         sectionName: https
     hostnames:
       - kanidm.goyangi.io
+    backendTlsPolicy:
+      validation:
+        wellKnownCACertificates: System
+        hostname: kanidm.goyangi.io
