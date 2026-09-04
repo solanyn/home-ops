@@ -156,7 +156,7 @@ spec:
             server.webUIEnabled = true
             server.initialOpenInBrowserEnabled = false
             server.webUIInterface = "browser"
-            server.webUIFlavor = "WebUI"
+            server.webUIFlavor = "VUI"
             server.webUIChannel = "STABLE"
             server.webUIUpdateCheckInterval = 23
             server.extensionRepos = [
