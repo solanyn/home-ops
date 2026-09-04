@@ -6,4 +6,3 @@ resources:
   - ./externalsecret.yaml
   - ./kanidm.yaml
   - ./resources.yaml
-  - ./sonarr-oauth2.yaml

@@ -41,6 +41,10 @@ spec:
         resources:
           requests:
             storage: 5Gi
+  oauth2ClientNamespaceSelector:
+    matchLabels: {}
+  groupNamespaceSelector:
+    matchLabels: {}
   gateway:
     parentRefs:
       - name: envoy-internal
