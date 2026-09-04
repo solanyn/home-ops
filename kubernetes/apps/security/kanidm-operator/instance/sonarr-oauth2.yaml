@@ -3,10 +3,11 @@ apiVersion: kaniop.rs/v1beta1
 kind: KanidmOAuth2Client
 metadata:
   name: sonarr
-  namespace: security
+  namespace: default
 spec:
   kanidmRef:
     name: kanidm
+    namespace: security
   displayname: Sonarr
   origin: https://sonarr.goyangi.io
   redirectUrl:
