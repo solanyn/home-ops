@@ -72,12 +72,37 @@ spec:
             port: 4567
     route:
       app:
+        forceRename: suwayomi
         hostnames:
           - suwayomi.goyangi.io
         parentRefs:
           - name: envoy-internal
             namespace: network
             sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+            backendRefs:
+              - identifier: app
+                port: 4567
+      api:
+        forceRename: suwayomi-api
+        hostnames:
+          - suwayomi.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /api
+            backendRefs:
+              - identifier: app
+                port: 4567
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
