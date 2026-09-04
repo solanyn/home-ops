@@ -8,3 +8,11 @@ resources:
   - ./ocirepository.yaml
   - ./oidc.yaml
   - ./securitypolicy.yaml
+configMapGenerator:
+  - name: sonarr-configmap
+    files:
+      - refresh-series.sh=./resources/refresh-series.sh
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
