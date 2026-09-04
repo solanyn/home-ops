@@ -2,8 +2,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./admin-passwords-pushsecret.yaml
   - ./externalsecret.yaml
-  - ./kanidm.yaml
-  - ./resources.yaml
-  - ./sonarr-oauth2.yaml
+  - ./pvc.yaml
+  - ./helmrelease.yaml
+  - ./ocirepository.yaml
+  - ./oidc.yaml
+  - ./securitypolicy.yaml
