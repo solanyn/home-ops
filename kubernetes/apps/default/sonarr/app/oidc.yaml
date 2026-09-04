@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sonarr-oidc
+  annotations:
+    secret-generator.v1.mittwald.de/autogenerate: client-secret
