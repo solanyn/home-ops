@@ -50,5 +50,5 @@ spec:
       - kanidm.goyangi.io
     backendTlsPolicy:
       validation:
-        wellKnownCACertificates: System
+        wellKnownCaCertificates: System
         hostname: kanidm.goyangi.io
