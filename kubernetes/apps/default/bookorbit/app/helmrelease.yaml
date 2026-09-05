@@ -96,12 +96,6 @@ spec:
       books:
         type: nfs
         server: nas.internal
-        path: /mnt/world/media/books
+        path: /mnt/world/media/library/books
         globalMounts:
           - path: /books
-      bookdrop:
-        type: nfs
-        server: nas.internal
-        path: /mnt/world/media/bookdrop
-        globalMounts:
-          - path: /bookdrop
