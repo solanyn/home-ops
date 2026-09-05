@@ -25,7 +25,7 @@ spec:
               - |
                 set -e
                 cp /configmap/server.conf /tachidesk-data/server.conf
-                mkdir -p /media/downloads
+                mkdir -p /media/downloads/suwayomi /media/library/manga/manga /media/library/manga/manhwa /media/library/manga/manhua
         containers:
           app:
             image:
@@ -123,7 +123,7 @@ spec:
       media:
         type: nfs
         server: nas.internal
-        path: /mnt/world/media/suwayomi
+        path: /mnt/world/media
         globalMounts:
           - path: /media
       tmp:
@@ -139,7 +139,7 @@ spec:
             server.port = 4567
             server.authMode = "none"
             server.downloadAsCbz = true
-            server.downloadsPath = "/media/downloads"
+            server.downloadsPath = "/media/downloads/suwayomi"
             server.autoDownloadNewChapters = false
             server.autoDownloadNewChaptersLimit = 0
             server.autoDownloadIgnoreReUploads = true
@@ -156,7 +156,7 @@ spec:
             server.webUIEnabled = true
             server.initialOpenInBrowserEnabled = false
             server.webUIInterface = "browser"
-            server.webUIFlavor = "VUI"
+            server.webUIFlavor = "WebUI"
             server.webUIChannel = "STABLE"
             server.webUIUpdateCheckInterval = 23
             server.extensionRepos = [

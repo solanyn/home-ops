@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mangarr
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: mangarr
+  interval: 1h
+  values:
+    controllers:
+      mangarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/gavinmcfall/mangarr
+              tag: latest
+            env:
+              MANGARR_DOWNLOAD_ROOTS: /media/downloads/suwayomi
+              MANGARR_DB_PATH: /data/mangarr.db
+              MANGARR_HTTP_ADDR: :8590
+              TZ: Australia/Sydney
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 8590
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: [ALL] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 256Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /data
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          - path: /media
