@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: nginx
-              tag: 1.29-alpine
+              tag: 1.31-alpine
             env:
               NGINX_ENTRYPOINT_WORKER_PROCESSES_AUTOTUNE: "0"
             probes:
