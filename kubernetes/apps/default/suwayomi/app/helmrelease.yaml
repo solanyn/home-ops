@@ -25,7 +25,6 @@ spec:
               - |
                 set -e
                 cp /configmap/server.conf /tachidesk-data/server.conf
-                mkdir -p /media/downloads/suwayomi /media/library/manga/manga /media/library/manga/manhwa /media/library/manga/manhua
         containers:
           app:
             image:
