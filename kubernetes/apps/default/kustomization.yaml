@@ -50,7 +50,6 @@ resources:
   - ./sonarr/ks.yaml
   - ./suwayomi/ks.yaml
   - ./tautulli/ks.yaml
-  - ./tsumiru/ks.yaml
   - ./thelounge/ks.yaml
   - ./wizarr/ks.yaml
   - ./zigbee/ks.yaml
