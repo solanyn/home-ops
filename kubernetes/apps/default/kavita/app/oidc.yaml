@@ -1,0 +1,15 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: kavita
+spec:
+  clientID: kavita
+  callbackUrls:
+    - https://kavita.goyangi.io/signin-oidc
+  logoutCallbackUrls:
+    - https://kavita.goyangi.io/signout-callback-oidc
+  allowedUserGroups:
+    - name: user
+  secret:
+    name: kavita-oidc
