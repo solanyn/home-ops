@@ -77,6 +77,6 @@ spec:
       manga:
         type: nfs
         server: nas.internal
-        path: /mnt/world/media/library/manga-maid-staging/Bleach
+        path: /mnt/world/media/library/manga-maid-staging
         globalMounts:
           - path: /manga
