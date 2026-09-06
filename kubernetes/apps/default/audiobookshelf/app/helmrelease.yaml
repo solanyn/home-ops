@@ -67,7 +67,7 @@ spec:
       init-dirs:
         image:
           repository: busybox
-          tag: 1.37
+          tag: 1.38
         command: ["/bin/sh", "-c"]
         args:
           - mkdir -p /state/config /state/metadata && chown -R 1000:1000 /state
