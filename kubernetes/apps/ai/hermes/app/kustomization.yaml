@@ -16,7 +16,6 @@ configMapGenerator:
     files:
       - ./resources/config.yaml
       - ./resources/Brewfile
-      - ./resources/hermes-matrix-timeout.patch
     options:
       disableNameSuffixHash: true
 generatorOptions:

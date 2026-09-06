@@ -115,6 +115,7 @@ spec:
                     CODEX_PREFIX="/opt/data/codex"
                     mkdir -p "$CODEX_PREFIX"
                     export PATH="$HOMEBREW_PREFIX/bin:$CODEX_PREFIX/bin:$PATH"
+                    # renovate: datasource=npm depName=@openai/codex
                     npm install --global --prefix "$CODEX_PREFIX" --no-update-notifier --no-fund \
                       @openai/codex@0.130.0
                     "$CODEX_PREFIX/bin/codex" --version
@@ -143,7 +144,6 @@ spec:
               HOMEBREW_NO_AUTO_UPDATE: "1"
               TZ: Australia/Sydney
               API_SERVER_ENABLED: "true"
-              API_SERVER_KEY: CFE1B842-AEF8-4704-A51D-1E885A5C7967
               HONCHO_WORKSPACE_ID: "hermes"
               BLUEBUBBLES_SERVER_URL: http://bluebubbles.internal:1234
               BLUEBUBBLES_WEBHOOK_HOST: 0.0.0.0
@@ -274,5 +274,3 @@ spec:
             subPath: config.yaml
           - path: /tmp/Brewfile
             subPath: Brewfile
-          - path: /tmp/hermes-matrix-timeout.patch
-            subPath: hermes-matrix-timeout.patch
