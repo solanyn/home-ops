@@ -25,7 +25,7 @@ spec:
               PGID: "1000"
               DATA_DIR: /data
               MANGA_ROOT: /manga
-              CONFIG_PATH: /seed/settings.json
+              SYNC_CRON: disabled
               TELEMETRY: "false"
             probes:
               liveness: &probes
@@ -74,30 +74,9 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /data
-      seed:
-        type: configMap
-        name: manga-maid
-        globalMounts:
-          - path: /seed
-            readOnly: true
       manga:
         type: nfs
         server: nas.internal
         path: /mnt/world/media/library/manga-maid-staging
         globalMounts:
           - path: /manga
-    configMaps:
-      seed:
-        data:
-          settings.json: |
-            {
-              "root_folders": ["Bleach"],
-              "sync_cron": "disabled",
-              "auto_scan": false,
-              "auto_covers": false,
-              "telemetry_enabled": false,
-              "suwayomi_url": "http://suwayomi.default.svc.cluster.local:4567",
-              "kavita_url": "",
-              "kavita_api_key": "",
-              "enabled_sources": []
-            }
