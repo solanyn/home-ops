@@ -1,0 +1,17 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: continuwuity
+spec:
+  clientID: continuwuity
+  callbackUrls:
+    - https://matrix.goyangi.io/_continuwuity/oidc/complete
+  logoutCallbackUrls:
+    - https://matrix.goyangi.io
+  allowedUserGroups:
+    - name: user
+  secret:
+    name: continuwuity-oidc
+    keys:
+      clientSecret: CONTINUWUITY_OAUTH__OIDC__CLIENT_SECRET
