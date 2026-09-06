@@ -33,7 +33,6 @@ resources:
   - ./matter-server/ks.yaml
   - ./otbr/ks.yaml
   - ./mealie/ks.yaml
-  - ./manga-maid/ks.yaml
   - ./mangarr/ks.yaml
   - ./lake/ks.yaml
   - ./pocket-id-operator/ks.yaml
