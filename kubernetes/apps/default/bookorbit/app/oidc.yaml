@@ -7,7 +7,7 @@ spec:
   clientID: bookorbit
   isPublic: false
   callbackUrls:
-    - https://bookorbit.goyangi.io/api/v1/auth/oidc/callback
+    - https://bookorbit.goyangi.io/oauth2-callback
   logoutCallbackUrls:
     - https://bookorbit.goyangi.io
   secret:
