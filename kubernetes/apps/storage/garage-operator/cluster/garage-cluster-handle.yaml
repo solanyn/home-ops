@@ -5,7 +5,7 @@ kind: GarageCluster
 metadata:
     name: garage
 spec:
-    image: dxflrs/garage:v2.3.0
+    image: dxflrs/garage:v2.4.0
     connectTo:
         adminApiEndpoint: https://garage-admin.goyangi.io
         adminTokenSecretRef:
