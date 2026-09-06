@@ -34,7 +34,6 @@ resources:
   - ./mealie/ks.yaml
   - ./mangarr/ks.yaml
   - ./lake/ks.yaml
-  - ./mlm/ks.yaml
   - ./pocket-id-operator/ks.yaml
   - ./plex/ks.yaml
   - ./print/ks.yaml
