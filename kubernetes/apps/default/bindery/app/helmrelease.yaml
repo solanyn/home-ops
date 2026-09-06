@@ -25,7 +25,9 @@ spec:
               BINDERY_DATA_DIR: /config
               BINDERY_DB_PATH: /config/bindery.db
               BINDERY_LIBRARY_DIR: /media/library/books
+              BINDERY_AUDIOBOOK_DIR: /media/library/audiobooks
               BINDERY_DOWNLOAD_DIR: /media/downloads/torrents/complete/books
+              BINDERY_AUDIOBOOK_DOWNLOAD_DIR: /media/downloads/torrents/complete/audiobooks
               BINDERY_CONTACT: andrew@goyangi.io
               BINDERY_TELEMETRY_DISABLED: "true"
               BINDERY_PUID: "1000"

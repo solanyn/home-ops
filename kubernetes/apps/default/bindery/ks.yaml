@@ -9,9 +9,15 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: bindery
+  components:
+    - ../../../../components/kopiur
   interval: 1h
   timeout: 5m
   path: ./kubernetes/apps/default/bindery/app
+  postBuild:
+    substitute:
+      APP: bindery
+      KOPIUR_CAPACITY: 5Gi
   prune: true
   sourceRef:
     kind: GitRepository
