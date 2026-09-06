@@ -21,8 +21,8 @@ spec:
               tag: 2.3@sha256:297128b374a8b77d824ced036f77b2e27a9049fc191ad8ebaab114e50037e225
             env:
               TZ: Australia/Sydney
-              PUID: "1000"
-              PGID: "1000"
+              PUID: "0"
+              PGID: "0"
               DATA_DIR: /data
               MANGA_ROOT: /manga
               SYNC_CRON: disabled
