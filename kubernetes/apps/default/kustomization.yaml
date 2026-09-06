@@ -12,6 +12,7 @@ resources:
   - ./anisette/ks.yaml
   - ./atuin/ks.yaml
   - ./autobrr/ks.yaml
+  - ./audiobookshelf/ks.yaml
   - ./brrpolice/ks.yaml
   - ./bazarr/ks.yaml
   - ./bindery/ks.yaml
