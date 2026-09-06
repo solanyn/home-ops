@@ -76,7 +76,7 @@ spec:
           - path: /data
       seed:
         type: configMap
-        identifier: seed
+        name: manga-maid
         globalMounts:
           - path: /seed
             readOnly: true
