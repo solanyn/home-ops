@@ -24,8 +24,8 @@ spec:
               BINDERY_PORT: &port 8787
               BINDERY_DATA_DIR: /config
               BINDERY_DB_PATH: /config/bindery.db
-              BINDERY_LIBRARY_DIR: /media/books
-              BINDERY_AUDIOBOOK_DIR: /media/audiobooks
+              BINDERY_LIBRARY_DIR: /media/library/books
+              BINDERY_AUDIOBOOK_DIR: /media/library/audiobooks
               BINDERY_DOWNLOAD_DIR: /media/downloads/torrents/complete/books
               BINDERY_AUDIOBOOK_DOWNLOAD_DIR: /media/downloads/torrents/complete/audiobooks
               BINDERY_CONTACT: andrew@goyangi.io
