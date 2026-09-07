@@ -46,7 +46,7 @@ jobs:
           persist-credentials: false
 
       - name: Configure 1Password Connect
-        uses: 1password/load-secrets-action/configure@v4
+        uses: 1password/load-secrets-action/configure@eb2efd0703da22a93c467f2d1ffbb6826c11e19c # v4.1.1
         with:
           connect-host: http://onepassword-connect.external-secrets.svc.cluster.local
           connect-token: ${{ secrets.OP_CONNECT_TOKEN }}
