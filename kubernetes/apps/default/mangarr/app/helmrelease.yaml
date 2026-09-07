@@ -22,8 +22,8 @@ spec:
               tag: latest
             env:
               MANGARR_DB_PATH: /data/mangarr.db
+              MANGARR_DOWNLOAD_ROOTS: /media/downloads/suwayomi/mangas/Weeb Central (EN)
               MANGARR_HTTP_ADDR: :8590
-              # Disable the metadata-only MangaDex fallback; it cannot prove adult status.
               MANGARR_MANGADEX_ENDPOINT: http://127.0.0.1:1
               TZ: Australia/Sydney
             probes:
