@@ -17,3 +17,22 @@ spec:
         - ports:
             - protocol: TCP
               port: "6379"
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: dragonfly-cluster-ai
+spec:
+  endpointSelector:
+    matchLabels:
+      app: dragonfly-cluster
+      app.kubernetes.io/name: dragonfly
+      app.kubernetes.io/part-of: dragonfly
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: ai
+      toPorts:
+        - ports:
+            - protocol: TCP
+              port: "6379"
