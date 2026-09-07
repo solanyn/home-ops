@@ -74,11 +74,16 @@ jobs:
                   tool_versions: |
                       opentofu latest
 
+            - name: Configure 1Password Connect
+              uses: 1password/load-secrets-action/configure@v4
+              with:
+                  connect-host: OP_CONNECT_HOST
+                  connect-token: ${{ secrets.OP_CONNECT_TOKEN }}
+
             - name: Load Secrets
               id: load-secrets
               uses: 1password/load-secrets-action@70062d7a876d3eb6334754fa26efd2fbd90c32f2 # v5.0.1 # zizmor: ignore[unpinned-tools]
               env:
-                  OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
                   UNIFI_API_KEY: op://kubernetes/unifi/UNIFI_API_KEY
 
             - name: Init (K8s backend)
