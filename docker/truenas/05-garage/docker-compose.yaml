@@ -10,7 +10,7 @@ services:
       GARAGE_ADMIN_TOKEN: ${GARAGE_ADMIN_TOKEN}
       GARAGE_RPC_SECRET: ${GARAGE_RPC_SECRET}
       TZ: Australia/Sydney
-    image: dxflrs/garage:v2.4.0
+    image: dxflrs/garage:v2.4.1
     network_mode: host
     restart: unless-stopped
     user: "1000:1000"
