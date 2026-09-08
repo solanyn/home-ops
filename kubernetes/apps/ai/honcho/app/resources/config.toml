@@ -5,17 +5,17 @@ LOG_LEVEL = "INFO"
 SCHEMA = "public"
 
 [llm]
-OPENAI_API_KEY = "sk-not-used"
+OPENAI_API_KEY = "not-needed"
 
 [embedding]
-VECTOR_DIMENSIONS = 1024
+VECTOR_DIMENSIONS = 384
 
 [embedding.model_config]
 transport = "openai"
-model = "Qwen3-Embedding-0.6B-Q8_0"
+model = "bge-small-en"
 
 [embedding.model_config.overrides]
-base_url = "http://qwen3-embedding.ai.svc.cluster.local:8080/v1"
+base_url = "http://bge-small-en.ai.svc.cluster.local:8080/v1"
 
 [vector_store]
 TYPE = "pgvector"
