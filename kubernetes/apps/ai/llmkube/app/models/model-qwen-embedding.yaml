@@ -5,6 +5,7 @@ metadata:
     name: qwen3-embedding
 spec:
     source: /Users/andrew/.omlx/models/Qwen3-Embedding-0.6B-Q8_0.gguf
+    refreshPolicy: Always
     format: gguf
     hardware:
         accelerator: metal
