@@ -50,6 +50,8 @@ spec:
                 value: http://litellm.ai.svc.cluster.local:4000/v1
               - name: DERIVER_MODEL_CONFIG__STRUCTURED_OUTPUT_MODE
                 value: json_object
+              - name: DERIVER_FLUSH_ENABLED
+                value: "true"
               - name: SUMMARY_MODEL_CONFIG__TRANSPORT
                 value: openai
               - name: SUMMARY_MODEL_CONFIG__MODEL
