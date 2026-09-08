@@ -22,10 +22,57 @@ spec:
             env: &env
               - name: TZ
                 value: Australia/Sydney
-              - name: EMBEDDING_VECTOR_DIMENSIONS
-                value: "1024"
               - name: AUTH_USE_AUTH
                 value: "false"
+              - name: EMBEDDING_VECTOR_DIMENSIONS
+                value: "384"
+              - name: CACHE_ENABLED
+                value: "true"
+              - name: CACHE_URL
+                value: redis://redis.storage.svc.cluster.local:6379/0?suppress=true
+              - name: LLM_OPENAI_API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: honcho-secret
+                    key: LITELLM_MASTER_KEY
+              - name: OPENAI_API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: honcho-secret
+                    key: LITELLM_MASTER_KEY
+              - name: OPENAI_BASE_URL
+                value: http://litellm.ai.svc.cluster.local:4000/v1
+              - name: DERIVER_MODEL_CONFIG__TRANSPORT
+                value: openai
+              - name: DERIVER_MODEL_CONFIG__MODEL
+                value: cron-pool
+              - name: DERIVER_MODEL_CONFIG__OVERRIDES__BASE_URL
+                value: http://litellm.ai.svc.cluster.local:4000/v1
+              - name: DERIVER_MODEL_CONFIG__STRUCTURED_OUTPUT_MODE
+                value: json_object
+              - name: SUMMARY_MODEL_CONFIG__TRANSPORT
+                value: openai
+              - name: SUMMARY_MODEL_CONFIG__MODEL
+                value: cron-pool
+              - name: SUMMARY_MODEL_CONFIG__OVERRIDES__BASE_URL
+                value: http://litellm.ai.svc.cluster.local:4000/v1
+              - name: LLM_MODEL_CONFIG__TRANSPORT
+                value: openai
+              - name: LLM_MODEL_CONFIG__MODEL
+                value: reasoning-pool
+              - name: LLM_MODEL_CONFIG__OVERRIDES__BASE_URL
+                value: http://litellm.ai.svc.cluster.local:4000/v1
+              - name: EMBEDDING_MODEL_CONFIG__TRANSPORT
+                value: openai
+              - name: EMBEDDING_MODEL_CONFIG__MODEL
+                value: bge-small-en
+              - name: EMBEDDING_MODEL_CONFIG__OVERRIDES__BASE_URL
+                value: http://bge-small-en.ai.svc.cluster.local:8080/v1
+              - name: EMBEDDING_MODEL_CONFIG__OVERRIDES__API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: honcho-secret
+                    key: LITELLM_MASTER_KEY
             envFrom:
               - secretRef:
                   name: honcho-secret
@@ -45,21 +92,18 @@ spec:
               PGDATABASE: honcho
             command: ["/bin/bash", "-c"]
             args:
-              - |
-                psql -c "CREATE EXTENSION IF NOT EXISTS vector CASCADE;"
+              - psql -c "CREATE EXTENSION IF NOT EXISTS vector CASCADE;"
         containers:
           app:
             image:
               repository: ghcr.io/plastic-labs/honcho
               tag: v3.1.1@sha256:0f989114cab71424aabcd8ce7752ba086916abdeaef54b347ce99142c891e0ba
-            command:
-              - /bin/sh
-              - -c
+            command: ["/bin/sh", "-c"]
+            args:
               - |
                 set -e
-                echo "Running database migrations..."
                 /app/.venv/bin/python scripts/provision_db.py
-                echo "Starting API server..."
+                /app/.venv/bin/python scripts/configure_embeddings.py --yes
                 exec /app/.venv/bin/fastapi run --host "0.0.0.0" src/main.py
             env: *env
             envFrom:
@@ -88,7 +132,7 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 5
                   failureThreshold: 5
-            securityContext:
+            securityContext: &security
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
@@ -97,6 +141,24 @@ spec:
               requests:
                 cpu: 50m
                 memory: 128Mi
+          deriver:
+            image:
+              repository: ghcr.io/plastic-labs/honcho
+              tag: v3.1.1@sha256:0f989114cab71424aabcd8ce7752ba086916abdeaef54b347ce99142c891e0ba
+            command: ["/bin/sh", "-c"]
+            args:
+              - exec /app/.venv/bin/python -m src.deriver
+            env: *env
+            envFrom:
+              - secretRef:
+                  name: honcho-secret
+            securityContext: *security
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
     service:
       app:
         ports:
