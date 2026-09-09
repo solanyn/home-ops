@@ -154,9 +154,6 @@ spec:
               MATRIX_USER_ID: "@hawow:goyangi.io"
               MATRIX_ALLOWED_USERS: "@andrew:goyangi.io"
               MATRIX_E2EE_MODE: required
-              MATRIX_RECOVERY_KEY_OUTPUT_FILE: /opt/data/matrix-recovery-key.txt
-              MATRIX_TOOLS_ALLOW_ROOM_CREATE: "true"
-              MATRIX_TOOLS_ALLOW_INVITES: "true"
             envFrom:
               - secretRef:
                   name: hermes
