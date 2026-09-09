@@ -10,6 +10,15 @@ spec:
     name: continuwuity
   interval: 1h
   values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
     controllers:
       continuwuity:
         annotations:
@@ -28,6 +37,7 @@ spec:
               CONTINUWUITY_DATABASE_BACKEND: rocksdb
               CONTINUWUITY_DATABASE_PATH: /data/db
               CONTINUWUITY_ALLOW_REGISTRATION: "false"
+              CONTINUWUITY_ALLOW_ENCRYPTION: "true"
               CONTINUWUITY_ALLOW_FEDERATION: "true"
               CONTINUWUITY_ALLOW_CHECK_FOR_UPDATES: "false"
               CONTINUWUITY_TRUSTED_SERVERS: '["matrix.org"]'
@@ -43,6 +53,12 @@ spec:
                   name: continuwuity-secret
               - secretRef:
                   name: continuwuity-oidc
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
             probes:
               liveness: &probes
                 enabled: true
@@ -56,10 +72,10 @@ spec:
               readiness: *probes
             resources:
               requests:
-                cpu: 10m
-                memory: 64Mi
+                cpu: 100m
+                memory: 256Mi
               limits:
-                memory: 512Mi
+                memory: 1Gi
     configMaps:
       config:
         data:
