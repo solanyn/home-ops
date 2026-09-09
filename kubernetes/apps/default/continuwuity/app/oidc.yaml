@@ -10,7 +10,7 @@ spec:
   logoutCallbackUrls:
     - https://matrix.goyangi.io
   allowedUserGroups:
-    - name: user
+    - name: matrix
   secret:
     name: continuwuity-oidc
     keys:
