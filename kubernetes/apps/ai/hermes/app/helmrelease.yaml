@@ -35,6 +35,16 @@ spec:
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
+
+                if [ ! -e /opt/data/.matrix-crypto-reset-v1 ]; then
+                  if [ -d /opt/data/platforms/matrix/store ]; then
+                    mv /opt/data/platforms/matrix/store /opt/data/platforms/matrix/store-pre-reset-v1
+                  fi
+                  mkdir -p /opt/data/platforms/matrix/store
+                  chown -R 10000:10000 /opt/data/platforms/matrix
+                  touch /opt/data/.matrix-crypto-reset-v1
+                fi
+
                 mkdir -p /opt/data/.codex
                 chown -R 10000:10000 /opt/data/.codex
 
