@@ -49,8 +49,6 @@ spec:
             envFrom:
               - secretRef:
                   name: continuwuity-secret
-              - secretRef:
-                  name: continuwuity-oidc
             securityContext:
               readOnlyRootFilesystem: true
               allowPrivilegeEscalation: false
