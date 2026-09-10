@@ -10,6 +10,7 @@ components:
 resources:
     - ./namespace.yaml
     - ./hermes/ks.yaml
+    - ./hermes-matrix/ks.yaml
     - ./honcho/ks.yaml
 # kelos removed - directory does not exist
     - ./litellm-operator/ks.yaml
