@@ -26,8 +26,8 @@ spec:
         containers:
           app:
             image:
-              repository: registry.erwanleboucher.dev/eleboucher/hermes-matrix
-              tag: 0.15.2-33e1668
+              repository: ghcr.io/solanyn/hermes-matrix
+              tag: rolling@sha256:db6b44117fe1b9b91b0ad0ff82233205c4de8846147a52a66d7bc9066605ec87
             env:
               HERMES_HOME: /data
               MATRIX_ENCRYPTION: "true"
