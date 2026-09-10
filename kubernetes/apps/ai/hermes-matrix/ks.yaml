@@ -1,0 +1,26 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: hermes-matrix
+  namespace: flux-system
+spec:
+  targetNamespace: ai
+  components:
+    - ../../../../components/kopiur
+  dependsOn:
+    - name: hermes
+  interval: 1h
+  path: ./kubernetes/apps/ai/hermes-matrix/app
+  postBuild:
+    substitute:
+      APP: hermes-matrix
+      KOPIUR_CAPACITY: 5Gi
+      KOPIUR_PUID: "65534"
+      KOPIUR_PGID: "65534"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false

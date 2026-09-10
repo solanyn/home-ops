@@ -1,0 +1,57 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: hermes-matrix
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: hermes-matrix
+  interval: 1h
+  values:
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+        seccompProfile:
+          type: RuntimeDefault
+    controllers:
+      hermes-matrix:
+        replicas: 1
+        strategy: Recreate
+        type: deployment
+        containers:
+          app:
+            image:
+              repository: registry.erwanleboucher.dev/eleboucher/hermes-matrix
+              tag: 0.15.2-33e1668
+            env:
+              HERMES_HOME: /data
+              MATRIX_ENCRYPTION: "true"
+              GATEWAY_PROXY_URL: http://hermes.ai.svc.cluster.local:8642
+            envFrom:
+              - secretRef:
+                  name: hermes-matrix
+            resources:
+              requests:
+                cpu: 25m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+    persistence:
+      data:
+        existingClaim: hermes-matrix
+        globalMounts:
+          - path: /data
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
