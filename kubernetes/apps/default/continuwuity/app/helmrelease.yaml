@@ -46,13 +46,9 @@ spec:
               CONTINUWUITY_LOG: warn,continuwuity=info
               CONTINUWUITY_WELL_KNOWN__CLIENT: https://matrix.goyangi.io
               CONTINUWUITY_WELL_KNOWN__SERVER: goyangi.io:443
-              CONTINUWUITY_OAUTH__OIDC__DISCOVERY_URL: https://id.goyangi.io
-              CONTINUWUITY_OAUTH__OIDC__CLIENT_ID: continuwuity
             envFrom:
               - secretRef:
                   name: continuwuity-secret
-              - secretRef:
-                  name: continuwuity-oidc
             securityContext:
               readOnlyRootFilesystem: true
               allowPrivilegeEscalation: false
