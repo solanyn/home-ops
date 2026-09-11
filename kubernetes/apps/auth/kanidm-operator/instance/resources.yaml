@@ -11,7 +11,6 @@ spec:
     mail:
       - andrew@goyangi.io
   credentialsTokenTtl: 3600
-
 ---
 apiVersion: kaniop.rs/v1beta1
 kind: KanidmGroup
