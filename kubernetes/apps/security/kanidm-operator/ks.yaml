@@ -3,11 +3,10 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: kanidm-operator
-  namespace: auth
 spec:
-  targetNamespace: auth
+  targetNamespace: security
   interval: 1h
-  path: ./kubernetes/apps/auth/kanidm-operator/app
+  path: ./kubernetes/apps/security/kanidm-operator/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -19,14 +18,13 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: kanidm-instance
-  namespace: auth
 spec:
-  targetNamespace: auth
+  targetNamespace: security
   dependsOn:
     - name: kanidm-operator
-      namespace: auth
+      namespace: security
   interval: 1h
-  path: ./kubernetes/apps/auth/kanidm-operator/instance
+  path: ./kubernetes/apps/security/kanidm-operator/instance
   prune: true
   sourceRef:
     kind: GitRepository
