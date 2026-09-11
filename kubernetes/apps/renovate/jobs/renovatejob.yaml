@@ -4,7 +4,10 @@ kind: RenovateJob
 metadata:
   name: solanyn
 spec:
-  discoveryFilters: ["solanyn/*"]
+  discoveryFilters:
+    - solanyn/home-ops
+    - solanyn/containers
+    - solanyn/mono
   extraEnv:
     - name: LOG_LEVEL
       value: debug
