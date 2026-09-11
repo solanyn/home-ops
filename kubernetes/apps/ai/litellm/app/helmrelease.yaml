@@ -3,120 +3,120 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-    name: litellm
+  name: litellm
 spec:
-    chartRef:
-        kind: OCIRepository
-        name: litellm
-    interval: 15m
-    values:
-        controllers:
-            litellm:
-                annotations:
-                    reloader.stakater.com/auto: "true"
-                replicas: 1
-                strategy: Recreate
-                containers:
-                    app:
-                        image:
-                            repository: ghcr.io/berriai/litellm-database
-                            tag: v1.100.1@sha256:fc44cf7f72786e636dc4dc1032b4e431818abfec9d54b8e04284fdea7ef03e2a
-                        args:
-                            - --config=/app/config.yaml
-                        env:
-                            AUTO_REDIRECT_UI_LOGIN_TO_SSO: "true"
-                            CHATGPT_TOKEN_DIR: /var/lib/litellm/chatgpt
-                            DATABASE_URL:
-                                valueFrom:
-                                    secretKeyRef:
-                                        name: litellm
-                                        key: DATABASE_URL
-                            GENERIC_AUTHORIZATION_ENDPOINT: https://id.goyangi.io/authorize
-                            GENERIC_SCOPE: openid email profile
-                            GENERIC_TOKEN_ENDPOINT: https://id.goyangi.io/api/oidc/token
-                            GENERIC_USERINFO_ENDPOINT: https://id.goyangi.io/api/oidc/userinfo
-                            GENERIC_USER_ROLE_ATTRIBUTE: litellm_role
-                            LITELLM_LOG: INFO
-                            LITELLM_MODE: PRODUCTION
-                            PROXY_BASE_URL: https://litellm.goyangi.io
-                            REDIS_HOST: redis.storage.svc.cluster.local
-                            REDIS_PORT: "6379"
-                            OPENCODE_GO_API_BASE: https://opencode.ai/zen/go/v1
-                            GENERIC_CLIENT_ID: litellm
-                            GENERIC_CLIENT_SECRET:
-                                valueFrom:
-                                    secretKeyRef:
-                                        name: litellm-oidc
-                                        key: client_secret
-                        envFrom:
-                            - secretRef:
-                                  name: litellm
-                        resources:
-                            requests:
-                                cpu: 100m
-                                memory: 2Gi
-                            limits:
-                                memory: 4Gi
-                        probes:
-                            liveness:
-                                enabled: true
-                                custom: true
-                                spec:
-                                    httpGet:
-                                        path: /
-                                        port: 4000
-                                    initialDelaySeconds: 5
-                                    periodSeconds: 10
-                                    failureThreshold: 3
-                            readiness:
-                                enabled: true
-                                custom: true
-                                spec:
-                                    httpGet:
-                                        path: /
-                                        port: 4000
-                                    initialDelaySeconds: 5
-                                    periodSeconds: 10
-                                    failureThreshold: 3
-                            startup:
-                                enabled: true
-                                custom: true
-                                spec:
-                                    httpGet:
-                                        path: /
-                                        port: 4000
-                                    initialDelaySeconds: 5
-                                    periodSeconds: 10
-                                    failureThreshold: 30
-        persistence:
-            config:
-                type: configMap
-                name: litellm-configmap
-                globalMounts:
-                    - path: /app/config.yaml
-                      subPath: config.yaml
-                      readOnly: true
-            cache:
-                type: emptyDir
-                advancedMounts:
-                    litellm:
-                        app:
-                            - path: /app/cache
-            chatgpt-auth:
-                existingClaim: "{{ .Release.Name }}"
-                advancedMounts:
-                    litellm:
-                        app:
-                            - path: /var/lib/litellm/chatgpt
-        route:
+  chartRef:
+    kind: OCIRepository
+    name: litellm
+  interval: 15m
+  values:
+    controllers:
+      litellm:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 1
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: ghcr.io/berriai/litellm-database
+              tag: v1.100.1@sha256:fc44cf7f72786e636dc4dc1032b4e431818abfec9d54b8e04284fdea7ef03e2a
+            args:
+              - --config=/app/config.yaml
+            env:
+              AUTO_REDIRECT_UI_LOGIN_TO_SSO: "true"
+              CHATGPT_TOKEN_DIR: /var/lib/litellm/chatgpt
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: litellm
+                    key: DATABASE_URL
+              GENERIC_AUTHORIZATION_ENDPOINT: https://id.goyangi.io/authorize
+              GENERIC_SCOPE: openid email profile
+              GENERIC_TOKEN_ENDPOINT: https://id.goyangi.io/api/oidc/token
+              GENERIC_USERINFO_ENDPOINT: https://id.goyangi.io/api/oidc/userinfo
+              GENERIC_USER_ROLE_ATTRIBUTE: litellm_role
+              LITELLM_LOG: INFO
+              LITELLM_MODE: PRODUCTION
+              PROXY_BASE_URL: https://litellm.goyangi.io
+              REDIS_HOST: redis.storage.svc.cluster.local
+              REDIS_PORT: "6379"
+              OPENCODE_GO_API_BASE: https://opencode.ai/zen/go/v1
+              GENERIC_CLIENT_ID: litellm
+              GENERIC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: litellm-oidc
+                    key: client_secret
+            envFrom:
+              - secretRef:
+                  name: litellm
+            resources:
+              requests:
+                cpu: 100m
+                memory: 2Gi
+              limits:
+                memory: 4Gi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 4000
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 4000
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 4000
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  failureThreshold: 30
+    persistence:
+      config:
+        type: configMap
+        name: litellm-configmap
+        globalMounts:
+          - path: /app/config.yaml
+            subPath: config.yaml
+            readOnly: true
+      cache:
+        type: emptyDir
+        advancedMounts:
+          litellm:
             app:
-                hostnames:
-                    - litellm.goyangi.io
-                parentRefs:
-                    - name: envoy-external
-                      namespace: network
-        service:
+              - path: /app/cache
+      chatgpt-auth:
+        existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          litellm:
             app:
-                ports:
-                    http:
-                        port: 4000
+              - path: /var/lib/litellm/chatgpt
+    route:
+      app:
+        hostnames:
+          - litellm.goyangi.io
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+    service:
+      app:
+        ports:
+          http:
+            port: 4000
