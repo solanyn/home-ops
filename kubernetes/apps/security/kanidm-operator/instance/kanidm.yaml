@@ -21,7 +21,7 @@ metadata:
 spec:
   domain: kanidm.goyangi.io
   origin: https://kanidm.goyangi.io
-  image: kanidm/server:1.11.1
+  image: kanidm/server:1.11.2
   tlsSecretName: kanidm-tls
   replicaGroups:
     - name: default
