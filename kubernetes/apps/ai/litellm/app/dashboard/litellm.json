@@ -26,7 +26,11 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
         "textMode": "auto"
       },
       "targets": [
@@ -51,7 +55,11 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
         "textMode": "auto"
       },
       "targets": [
@@ -76,7 +84,11 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
         "textMode": "auto"
       },
       "targets": [
@@ -240,7 +252,11 @@
       "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
       "gridPos": { "h": 5, "w": 12, "x": 0, "y": 19 },
       "id": 12,
-      "options": { "displayLabels": ["name"], "layout": "horizontal", "showLegend": true },
+      "options": {
+        "displayLabels": ["name"],
+        "layout": "horizontal",
+        "showLegend": true
+      },
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
@@ -279,7 +295,11 @@
       "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
       "gridPos": { "h": 5, "w": 12, "x": 0, "y": 24 },
       "id": 14,
-      "options": { "displayLabels": ["name"], "layout": "horizontal", "showLegend": true },
+      "options": {
+        "displayLabels": ["name"],
+        "layout": "horizontal",
+        "showLegend": true
+      },
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
@@ -300,10 +320,17 @@
     {
       "datasource": { "type": "prometheus", "uid": "${datasource}" },
       "description": "Spend per backend model in the selected time range (local models = $0)",
-      "fieldConfig": { "defaults": { "currency": "USD", "unit": "currencyUSD" }, "overrides": [] },
+      "fieldConfig": {
+        "defaults": { "currency": "USD", "unit": "currencyUSD" },
+        "overrides": []
+      },
       "gridPos": { "h": 5, "w": 12, "x": 12, "y": 24 },
       "id": 15,
-      "options": { "displayLabels": ["name"], "layout": "horizontal", "showLegend": true },
+      "options": {
+        "displayLabels": ["name"],
+        "layout": "horizontal",
+        "showLegend": true
+      },
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
@@ -326,7 +353,10 @@
     {
       "datasource": { "type": "prometheus", "uid": "${datasource}" },
       "description": "Failed requests as a percentage of total requests over the last 5m",
-      "fieldConfig": { "defaults": { "max": 1, "min": 0, "unit": "percentunit" }, "overrides": [] },
+      "fieldConfig": {
+        "defaults": { "max": 1, "min": 0, "unit": "percentunit" },
+        "overrides": []
+      },
       "gridPos": { "h": 6, "w": 6, "x": 0, "y": 30 },
       "id": 23,
       "options": {
@@ -334,7 +364,11 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
         "textMode": "auto"
       },
       "targets": [
@@ -375,7 +409,11 @@
       "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
       "gridPos": { "h": 6, "w": 12, "x": 0, "y": 36 },
       "id": 18,
-      "options": { "displayLabels": ["name"], "layout": "horizontal", "showLegend": true },
+      "options": {
+        "displayLabels": ["name"],
+        "layout": "horizontal",
+        "showLegend": true
+      },
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
@@ -395,9 +433,17 @@
       "id": 19,
       "options": {
         "displayLabels": ["name", "percent"],
-        "legend": { "displayMode": "table", "placement": "right", "values": ["value", "percent"] },
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "values": ["value", "percent"]
+        },
         "pieType": "donut",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        }
       },
       "targets": [
         {
@@ -453,7 +499,11 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
         "textMode": "auto"
       },
       "targets": [
@@ -478,7 +528,11 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
         "textMode": "auto"
       },
       "targets": [
@@ -503,7 +557,11 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
         "textMode": "auto"
       },
       "targets": [
@@ -543,7 +601,11 @@
         "graphMode": "area",
         "justifyMode": "auto",
         "orientation": "auto",
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
         "textMode": "auto"
       },
       "targets": [
@@ -646,9 +708,7 @@
         "legend": {
           "displayMode": "table",
           "placement": "right",
-          "calcs": [
-            "sum"
-          ]
+          "calcs": ["sum"]
         },
         "tooltip": {
           "mode": "multi",
@@ -694,9 +754,7 @@
         "displayMode": "gradient",
         "orientation": "horizontal",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "values": false
         },
         "sortOrder": "descending"
@@ -741,9 +799,7 @@
         "displayMode": "gradient",
         "orientation": "horizontal",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "values": false
         },
         "sortOrder": "descending"
@@ -789,9 +845,7 @@
         "legend": {
           "displayMode": "table",
           "placement": "right",
-          "calcs": [
-            "sum"
-          ]
+          "calcs": ["sum"]
         },
         "tooltip": {
           "mode": "multi",
@@ -837,9 +891,7 @@
         "displayMode": "gradient",
         "orientation": "horizontal",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "values": false
         },
         "sortOrder": "descending"

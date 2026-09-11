@@ -8,12 +8,10 @@ components:
   - ../../components/alerts
 
 resources:
-    - ./namespace.yaml
-    - ./hermes/ks.yaml
-    - ./hermes-matrix/ks.yaml
-    - ./honcho/ks.yaml
-# kelos removed - directory does not exist
-    - ./litellm-operator/ks.yaml
-    - ./litellm/ks.yaml
-    - ./llmkube/ks.yaml
-# presidio removed - presidio-masking caused false positives and latency issues
+  - ./namespace.yaml
+  - ./hermes/ks.yaml
+  - ./hermes-matrix/ks.yaml
+  - ./honcho/ks.yaml
+  - ./litellm-operator/ks.yaml
+  - ./litellm/ks.yaml
+  - ./llmkube/ks.yaml
