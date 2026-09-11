@@ -2,14 +2,14 @@
 apiVersion: pocketid.internal/v1alpha1
 kind: PocketIDOIDCClient
 metadata:
-    name: litellm
+  name: litellm
 spec:
-    clientID: litellm
-    callbackUrls:
-        - https://litellm.goyangi.io/sso/callback
-    logoutCallbackUrls:
-        - https://litellm.goyangi.io
-    secret:
-        name: litellm-oidc
-        keys:
-            clientSecret: client_secret
+  clientID: litellm
+  callbackUrls:
+    - https://litellm.goyangi.io/sso/callback
+  logoutCallbackUrls:
+    - https://litellm.goyangi.io
+  secret:
+    name: litellm-oidc
+    keys:
+      clientSecret: client_secret

@@ -2,117 +2,117 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-    name: litellm-configmap
+  name: litellm-configmap
 data:
-    config.yaml: |
-        model_list:
-          - model_name: chatgpt/gpt-5.6-luna
-            model_info:
-              mode: responses
-              input_cost_per_token: 0.0000002
-              cache_creation_input_token_cost: 0.00000025
-              cache_read_input_token_cost: 0.00000002
-              output_cost_per_token: 0.0000012
-              max_input_tokens: 1050000
-            litellm_params:
-              model: chatgpt/gpt-5.6-luna
-          - model_name: chatgpt/gpt-5.6-sol
-            model_info:
-              mode: responses
-              input_cost_per_token: 0.000005
-              cache_creation_input_token_cost: 0.00000625
-              cache_read_input_token_cost: 0.0000005
-              output_cost_per_token: 0.00003
-              max_input_tokens: 1100000
-            litellm_params:
-              model: chatgpt/gpt-5.6-sol
-          - model_name: cron-pool
-            model_info:
-              mode: chat
-              supports_function_calling: true
-            litellm_params:
-              model: openai/mimo-v2.5
-              api_base: os.environ/OPENCODE_GO_API_BASE
-              api_key: os.environ/OPENCODE_API_KEY
-              order: 1
-          - model_name: deepseek-v4-flash
-            model_info:
-              mode: chat
-              supports_function_calling: true
-            litellm_params:
-              model: openai/deepseek-v4-flash
-              api_base: os.environ/OPENCODE_GO_API_BASE
-              api_key: os.environ/OPENCODE_API_KEY
-          - model_name: qwen3-embedding
-            model_info:
-              mode: embedding
-            litellm_params:
-              model: openai/qwen3-embedding-0.6b-4bit-DWQ
-              api_base: http://mac.internal:8000/v1
-              api_key: sk-local
-          - model_name: reasoning-pool
-            model_info:
-              mode: responses
-              supports_function_calling: true
-            litellm_params:
-              model: chatgpt/gpt-5.6-luna
-              order: 1
-          - model_name: reasoning-pool
-            model_info:
-              mode: responses
-              supports_function_calling: true
-            litellm_params:
-              model: chatgpt/gpt-5.6-sol
-              order: 2
-          - model_name: frontier-pool
-            model_info:
-              mode: responses
-              supports_function_calling: true
-            litellm_params:
-              model: chatgpt/gpt-5.6-sol
-              order: 1
-          - model_name: frontier-pool
-            model_info:
-              mode: responses
-              supports_function_calling: true
-            litellm_params:
-              model: chatgpt/gpt-5.6-luna
-              order: 2
-          - model_name: chatgpt/gpt-5.4
-            model_info:
-              mode: responses
-            litellm_params:
-              model: chatgpt/gpt-5.4
-          - model_name: chatgpt/gpt-5.3-codex
-            model_info:
-              mode: responses
-            litellm_params:
-              model: chatgpt/gpt-5.3-codex
-        general_settings:
-          health_check_endpoint: /v1/health
-          store_model_in_db: false
-        router_settings:
-          redis_host: os.environ/REDIS_HOST
-          redis_port: os.environ/REDIS_PORT
-          routing_strategy: simple-shuffle
-          cooldown_time: 30
-          enable_pre_call_checks: true
-          fallbacks:
-            - cron-pool: [chatgpt/gpt-5.6-luna]
-            - reasoning-pool: [cron-pool]
-            - frontier-pool: [reasoning-pool]
-        litellm_settings:
-          success_callback: [prometheus]
-          failure_callback: [prometheus]
-          prometheus_adapter: true
-          require_auth_for_metrics_endpoint: false
-          cache: true
-          cache_params:
-            type: redis
-            host: os.environ/REDIS_HOST
-            port: os.environ/REDIS_PORT
-            ttl: 300
-          drop_params: true
-          request_timeout: 1200
-          num_retries: 2
-          retry_after: 5
+  config.yaml: |
+    model_list:
+      - model_name: chatgpt/gpt-5.6-luna
+        model_info:
+          mode: responses
+          input_cost_per_token: 0.0000002
+          cache_creation_input_token_cost: 0.00000025
+          cache_read_input_token_cost: 0.00000002
+          output_cost_per_token: 0.0000012
+          max_input_tokens: 1050000
+        litellm_params:
+          model: chatgpt/gpt-5.6-luna
+      - model_name: chatgpt/gpt-5.6-sol
+        model_info:
+          mode: responses
+          input_cost_per_token: 0.000005
+          cache_creation_input_token_cost: 0.00000625
+          cache_read_input_token_cost: 0.0000005
+          output_cost_per_token: 0.00003
+          max_input_tokens: 1100000
+        litellm_params:
+          model: chatgpt/gpt-5.6-sol
+      - model_name: cron-pool
+        model_info:
+          mode: chat
+          supports_function_calling: true
+        litellm_params:
+          model: openai/mimo-v2.5
+          api_base: os.environ/OPENCODE_GO_API_BASE
+          api_key: os.environ/OPENCODE_API_KEY
+          order: 1
+      - model_name: deepseek-v4-flash
+        model_info:
+          mode: chat
+          supports_function_calling: true
+        litellm_params:
+          model: openai/deepseek-v4-flash
+          api_base: os.environ/OPENCODE_GO_API_BASE
+          api_key: os.environ/OPENCODE_API_KEY
+      - model_name: qwen3-embedding
+        model_info:
+          mode: embedding
+        litellm_params:
+          model: openai/qwen3-embedding-0.6b-4bit-DWQ
+          api_base: http://mac.internal:8000/v1
+          api_key: sk-local
+      - model_name: reasoning-pool
+        model_info:
+          mode: responses
+          supports_function_calling: true
+        litellm_params:
+          model: chatgpt/gpt-5.6-luna
+          order: 1
+      - model_name: reasoning-pool
+        model_info:
+          mode: responses
+          supports_function_calling: true
+        litellm_params:
+          model: chatgpt/gpt-5.6-sol
+          order: 2
+      - model_name: frontier-pool
+        model_info:
+          mode: responses
+          supports_function_calling: true
+        litellm_params:
+          model: chatgpt/gpt-5.6-sol
+          order: 1
+      - model_name: frontier-pool
+        model_info:
+          mode: responses
+          supports_function_calling: true
+        litellm_params:
+          model: chatgpt/gpt-5.6-luna
+          order: 2
+      - model_name: chatgpt/gpt-5.4
+        model_info:
+          mode: responses
+        litellm_params:
+          model: chatgpt/gpt-5.4
+      - model_name: chatgpt/gpt-5.3-codex
+        model_info:
+          mode: responses
+        litellm_params:
+          model: chatgpt/gpt-5.3-codex
+    general_settings:
+      health_check_endpoint: /v1/health
+      store_model_in_db: false
+    router_settings:
+      redis_host: os.environ/REDIS_HOST
+      redis_port: os.environ/REDIS_PORT
+      routing_strategy: simple-shuffle
+      cooldown_time: 30
+      enable_pre_call_checks: true
+      fallbacks:
+        - cron-pool: [chatgpt/gpt-5.6-luna]
+        - reasoning-pool: [cron-pool]
+        - frontier-pool: [reasoning-pool]
+    litellm_settings:
+      success_callback: [prometheus]
+      failure_callback: [prometheus]
+      prometheus_adapter: true
+      require_auth_for_metrics_endpoint: false
+      cache: true
+      cache_params:
+        type: redis
+        host: os.environ/REDIS_HOST
+        port: os.environ/REDIS_PORT
+        ttl: 300
+      drop_params: true
+      request_timeout: 1200
+      num_retries: 2
+      retry_after: 5
