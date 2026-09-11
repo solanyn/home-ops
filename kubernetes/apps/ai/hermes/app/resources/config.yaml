@@ -39,7 +39,7 @@ agent:
 updates:
   pre_update_backup: false
 streaming:
-  enabled: true
+  enabled: false
 security:
   redact_secrets: true
 privacy:
@@ -112,9 +112,14 @@ auxiliary:
     provider: main
     timeout: 30
     max_concurrency: 3
+platforms:
+  matrix:
+    enabled: false
 matrix:
   allowed_users:
     - "@andrew:goyangi.io"
+  session_scope: room
+  auto_thread: false
 onboarding:
   seen:
     profile_build_offered: true
