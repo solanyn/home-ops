@@ -7,7 +7,7 @@ metadata:
 spec:
   kanidmRef:
     name: kanidm
-    namespace: security
+    namespace: auth
   displayname: Sonarr
   origin: https://sonarr.goyangi.io
   redirectUrl:
