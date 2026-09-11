@@ -2,6 +2,6 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: security
+  name: auth
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
