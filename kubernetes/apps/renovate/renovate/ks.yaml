@@ -6,7 +6,7 @@ metadata:
 spec:
   targetNamespace: renovate
   interval: 1h
-  path: ./kubernetes/apps/renovate/app
+  path: ./kubernetes/apps/renovate/renovate/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -24,7 +24,7 @@ spec:
     - name: renovate-operator
       namespace: renovate
   interval: 1h
-  path: ./kubernetes/apps/renovate/jobs
+  path: ./kubernetes/apps/renovate/renovate/jobs
   prune: true
   sourceRef:
     kind: GitRepository
