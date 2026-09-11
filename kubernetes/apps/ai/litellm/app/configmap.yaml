@@ -35,7 +35,7 @@ data:
               api_base: os.environ/OPENCODE_GO_API_BASE
               api_key: os.environ/OPENCODE_API_KEY
               order: 1
-          - model_name: cron-pool
+          - model_name: deepseek-v4-flash
             model_info:
               mode: chat
               supports_function_calling: true
@@ -43,17 +43,6 @@ data:
               model: openai/deepseek-v4-flash
               api_base: os.environ/OPENCODE_GO_API_BASE
               api_key: os.environ/OPENCODE_API_KEY
-              order: 2
-          - model_name: cron-pool
-            model_info:
-              mode: chat
-              supports_function_calling: true
-              max_input_tokens: 32768
-            litellm_params:
-              model: openai/gemma-4-12b-coder-fable5-composer2.5-4bit
-              api_base: http://mac.internal:8000/v1
-              api_key: sk-local
-              order: 3
           - model_name: qwen3-embedding
             model_info:
               mode: embedding
@@ -75,16 +64,6 @@ data:
             litellm_params:
               model: chatgpt/gpt-5.6-sol
               order: 2
-          - model_name: reasoning-pool
-            model_info:
-              mode: chat
-              supports_function_calling: true
-              max_input_tokens: 32768
-            litellm_params:
-              model: openai/gemma-4-12b-coder-fable5-composer2.5-4bit
-              api_base: http://mac.internal:8000/v1
-              api_key: sk-local
-              order: 3
           - model_name: frontier-pool
             model_info:
               mode: responses
@@ -99,16 +78,6 @@ data:
             litellm_params:
               model: chatgpt/gpt-5.6-luna
               order: 2
-          - model_name: frontier-pool
-            model_info:
-              mode: chat
-              supports_function_calling: true
-              max_input_tokens: 32768
-            litellm_params:
-              model: openai/gemma-4-12b-coder-fable5-composer2.5-4bit
-              api_base: http://mac.internal:8000/v1
-              api_key: sk-local
-              order: 3
           - model_name: chatgpt/gpt-5.4
             model_info:
               mode: responses
