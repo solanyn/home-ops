@@ -2,7 +2,7 @@ apiVersion: kaniop.rs/v1beta1
 kind: KanidmPersonAccount
 metadata:
   name: andrew
-  namespace: auth
+  namespace: security
 spec:
   kanidmRef:
     name: kanidm
@@ -16,7 +16,7 @@ apiVersion: kaniop.rs/v1beta1
 kind: KanidmGroup
 metadata:
   name: sonarr-users
-  namespace: auth
+  namespace: security
 spec:
   kanidmRef:
     name: kanidm
