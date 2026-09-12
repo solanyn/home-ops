@@ -14,3 +14,5 @@ spec:
     - name: admin
   secret:
     name: sonarr-oidc
+    keys:
+      clientSecret: client-secret
