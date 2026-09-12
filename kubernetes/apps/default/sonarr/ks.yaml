@@ -7,8 +7,8 @@ metadata:
 spec:
   targetNamespace: default
   dependsOn:
-    - name: kanidm-instance
-      namespace: security
+    - name: pocket-id-resources
+      namespace: default
     - name: cloudnative-pg-cluster
       namespace: storage
   interval: 1h
