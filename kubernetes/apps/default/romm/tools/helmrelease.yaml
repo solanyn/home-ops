@@ -54,20 +54,50 @@ spec:
         data:
           convert.py: |
             #!/usr/bin/env python3
+            import json
+            import os
+            import re
             import shutil
             import subprocess
-            import re
-            import urllib.request
             import urllib.parse
-            import json
+            import urllib.request
             from pathlib import Path
 
             QBT = "http://qbittorrent.default.svc.cluster.local"
-            DEST = Path("/media/games/roms/switch")
+            DEST = Path("/media/games/roms")
             SOURCES = [
-                (Path("/media/downloads/torrents/complete/switch"), "switch", True),
-                (Path("/media/downloads/torrents/complete/games"), "games", False),
+                # Switch imports retain the existing copy-and-cleanup behaviour.
+                (Path("/media/downloads/torrents/complete/switch"), "switch", "copy", True),
+                (Path("/media/downloads/torrents/complete/games"), "games", "hardlink", False),
+                # Minerva archives are preserved for seeding and never cleaned up.
+                (Path("/media/downloads/torrents/complete/roms/Minerva_Myrient"), "roms", "hardlink", False),
             ]
+
+            MINERVA_PLATFORMS = {
+                "Nintendo - Game Boy Advance": "gba",
+                "Nintendo - Nintendo 3DS (Digital) (CDN)": "3ds",
+                "Nintendo - Nintendo 64 (BigEndian)": "n64",
+                "Nintendo - Nintendo DS (Decrypted)": "nds",
+                "Nintendo - Nintendo Entertainment System (Headerless)": "nes",
+                "Nintendo - Super Nintendo Entertainment System": "snes",
+                "Nintendo - GameCube - NKit RVZ [zstd-19-128k]": "ngc",
+                "Nintendo - Wii - NKit RVZ [zstd-19-128k]": "wii",
+                "Non-Redump - Nintendo - Wii U": "wiiu",
+                "Non-Redump - Sony - PlayStation Portable": "psp",
+                "Sony - PlayStation": "psx",
+                "Sony - PlayStation 2": "ps2",
+                "Sony - PlayStation Portable": "psp",
+                "Sony - PlayStation Portable (PSN) (Decrypted)": "psp",
+                "Sega - Game Gear": "gg",
+                "Sega - Master System - Mark III": "sms",
+                "Sega - Mega Drive - Genesis": "genesis",
+                "Sega - Dreamcast": "dc",
+                "Sega - Saturn": "saturn",
+                "NEC - PC Engine - TurboGrafx-16": "pcengine",
+                "Microsoft - Xbox": "xbox",
+                "Microsoft - Xbox 360": "xbox360",
+            }
+            MINERVA_EXTENSIONS = {".zip", ".7z", ".rar", ".chd", ".rvz", ".iso", ".cue", ".bin"}
 
             def normalize(name):
                 return re.sub(r'\s*\(\d+\.\d+\s+GB\)', '', name)
@@ -88,10 +118,27 @@ spec:
                 norm = normalize(dest.name)
                 return any(normalize(f.name) == norm for f in dest.parent.glob("*.nsp"))
 
-            def make_dest(game, kind, filename):
-                d = DEST / game if kind == "base" else DEST / game / kind
-                d.mkdir(parents=True, exist_ok=True)
-                return d / filename
+            def minerva_platform(source):
+                for part in source.parts:
+                    if part in MINERVA_PLATFORMS:
+                        return MINERVA_PLATFORMS[part]
+                    if part.startswith("Nintendo - ") and "[T-En] Collection" in part:
+                        return MINERVA_PLATFORMS.get(part.split(" [T-En] Collection", 1)[0])
+                    if part.startswith("Sega - ") and "[T-En] Collection" in part:
+                        return MINERVA_PLATFORMS.get(part.split(" [T-En] Collection", 1)[0])
+                    if part.startswith("Sony - ") and "[T-En] Collection" in part:
+                        return MINERVA_PLATFORMS.get(part.split(" [T-En] Collection", 1)[0])
+                return None
+
+            def destination(source, src_dir, category):
+                if category == "roms":
+                    platform = minerva_platform(source)
+                    if not platform:
+                        return None
+                    return DEST / platform / source.name
+                game, kind = game_info(source.name)
+                target = DEST / "switch" / game if kind == "base" else DEST / "switch" / game / kind
+                return target / source.name
 
             def qbt_torrents(category):
                 url = f"{QBT}/api/v2/torrents/info?" + urllib.parse.urlencode({"category": category})
@@ -115,36 +162,57 @@ spec:
                         hashes.add(t["hash"])
                 return hashes
 
-            def import_files(src_dir, cleanup):
+            def transfer(source, dest, mode):
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                if dest.exists():
+                    if dest.stat().st_size != source.stat().st_size:
+                        raise RuntimeError(f"destination exists with different size: {dest}")
+                    if mode == "hardlink" and os.stat(dest).st_ino != os.stat(source).st_ino:
+                        raise RuntimeError(f"destination exists but is not the source hardlink: {dest}")
+                    return "existing"
+                if mode == "hardlink":
+                    if os.stat(source).st_dev != os.stat(dest.parent).st_dev:
+                        raise OSError(f"hardlink requires one filesystem: {source} -> {dest}")
+                    os.link(source, dest)
+                    if os.stat(source).st_ino != os.stat(dest).st_ino:
+                        raise RuntimeError(f"hardlink verification failed: {dest}")
+                    return "hardlinked"
+                if mode == "copy":
+                    tmp = dest.with_suffix(dest.suffix + ".tmp")
+                    try:
+                        shutil.copy2(source, tmp)
+                        tmp.replace(dest)
+                    finally:
+                        tmp.unlink(missing_ok=True)
+                    return "copied"
+                raise ValueError(f"unknown transfer mode: {mode}")
+
+            def import_files(src_dir, category, mode, cleanup):
                 cleaned = []
-                for nsz in src_dir.rglob("*.nsz"):
-                    game, kind = game_info(nsz.name)
-                    dest = make_dest(game, kind, nsz.with_suffix(".nsp").name)
-                    if exists(dest):
-                        cleaned.append(nsz)
+                for source in src_dir.rglob("*"):
+                    if not source.is_file() or source.name.startswith(".") or ".unwanted" in source.parts:
                         continue
-                    print(f"Converting {nsz.name}")
-                    subprocess.run(["nsz", "-D", str(nsz), "-o", str(dest.parent)], check=True)
-                    cleaned.append(nsz)
-                for nsp in src_dir.rglob("*.nsp"):
-                    game, kind = game_info(nsp.name)
-                    dest = make_dest(game, kind, nsp.name)
-                    if exists(dest):
-                        cleaned.append(nsp)
+                    if category == "roms" and source.suffix.lower() not in MINERVA_EXTENSIONS:
                         continue
+                    if category != "roms" and source.suffix.lower() == ".nsz":
+                        game, kind = game_info(source.name)
+                        dest = DEST / "switch" / game / (kind if kind != "base" else "") / source.with_suffix(".nsp").name
+                        if dest.exists():
+                            cleaned.append(source)
+                            continue
+                        dest.parent.mkdir(parents=True, exist_ok=True)
+                        print(f"Converting {source.name}")
+                        subprocess.run(["nsz", "-D", str(source), "-o", str(dest.parent)], check=True)
+                        cleaned.append(source)
+                        continue
+                    dest = destination(source, src_dir, category)
+                    if dest is None:
+                        print(f"Skipping unmapped source: {source}")
+                        continue
+                    result = transfer(source, dest, mode)
+                    print(f"{result}: {source} -> {dest}")
                     if cleanup:
-                        tmp = dest.with_suffix(".nsp.tmp")
-                        try:
-                            print(f"Copying {nsp.name}")
-                            shutil.copy2(nsp, tmp)
-                            tmp.rename(dest)
-                        except BaseException:
-                            tmp.unlink(missing_ok=True)
-                            raise
-                        cleaned.append(nsp)
-                    else:
-                        print(f"Hardlinking {nsp.name}")
-                        dest.hardlink_to(nsp)
+                        cleaned.append(source)
                 return cleaned
 
             def cleanup_sources(category, src_dir, cleaned):
@@ -160,19 +228,35 @@ spec:
                         d.rmdir()
 
             def process():
-                for src_dir, category, cleanup in SOURCES:
-                    if not src_dir.exists():
-                        continue
-                    try:
-                        cleaned = import_files(src_dir, cleanup)
-                    except Exception as e:
-                        print(f"Import failed for {src_dir}: {e}")
-                        continue
-                    if cleanup and cleaned:
+                lock_path = DEST / ".romm-tools.lock"
+                try:
+                    lock_path.mkdir()
+                except FileExistsError:
+                    print("Another romm-tools run is active; exiting")
+                    return
+                try:
+                    (lock_path / "owner").write_text(
+                        f"pid={os.getpid()}\\n", encoding="utf-8"
+                    )
+                    for src_dir, category, mode, cleanup in SOURCES:
+                        if not src_dir.exists():
+                            continue
                         try:
-                            cleanup_sources(category, src_dir, cleaned)
+                            cleaned = import_files(src_dir, category, mode, cleanup)
                         except Exception as e:
-                            print(f"Cleanup failed for {category}: {e}")
+                            print(f"Import failed for {src_dir}: {e}")
+                            continue
+                        if cleanup and cleaned:
+                            try:
+                                cleanup_sources(category, src_dir, cleaned)
+                            except Exception as e:
+                                print(f"Cleanup failed for {category}: {e}")
+                finally:
+                    try:
+                        (lock_path / "owner").unlink(missing_ok=True)
+                        lock_path.rmdir()
+                    except FileNotFoundError:
+                        pass
 
             if __name__ == "__main__":
                 process()
