@@ -75,6 +75,7 @@ spec:
 
             MINERVA_PLATFORMS = {
                 "Nintendo - Game Boy Advance": "gba",
+                "Nintendo - Nintendo 3DS": "3ds",
                 "Nintendo - Nintendo 3DS (Digital) (CDN)": "3ds",
                 "Nintendo - Nintendo 64 (BigEndian)": "n64",
                 "Nintendo - Nintendo DS (Decrypted)": "nds",
@@ -98,6 +99,13 @@ spec:
                 "Microsoft - Xbox 360": "xbox360",
             }
             MINERVA_EXTENSIONS = {".zip", ".7z", ".rar", ".chd", ".rvz", ".iso", ".cue", ".bin"}
+            SWITCH_EXTENSIONS = {".nsp", ".nsz", ".xci"}
+            SWITCH_MOD_DIRECTORIES = {
+                "atmosphere",
+                "exefs",
+                "romfs",
+                "sxos",
+            }
 
             def normalize(name):
                 return re.sub(r'\s*\(\d+\.\d+\s+GB\)', '', name)
@@ -118,24 +126,26 @@ spec:
                 norm = normalize(dest.name)
                 return any(normalize(f.name) == norm for f in dest.parent.glob("*.nsp"))
 
-            def minerva_platform(source):
-                for part in source.parts:
-                    if part in MINERVA_PLATFORMS:
-                        return MINERVA_PLATFORMS[part]
-                    if part.startswith("Nintendo - ") and "[T-En] Collection" in part:
-                        return MINERVA_PLATFORMS.get(part.split(" [T-En] Collection", 1)[0])
-                    if part.startswith("Sega - ") and "[T-En] Collection" in part:
-                        return MINERVA_PLATFORMS.get(part.split(" [T-En] Collection", 1)[0])
-                    if part.startswith("Sony - ") and "[T-En] Collection" in part:
-                        return MINERVA_PLATFORMS.get(part.split(" [T-En] Collection", 1)[0])
-                return None
+            def minerva_location(source, src_dir):
+                relative = source.relative_to(src_dir)
+                parts = relative.parts
+                for index, part in enumerate(parts[:-1]):
+                    platform = MINERVA_PLATFORMS.get(part)
+                    if platform:
+                        return platform, Path(*parts[index + 1:])
+                    if "[T-En] Collection" in part:
+                        base = part.split(" [T-En] Collection", 1)[0]
+                        platform = MINERVA_PLATFORMS.get(base)
+                        if platform:
+                            return platform, Path(*parts[index + 1:])
+                return None, None
 
             def destination(source, src_dir, category):
                 if category == "roms":
-                    platform = minerva_platform(source)
+                    platform, relative = minerva_location(source, src_dir)
                     if not platform:
                         return None
-                    return DEST / platform / source.name
+                    return DEST / platform / relative
                 game, kind = game_info(source.name)
                 target = DEST / "switch" / game if kind == "base" else DEST / "switch" / game / kind
                 return target / source.name
@@ -192,7 +202,11 @@ spec:
                 for source in src_dir.rglob("*"):
                     if not source.is_file() or source.name.startswith(".") or ".unwanted" in source.parts:
                         continue
+                    if category in {"switch", "games"} and SWITCH_MOD_DIRECTORIES.intersection(source.parts):
+                        continue
                     if category == "roms" and source.suffix.lower() not in MINERVA_EXTENSIONS:
+                        continue
+                    if category in {"switch", "games"} and source.suffix.lower() not in SWITCH_EXTENSIONS:
                         continue
                     if category != "roms" and source.suffix.lower() == ".nsz":
                         game, kind = game_info(source.name)
