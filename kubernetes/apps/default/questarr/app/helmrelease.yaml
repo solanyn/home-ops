@@ -21,8 +21,8 @@ spec:
               tag: v1.4.2
             env:
               PORT: &port 5000
-              PUID: "1000"
-              PGID: "1000"
+              PUID: "1001"
+              PGID: "1001"
               TZ: Australia/Sydney
             probes:
               liveness: &probes
