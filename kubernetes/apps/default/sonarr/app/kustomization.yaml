@@ -5,6 +5,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+  - ./pvc.yaml
   - ./securitypolicy.yaml
 configMapGenerator:
   - name: sonarr-configmap
