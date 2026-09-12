@@ -8,3 +8,4 @@ resources:
   - ./users.yaml
   - ./usergroups.yaml
   - ./oidc-forgejo.yaml
+  - ./oidc-sonarr.yaml
