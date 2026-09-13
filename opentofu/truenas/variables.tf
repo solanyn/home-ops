@@ -45,9 +45,3 @@ variable "truenas_api_key" {
   type        = string
   sensitive   = true
 }
-
-variable "doco_cd_webhook_secret" {
-  description = "Doco-CD webhook secret."
-  type        = string
-  sensitive   = true
-}
