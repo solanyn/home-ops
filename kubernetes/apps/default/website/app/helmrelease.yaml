@@ -15,8 +15,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/solanyn/website
-              tag: 2026.09.6
+              repository: nginxinc/nginx-unprivileged
+              tag: 1.29.1-alpine@sha256:27985295bdb22a1ef8f712863210bd5877c0f3006494a593e86b3fe0fa55467e
             env:
               NGINX_ENTRYPOINT_QUIET_LOGS: "1"
             probes:
@@ -26,7 +26,7 @@ spec:
                 spec:
                   httpGet:
                     path: /
-                    port: &port 80
+                    port: &port 8080
                   periodSeconds: 30
                   timeoutSeconds: 5
               readiness: *probe
@@ -48,6 +48,18 @@ spec:
         ports:
           http:
             port: *port
+    persistence:
+      assets:
+        type: image
+        # renovate: datasource=docker depName=ghcr.io/solanyn/website-assets
+        image: ghcr.io/solanyn/website-assets:2026.09.6
+        globalMounts:
+          - path: /usr/share/nginx/html
+            readOnly: true
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
     route:
       app:
         annotations:
