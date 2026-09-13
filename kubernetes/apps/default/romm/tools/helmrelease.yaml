@@ -65,11 +65,6 @@ spec:
             env:
               HOME: /tmp
               NPM_CONFIG_CACHE: /tmp/npm-cache
-            volumeMounts:
-              - name: igir-tools
-                mountPath: /tools
-              - name: tmp
-                mountPath: /tmp
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -130,11 +125,6 @@ spec:
             env:
               HOME: /tmp
               NPM_CONFIG_CACHE: /tmp/npm-cache
-            volumeMounts:
-              - name: igir-tools
-                mountPath: /tools
-              - name: tmp
-                mountPath: /tmp
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
