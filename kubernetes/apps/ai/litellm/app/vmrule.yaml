@@ -11,6 +11,18 @@ spec:
       type: vlogs
       interval: 30s
       rules:
+        - alert: LiteLLMChatGPTUsageLimitReached
+          expr: |-
+            kubernetes.pod_name:~"litellm-.*" "usage_limit_reached"
+            | stats by (kubernetes.pod_name) count() as matches
+            | filter matches:>0
+          keep_firing_for: 15m
+          annotations:
+            summary: LiteLLM ChatGPT usage limit reached
+            description: ChatGPT Plus has exhausted its current usage allowance. LiteLLM may be serving fallback models; inspect the reset time in the LiteLLM log.
+          labels:
+            severity: critical
+            category: capacity
         - alert: LiteLLMChatGPTAuthenticationRequired
           expr: |-
             kubernetes.pod_name:~"litellm-.*" "Enter code:"
