@@ -21,4 +21,3 @@ resources:
   - ./unpoller/ks.yaml
   - ./victoria-logs/ks.yaml
   - ./victoria/ks.yaml
-  - ./toolhive/ks.yaml

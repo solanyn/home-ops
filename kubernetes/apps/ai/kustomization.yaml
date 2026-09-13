@@ -15,3 +15,4 @@ resources:
   - ./litellm-operator/ks.yaml
   - ./litellm/ks.yaml
   - ./llmkube/ks.yaml
+  - ./toolhive/ks.yaml
