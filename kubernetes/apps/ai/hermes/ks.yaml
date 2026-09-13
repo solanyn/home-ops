@@ -16,12 +16,10 @@ spec:
       KOPIUR_CAPACITY: 10Gi
       KOPIUR_PUID: "10000"
       KOPIUR_PGID: "10000"
-      BREW_PREFIX: /opt/data/homebrew/.linuxbrew
-      BREW_USER_HOME: /opt/data/homebrew/.homebrew-user
       # These are bash variables in the install-tools init script.
       # Flux's envsubst (strict mode) fails on any unset $VAR, so we
       # provide their literal values — substitution is transparent.
-      HOMEBREW_PREFIX: /opt/data/homebrew/.linuxbrew
+      HOMEBREW_PREFIX: /opt/tools/homebrew/.linuxbrew
   prune: true
   sourceRef:
     kind: GitRepository

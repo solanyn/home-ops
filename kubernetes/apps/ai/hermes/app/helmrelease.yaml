@@ -36,6 +36,9 @@ spec:
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
 
+                # Remove tool installations left in the state volume by older revisions.
+                rm -rf /opt/data/homebrew /opt/data/codex
+
                 mkdir -p /opt/data/.codex
                 chown -R 10000:10000 /opt/data/.codex
 
@@ -55,10 +58,10 @@ spec:
                 apt-get update -qq && apt-get install -y -qq curl ca-certificates git build-essential file unzip util-linux patch bzip2 nodejs npm >/dev/null 2>&1
 
                 # linuxbrew refuses to run as root and needs a writable $HOME.
-                # Install at /opt/data/homebrew/.linuxbrew (PVC-backed, persists across pod restarts)
-                # and use /opt/data/homebrew/.homebrew-user as the non-root $HOME.
-                BREW_PREFIX="/opt/data/homebrew/.linuxbrew"
-                BREW_USER_HOME="/opt/data/homebrew/.homebrew-user"
+                # Install at /opt/tools/homebrew/.linuxbrew (ephemeral tools volume)
+                # and use /opt/tools/homebrew/.homebrew-user as the non-root $HOME.
+                BREW_PREFIX="/opt/tools/homebrew/.linuxbrew"
+                BREW_USER_HOME="/opt/tools/homebrew/.homebrew-user"
                 mkdir -p "$BREW_PREFIX" "$BREW_USER_HOME"
                 chown -R 10000:10000 "$BREW_PREFIX" "$BREW_USER_HOME"
 
@@ -74,7 +77,7 @@ spec:
                   HOMEBREW_NO_ANALYTICS=1 \
                   HOMEBREW_NO_AUTO_UPDATE=1 \
                   NONINTERACTIVE=1 \
-                  PATH="/opt/data/homebrew/.linuxbrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+                  PATH="/opt/tools/homebrew/.linuxbrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
                   bash -c '
                     set -euo pipefail
 
@@ -111,9 +114,8 @@ spec:
                         chmod 600 /opt/data/.config/op/config || true
                     fi
 
-                    # Stage a pinned Codex CLI in the PVC-backed tool directory.
-                    # Hermes launches codex app-server as its child process.
-                    CODEX_PREFIX="/opt/data/codex"
+                    # Stage the pinned Codex CLI in the ephemeral tools volume.
+                    CODEX_PREFIX="/opt/tools/codex"
                     mkdir -p "$CODEX_PREFIX"
                     export PATH="$HOMEBREW_PREFIX/bin:$CODEX_PREFIX/bin:$PATH"
                     # renovate: datasource=npm depName=@openai/codex
@@ -130,17 +132,17 @@ spec:
         containers:
           app:
             image: &image
-              repository: nousresearch/hermes-agent
-              tag: v2026.9.11@sha256:9469b3e78b9545b6d576eb8887a95352e9a0ea83730eaf31431cf862ca1010e1
+              repository: ghcr.io/solanyn/hermes
+              tag: 2026.9.11
             command: ["/opt/hermes/bin/hermes"]
             args: ["gateway", "run"]
             env:
               HERMES_HOME: /opt/data
               HOME: /opt/data
-              PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/data/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+              PATH: /opt/tools/homebrew/.linuxbrew/bin:/opt/tools/homebrew/.linuxbrew/sbin:/opt/tools/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
               CODEX_HOME: /opt/data/.codex
-              HOMEBREW_PREFIX: /opt/data/homebrew/.linuxbrew
-              HOMEBREW_CELLAR: /opt/data/homebrew/.linuxbrew/Cellar
+              HOMEBREW_PREFIX: /opt/tools/homebrew/.linuxbrew
+              HOMEBREW_CELLAR: /opt/tools/homebrew/.linuxbrew/Cellar
               HOMEBREW_NO_ANALYTICS: "1"
               HOMEBREW_NO_AUTO_UPDATE: "1"
               TZ: Australia/Sydney
@@ -193,9 +195,9 @@ spec:
             env:
               HERMES_HOME: /opt/data
               HOME: /opt/data
-              PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-              HOMEBREW_PREFIX: /opt/data/homebrew/.linuxbrew
-              HOMEBREW_CELLAR: /opt/data/homebrew/.linuxbrew/Cellar
+              PATH: /opt/tools/homebrew/.linuxbrew/bin:/opt/tools/homebrew/.linuxbrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+              HOMEBREW_PREFIX: /opt/tools/homebrew/.linuxbrew
+              HOMEBREW_CELLAR: /opt/tools/homebrew/.linuxbrew/Cellar
               HOMEBREW_NO_ANALYTICS: "1"
               HOMEBREW_NO_AUTO_UPDATE: "1"
               TZ: Australia/Sydney
@@ -239,6 +241,10 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /opt/data
+      tools:
+        type: emptyDir
+        globalMounts:
+          - path: /opt/tools
       home-cache:
         type: emptyDir
         globalMounts:
@@ -251,11 +257,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /opt/data/.cache
-          - path: /opt/data/homebrew/.homebrew-user/.cache
-      codex:
-        type: emptyDir
-        globalMounts:
-          - path: /opt/data/codex
+          - path: /opt/tools/homebrew/.homebrew-user/.cache
       media:
         type: nfs
         server: nas.internal
