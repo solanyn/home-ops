@@ -12,7 +12,9 @@ import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 
-QBT = os.environ.get("QBT_URL", "http://qbittorrent.default.svc.cluster.local")
+QBT = os.environ.get(
+    "QBT_URL", "http://qui.default.svc.cluster.local/api/instances/1"
+).rstrip("/")
 DEST = Path(os.environ.get("ROM_DEST", "/media/games/roms"))
 ROM_ROOTS = (
     Path("/media/downloads/torrents/complete/roms/Minerva_Myrient"),
@@ -30,6 +32,7 @@ SWITCH_MOD_DIRECTORIES = {"atmosphere", "exefs", "romfs", "sxos"}
 MINERVA_PLATFORMS = {
     "Nintendo - Game Boy Advance": "gba",
     "Nintendo - Nintendo 3DS": "3ds",
+    "Nintendo - Nintendo 3DS (Decrypted)": "3ds",
     "Nintendo - Nintendo 3DS (Digital) (CDN)": "3ds",
     "Nintendo - Nintendo 64 (BigEndian)": "n64",
     "Nintendo - Nintendo DS": "nds",
@@ -80,11 +83,24 @@ def http_json(path: str):
 
 def qbt_selected_files() -> set[Path]:
     selected = set()
-    for torrent in http_json("torrents/info?category=roms"):
-        content = Path(torrent["content_path"]).resolve()
-        for item in http_json(f"torrents/files?hash={urllib.parse.quote(torrent['hash'])}"):
-            if item.get("priority", 0) > 0 and item.get("progress", 0) >= 1:
-                selected.add((content / item["name"]).resolve())
+    torrents = http_json("torrents")
+    if isinstance(torrents, dict):
+        torrents = torrents.get("torrents", [])
+    if not isinstance(torrents, list):
+        raise RuntimeError("unexpected torrent list response")
+    for torrent in torrents:
+        if torrent.get("category") != "roms":
+            continue
+        content = Path(torrent["content_path"])
+        for item in http_json(f"torrents/{urllib.parse.quote(torrent['hash'])}/files"):
+            if item.get("priority", 0) <= 0 or item.get("progress", 0) < 1:
+                continue
+            relative = Path(item["name"])
+            if relative.parts and relative.parts[0] == content.name:
+                relative = Path(*relative.parts[1:])
+            source = (content / relative).resolve()
+            if any(is_source_path(source, root) for root in ROM_ROOTS):
+                selected.add(source)
     return selected
 
 
@@ -107,6 +123,14 @@ def is_allowed(source: Path) -> bool:
         any(marker in name for marker in JAPAN_MARKERS)
         and not any(marker in name for marker in PATCH_MARKERS)
     )
+
+
+def is_source_path(source: Path, root: Path) -> bool:
+    try:
+        source.resolve().relative_to(root.resolve())
+        return True
+    except ValueError:
+        return False
 
 
 def safe_source(source: Path, root: Path) -> bool:
@@ -139,6 +163,10 @@ def import_minerva(selected: set[Path], result: Result) -> None:
             if not source.is_file() or source.name.startswith(".") or ".unwanted" in source.parts:
                 continue
             if source.resolve() not in selected:
+                continue
+            if not safe_source(source, root):
+                result.failed += 1
+                print(f"failed: unsafe source path: {source}")
                 continue
             if source.suffix.lower() not in MINERVA_EXTENSIONS or not is_allowed(source):
                 result.skipped += 1
