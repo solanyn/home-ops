@@ -4,3 +4,10 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+
+configMapGenerator:
+  - name: romm-tools-script
+    files:
+      - import.py=resources/import.py
+generatorOptions:
+  disableNameSuffixHash: true
