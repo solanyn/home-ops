@@ -54,8 +54,8 @@ spec:
         initContainers:
           install-igir:
             image:
-              repository: alpine
-              tag: 3.22
+              repository: node
+              tag: lts-bookworm-slim
             command:
               - /bin/sh
             args:
@@ -72,7 +72,7 @@ spec:
           app:
             image:
               repository: node
-              tag: lts-alpine
+              tag: lts-bookworm-slim
             env:
               QBT_URL: http://qbittorrent.default.svc.cluster.local
               IGIR_DAT_URLS: >-
@@ -113,8 +113,8 @@ spec:
         initContainers:
           install-igir:
             image:
-              repository: alpine
-              tag: 3.22
+              repository: node
+              tag: lts-bookworm-slim
             command:
               - /bin/sh
             args:
@@ -131,7 +131,7 @@ spec:
           app:
             image:
               repository: node
-              tag: lts-alpine
+              tag: lts-bookworm-slim
             env:
               QBT_URL: http://qbittorrent.default.svc.cluster.local
               IGIR_DAT_URLS: >-
