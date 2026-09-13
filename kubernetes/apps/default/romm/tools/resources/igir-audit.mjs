@@ -13,7 +13,9 @@ if (args.some((arg) => !["--dry-run", "--apply"].includes(arg)) || (apply && arg
   process.exit(2);
 }
 
-const QBT = process.env.QBT_URL || "http://qbittorrent.default.svc.cluster.local";
+const QBT_API = process.env.QBT_API || "http://qbittorrent.default.svc.cluster.local/api/v2";
+const QBT_TORRENTS_PATH = process.env.QBT_TORRENTS_PATH || "torrents/info?category=roms";
+const QBT_FILES_PATH = process.env.QBT_FILES_PATH || "torrents/files?hash={hash}";
 const DEST_ROOT = process.env.IGIR_DEST_ROOT || "/media/games/roms";
 const STAGE_ROOT = process.env.IGIR_STAGE_ROOT || "/media/games/.igir-staging";
 const PROMOTION_ROOT = process.env.IGIR_PROMOTION_ROOT || "/media/games/.igir-promotion";
@@ -47,7 +49,7 @@ async function getJson(endpoint, attempts = 3) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 15000);
     try {
-      const response = await fetch(`${QBT}/api/v2/${endpoint}`, { signal: controller.signal });
+      const response = await fetch(`${QBT_API}/${endpoint}`, { signal: controller.signal });
       if (!response.ok) throw new Error(`qBittorrent ${response.status}: ${endpoint}`);
       return await response.json();
     } catch (error) {
@@ -76,13 +78,13 @@ function platformRelative(file, root) {
 }
 
 async function selectedFiles() {
-  const torrents = await getJson("torrents/info?category=roms");
+  const torrents = await getJson(QBT_TORRENTS_PATH);
   if (!Array.isArray(torrents)) throw new Error("qBittorrent returned an invalid torrent list");
   const selected = [];
   for (const torrent of torrents) {
     let files;
     try {
-      files = await getJson(`torrents/files?hash=${encodeURIComponent(torrent.hash)}`);
+      files = await getJson(QBT_FILES_PATH.replace("{hash}", encodeURIComponent(torrent.hash)));
     } catch (error) {
       console.log(`torrent-failed: ${torrent.hash}: ${error.message}`);
       continue;
