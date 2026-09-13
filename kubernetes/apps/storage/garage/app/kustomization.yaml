@@ -5,5 +5,4 @@ kind: Kustomization
 namespace: storage
 resources:
   - ./buckets.yaml
-  - ./dnsendpoint.yaml
   - ./externalsecret.yaml
