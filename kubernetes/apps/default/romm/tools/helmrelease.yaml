@@ -77,7 +77,9 @@ spec:
               repository: node
               tag: lts-bookworm-slim
             env:
-              QBT_URL: http://qbittorrent.default.svc.cluster.local
+              QBT_API: http://qui.default.svc.cluster.local/api/instances/1
+              QBT_TORRENTS_PATH: torrents
+              QBT_FILES_PATH: torrents/{hash}/files
               IGIR_DAT_URLS: >-
                 https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Game%20Boy%20Advance.dat,
                 https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Nintendo%203DS.dat,
@@ -139,7 +141,9 @@ spec:
               repository: node
               tag: lts-bookworm-slim
             env:
-              QBT_URL: http://qbittorrent.default.svc.cluster.local
+              QBT_API: http://qui.default.svc.cluster.local/api/instances/1
+              QBT_TORRENTS_PATH: torrents
+              QBT_FILES_PATH: torrents/{hash}/files
               IGIR_DAT_URLS: >-
                 https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Game%20Boy%20Advance.dat,
                 https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Nintendo%203DS.dat,
