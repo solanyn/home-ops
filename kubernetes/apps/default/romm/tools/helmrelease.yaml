@@ -42,6 +42,84 @@ spec:
               capabilities: { drop: ["ALL"] }
         pod:
           restartPolicy: Never
+      romm-audit:
+        type: cronjob
+        cronjob:
+          schedule: "30 3 * * *"
+          backoffLimit: 0
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+          ttlSecondsAfterFinished: 3600
+        containers:
+          app:
+            image:
+              repository: node
+              tag: 22-alpine
+            env:
+              QBT_URL: http://qbittorrent.default.svc.cluster.local
+              IGIR_DAT_URLS: >-
+                https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Game%20Boy%20Advance.dat,
+                https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Nintendo%203DS.dat,
+                https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Nintendo%20DS.dat,
+                https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Nintendo%2064.dat,
+                https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Nintendo%20Entertainment%20System.dat,
+                https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Super%20Nintendo%20Entertainment%20System.dat
+              IGIR_REPORT_FILE: /tmp/igir-report.csv
+              IGIR_STAGE_ROOT: /media/games/.igir-staging
+            command:
+              - /bin/sh
+            args:
+              - /scripts/igir-report.sh
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+      romm-import:
+        type: cronjob
+        cronjob:
+          schedule: "0 0 1 1 *"
+          suspend: true
+          backoffLimit: 0
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+          ttlSecondsAfterFinished: 3600
+        containers:
+          app:
+            image:
+              repository: node
+              tag: 22-alpine
+            env:
+              QBT_URL: http://qbittorrent.default.svc.cluster.local
+              IGIR_DAT_URLS: >-
+                https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Game%20Boy%20Advance.dat,
+                https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Nintendo%203DS.dat,
+                https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Nintendo%20DS.dat,
+                https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Nintendo%2064.dat,
+                https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Nintendo%20Entertainment%20System.dat,
+                https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Super%20Nintendo%20Entertainment%20System.dat
+              IGIR_REPORT_FILE: /tmp/igir-report.csv
+              IGIR_STAGE_ROOT: /media/games/.igir-staging
+              IGIR_DEST_ROOT: /media/games/roms
+            command:
+              - node
+            args:
+              - /scripts/igir-audit.mjs
+              - --apply
+            resources: {}
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+        pod:
+          restartPolicy: Never
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -71,3 +149,5 @@ spec:
             readOnly: true
       tmp:
         type: emptyDir
+        globalMounts:
+          - path: /tmp
