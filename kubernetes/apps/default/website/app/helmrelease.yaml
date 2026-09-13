@@ -52,7 +52,7 @@ spec:
       assets:
         type: image
         # renovate: datasource=docker depName=ghcr.io/solanyn/website-assets
-        image: ghcr.io/solanyn/website-assets:2026.09.6
+        image: ghcr.io/solanyn/website-assets:2026.09.2
         globalMounts:
           - path: /usr/share/nginx/html
             readOnly: true
