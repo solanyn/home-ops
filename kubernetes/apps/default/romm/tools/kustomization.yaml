@@ -9,5 +9,7 @@ configMapGenerator:
   - name: romm-tools-script
     files:
       - import.py=resources/import.py
+      - igir-audit.mjs=resources/igir-audit.mjs
+      - igir-report.sh=resources/igir-report.sh
 generatorOptions:
   disableNameSuffixHash: true
