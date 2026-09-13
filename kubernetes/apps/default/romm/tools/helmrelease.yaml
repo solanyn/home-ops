@@ -27,6 +27,7 @@ spec:
               tag: python3.12-alpine
             env:
               UV_CACHE_DIR: /tmp/uv-cache
+              CLEANUP_LIBRARY: "true"
             command:
               - uv
             args:
