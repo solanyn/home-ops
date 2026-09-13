@@ -25,7 +25,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "ChatGPT Plus + Opencode Go + MiniMax Plus + GLM Coding Lite + Kimi Coding (tunable variables).",
+      "description": "ChatGPT Plus + OpenCode Go + Zen + MiniMax Plus + GLM Coding Lite + Kimi Coding (tunable variables).",
       "fieldConfig": {
         "defaults": {
           "unit": "currency:C$",
@@ -116,7 +116,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "$usd_cad * ((((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"chatgpt/.*\"}[$__range])) or vector(0)) * 5.0 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"chatgpt/.*\"}[$__range])) or vector(0)) * 30.0) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"oc-deepseek-v4-flash|oc-mimo-v2.5|oc-mimo-v2.5-pro|oc-qwen3.7-plus\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"oc-deepseek-v4-flash|oc-mimo-v2.5|oc-mimo-v2.5-pro|oc-qwen3.7-plus\"}[$__range])) or vector(0)) * 1.5) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"oc-glm-5.2\"}[$__range])) or vector(0)) * 0.6 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"oc-glm-5.2\"}[$__range])) or vector(0)) * 2.0) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"minimax-m2.5|minimax-m2.7|minimax-m2.7-highspeed\"}[$__range])) or vector(0)) * 0.3 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"minimax-m2.5|minimax-m2.7|minimax-m2.7-highspeed\"}[$__range])) or vector(0)) * 1.2) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"self-hosted|nvidia|ryzen|memini-embed|memini-rerank|toolhive-embed\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"self-hosted|nvidia|ryzen|memini-embed|memini-rerank|toolhive-embed\"}[$__range])) or vector(0)) * 1.2) / 1e6) + ((sum(increase(litellm_spend_metric_total{api_provider=\"moonshot\"}[$__range])) or vector(0))))",
+          "expr": "$usd_cad * ((((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"chatgpt/.*\"}[$__range])) or vector(0)) * 5.0 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"chatgpt/.*\"}[$__range])) or vector(0)) * 30.0) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"opencode-go-reasoning|opencode-zen-reasoning|opencode-go/deepseek-v4-flash|opencode-go/gpt-5.6-luna|opencode-zen/deepseek-v4-flash|opencode-zen/gpt-5.6-luna|deepseek-v4-flash|cron-pool\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"opencode-go-reasoning|opencode-zen-reasoning|opencode-go/deepseek-v4-flash|opencode-go/gpt-5.6-luna|opencode-zen/deepseek-v4-flash|opencode-zen/gpt-5.6-luna|deepseek-v4-flash|cron-pool\"}[$__range])) or vector(0)) * 1.5) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"oc-glm-5.2\"}[$__range])) or vector(0)) * 0.6 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"oc-glm-5.2\"}[$__range])) or vector(0)) * 2.0) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"minimax-m2.5|minimax-m2.7|minimax-m2.7-highspeed\"}[$__range])) or vector(0)) * 0.3 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"minimax-m2.5|minimax-m2.7|minimax-m2.7-highspeed\"}[$__range])) or vector(0)) * 1.2) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"self-hosted|nvidia|ryzen|memini-embed|memini-rerank|toolhive-embed\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"self-hosted|nvidia|ryzen|memini-embed|memini-rerank|toolhive-embed\"}[$__range])) or vector(0)) * 1.2) / 1e6) + ((sum(increase(litellm_spend_metric_total{api_provider=\"moonshot\"}[$__range])) or vector(0))))",
           "refId": "A",
           "legendFormat": "A"
         }
@@ -208,7 +208,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "($usd_cad * ((((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"chatgpt/.*\"}[$__range])) or vector(0)) * 5.0 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"chatgpt/.*\"}[$__range])) or vector(0)) * 30.0) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"oc-deepseek-v4-flash|oc-mimo-v2.5|oc-mimo-v2.5-pro|oc-qwen3.7-plus\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"oc-deepseek-v4-flash|oc-mimo-v2.5|oc-mimo-v2.5-pro|oc-qwen3.7-plus\"}[$__range])) or vector(0)) * 1.5) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"oc-glm-5.2\"}[$__range])) or vector(0)) * 0.6 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"oc-glm-5.2\"}[$__range])) or vector(0)) * 2.0) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"minimax-m2.5|minimax-m2.7|minimax-m2.7-highspeed\"}[$__range])) or vector(0)) * 0.3 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"minimax-m2.5|minimax-m2.7|minimax-m2.7-highspeed\"}[$__range])) or vector(0)) * 1.2) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"self-hosted|nvidia|ryzen|memini-embed|memini-rerank|toolhive-embed\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"self-hosted|nvidia|ryzen|memini-embed|memini-rerank|toolhive-embed\"}[$__range])) or vector(0)) * 1.2) / 1e6) + ((sum(increase(litellm_spend_metric_total{api_provider=\"moonshot\"}[$__range])) or vector(0))))) * (${days_in_month} * 86400 / $__range_s)",
+          "expr": "($usd_cad * ((((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"chatgpt/.*\"}[$__range])) or vector(0)) * 5.0 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"chatgpt/.*\"}[$__range])) or vector(0)) * 30.0) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"opencode-go-reasoning|opencode-zen-reasoning|opencode-go/deepseek-v4-flash|opencode-go/gpt-5.6-luna|opencode-zen/deepseek-v4-flash|opencode-zen/gpt-5.6-luna|deepseek-v4-flash|cron-pool\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"opencode-go-reasoning|opencode-zen-reasoning|opencode-go/deepseek-v4-flash|opencode-go/gpt-5.6-luna|opencode-zen/deepseek-v4-flash|opencode-zen/gpt-5.6-luna|deepseek-v4-flash|cron-pool\"}[$__range])) or vector(0)) * 1.5) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"oc-glm-5.2\"}[$__range])) or vector(0)) * 0.6 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"oc-glm-5.2\"}[$__range])) or vector(0)) * 2.0) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"minimax-m2.5|minimax-m2.7|minimax-m2.7-highspeed\"}[$__range])) or vector(0)) * 0.3 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"minimax-m2.5|minimax-m2.7|minimax-m2.7-highspeed\"}[$__range])) or vector(0)) * 1.2) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"self-hosted|nvidia|ryzen|memini-embed|memini-rerank|toolhive-embed\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"self-hosted|nvidia|ryzen|memini-embed|memini-rerank|toolhive-embed\"}[$__range])) or vector(0)) * 1.2) / 1e6) + ((sum(increase(litellm_spend_metric_total{api_provider=\"moonshot\"}[$__range])) or vector(0))))) * (${days_in_month} * 86400 / $__range_s)",
           "refId": "A",
           "legendFormat": "A"
         }
@@ -270,7 +270,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "(($usd_cad * ((((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"chatgpt/.*\"}[$__range])) or vector(0)) * 5.0 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"chatgpt/.*\"}[$__range])) or vector(0)) * 30.0) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"oc-deepseek-v4-flash|oc-mimo-v2.5|oc-mimo-v2.5-pro|oc-qwen3.7-plus\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"oc-deepseek-v4-flash|oc-mimo-v2.5|oc-mimo-v2.5-pro|oc-qwen3.7-plus\"}[$__range])) or vector(0)) * 1.5) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"oc-glm-5.2\"}[$__range])) or vector(0)) * 0.6 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"oc-glm-5.2\"}[$__range])) or vector(0)) * 2.0) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"minimax-m2.5|minimax-m2.7|minimax-m2.7-highspeed\"}[$__range])) or vector(0)) * 0.3 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"minimax-m2.5|minimax-m2.7|minimax-m2.7-highspeed\"}[$__range])) or vector(0)) * 1.2) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"self-hosted|nvidia|ryzen|memini-embed|memini-rerank|toolhive-embed\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"self-hosted|nvidia|ryzen|memini-embed|memini-rerank|toolhive-embed\"}[$__range])) or vector(0)) * 1.2) / 1e6) + ((sum(increase(litellm_spend_metric_total{api_provider=\"moonshot\"}[$__range])) or vector(0))))) * (${days_in_month} * 86400 / $__range_s)) - ($sub_chatgpt + ($sub_opencode + $sub_minimax + $sub_glm) * $usd_cad)",
+          "expr": "(($usd_cad * ((((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"chatgpt/.*\"}[$__range])) or vector(0)) * 5.0 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"chatgpt/.*\"}[$__range])) or vector(0)) * 30.0) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"opencode-go-reasoning|opencode-zen-reasoning|opencode-go/deepseek-v4-flash|opencode-go/gpt-5.6-luna|opencode-zen/deepseek-v4-flash|opencode-zen/gpt-5.6-luna|deepseek-v4-flash|cron-pool\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"opencode-go-reasoning|opencode-zen-reasoning|opencode-go/deepseek-v4-flash|opencode-go/gpt-5.6-luna|opencode-zen/deepseek-v4-flash|opencode-zen/gpt-5.6-luna|deepseek-v4-flash|cron-pool\"}[$__range])) or vector(0)) * 1.5) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"oc-glm-5.2\"}[$__range])) or vector(0)) * 0.6 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"oc-glm-5.2\"}[$__range])) or vector(0)) * 2.0) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"minimax-m2.5|minimax-m2.7|minimax-m2.7-highspeed\"}[$__range])) or vector(0)) * 0.3 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"minimax-m2.5|minimax-m2.7|minimax-m2.7-highspeed\"}[$__range])) or vector(0)) * 1.2) / 1e6) + (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"self-hosted|nvidia|ryzen|memini-embed|memini-rerank|toolhive-embed\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"self-hosted|nvidia|ryzen|memini-embed|memini-rerank|toolhive-embed\"}[$__range])) or vector(0)) * 1.2) / 1e6) + ((sum(increase(litellm_spend_metric_total{api_provider=\"moonshot\"}[$__range])) or vector(0))))) * (${days_in_month} * 86400 / $__range_s)) - ($sub_chatgpt + ($sub_opencode + $sub_minimax + $sub_glm) * $usd_cad)",
           "refId": "A",
           "legendFormat": "A"
         }
@@ -415,7 +415,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "label_replace((($usd_cad * (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"oc-deepseek-v4-flash|oc-mimo-v2.5|oc-mimo-v2.5-pro|oc-qwen3.7-plus\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"oc-deepseek-v4-flash|oc-mimo-v2.5|oc-mimo-v2.5-pro|oc-qwen3.7-plus\"}[$__range])) or vector(0)) * 1.5) / 1e6)) * (${days_in_month} * 86400 / $__range_s) - ($sub_opencode * $usd_cad)), \"bucket\", \"Opencode Go\", \"\", \"\")",
+          "expr": "label_replace((($usd_cad * (((sum(increase(litellm_input_tokens_metric_total{requested_model=~\"opencode-go-reasoning|opencode-zen-reasoning|opencode-go/deepseek-v4-flash|opencode-go/gpt-5.6-luna|opencode-zen/deepseek-v4-flash|opencode-zen/gpt-5.6-luna|deepseek-v4-flash|cron-pool\"}[$__range])) or vector(0)) * 0.4 + (sum(increase(litellm_output_tokens_metric_total{requested_model=~\"opencode-go-reasoning|opencode-zen-reasoning|opencode-go/deepseek-v4-flash|opencode-go/gpt-5.6-luna|opencode-zen/deepseek-v4-flash|opencode-zen/gpt-5.6-luna|deepseek-v4-flash|cron-pool\"}[$__range])) or vector(0)) * 1.5) / 1e6)) * (${days_in_month} * 86400 / $__range_s) - ($sub_opencode * $usd_cad)), \"bucket\", \"OpenCode Go + Zen\", \"\", \"\")",
           "refId": "B",
           "legendFormat": "{{bucket}}"
         },
@@ -514,9 +514,9 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "(($usd_cad * (sum(rate(litellm_input_tokens_metric_total{requested_model=~\"oc-deepseek-v4-flash|oc-mimo-v2.5|oc-mimo-v2.5-pro|oc-qwen3.7-plus\"}[$__rate_interval])) * 0.4 + sum(rate(litellm_output_tokens_metric_total{requested_model=~\"oc-deepseek-v4-flash|oc-mimo-v2.5|oc-mimo-v2.5-pro|oc-qwen3.7-plus\"}[$__rate_interval])) * 1.5) / 1e6) * 86400)",
+          "expr": "(($usd_cad * (sum(rate(litellm_input_tokens_metric_total{requested_model=~\"opencode-go-reasoning|opencode-zen-reasoning|opencode-go/deepseek-v4-flash|opencode-go/gpt-5.6-luna|opencode-zen/deepseek-v4-flash|opencode-zen/gpt-5.6-luna|deepseek-v4-flash|cron-pool\"}[$__rate_interval])) * 0.4 + sum(rate(litellm_output_tokens_metric_total{requested_model=~\"opencode-go-reasoning|opencode-zen-reasoning|opencode-go/deepseek-v4-flash|opencode-go/gpt-5.6-luna|opencode-zen/deepseek-v4-flash|opencode-zen/gpt-5.6-luna|deepseek-v4-flash|cron-pool\"}[$__rate_interval])) * 1.5) / 1e6) * 86400)",
           "refId": "B",
-          "legendFormat": "Opencode Go"
+          "legendFormat": "OpenCode Go + Zen"
         },
         {
           "datasource": {
@@ -771,7 +771,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "label_replace((sum(increase(litellm_total_tokens_metric_total{requested_model=~\"oc-deepseek-v4-flash|oc-mimo-v2.5|oc-mimo-v2.5-pro|oc-qwen3.7-plus\"}[$__range])) or vector(0)), \"bucket\", \"Opencode Go\", \"\", \"\")",
+          "expr": "label_replace((sum(increase(litellm_total_tokens_metric_total{requested_model=~\"opencode-go-reasoning|opencode-zen-reasoning|opencode-go/deepseek-v4-flash|opencode-go/gpt-5.6-luna|opencode-zen/deepseek-v4-flash|opencode-zen/gpt-5.6-luna|deepseek-v4-flash|cron-pool\"}[$__range])) or vector(0)), \"bucket\", \"OpenCode Go + Zen\", \"\", \"\")",
           "refId": "B",
           "legendFormat": "{{bucket}}"
         },
@@ -1099,14 +1099,14 @@
       },
       {
         "name": "sub_opencode",
-        "label": "Opencode Go $/mo (USD)",
+        "label": "OpenCode Go + Zen $/mo (USD)",
         "type": "textbox",
         "current": {
           "text": "10",
           "value": "10"
         },
         "query": "10",
-        "description": "Opencode Go \u2014 USD/mo (converted via $usd_cad)"
+        "description": "OpenCode Go + Zen \u2014 USD/mo (converted via $usd_cad)"
       },
       {
         "name": "sub_minimax",
