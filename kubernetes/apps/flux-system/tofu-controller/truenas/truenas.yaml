@@ -29,4 +29,3 @@ spec:
               - onepassword_credentials_json
               - onepassword_connect_token
               - truenas_api_key
-              - doco_cd_webhook_secret
