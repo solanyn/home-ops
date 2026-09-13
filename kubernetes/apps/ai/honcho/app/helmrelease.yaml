@@ -52,6 +52,10 @@ spec:
                 value: json_object
               - name: DERIVER_FLUSH_ENABLED
                 value: "true"
+              - name: DERIVER_REPRESENTATION_BATCH_MAX_TOKENS
+                value: "128"
+              - name: DERIVER_REPRESENTATION_BATCH_MAX_AGE_SECONDS
+                value: "30"
               - name: SUMMARY_MODEL_CONFIG__TRANSPORT
                 value: openai
               - name: SUMMARY_MODEL_CONFIG__MODEL
