@@ -287,5 +287,7 @@ async function main() {
 
 main().catch((error) => {
   console.error(`igir-audit failed: ${error.message}`);
+  if (error.stdout) process.stdout.write(error.stdout);
+  if (error.stderr) process.stderr.write(error.stderr);
   process.exitCode = 1;
 });
