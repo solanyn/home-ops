@@ -19,6 +19,7 @@ const STAGE_ROOT = process.env.IGIR_STAGE_ROOT || "/media/games/.igir-staging";
 const PROMOTION_ROOT = process.env.IGIR_PROMOTION_ROOT || "/media/games/.igir-promotion";
 const REPORT_FILE = process.env.IGIR_REPORT_FILE || "/tmp/igir-report.csv";
 const LOCK = "/tmp/igir-audit.lock";
+const IGIR_BINARY = "/tools/igir";
 const ROM_ROOTS = [
   "/media/downloads/torrents/complete/roms/Minerva_Myrient",
   "/media/downloads/torrents/incomplete/roms/Minerva_Myrient",
