@@ -28,4 +28,5 @@ spec:
               - truenas_ssh_host_key_fingerprint: truenas_ssh_host_key_fingerprint
               - onepassword_credentials_json: onepassword_credentials_json
               - onepassword_connect_token: onepassword_connect_token
+              - truenas_api_key: truenas_api_key
               - doco_cd_webhook_secret: doco_cd_webhook_secret
