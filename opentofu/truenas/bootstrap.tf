@@ -1,3 +1,8 @@
+resource "random_password" "doco_cd_webhook_secret" {
+  length  = 32
+  special = false
+}
+
 resource "truenas_dataset" "doco_cd" {
   pool        = "world"
   path        = "doco-cd"
@@ -38,7 +43,7 @@ resource "truenas_file" "onepassword_token" {
 
 resource "truenas_file" "doco_cd_webhook_secret" {
   path    = "/mnt/world/doco-cd/webhook_secret"
-  content = var.doco_cd_webhook_secret
+  content = random_password.doco_cd_webhook_secret.result
   mode    = "0600"
   uid     = 1000
   gid     = 1000
