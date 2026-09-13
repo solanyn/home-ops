@@ -68,6 +68,7 @@ spec:
               IGIR_REPORT_FILE: /tmp/igir-report.csv
               IGIR_STAGE_ROOT: /media/games/.igir-staging
               NPM_CONFIG_CACHE: /tmp/npm-cache
+              HOME: /tmp
             command:
               - /bin/sh
             args:
@@ -109,6 +110,7 @@ spec:
               IGIR_REPORT_FILE: /tmp/igir-report.csv
               IGIR_STAGE_ROOT: /media/games/.igir-staging
               NPM_CONFIG_CACHE: /tmp/npm-cache
+              HOME: /tmp
               IGIR_DEST_ROOT: /media/games/roms
             command:
               - node
