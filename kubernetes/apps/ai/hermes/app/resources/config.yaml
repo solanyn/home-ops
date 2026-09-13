@@ -125,4 +125,4 @@ onboarding:
     profile_build_offered: true
 mcp_servers:
   toolhive:
-    url: "http://vmcp-mcp-gateway.o11y.svc:4483/mcp"
+    url: "http://vmcp-mcp-gateway.ai.svc:4483/mcp"
