@@ -53,12 +53,7 @@ spec:
             env:
               HERMES_HOME: /opt/data
               HOME: /opt/data
-              PATH: /opt/tools/homebrew/.linuxbrew/bin:/opt/tools/homebrew/.linuxbrew/sbin:/opt/tools/codex/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
               CODEX_HOME: /opt/data/.codex
-              HOMEBREW_PREFIX: /opt/tools/homebrew/.linuxbrew
-              HOMEBREW_CELLAR: /opt/tools/homebrew/.linuxbrew/Cellar
-              HOMEBREW_NO_ANALYTICS: "1"
-              HOMEBREW_NO_AUTO_UPDATE: "1"
               TZ: Australia/Sydney
               API_SERVER_ENABLED: "true"
               API_SERVER_HOST: 0.0.0.0
@@ -109,11 +104,6 @@ spec:
             env:
               HERMES_HOME: /opt/data
               HOME: /opt/data
-              PATH: /opt/tools/homebrew/.linuxbrew/bin:/opt/tools/homebrew/.linuxbrew/sbin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-              HOMEBREW_PREFIX: /opt/tools/homebrew/.linuxbrew
-              HOMEBREW_CELLAR: /opt/tools/homebrew/.linuxbrew/Cellar
-              HOMEBREW_NO_ANALYTICS: "1"
-              HOMEBREW_NO_AUTO_UPDATE: "1"
               TZ: Australia/Sydney
               HERMES_DASHBOARD_OIDC_CLIENT_ID: hermes-serve
               HERMES_DASHBOARD_PUBLIC_URL: https://hermes-serve.goyangi.io
@@ -155,23 +145,6 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /opt/data
-      tools:
-        type: emptyDir
-        globalMounts:
-          - path: /opt/tools
-      home-cache:
-        type: emptyDir
-        globalMounts:
-          - path: /opt/data/home/.cache
-      npm-cache:
-        type: emptyDir
-        globalMounts:
-          - path: /opt/data/.npm
-      runtime-cache:
-        type: emptyDir
-        globalMounts:
-          - path: /opt/data/.cache
-          - path: /opt/tools/homebrew/.homebrew-user/.cache
       media:
         type: nfs
         server: nas.internal
