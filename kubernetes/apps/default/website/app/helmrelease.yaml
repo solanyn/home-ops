@@ -37,13 +37,6 @@ spec:
             resources:
               limits:
                 memory: 64Mi
-    configMaps:
-      matrix:
-        data:
-          client.json: |-
-            {"m.homeserver":{"base_url":"https://matrix.goyangi.io"},"org.matrix.msc4143.rtc_foci":[{"type":"livekit","livekit_service_url":"https://livekit-jwt.goyangi.io"}]}
-          server.json: |-
-            {"m.server":"matrix.goyangi.io:443"}
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -55,12 +48,6 @@ spec:
         ports:
           http:
             port: *port
-    persistence:
-      matrix:
-        type: configMap
-        identifier: matrix
-        globalMounts:
-          - path: /usr/share/nginx/html/.well-known/matrix
     route:
       app:
         annotations:
