@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/raw.githubusercontent.com/flux-iac/tofu-controller/main/docs/api/v1alpha2/terraform.json
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+    name: truenas
+spec:
+    sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+    path: ./opentofu/truenas
+    interval: 10m
+    approvePlan: auto
+    vars:
+        - name: truenas_host
+          value: nas.internal
+        - name: truenas_ssh_user
+          value: truenas_admin
+        - name: truenas_ssh_port
+          value: "22"
+    destroyResourcesOnDeletion: false
+    varsFrom:
+        - kind: Secret
+          name: truenas-secret
+          varsKeys:
+              - truenas_ssh_private_key: truenas_ssh_private_key
+              - truenas_ssh_host_key_fingerprint: truenas_ssh_host_key_fingerprint
+              - onepassword_credentials_json: onepassword_credentials_json
+              - onepassword_connect_token: onepassword_connect_token
+              - doco_cd_webhook_secret: doco_cd_webhook_secret
