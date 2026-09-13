@@ -78,7 +78,8 @@ function platformRelative(file, root) {
 }
 
 async function selectedFiles() {
-  const torrents = await getJson(QBT_TORRENTS_PATH);
+  const response = await getJson(QBT_TORRENTS_PATH);
+  const torrents = Array.isArray(response) ? response : response?.torrents;
   if (!Array.isArray(torrents)) throw new Error("qBittorrent returned an invalid torrent list");
   const selected = [];
   for (const torrent of torrents) {
