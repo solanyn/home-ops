@@ -71,7 +71,7 @@ def http_json(path: str):
     last_error = None
     for attempt in range(3):
         try:
-            request = urllib.request.Request(f"{QBT}/api/v2/{path}")
+            request = urllib.request.Request(f"{QBT}/{path}")
             with urllib.request.urlopen(request, timeout=15) as response:
                 return json.loads(response.read())
         except (OSError, ValueError) as error:
