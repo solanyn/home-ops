@@ -36,9 +36,6 @@ spec:
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
 
-                # Remove tool installations left in the state volume by older revisions.
-                rm -rf /opt/data/homebrew /opt/data/codex
-
                 mkdir -p /opt/data/.codex
                 chown -R 10000:10000 /opt/data/.codex
 
@@ -46,89 +43,6 @@ spec:
                 # op refuses to read a config owned by another user. Fix ownership
                 # here as root so the app (runAsUser 10000) can use the CLI.
                 chown -R 10000:10000 /opt/data/.config 2>/dev/null || true
-          install-tools:
-            image:
-              repository: docker.io/library/debian
-              tag: "13-slim"
-            command:
-              - sh
-              - -c
-              - |
-                set -euo pipefail
-                apt-get update -qq && apt-get install -y -qq curl ca-certificates git build-essential file unzip util-linux patch bzip2 nodejs npm >/dev/null 2>&1
-
-                # linuxbrew refuses to run as root and needs a writable $HOME.
-                # Install at /opt/tools/homebrew/.linuxbrew (ephemeral tools volume)
-                # and use /opt/tools/homebrew/.homebrew-user as the non-root $HOME.
-                BREW_PREFIX="/opt/tools/homebrew/.linuxbrew"
-                BREW_USER_HOME="/opt/tools/homebrew/.homebrew-user"
-                mkdir -p "$BREW_PREFIX" "$BREW_USER_HOME"
-                chown -R 10000:10000 "$BREW_PREFIX" "$BREW_USER_HOME"
-
-                # brew casks require a passwd entry for the running UID.
-                # Inject a synthetic entry for UID 10000 so 'op' cask can install.
-                if ! getent passwd 10000 >/dev/null; then
-                  echo "brewuser:x:10000:10000:brewuser:${BREW_USER_HOME}:/bin/bash" >> /etc/passwd
-                fi
-
-                setpriv --reuid=10000 --regid=10000 --clear-groups env \
-                  HOME="$BREW_USER_HOME" \
-                  HOMEBREW_PREFIX="$BREW_PREFIX" \
-                  HOMEBREW_NO_ANALYTICS=1 \
-                  HOMEBREW_NO_AUTO_UPDATE=1 \
-                  NONINTERACTIVE=1 \
-                  PATH="/opt/tools/homebrew/.linuxbrew/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
-                  bash -c '
-                    set -euo pipefail
-
-                    # The upstream install.sh ignores HOMEBREW_PREFIX on Linux and
-                    # always tries to write to /home/linuxbrew/.linuxbrew via sudo.
-                    # Bootstrap manually from the official brew tarball instead.
-                    if [[ ! -x "$HOMEBREW_PREFIX/Homebrew/bin/brew" ]]; then
-                      echo "[install-tools] Bootstrapping linuxbrew at $HOMEBREW_PREFIX (cold)..."
-                      cd "$HOMEBREW_PREFIX"
-                      curl -fsSL https://github.com/Homebrew/brew/tarball/main -o brew.tgz
-                      mkdir -p Homebrew
-                      tar -xzf brew.tgz -C Homebrew --strip-components 1
-                      rm brew.tgz
-                      mkdir -p bin
-                      ln -sf ../Homebrew/bin/brew bin/brew
-                    else
-                      echo "[install-tools] linuxbrew already installed (warm cache hit)"
-                    fi
-
-                    eval "$("$HOMEBREW_PREFIX/bin/brew" shellenv)"
-
-                    # brew 4.x refuses to load formulae from untrusted taps.
-                    brew trust fluxcd/tap 2>/dev/null || true
-
-                    # Declarative toolset lives in /tmp/Brewfile (mounted from the
-                    # hermes-config ConfigMap). --no-upgrade keeps the init
-                    # deterministic; version bumps land as follow-up commits.
-                    brew bundle install --no-upgrade --file=/tmp/Brewfile
-
-                    # Ensure op CLI config has restricted permissions
-                    mkdir -p /opt/data/.config/op
-                    chmod 700 /opt/data/.config/op || true
-                    if [ -f /opt/data/.config/op/config ]; then
-                        chmod 600 /opt/data/.config/op/config || true
-                    fi
-
-                    # Stage the pinned Codex CLI in the ephemeral tools volume.
-                    CODEX_PREFIX="/opt/tools/codex"
-                    mkdir -p "$CODEX_PREFIX"
-                    export PATH="$HOMEBREW_PREFIX/bin:$CODEX_PREFIX/bin:$PATH"
-                    # renovate: datasource=npm depName=@openai/codex
-                    npm install --global --prefix "$CODEX_PREFIX" --no-update-notifier --no-fund \
-                      @openai/codex@0.130.0
-                    "$CODEX_PREFIX/bin/codex" --version
-                    "$CODEX_PREFIX/bin/codex" app-server --help >/dev/null
-                  '
-
-                chmod -R a+rx "$BREW_PREFIX/bin"
-
-                echo "[install-tools] Available binaries:"
-                ls -la "$BREW_PREFIX/bin"
         containers:
           app:
             image: &image
@@ -272,5 +186,3 @@ spec:
         globalMounts:
           - path: /tmp/config.yaml
             subPath: config.yaml
-          - path: /tmp/Brewfile
-            subPath: Brewfile
