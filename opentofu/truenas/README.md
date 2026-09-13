@@ -20,7 +20,6 @@ Before enabling reconciliation, import the existing app:
 tofu import truenas_app.doco_cd doco-cd
 ```
 
-`truenas_secret` contains the TrueNAS SSH credentials, the Connect
-credentials JSON and Connect token, plus the Doco-CD webhook secret. The
-Connect credentials and token are written to TrueNAS by OpenTofu, so the
-remote tofu-controller state must be encrypted and access-controlled.
+The TrueNAS API key is sourced from the `TRUENAS_API_KEY` field in the `truenas` 1Password item via External Secrets. The provider uses WebSocket authentication with SSH retained as the required fallback for file operations.
+
+`truenas_secret` contains the TrueNAS SSH credentials, the Connect credentials JSON and Connect token, plus the TrueNAS API key and Doco-CD webhook secret. The Connect credentials, token and API key are written to TrueNAS or consumed by the tofu-controller, so remote tofu-controller state must be encrypted and access-controlled.
