@@ -66,6 +66,7 @@ spec:
                 && test -x /tmp/igir
                 && cp /tmp/igir /tools/igir
                 && chmod 0755 /tools/igir
+                && rm /tmp/igir
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -127,6 +128,7 @@ spec:
                 && test -x /tmp/igir
                 && cp /tmp/igir /tools/igir
                 && chmod 0755 /tools/igir
+                && rm /tmp/igir
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
