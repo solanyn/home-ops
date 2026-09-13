@@ -67,6 +67,7 @@ spec:
                 https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Super%20Nintendo%20Entertainment%20System.dat
               IGIR_REPORT_FILE: /tmp/igir-report.csv
               IGIR_STAGE_ROOT: /media/games/.igir-staging
+              NPM_CONFIG_CACHE: /tmp/npm-cache
             command:
               - /bin/sh
             args:
@@ -107,6 +108,7 @@ spec:
                 https://raw.githubusercontent.com/libretro/libretro-database/master/metadat/no-intro/Nintendo%20-%20Super%20Nintendo%20Entertainment%20System.dat
               IGIR_REPORT_FILE: /tmp/igir-report.csv
               IGIR_STAGE_ROOT: /media/games/.igir-staging
+              NPM_CONFIG_CACHE: /tmp/npm-cache
               IGIR_DEST_ROOT: /media/games/roms
             command:
               - node
