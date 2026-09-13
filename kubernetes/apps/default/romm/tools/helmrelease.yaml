@@ -51,11 +51,34 @@ spec:
           successfulJobsHistory: 1
           failedJobsHistory: 1
           ttlSecondsAfterFinished: 3600
+        initContainers:
+          install-igir:
+            image:
+              repository: node
+              tag: lts-alpine
+            command:
+              - /bin/sh
+            args:
+              - -ec
+              - >-
+                npm install --global --prefix /tools igir@5.4.0
+            env:
+              HOME: /tmp
+              NPM_CONFIG_CACHE: /tmp/npm-cache
+            volumeMounts:
+              - name: igir-tools
+                mountPath: /tools
+              - name: tmp
+                mountPath: /tmp
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
         containers:
           app:
             image:
               repository: node
-              tag: 22-alpine
+              tag: lts-alpine
             env:
               QBT_URL: http://qbittorrent.default.svc.cluster.local
               IGIR_DAT_URLS: >-
@@ -93,11 +116,34 @@ spec:
           successfulJobsHistory: 1
           failedJobsHistory: 1
           ttlSecondsAfterFinished: 3600
+        initContainers:
+          install-igir:
+            image:
+              repository: node
+              tag: lts-alpine
+            command:
+              - /bin/sh
+            args:
+              - -ec
+              - >-
+                npm install --global --prefix /tools igir@5.4.0
+            env:
+              HOME: /tmp
+              NPM_CONFIG_CACHE: /tmp/npm-cache
+            volumeMounts:
+              - name: igir-tools
+                mountPath: /tools
+              - name: tmp
+                mountPath: /tmp
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
         containers:
           app:
             image:
               repository: node
-              tag: 22-alpine
+              tag: lts-alpine
             env:
               QBT_URL: http://qbittorrent.default.svc.cluster.local
               IGIR_DAT_URLS: >-
@@ -155,3 +201,7 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp
+      igir-tools:
+        type: emptyDir
+        globalMounts:
+          - path: /tools

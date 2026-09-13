@@ -181,12 +181,12 @@ async function filesUnder(root) {
 }
 
 async function runIgir(command, input, output) {
-  const commandArgs = ["-y", "igir@5.4.0", command, "--input", input];
+  const commandArgs = [command, "--input", input];
   if (command === "report") commandArgs.push("--report-output", output);
   else commandArgs.push("--output", output);
   for (const dat of DAT_URLS) commandArgs.push("--dat", dat);
   commandArgs.push("--input-checksum-quick", "false", "--input-checksum-min", "CRC32", "--input-checksum-max", "SHA1");
-  return exec("npx", commandArgs, { timeout: 1800000, maxBuffer: 32 * 1024 * 1024 });
+  return exec("/tools/bin/igir", commandArgs, { timeout: 1800000, maxBuffer: 32 * 1024 * 1024 });
 }
 
 async function sha256(file) {
