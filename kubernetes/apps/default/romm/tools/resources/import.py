@@ -198,6 +198,59 @@ def game_info(filename: str):
     return game, "update" if version and int(version.group(1)) > 0 else "base"
 
 
+def library_key(name: str) -> str:
+    stem = Path(name).stem.lower()
+    match = re.search(r"\s\((?:usa|europe|australia|world|japan|unknown|korea)", stem)
+    return stem[: match.start()].strip() if match else stem
+
+
+def cleanup_library(selected: set[Path], result: Result) -> None:
+    if os.environ.get("CLEANUP_LIBRARY", "false").lower() != "true":
+        return
+
+    selected_inodes = set()
+    selected_keys = {}
+    for source in selected:
+        try:
+            selected_inodes.add(source.stat().st_ino)
+        except OSError:
+            continue
+        location = next((minerva_location(source, root) for root in ROM_ROOTS if safe_source(source, root)), None)
+        if location:
+            platform, relative = location
+            selected_keys.setdefault(platform, set()).add(library_key(relative.name))
+
+    cleaned = 0
+    preserved = 0
+    for platform, keys in selected_keys.items():
+        platform_dir = DEST / platform
+        if not platform_dir.exists():
+            continue
+        for item in platform_dir.rglob("*"):
+            if not item.is_file() and not item.is_symlink():
+                continue
+            if item.name.lower() == ".ds_store" or item.name.startswith("."):
+                item.unlink()
+                cleaned += 1
+                continue
+            if library_key(item.name) not in keys:
+                continue
+            if any(marker in item.name.lower() for marker in PATCH_MARKERS):
+                preserved += 1
+                continue
+            try:
+                if item.stat().st_ino in selected_inodes:
+                    preserved += 1
+                    continue
+            except OSError:
+                pass
+            item.unlink()
+            cleaned += 1
+            print(f"cleaned: {item}")
+    result.skipped += preserved
+    print(f"cleanup cleaned={cleaned} preserved={preserved}")
+
+
 def import_switch_and_games(result: Result) -> None:
     sources = ((Path("/media/downloads/torrents/complete/switch"), "copy"),
                (Path("/media/downloads/torrents/complete/games"), "hardlink"))
@@ -243,7 +296,9 @@ def main() -> None:
     result = Result()
     try:
         import_switch_and_games(result)
-        import_minerva(qbt_selected_files(), result)
+        selected = qbt_selected_files()
+        import_minerva(selected, result)
+        cleanup_library(selected, result)
     finally:
         lock.rmdir()
     print(f"summary imported={result.imported} existing={result.existing} skipped={result.skipped} failed={result.failed}")
