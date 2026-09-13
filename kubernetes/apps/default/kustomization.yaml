@@ -23,7 +23,7 @@ resources:
   - ./forgejo/ks.yaml
   - ./forgejo-runner/ks.yaml
   - ./fusion/ks.yaml
-  - ./goyangi/ks.yaml
+  - ./website/ks.yaml
   - ./go2rtc/ks.yaml
   - ./apple-health-ingester/ks.yaml
   - ./home-assistant/ks.yaml
