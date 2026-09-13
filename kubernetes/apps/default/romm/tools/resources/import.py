@@ -18,7 +18,11 @@ ROM_ROOTS = (
     Path("/media/downloads/torrents/complete/roms/Minerva_Myrient"),
     Path("/media/downloads/torrents/incomplete/roms/Minerva_Myrient"),
 )
-MINERVA_EXTENSIONS = {".zip", ".7z", ".rar", ".chd", ".rvz", ".iso", ".cue", ".bin"}
+MINERVA_EXTENSIONS = {
+    ".3ds", ".7z", ".bin", ".cso", ".chd", ".cia", ".cue", ".gba",
+    ".gb", ".gbc", ".gcz", ".iso", ".nds", ".nes", ".n64", ".pbp",
+    ".rar", ".rvz", ".sfc", ".smc", ".wad", ".wbfs", ".zip",
+}
 SWITCH_EXTENSIONS = {".nsp", ".nsz", ".xci"}
 PATCH_MARKERS = ("english", "translated", "translation", "patched", "undub", "hack")
 JAPAN_MARKERS = ("(japan)", "[japan]")
@@ -28,6 +32,8 @@ MINERVA_PLATFORMS = {
     "Nintendo - Nintendo 3DS": "3ds",
     "Nintendo - Nintendo 3DS (Digital) (CDN)": "3ds",
     "Nintendo - Nintendo 64 (BigEndian)": "n64",
+    "Nintendo - Nintendo DS": "nds",
+    "Nintendo - Nintendo DS [T-En]": "nds",
     "Nintendo - Nintendo DS (Decrypted)": "nds",
     "Nintendo - Nintendo Entertainment System (Headerless)": "nes",
     "Nintendo - Super Nintendo Entertainment System": "snes",
