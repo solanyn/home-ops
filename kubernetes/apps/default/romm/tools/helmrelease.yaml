@@ -55,7 +55,7 @@ spec:
           app:
             image:
               repository: node
-              tag: 22-alpine
+              tag: 24-alpine
             env:
               QBT_URL: http://qbittorrent.default.svc.cluster.local
               IGIR_DAT_URLS: >-
@@ -97,7 +97,7 @@ spec:
           app:
             image:
               repository: node
-              tag: 22-alpine
+              tag: 24-alpine
             env:
               QBT_URL: http://qbittorrent.default.svc.cluster.local
               IGIR_DAT_URLS: >-
