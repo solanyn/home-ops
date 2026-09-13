@@ -1,8 +1,0 @@
----
-apiVersion: toolhive.stacklok.dev/v1alpha1
-kind: MCPGroup
-metadata:
-  name: mcp-tools
-  namespace: o11y
-spec:
-  description: Optimised MCP tools for AI assistants
