@@ -454,7 +454,7 @@
         },
         {
           "datasource": { "type": "prometheus", "uid": "${datasource}" },
-          "expr": "label_replace(sum(increase(litellm_total_tokens_metric_total{requested_model=~\"oc-deepseek-v4-flash|oc-mimo-v2.5|oc-mimo-v2.5-pro|oc-qwen3.7-plus\"}[$__range])) or vector(0), \"provider\", \"Opencode Go\", \"\", \"\")",
+          "expr": "label_replace(sum(increase(litellm_total_tokens_metric_total{requested_model=~\"opencode-go-reasoning|opencode-zen-reasoning|opencode-go/deepseek-v4-flash|opencode-go/gpt-5.6-luna|opencode-zen/deepseek-v4-flash|opencode-zen/gpt-5.6-luna|deepseek-v4-flash|cron-pool\"}[$__range])) or vector(0), \"provider\", \"OpenCode Go + Zen\", \"\", \"\")",
           "legendFormat": "{{provider}}",
           "refId": "B"
         },

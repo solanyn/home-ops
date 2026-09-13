@@ -8,6 +8,18 @@ spec:
   groups:
     - name: litellm.rules
       rules:
+        - alert: LiteLLMChatGPTUsageLimitReached
+          expr: |-
+            sum by (requested_model, fallback_model, exception_status, exception_class) (
+                increase(litellm_deployment_failed_fallbacks_total{exception_class=~".*(RateLimit|UsageLimit|Chatgpt).*"}[15m])
+            ) > 0
+          for: 0m
+          annotations:
+            summary: LiteLLM {{ $labels.requested_model }} hit a ChatGPT usage limit
+            description: ChatGPT rejected a request for {{ $labels.requested_model }}. Fallback target {{ $labels.fallback_model }} may also be unavailable.
+          labels:
+            severity: critical
+            category: capacity
         - alert: LiteLLMFallbackChainExhausted
           expr: |-
             sum by (requested_model, exception_status, exception_class) (
