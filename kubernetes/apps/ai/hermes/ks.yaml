@@ -13,7 +13,7 @@ spec:
   postBuild:
     substitute:
       APP: hermes
-      KOPIUR_CAPACITY: 10Gi
+      KOPIUR_CAPACITY: 20Gi
       KOPIUR_PUID: "10000"
       KOPIUR_PGID: "10000"
   prune: true
