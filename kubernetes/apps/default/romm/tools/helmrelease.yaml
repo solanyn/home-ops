@@ -61,7 +61,7 @@ spec:
             args:
               - -ec
               - >-
-                wget -qO /tmp/igir.tgz https://github.com/emmercm/igir/releases/download/v5.4.0/igir-5.4.0-Linux-amd64.tar.gz
+                node -e 'const fs=require("fs"),https=require("https");const u="https://github.com/emmercm/igir/releases/download/v5.4.0/igir-5.4.0-Linux-amd64.tar.gz";const f=fs.createWriteStream("/tmp/igir.tgz");https.get(u,r=>{if(r.statusCode!==200){console.error(`HTTP ${r.statusCode}`);process.exit(1)}r.pipe(f);f.on("finish",()=>f.close())}).on("error",e=>{console.error(e);process.exit(1)})'
                 && tar -xzf /tmp/igir.tgz -C /tmp
                 && chmod 0755 /tmp/igir
             securityContext:
@@ -120,7 +120,7 @@ spec:
             args:
               - -ec
               - >-
-                wget -qO /tmp/igir.tgz https://github.com/emmercm/igir/releases/download/v5.4.0/igir-5.4.0-Linux-amd64.tar.gz
+                node -e 'const fs=require("fs"),https=require("https");const u="https://github.com/emmercm/igir/releases/download/v5.4.0/igir-5.4.0-Linux-amd64.tar.gz";const f=fs.createWriteStream("/tmp/igir.tgz");https.get(u,r=>{if(r.statusCode!==200){console.error(`HTTP ${r.statusCode}`);process.exit(1)}r.pipe(f);f.on("finish",()=>f.close())}).on("error",e=>{console.error(e);process.exit(1)})'
                 && tar -xzf /tmp/igir.tgz -C /tmp
                 && chmod 0755 /tmp/igir
             securityContext:
