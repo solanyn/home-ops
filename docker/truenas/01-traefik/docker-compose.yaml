@@ -18,16 +18,8 @@ services:
       - --entrypoints.websecure.http.tls=true
       - --entrypoints.websecure.http.tls.certResolver=cf
       - --entrypoints.websecure.http.tls.domains[0].main=nas.goyangi.io
-      - --entrypoints.websecure.http.tls.domains[1].main=s3.goyangi.io
-      - --entrypoints.websecure.http.tls.domains[2].main=garage-admin.goyangi.io
-      - --providers.docker=true
-      - --providers.docker.exposedByDefault=false
-      - --providers.docker.network=apps
       - --providers.file.filename=/etc/traefik/dynamic.yaml
       - --providers.file.watch=true
-      - --metrics.prometheus=true
-      - --metrics.prometheus.entryPoint=metrics
-      - --entryPoints.metrics.address=:8082
     container_name: traefik
     environment:
       CF_DNS_API_TOKEN: ${TRAEFIK_CF_DNS_API_TOKEN}
@@ -37,12 +29,10 @@ services:
     ports:
       - 80:80
       - 443:443
-      - 8082:8082
     extra_hosts:
       - host.docker.internal:host-gateway
     volumes:
       - acme:/certs
       - ./dynamic.yaml:/etc/traefik/dynamic.yaml:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
 volumes:
   acme:
