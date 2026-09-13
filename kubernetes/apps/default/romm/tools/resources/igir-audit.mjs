@@ -186,7 +186,7 @@ async function runIgir(command, input, output) {
   else commandArgs.push("--output", output);
   for (const dat of DAT_URLS) commandArgs.push("--dat", dat);
   commandArgs.push("--input-checksum-quick", "false", "--input-checksum-min", "CRC32", "--input-checksum-max", "SHA1");
-  return exec("/tools/bin/igir", commandArgs, { timeout: 1800000, maxBuffer: 32 * 1024 * 1024 });
+  return exec("/tools/igir", commandArgs, { timeout: 1800000, maxBuffer: 32 * 1024 * 1024 });
 }
 
 async function sha256(file) {
