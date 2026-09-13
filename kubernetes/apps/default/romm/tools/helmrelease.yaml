@@ -54,17 +54,16 @@ spec:
         initContainers:
           install-igir:
             image:
-              repository: node
-              tag: lts-alpine
+              repository: alpine
+              tag: 3.22
             command:
               - /bin/sh
             args:
               - -ec
               - >-
-                npm install --global --prefix /tools igir@5.4.0
-            env:
-              HOME: /tmp
-              NPM_CONFIG_CACHE: /tmp/npm-cache
+                wget -qO /tmp/igir.tgz https://github.com/emmercm/igir/releases/download/v5.4.0/igir-5.4.0-Linux-amd64.tar.gz
+                && tar -xzf /tmp/igir.tgz -C /tools
+                && chmod 0755 /tools/igir
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -114,17 +113,16 @@ spec:
         initContainers:
           install-igir:
             image:
-              repository: node
-              tag: lts-alpine
+              repository: alpine
+              tag: 3.22
             command:
               - /bin/sh
             args:
               - -ec
               - >-
-                npm install --global --prefix /tools igir@5.4.0
-            env:
-              HOME: /tmp
-              NPM_CONFIG_CACHE: /tmp/npm-cache
+                wget -qO /tmp/igir.tgz https://github.com/emmercm/igir/releases/download/v5.4.0/igir-5.4.0-Linux-amd64.tar.gz
+                && tar -xzf /tmp/igir.tgz -C /tools
+                && chmod 0755 /tools/igir
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
