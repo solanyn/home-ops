@@ -263,7 +263,7 @@ async function main() {
       process.stdout.write(stdout);
       process.stderr.write(stderr);
       const report = await fs.readFile(REPORT_FILE, "utf8");
-      if (!report.startsWith("Status,")) throw new Error(`invalid Igir report: ${REPORT_FILE}`);
+      if (!report.includes("Status,")) throw new Error(`invalid Igir report: ${REPORT_FILE}`);
       process.stdout.write(report);
     } finally {
       await fs.rm(REPORT_FILE, { force: true });
