@@ -13,26 +13,26 @@ spec:
       targets:
         - &vps_ip 139.99.135.40
       providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+        - name: external-dns.kubernetes.io/cloudflare-proxied
           value: "false"
     - dnsName: edge-doco-cd.goyangi.io
       recordType: A
       targets:
         - *vps_ip
       providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+        - name: external-dns.kubernetes.io/cloudflare-proxied
           value: "false"
     - dnsName: edge-gatus.goyangi.io
       recordType: A
       targets:
         - *vps_ip
       providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+        - name: external-dns.kubernetes.io/cloudflare-proxied
           value: "false"
     - dnsName: external.goyangi.io
       recordType: CNAME
       targets:
         - towonel.goyangi.io
       providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+        - name: external-dns.kubernetes.io/cloudflare-proxied
           value: "false"
