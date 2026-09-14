@@ -31,9 +31,6 @@ services:
     environment:
       OP_HTTP_PORT: 8081
       OP_SESSION: /home/opuser/.op/1password-credentials.json
-    depends_on:
-      op-connect-api:
-        condition: service_healthy
     volumes:
       - /mnt/world/doco-cd/1password-connect/1password-credentials.json:/home/opuser/.op/1password-credentials.json:ro
       - /mnt/world/doco-cd/1password-connect/data:/home/opuser/.op/data
