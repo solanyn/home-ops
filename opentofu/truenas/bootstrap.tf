@@ -9,28 +9,6 @@ resource "truenas_dataset" "doco_cd" {
   compression = "LZ4"
 }
 
-resource "truenas_dataset" "onepassword_connect_legacy" {
-  pool          = "world"
-  path          = "onepassword-connect"
-  compression   = "LZ4"
-  force_destroy = false
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "truenas_dataset" "onepassword_connect_data_legacy" {
-  parent        = truenas_dataset.onepassword_connect_legacy.id
-  path          = "data"
-  compression   = "LZ4"
-  force_destroy = false
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 resource "truenas_dataset" "onepassword_connect" {
   parent      = truenas_dataset.doco_cd.id
   path        = "1password-connect"
