@@ -10,7 +10,8 @@ provider "truenas" {
   }
 
   websocket {
-    username = var.truenas_ssh_user
-    api_key  = var.truenas_api_key
+    username             = var.truenas_ssh_user
+    api_key              = var.truenas_api_key
+    insecure_skip_verify = true
   }
 }
