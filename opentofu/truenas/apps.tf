@@ -1,3 +1,8 @@
+import {
+  to = truenas_app.doco_cd
+  id = "doco-cd"
+}
+
 resource "truenas_app" "doco_cd" {
   name           = "doco-cd"
   custom_app     = true
