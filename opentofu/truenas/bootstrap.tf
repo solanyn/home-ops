@@ -6,19 +6,19 @@ resource "random_password" "doco_cd_webhook_secret" {
 resource "truenas_dataset" "doco_cd" {
   pool        = "world"
   path        = "doco-cd"
-  compression = "lz4"
+  compression = "LZ4"
 }
 
 resource "truenas_dataset" "onepassword_connect" {
   pool        = "world"
   path        = "onepassword-connect"
-  compression = "lz4"
+  compression = "LZ4"
 }
 
 resource "truenas_dataset" "onepassword_connect_data" {
   parent      = truenas_dataset.onepassword_connect.id
   path        = "data"
-  compression = "lz4"
+  compression = "LZ4"
 }
 
 resource "truenas_file" "onepassword_credentials" {
