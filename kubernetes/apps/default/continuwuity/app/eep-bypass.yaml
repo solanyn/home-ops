@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://crd.movishell.pl/gateway.envoyproxy.io/envoyextensionpolicy_v1alpha1.json
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyExtensionPolicy
+metadata:
+  name: continuwuity-eep-bypass
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: continuwuity
+  lua:
+    - type: Inline
+      inline: |
+        function envoy_on_request(request_handle)
+        end
