@@ -47,7 +47,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-ingest
-              tag: "2026.07.0"
+              tag: "2026.09.5"
               pullPolicy: Always
             env: &env
               S3_ENDPOINT: https://s3.goyangi.io
