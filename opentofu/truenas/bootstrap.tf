@@ -9,16 +9,6 @@ resource "truenas_dataset" "doco_cd" {
   compression = "LZ4"
 }
 
-moved {
-  from = truenas_dataset.onepassword_connect
-  to   = truenas_dataset.onepassword_connect_legacy
-}
-
-moved {
-  from = truenas_dataset.onepassword_connect_data
-  to   = truenas_dataset.onepassword_connect_data_legacy
-}
-
 resource "truenas_dataset" "onepassword_connect_legacy" {
   pool          = "world"
   path          = "onepassword-connect"
