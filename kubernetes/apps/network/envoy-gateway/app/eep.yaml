@@ -8,7 +8,7 @@ spec:
   targetRefs:
     - group: gateway.networking.k8s.io
       kind: Gateway
-      name: envoy-internal
+      name: envoy-external
   wasm:
     - name: eep
       rootID: eep
@@ -21,5 +21,6 @@ spec:
         showDetails: true
         excludeDomains:
           - "(?i)^matrix\\.goyangi\\.io(:[0-9]+)?$"
-        locale: auto
+        filterCodes:
+          - "400-599"
       failOpen: false
