@@ -8,7 +8,7 @@ configs:
         reference: main
 secrets:
   connect_token:
-    file: /mnt/world/onepassword-connect/connect-token
+    file: /mnt/world/doco-cd/1password-connect/connect-token
   webhook_secret:
     file: /mnt/world/doco-cd/webhook_secret
 services:
@@ -24,8 +24,8 @@ services:
       timeout: 5s
       retries: 5
     volumes:
-      - /mnt/world/onepassword-connect/1password-credentials.json:/home/opuser/.op/1password-credentials.json:ro
-      - /mnt/world/onepassword-connect/data:/home/opuser/.op/data
+      - /mnt/world/doco-cd/1password-connect/1password-credentials.json:/home/opuser/.op/1password-credentials.json:ro
+      - /mnt/world/doco-cd/1password-connect/data:/home/opuser/.op/data
 
   op-connect-sync:
     image: ghcr.io/1password/connect-sync:1.8.2@sha256:3844a6410e119ccec72011737d5b46afe4be12cb0f54f681fe3ce999280449d8
@@ -37,8 +37,8 @@ services:
       op-connect-api:
         condition: service_healthy
     volumes:
-      - /mnt/world/onepassword-connect/1password-credentials.json:/home/opuser/.op/1password-credentials.json:ro
-      - /mnt/world/onepassword-connect/data:/home/opuser/.op/data
+      - /mnt/world/doco-cd/1password-connect/1password-credentials.json:/home/opuser/.op/1password-credentials.json:ro
+      - /mnt/world/doco-cd/1password-connect/data:/home/opuser/.op/data
 
   app:
     configs:
