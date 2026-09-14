@@ -29,7 +29,7 @@ resource "truenas_dataset" "onepassword_connect_data" {
 
 resource "truenas_file" "onepassword_credentials" {
   path    = "/mnt/world/doco-cd/1password-connect/1password-credentials.json"
-  content = var.onepassword_credentials_json
+  content = base64decode(var.onepassword_credentials_json)
   mode    = "0600"
   uid     = 999
   gid     = 999
