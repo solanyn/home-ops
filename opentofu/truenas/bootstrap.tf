@@ -9,20 +9,58 @@ resource "truenas_dataset" "doco_cd" {
   compression = "LZ4"
 }
 
+moved {
+  from = truenas_dataset.onepassword_connect
+  to   = truenas_dataset.onepassword_connect_legacy
+}
+
+moved {
+  from = truenas_dataset.onepassword_connect_data
+  to   = truenas_dataset.onepassword_connect_data_legacy
+}
+
+resource "truenas_dataset" "onepassword_connect_legacy" {
+  pool          = "world"
+  path          = "onepassword-connect"
+  compression   = "LZ4"
+  force_destroy = false
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "truenas_dataset" "onepassword_connect_data_legacy" {
+  parent        = truenas_dataset.onepassword_connect_legacy.id
+  path          = "data"
+  compression   = "LZ4"
+  force_destroy = false
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "truenas_dataset" "onepassword_connect" {
-  pool        = "world"
-  path        = "onepassword-connect"
+  parent      = truenas_dataset.doco_cd.id
+  path        = "1password-connect"
   compression = "LZ4"
+  mode        = "0755"
+  uid         = 999
+  gid         = 999
 }
 
 resource "truenas_dataset" "onepassword_connect_data" {
   parent      = truenas_dataset.onepassword_connect.id
   path        = "data"
   compression = "LZ4"
+  mode        = "0755"
+  uid         = 999
+  gid         = 999
 }
 
 resource "truenas_file" "onepassword_credentials" {
-  path    = "/mnt/world/onepassword-connect/1password-credentials.json"
+  path    = "/mnt/world/doco-cd/1password-connect/1password-credentials.json"
   content = var.onepassword_credentials_json
   mode    = "0600"
   uid     = 999
@@ -32,7 +70,7 @@ resource "truenas_file" "onepassword_credentials" {
 }
 
 resource "truenas_file" "onepassword_token" {
-  path    = "/mnt/world/onepassword-connect/connect-token"
+  path    = "/mnt/world/doco-cd/1password-connect/connect-token"
   content = var.onepassword_connect_token
   mode    = "0600"
   uid     = 999
