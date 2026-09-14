@@ -6,8 +6,14 @@ metadata:
   name: website
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/anubis
   interval: 1h
   path: ./kubernetes/apps/default/website/app
+  postBuild:
+    substitute:
+      APP: website
+      ANUBIS_TARGET: http://website.default.svc.cluster.local:8080
   prune: true
   sourceRef:
     kind: GitRepository
