@@ -1,4 +1,4 @@
-_config_version: 27
+_config_version: 44
 model:
   default: reasoning-pool
   provider: litellm
@@ -31,11 +31,16 @@ compression:
   tail_mode: lean
   protect_last_n: 12
   min_tail_user_messages: 3
+  proactive_prune_tokens: 48000
+  proactive_prune_min_result_chars: 4000
+  proactive_prune_min_reclaim_tokens: 2048
+  idle_compact_after_seconds: 3600
 agent:
   max_turns: 60
   gateway_timeout: 1800
   restart_drain_timeout: 60
   api_max_retries: 2
+  verify_on_stop: false
 updates:
   pre_update_backup: false
 streaming:
@@ -94,7 +99,7 @@ stt:
     model: mlx-community--parakeet-tdt-0.6b-v3
     base_url: http://mac.internal:8000/v1
 delegation:
-  max_iterations: 50
+  max_iterations: 250
 platform_toolsets:
   cli:
     - hermes-cli
