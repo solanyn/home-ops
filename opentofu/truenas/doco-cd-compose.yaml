@@ -17,11 +17,6 @@ services:
     environment:
       OP_HTTP_PORT: 8080
       OP_SESSION: /home/opuser/.op/1password-credentials.json
-    healthcheck:
-      test: [CMD, wget, --spider, -q, http://localhost:8080/heartbeat]
-      interval: 30s
-      timeout: 5s
-      retries: 5
     volumes:
       - /mnt/world/doco-cd/1password-connect/1password-credentials.json:/home/opuser/.op/1password-credentials.json:ro
       - /mnt/world/doco-cd/1password-connect/data:/home/opuser/.op/data
@@ -40,9 +35,6 @@ services:
       - source: poll-config.yml
         target: /poll-config.yml
     container_name: doco-cd
-    depends_on:
-      op-connect-api:
-        condition: service_healthy
     environment:
       DEPLOY_CONFIG_BASE_DIR: ./docker/truenas/
       HTTP_PORT: 8080
