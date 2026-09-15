@@ -28,7 +28,7 @@ spec:
             args:
               - --repo=https://github.com/Dimensional/ntool.git
               - --ref=460c7ed41385223ffac686d7364ae1a09994ebbb
-              - --root=/tooling/git-sync
+              - --root=/tmp/tooling/git-sync
               - --link=current
               - --one-time
               - --group-write
@@ -104,8 +104,11 @@ spec:
         type: emptyDir
         advancedMounts:
           switch-importer:
+            00-sync-ntool:
+              - path: /tmp/tooling
             prepare-ntool:
               - path: /tooling
+              - path: /tmp/tooling
             app:
               - path: /tooling
                 readOnly: true
