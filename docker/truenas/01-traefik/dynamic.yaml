@@ -8,12 +8,45 @@ http:
       service: truenas
       tls:
         certResolver: cf
+    versitygw-s3:
+      entryPoints:
+        - websecure
+      rule: Host(`s3-versitygw.goyangi.io`)
+      service: versitygw-s3
+      tls:
+        certResolver: cf
+    versitygw-admin:
+      entryPoints:
+        - websecure
+      rule: Host(`versitygw-admin.goyangi.io`)
+      service: versitygw-admin
+      tls:
+        certResolver: cf
+    versitygw-webui:
+      entryPoints:
+        - websecure
+      rule: Host(`versitygw.goyangi.io`)
+      service: versitygw-webui
+      tls:
+        certResolver: cf
   services:
     truenas:
       loadBalancer:
         servers:
           - url: https://host.docker.internal:10443
         serversTransport: insecure
+    versitygw-s3:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:9000
+    versitygw-admin:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:9001
+    versitygw-webui:
+      loadBalancer:
+        servers:
+          - url: http://host.docker.internal:9002
   serversTransports:
     insecure:
       insecureSkipVerify: true
