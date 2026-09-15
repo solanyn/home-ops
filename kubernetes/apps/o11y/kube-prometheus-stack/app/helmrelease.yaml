@@ -23,6 +23,10 @@ spec:
             enabled: false
             forceDeployDashboards: true
 
+        coreDns:
+            serviceMonitor:
+                authorization: null
+
         kubeApiServer:
             serviceMonitor:
                 authorization: null
