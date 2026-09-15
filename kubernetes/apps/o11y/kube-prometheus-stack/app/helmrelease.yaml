@@ -23,10 +23,24 @@ spec:
             enabled: false
             forceDeployDashboards: true
 
+        kubeApiServer:
+            serviceMonitor:
+                authorization: null
+
+        kubeControllerManager:
+            serviceMonitor:
+                authorization: null
+
         kubeEtcd:
             service:
                 selector:
                     component: kube-apiserver
+            serviceMonitor:
+                authorization: null
+
+        kubeScheduler:
+            serviceMonitor:
+                authorization: null
 
         kubeProxy:
             enabled: false
