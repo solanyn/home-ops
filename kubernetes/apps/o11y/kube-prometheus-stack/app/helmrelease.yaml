@@ -42,6 +42,10 @@ spec:
             serviceMonitor:
                 authorization: null
 
+        kubelet:
+            serviceMonitor:
+                authorization: null
+
         kubeProxy:
             enabled: false
 
