@@ -13,6 +13,7 @@ spec:
   postBuild:
     substitute:
       APP: website
+      ANUBIS_HOSTNAME: goyangi.io
       ANUBIS_TARGET: http://website.default.svc.cluster.local:8080
   prune: true
   sourceRef:
