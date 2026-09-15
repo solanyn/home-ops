@@ -21,7 +21,7 @@ spec:
           failedJobsHistory: 1
           ttlSecondsAfterFinished: 3600
         initContainers:
-          sync-ntool:
+          00-sync-ntool:
             image:
               repository: registry.k8s.io/git-sync/git-sync
               tag: v4.7.1@sha256:fb5eaafc672baa65f64d1ebb5c2e63e29b737237fddd1d55da187f1f052dc2de
