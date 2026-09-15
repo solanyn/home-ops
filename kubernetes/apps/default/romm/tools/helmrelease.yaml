@@ -58,6 +58,7 @@ spec:
                 uv sync --directory /tooling/project --locked
             env:
               NTOOL_COMMIT: "460c7ed41385223ffac686d7364ae1a09994ebbb"
+              UV_CACHE_DIR: /tmp/uv-cache
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
