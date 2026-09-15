@@ -20,6 +20,46 @@ spec:
           successfulJobsHistory: 1
           failedJobsHistory: 1
           ttlSecondsAfterFinished: 3600
+        initContainers:
+          sync-ntool:
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.7.1@sha256:fb5eaafc672baa65f64d1ebb5c2e63e29b737237fddd1d55da187f1f052dc2de
+            args:
+              - --repo=https://github.com/Dimensional/ntool.git
+              - --ref=460c7ed41385223ffac686d7364ae1a09994ebbb
+              - --root=/tooling/git-sync
+              - --link=current
+              - --one-time
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+          prepare-ntool:
+            image:
+              repository: ghcr.io/astral-sh/uv
+              tag: python3.12-alpine
+            command: [sh, -eu, -c]
+            args:
+              - |
+                test -f /tooling/git-sync/current/ntool.py
+                mkdir -p /tooling/project
+                cat > /tooling/project/pyproject.toml <<'EOF'
+                [project]
+                name = "romm-ntool-runtime"
+                version = "0.0.0"
+                requires-python = ">=3.12,<3.13"
+                dependencies = ["pycryptodome==3.23.0"]
+
+                [tool.uv]
+                package = false
+                EOF
+                uv lock --directory /tooling/project
+                uv sync --directory /tooling/project --locked
+            env:
+              NTOOL_COMMIT: "460c7ed41385223ffac686d7364ae1a09994ebbb"
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
         containers:
           app:
             image:
@@ -27,6 +67,9 @@ spec:
               tag: python3.12-alpine
             env:
               UV_CACHE_DIR: /tmp/uv-cache
+              NTOOL_PROJECT: /tooling/project
+              NTOOL_CHECKOUT: /tooling/git-sync/current
+              NTOOL_COMMIT: "460c7ed41385223ffac686d7364ae1a09994ebbb"
               CLEANUP_LIBRARY: "true"
             command:
               - uv
@@ -56,6 +99,15 @@ spec:
         name: romm-tools-script
         globalMounts:
           - path: /scripts
+      tooling:
+        type: emptyDir
+        advancedMounts:
+          switch-importer:
+            prepare-ntool:
+              - path: /tooling
+            app:
+              - path: /tooling
+                readOnly: true
       media:
         type: nfs
         server: nas.internal
