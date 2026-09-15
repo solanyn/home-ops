@@ -9,5 +9,6 @@ configMapGenerator:
   - name: romm-tools-script
     files:
       - import.py=resources/import.py
+      - ntool_wrapper.py=resources/ntool_wrapper.py
 generatorOptions:
   disableNameSuffixHash: true
