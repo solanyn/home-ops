@@ -60,15 +60,3 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp
-    route:
-      app:
-        annotations:
-          gatus.home-operations.com/enabled: "true"
-          gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 200"]
-        hostnames:
-          - goyangi.io
-        parentRefs:
-          - name: envoy-external
-            namespace: network
-            sectionName: https

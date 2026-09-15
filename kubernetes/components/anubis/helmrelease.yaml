@@ -42,6 +42,7 @@ spec:
                   initialDelaySeconds: 1
                   periodSeconds: 10
               readiness: *probe
+              startup: *probe
             resources:
               requests:
                 cpu: 10m
@@ -52,6 +53,18 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+    route:
+      main:
+        annotations:
+          gatus.home-operations.com/enabled: "true"
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
+        hostnames:
+          - ${ANUBIS_HOSTNAME}
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
