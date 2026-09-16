@@ -21,6 +21,29 @@ def test_wrapper_rejects_unpinned_checkout(tmp_path, monkeypatch):
         romm_import.ntool_wrapper.command(tmp_path / "cdn", tmp_path / "out")
 
 
+def test_classifies_direct_cia_fallback():
+    source = Path("Nintendo - Nintendo 3DS (Decrypted)") / (
+        "Fallback Game (USA).cia"
+    )
+    item = romm_import.classify_3ds(source)
+    assert (item.game, item.kind, item.is_cdn) == ("Fallback Game", "base", False)
+
+
+def test_cdn_archive_is_converted_for_base_and_addons(tmp_path, monkeypatch):
+    source = Path("Nintendo - Nintendo 3DS (Digital) (CDN)") / "Game (USA).zip"
+    item = romm_import.classify_3ds(source)
+    assert item.destination == Path("3ds/Game")
+    assert item.is_cdn
+
+
+def test_non_archive_cdn_members_are_not_published(tmp_path, monkeypatch):
+    source = Path("Nintendo - Nintendo 3DS (Digital) (CDN)") / "Game (USA) (Update)" / "00000000"
+    item = romm_import.classify_3ds(source)
+    assert item.is_cdn
+
+
+
+
 def test_classifies_actual_minerva_update_name():
     source = Path("Nintendo - Nintendo 3DS (Digital) (CDN)") / (
         "Legend of Zelda, The - Majora's Mask 3D (USA) (Update).zip"
@@ -29,7 +52,7 @@ def test_classifies_actual_minerva_update_name():
     assert (item.game, item.kind, item.destination, item.is_cdn) == (
         "Legend of Zelda, The - Majora's Mask 3D",
         "update",
-        Path("3ds/Legend of Zelda, The - Majora's Mask 3D/update"),
+        Path("3ds/Legend of Zelda, The - Majora's Mask 3D/updates"),
         True,
     )
 
