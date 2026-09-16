@@ -12,8 +12,6 @@ spec:
       namespace: storage
     - name: dragonfly
       namespace: storage
-    - name: garage
-      namespace: storage
     - name: pocket-id-resources
       namespace: default
   interval: 1h
