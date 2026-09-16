@@ -16,9 +16,13 @@ spec:
       memory: 64Mi
     limits:
       memory: 256Mi
-  args:
-    - --allowed-hosts
-    - "*"
+  podTemplateSpec:
+    spec:
+      containers:
+        - name: mcp
+          args:
+            - --allowed-hosts
+            - "*"
   env:
     - name: GRAFANA_URL
       value: http://grafana-service.o11y.svc:3000
