@@ -26,9 +26,9 @@ ROM_ROOTS = (
     Path("/media/downloads/torrents/incomplete/roms/Minerva_Myrient"),
 )
 MINERVA_EXTENSIONS = {
-    ".3ds", ".7z", ".bin", ".cso", ".chd", ".cue", ".gba", ".gb", ".gbc",
-    ".gcz", ".iso", ".nds", ".nes", ".n64", ".pbp", ".rar", ".rvz", ".sfc",
-    ".smc", ".wad", ".wbfs", ".zip",
+    ".3ds", ".7z", ".bin", ".cso", ".chd", ".cia", ".cci", ".cue", ".gba",
+    ".gb", ".gbc", ".gcz", ".iso", ".nds", ".nes", ".n64", ".pbp", ".rar",
+    ".rvz", ".sfc", ".smc", ".wad", ".wbfs", ".zip",
 }
 SWITCH_EXTENSIONS = {".nsp", ".nsz", ".xci"}
 PATCH_MARKERS = ("english", "translated", "translation", "patched", "undub", "hack")
@@ -85,7 +85,7 @@ def classify_3ds(source: Path) -> ThreeDSItem:
     version = re.search(r"\[v(\d+)\]", stem, re.I)
     kind = "dlc" if dlc or dlc_match else ("update" if update or (version and int(version.group(1)) > 0) else "base")
     is_cdn = "(cdn)" in " ".join(source.parts).lower()
-    directory = Path("3ds") / game / (kind if kind != "base" else "")
+    directory = Path("3ds") / game / ("updates" if kind == "update" else kind if kind != "base" else "")
     return ThreeDSItem(game, kind, directory, is_cdn)
 
 
@@ -239,7 +239,11 @@ def import_3ds(selected: set[Path], result: Result) -> None:
         location = next((minerva_location(source, root) for root in ROM_ROOTS if safe_source(source, root)), None)
         if not location or location[0] != "3ds": continue
         item = classify_3ds(source)
-        if item.kind == "base" and not item.is_cdn:
+        if item.is_cdn and source.suffix.lower() == ".zip":
+            status = convert_cdn(source, DEST / item.destination, work_root, dry_run=dry_run)
+            result.failed += status.startswith(("blocked", "failed")); result.skipped += status.startswith("dry-run"); result.imported += status == "imported"; result.existing += status == "existing"
+            print(f"{status}: {source}")
+        elif item.kind == "base" and not item.is_cdn:
             if dry_run: result.skipped += 1; print(f"dry-run: {source} -> {DEST / item.destination / source.name}"); continue
             try:
                 status = hardlink(source, DEST / item.destination / source.name)
@@ -247,9 +251,15 @@ def import_3ds(selected: set[Path], result: Result) -> None:
                 print(f"{status}: {source}")
             except (OSError, RuntimeError) as error: result.failed += 1; print(f"failed: {source}: {error}")
         elif item.is_cdn and item.kind in {"update", "dlc"}:
-            status = convert_cdn(source, DEST / item.destination, work_root, dry_run=dry_run)
-            result.failed += status.startswith(("blocked", "failed")); result.skipped += status.startswith("dry-run"); result.imported += status == "imported"; result.existing += status == "existing"
-            print(f"{status}: {source}")
+            # Non-ZIP CDN members are never library artifacts; the ZIP is the unit of conversion.
+            result.skipped += 1
+        elif not item.is_cdn and source.suffix.lower() == ".cia":
+            if dry_run: result.skipped += 1; print(f"dry-run: {source} -> {DEST / item.destination / source.name}"); continue
+            try:
+                status = hardlink(source, DEST / item.destination / source.name)
+                result.imported += status == "imported"; result.existing += status != "imported"
+                print(f"{status}: {source}")
+            except (OSError, RuntimeError) as error: result.failed += 1; print(f"failed: {source}: {error}")
 
 
 def import_minerva(selected: set[Path], result: Result) -> None:
