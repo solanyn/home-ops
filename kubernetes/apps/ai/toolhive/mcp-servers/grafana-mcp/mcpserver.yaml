@@ -21,6 +21,8 @@ spec:
       containers:
         - name: mcp
           args:
+            - --transport
+            - streamable-http
             - --allowed-hosts
             - "*"
   env:
