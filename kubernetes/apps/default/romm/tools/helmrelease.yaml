@@ -129,7 +129,6 @@ spec:
             prepare-ntool:
               - path: /tooling
               - path: /tmp/tooling
-              - path: /seeddb
             app:
               - path: /tooling
                 readOnly: true
