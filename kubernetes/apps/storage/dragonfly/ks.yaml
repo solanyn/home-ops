@@ -6,9 +6,6 @@ metadata:
   name: dragonfly
 spec:
   targetNamespace: storage
-  dependsOn:
-    - name: garage-operator
-      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/storage/dragonfly/app
   prune: true
@@ -26,8 +23,6 @@ spec:
   targetNamespace: storage
   dependsOn:
     - name: dragonfly
-      namespace: storage
-    - name: garage
       namespace: storage
   healthChecks:
     - apiVersion: dragonflydb.io/v1alpha1

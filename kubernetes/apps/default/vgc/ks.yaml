@@ -6,9 +6,6 @@ metadata:
   name: vgc
 spec:
   targetNamespace: default
-  dependsOn:
-    - name: garage
-      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/default/vgc/app
   postBuild:
