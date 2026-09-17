@@ -43,7 +43,21 @@ spec:
             args:
               - |
                 test -f /tooling/git-sync/current/ntool.py
-                mkdir -p /tooling/project
+                mkdir -p /tooling/git-sync/current/lib/resources /tooling/project
+                python - <<'PY'
+                import hashlib
+                import pathlib
+                import urllib.request
+
+                target = pathlib.Path("/tooling/git-sync/current/lib/resources/seeddb.bin")
+                expected = "ccdcea5e4465194158737462436ec10ae48669dd961902282ac2861e260d03c9"
+                url = "https://raw.githubusercontent.com/xxmichibxx/Batch-CIA-3DS-Decryptor-Redux/" \
+                    "main/bin/seeddb.bin"
+                data = urllib.request.urlopen(url, timeout=30).read()
+                if hashlib.sha256(data).hexdigest() != expected:
+                    raise SystemExit("seeddb.bin checksum mismatch")
+                target.write_bytes(data)
+                PY
                 cat > /tooling/project/pyproject.toml <<'EOF'
                 [project]
                 name = "romm-ntool-runtime"
@@ -72,6 +86,8 @@ spec:
               NTOOL_PROJECT: /tooling/project
               NTOOL_CHECKOUT: /tooling/git-sync/current
               NTOOL_COMMIT: "460c7ed41385223ffac686d7364ae1a09994ebbb"
+              NTOOL_KEY_MATERIAL: /tooling/git-sync/current/lib/resources/seeddb.bin
+              NTOOL_ARGS: --decrypt
               CLEANUP_LIBRARY: "true"
             command:
               - uv
