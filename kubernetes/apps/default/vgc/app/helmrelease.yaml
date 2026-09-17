@@ -15,6 +15,7 @@ spec:
         type: cronjob
         cronjob:
           schedule: "0 6 * * 1"
+          suspend: true
           timeZone: Australia/Sydney
           concurrencyPolicy: Forbid
           successfulJobsHistory: 3
