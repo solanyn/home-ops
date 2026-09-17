@@ -10,6 +10,7 @@ spec:
   values:
     controllers:
       ingest:
+        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -86,6 +87,7 @@ spec:
               limits:
                 memory: 1Gi
       promote:
+        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -111,6 +113,7 @@ spec:
                   failureThreshold: 3
             resources: *resources
       aggregate:
+        replicas: 0
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
