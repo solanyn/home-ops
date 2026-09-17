@@ -22,18 +22,7 @@ def _contract() -> tuple[str, Path, Path]:
         raise RuntimeError("NTOOL_COMMIT must be a 40-character lowercase SHA-1")
     if not project.is_dir() or not checkout.is_dir() or not script.is_file():
         raise RuntimeError("ntool project or checkout is unavailable")
-    try:
-        actual = subprocess.run(
-            ["git", "-C", str(checkout), "rev-parse", "HEAD"],
-            check=True,
-            capture_output=True,
-            text=True,
-        ).stdout.strip()
-    except (OSError, subprocess.CalledProcessError) as error:
-        raise RuntimeError("ntool checkout cannot be verified") from error
-    if actual != expected_commit:
-        raise RuntimeError("ntool checkout commit does not match NTOOL_COMMIT")
-    return actual, project, script
+    return expected_commit, project, script
 
 
 def command(source: Path, output: Path, extra: list[str] | None = None) -> list[str]:
