@@ -120,7 +120,7 @@ spec:
           app:
             image:
               repository: ghcr.io/solanyn/lake-aggregate
-              tag: "2026.09.5"
+              tag: "2026.09.6"
               pullPolicy: Always
             env:
               <<: *env
