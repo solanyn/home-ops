@@ -1,0 +1,15 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: lifttrace
+spec:
+  clientID: lifttrace
+  callbackUrls:
+    - https://lifttrace.goyangi.io/api/auth/oidc/callback/1
+  logoutCallbackUrls:
+    - https://lifttrace.goyangi.io
+  allowedUserGroups:
+    - name: user
+  secret:
+    name: lifttrace-oidc
