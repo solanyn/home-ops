@@ -1,0 +1,106 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: lifttrace
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: lifttrace
+  interval: 10m
+  values:
+    controllers:
+      lifttrace:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/traceapps/lifttrace
+              tag: v1.3.0
+            env:
+              DB_PATH: /data/db/lifttrace.db
+              UPLOADS_PATH: /data/uploads
+              EXERCISE_SOURCES: wger,free-db
+              OIDC_ISSUER: https://id.goyangi.io/
+              OIDC_CLIENT_ID: lifttrace
+              OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: lifttrace-oidc
+                    key: client_secret
+              OIDC_DISPLAY_NAME: Pocket ID
+              OIDC_REDIRECT_URIS: https://lifttrace.goyangi.io/api/auth/oidc/callback/1
+              OIDC_SCOPE: openid profile email
+              OIDC_AUTO_LINK: "1"
+              OIDC_AUTO_REGISTER: "0"
+              OIDC_IS_ACTIVE: "1"
+              OIDC_ENABLE_EMAIL_PASSWORD_LOGIN: "1"
+              PORT: 3002
+              TZ: Australia/Sydney
+            envFrom:
+              - secretRef:
+                  name: lifttrace-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: &port 3002
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: [ALL] }
+            resources:
+              requests:
+                cpu: 25m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      db:
+        existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          lifttrace:
+            app:
+              - path: /data/db
+                subPath: db
+      uploads:
+        existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          lifttrace:
+            app:
+              - path: /data/uploads
+                subPath: uploads
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
