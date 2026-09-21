@@ -13,3 +13,5 @@ spec:
     - name: user
   secret:
     name: lifttrace-oidc
+    keys:
+      clientSecret: client-secret
