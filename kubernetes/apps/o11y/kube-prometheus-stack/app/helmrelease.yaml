@@ -3,86 +3,83 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-    name: kube-prometheus-stack
+  name: kube-prometheus-stack
 spec:
-    chartRef:
-        kind: OCIRepository
-        name: kube-prometheus-stack
-    interval: 1h
-    valuesFrom:
-        - kind: ConfigMap
-          name: flux-metrics-configmap
-          valuesKey: flux-metrics.yaml
-    values:
-        cleanPrometheusOperatorObjectNames: true
+  chartRef:
+    kind: OCIRepository
+    name: kube-prometheus-stack
+  interval: 1h
+  valuesFrom:
+    - kind: ConfigMap
+      name: flux-metrics-configmap
+      valuesKey: flux-metrics.yaml
+  values:
+    cleanPrometheusOperatorObjectNames: true
 
-        alertmanager:
-            enabled: false # managed by VictoriaMetrics operator
+    alertmanager:
+      enabled: false # managed by VictoriaMetrics operator
 
-        grafana:
-            enabled: false
-            forceDeployDashboards: true
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
 
-        coreDns:
-            serviceMonitor:
-                authorization: null
+    coreDns:
+      serviceMonitor:
+        authorization: null
 
-        kubeApiServer:
-            serviceMonitor:
-                authorization: null
+    kubeApiServer:
+      serviceMonitor: {}
 
-        kubeControllerManager:
-            serviceMonitor:
-                authorization: null
+    kubeControllerManager:
+      serviceMonitor: {}
 
-        kubeEtcd:
-            service:
-                selector:
-                    component: kube-apiserver
-            serviceMonitor:
-                authorization: null
+    kubeEtcd:
+      service:
+        selector:
+          component: kube-apiserver
+      serviceMonitor:
+        authorization: null
 
-        kubeScheduler:
-            serviceMonitor:
-                authorization: null
+    kubeScheduler:
+      serviceMonitor: {}
 
-        kubelet:
-            serviceMonitor:
-                authorization: null
+    kubelet:
+      serviceMonitor:
+        authorization: null
 
-        kubeProxy:
-            enabled: false
+    kubeProxy:
+      enabled: false
 
-        prometheus:
-            enabled: false # using VictoriaMetrics
+    prometheus:
+      enabled: false # using VictoriaMetrics
 
-        prometheusOperator:
-            enabled: false # using VictoriaMetrics operator
+    prometheusOperator:
+      enabled: false # using VictoriaMetrics operator
 
-        prometheus-node-exporter:
-            fullnameOverride: node-exporter
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
 
-        kube-state-metrics:
-            fullnameOverride: kube-state-metrics
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
 
-        additionalPrometheusRulesMap:
-            oom-rules:
-                groups:
-                    - name: oom
-                      rules:
-                          - alert: OomKilled
-                            annotations:
-                                summary: Container {{ $labels.container }} in pod {{ $labels.namespace }}/{{ $labels.pod }} has been OOMKilled {{ $value }} times in the last 10 minutes.
-                            expr: (kube_pod_container_status_restarts_total - kube_pod_container_status_restarts_total offset 10m >= 1) and ignoring (reason) min_over_time(kube_pod_container_status_last_terminated_reason{reason="OOMKilled"}[10m]) == 1
-                            labels:
-                                severity: critical
-            zfs-rules:
-                groups:
-                    - name: zfs
-                      rules:
-                          - alert: ZfsUnexpectedPoolState
-                            annotations:
-                                summary: ZFS pool {{$labels.zpool}} on {{$labels.instance}} is in a unexpected state {{$labels.state}}
-                            expr: node_zfs_zpool_state{state!="online"} > 0
-                            labels:
-                                severity: critical
+    additionalPrometheusRulesMap:
+      oom-rules:
+        groups:
+          - name: oom
+            rules:
+              - alert: OomKilled
+                annotations:
+                  summary: Container {{ $labels.container }} in pod {{ $labels.namespace }}/{{ $labels.pod }} has been OOMKilled {{ $value }} times in the last 10 minutes.
+                expr: (kube_pod_container_status_restarts_total - kube_pod_container_status_restarts_total offset 10m >= 1) and ignoring (reason) min_over_time(kube_pod_container_status_last_terminated_reason{reason="OOMKilled"}[10m]) == 1
+                labels:
+                  severity: critical
+      zfs-rules:
+        groups:
+          - name: zfs
+            rules:
+              - alert: ZfsUnexpectedPoolState
+                annotations:
+                  summary: ZFS pool {{$labels.zpool}} on {{$labels.instance}} is in a unexpected state {{$labels.state}}
+                expr: node_zfs_zpool_state{state!="online"} > 0
+                labels:
+                  severity: critical
