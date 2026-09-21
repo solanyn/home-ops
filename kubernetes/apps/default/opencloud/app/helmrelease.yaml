@@ -1,0 +1,110 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: opencloud
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: opencloud
+  interval: 10m
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    controllers:
+      opencloud:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: docker.io/opencloudeu/opencloud-rolling
+              tag: 8.0.1@sha256:1e78144071ab3fc20d2533dd4c5709d24b7e1669c96439fdf7c73cb2808a5d5e
+            command: ["/bin/sh", "-c", "opencloud init || true; opencloud server"]
+            env:
+              OC_URL: https://opencloud.goyangi.io
+              OC_EXCLUDE_RUN_SERVICES: idp
+              OC_OIDC_ISSUER: https://id.goyangi.io
+              OC_OIDC_CLIENT_ID: opencloud
+              PROXY_AUTOPROVISION_ACCOUNTS: true
+              PROXY_AUTOPROVISION_CLAIM_USERNAME: preferred_username
+              PROXY_AUTOPROVISION_CLAIM_EMAIL: email
+              PROXY_AUTOPROVISION_CLAIM_DISPLAYNAME: name
+              PROXY_AUTOPROVISION_CLAIM_GROUPS: groups
+              PROXY_ROLE_ASSIGNMENT_DRIVER: oidc
+              PROXY_ROLE_ASSIGNMENT_OIDC_CLAIM: groups
+              PROXY_OIDC_REWRITE_WELLKNOWN: true
+              PROXY_OIDC_ACCESS_TOKEN_VERIFY_METHOD: jwt
+              STORAGE_USERS_DRIVER: posix
+              STORAGE_USERS_POSIX_ROOT: /var/lib/opencloud/storage/users
+              STORAGE_SYSTEM_DRIVER: decomposed
+              OCIS_LOG_COLOR: false
+              OCIS_LOG_LEVEL: info
+              OCIS_LOG_PRETTY: false
+            envFrom:
+              - secretRef:
+                  name: opencloud-oidc
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 2Gi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: &port 9200
+                  initialDelaySeconds: 30
+                  periodSeconds: 10
+                  timeoutSeconds: 2
+                  failureThreshold: 6
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: *port
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 2
+                  failureThreshold: 6
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["opencloud.goyangi.io"]
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+    persistence:
+      config:
+        existingClaim: opencloud
+        globalMounts:
+          - path: /etc/opencloud
+            subPath: config
+      data:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/opencloud
+        globalMounts:
+          - path: /var/lib/opencloud
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
