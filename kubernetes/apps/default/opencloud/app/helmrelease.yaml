@@ -29,6 +29,7 @@ spec:
               tag: 8.0.1@sha256:1e78144071ab3fc20d2533dd4c5709d24b7e1669c96439fdf7c73cb2808a5d5e
             command: ["/bin/sh", "-c", "opencloud init || true; opencloud server"]
             env:
+              OC_INSECURE: true
               OC_URL: https://opencloud.goyangi.io
               OC_EXCLUDE_RUN_SERVICES: idp
               OC_OIDC_ISSUER: https://id.goyangi.io
