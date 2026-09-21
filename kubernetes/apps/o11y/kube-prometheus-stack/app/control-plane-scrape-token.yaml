@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vmagent-goyangi-control-plane-token
+  annotations:
+    kubernetes.io/service-account.name: vmagent-goyangi
+type: kubernetes.io/service-account-token
