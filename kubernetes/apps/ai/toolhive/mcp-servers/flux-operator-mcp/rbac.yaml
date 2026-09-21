@@ -11,5 +11,5 @@ roleRef:
   name: cluster-admin
 subjects:
   - kind: ServiceAccount
-    name: flux-operator-mcp
+    name: flux-operator-mcp-sa
     namespace: ai
