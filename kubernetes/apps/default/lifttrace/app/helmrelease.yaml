@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/traceapps/lifttrace
-              tag: v1.3.0
+              tag: v1.3.1
             env:
               DB_PATH: /data/db/lifttrace.db
               UPLOADS_PATH: /data/uploads
