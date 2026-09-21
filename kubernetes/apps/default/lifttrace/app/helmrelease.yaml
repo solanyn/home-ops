@@ -29,7 +29,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: lifttrace-oidc
-                    key: client_secret
+                    key: client-secret
               OIDC_DISPLAY_NAME: Pocket ID
               OIDC_REDIRECT_URIS: https://lifttrace.goyangi.io/api/auth/oidc/callback/1
               OIDC_SCOPE: openid profile email
@@ -86,20 +86,10 @@ spec:
             namespace: network
             sectionName: https
     persistence:
-      db:
+      data:
         existingClaim: "{{ .Release.Name }}"
-        advancedMounts:
-          lifttrace:
-            app:
-              - path: /data/db
-                subPath: db
-      uploads:
-        existingClaim: "{{ .Release.Name }}"
-        advancedMounts:
-          lifttrace:
-            app:
-              - path: /data/uploads
-                subPath: uploads
+        globalMounts:
+          - path: /data
       tmp:
         type: emptyDir
         globalMounts:
