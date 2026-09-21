@@ -29,11 +29,17 @@ spec:
 
     kubeApiServer:
       serviceMonitor:
-        authorization: null
+        authorization:
+          credentials:
+            name: vmagent-goyangi-control-plane-token
+            key: token
 
     kubeControllerManager:
       serviceMonitor:
-        authorization: null
+        authorization:
+          credentials:
+            name: vmagent-goyangi-control-plane-token
+            key: token
 
     kubeEtcd:
       service:
@@ -44,7 +50,10 @@ spec:
 
     kubeScheduler:
       serviceMonitor:
-        authorization: null
+        authorization:
+          credentials:
+            name: vmagent-goyangi-control-plane-token
+            key: token
 
     kubelet:
       serviceMonitor:
