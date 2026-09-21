@@ -1,0 +1,15 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: opencloud
+spec:
+  clientID: opencloud
+  callbackUrls:
+    - https://opencloud.goyangi.io/oidc-callback.html
+  logoutCallbackUrls:
+    - https://opencloud.goyangi.io
+  allowedUserGroups:
+    - name: user
+  secret:
+    name: opencloud-oidc

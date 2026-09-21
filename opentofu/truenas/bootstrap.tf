@@ -27,6 +27,15 @@ resource "truenas_dataset" "onepassword_connect_data" {
   gid         = 999
 }
 
+resource "truenas_dataset" "opencloud" {
+  pool        = "world"
+  path        = "opencloud"
+  compression = "LZ4"
+  mode        = "0755"
+  uid         = 1000
+  gid         = 1000
+}
+
 resource "truenas_file" "onepassword_credentials" {
   path    = "/mnt/world/doco-cd/1password-connect/1password-credentials.json"
   content = base64decode(var.onepassword_credentials_json)
