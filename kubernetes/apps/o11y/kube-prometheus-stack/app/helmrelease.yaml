@@ -28,10 +28,12 @@ spec:
         authorization: null
 
     kubeApiServer:
-      serviceMonitor: {}
+      serviceMonitor:
+        bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
 
     kubeControllerManager:
-      serviceMonitor: {}
+      serviceMonitor:
+        bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
 
     kubeEtcd:
       service:
@@ -41,7 +43,8 @@ spec:
         authorization: null
 
     kubeScheduler:
-      serviceMonitor: {}
+      serviceMonitor:
+        bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
 
     kubelet:
       serviceMonitor:
