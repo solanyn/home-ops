@@ -83,8 +83,13 @@ spec:
                 subPath: resources
               - path: /romm/assets
                 subPath: assets
-              - path: /romm/config
-                subPath: config
+      config:
+        type: configMap
+        name: romm-config
+        globalMounts:
+          - path: /romm/config/config.yml
+            subPath: config.yml
+            readOnly: true
       media:
         type: nfs
         server: nas.internal
@@ -98,3 +103,11 @@ spec:
             app:
               - path: /tmp
                 subPath: tmp
+    configMaps:
+      config:
+        data:
+          config.yml: |
+            filesystem:
+              structure:
+                default: "roms/{platform}/{game}"
+                firmware: "bios/{platform}"
