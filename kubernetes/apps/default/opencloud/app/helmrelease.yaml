@@ -30,11 +30,11 @@ spec:
             command: ["/bin/sh", "-c", "opencloud init || true; opencloud server"]
             env:
               OC_INSECURE: true
-              OC_HTTP_TLS_ENABLED: false
               OC_URL: https://opencloud.goyangi.io
               OC_EXCLUDE_RUN_SERVICES: idp
               OC_OIDC_ISSUER: https://id.goyangi.io
               OC_OIDC_CLIENT_ID: opencloud
+              PROXY_TLS: false
               PROXY_AUTOPROVISION_ACCOUNTS: true
               PROXY_AUTOPROVISION_CLAIM_USERNAME: preferred_username
               PROXY_AUTOPROVISION_CLAIM_EMAIL: email
