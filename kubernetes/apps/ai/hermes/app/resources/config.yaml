@@ -91,13 +91,15 @@ tool_loop_guardrails:
 tts:
   provider: openai
   openai:
-    model: mlx-community/Kokoro-82M-4bit
-    base_url: http://mac.internal:8001/v1
+    model: kokoro
+    base_url: http://mac.internal:8765/v1
 stt:
   provider: openai
   openai:
-    model: mlx-community--parakeet-tdt-0.6b-v3
-    base_url: http://mac.internal:8000/v1
+    model: parakeet
+    base_url: http://mac.internal:8765/v1
+voice:
+  auto_tts: true
 delegation:
   max_iterations: 250
 platform_toolsets:
