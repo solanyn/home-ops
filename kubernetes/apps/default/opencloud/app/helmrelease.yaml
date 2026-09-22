@@ -90,7 +90,7 @@ spec:
       app:
         hostnames: ["opencloud.goyangi.io"]
         parentRefs:
-          - name: envoy-external
+          - name: envoy-internal
             namespace: network
             sectionName: https
     persistence:
