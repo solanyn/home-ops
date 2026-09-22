@@ -34,6 +34,9 @@ spec:
               OC_EXCLUDE_RUN_SERVICES: idp
               OC_OIDC_ISSUER: https://id.goyangi.io
               OC_OIDC_CLIENT_ID: opencloud
+              PROXY_OIDC_CLIENT_ID: opencloud
+              PROXY_OIDC_ISSUER: https://id.goyangi.io
+              WEB_OIDC_SCOPE: openid profile email groups
               PROXY_TLS: false
               PROXY_AUTOPROVISION_ACCOUNTS: true
               PROXY_AUTOPROVISION_CLAIM_USERNAME: preferred_username
