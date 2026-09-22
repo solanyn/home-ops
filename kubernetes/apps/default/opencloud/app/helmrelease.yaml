@@ -34,7 +34,7 @@ spec:
               OC_EXCLUDE_RUN_SERVICES: idp
               OC_OIDC_ISSUER: https://id.goyangi.io
               OC_OIDC_CLIENT_ID: web
-              PROXY_CSP_CONFIG_FILE_LOCATION: /etc/opencloud/csp.yaml
+              PROXY_CSP_CONFIG_FILE_OVERRIDE_LOCATION: /etc/opencloud/csp.yaml
               PROXY_OIDC_ISSUER: https://id.goyangi.io
               WEB_OIDC_SCOPE: openid profile email
               WEBFINGER_WEB_OIDC_CLIENT_ID: web
