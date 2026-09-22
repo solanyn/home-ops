@@ -37,6 +37,7 @@ compression:
   idle_compact_after_seconds: 3600
 agent:
   max_turns: 60
+  text_verbosity: high
   gateway_timeout: 1800
   restart_drain_timeout: 60
   api_max_retries: 2
@@ -105,6 +106,16 @@ delegation:
 platform_toolsets:
   cli:
     - hermes-cli
+display:
+  tool_progress_command: true
+  show_reasoning: false
+  platforms:
+    matrix:
+      tool_progress: new
+      tool_progress_grouping: accumulate
+      interim_assistant_messages: true
+      busy_ack_detail: true
+      long_running_notifications: true
 auxiliary:
   vision:
     provider: main
