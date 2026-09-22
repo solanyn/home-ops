@@ -27,7 +27,7 @@ spec:
             image:
               repository: docker.io/opencloudeu/opencloud-rolling
               tag: 8.0.1@sha256:1e78144071ab3fc20d2533dd4c5709d24b7e1669c96439fdf7c73cb2808a5d5e
-            command: ["/bin/sh", "-c", "opencloud init --force-overwrite; opencloud server"]
+            command: ["/bin/sh", "-c", "if [ ! -f /etc/opencloud/opencloud.yaml ]; then opencloud init; fi; exec opencloud server"]
             env:
               OC_INSECURE: true
               OC_URL: https://opencloud.goyangi.io
