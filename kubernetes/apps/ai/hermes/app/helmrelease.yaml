@@ -37,6 +37,23 @@ spec:
                 cp /tmp/config.yaml /opt/data/config.yaml
 
                 mkdir -p /opt/data/.codex
+                codex_config=/opt/data/.codex/config.toml
+                touch "$codex_config"
+                if ! grep -q '^model_provider = ' "$codex_config"; then
+                  {
+                    printf '%s\n' 'model_provider = "litellm"'
+                    cat "$codex_config"
+                  } > "$codex_config.tmp"
+                  mv "$codex_config.tmp" "$codex_config"
+                fi
+                if ! grep -q '^\[model_providers\.litellm\]' "$codex_config"; then
+                  printf '%s\n' \
+                    '' \
+                    '[model_providers.litellm]' \
+                    'name = "LiteLLM"' \
+                    'base_url = "http://litellm.ai.svc.cluster.local:4000/v1"' \
+                    'env_key = "OPENAI_API_KEY"' >> "$codex_config"
+                fi
                 chown -R 10000:10000 /opt/data/.codex
 
                 # .config/op may be owned by a stale UID from a restored snapshot;
