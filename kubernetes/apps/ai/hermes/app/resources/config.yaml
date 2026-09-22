@@ -121,7 +121,7 @@ auxiliary:
     max_concurrency: 3
 platforms:
   matrix:
-    enabled: false
+    enabled: true
 matrix:
   allowed_users:
     - "@andrew:goyangi.io"
