@@ -53,9 +53,6 @@ spec:
               OCIS_LOG_COLOR: false
               OCIS_LOG_LEVEL: info
               OCIS_LOG_PRETTY: false
-            envFrom:
-              - secretRef:
-                  name: opencloud-oidc
             resources:
               requests:
                 cpu: 100m
