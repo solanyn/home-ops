@@ -6,7 +6,7 @@ Follow conventional commits. Never attribute agents in commit messages. Avoid un
 
 Use GitOps. Do not edit resources directly. Make changes to the repo, commit and push, then run `flux reconcile ks cluster-apps --with-source`.
 
-Read `.agents/*.md` for specific scenarios.
+Read the applicable files under `.agents/` for specific scenarios, including `.agents/instructions/` and `.agents/skills/`.
 
 ## Commits
 
@@ -77,7 +77,9 @@ Single cluster Kubernetes GitOps repository with FluxCD v2. Hierarchical pattern
 
 ### Directories
 
-- `.agents/` - Agent instructions
+- `.agents/` - Agent instructions and reusable workflows
+  - `.agents/instructions/` - Sorting and review conventions
+  - `.agents/skills/` - Task-specific implementation workflows
 - `kubernetes/` - Cluster manifests
 - `kubernetes/mod.just` - Just commands for cluster operations
 - `talos/` - Talos Linux configuration
