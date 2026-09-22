@@ -10,10 +10,10 @@ spec:
   callbackUrls:
     - https://opencloud.goyangi.io/oidc-callback.html
     - oc://ios.opencloud.eu
-    - oc:android.opencloud.eu
+    - oc://android.opencloud.eu
   logoutCallbackUrls:
     - https://opencloud.goyangi.io
     - oc://ios.opencloud.eu
-    - oc:android.opencloud.eu
+    - oc://android.opencloud.eu
   allowedUserGroups:
     - name: user
