@@ -33,10 +33,17 @@ spec:
               OC_URL: https://opencloud.goyangi.io
               OC_EXCLUDE_RUN_SERVICES: idp
               OC_OIDC_ISSUER: https://id.goyangi.io
-              OC_OIDC_CLIENT_ID: opencloud
-              PROXY_OIDC_CLIENT_ID: opencloud
+              OC_OIDC_CLIENT_ID: web
               PROXY_OIDC_ISSUER: https://id.goyangi.io
-              WEB_OIDC_SCOPE: openid profile email groups
+              WEB_OIDC_SCOPE: openid profile email
+              WEBFINGER_WEB_OIDC_CLIENT_ID: web
+              WEBFINGER_WEB_OIDC_CLIENT_SCOPES: openid profile email
+              WEBFINGER_ANDROID_OIDC_CLIENT_ID: OpenCloudAndroid
+              WEBFINGER_ANDROID_OIDC_CLIENT_SCOPES: openid profile email offline_access
+              WEBFINGER_IOS_OIDC_CLIENT_ID: OpenCloudIOS
+              WEBFINGER_IOS_OIDC_CLIENT_SCOPES: openid profile email offline_access
+              WEBFINGER_DESKTOP_OIDC_CLIENT_ID: OpenCloudDesktop
+              WEBFINGER_DESKTOP_OIDC_CLIENT_SCOPES: openid profile email offline_access
               PROXY_TLS: false
               PROXY_AUTOPROVISION_ACCOUNTS: true
               PROXY_AUTOPROVISION_CLAIM_USERNAME: preferred_username
