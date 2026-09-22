@@ -43,6 +43,20 @@ spec:
                 # op refuses to read a config owned by another user. Fix ownership
                 # here as root so the app (runAsUser 10000) can use the CLI.
                 chown -R 10000:10000 /opt/data/.config 2>/dev/null || true
+          install-codex:
+            image:
+              repository: docker.io/library/node
+              tag: 22-bookworm-slim
+            command:
+              - sh
+              - -c
+              - |
+                set -eu
+                npm install --global --prefix /opt/tools/codex --no-update-notifier --no-fund \
+                  @openai/codex@0.130.0
+                /opt/tools/codex/bin/codex --version
+                /opt/tools/codex/bin/codex app-server --help >/dev/null
+                chmod -R a+rx /opt/tools/codex
         containers:
           app:
             image: &image
@@ -51,6 +65,7 @@ spec:
             command: ["/opt/hermes/bin/hermes"]
             args: ["gateway", "run"]
             env:
+              PATH: /opt/tools/codex/bin:/usr/local/bin:/usr/bin:/bin
               HERMES_HOME: /opt/data
               HOME: /opt/data
               CODEX_HOME: /opt/data/.codex
@@ -78,6 +93,7 @@ spec:
           dashboard:
             image: *image
             env:
+              PATH: /opt/tools/codex/bin:/usr/local/bin:/usr/bin:/bin
               GATEWAY_HEALTH_URL: http://localhost:8642
               TZ: Australia/Sydney
             command: ["/opt/hermes/bin/hermes"]
@@ -102,6 +118,7 @@ spec:
               - --port
               - "9120"
             env:
+              PATH: /opt/tools/codex/bin:/usr/local/bin:/usr/bin:/bin
               HERMES_HOME: /opt/data
               HOME: /opt/data
               TZ: Australia/Sydney
@@ -159,3 +176,7 @@ spec:
         globalMounts:
           - path: /tmp/config.yaml
             subPath: config.yaml
+      codex:
+        type: emptyDir
+        globalMounts:
+          - path: /opt/tools/codex
