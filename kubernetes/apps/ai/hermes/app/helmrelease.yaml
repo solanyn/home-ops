@@ -63,7 +63,7 @@ spec:
           install-codex:
             image:
               repository: docker.io/library/node
-              tag: 22-bookworm-slim
+              tag: 24-bookworm-slim
             command:
               - sh
               - -c
