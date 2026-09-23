@@ -85,7 +85,7 @@ spec:
                 subPath: assets
       config:
         type: configMap
-        name: romm
+        name: romm-config
         globalMounts:
           - path: /romm/config/config.yml
             subPath: config.yml
