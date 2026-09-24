@@ -1,0 +1,15 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: actual
+spec:
+  allowedUserGroups:
+    - name: admin
+  callbackUrls:
+    - https://actual.goyangi.io/openid/callback
+  clientID: actual
+  isPublic: true
+  logoutCallbackUrls:
+    - https://actual.goyangi.io
+  pkceEnabled: true
