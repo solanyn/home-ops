@@ -11,6 +11,7 @@ resources:
   - ./actual/ks.yaml
   - ./outline/ks.yaml
   - ./kan/ks.yaml
+  - ./pkvault/ks.yaml
   - ./agregarr/ks.yaml
   - ./atuin/ks.yaml
   - ./autobrr/ks.yaml
