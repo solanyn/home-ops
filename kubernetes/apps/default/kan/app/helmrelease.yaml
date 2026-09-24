@@ -1,0 +1,92 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kan
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: kan
+  interval: 10m
+  timeout: 15m
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      kan:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          migrate:
+            image:
+              repository: ghcr.io/kanbn/kan-migrate
+              tag: latest
+            envFrom:
+              - secretRef:
+                  name: kan-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/kanbn/kan
+              tag: latest
+            env:
+              NEXT_PUBLIC_BASE_URL: https://kan.goyangi.io
+              BETTER_AUTH_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: kan-secret
+                    key: BETTER_AUTH_SECRET
+              REDIS_URL: redis://redis.storage.svc.cluster.local:6379/4
+              OIDC_CLIENT_ID: kan
+              OIDC_DISCOVERY_URL: https://id.goyangi.io/.well-known/openid-configuration
+              OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: kan-oidc
+                    key: client_secret
+              BETTER_AUTH_TRUSTED_ORIGINS: https://kan.goyangi.io
+              NEXT_PUBLIC_DISABLE_SIGN_UP: "true"
+              NEXT_PUBLIC_ALLOW_CREDENTIALS: "true"
+              LOG_LEVEL: info
+            envFrom:
+              - secretRef:
+                  name: kan-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: *port
+                  initialDelaySeconds: 30
+                  periodSeconds: 15
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 25m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    service:
+      app:
+        ports:
+          http:
+            port: &port 3000
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/enabled: "true"
+        hostnames:
+          - kan.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
