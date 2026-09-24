@@ -36,6 +36,7 @@ spec:
               tag: latest
             env:
               NEXT_PUBLIC_BASE_URL: https://kan.goyangi.io
+              PORT: &port 3000
               BETTER_AUTH_SECRET:
                 valueFrom:
                   secretKeyRef:
@@ -79,7 +80,7 @@ spec:
       app:
         ports:
           http:
-            port: &port 3000
+            port: *port
     route:
       app:
         annotations:
