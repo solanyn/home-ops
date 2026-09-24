@@ -1,0 +1,16 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: kan
+spec:
+  clientID: kan
+  isPublic: false
+  callbackUrls:
+    - https://kan.goyangi.io/api/auth/callback/oidc
+  logoutCallbackUrls:
+    - https://kan.goyangi.io
+  allowedUserGroups:
+    - name: user
+  secret:
+    name: kan-oidc

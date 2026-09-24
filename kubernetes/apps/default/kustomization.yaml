@@ -9,6 +9,8 @@ components:
 resources:
   - ./namespace.yaml
   - ./actual/ks.yaml
+  - ./outline/ks.yaml
+  - ./kan/ks.yaml
   - ./agregarr/ks.yaml
   - ./atuin/ks.yaml
   - ./autobrr/ks.yaml

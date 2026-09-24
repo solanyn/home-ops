@@ -1,0 +1,16 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: outline
+spec:
+  clientID: outline
+  isPublic: false
+  callbackUrls:
+    - https://outline.goyangi.io/auth/oidc.callback
+  logoutCallbackUrls:
+    - https://outline.goyangi.io
+  allowedUserGroups:
+    - name: user
+  secret:
+    name: outline-oidc
