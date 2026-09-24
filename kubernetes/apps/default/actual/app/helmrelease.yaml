@@ -27,7 +27,14 @@ spec:
             env:
               TZ: Australia/Sydney
               ACTUAL_PORT: &port 5006
-              ACTUAL_ALLOWED_LOGIN_METHODS: password
+              ACTUAL_ALLOWED_LOGIN_METHODS: openid
+              ACTUAL_LOGIN_METHOD: openid
+              ACTUAL_OPENID_AUTH_METHOD: openid
+              ACTUAL_OPENID_DISCOVERY_URL: https://id.goyangi.io/.well-known/openid-configuration
+              ACTUAL_OPENID_ENFORCE: "true"
+              ACTUAL_OPENID_SERVER_HOSTNAME: https://actual.goyangi.io
+              ACTUAL_OPENID_CLIENT_ID: actual
+              ACTUAL_USER_CREATION_MODE: login
             probes:
               liveness:
                 enabled: true
