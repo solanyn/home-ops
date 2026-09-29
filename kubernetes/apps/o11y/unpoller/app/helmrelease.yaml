@@ -16,7 +16,7 @@ spec:
           app:
             image:
               repository: ghcr.io/unpoller/unpoller
-              tag: v5.2.8@sha256:a5316d729249c14ed17f102f5c7810230d0dcce17c3642c95050487fd0303072
+              tag: v5.2.10@sha256:99b65b840d28129265136832d3337886cabac93aa2df9abbe4739975452e79fb
             env:
               TZ: Australia/Sydney
               UP_UNIFI_DEFAULT_URL: https://192.168.1.1
