@@ -45,6 +45,49 @@ data:
           model: openai/deepseek-v4-flash
           api_base: os.environ/OPENCODE_GO_API_BASE
           api_key: os.environ/OPENCODE_API_KEY
+      - model_name: openrouter/qwen3.7-flash
+        model_info:
+          mode: chat
+          input_cost_per_token: 0.00000003
+          output_cost_per_token: 0.00000013
+          supports_function_calling: true
+        litellm_params:
+          model: openrouter/qwen/qwen3.7-flash
+          api_key: os.environ/OPENROUTER_API_KEY
+      - model_name: openrouter/qwen3.8-flash
+        model_info:
+          mode: chat
+          input_cost_per_token: 0.00000015
+          output_cost_per_token: 0.00000047
+          supports_function_calling: true
+        litellm_params:
+          model: openrouter/qwen/qwen3.8-flash
+          api_key: os.environ/OPENROUTER_API_KEY
+      - model_name: openrouter/qwen3-coder-30b
+        model_info:
+          mode: chat
+          input_cost_per_token: 0.00000007
+          output_cost_per_token: 0.00000028
+          supports_function_calling: true
+        litellm_params:
+          model: openrouter/qwen/qwen3-coder-30b-a3b-instruct
+          api_key: os.environ/OPENROUTER_API_KEY
+      - model_name: openrouter/qwen3.8-27b
+        model_info:
+          mode: chat
+          input_cost_per_token: 0.0000000249
+          output_cost_per_token: 0.00000435
+          supports_function_calling: true
+        litellm_params:
+          model: openrouter/qwen/qwen3.8-27b
+          api_key: os.environ/OPENROUTER_API_KEY
+      - model_name: openrouter/qwen3.8-27b-free
+        model_info:
+          mode: chat
+          supports_function_calling: true
+        litellm_params:
+          model: openrouter/qwen/qwen3.8-27b:free
+          api_key: os.environ/OPENROUTER_API_KEY
       - model_name: opencode-go/deepseek-v4-flash
         model_info:
           mode: chat
