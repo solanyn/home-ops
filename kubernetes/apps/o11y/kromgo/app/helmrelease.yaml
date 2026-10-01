@@ -63,6 +63,7 @@ spec:
         annotations:
           gatus.home-operations.com/endpoint: |-
             conditions: ["[STATUS] == 200"]
+          path: /healthz
         hostnames:
           - "{{ .Release.Name }}.goyangi.io"
         parentRefs:
