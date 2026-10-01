@@ -1,0 +1,11 @@
+---
+services:
+  zot:
+    image: ghcr.io/project-zot/zot-linux-amd64:v2.1.15
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    user: "1000:1000"
+    volumes:
+      - /mnt/world/zot:/var/lib/registry
+      - ./config/config.json:/etc/zot/config.json:ro
