@@ -7,5 +7,5 @@ services:
     restart: unless-stopped
     user: "1000:1000"
     volumes:
-      - /mnt/world/zot:/var/lib/registry
+      - /mnt/world/doco-cd/zot:/var/lib/registry
       - ./config/config.json:/etc/zot/config.json:ro
