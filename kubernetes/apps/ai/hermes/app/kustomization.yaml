@@ -7,20 +7,16 @@ resources:
   - ./httproute.yaml
   - ./ocirepository.yaml
   - ./oidc.yaml
+  - ./role.yaml
+  - ./rolebinding.yaml
+  - ./clusterrole.yaml
+  - ./clusterrolebinding.yaml
 configMapGenerator:
   - name: hermes-config
     files:
       - ./resources/config.yaml
     options:
       disableNameSuffixHash: true
-  - name: hermes-skill-homelab-commit-watcher
-    files:
-      - ./resources/skills/homelab-commit-watcher/SKILL.md
-      - ./resources/skills/homelab-commit-watcher/fetch_k8s_repos.py
-    options:
-      disableNameSuffixHash: true
-      annotations:
-        kustomize.toolkit.fluxcd.io/substitute: disabled
 generatorOptions:
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
