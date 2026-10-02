@@ -44,7 +44,8 @@ data:
         bind: "lan",
         port: 18789,
         publicOrigin: "https://openclaw.goyangi.io",
-        trustedProxies: ["10.42.0.0/16"]
+        trustedProxies: ["10.42.0.0/16"],
+        allowRealIpFallback: true
       },
       mcp: {
         servers: {
