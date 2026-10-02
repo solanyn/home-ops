@@ -70,18 +70,18 @@ spec:
               allowPrivilegeEscalation: false
               capabilities:
                 drop: [ALL]
-        persistence:
-          config:
-            existingClaim: "{{ .Release.Name }}"
-            globalMounts:
-              - path: /home/node
-          configmap:
-            type: configMap
-            name: openclaw-config
-            defaultMode: 0444
-            globalMounts:
-              - path: /tmp/openclaw.json
-                subPath: openclaw.json
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /home/node
+      configmap:
+        type: configMap
+        name: openclaw-config
+        defaultMode: 0444
+        globalMounts:
+          - path: /tmp/openclaw.json
+            subPath: openclaw.json
     service:
       app:
         controller: openclaw
