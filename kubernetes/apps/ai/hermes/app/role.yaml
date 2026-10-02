@@ -1,0 +1,53 @@
+# Namespace-scoped read access for the Hermes agent.
+# See clusterrole.yaml for cluster-wide reads and exclusion rationale.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: hermes
+  namespace: ai
+  labels:
+    app.kubernetes.io/name: hermes
+    app.kubernetes.io/part-of: hermes
+rules:
+  # Core k8s resources in `ai/` — incl. secrets here (namespace-scoped only).
+  - apiGroups: [""]
+    resources:
+      - pods
+      - pods/log
+      - events
+      - configmaps
+      - secrets
+      - services
+      - endpoints
+      - persistentvolumeclaims
+      - serviceaccounts
+      - resourcequotas
+      - limitranges
+      - replicasets
+    verbs: ["get", "list", "watch"]
+
+  # Workloads + batch + networking within `ai/`.
+  - apiGroups: ["apps"]
+    resources: [deployments, statefulsets, daemonsets]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["batch"]
+    resources: [jobs, cronjobs]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["networking.k8s.io"]
+    resources: [ingresses, networkpolicies, gateways, httproutes, tlsroutes, grpcroutes]
+    verbs: ["get", "list", "watch"]
+
+  # All Flux controllers (read-only) — Kustomizations, HelmReleases, sources, etc.
+  - apiGroups:
+      - source.toolkit.fluxcd.io
+      - kustomize.toolkit.fluxcd.io
+      - helm.toolkit.fluxcd.io
+      - notification.toolkit.fluxcd.io
+      - image.toolkit.fluxcd.io
+    resources: ["*"]
+    verbs: ["get", "list", "watch"]
+
+  # External Secrets — namespaced only. ClusterSecretStore is in clusterrole.yaml.
+  - apiGroups: ["external-secrets.io"]
+    resources: [externalSecrets, secretStores]
+    verbs: ["get", "list", "watch"]
