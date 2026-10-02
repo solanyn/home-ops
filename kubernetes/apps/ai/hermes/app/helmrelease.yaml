@@ -40,17 +40,6 @@ spec:
                 # op refuses to read a config owned by another user. Fix ownership
                 # here as root so the app (runAsUser 10000) can use the CLI.
                 chown -R 10000:10000 /opt/data/.config 2>/dev/null || true
-          init-webui-agent:
-            image:
-              repository: nousresearch/hermes-agent
-              tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
-            command: ["/bin/sh", "-c"]
-            args:
-              - |
-                set -eu
-                mkdir -p /webui-agent /opt/data/.hermes/webui
-                cp -a /opt/hermes/. /webui-agent/
-                chown -R 10000:10000 /opt/data/.hermes/webui
         containers:
           app:
             image: &image
@@ -129,61 +118,6 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 512Mi
-          webui:
-            image:
-              repository: ghcr.io/nesquena/hermes-webui
-              tag: 0.52.113@sha256:48ba6ee4a837079955c00e997b751065cc0324ae6eaa0f2fec592c8f4b2a746e
-            env:
-              HERMES_HOME: /opt/data
-              HOME: /opt/data
-              HERMES_WEBUI_HOST: 0.0.0.0
-              HERMES_WEBUI_PORT: &webuiPort 8787
-              HERMES_WEBUI_STATE_DIR: /opt/data/.hermes/webui
-              HERMES_WEBUI_DEFAULT_WORKSPACE: /opt/data/workspace
-              HERMES_API_URL: http://127.0.0.1:8642
-              WANTED_UID: "10000"
-              WANTED_GID: "10000"
-              HERMES_WEBUI_ALLOWED_ORIGINS: https://hermes-webui.goyangi.io
-              HERMES_WEBUI_TRUST_FORWARDED_HOST: "1"
-              HERMES_WEBUI_TRUST_FORWARDED_PROTO: "1"
-              HERMES_WEBUI_OIDC_ISSUER: https://id.goyangi.io
-              HERMES_WEBUI_OIDC_CLIENT_ID: hermes-webui
-              HERMES_WEBUI_OIDC_REDIRECT_URI: https://hermes-webui.goyangi.io/api/auth/oidc/callback
-              HERMES_WEBUI_OIDC_ALLOW_CLAIM: groups
-              HERMES_WEBUI_OIDC_ALLOW_VALUES: admin
-              HERMES_WEBUI_GATEWAY_API_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: hermes
-                    key: API_SERVER_KEY
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: *webuiPort
-                  periodSeconds: 30
-                  timeoutSeconds: 5
-                  failureThreshold: 6
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: *webuiPort
-                  periodSeconds: 10
-                  timeoutSeconds: 5
-            securityContext:
-              readOnlyRootFilesystem: false
-            resources:
-              requests:
-                cpu: 25m
-                memory: 256Mi
-              limits:
-                memory: 1Gi
     service:
       app:
         controller: hermes
@@ -205,11 +139,6 @@ spec:
         ports:
           http:
             port: 9120
-      webui:
-        controller: hermes
-        ports:
-          http:
-            port: *webuiPort
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
@@ -229,12 +158,3 @@ spec:
         globalMounts:
           - path: /tmp/config.yaml
             subPath: config.yaml
-      webui-agent:
-        type: emptyDir
-        advancedMounts:
-          hermes:
-            init-webui-agent:
-              - path: /webui-agent
-            webui:
-              - path: /home/hermeswebui/.hermes/hermes-agent
-                readOnly: true
