@@ -132,7 +132,7 @@ spec:
           webui:
             image:
               repository: ghcr.io/nesquena/hermes-webui
-              tag: 0.52.113@sha256:48ba6ee4a837079955c00e997b751065cc0324ae6eaa0f2fec592c8f4b2a746e
+              tag: 0.52.404@sha256:005718b9dc5249f385ab30ccf968b00830791ea59379d26210cde085075f94a5
             env:
               HERMES_HOME: /opt/data
               HOME: /opt/data
