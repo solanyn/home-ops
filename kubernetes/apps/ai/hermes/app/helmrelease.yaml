@@ -36,26 +36,6 @@ spec:
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
 
-                mkdir -p /opt/data/.codex
-                codex_config=/opt/data/.codex/config.toml
-                touch "$codex_config"
-                if ! grep -q '^model_provider = ' "$codex_config"; then
-                  {
-                    printf '%s\n' 'model_provider = "litellm"'
-                    cat "$codex_config"
-                  } > "$codex_config.tmp"
-                  mv "$codex_config.tmp" "$codex_config"
-                fi
-                if ! grep -q '^\[model_providers\.litellm\]' "$codex_config"; then
-                  printf '%s\n' \
-                    '' \
-                    '[model_providers.litellm]' \
-                    'name = "LiteLLM"' \
-                    'base_url = "http://litellm.ai.svc.cluster.local:4000/v1"' \
-                    'env_key = "OPENAI_API_KEY"' >> "$codex_config"
-                fi
-                chown -R 10000:10000 /opt/data/.codex
-
                 # .config/op may be owned by a stale UID from a restored snapshot;
                 # op refuses to read a config owned by another user. Fix ownership
                 # here as root so the app (runAsUser 10000) can use the CLI.
@@ -71,20 +51,6 @@ spec:
                 mkdir -p /webui-agent /opt/data/.hermes/webui
                 cp -a /opt/hermes/. /webui-agent/
                 chown -R 10000:10000 /opt/data/.hermes/webui
-          install-codex:
-            image:
-              repository: docker.io/library/node
-              tag: 24-bookworm-slim
-            command:
-              - sh
-              - -c
-              - |
-                set -eu
-                npm install --global --prefix /opt/tools/codex --no-update-notifier --no-fund \
-                  @openai/codex@0.130.0
-                /opt/tools/codex/bin/codex --version
-                /opt/tools/codex/bin/codex app-server --help >/dev/null
-                chmod -R a+rx /opt/tools/codex
         containers:
           app:
             image: &image
@@ -93,10 +59,9 @@ spec:
             command: ["/opt/hermes/bin/hermes"]
             args: ["gateway", "run"]
             env:
-              PATH: /opt/tools/codex/bin:/usr/local/bin:/usr/bin:/bin
+              PATH: /usr/local/bin:/usr/bin:/bin
               HERMES_HOME: /opt/data
               HOME: /opt/data
-              CODEX_HOME: /opt/data/.codex
               TZ: Australia/Sydney
               API_SERVER_ENABLED: "true"
               API_SERVER_HOST: 0.0.0.0
@@ -121,7 +86,7 @@ spec:
           dashboard:
             image: *image
             env:
-              PATH: /opt/tools/codex/bin:/usr/local/bin:/usr/bin:/bin
+              PATH: /usr/local/bin:/usr/bin:/bin
               GATEWAY_HEALTH_URL: http://localhost:8642
               TZ: Australia/Sydney
             command: ["/opt/hermes/bin/hermes"]
@@ -146,7 +111,7 @@ spec:
               - --port
               - "9120"
             env:
-              PATH: /opt/tools/codex/bin:/usr/local/bin:/usr/bin:/bin
+              PATH: /usr/local/bin:/usr/bin:/bin
               HERMES_HOME: /opt/data
               HOME: /opt/data
               TZ: Australia/Sydney
@@ -264,10 +229,6 @@ spec:
         globalMounts:
           - path: /tmp/config.yaml
             subPath: config.yaml
-      codex:
-        type: emptyDir
-        globalMounts:
-          - path: /opt/tools/codex
       webui-agent:
         type: emptyDir
         advancedMounts:
