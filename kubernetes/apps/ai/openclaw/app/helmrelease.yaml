@@ -1,0 +1,101 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: openclaw
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: openclaw
+  interval: 15m
+  values:
+    defaultPodOptions:
+      hostname: openclaw
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 100
+        runAsNonRoot: true
+        fsGroup: 100
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+    controllers:
+      openclaw:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init:
+            image:
+              repository: docker.io/library/alpine
+              tag: 3.24@sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+            command: [sh, -c]
+            args:
+              - |
+                set -eu
+                mkdir -p /home/node/.openclaw
+                cp /tmp/openclaw.json /home/node/.openclaw/openclaw.json
+                chown 1000:100 /home/node/.openclaw/openclaw.json
+                chmod 400 /home/node/.openclaw/openclaw.json
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+        containers:
+          app:
+            image:
+              repository: ghcr.io/openclaw/openclaw
+              tag: 2026.9.7@sha256:0da12cd49983fcb5e4915fd3135ce7a33d82f93649b1df6964946d2c1d1dbcfc
+            command: ["node", "dist/index.js"]
+            args: ["gateway"]
+            env:
+              HOME: /home/node
+              OPENCLAW_GATEWAY_PORT: "18789"
+              OPENCLAW_LOG_LEVEL: info
+              NODE_ENV: production
+              TZ: Australia/Sydney
+            envFrom:
+              - secretRef:
+                  name: openclaw
+            ports:
+              - name: http
+                containerPort: 18789
+            resources:
+              requests:
+                cpu: 250m
+                memory: 1Gi
+              limits:
+                cpu: 2
+                memory: 4Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+        persistence:
+          config:
+            existingClaim: "{{ .Release.Name }}"
+            globalMounts:
+              - path: /home/node
+          configmap:
+            type: configMap
+            name: openclaw-config
+            defaultMode: 0444
+            globalMounts:
+              - path: /tmp/openclaw.json
+                subPath: openclaw.json
+    service:
+      app:
+        controller: openclaw
+        ports:
+          http:
+            port: 18789
+    route:
+      app:
+        hostnames:
+          - openclaw.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 18789
