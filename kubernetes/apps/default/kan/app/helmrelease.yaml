@@ -22,7 +22,15 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom:
+              - secretRef:
+                  name: kan-secret
           migrate:
+            dependsOn: init-db
             image:
               repository: ghcr.io/kanbn/kan-migrate
               tag: latest
