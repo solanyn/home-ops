@@ -22,19 +22,3 @@ spec:
         - https://hermes-serve.goyangi.io/auth/callback
     logoutCallbackUrls:
         - https://hermes-serve.goyangi.io
-
----
-apiVersion: pocketid.internal/v1alpha1
-kind: PocketIDOIDCClient
-metadata:
-    name: hermes-webui
-spec:
-    clientID: hermes-webui
-    isPublic: true
-    pkceEnabled: true
-    callbackUrls:
-        - https://hermes-webui.goyangi.io/api/auth/oidc/callback
-    logoutCallbackUrls:
-        - https://hermes-webui.goyangi.io
-    allowedUserGroups:
-        - name: admin
