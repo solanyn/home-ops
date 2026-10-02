@@ -6,7 +6,7 @@ metadata:
 spec:
   chartRef:
     kind: OCIRepository
-    name: atuin
+    name: autobrr
   interval: 1h
   values:
     controllers:
@@ -18,11 +18,9 @@ spec:
             image:
               repository: ghcr.io/home-operations/postgres-init
               tag: 18
-            envFrom: &envFrom
+            envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
-              - secretRef:
-                  name: "{{ .Release.Name }}-session-secret"
         containers:
           app:
             image:
@@ -44,7 +42,11 @@ spec:
               AUTOBRR__OIDC_PROVIDER_URL: https://id.goyangi.io
               AUTOBRR__OIDC_CLIENT_ID: autobrr
               AUTOBRR__OIDC_REDIRECT_URL: https://autobrr.goyangi.io/api/auth/oidc/callback
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}-secret"
+              - secretRef:
+                  name: "{{ .Release.Name }}-session-secret"
             probes:
               liveness:
                 enabled: true
