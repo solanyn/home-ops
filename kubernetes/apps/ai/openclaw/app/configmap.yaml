@@ -39,9 +39,12 @@ data:
       },
       gateway: {
         auth: { mode: "token", token: "$${OPENCLAW_GATEWAY_TOKEN}" },
+        controlUi: { allowedOrigins: ["https://openclaw.goyangi.io"] },
         mode: "local",
         bind: "lan",
-        port: 18789
+        port: 18789,
+        publicOrigin: "https://openclaw.goyangi.io",
+        trustedProxies: ["10.42.0.0/16"]
       },
       mcp: {
         servers: {
