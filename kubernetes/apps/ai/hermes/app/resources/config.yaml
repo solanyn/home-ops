@@ -3,7 +3,7 @@ model:
   default: reasoning-pool
   provider: litellm
   base_url: http://litellm.ai.svc.cluster.local:4000/v1
-  fallback: '["opencode-go-reasoning"]'
+  fallback: '["openrouter/deepseek-v4-flash"]'
 providers:
   litellm:
     api: http://litellm.ai.svc.cluster.local:4000/v1
@@ -50,8 +50,7 @@ security:
 privacy:
   redact_pii: true
 memory:
-  provider: honcho
-  honcho_url: http://honcho.ai.svc.cluster.local
+  provider: ""
   memory_enabled: true
   user_profile_enabled: true
   memory_char_limit: 40000

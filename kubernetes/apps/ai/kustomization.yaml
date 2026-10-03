@@ -11,9 +11,9 @@ resources:
   - ./namespace.yaml
   - ./hermes/ks.yaml
   - ./hermes-matrix/ks.yaml
-  - ./honcho/ks.yaml
   - ./litellm-operator/ks.yaml
   - ./litellm/ks.yaml
   - ./llmkube/ks.yaml
+  - ./memini/ks.yaml
   - ./openclaw/ks.yaml
   - ./toolhive/ks.yaml

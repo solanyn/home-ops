@@ -45,14 +45,26 @@ spec:
             image:
               repository: ghcr.io/openclaw/openclaw
               tag: 2026.9.7@sha256:0da12cd49983fcb5e4915fd3135ce7a33d82f93649b1df6964946d2c1d1dbcfc
-            command: ["node", "dist/index.js"]
-            args: ["gateway"]
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                set -eu
+                plugin_version=0.7.29
+                marker="$HOME/.openclaw/extensions/memini/.clawver"
+                if [ "$(cat "$marker" 2>/dev/null || true)" != "$plugin_version" ]; then
+                  node dist/index.js plugins install "clawhub:@eleboucher/memini@$plugin_version" --force --accept-capabilities --acknowledge-install-policy-warning
+                  mkdir -p "$(dirname "$marker")"
+                  printf '%s' "$plugin_version" > "$marker"
+                fi
+                exec node dist/index.js gateway
             env:
               HOME: /home/node
               OPENCLAW_GATEWAY_PORT: "18789"
               OPENCLAW_LOG_LEVEL: info
               NODE_ENV: production
               TZ: Australia/Sydney
+              MEMINI_BASE_URL: http://memini.ai.svc.cluster.local:8080
+              MEMINI_NAMESPACE: openclaw
             envFrom:
               - secretRef:
                   name: openclaw
