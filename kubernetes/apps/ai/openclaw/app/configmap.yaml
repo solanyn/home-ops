@@ -36,7 +36,19 @@ data:
             fallbacks: ["litellm/frontier-pool"]
           },
           timeoutSeconds: 1800,
-          thinkingDefault: "high"
+          thinkingDefault: "high",
+          contextPruning: {
+            mode: "cache-ttl",
+            ttl: "1h",
+            tools: {
+              allow: [],
+              deny: []
+            },
+            hardClear: {
+              enabled: true,
+              placeholder: "[Old tool result content cleared]"
+            }
+          }
         },
         entries: {
           main: {
@@ -52,7 +64,7 @@ data:
         providers: {
           litellm: {
             baseUrl: "http://litellm.ai.svc.cluster.local:4000/v1",
-            apiKey: "$${LITELLM_API_KEY}",
+            apiKey: "$${LIT…_KEY}",
             api: "openai-completions",
             timeoutSeconds: 1800,
             models: [
