@@ -53,10 +53,46 @@ data:
         entries: {
           main: {
             default: true,
-            tools: { alsoAllow: ["memory_recall", "memory_list", "memory_remember", "memory_forget"] },
-            name: "OpenClaw",
+            name: "Hawow",
             workspace: "/home/node/.openclaw/workspace",
-            agentDir: "/home/node/.openclaw/agents/main/agent"
+            agentDir: "/home/node/.openclaw/agents/main/agent",
+            tools: { alsoAllow: ["memory_recall", "memory_list", "memory_remember", "memory_forget", "sessions_spawn"] },
+          },
+          pulse: {
+            name: "Pulse",
+            workspace: "/home/node/.openclaw/workspace-pulse",
+            agentDir: "/home/node/.openclaw/agents/pulse/agent",
+            tools: { allow: ["read", "web_search", "web_fetch", "memory_recall", "memory_list", "memory_remember"] },
+          },
+          counsel: {
+            name: "Counsel",
+            workspace: "/home/node/.openclaw/workspace-counsel",
+            agentDir: "/home/node/.openclaw/agents/counsel/agent",
+            tools: { allow: ["read", "web_search", "web_fetch", "memory_recall", "memory_list", "memory_remember"] },
+          },
+          tinker: {
+            name: "Tinker",
+            workspace: "/home/node/.openclaw/workspace-tinker",
+            agentDir: "/home/node/.openclaw/agents/tinker/agent",
+            tools: { allow: ["read", "write", "edit", "exec", "process", "web_search", "web_fetch", "memory_recall", "memory_list", "memory_remember", "sessions_spawn"] },
+          },
+          nexus: {
+            name: "Nexus",
+            workspace: "/home/node/.openclaw/workspace-nexus",
+            agentDir: "/home/node/.openclaw/agents/nexus/agent",
+            tools: { allow: ["read", "write", "edit", "exec", "process", "web_search", "web_fetch", "memory_recall", "memory_list", "memory_remember", "sessions_spawn"] },
+          },
+          quest: {
+            name: "Quest",
+            workspace: "/home/node/.openclaw/workspace-quest",
+            agentDir: "/home/node/.openclaw/agents/quest/agent",
+            tools: { allow: ["read", "web_search", "web_fetch", "memory_recall", "memory_list", "memory_remember"] },
+          },
+          lore: {
+            name: "Lore",
+            workspace: "/home/node/.openclaw/workspace-lore",
+            agentDir: "/home/node/.openclaw/agents/lore/agent",
+            tools: { allow: ["read", "write", "edit", "web_search", "web_fetch", "memory_recall", "memory_list", "memory_remember"] },
           }
         }
       },
