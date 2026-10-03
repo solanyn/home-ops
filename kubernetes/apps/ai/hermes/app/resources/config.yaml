@@ -50,7 +50,8 @@ security:
 privacy:
   redact_pii: true
 memory:
-  provider: ""
+  provider: honcho
+  honcho_url: http://honcho.ai.svc.cluster.local
   memory_enabled: true
   user_profile_enabled: true
   memory_char_limit: 40000
