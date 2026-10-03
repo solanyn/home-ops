@@ -5,7 +5,6 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
-  - ./rbac.yaml
 configMapGenerator:
   - name: openclaw-workspace
     files:
@@ -34,7 +33,7 @@ configMapGenerator:
       - skills__grafana__SKILL.md=./resources/skills/grafana/SKILL.md
       - skills__health-influxdb__SKILL.md=./resources/skills/health-influxdb/SKILL.md
       - skills__health-influxdb__references__health-ranges.md=./resources/skills/health-influxdb/references/health-ranges.md
-      - skills__health-influxdb__scripts__health-query.py=./resources/skills/health-influxdb/scripts/health-query.py
+      - skills__health-influxdb__scripts__health-query.py=./resources/skills/health-ranges.md
       - skills__hippo-memory__SKILL.md=./resources/skills/hippo-memory/SKILL.md
       - skills__home-assistant__SKILL.md=./resources/skills/home-assistant/SKILL.md
       - skills__icloud-reminders__SKILL.md=./resources/skills/icloud-reminders/SKILL.md
