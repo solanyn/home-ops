@@ -5,3 +5,63 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+configMapGenerator:
+  - name: openclaw-workspace
+    files:
+      - AGENTS.md=./resources/workspace/AGENTS.md
+      - HEARTBEAT.md=./resources/workspace/HEARTBEAT.md
+      - IDENTITY.md=./resources/workspace/IDENTITY.md
+      - MEMORY.md=./resources/workspace/MEMORY.md
+      - SOUL.md=./resources/workspace/SOUL.md
+      - TOOLS.md=./resources/workspace/TOOLS.md
+      - USER.md=./resources/workspace/USER.md
+      - skills/agent-browser/SKILL.md=./resources/skills/agent-browser/SKILL.md
+      - skills/announce/SKILL.md=./resources/skills/announce/SKILL.md
+      - skills/baikal-caldav/SKILL.md=./resources/skills/baikal-caldav/SKILL.md
+      - skills/caldav-calendar/SKILL.md=./resources/skills/caldav-calendar/SKILL.md
+      - skills/compress/SKILL.md=./resources/skills/compress/SKILL.md
+      - skills/compress/scripts/__init__.py=./resources/skills/compress/scripts/__init__.py
+      - skills/compress/scripts/__main__.py=./resources/skills/compress/scripts/__main__.py
+      - skills/compress/scripts/compress.py=./resources/skills/compress/scripts/compress.py
+      - skills/compress/scripts/detect.py=./resources/skills/compress/scripts/detect.py
+      - skills/compress/scripts/validate.py=./resources/skills/compress/scripts/validate.py
+      - skills/document-convert/SKILL.md=./resources/skills/document-convert/SKILL.md
+      - skills/forgejo-api/SKILL.md=./resources/skills/forgejo-api/SKILL.md
+      - skills/fusion-rss/SKILL.md=./resources/skills/fusion-rss/SKILL.md
+      - skills/fusion-rss-patches/SKILL.md=./resources/skills/fusion-rss-patches/SKILL.md
+      - skills/google-workspace/SKILL.md=./resources/skills/google-workspace/SKILL.md
+      - skills/grafana/SKILL.md=./resources/skills/grafana/SKILL.md
+      - skills/health-influxdb/SKILL.md=./resources/skills/health-influxdb/SKILL.md
+      - skills/health-influxdb/references/health-ranges.md=./resources/skills/health-influxdb/references/health-ranges.md
+      - skills/health-influxdb/scripts/__pycache__/health-query.cpython-313.pyc=./resources/skills/health-influxdb/scripts/__pycache__/health-query.cpython-313.pyc
+      - skills/health-influxdb/scripts/health-query.py=./resources/skills/health-influxdb/scripts/health-query.py
+      - skills/hippo-memory/SKILL.md=./resources/skills/hippo-memory/SKILL.md
+      - skills/home-assistant/SKILL.md=./resources/skills/home-assistant/SKILL.md
+      - skills/icloud-reminders/SKILL.md=./resources/skills/icloud-reminders/SKILL.md
+      - skills/kgateway/SKILL.md=./resources/skills/kgateway/SKILL.md
+      - skills/kubectl/SKILL.md=./resources/skills/kubectl/SKILL.md
+      - skills/kubectl/references/in-pod-github-api.md=./resources/skills/kubectl/references/in-pod-github-api.md
+      - skills/livesync-bridge/SKILL.md=./resources/skills/livesync-bridge/SKILL.md
+      - skills/mealie/SKILL.md=./resources/skills/mealie/SKILL.md
+      - skills/mermaid/SKILL.md=./resources/skills/mermaid/SKILL.md
+      - skills/migadu-email/SKILL.md=./resources/skills/migadu-email/SKILL.md
+      - skills/migadu-email/scripts/check-inbox.sh=./resources/skills/migadu-email/scripts/check-inbox.sh
+      - skills/ontology/SKILL.md=./resources/skills/ontology/SKILL.md
+      - skills/opencode/SKILL.md=./resources/skills/opencode/SKILL.md
+      - skills/summarize/SKILL.md=./resources/skills/summarize/SKILL.md
+      - skills/template-skill/SKILL.md=./resources/skills/template-skill/SKILL.md
+      - skills/tmux/SKILL.md=./resources/skills/tmux/SKILL.md
+      - skills/unifi/SKILL.md=./resources/skills/unifi/SKILL.md
+      - skills/weather/SKILL.md=./resources/skills/weather/SKILL.md
+      - skills/weather/scripts/weather.sh=./resources/skills/weather/scripts/weather.sh
+      - skills/work-gitlab/SKILL.md=./resources/skills/work-gitlab/SKILL.md
+      - skills/work-gitlab/scripts/verify-tls-pair.sh=./resources/skills/work-gitlab/scripts/verify-tls-pair.sh
+      - scripts/_run-rss-watcher.py=./resources/scripts/_run-rss-watcher.py
+      - scripts/openrouter-pricing.py=./resources/scripts/openrouter-pricing.py
+      - scripts/ozbargain-watcher.py=./resources/scripts/ozbargain-watcher.py
+      - scripts/paperless-email-scan.py=./resources/scripts/paperless-email-scan.py
+    options:
+      disableNameSuffixHash: true
+generatorOptions:
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

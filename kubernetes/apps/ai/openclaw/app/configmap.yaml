@@ -43,7 +43,7 @@ data:
             default: true,
             tools: { alsoAllow: ["memory_recall", "memory_list", "memory_remember", "memory_forget"] },
             name: "OpenClaw",
-            workspace: "/home/node/.openclaw/workspace-main",
+            workspace: "/home/node/.openclaw/workspace",
             agentDir: "/home/node/.openclaw/agents/main/agent"
           }
         }
