@@ -49,7 +49,7 @@ spec:
             command: ["/bin/sh", "-c"]
             args:
               - |
-                set -eu
+                set -eux
                 plugin_version=0.7.29
                 marker="$HOME/.openclaw/extensions/memini/.clawver"
                 rm -f "$marker"
