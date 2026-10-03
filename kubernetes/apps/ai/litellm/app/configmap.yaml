@@ -91,7 +91,7 @@ data:
           mode: embedding
         litellm_params:
           model: openai/qwen3-embedding-0.6b-4bit-DWQ
-          api_base: http://mac.internal:8000/v1
+          api_base: http://qwen3-embedding.ai.svc.cluster.local:8080/v1
           api_key: sk-local
       - model_name: reasoning-pool
         model_info:

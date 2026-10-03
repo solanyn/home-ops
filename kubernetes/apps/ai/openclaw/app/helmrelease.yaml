@@ -44,7 +44,9 @@ spec:
                     *) target="/home/node/.openclaw/workspace/$name" ;;
                   esac
                   mkdir -p "$(dirname "$target")"
-                  cp "$file" "$target"
+                  if [ ! -e "$target" ]; then
+                    cp "$file" "$target"
+                  fi
                 done
                 chown -R 1000:100 /home/node/.openclaw/workspace /home/node/.openclaw/openclaw.json
                 chown 1000:100 /home/node/.openclaw/openclaw.json
