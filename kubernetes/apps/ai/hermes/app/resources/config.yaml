@@ -7,7 +7,7 @@ model:
 providers:
   litellm:
     api: http://litellm.ai.svc.cluster.local:4000/v1
-    api_key: ${env:OPENAI_API_KEY}
+    api_key: ${OPENAI_API_KEY}
     default_model: reasoning-pool
     transport: chat_completions
 moa:
