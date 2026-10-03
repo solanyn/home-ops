@@ -39,8 +39,8 @@ spec:
                 for file in /tmp/openclaw-workspace-files/*; do
                   name="$(basename "$file")"
                   case "$name" in
-                    skills__*) target="/home/node/.openclaw/workspace/skills/${name#skills__}"; target="$(printf '%s' "$target" | sed 's/__/\//g')" ;;
-                    scripts__*) target="/home/node/.openclaw/workspace/scripts/${name#scripts__}"; target="$(printf '%s' "$target" | sed 's/__/\//g')" ;;
+                    skills__*) target="/home/node/.openclaw/workspace/skills/$${name#skills__}"; target="$(printf '%s' "$target" | sed 's/__/\//g')" ;;
+                    scripts__*) target="/home/node/.openclaw/workspace/scripts/$${name#scripts__}"; target="$(printf '%s' "$target" | sed 's/__/\//g')" ;;
                     *) target="/home/node/.openclaw/workspace/$name" ;;
                   esac
                   mkdir -p "$(dirname "$target")"
