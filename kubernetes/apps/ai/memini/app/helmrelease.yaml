@@ -63,6 +63,9 @@ spec:
         existingClaim: "{{ .Release.Name }}"
       api-keys:
         enabled: true
+        globalMounts:
+          - path: /etc/memini/api-keys.yaml
+            subPath: api-keys.yaml
     service:
       main:
         ports:
