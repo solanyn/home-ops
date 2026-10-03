@@ -15,6 +15,4 @@ resources:
   - ./litellm-operator/ks.yaml
   - ./litellm/ks.yaml
   - ./llmkube/ks.yaml
-  - ./memini/ks.yaml
-  - ./openclaw/ks.yaml
   - ./toolhive/ks.yaml
