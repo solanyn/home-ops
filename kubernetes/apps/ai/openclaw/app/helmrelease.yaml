@@ -33,6 +33,7 @@ spec:
               - |
                 set -eu
                 mkdir -p /home/node/.openclaw
+                rm -rf /home/node/.openclaw/extensions/memini
                 cp /tmp/openclaw.json /home/node/.openclaw/openclaw.json
                 chown 1000:100 /home/node/.openclaw/openclaw.json
                 chmod 400 /home/node/.openclaw/openclaw.json
