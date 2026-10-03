@@ -34,11 +34,11 @@ data:
           model: openrouter/qwen/qwen3.8-flash
           api_key: os.environ/OPENROUTER_API_KEY
           order: 1
-      - model_name: deepseek-v4-flash
+      - model_name: openrouter/deepseek-v4.1-flash
         model_info:
           mode: chat
-          input_cost_per_token: 0.00000014
-          output_cost_per_token: 0.00000028
+          input_cost_per_token: 0.000000015
+          output_cost_per_token: 0.000000677
           supports_function_calling: true
         litellm_params:
           model: openrouter/deepseek/deepseek-v4.1-flash
@@ -75,13 +75,6 @@ data:
           mode: chat
           input_cost_per_token: 0.0000000249
           output_cost_per_token: 0.00000435
-          supports_function_calling: true
-        litellm_params:
-          model: openrouter/qwen/qwen3.8-27b
-          api_key: os.environ/OPENROUTER_API_KEY
-      - model_name: openrouter/qwen3.8-27b-free
-        model_info:
-          mode: chat
           supports_function_calling: true
         litellm_params:
           model: openrouter/qwen/qwen3.8-27b
@@ -148,10 +141,10 @@ data:
       cooldown_time: 30
       enable_pre_call_checks: true
       fallbacks:
-        - chatgpt/gpt-5.6-luna: [openrouter/deepseek-v4-flash, openrouter/qwen3.8-flash]
-        - chatgpt/gpt-5.6-sol: [openrouter/deepseek-v4-flash, openrouter/qwen3.8-flash]
-        - reasoning-pool: [openrouter/deepseek-v4-flash, openrouter/qwen3.8-flash]
-        - frontier-pool: [reasoning-pool, openrouter/glm-5.3-flash, openrouter/deepseek-v4-flash]
+        - chatgpt/gpt-5.6-luna: [openrouter/deepseek-v4.1-flash, openrouter/qwen3.8-flash]
+        - chatgpt/gpt-5.6-sol: [openrouter/deepseek-v4.1-flash, openrouter/qwen3.8-flash]
+        - reasoning-pool: [openrouter/deepseek-v4.1-flash, openrouter/qwen3.8-flash]
+        - frontier-pool: [reasoning-pool, openrouter/glm-5.3-flash, openrouter/deepseek-v4.1-flash]
     litellm_settings:
       success_callback: [prometheus]
       failure_callback: [prometheus]
