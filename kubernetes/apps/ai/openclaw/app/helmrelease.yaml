@@ -53,11 +53,12 @@ spec:
                 plugin_version=0.7.29
                 marker="$HOME/.openclaw/extensions/memini/.clawver"
                 rm -f "$marker"
-                if [ "$(cat "$marker" 2>/dev/null || true)" != "$plugin_version" ]; then
-                  node dist/index.js plugins install "clawhub:@eleboucher/memini@$plugin_version" --force --accept-capabilities --acknowledge-install-policy-warning
-                  mkdir -p "$(dirname "$marker")"
-                  printf '%s' "$plugin_version" > "$marker"
-                fi
+                config="$HOME/.openclaw/openclaw.json"
+                mv "$config" "$config.disabled"
+                node dist/index.js plugins install "clawhub:@eleboucher/memini@$plugin_version" --force --accept-capabilities --acknowledge-install-policy-warning
+                mv "$config.disabled" "$config"
+                mkdir -p "$(dirname "$marker")"
+                printf '%s' "$plugin_version" > "$marker"
                 exec node dist/index.js gateway
             env:
               HOME: /home/node
