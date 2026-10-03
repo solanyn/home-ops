@@ -35,6 +35,9 @@ spec:
                 mkdir -p /home/node/.openclaw
                 rm -rf /home/node/.openclaw/extensions/memini
                 cp /tmp/openclaw.json /home/node/.openclaw/openclaw.json
+                mkdir -p /home/node/.openclaw/workspace
+                cp -Rn /tmp/openclaw-workspace/. /home/node/.openclaw/workspace/
+                chown -R 1000:100 /home/node/.openclaw/workspace /home/node/.openclaw/openclaw.json
                 chown 1000:100 /home/node/.openclaw/openclaw.json
                 chmod 400 /home/node/.openclaw/openclaw.json
             securityContext:
@@ -97,6 +100,13 @@ spec:
         globalMounts:
           - path: /tmp/openclaw.json
             subPath: openclaw.json
+      workspace:
+        type: configMap
+        name: openclaw-workspace
+        defaultMode: 0444
+        globalMounts:
+          - path: /tmp/openclaw-workspace
+
     service:
       app:
         controller: openclaw
