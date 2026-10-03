@@ -6,6 +6,7 @@ data:
   openclaw.json: |
     {
       plugins: {
+        allow: ["memini"],
         slots: { memory: "memini" },
         entries: {
           memini: {
@@ -15,12 +16,16 @@ data:
               base_url: "http://memini.ai.svc.cluster.local:8080",
               namespace: "openclaw",
               namespace_per_agent: true,
-              namespace_template: "{namespace}-{agent}",
+              namespace_template: "{namespace}/{agent}",
+              skip_without_agent: true,
+              skip_system_turns: true,
               fallback_on_error: true,
-              timeout_ms: 30000,
+              timeout_ms: 60000,
+              recall_limit: 3,
+              min_capture_chars: 24,
+              recall_position: "append",
               expose_tools: true
-            },
-            tools: { allow: ["memory_recall", "memory_list", "memory_remember", "memory_forget"] }
+            }
           }
         }
       },
@@ -36,6 +41,7 @@ data:
         entries: {
           main: {
             default: true,
+            tools: { alsoAllow: ["memory_recall", "memory_list", "memory_remember", "memory_forget"] },
             name: "OpenClaw",
             workspace: "/home/node/.openclaw/workspace-main",
             agentDir: "/home/node/.openclaw/agents/main/agent"
