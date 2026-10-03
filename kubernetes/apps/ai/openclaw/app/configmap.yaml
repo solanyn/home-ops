@@ -69,7 +69,10 @@ data:
         bind: "lan",
         port: 18789,
         publicOrigin: "https://openclaw.goyangi.io",
-        trustedProxies: ["10.42.0.0/16"],
+        # OpenClaw 2026.9.7 matches trusted proxies by exact peer address.
+        # Keep these in sync with the Envoy-internal gateway pods so forwarded
+        # client attribution works through the HTTPS/WebSocket route.
+        trustedProxies: ["10.42.1.185", "10.42.2.84"],
         allowRealIpFallback: true
       },
       mcp: {
