@@ -62,8 +62,7 @@ spec:
       data:
         existingClaim: "{{ .Release.Name }}"
       api-keys:
-        type: secret
-        name: memini-api-keys
+        enabled: true
     service:
       main:
         ports:
