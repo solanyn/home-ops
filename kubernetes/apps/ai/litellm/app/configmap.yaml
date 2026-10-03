@@ -31,9 +31,8 @@ data:
           mode: chat
           supports_function_calling: true
         litellm_params:
-          model: openai/mimo-v2.5
-          api_base: os.environ/OPENCODE_GO_API_BASE
-          api_key: os.environ/OPENCODE_API_KEY
+          model: openrouter/qwen/qwen3.8-flash
+          api_key: os.environ/OPENROUTER_API_KEY
           order: 1
       - model_name: deepseek-v4-flash
         model_info:
@@ -42,9 +41,8 @@ data:
           output_cost_per_token: 0.00000028
           supports_function_calling: true
         litellm_params:
-          model: openai/deepseek-v4-flash
-          api_base: os.environ/OPENCODE_GO_API_BASE
-          api_key: os.environ/OPENCODE_API_KEY
+          model: openrouter/deepseek/deepseek-v4.1-flash
+          api_key: os.environ/OPENROUTER_API_KEY
       - model_name: openrouter/qwen3.7-flash
         model_info:
           mode: chat
@@ -70,7 +68,7 @@ data:
           output_cost_per_token: 0.00000028
           supports_function_calling: true
         litellm_params:
-          model: openrouter/qwen/qwen3-coder-30b-a3b-instruct
+          model: openrouter/qwen/qwen3-coder-plus
           api_key: os.environ/OPENROUTER_API_KEY
       - model_name: openrouter/qwen3.8-27b
         model_info:
@@ -86,84 +84,15 @@ data:
           mode: chat
           supports_function_calling: true
         litellm_params:
-          model: openrouter/qwen/qwen3.8-27b:free
+          model: openrouter/qwen/qwen3.8-27b
           api_key: os.environ/OPENROUTER_API_KEY
-      - model_name: opencode-go/deepseek-v4-flash
-        model_info:
-          mode: chat
-          input_cost_per_token: 0.00000014
-          output_cost_per_token: 0.00000028
-          supports_function_calling: true
-        litellm_params:
-          model: openai/deepseek-v4-flash
-          api_base: os.environ/OPENCODE_GO_API_BASE
-          api_key: os.environ/OPENCODE_API_KEY
-      - model_name: opencode-go/gpt-5.6-luna
-        model_info:
-          mode: chat
-          input_cost_per_token: 0.0000002
-          output_cost_per_token: 0.0000012
-          supports_function_calling: true
-        litellm_params:
-          model: openai/gpt-5.6-luna
-          api_base: os.environ/OPENCODE_GO_API_BASE
-          api_key: os.environ/OPENCODE_API_KEY
-      - model_name: opencode-zen/deepseek-v4-flash
-        model_info:
-          mode: chat
-          input_cost_per_token: 0.00000014
-          output_cost_per_token: 0.00000028
-          supports_function_calling: true
-        litellm_params:
-          model: openai/deepseek-v4-flash
-          api_base: os.environ/OPENCODE_ZEN_API_BASE
-          api_key: os.environ/OPENCODE_API_KEY
-      - model_name: opencode-zen/gpt-5.6-luna
-        model_info:
-          mode: chat
-          input_cost_per_token: 0.0000002
-          output_cost_per_token: 0.0000012
-          supports_function_calling: true
-        litellm_params:
-          model: openai/gpt-5.6-luna
-          api_base: os.environ/OPENCODE_ZEN_API_BASE
-          api_key: os.environ/OPENCODE_API_KEY
-      - model_name: opencode-go-reasoning
+      - model_name: openrouter/glm-5.3-flash
         model_info:
           mode: chat
           supports_function_calling: true
         litellm_params:
-          model: openai/deepseek-v4-flash
-          api_base: os.environ/OPENCODE_GO_API_BASE
-          api_key: os.environ/OPENCODE_API_KEY
-          order: 1
-      - model_name: opencode-go-reasoning
-        model_info:
-          mode: chat
-          supports_function_calling: true
-        litellm_params:
-          model: openai/gpt-5.6-luna
-          api_base: os.environ/OPENCODE_GO_API_BASE
-          api_key: os.environ/OPENCODE_API_KEY
-          order: 2
-      - model_name: opencode-zen-reasoning
-        model_info:
-          mode: chat
-          supports_function_calling: true
-        litellm_params:
-          model: openai/deepseek-v4-flash
-          api_base: os.environ/OPENCODE_ZEN_API_BASE
-          api_key: os.environ/OPENCODE_API_KEY
-          order: 1
-      - model_name: opencode-zen-reasoning
-        model_info:
-          mode: chat
-          supports_function_calling: true
-        litellm_params:
-          model: openai/gpt-5.6-luna
-          api_base: os.environ/OPENCODE_ZEN_API_BASE
-          api_key: os.environ/OPENCODE_API_KEY
-          order: 2
+          model: openrouter/z-ai/glm-5.3-flash
+          api_key: os.environ/OPENROUTER_API_KEY
       - model_name: qwen3-embedding
         model_info:
           mode: embedding
@@ -219,11 +148,10 @@ data:
       cooldown_time: 30
       enable_pre_call_checks: true
       fallbacks:
-        - chatgpt/gpt-5.6-luna: [opencode-go-reasoning]
-        - chatgpt/gpt-5.6-sol: [opencode-go-reasoning]
-        - reasoning-pool: [opencode-go-reasoning]
-        - opencode-go-reasoning: [opencode-zen-reasoning]
-        - frontier-pool: [reasoning-pool, opencode-go-reasoning, opencode-zen-reasoning]
+        - chatgpt/gpt-5.6-luna: [openrouter/deepseek-v4-flash, openrouter/qwen3.8-flash]
+        - chatgpt/gpt-5.6-sol: [openrouter/deepseek-v4-flash, openrouter/qwen3.8-flash]
+        - reasoning-pool: [openrouter/deepseek-v4-flash, openrouter/qwen3.8-flash]
+        - frontier-pool: [reasoning-pool, openrouter/glm-5.3-flash, openrouter/deepseek-v4-flash]
     litellm_settings:
       success_callback: [prometheus]
       failure_callback: [prometheus]
