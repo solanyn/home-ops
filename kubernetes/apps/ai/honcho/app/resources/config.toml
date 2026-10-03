@@ -1,0 +1,22 @@
+[app]
+LOG_LEVEL = "INFO"
+
+[db]
+SCHEMA = "public"
+
+[llm]
+OPENAI_API_KEY = "not-needed"
+
+[embedding]
+VECTOR_DIMENSIONS = 384
+
+[embedding.model_config]
+transport = "openai"
+model = "bge-small-en"
+
+[embedding.model_config.overrides]
+base_url = "http://bge-small-en.ai.svc.cluster.local:8080/v1"
+
+[vector_store]
+TYPE = "pgvector"
+NAMESPACE = "honcho"
