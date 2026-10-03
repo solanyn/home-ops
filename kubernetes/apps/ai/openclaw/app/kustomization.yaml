@@ -5,6 +5,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+  - ./rbac.yaml
 configMapGenerator:
   - name: openclaw-workspace
     files:
@@ -40,6 +41,7 @@ configMapGenerator:
       - skills__kgateway__SKILL.md=./resources/skills/kgateway/SKILL.md
       - skills__kubectl__SKILL.md=./resources/skills/kubectl/SKILL.md
       - skills__kubectl__references__in-pod-github-api.md=./resources/skills/kubectl/references/in-pod-github-api.md
+      - skills__livesync-bridge__SKILL.md=./resources/skills/livesync-bridge/references/in-pod-github-api.md
       - skills__livesync-bridge__SKILL.md=./resources/skills/livesync-bridge/SKILL.md
       - skills__mealie__SKILL.md=./resources/skills/mealie/SKILL.md
       - skills__mermaid__SKILL.md=./resources/skills/mermaid/SKILL.md
