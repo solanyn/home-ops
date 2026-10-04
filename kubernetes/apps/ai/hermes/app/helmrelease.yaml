@@ -38,8 +38,8 @@ spec:
 
                 umask 077
                 printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY" > /opt/data/.env
-                # Child profile workers need the same LiteLLM credential; without a
-                # profile-local env file, ${OPENAI_API_KEY} remains unresolved.
+                # Profile-local env files are required for child workers to
+                # resolve the shared LiteLLM credential.
                 for profile in /opt/data/profiles/*; do
                   if [ -d "$profile" ]; then
                     tmp="$profile/.env.tmp"
