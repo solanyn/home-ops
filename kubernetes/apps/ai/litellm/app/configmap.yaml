@@ -34,15 +34,16 @@ data:
           model: openrouter/qwen/qwen3.8-flash
           api_key: os.environ/OPENROUTER_API_KEY
           order: 1
-      - model_name: openrouter/deepseek-v4.1-flash
+      - model_name: kanban-pool
         model_info:
           mode: chat
-          input_cost_per_token: 0.000000015
-          output_cost_per_token: 0.000000677
+          input_cost_per_token: 0.00000015
+          output_cost_per_token: 0.00000047
           supports_function_calling: true
         litellm_params:
-          model: openrouter/deepseek/deepseek-v4.1-flash
+          model: openrouter/qwen/qwen3.8-flash
           api_key: os.environ/OPENROUTER_API_KEY
+          order: 1
       - model_name: openrouter/qwen3.7-flash
         model_info:
           mode: chat
