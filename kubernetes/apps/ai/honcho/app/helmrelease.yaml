@@ -103,7 +103,7 @@ spec:
           app:
             image:
               repository: ghcr.io/plastic-labs/honcho
-              tag: v3.2.1@sha256:a6bf2f03d47d91281521830ba2a32710a60bde207c37c8f2049fd1ac7619c6d9
+              tag: v3.2.2@sha256:c74955d6dbea6dda42c2dd9dd13dea726fcba36ba5c0b6bae4867f7ed762896d
             command: ["/bin/sh", "-c"]
             args:
               - |
@@ -150,7 +150,7 @@ spec:
           deriver:
             image:
               repository: ghcr.io/plastic-labs/honcho
-              tag: v3.2.1@sha256:a6bf2f03d47d91281521830ba2a32710a60bde207c37c8f2049fd1ac7619c6d9
+              tag: v3.2.2@sha256:c74955d6dbea6dda42c2dd9dd13dea726fcba36ba5c0b6bae4867f7ed762896d
             command: ["/bin/sh", "-c"]
             args:
               - exec /app/.venv/bin/python -m src.deriver
