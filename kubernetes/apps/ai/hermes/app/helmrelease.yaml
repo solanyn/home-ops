@@ -38,6 +38,18 @@ spec:
 
                 umask 077
                 printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY" > /opt/data/.env
+                # Child profile workers need the same LiteLLM credential; without a
+                # profile-local env file, ${OPENAI_API_KEY} remains unresolved.
+                for profile in /opt/data/profiles/*; do
+                  if [ -d "$profile" ]; then
+                    tmp="$profile/.env.tmp"
+                    { grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true; \
+                      printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY"; } > "$tmp"
+                    chown 10000:10000 "$tmp"
+                    chmod 600 "$tmp"
+                    mv "$tmp" "$profile/.env"
+                  fi
+                done
 
                 # .config/op may be owned by a stale UID from a restored snapshot;
                 # op refuses to read a config owned by another user. Fix ownership
