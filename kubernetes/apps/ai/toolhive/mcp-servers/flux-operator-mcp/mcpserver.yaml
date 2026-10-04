@@ -5,7 +5,7 @@ metadata:
   name: flux-operator-mcp
   namespace: ai
 spec:
-  image: ghcr.io/controlplaneio-fluxcd/flux-operator-mcp:v0.60.0
+  image: ghcr.io/controlplaneio-fluxcd/flux-operator-mcp:v0.61.0
   transport: streamable-http
   proxyMode: streamable-http
   proxyPort: 8080
