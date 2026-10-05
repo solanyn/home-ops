@@ -26,42 +26,76 @@ data:
           max_input_tokens: 1100000
         litellm_params:
           model: chatgpt/gpt-5.6-sol
+      # OpenRouter catalogue: only affordable chat/tool models with current
+      # model IDs and ZDR-capable endpoints. Keep these aliases stable for
+      # Hermes, Kanban and cron jobs; do not point callers at provider IDs.
       - model_name: cron-pool
         model_info:
           mode: chat
-          supports_function_calling: true
-        litellm_params:
-          model: openrouter/qwen/qwen3.8-flash
-          api_key: os.environ/OPENROUTER_API_KEY
-          order: 1
-      - model_name: kanban-pool
-        model_info:
-          mode: chat
-          input_cost_per_token: 0.00000015
-          output_cost_per_token: 0.00000047
-          supports_function_calling: true
-        litellm_params:
-          model: openrouter/qwen/qwen3.8-flash
-          api_key: os.environ/OPENROUTER_API_KEY
-          order: 1
-      - model_name: openrouter/qwen3.7-flash
-        model_info:
-          mode: chat
-          input_cost_per_token: 0.00000003
+          input_cost_per_token: 0.00000008
           output_cost_per_token: 0.00000013
           supports_function_calling: true
         litellm_params:
-          model: openrouter/qwen/qwen3.7-flash
+          model: openrouter/qwen/qwen3.5-9b
           api_key: os.environ/OPENROUTER_API_KEY
-      - model_name: openrouter/qwen3.8-flash
+          order: 1
+          extra_body:
+            provider:
+              zdr: true
+              require_parameters: true
+      - model_name: kanban-pool
+        model_info:
+          mode: chat
+          input_cost_per_token: 0.000000195
+          output_cost_per_token: 0.00000156
+          supports_function_calling: true
+        litellm_params:
+          model: openrouter/qwen/qwen3.5-27b
+          api_key: os.environ/OPENROUTER_API_KEY
+          order: 1
+          extra_body:
+            provider:
+              zdr: true
+              require_parameters: true
+      - model_name: openrouter/qwen3.5-9b
+        model_info:
+          mode: chat
+          input_cost_per_token: 0.00000008
+          output_cost_per_token: 0.00000013
+          supports_function_calling: true
+        litellm_params:
+          model: openrouter/qwen/qwen3.5-9b
+          api_key: os.environ/OPENROUTER_API_KEY
+          extra_body:
+            provider:
+              zdr: true
+              require_parameters: true
+      - model_name: openrouter/qwen3.5-27b
+        model_info:
+          mode: chat
+          input_cost_per_token: 0.000000195
+          output_cost_per_token: 0.00000156
+          supports_function_calling: true
+        litellm_params:
+          model: openrouter/qwen/qwen3.5-27b
+          api_key: os.environ/OPENROUTER_API_KEY
+          extra_body:
+            provider:
+              zdr: true
+              require_parameters: true
+      - model_name: openrouter/qwen3.5-35b-a3b
         model_info:
           mode: chat
           input_cost_per_token: 0.00000015
-          output_cost_per_token: 0.00000047
+          output_cost_per_token: 0.000001
           supports_function_calling: true
         litellm_params:
-          model: openrouter/qwen/qwen3.8-flash
+          model: openrouter/qwen/qwen3.5-35b-a3b
           api_key: os.environ/OPENROUTER_API_KEY
+          extra_body:
+            provider:
+              zdr: true
+              require_parameters: true
       - model_name: openrouter/qwen3-coder-30b
         model_info:
           mode: chat
@@ -69,24 +103,38 @@ data:
           output_cost_per_token: 0.00000028
           supports_function_calling: true
         litellm_params:
-          model: openrouter/qwen/qwen3-coder-plus
+          model: openrouter/qwen/qwen3-coder-30b-a3b-instruct
           api_key: os.environ/OPENROUTER_API_KEY
-      - model_name: openrouter/qwen3.8-27b
+          extra_body:
+            provider:
+              zdr: true
+              require_parameters: true
+      - model_name: openrouter/glm-4.7-flash
         model_info:
           mode: chat
-          input_cost_per_token: 0.0000000249
-          output_cost_per_token: 0.00000435
+          input_cost_per_token: 0.0000000605
+          output_cost_per_token: 0.0000004
           supports_function_calling: true
         litellm_params:
-          model: openrouter/qwen/qwen3.8-27b
+          model: openrouter/z-ai/glm-4.7-flash
           api_key: os.environ/OPENROUTER_API_KEY
-      - model_name: openrouter/glm-5.3-flash
+          extra_body:
+            provider:
+              zdr: true
+              require_parameters: true
+      - model_name: openrouter/deepseek-v3.2
         model_info:
           mode: chat
+          input_cost_per_token: 0.00000028
+          output_cost_per_token: 0.00000042
           supports_function_calling: true
         litellm_params:
-          model: openrouter/z-ai/glm-5.3-flash
+          model: openrouter/deepseek/deepseek-v3.2
           api_key: os.environ/OPENROUTER_API_KEY
+          extra_body:
+            provider:
+              zdr: true
+              require_parameters: true
       - model_name: qwen3-embedding
         model_info:
           mode: embedding
@@ -142,10 +190,10 @@ data:
       cooldown_time: 30
       enable_pre_call_checks: true
       fallbacks:
-        - chatgpt/gpt-5.6-luna: [openrouter/deepseek-v4.1-flash, openrouter/qwen3.8-flash]
-        - chatgpt/gpt-5.6-sol: [openrouter/deepseek-v4.1-flash, openrouter/qwen3.8-flash]
-        - reasoning-pool: [openrouter/deepseek-v4.1-flash, openrouter/qwen3.8-flash]
-        - frontier-pool: [reasoning-pool, openrouter/glm-5.3-flash, openrouter/deepseek-v4.1-flash]
+        - chatgpt/gpt-5.6-luna: [openrouter/deepseek-v3.2, openrouter/qwen3.5-27b]
+        - chatgpt/gpt-5.6-sol: [openrouter/deepseek-v3.2, openrouter/qwen3.5-27b]
+        - reasoning-pool: [openrouter/deepseek-v3.2, openrouter/qwen3.5-27b]
+        - frontier-pool: [reasoning-pool, openrouter/glm-4.7-flash, openrouter/deepseek-v3.2]
     litellm_settings:
       success_callback: [prometheus]
       failure_callback: [prometheus]
