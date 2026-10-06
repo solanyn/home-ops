@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/vavallee/bindery
-              tag: v1.40.1@sha256:44675fde2d715ddaae45d7a3839a20d6ed02dcb61ad8ea7fe45f0aaa91641e89
+              tag: v1.40.2@sha256:5a87cd0b38447acebe55594f98a1d60390704fdfd40d4a53db630f5f9a2ed260
             env:
               TZ: Australia/Sydney
               BINDERY_PORT: &port 8787
