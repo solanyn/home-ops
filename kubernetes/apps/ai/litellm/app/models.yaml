@@ -40,10 +40,6 @@ spec:
       value: redis.storage.svc.cluster.local
     - name: REDIS_PORT
       value: "6379"
-    - name: OPENCODE_GO_API_BASE
-      value: https://opencode.ai/zen/go/v1
-    - name: OPENCODE_ZEN_API_BASE
-      value: https://opencode.ai/zen/v1
     - name: GENERIC_CLIENT_ID
       value: litellm
     - name: GENERIC_CLIENT_SECRET
@@ -57,7 +53,10 @@ spec:
     enable_pre_call_checks: true
     num_retries: 2
     fallbacks:
-      - frontier-pool: [coding-pool, simple-pool]
+      - chatgpt/gpt-5.6-luna: [cron-pool, kanban-pool]
+      - chatgpt/gpt-5.6-sol: [cron-pool, kanban-pool]
+      - reasoning-pool: [cron-pool, kanban-pool]
+      - frontier-pool: [reasoning-pool, coding-pool, simple-pool]
       - coding-pool: [simple-pool]
   litellmSettings:
     drop_params: true
@@ -188,9 +187,8 @@ spec:
     apiKeyRef: &openrouterKey
       name: litellm
       key: OPENROUTER_API_KEY
-    additional: &zdr
+    additional:
       provider:
-        zdr: true
         require_parameters: true
   info:
     mode: chat
@@ -211,7 +209,6 @@ spec:
       key: OPENROUTER_API_KEY
     additional:
       provider:
-        zdr: true
         require_parameters: true
   info:
     mode: chat
@@ -232,7 +229,6 @@ spec:
       key: OPENROUTER_API_KEY
     additional:
       provider:
-        zdr: true
         require_parameters: true
   info:
     mode: chat
@@ -253,7 +249,6 @@ spec:
       key: OPENROUTER_API_KEY
     additional:
       provider:
-        zdr: true
         require_parameters: true
   info:
     mode: chat
@@ -274,7 +269,6 @@ spec:
       key: OPENROUTER_API_KEY
     additional:
       provider:
-        zdr: true
         require_parameters: true
   info:
     mode: chat
@@ -296,7 +290,6 @@ spec:
       key: OPENROUTER_API_KEY
     additional:
       provider:
-        zdr: true
         require_parameters: true
   info:
     mode: chat
@@ -318,7 +311,6 @@ spec:
       key: OPENROUTER_API_KEY
     additional:
       provider:
-        zdr: true
         require_parameters: true
   info:
     mode: chat
@@ -339,7 +331,6 @@ spec:
       key: OPENROUTER_API_KEY
     additional:
       provider:
-        zdr: true
         require_parameters: true
   info:
     mode: chat
@@ -360,7 +351,6 @@ spec:
       key: OPENROUTER_API_KEY
     additional:
       provider:
-        zdr: true
         require_parameters: true
   info:
     mode: chat
@@ -382,7 +372,6 @@ spec:
       key: OPENROUTER_API_KEY
     additional:
       provider:
-        zdr: true
         require_parameters: true
   info:
     mode: chat
@@ -403,7 +392,6 @@ spec:
       key: OPENROUTER_API_KEY
     additional:
       provider:
-        zdr: true
         require_parameters: true
   info:
     mode: chat
