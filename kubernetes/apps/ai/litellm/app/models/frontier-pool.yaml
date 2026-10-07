@@ -1,0 +1,96 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: frontier-pool-deepseek
+spec:
+  modelName: frontier-pool
+  proxyRef: litellm
+  params:
+    model: openrouter/deepseek/deepseek-v4.1-flash
+    apiKeyRef: &openrouterKey
+      name: litellm
+      key: OPENROUTER_API_KEY
+    additional:
+      order: 1
+      allowed_openai_params: [reasoning_effort]
+      extra_body: &openrouterProvider
+        provider:
+          zdr: true
+          require_parameters: true
+  info:
+    mode: chat
+    maxInputTokens: 1048576
+    supportsFunctionCalling: true
+    supportsPromptCaching: true
+    supportsVision: true
+    extra:
+      input_cost_per_token: 5.0e-08
+      output_cost_per_token: 1.2e-06
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: frontier-pool-glm
+spec:
+  modelName: frontier-pool
+  proxyRef: litellm
+  params:
+    model: openrouter/z-ai/glm-5.3-flash
+    apiKeyRef: *openrouterKey
+    additional:
+      order: 2
+      allowed_openai_params: [reasoning_effort]
+      extra_body: *openrouterProvider
+  info:
+    mode: chat
+    maxInputTokens: 1048576
+    supportsFunctionCalling: true
+    supportsPromptCaching: true
+    supportsVision: true
+    extra:
+      input_cost_per_token: 1.5e-07
+      output_cost_per_token: 5.0e-07
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: frontier-pool-inkling
+spec:
+  modelName: frontier-pool
+  proxyRef: litellm
+  params:
+    model: openrouter/thinkingmachines/inkling-small
+    apiKeyRef: *openrouterKey
+    additional:
+      order: 3
+      extra_body: *openrouterProvider
+  info:
+    mode: chat
+    maxInputTokens: 524288
+    supportsFunctionCalling: true
+    extra:
+      input_cost_per_token: 4.5e-07
+      output_cost_per_token: 1.2e-06
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: frontier-pool-qwen
+spec:
+  modelName: frontier-pool
+  proxyRef: litellm
+  params:
+    model: openrouter/qwen/qwen3.8-flash
+    apiKeyRef: *openrouterKey
+    additional:
+      order: 4
+      allowed_openai_params: [reasoning_effort]
+      extra_body: *openrouterProvider
+  info:
+    mode: chat
+    maxInputTokens: 1000000
+    supportsFunctionCalling: true
+    extra:
+      input_cost_per_token: 1.5e-07
+      output_cost_per_token: 4.7e-07

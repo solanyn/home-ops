@@ -1,0 +1,98 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMProxy
+metadata:
+  name: litellm
+spec:
+  image: ghcr.io/berriai/litellm-database:v1.104.0@sha256:fbe28229d2d02181c0a7d9df9599de614b491f3d897d2d7da18404f088310218
+  replicas: 1
+  service:
+    port: 4000
+    type: ClusterIP
+  route:
+    hostnames:
+      - litellm.goyangi.io
+    parentRefs:
+      - name: envoy-external
+        namespace: network
+  env:
+    - name: AUTO_REDIRECT_UI_LOGIN_TO_SSO
+      value: "true"
+    - name: CHATGPT_TOKEN_DIR
+      value: /var/lib/litellm/chatgpt
+    - name: GENERIC_AUTHORIZATION_ENDPOINT
+      value: https://id.goyangi.io/authorize
+    - name: GENERIC_SCOPE
+      value: openid email profile
+    - name: GENERIC_TOKEN_ENDPOINT
+      value: https://id.goyangi.io/api/oidc/token
+    - name: GENERIC_USERINFO_ENDPOINT
+      value: https://id.goyangi.io/api/oidc/userinfo
+    - name: GENERIC_USER_ROLE_ATTRIBUTE
+      value: litellm_role
+    - name: LITELLM_LOG
+      value: INFO
+    - name: LITELLM_MODE
+      value: PRODUCTION
+    - name: PROXY_BASE_URL
+      value: https://litellm.goyangi.io
+    - name: REDIS_HOST
+      value: redis.storage.svc.cluster.local
+    - name: REDIS_PORT
+      value: "6379"
+    - name: GENERIC_CLIENT_ID
+      value: litellm
+    - name: GENERIC_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: litellm-oidc
+          key: client_secret
+  envFrom:
+    - secretRef:
+        name: litellm
+  resources:
+    requests:
+      cpu: 100m
+      memory: 2Gi
+    limits:
+      memory: 4Gi
+  volumes:
+    - name: chatgpt-auth
+      persistentVolumeClaim:
+        claimName: litellm
+  volumeMounts:
+    - name: chatgpt-auth
+      mountPath: /var/lib/litellm/chatgpt
+  routerSettings:
+    redis_host: os.environ/REDIS_HOST
+    redis_port: os.environ/REDIS_PORT
+    routing_strategy: simple-shuffle
+    cooldown_time: 30
+    enable_pre_call_checks: true
+    fallbacks:
+      - chatgpt/gpt-5.6-luna: [chatgpt/gpt-5.6-sol]
+      - chatgpt/gpt-5.6-sol: [frontier-pool]
+      - reasoning-pool: [frontier-pool]
+      - frontier-pool: [coding-pool]
+      - coding-pool: [simple-pool]
+      - kanban-pool: [simple-pool]
+  callbacks:
+    success: [prometheus]
+    failure: [prometheus]
+  litellmSettings:
+    cache: true
+    cache_params:
+      type: redis
+      host: os.environ/REDIS_HOST
+      port: os.environ/REDIS_PORT
+      ttl: 300
+      supported_call_types: [embedding, aembedding]
+    drop_params: true
+    num_retries: 2
+    prometheus_adapter: true
+    request_timeout: 1200
+    require_auth_for_metrics_endpoint: false
+    retry_after: 5
+  generalSettings:
+    health_check_endpoint: /v1/health
+    store_model_in_db: false
