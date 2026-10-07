@@ -171,6 +171,13 @@ spec:
           http:
             port: 80
             targetPort: *port
+    route:
+      app:
+        hostnames: ["honcho.goyangi.io"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
     persistence:
       config-toml:
         type: configMap
