@@ -1,0 +1,28 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: kanban-pool-qwen
+spec:
+  modelName: kanban-pool
+  proxyRef: litellm
+  params:
+    model: openrouter/qwen/qwen3.8-27b
+    apiKeyRef:
+      name: litellm
+      key: OPENROUTER_API_KEY
+    additional:
+      reasoning_effort: medium
+      allowed_openai_params: [reasoning_effort]
+      extra_body:
+        provider:
+          zdr: true
+          require_parameters: true
+  info:
+    mode: chat
+    maxInputTokens: 1000000
+    supportsFunctionCalling: true
+    supportsVision: true
+    extra:
+      input_cost_per_token: 4.25e-07
+      output_cost_per_token: 2.55e-06

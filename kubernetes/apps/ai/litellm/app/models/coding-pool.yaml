@@ -1,0 +1,51 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: coding-pool-qwen
+spec:
+  modelName: coding-pool
+  proxyRef: litellm
+  params:
+    model: openrouter/qwen/qwen3.8-27b
+    apiKeyRef: &openrouterKey
+      name: litellm
+      key: OPENROUTER_API_KEY
+    additional:
+      order: 1
+      reasoning_effort: medium
+      allowed_openai_params: [reasoning_effort]
+      extra_body: &openrouterProvider
+        provider:
+          zdr: true
+          require_parameters: true
+  info:
+    mode: chat
+    maxInputTokens: 1000000
+    supportsFunctionCalling: true
+    supportsVision: true
+    extra:
+      input_cost_per_token: 4.25e-07
+      output_cost_per_token: 2.55e-06
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: coding-pool-gemma
+spec:
+  modelName: coding-pool
+  proxyRef: litellm
+  params:
+    model: openrouter/google/gemma-4-26b-a4b-it
+    apiKeyRef: *openrouterKey
+    additional:
+      order: 2
+      extra_body: *openrouterProvider
+  info:
+    mode: chat
+    maxInputTokens: 262144
+    supportsFunctionCalling: true
+    supportsVision: true
+    extra:
+      input_cost_per_token: 9.0e-08
+      output_cost_per_token: 3.0e-07
