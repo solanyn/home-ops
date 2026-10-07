@@ -1,0 +1,25 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: cron-pool-qwen
+spec:
+  modelName: cron-pool
+  proxyRef: litellm
+  params:
+    model: openrouter/qwen/qwen3.5-9b
+    apiKeyRef:
+      name: litellm
+      key: OPENROUTER_API_KEY
+    additional:
+      extra_body:
+        provider:
+          zdr: true
+          require_parameters: true
+  info:
+    mode: chat
+    maxInputTokens: 262144
+    supportsFunctionCalling: true
+    extra:
+      input_cost_per_token: 1.0e-07
+      output_cost_per_token: 1.5e-07

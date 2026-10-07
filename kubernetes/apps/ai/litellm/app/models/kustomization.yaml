@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./chatgpt.yaml
+  - ./coding-pool.yaml
+  - ./cron-pool.yaml
+  - ./embedding.yaml
+  - ./frontier-pool.yaml
+  - ./kanban-pool.yaml
+  - ./reasoning-pool.yaml
+  - ./simple-pool.yaml

@@ -1,0 +1,14 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: qwen3-embedding
+spec:
+  modelName: qwen3-embedding
+  proxyRef: litellm
+  params:
+    model: openai/qwen3-embedding-0.6b-4bit-DWQ
+    apiBase: http://qwen3-embedding.ai.svc.cluster.local:8080/v1
+    apiKey: "***"
+  info:
+    mode: embedding

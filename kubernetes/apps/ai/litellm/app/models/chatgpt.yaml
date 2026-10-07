@@ -1,0 +1,62 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: chatgpt-gpt-53-codex
+spec:
+  modelName: chatgpt/gpt-5.3-codex
+  proxyRef: litellm
+  params:
+    model: chatgpt/gpt-5.3-codex
+  info:
+    mode: responses
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: chatgpt-gpt-54
+spec:
+  modelName: chatgpt/gpt-5.4
+  proxyRef: litellm
+  params:
+    model: chatgpt/gpt-5.4
+  info:
+    mode: responses
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: chatgpt-gpt-56-luna
+spec:
+  modelName: chatgpt/gpt-5.6-luna
+  proxyRef: litellm
+  params:
+    model: chatgpt/gpt-5.6-luna
+  info:
+    mode: responses
+    maxInputTokens: 1050000
+    supportsFunctionCalling: true
+    extra:
+      input_cost_per_token: 2.0e-07
+      cache_creation_input_token_cost: 2.5e-07
+      cache_read_input_token_cost: 2.0e-08
+      output_cost_per_token: 1.2e-06
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: chatgpt-gpt-56-sol
+spec:
+  modelName: chatgpt/gpt-5.6-sol
+  proxyRef: litellm
+  params:
+    model: chatgpt/gpt-5.6-sol
+  info:
+    mode: responses
+    maxInputTokens: 1100000
+    supportsFunctionCalling: true
+    extra:
+      input_cost_per_token: 5.0e-06
+      cache_creation_input_token_cost: 6.25e-06
+      cache_read_input_token_cost: 5.0e-07
+      output_cost_per_token: 3.0e-05
