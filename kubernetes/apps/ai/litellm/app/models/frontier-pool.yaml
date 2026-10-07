@@ -8,13 +8,13 @@ spec:
   proxyRef: litellm
   params:
     model: openrouter/deepseek/deepseek-v4.1-flash
-    apiKeyRef: &openrouterKey
+    apiKeyRef:
       name: litellm
       key: OPENROUTER_API_KEY
     additional:
       order: 1
       allowed_openai_params: [reasoning_effort]
-      extra_body: &openrouterProvider
+      extra_body:
         provider:
           zdr: true
           require_parameters: true

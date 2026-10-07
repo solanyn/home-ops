@@ -8,12 +8,12 @@ spec:
   proxyRef: litellm
   params:
     model: openrouter/qwen/qwen3.5-9b
-    apiKeyRef: &openrouterKey
+    apiKeyRef:
       name: litellm
       key: OPENROUTER_API_KEY
     additional:
       order: 1
-      extra_body: &openrouterProvider
+      extra_body:
         provider:
           zdr: true
           require_parameters: true
