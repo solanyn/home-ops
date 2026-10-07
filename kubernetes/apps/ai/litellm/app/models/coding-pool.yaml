@@ -37,10 +37,15 @@ spec:
   proxyRef: litellm
   params:
     model: openrouter/google/gemma-4-26b-a4b-it
-    apiKeyRef: *openrouterKey
+    apiKeyRef:
+      name: litellm
+      key: OPENROUTER_API_KEY
     additional:
       order: 2
-      extra_body: *openrouterProvider
+      extra_body:
+        provider:
+          zdr: true
+          require_parameters: true
   info:
     mode: chat
     maxInputTokens: 262144

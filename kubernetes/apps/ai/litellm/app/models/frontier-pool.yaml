@@ -37,11 +37,16 @@ spec:
   proxyRef: litellm
   params:
     model: openrouter/z-ai/glm-5.3-flash
-    apiKeyRef: *openrouterKey
+    apiKeyRef:
+      name: litellm
+      key: OPENROUTER_API_KEY
     additional:
       order: 2
       allowed_openai_params: [reasoning_effort]
-      extra_body: *openrouterProvider
+      extra_body:
+        provider:
+          zdr: true
+          require_parameters: true
   info:
     mode: chat
     maxInputTokens: 1048576
@@ -61,10 +66,15 @@ spec:
   proxyRef: litellm
   params:
     model: openrouter/thinkingmachines/inkling-small
-    apiKeyRef: *openrouterKey
+    apiKeyRef:
+      name: litellm
+      key: OPENROUTER_API_KEY
     additional:
       order: 3
-      extra_body: *openrouterProvider
+      extra_body:
+        provider:
+          zdr: true
+          require_parameters: true
   info:
     mode: chat
     maxInputTokens: 524288
@@ -82,11 +92,16 @@ spec:
   proxyRef: litellm
   params:
     model: openrouter/qwen/qwen3.8-flash
-    apiKeyRef: *openrouterKey
+    apiKeyRef:
+      name: litellm
+      key: OPENROUTER_API_KEY
     additional:
       order: 4
       allowed_openai_params: [reasoning_effort]
-      extra_body: *openrouterProvider
+      extra_body:
+        provider:
+          zdr: true
+          require_parameters: true
   info:
     mode: chat
     maxInputTokens: 1000000
