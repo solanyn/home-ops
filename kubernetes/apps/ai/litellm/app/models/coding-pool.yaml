@@ -8,14 +8,14 @@ spec:
   proxyRef: litellm
   params:
     model: openrouter/qwen/qwen3.8-27b
-    apiKeyRef: &openrouterKey
+    apiKeyRef:
       name: litellm
       key: OPENROUTER_API_KEY
     additional:
       order: 1
       reasoning_effort: medium
       allowed_openai_params: [reasoning_effort]
-      extra_body: &openrouterProvider
+      extra_body:
         provider:
           zdr: true
           require_parameters: true
