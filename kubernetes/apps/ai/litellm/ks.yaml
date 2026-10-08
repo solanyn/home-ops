@@ -11,12 +11,17 @@ spec:
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage
+    - name: miroir-config
+      namespace: miroir-system
   interval: 1h
   path: ./kubernetes/apps/ai/litellm/app
   postBuild:
     substitute:
       APP: litellm
+      KOPIUR_ACCESSMODES: ReadWriteMany
       KOPIUR_CAPACITY: 1Gi
+      KOPIUR_SNAPSHOTCLASS: miroir-snap
+      KOPIUR_STORAGECLASS: miroir-replicated
   prune: true
   sourceRef:
     kind: GitRepository
