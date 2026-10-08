@@ -12,3 +12,13 @@ resources:
   - ./prometheusrule.yaml
   - ./servicemonitor.yaml
   - ./vmrule.yaml
+
+patches:
+  - target:
+      kind: PersistentVolumeClaim
+      name: litellm
+    patch: |-
+      - op: remove
+        path: /spec/dataSource
+      - op: remove
+        path: /spec/dataSourceRef
