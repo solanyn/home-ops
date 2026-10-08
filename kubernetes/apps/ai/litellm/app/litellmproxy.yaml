@@ -5,7 +5,7 @@ metadata:
   name: litellm
 spec:
   image: ghcr.io/berriai/litellm-database:v1.104.0@sha256:fbe28229d2d02181c0a7d9df9599de614b491f3d897d2d7da18404f088310218
-  replicas: 0
+  replicas: 3
   service:
     port: 4000
     type: ClusterIP
@@ -19,7 +19,7 @@ spec:
     - name: AUTO_REDIRECT_UI_LOGIN_TO_SSO
       value: "true"
     - name: CHATGPT_TOKEN_DIR
-      value: /var/lib/litellm/chatgpt
+      value: /app/chatgpt_tokens
     - name: GENERIC_AUTHORIZATION_ENDPOINT
       value: https://id.goyangi.io/authorize
     - name: GENERIC_SCOPE
@@ -62,7 +62,7 @@ spec:
         claimName: litellm
   volumeMounts:
     - name: chatgpt-auth
-      mountPath: /var/lib/litellm/chatgpt
+      mountPath: /app/chatgpt_tokens
   routerSettings:
     redis_host: os.environ/REDIS_HOST
     redis_port: os.environ/REDIS_PORT
