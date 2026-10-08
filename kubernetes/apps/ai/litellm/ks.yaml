@@ -21,6 +21,8 @@ spec:
       KOPIUR_ACCESSMODES: ReadWriteMany
       KOPIUR_CAPACITY: 1Gi
       KOPIUR_SNAPSHOTCLASS: miroir-snap
+      KOPIUR_PGID: 0
+      KOPIUR_PUID: 0
       KOPIUR_STORAGECLASS: miroir-replicated
   prune: true
   sourceRef:
