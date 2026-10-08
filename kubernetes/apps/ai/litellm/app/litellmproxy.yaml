@@ -5,7 +5,7 @@ metadata:
   name: litellm
 spec:
   image: ghcr.io/berriai/litellm-database:v1.104.0@sha256:fbe28229d2d02181c0a7d9df9599de614b491f3d897d2d7da18404f088310218
-  replicas: 1
+  replicas: 0
   service:
     port: 4000
     type: ClusterIP
