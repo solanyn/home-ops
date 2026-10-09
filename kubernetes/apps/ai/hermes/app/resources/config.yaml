@@ -22,6 +22,20 @@ terminal:
   persistent_shell: true
   home_mode: auto
   lifetime_seconds: 300
+  # Cron jobs on a multiplexed gateway run in a scrubbed child process. Without
+  # this allowlist they cannot see the delivery platform credentials, so
+  # preflight blocks every matrix-delivering job with 'no gateway credentials
+  # configured' and no LLM call is made. Names here are forwarded from the
+  # gateway's own env into sandboxed children (see tools/env_passthrough.py).
+  env_passthrough:
+    - MATRIX_ACCESS_TOKEN
+    - MATRIX_HOMESERVER
+    - MATRIX_USER_ID
+    - MATRIX_DEVICE_ID
+    - MATRIX_RECOVERY_KEY
+    - MATRIX_E2EE_MODE
+    - BLUEBUBBLES_SERVER_URL
+    - BLUEBUBBLES_PASSWORD
 compression:
   enabled: true
   threshold: 0.35
