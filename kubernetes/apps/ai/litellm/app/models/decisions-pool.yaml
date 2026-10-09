@@ -1,0 +1,66 @@
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: decisions-pool-pplx
+spec:
+  modelName: decisions-pool
+  proxyRef: litellm
+  params:
+    model: openrouter/perplexity/pplx-decider-v1.1-27b
+    apiKeyRef:
+      name: litellm
+      key: OPENROUTER_API_KEY
+    additional:
+      order: 1
+      extra_body:
+        provider:
+          zdr: true
+  info:
+    mode: decisions
+    maxInputTokens: 200000
+    supportsVision: true
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: decisions-pool-jev
+spec:
+  modelName: decisions-pool
+  proxyRef: litellm
+  params:
+    model: openrouter/typesafe/jev-1.13
+    apiKeyRef:
+      name: litellm
+      key: OPENROUTER_API_KEY
+    additional:
+      order: 2
+      extra_body:
+        provider:
+          zdr: true
+  info:
+    mode: decisions
+    maxInputTokens: 32000
+    supportsVision: false
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: decisions-pool-jev-router
+spec:
+  modelName: decisions-pool
+  proxyRef: litellm
+  params:
+    model: openrouter/typesafe/jev-router
+    apiKeyRef:
+      name: litellm
+      key: OPENROUTER_API_KEY
+    additional:
+      order: 3
+      extra_body:
+        provider:
+          zdr: true
+  info:
+    mode: decisions
+    maxInputTokens: 1000000
+    supportsVision: true
