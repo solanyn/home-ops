@@ -24,7 +24,7 @@ spec:
       hermes:
         annotations:
           reloader.stakater.com/auto: "true"
-        replicas: 0
+        replicas: 1
         initContainers:
           init:
             image:
