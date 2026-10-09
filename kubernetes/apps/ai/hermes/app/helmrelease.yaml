@@ -56,6 +56,10 @@ spec:
                 # op refuses to read a config owned by another user. Fix ownership
                 # here as root so the app (runAsUser 10000) can use the CLI.
                 chown -R 10000:10000 /opt/data/.config 2>/dev/null || true
+
+                # fsGroup relaxes the ssh key mode at mount time and openssh
+                # refuses a group-readable private key; restore it after mount.
+                chmod 600 /opt/data/.ssh/id_ed25519 2>/dev/null || true
             envFrom:
               - secretRef:
                   name: hermes
