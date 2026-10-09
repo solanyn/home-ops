@@ -5,3 +5,14 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+
+patches:
+  - patch: |
+      apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: retain-hermes-matrix-data
+        annotations:
+          kustomize.toolkit.fluxcd.io/prune: disabled
+    target:
+      kind: PersistentVolumeClaim
