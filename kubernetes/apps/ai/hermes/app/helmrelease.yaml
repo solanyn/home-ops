@@ -60,6 +60,20 @@ spec:
                 # fsGroup relaxes the ssh key mode at mount time and openssh
                 # refuses a group-readable private key; restore it after mount.
                 chmod 600 /opt/data/.ssh/id_ed25519 2>/dev/null || true
+
+                # fsGroup also broadens the op config dir to 2770 and op refuses
+                # a group-readable config path; its daemon needs a writable
+                # XDG_RUNTIME_DIR, which the image points at a root-owned dir.
+                for d in /opt/data/.config/op /opt/data/home/.config/op; do
+                  if [ -d "$d" ]; then
+                    chmod 700 "$d"
+                    find "$d" -type f -exec chmod 600 {} + 2>/dev/null || true
+                  fi
+                done
+                if [ -d /tmp/hermes-runtime ]; then
+                  chown 10000:10000 /tmp/hermes-runtime
+                  chmod 700 /tmp/hermes-runtime
+                fi
             envFrom:
               - secretRef:
                   name: hermes
