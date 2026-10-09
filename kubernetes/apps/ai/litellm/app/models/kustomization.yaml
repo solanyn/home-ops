@@ -6,6 +6,7 @@ resources:
   - ./chatgpt.yaml
   - ./coding-pool.yaml
   - ./cron-pool.yaml
+  - ./decisions-pool.yaml
   - ./embedding.yaml
   - ./frontier-pool.yaml
   - ./kanban-pool.yaml
