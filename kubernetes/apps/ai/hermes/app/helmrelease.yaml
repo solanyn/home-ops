@@ -68,6 +68,15 @@ spec:
             args: ["gateway", "run"]
             env:
               PATH: /usr/local/bin:/usr/bin:/bin
+              MATRIX_ALLOWED_USERS: "@andrew:goyangi.io"
+              MATRIX_ALLOW_ROOM_MENTIONS: "false"
+              MATRIX_AUTO_THREAD: "true"
+              MATRIX_ENCRYPTION: "true"
+              MATRIX_FREE_RESPONSE_ROOMS: "!12_EWTBUFG6QBq_b-KblbBRCVqf8ijvRJqIo-T58tP4"
+              MATRIX_HOME_ROOM: "!12_EWTBUFG6QBq_b-KblbBRCVqf8ijvRJqIo-T58tP4"
+              MATRIX_PROCESS_NOTICES: "false"
+              MATRIX_REQUIRE_MENTION: "false"
+              MATRIX_SESSION_SCOPE: thread
               HERMES_HOME: /opt/data
               HOME: /opt/data
               TZ: Australia/Sydney
