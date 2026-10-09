@@ -10,7 +10,6 @@ components:
 resources:
   - ./namespace.yaml
   - ./hermes/ks.yaml
-  - ./hermes-matrix/ks.yaml
   - ./honcho/ks.yaml
   - ./litellm-operator/ks.yaml
   - ./litellm/ks.yaml
