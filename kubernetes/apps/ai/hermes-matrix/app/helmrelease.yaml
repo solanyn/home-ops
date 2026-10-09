@@ -20,7 +20,7 @@ spec:
           type: RuntimeDefault
     controllers:
       hermes-matrix:
-        replicas: 1
+        replicas: 0
         strategy: Recreate
         type: deployment
         containers:
