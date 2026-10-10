@@ -70,10 +70,12 @@ spec:
                     find "$d" -type f -exec chmod 600 {} + 2>/dev/null || true
                   fi
                 done
-                if [ -d /tmp/hermes-runtime ]; then
-                  chown 10000:10000 /tmp/hermes-runtime
-                  chmod 700 /tmp/hermes-runtime
-                fi
+                # /tmp and /run are emptyDir volumes, so the image's baked-in
+                # /tmp/hermes-runtime is shadowed by the fresh mount; recreate it
+                # for op's daemon, which needs a writable XDG_RUNTIME_DIR.
+                mkdir -p /tmp/hermes-runtime
+                chown 10000:10000 /tmp/hermes-runtime
+                chmod 700 /tmp/hermes-runtime
             envFrom:
               - secretRef:
                   name: hermes
@@ -82,10 +84,13 @@ spec:
             image: &image
               repository: nousresearch/hermes-agent
               tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
-            command: ["/opt/hermes/bin/hermes"]
             args: ["gateway", "run"]
             env:
               PATH: /usr/local/bin:/usr/bin:/bin
+              # s6-overlay refuses a non-world-writable /run on Kubernetes, where
+              # the projected/emptyDir mount cannot be chmod'd; this is the
+              # supported opt-out and the image's own documented k8s path.
+              S6_YES_I_WANT_A_WORLD_WRITABLE_RUN_BECAUSE_KUBERNETES: "1"
               MATRIX_ALLOWED_USERS: "@andrew:goyangi.io"
               MATRIX_ALLOW_ROOM_MENTIONS: "false"
               MATRIX_AUTO_THREAD: "true"
@@ -208,3 +213,11 @@ spec:
         globalMounts:
           - path: /tmp/config.yaml
             subPath: config.yaml
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+      run:
+        type: emptyDir
+        globalMounts:
+          - path: /run
