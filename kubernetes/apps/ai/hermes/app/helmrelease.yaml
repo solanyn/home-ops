@@ -112,11 +112,13 @@ spec:
               runAsUser: 10000
               runAsGroup: 10000
             resources:
+              # app runs ~770Mi live; keep the limit generous so page-cache
+              # pressure from state.db / kanban workspaces cannot OOMKill it.
               requests:
                 cpu: 100m
-                memory: 512Mi
+                memory: 1Gi
               limits:
-                memory: 2Gi
+                memory: 8Gi
           dashboard:
             image: *image
             env:
@@ -133,6 +135,9 @@ spec:
               runAsUser: 10000
               runAsGroup: 10000
             resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
               limits:
                 memory: 512Mi
           serve:
