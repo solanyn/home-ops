@@ -64,7 +64,9 @@ privacy:
   redact_pii: true
 memory:
   provider: honcho
-  honcho_url: http://honcho.ai.svc.cluster.local
+  # NB: do not add a honcho_url key here - nothing reads it. The plugin resolves
+  # the URL from HONCHO_BASE_URL (or honcho.json), set on the app container env
+  # in the HelmRelease. A key here silently falls back to Honcho cloud.
   memory_enabled: true
   user_profile_enabled: true
   memory_char_limit: 40000
