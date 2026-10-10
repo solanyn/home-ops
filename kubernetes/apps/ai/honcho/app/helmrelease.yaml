@@ -65,7 +65,7 @@ spec:
               - name: LLM_MODEL_CONFIG__TRANSPORT
                 value: openai
               - name: LLM_MODEL_CONFIG__MODEL
-                value: reasoning-pool
+                value: frontier-pool
               - name: LLM_MODEL_CONFIG__OVERRIDES__BASE_URL
                 value: http://litellm.ai.svc.cluster.local:4000/v1
               - name: EMBEDDING_MODEL_CONFIG__TRANSPORT

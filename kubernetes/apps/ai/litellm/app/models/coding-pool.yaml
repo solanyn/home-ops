@@ -52,5 +52,5 @@ spec:
     supportsFunctionCalling: true
     supportsVision: true
     extra:
-      input_cost_per_token: 9.0e-08
-      output_cost_per_token: 3.0e-07
+      input_cost_per_token: 6.75e-08
+      output_cost_per_token: 2.25e-07
