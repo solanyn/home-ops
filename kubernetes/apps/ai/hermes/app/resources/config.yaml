@@ -54,6 +54,11 @@ agent:
   restart_drain_timeout: 60
   api_max_retries: 2
   verify_on_stop: false
+kanban:
+  # Cap concurrent Kanban workers. Every worker runs on kanban-pool, which
+  # routes to OpenRouter — so this is the direct spend ceiling. Left unset,
+  # the dispatcher derives it from host memory and picks 8.
+  max_in_progress: 2
 updates:
   pre_update_backup: false
 streaming:
