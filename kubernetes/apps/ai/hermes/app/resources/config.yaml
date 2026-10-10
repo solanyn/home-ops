@@ -1,13 +1,13 @@
 _config_version: 44
 model:
-  default: reasoning-pool
+  default: frontier-pool
   provider: litellm
   base_url: http://litellm.ai.svc.cluster.local:4000/v1
 providers:
   litellm:
     api: http://litellm.ai.svc.cluster.local:4000/v1
     api_key: ${OPENAI_API_KEY}
-    default_model: reasoning-pool
+    default_model: frontier-pool
     transport: chat_completions
 moa:
   presets:
