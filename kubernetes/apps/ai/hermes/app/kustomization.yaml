@@ -15,8 +15,10 @@ configMapGenerator:
   - name: hermes-config
     files:
       - ./resources/config.yaml
-    options:
-      disableNameSuffixHash: true
+  - name: hermes-honcho
+    files:
+      - ./resources/honcho.json
 generatorOptions:
+  disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
