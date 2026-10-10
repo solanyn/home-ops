@@ -70,8 +70,6 @@ spec:
     cooldown_time: 30
     enable_pre_call_checks: true
     fallbacks:
-      - chatgpt/gpt-5.6-luna: [chatgpt/gpt-5.6-sol]
-      - chatgpt/gpt-5.6-sol: [frontier-pool]
       - frontier-pool: [coding-pool]
       - coding-pool: [simple-pool]
       - kanban-pool: [simple-pool]
