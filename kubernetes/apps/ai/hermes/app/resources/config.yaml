@@ -127,8 +127,13 @@ display:
     matrix:
       tool_progress: new
       tool_progress_grouping: accumulate
+      # Terse busy acks: keeps the "working" indicator, drops the per-iteration
+      # and per-tool detail (upstream default is the verbose form).
+      busy_ack_detail: false
+      # No 40-char tool-argument previews in progress lines (upstream sets 40);
+      # shortens each line and keeps tool input such as paths out of chat.
+      tool_preview_length: 0
       interim_assistant_messages: true
-      busy_ack_detail: true
       long_running_notifications: true
 auxiliary:
   vision:
