@@ -1,0 +1,11 @@
+{
+  "baseUrl": "http://honcho.ai.svc.cluster.local",
+  "hosts": {
+    "hermes": {
+      "enabled": true,
+      "aiPeer": "hermes",
+      "peerName": "andrew",
+      "workspace": "hermes"
+    }
+  }
+}

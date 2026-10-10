@@ -220,6 +220,12 @@ spec:
         globalMounts:
           - path: /tmp/config.yaml
             subPath: config.yaml
+      honcho:
+        type: configMap
+        name: "{{ .Release.Name }}-honcho"
+        globalMounts:
+          - path: /opt/data/honcho.json
+            subPath: honcho.json
       tmp:
         type: emptyDir
         globalMounts:
