@@ -10,5 +10,4 @@ resources:
   - ./embedding.yaml
   - ./frontier-pool.yaml
   - ./kanban-pool.yaml
-  - ./reasoning-pool.yaml
   - ./simple-pool.yaml
