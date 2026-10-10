@@ -91,6 +91,13 @@ spec:
               # the projected/emptyDir mount cannot be chmod'd; this is the
               # supported opt-out and the image's own documented k8s path.
               S6_YES_I_WANT_A_WORLD_WRITABLE_RUN_BECAUSE_KUBERNETES: "1"
+              # Point the Honcho memory provider at the in-cluster instance.
+              # Without this the plugin resolves base_url=None and falls back to
+              # environment=production (Honcho cloud), silently ignoring the
+              # self-hosted server. NB the key is NOT HONCHO_URL and does not
+              # live under memory: in config.yaml — the plugin reads
+              # HONCHO_BASE_URL (or honcho.json), nothing else.
+              HONCHO_BASE_URL: http://honcho.ai.svc.cluster.local
               MATRIX_ALLOWED_USERS: "@andrew:goyangi.io"
               MATRIX_ALLOW_ROOM_MENTIONS: "false"
               MATRIX_AUTO_THREAD: "true"
