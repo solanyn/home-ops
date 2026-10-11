@@ -51,8 +51,8 @@ spec:
     networkPolicy:
       enabled: true
       egressPorts:
-        - 4000
-        - 5432
+        - 443
+      postgresPort: 5432
     runner:
       resources:
         requests:
