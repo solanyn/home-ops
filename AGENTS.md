@@ -78,8 +78,8 @@ Single cluster Kubernetes GitOps repository with FluxCD v2. Hierarchical pattern
 ### Directories
 
 - `.agents/` - Agent instructions and reusable workflows
-  - `.agents/instructions/` - Sorting and review conventions
-  - `.agents/skills/` - Task-specific implementation workflows
+    - `.agents/instructions/` - Sorting and review conventions
+    - `.agents/skills/` - Task-specific implementation workflows
 - `kubernetes/` - Cluster manifests
 - `kubernetes/mod.just` - Just commands for cluster operations
 - `talos/` - Talos Linux configuration
@@ -487,30 +487,30 @@ route:
 ```yaml
 # LoadBalancer with Cilium IPAM (dual-stack)
 service:
-  app:
-    type: LoadBalancer
-    ipFamilies: [IPv4, IPv6]
-    ipFamilyPolicy: PreferDualStack
-    externalTrafficPolicy: Local
-    annotations:
-      external-dns.alpha.kubernetes.io/hostname: app.goyangi.io
-      lbipam.cilium.io/ips: 192.168.69.122,fc69::122
-    ports:
-      tcp:
-        port: 50469
-        protocol: TCP
+    app:
+        type: LoadBalancer
+        ipFamilies: [IPv4, IPv6]
+        ipFamilyPolicy: PreferDualStack
+        externalTrafficPolicy: Local
+        annotations:
+            external-dns.alpha.kubernetes.io/hostname: app.goyangi.io
+            lbipam.cilium.io/ips: 192.168.69.122,fc69::122
+        ports:
+            tcp:
+                port: 50469
+                protocol: TCP
 
 # LoadBalancer with IPv4 only (legacy)
 service:
-  bittorrent:
-    type: LoadBalancer
-    annotations:
-      lbipam.cilium.io/ips: 192.168.69.122
-    externalTrafficPolicy: Local
-    ports:
-      tcp:
-        port: 50469
-        protocol: TCP
+    bittorrent:
+        type: LoadBalancer
+        annotations:
+            lbipam.cilium.io/ips: 192.168.69.122
+        externalTrafficPolicy: Local
+        ports:
+            tcp:
+                port: 50469
+                protocol: TCP
 ```
 
 #### Configuration Patterns
@@ -589,28 +589,28 @@ resources:
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: app-name
+    name: app-name
 spec:
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: onepassword-connect
-  target:
-    name: app-name-secret
-    creationPolicy: Owner
-    template:
-      data:
-        DATABASE_URL: "postgres://{{ .DB_USER }}:{{ .DB_PASS }}@host:5432/db"
-        API_KEY: "{{ .API_KEY }}"
-        # Use YAML anchors for shared values
-        INIT_POSTGRES_HOST: &dbHost postgres-rw.storage.svc.cluster.local
-        INIT_POSTGRES_USER: &dbUser "{{ .DB_USER }}"
-        INIT_POSTGRES_PASS: &dbPass "{{ .DB_PASS }}"
-        INIT_POSTGRES_DBNAME: *dbName
-  dataFrom:
-    - extract:
-        key: app-name
-    - extract:
-        key: cloudnative-pg  # Shared database credentials
+    secretStoreRef:
+        kind: ClusterSecretStore
+        name: onepassword-connect
+    target:
+        name: app-name-secret
+        creationPolicy: Owner
+        template:
+            data:
+                DATABASE_URL: "postgres://{{ .DB_USER }}:{{ .DB_PASS }}@host:5432/db"
+                API_KEY: "{{ .API_KEY }}"
+                # Use YAML anchors for shared values
+                INIT_POSTGRES_HOST: &dbHost postgres-rw.storage.svc.cluster.local
+                INIT_POSTGRES_USER: &dbUser "{{ .DB_USER }}"
+                INIT_POSTGRES_PASS: &dbPass "{{ .DB_PASS }}"
+                INIT_POSTGRES_DBNAME: *dbName
+    dataFrom:
+        - extract:
+              key: app-name
+        - extract:
+              key: cloudnative-pg # Shared database credentials
 ```
 
 ## Commands
@@ -855,7 +855,7 @@ dataFrom:
 
 1. FluxCD syncs changes automatically
 2. Hierarchical reconciliation with dependencies
-3. PR validation with kubeconform and linting
+3. PR validation with linting and rendered-manifest checks
 4. Renovate automation for updates
 
 ### Runtime verification
@@ -876,9 +876,15 @@ dataFrom:
 
 ### Local rendering with Flate
 
-- Flate renders Flux Kustomizations locally using `FLATE_PATH=kubernetes/flux/cluster` from `.mise.toml`.
-- Install repository tools with `mise install` before rendering.
-- Use `just kube render-local-ks <namespace> <kustomization>` to render a child Kustomization. The recipe runs Flate through `mise exec` with `--allow-missing-secrets` because source authentication and generated application secrets only exist in the live cluster.
+- `mise` is the required project tool manager and version source of truth for this repository. Before using repo tools, run `mise install` from the repo root; use `mise exec -- <tool>` for commands so versions come from `.mise.toml` and `mise.lock`. Do not install project tools globally or rely on unpinned system/Homebrew versions when a mise-managed version exists. Pin tool versions and commit the updated `mise.lock` whenever tool configuration changes.
+- Run `lefthook run pre-commit` on staged changes before committing. Hooks format YAML, JSON and Just files with `oxfmt`/`just` and run configured shell/workflow checks; stage formatter output and inspect the diff before commit.
+- Render Flux resources with `just kube render-local-ks <namespace> <kustomization>` (equivalent to `mise exec -- flate build ks --allow-missing-secrets --namespace <namespace> --output yaml <kustomization>`). `--allow-missing-secrets` permits local rendering when cluster-only ExternalSecrets are unavailable; it does not validate their secret values.
+- For every changed Flux Kustomization path, render the relevant entry point and validate the rendered YAML against the cluster's served API schemas/CRDs using the repository's schema-validation tool. Include the parent/root render to catch Flux tree wiring and duplicate resource IDs. Do not apply manifests directly as a substitute for validation.
+- For changes that depend on live CRDs or operator/chart versions, use an authenticated cluster context and inspect the installed CRDs/Flux state read-only. Report when live validation is blocked; never imply the local render checked the cluster.
+- For HelmRelease changes, render the Helm chart with the exact chart version and values and validate the rendered resources as well as the HelmRelease schema. Do not treat a successful Kustomize/Flate build alone as Helm chart validation.
+- Konflate is separate from Flate: identify its configured PR checks and run the equivalent local render/schema checks when available. Do not claim there is a Konflate-specific cluster render until the job or logs confirm it.
+- Before finishing an implementation, run the relevant lint/format checks, all affected local renders, and schema validation; include exact commands and outcomes in the PR summary.
+
 - Rendering `cluster-apps-private` locally validates the root graph but cannot prove the private source contents are current without its Forgejo credentials. Use the live `flux-system-private` GitRepository and `cluster-apps-private` status for that check.
 - Use `just kube apply-ks` or `just kube delete-ks` only when that direct cluster action is explicitly intended. Normal changes must follow GitOps: edit, commit, push and reconcile.
 - Flate is a local renderer. Konflate is repository automation. Neither combines the public and private repositories.
