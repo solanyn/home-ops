@@ -1,0 +1,45 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: kritika
+spec:
+  cluster:
+    name: kritika-postgres
+  name: kritika
+  owner: kritika
+  extensions:
+    - name: vector
+      ensure: present
+    - name: vchord
+      version: "1.1.1"
+      ensure: present
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/role_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: kritika-app
+spec:
+  cluster:
+    name: kritika-postgres
+  name: kritika_app
+  login: true
+  passwordSecret:
+    name: kritika-postgres-app
+  databaseRoleReclaimPolicy: retain
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/role_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: kritika-runner
+spec:
+  cluster:
+    name: kritika-postgres
+  name: kritika_runner
+  login: true
+  passwordSecret:
+    name: kritika-postgres-runner
+  databaseRoleReclaimPolicy: retain
