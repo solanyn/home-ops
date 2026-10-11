@@ -10,7 +10,7 @@ _.file = ["{{config_root}}/.secrets.env"]
 
 [tools]
 "github:home-operations/flate" = "v0.6.5"
-"aqua:mitsuhiko/minijinja" = "2.24.0"
+"aqua:mitsuhiko/minijinja" = "3.0.0"
 "1password-cli" = "2.35.0"
 actionlint = "1.7.12"
 jq = "1.8.2"
