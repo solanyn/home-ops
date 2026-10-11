@@ -1,17 +1,37 @@
 [pre-commit]
 parallel = true
+skip = ["merge", "rebase"]
 
 [pre-commit.commands.format-yaml]
 run = "oxfmt {staged_files}"
 glob = ["*.yaml", "*.yml"]
 stage_fixed = true
+exclude = [".mise/locks/**"]
 
 [pre-commit.commands.format-json]
 run = "oxfmt {staged_files}"
 glob = ["*.json", "*.json5", "*.jsonc"]
+stage_fixed = true
+exclude = [".mise/locks/**"]
+
+[pre-commit.commands.format-markdown]
+run = "oxfmt {staged_files}"
+glob = ["*.md", "*.markdown", "*.mdx"]
 stage_fixed = true
 
 [pre-commit.commands.format-just]
 run = 'for f in {staged_files}; do just --justfile "$f" --fmt; done'
 glob = ["*.just", ".justfile"]
 stage_fixed = true
+
+[pre-commit.commands.shellcheck]
+run = "shellcheck {staged_files}"
+glob = ["*.sh"]
+
+[pre-commit.commands.actionlint]
+run = "actionlint {staged_files}"
+glob = [".github/workflows/*.yaml", ".github/workflows/*.yml"]
+
+[pre-commit.commands.zizmor]
+run = "zizmor --offline {staged_files}"
+glob = [".github/workflows/*.yaml", ".github/workflows/*.yml", ".github/actions/**/action.yaml", "actions/**/action.yaml"]
