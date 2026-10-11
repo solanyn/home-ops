@@ -66,13 +66,7 @@ spec:
           memory: 2Gi
       tools: []
     httpRoute:
-      enabled: true
-      parentRefs:
-        - name: envoy-external
-          namespace: network
-          sectionName: https
-      hostnames:
-        - kritika.goyangi.io
+      enabled: false
     monitoring:
       dashboards:
         enabled: true
