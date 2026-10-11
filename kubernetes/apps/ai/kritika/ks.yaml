@@ -6,11 +6,9 @@ metadata:
   name: kritika-database
   namespace: ai
 spec:
-  healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: kritika-postgres
-      namespace: ai
+  dependsOn:
+    - name: cloudnative-pg-cluster
+      namespace: storage
   interval: 1h
   path: ./kubernetes/apps/ai/kritika/database
   prune: true
@@ -18,7 +16,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: ai
+  targetNamespace: storage
   wait: false
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json

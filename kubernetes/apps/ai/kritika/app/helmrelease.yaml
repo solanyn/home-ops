@@ -40,16 +40,20 @@ spec:
         dimensions: 1024
     database:
       owner:
-        existingSecret: kritika-postgres-credentials
+        existingSecret: kritika-postgres-owner
       app:
         existingSecret: kritika-postgres-app
       runner:
         existingSecret: kritika-postgres-runner
-    envFrom:
-      - secretRef:
-          name: kritika-secret
+      envFrom:
+        - secretRef:
+            name: kritika-secret
     networkPolicy:
       enabled: true
+      services:
+        - name: postgres-rw.storage.svc.cluster.local
+          ports:
+            - 5432
       egressPorts:
         - 443
       postgresPort: 5432
