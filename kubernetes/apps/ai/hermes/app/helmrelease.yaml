@@ -76,6 +76,12 @@ spec:
                 mkdir -p /tmp/hermes-runtime
                 chown 10000:10000 /tmp/hermes-runtime
                 chmod 700 /tmp/hermes-runtime
+
+                # Keep Hermes host rendezvous locks off the persistent state
+                # tree, whose parent directories may have been created as root.
+                mkdir -p /run/hermes/gateway-locks
+                chown 10000:10000 /run/hermes /run/hermes/gateway-locks
+                chmod 700 /run/hermes /run/hermes/gateway-locks
             envFrom:
               - secretRef:
                   name: hermes
@@ -98,6 +104,7 @@ spec:
               # live under memory: in config.yaml — the plugin reads
               # HONCHO_BASE_URL (or honcho.json), nothing else.
               HONCHO_BASE_URL: http://honcho.ai.svc.cluster.local
+              HERMES_GATEWAY_LOCK_DIR: /run/hermes/gateway-locks
               MATRIX_ALLOWED_USERS: "@andrew:goyangi.io"
               MATRIX_ALLOW_ROOM_MENTIONS: "false"
               MATRIX_AUTO_THREAD: "true"
@@ -135,6 +142,7 @@ spec:
             image: *image
             env:
               PATH: /usr/local/bin:/usr/bin:/bin
+              HERMES_GATEWAY_LOCK_DIR: /run/hermes/gateway-locks
               GATEWAY_HEALTH_URL: http://localhost:8642
               TZ: Australia/Sydney
             command: ["/opt/hermes/bin/hermes"]
@@ -163,6 +171,7 @@ spec:
               - "9120"
             env:
               PATH: /usr/local/bin:/usr/bin:/bin
+              HERMES_GATEWAY_LOCK_DIR: /run/hermes/gateway-locks
               HERMES_HOME: /opt/data
               HOME: /opt/data
               TZ: Australia/Sydney
