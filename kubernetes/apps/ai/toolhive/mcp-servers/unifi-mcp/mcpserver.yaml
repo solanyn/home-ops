@@ -5,7 +5,7 @@ metadata:
   name: unifi-mcp
   namespace: ai
 spec:
-  image: ghcr.io/sirkirby/unifi-network-mcp:0.36.2@sha256:ef7ac87ec60c826e3fd4ae28a8674d7b6100325bcad6422e54dd1a6096859585
+  image: ghcr.io/sirkirby/unifi-network-mcp:0.37.0@sha256:7850ed50edc633b315c94515e514b9850d703511386e78d09421ebf441f0cb90
   transport: streamable-http
   proxyMode: streamable-http
   proxyPort: 8080
