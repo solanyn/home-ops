@@ -31,6 +31,6 @@ spec:
   clientID: hermes-webui
   isPublic: true
   callbackUrls:
-    - https://hermes-webui.goyangi.io/auth/callback
+    - https://hermes-webui.goyangi.io/api/auth/oidc/callback
   logoutCallbackUrls:
     - https://hermes-webui.goyangi.io
