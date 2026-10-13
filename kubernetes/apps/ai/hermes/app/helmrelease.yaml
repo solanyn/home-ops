@@ -26,6 +26,17 @@ spec:
           reloader.stakater.com/auto: "true"
         replicas: 1
         initContainers:
+          webui-agent-source:
+            image: &image
+              repository: nousresearch/hermes-agent
+              tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
+            command:
+              - sh
+              - -c
+              - |
+                set -eu
+                cp -a /opt/hermes/. /agent-source/
+                chmod -R a+rX /agent-source
           init:
             image:
               repository: docker.io/library/alpine
@@ -36,19 +47,16 @@ spec:
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
-                cp -a /opt/hermes/. /tmp/hermes-agent-src/
-                chmod -R a+rX /tmp/hermes-agent-src
-                chown -R 10000:10000 /tmp/hermes-agent-src
 
                 umask 077
-                printf 'OPENAI_API_KEY=%s\\n' "$OPENAI_API_KEY" > /opt/data/.env
+                printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY" > /opt/data/.env
                 # Profile-local env files are required for child workers to
                 # resolve the shared LiteLLM credential.
                 for profile in /opt/data/profiles/*; do
                   if [ -d "$profile" ]; then
                     tmp="$profile/.env.tmp"
-                    { grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true; \\
-                      printf 'OPENAI_API_KEY=%s\\n' "$OPENAI_API_KEY"; } > "$tmp"
+                    { grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true; \
+                      printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY"; } > "$tmp"
                     chown 10000:10000 "$tmp"
                     chmod 600 "$tmp"
                     mv "$tmp" "$profile/.env"
@@ -90,9 +98,7 @@ spec:
                   name: hermes
         containers:
           app:
-            image: &image
-              repository: nousresearch/hermes-agent
-              tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
+            image: *image
             args: ["gateway", "run"]
             env:
               PATH: /usr/local/bin:/usr/bin:/bin
@@ -157,12 +163,9 @@ spec:
               repository: ghcr.io/nesquena/hermes-webui
               tag: 0.52.113@sha256:48ba6ee4a837079955c00e997b751065cc0324ae6eaa0f2fec592c8f4b2a746e
             command: ["/hermeswebui_init.bash"]
-            args: ["--skip-agent-install"]
             env:
               HERMES_HOME: /opt/data
-              HOME: /opt/data
-              HERMES_WEBUI_AGENT_DIR: /tmp/hermes-agent-src
-              HERMES_WEBUI_PYTHON: /usr/local/bin/python
+              HOME: /home/hermeswebui
               HERMES_CONFIG_PATH: /opt/data/config.yaml
               HERMES_KANBAN_HOME: /opt/data
               HERMES_WEBUI_HOST: 0.0.0.0
@@ -291,7 +294,9 @@ spec:
       webui-agent-source:
         type: emptyDir
         globalMounts:
-          - path: /tmp/hermes-agent-src
+          - path: /agent-source
+          - path: /home/hermeswebui/.hermes/hermes-agent
+            readOnly: true
       media:
         type: nfs
         server: nas.internal
