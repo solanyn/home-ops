@@ -163,7 +163,7 @@ spec:
           webui:
             image:
               repository: ghcr.io/nesquena/hermes-webui
-              tag: 0.52.113@sha256:48ba6ee4a837079955c00e997b751065cc0324ae6eaa0f2fec592c8f4b2a746e
+              tag: 0.52.468@sha256:4ef899ac3a5a2faf22c31ebc46c8fc4e69f47287698cc8190eeb4273ef855992
             command: ["/hermeswebui_init.bash"]
             args: ["--skip-agent-install"]
             env:
