@@ -36,16 +36,19 @@ spec:
               - |
                 set -euo pipefail
                 cp /tmp/config.yaml /opt/data/config.yaml
+                cp -a /opt/hermes/. /tmp/hermes-agent-src/
+                chmod -R a+rX /tmp/hermes-agent-src
+                chown -R 10000:10000 /tmp/hermes-agent-src
 
                 umask 077
-                printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY" > /opt/data/.env
+                printf 'OPENAI_API_KEY=%s\\n' "$OPENAI_API_KEY" > /opt/data/.env
                 # Profile-local env files are required for child workers to
                 # resolve the shared LiteLLM credential.
                 for profile in /opt/data/profiles/*; do
                   if [ -d "$profile" ]; then
                     tmp="$profile/.env.tmp"
-                    { grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true; \
-                      printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY"; } > "$tmp"
+                    { grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true; \\
+                      printf 'OPENAI_API_KEY=%s\\n' "$OPENAI_API_KEY"; } > "$tmp"
                     chown 10000:10000 "$tmp"
                     chmod 600 "$tmp"
                     mv "$tmp" "$profile/.env"
@@ -93,16 +96,7 @@ spec:
             args: ["gateway", "run"]
             env:
               PATH: /usr/local/bin:/usr/bin:/bin
-              # s6-overlay refuses a non-world-writable /run on Kubernetes, where
-              # the projected/emptyDir mount cannot be chmod'd; this is the
-              # supported opt-out and the image's own documented k8s path.
               S6_YES_I_WANT_A_WORLD_WRITABLE_RUN_BECAUSE_KUBERNETES: "1"
-              # Point the Honcho memory provider at the in-cluster instance.
-              # Without this the plugin resolves base_url=None and falls back to
-              # environment=production (Honcho cloud), silently ignoring the
-              # self-hosted server. NB the key is NOT HONCHO_URL and does not
-              # live under memory: in config.yaml — the plugin reads
-              # HONCHO_BASE_URL (or honcho.json), nothing else.
               HONCHO_BASE_URL: http://honcho.ai.svc.cluster.local
               HERMES_GATEWAY_LOCK_DIR: /run/hermes/gateway-locks
               MATRIX_ALLOWED_USERS: "@andrew:goyangi.io"
@@ -131,8 +125,6 @@ spec:
               runAsUser: 10000
               runAsGroup: 10000
             resources:
-              # app runs ~770Mi live; keep the limit generous so page-cache
-              # pressure from state.db / kanban workspaces cannot OOMKill it.
               requests:
                 cpu: 100m
                 memory: 1Gi
@@ -169,15 +161,15 @@ spec:
             env:
               HERMES_HOME: /home/hermeswebui/.hermes
               HOME: /home/hermeswebui
-              HERMES_WEBUI_AGENT_DIR: /home/hermeswebui/.hermes/hermes-agent
-              HERMES_WEBUI_PYTHON: /home/hermeswebui/.hermes/hermes-agent/.venv/bin/python
+              HERMES_WEBUI_AGENT_DIR: /tmp/hermes-agent-src
+              HERMES_WEBUI_PYTHON: /opt/hermes/.venv/bin/python
               HERMES_WEBUI_HOST: 0.0.0.0
               HERMES_WEBUI_PORT: "8787"
               HERMES_WEBUI_STATE_DIR: /webui-state
               HERMES_WEBUI_DEFAULT_WORKSPACE: /opt/data/workspace
               HERMES_WEBUI_OIDC_ISSUER: https://id.goyangi.io
               HERMES_WEBUI_OIDC_CLIENT_ID: hermes-webui
-              HERMES_WEBUI_OIDC_REDIRECT_URI: https://hermes-webui.goyangi.io/auth/callback
+              HERMES_WEBUI_OIDC_REDIRECT_URI: https://hermes-webui.goyangi.io/api/auth/oidc/callback
               HERMES_WEBUI_OIDC_ALLOW_CLAIM: email
               HERMES_WEBUI_OIDC_ALLOW_VALUES: andrew@goyangi.io
               HERMES_WEBUI_GATEWAY_API_KEY:
@@ -291,15 +283,13 @@ spec:
         globalMounts:
           - path: /opt/data
       webui-home:
-        existingClaim: "{{ .Release.Name }}"
+        type: emptyDir
         globalMounts:
           - path: /home/hermeswebui/.hermes
       webui-agent-source:
-        existingClaim: "{{ .Release.Name }}"
+        type: emptyDir
         globalMounts:
-          - path: /home/hermeswebui/.hermes/hermes-agent
-            subPath: hermes-agent
-            readOnly: true
+          - path: /tmp/hermes-agent-src
       media:
         type: nfs
         server: nas.internal
