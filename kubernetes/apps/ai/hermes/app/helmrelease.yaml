@@ -26,17 +26,6 @@ spec:
           reloader.stakater.com/auto: "true"
         replicas: 1
         initContainers:
-          webui-agent-source:
-            image: &image
-              repository: nousresearch/hermes-agent
-              tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
-            command:
-              - sh
-              - -c
-              - |
-                set -eu
-                cp -a /opt/hermes/. /agent-source/
-                chmod -R a+rX /agent-source
           init:
             image:
               repository: docker.io/library/alpine
@@ -98,7 +87,9 @@ spec:
                   name: hermes
         containers:
           app:
-            image: *image
+            image: &image
+              repository: nousresearch/hermes-agent
+              tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
             args: ["gateway", "run"]
             env:
               PATH: /usr/local/bin:/usr/bin:/bin
@@ -158,77 +149,6 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 512Mi
-          webui:
-            image:
-              repository: ghcr.io/nesquena/hermes-webui
-              tag: 0.52.113@sha256:48ba6ee4a837079955c00e997b751065cc0324ae6eaa0f2fec592c8f4b2a746e
-            command: ["/hermeswebui_init.bash"]
-            args: ["--skip-agent-install"]
-            env:
-              HERMES_HOME: /opt/data
-              HOME: /home/hermeswebui
-              HERMES_WEBUI_AGENT_DIR: /home/hermeswebui/.hermes/hermes-agent
-              HERMES_CONFIG_PATH: /opt/data/config.yaml
-              HERMES_KANBAN_HOME: /opt/data
-              HERMES_WEBUI_HOST: 0.0.0.0
-              HERMES_WEBUI_PORT: "8787"
-              HERMES_WEBUI_STATE_DIR: /webui-state
-              HERMES_WEBUI_DEFAULT_WORKSPACE: /opt/data/workspace
-              HERMES_WEBUI_OIDC_ISSUER: https://id.goyangi.io
-              HERMES_WEBUI_OIDC_CLIENT_ID: hermes-webui
-              HERMES_WEBUI_OIDC_REDIRECT_URI: https://hermes-webui.goyangi.io/api/auth/oidc/callback
-              HERMES_WEBUI_OIDC_ALLOW_CLAIM: email
-              HERMES_WEBUI_OIDC_ALLOW_VALUES: andrew@goyangi.io
-              HERMES_WEBUI_GATEWAY_API_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: hermes
-                    key: API_SERVER_KEY
-              HERMES_WEBUI_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: hermes
-                    key: HERMES_WEBUI_PASSWORD
-              WANTED_UID: "10000"
-              WANTED_GID: "10000"
-              UV_CACHE_DIR: /uv_cache
-              HERMES_API_URL: http://localhost:8642
-              TZ: Australia/Sydney
-            envFrom:
-              - secretRef:
-                  name: hermes
-            securityContext:
-              runAsUser: 10000
-              runAsGroup: 10000
-              runAsNonRoot: true
-              readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop: [ALL]
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: 8787
-                  initialDelaySeconds: 15
-                  periodSeconds: 30
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: 8787
-                  periodSeconds: 10
-            resources:
-              requests:
-                cpu: 100m
-                memory: 512Mi
-              limits:
-                memory: 2Gi
           serve:
             image: *image
             command: ["/opt/hermes/bin/hermes"]
@@ -274,11 +194,6 @@ spec:
         ports:
           http:
             port: 8645
-      webui:
-        controller: hermes
-        ports:
-          http:
-            port: 8787
       serve:
         controller: hermes
         ports:
@@ -289,16 +204,6 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /opt/data
-      webui-home:
-        type: emptyDir
-        globalMounts:
-          - path: /home/hermeswebui/.hermes
-      webui-agent-source:
-        type: emptyDir
-        globalMounts:
-          - path: /agent-source
-          - path: /home/hermeswebui/.hermes/hermes-agent
-            readOnly: true
       media:
         type: nfs
         server: nas.internal
@@ -323,23 +228,11 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp
-      webui-state:
-        type: emptyDir
-        globalMounts:
-          - path: /webui-state
       webui-workspace:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /opt/data/workspace
             readOnly: true
-      webui-app:
-        type: emptyDir
-        globalMounts:
-          - path: /app
-      webui-cache:
-        type: emptyDir
-        globalMounts:
-          - path: /uv_cache
       run:
         type: emptyDir
         globalMounts:
