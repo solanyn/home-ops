@@ -8,6 +8,9 @@ LEFTHOOK_OUTPUT = "false"
 
 _.file = ["{{config_root}}/.secrets.env"]
 
+[hooks]
+postinstall = "lefthook install"
+
 [tools]
 "github:home-operations/flate" = "v0.6.5"
 "aqua:mitsuhiko/minijinja" = "3.0.0"
