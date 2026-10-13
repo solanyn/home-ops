@@ -163,9 +163,11 @@ spec:
               repository: ghcr.io/nesquena/hermes-webui
               tag: 0.52.113@sha256:48ba6ee4a837079955c00e997b751065cc0324ae6eaa0f2fec592c8f4b2a746e
             command: ["/hermeswebui_init.bash"]
+            args: ["--skip-agent-install"]
             env:
               HERMES_HOME: /opt/data
               HOME: /home/hermeswebui
+              HERMES_WEBUI_AGENT_DIR: /home/hermeswebui/.hermes/hermes-agent
               HERMES_CONFIG_PATH: /opt/data/config.yaml
               HERMES_KANBAN_HOME: /opt/data
               HERMES_WEBUI_HOST: 0.0.0.0
