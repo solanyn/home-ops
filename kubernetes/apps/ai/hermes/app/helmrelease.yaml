@@ -69,12 +69,11 @@ spec:
                 spec:
                   exec:
                     command:
-                      - /opt/hermes/bin/hermes
-                      - healthcheck
-                      - --skip-model-check
-                      - --skip-provider-check
-                      - --skip-version-check
-                      - --skip-channel-check
+                      - /bin/sh
+                      - -c
+                      - |
+                        cd /opt/data/workspace
+                        exec hermes healthcheck --skip-model-check --skip-provider-check --skip-version-check --skip-channel-check
                   initialDelaySeconds: 30
                   periodSeconds: 30
                   timeoutSeconds: 10
@@ -85,12 +84,11 @@ spec:
                 spec:
                   exec:
                     command:
-                      - /opt/hermes/bin/hermes
-                      - healthcheck
-                      - --skip-model-check
-                      - --skip-provider-check
-                      - --skip-version-check
-                      - --skip-channel-check
+                      - /bin/sh
+                      - -c
+                      - |
+                        cd /opt/data/workspace
+                        exec hermes healthcheck --skip-model-check --skip-provider-check --skip-version-check --skip-channel-check
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -101,12 +99,11 @@ spec:
                 spec:
                   exec:
                     command:
-                      - /opt/hermes/bin/hermes
-                      - healthcheck
-                      - --skip-model-check
-                      - --skip-provider-check
-                      - --skip-version-check
-                      - --skip-channel-check
+                      - /bin/sh
+                      - -c
+                      - |
+                        cd /opt/data/workspace
+                        exec hermes healthcheck --skip-model-check --skip-provider-check --skip-version-check --skip-channel-check
                   periodSeconds: 10
                   timeoutSeconds: 5
                   failureThreshold: 30
@@ -215,52 +212,52 @@ spec:
             ports:
               http:
                 port: 9120
-        service:
-          hermes:
-            controller: hermes
-            ports:
-              http:
-                port: 8643
-          dashboard:
-            controller: hermes
-            ports:
-              http:
-                port: 8642
-          serve:
-            controller: hermes
-            ports:
-              http:
-                port: 9120
-        persistence:
-          config:
-            existingClaim: "{{ .Release.Name }}"
-            globalMounts:
-              - path: /opt/data
-          media:
-            type: nfs
-            server: nas.internal
-            path: /mnt/world/media
-            globalMounts:
-              - path: /media
-                readOnly: true
-          configmap:
-            type: configMap
-            name: "{{ .Release.Name }}-config"
-            defaultMode: 0755
-            globalMounts:
-              - path: /tmp/config.yaml
-                subPath: config.yaml
-          honcho:
-            type: configMap
-            name: "{{ .Release.Name }}-honcho"
-            globalMounts:
-              - path: /opt/data/honcho.json
-                subPath: honcho.json
-          tmp:
-            type: emptyDir
-            globalMounts:
-              - path: /tmp
-          run:
-            type: emptyDir
-            globalMounts:
-              - path: /run
+    service:
+      hermes:
+        controller: hermes
+        ports:
+          http:
+            port: 8643
+      dashboard:
+        controller: hermes
+        ports:
+          http:
+            port: 8642
+      serve:
+        controller: hermes
+        ports:
+          http:
+            port: 9120
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /opt/data
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          - path: /media
+            readOnly: true
+      configmap:
+        type: configMap
+        name: "{{ .Release.Name }}-config"
+        defaultMode: 0755
+        globalMounts:
+          - path: /tmp/config.yaml
+            subPath: config.yaml
+      honcho:
+        type: configMap
+        name: "{{ .Release.Name }}-honcho"
+        globalMounts:
+          - path: /opt/data/honcho.json
+            subPath: honcho.json
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+      run:
+        type: emptyDir
+        globalMounts:
+          - path: /run
