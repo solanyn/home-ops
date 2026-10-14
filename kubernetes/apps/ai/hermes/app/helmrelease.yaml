@@ -215,55 +215,21 @@ spec:
             ports:
               http:
                 port: 9120
-    service:
-      hermes:
-        controller: hermes
-        ports:
-          http:
-            port: 8643
-      dashboard:
-        controller: hermes
-        ports:
-          http:
-            port: 8642
-      serve:
-        controller: hermes
-        ports:
-          http:
-            port: 9120
-    route:
-      app:
-        hostnames:
-          - hermes.goyangi.io
-        parentRefs:
-          - name: envoy-external
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: hermes
+        service:
+          hermes:
+            controller: hermes
+            ports:
+              http:
                 port: 8643
-      dashboard:
-        hostnames:
-          - hermes-dashboard.goyangi.io
-        parentRefs:
-          - name: envoy-external
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: dashboard
+          dashboard:
+            controller: hermes
+            ports:
+              http:
                 port: 8642
-      serve:
-        hostnames:
-          - hermes-serve.goyangi.io
-        parentRefs:
-          - name: envoy-external
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - identifier: serve
+          serve:
+            controller: hermes
+            ports:
+              http:
                 port: 9120
     persistence:
       config:
