@@ -38,14 +38,14 @@ spec:
                 cp /tmp/config.yaml /opt/data/config.yaml
 
                 umask 077
-                printf 'OPENAI_API_KEY=%s\\n' "$OPENAI_API_KEY" > /opt/data/.env
+                printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY" > /opt/data/.env
                 # Profile-local env files are required for child workers to
                 # resolve the shared LiteLLM credential.
                 for profile in /opt/data/profiles/*; do
                   if [ -d "$profile" ]; then
                     tmp="$profile/.env.tmp"
                     { grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true; \\
-                      printf 'OPENAI_API_KEY=%s\\n' "$OPENAI_API_KEY"; } > "$tmp"
+                      printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY"; } > "$tmp"
                     chown 10000:10000 "$tmp"
                     chmod 600 "$tmp"
                     mv "$tmp" "$profile/.env"
@@ -118,8 +118,8 @@ spec:
         containers:
           app:
             image: *image
-            command: ["/opt/hermes/bin/hermes"]
-            args: ["chat", "--serve", "--port", "8643"]
+            command: ["/bin/sh", "-lc"]
+            args: ["exec hermes chat --serve --port 8643"]
             env:
               HERMES_HOME: /opt/data
               HOME: /opt/data
@@ -301,8 +301,8 @@ spec:
                 protocol: TCP
           serve:
             image: *image
-            command: ["/opt/hermes/bin/hermes"]
-            args: ["serve", "--host", "0.0.0.0", "--port", "9120"]
+            command: ["/bin/sh", "-lc"]
+            args: ["exec hermes serve --host 0.0.0.0 --port 9120"]
             env:
               PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/hermes/bin:/usr/local/bin:/usr/bin:/bin
               HERMES_GATEWAY_LOCK_DIR: /run/hermes/gateway-locks
@@ -327,7 +327,7 @@ spec:
               limits:
                 memory: 512Mi
         service:
-          app:
+          hermes:
             controller: hermes
             ports:
               http:
@@ -337,11 +337,6 @@ spec:
             ports:
               http:
                 port: 8642
-          webhook:
-            controller: hermes
-            ports:
-              http:
-                port: 8645
           serve:
             controller: hermes
             ports:
