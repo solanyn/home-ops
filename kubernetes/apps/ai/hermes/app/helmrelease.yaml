@@ -1,4 +1,3 @@
----
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -232,6 +231,40 @@ spec:
         ports:
           http:
             port: 9120
+    route:
+      app:
+        hostnames:
+          - hermes.goyangi.io
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: hermes
+                port: 8643
+      dashboard:
+        hostnames:
+          - hermes-dashboard.goyangi.io
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: dashboard
+                port: 8642
+      serve:
+        hostnames:
+          - hermes-serve.goyangi.io
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: serve
+                port: 9120
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
