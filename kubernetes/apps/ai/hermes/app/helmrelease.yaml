@@ -132,6 +132,35 @@ spec:
             envFrom:
               - secretRef:
                   name: hermes
+          sync-profiles:
+            image: *image
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -eu
+                for profile in counsel lore nexus pulse quest tinker; do
+                  profile_home="/opt/data/profiles/$profile"
+                  if [ -d "$profile_home" ]; then
+                    cp "/tmp/profile-souls/$profile.SOUL.md" "$profile_home/SOUL.md"
+                    chmod 644 "$profile_home/SOUL.md"
+                    /opt/hermes/bin/hermes -p "$profile" config set model.default frontier-pool
+                    /opt/hermes/bin/hermes -p "$profile" config set providers.litellm.default_model frontier-pool
+                  fi
+                done
+            securityContext:
+              runAsUser: 10000
+              runAsGroup: 10000
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+              seccompProfile: { type: RuntimeDefault }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
         containers:
           gateway:
             image: *image
@@ -307,6 +336,12 @@ spec:
         globalMounts:
           - path: /opt/data/honcho.json
             subPath: honcho.json
+      profile-souls:
+        type: configMap
+        name: "{{ .Release.Name }}-profile-souls"
+        globalMounts:
+          - path: /tmp/profile-souls
+            readOnly: true
       tmp:
         type: emptyDir
         globalMounts:
