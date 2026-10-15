@@ -157,6 +157,10 @@ auxiliary:
 platforms:
   matrix:
     enabled: true
+  api_server:
+    enabled: true
+    host: 0.0.0.0
+    port: 8643
 matrix:
   allowed_users:
     - "@andrew:goyangi.io"
