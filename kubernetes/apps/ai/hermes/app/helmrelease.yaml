@@ -196,6 +196,8 @@ spec:
             image: *image
             args: ["gateway", "run"]
             env:
+              HERMES_HOME: /opt/data
+              HOME: /opt/data
               PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/hermes/bin:/usr/local/bin:/usr/bin:/bin
               S6_YES_I_WANT_A_WORLD_WRITABLE_RUN_BECAUSE_KUBERNETES: "1"
               HONCHO_BASE_URL: http://honcho.ai.svc.cluster.local
@@ -204,6 +206,10 @@ spec:
               HERMES_GATEWAY_RESTART_MARKER: /run/hermes/gateway-restarting
               HERMES_WORKSPACE_ROOT: /opt/data/workspace
               TZ: Australia/Sydney
+            ports:
+              - name: webhook
+                containerPort: 8645
+                protocol: TCP
             envFrom:
               - secretRef:
                   name: hermes
@@ -267,6 +273,8 @@ spec:
           dashboard:
             image: *image
             env:
+              HERMES_HOME: /opt/data
+              HOME: /opt/data
               PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/hermes/bin:/usr/local/bin:/usr/bin:/bin
               HERMES_GATEWAY_LOCK_DIR: /run/hermes/gateway-locks
               GATEWAY_HEALTH_URL: http://localhost:8642
@@ -279,7 +287,7 @@ spec:
                   name: hermes
             args: ["dashboard", "--host", "0.0.0.0", "--port", "8642"]
             ports:
-              - name: http
+              - name: dashboard
                 containerPort: 8642
                 protocol: TCP
           serve:
@@ -296,7 +304,7 @@ spec:
               runAsUser: 10000
               runAsGroup: 10000
             ports:
-              - name: http
+              - name: serve
                 containerPort: 9120
                 protocol: TCP
     service:
@@ -308,13 +316,18 @@ spec:
       dashboard:
         controller: hermes
         ports:
-          http:
+          dashboard:
             port: 8642
       serve:
         controller: hermes
         ports:
-          http:
+          serve:
             port: 9120
+      webhook:
+        controller: hermes
+        ports:
+          webhook:
+            port: 8645
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
