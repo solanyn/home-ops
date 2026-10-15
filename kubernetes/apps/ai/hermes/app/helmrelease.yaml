@@ -118,86 +118,13 @@ spec:
               - secretRef:
                   name: hermes
         containers:
-          app:
-            image: *image
-            command: ["/bin/sh", "-lc"]
-            args: ["exec hermes chat --serve --port 8643"]
-            env:
-              HERMES_HOME: /opt/data
-              HOME: /opt/data
-              PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/hermes/bin:/usr/local/bin:/usr/bin:/bin
-            securityContext:
-              runAsUser: 10000
-              runAsGroup: 10000
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop: [ALL]
-              seccompProfile: { type: RuntimeDefault }
-            ports:
-              - name: http
-                containerPort: 8643
-                protocol: TCP
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command:
-                      - /opt/hermes/bin/hermes
-                      - healthcheck
-                      - --skip-model-check
-                      - --skip-provider-check
-                      - --skip-version-check
-                      - --skip-channel-check
-                  initialDelaySeconds: 30
-                  periodSeconds: 30
-                  timeoutSeconds: 10
-                  failureThreshold: 3
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command:
-                      - /opt/hermes/bin/hermes
-                      - healthcheck
-                      - --skip-model-check
-                      - --skip-provider-check
-                      - --skip-version-check
-                      - --skip-channel-check
-                  initialDelaySeconds: 10
-                  periodSeconds: 10
-                  timeoutSeconds: 5
-                  failureThreshold: 2
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command:
-                      - /opt/hermes/bin/hermes
-                      - healthcheck
-                      - --skip-model-check
-                      - --skip-provider-check
-                      - --skip-version-check
-                      - --skip-channel-check
-                  periodSeconds: 10
-                  timeoutSeconds: 5
-                  failureThreshold: 30
-            envFrom:
-              - secretRef:
-                  name: hermes
-            resources:
-              requests:
-                cpu: 100m
-                memory: 1Gi
-              limits:
-                memory: 8Gi
           gateway:
             image: *image
             args: ["gateway", "run"]
             env:
+              API_SERVER_ENABLED: "true"
+              API_SERVER_HOST: 0.0.0.0
+              API_SERVER_PORT: "8643"
               HERMES_HOME: /opt/data
               HOME: /opt/data
               PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/hermes/bin:/usr/local/bin:/usr/bin:/bin
@@ -209,6 +136,9 @@ spec:
               HERMES_WORKSPACE_ROOT: /opt/data/workspace
               TZ: Australia/Sydney
             ports:
+              - name: api
+                containerPort: 8643
+                protocol: TCP
               - name: webhook
                 containerPort: 8645
                 protocol: TCP
@@ -232,11 +162,8 @@ spec:
                   exec:
                     command:
                       - /opt/hermes/bin/hermes
-                      - healthcheck
-                      - --skip-model-check
-                      - --skip-provider-check
-                      - --skip-version-check
-                      - --skip-channel-check
+                      - gateway
+                      - status
                   initialDelaySeconds: 30
                   periodSeconds: 30
                   timeoutSeconds: 10
@@ -248,11 +175,8 @@ spec:
                   exec:
                     command:
                       - /opt/hermes/bin/hermes
-                      - healthcheck
-                      - --skip-model-check
-                      - --skip-provider-check
-                      - --skip-version-check
-                      - --skip-channel-check
+                      - gateway
+                      - status
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -264,11 +188,8 @@ spec:
                   exec:
                     command:
                       - /opt/hermes/bin/hermes
-                      - healthcheck
-                      - --skip-model-check
-                      - --skip-provider-check
-                      - --skip-version-check
-                      - --skip-channel-check
+                      - gateway
+                      - status
                   periodSeconds: 10
                   timeoutSeconds: 10
                   failureThreshold: 30
@@ -292,10 +213,22 @@ spec:
               - name: dashboard
                 containerPort: 8642
                 protocol: TCP
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 8642
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 8642
           serve:
             image: *image
-            command: ["/bin/sh", "-lc"]
-            args: ["exec hermes serve --host 0.0.0.0 --port 9120"]
+            args: ["serve", "--host", "0.0.0.0", "--port", "9120"]
             env:
               PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/hermes/bin:/usr/local/bin:/usr/bin:/bin
               HERMES_GATEWAY_LOCK_DIR: /run/hermes/gateway-locks
@@ -309,11 +242,24 @@ spec:
               - name: serve
                 containerPort: 9120
                 protocol: TCP
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 9120
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 9120
     service:
       hermes:
         controller: hermes
         ports:
-          http:
+          api:
             port: 8643
       dashboard:
         controller: hermes
