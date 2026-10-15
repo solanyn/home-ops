@@ -38,28 +38,30 @@ spec:
                 cp /tmp/config.yaml /opt/data/config.yaml
 
                 umask 077
-                printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY" > /opt/data/.env
-                # Platform credentials are profile-scoped. The default profile
-                # owns the Matrix adapter; satellite profiles need only LiteLLM.
+                # Hermes treats its root home as the default profile.
+                root_env=/opt/data/.env.tmp
+                {
+                  grep -v -E '^(OPENAI_API_KEY|MATRIX_HOMESERVER|MATRIX_USER_ID|MATRIX_ACCESS_TOKEN|MATRIX_DEVICE_ID|MATRIX_RECOVERY_KEY|MATRIX_E2EE_MODE)=' /opt/data/.env 2>/dev/null || true
+                  printf '%s\n' \
+                    "OPENAI_API_KEY=$OPENAI_API_KEY" \
+                    "MATRIX_HOMESERVER=$MATRIX_HOMESERVER" \
+                    "MATRIX_USER_ID=$MATRIX_USER_ID" \
+                    "MATRIX_ACCESS_TOKEN=$MATRIX_ACCESS_TOKEN" \
+                    "MATRIX_DEVICE_ID=$MATRIX_DEVICE_ID" \
+                    "MATRIX_RECOVERY_KEY=$MATRIX_RECOVERY_KEY" \
+                    "MATRIX_E2EE_MODE=$MATRIX_E2EE_MODE"
+                } > "$root_env"
+                chown 10000:10000 "$root_env"
+                chmod 600 "$root_env"
+                mv "$root_env" /opt/data/.env
+
+                # Satellite profiles need the shared LiteLLM credential only.
                 for profile in /opt/data/profiles/*; do
                   if [ -d "$profile" ]; then
                     tmp="$profile/.env.tmp"
                     {
-                      if [ "$profile" = /opt/data/profiles/default ]; then
-                        grep -v -E '^(OPENAI_API_KEY|MATRIX_HOMESERVER|MATRIX_USER_ID|MATRIX_ACCESS_TOKEN|MATRIX_DEVICE_ID|MATRIX_RECOVERY_KEY|MATRIX_E2EE_MODE)=' "$profile/.env" 2>/dev/null || true
-                      else
-                        grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true
-                      fi
+                      grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true
                       printf '%s\n' "OPENAI_API_KEY=$OPENAI_API_KEY"
-                      if [ "$profile" = /opt/data/profiles/default ]; then
-                        printf '%s\n' \
-                          "MATRIX_HOMESERVER=$MATRIX_HOMESERVER" \
-                          "MATRIX_USER_ID=$MATRIX_USER_ID" \
-                          "MATRIX_ACCESS_TOKEN=$MATRIX_ACCESS_TOKEN" \
-                          "MATRIX_DEVICE_ID=$MATRIX_DEVICE_ID" \
-                          "MATRIX_RECOVERY_KEY=$MATRIX_RECOVERY_KEY" \
-                          "MATRIX_E2EE_MODE=$MATRIX_E2EE_MODE"
-                      fi
                     } > "$tmp"
                     chown 10000:10000 "$tmp"
                     chmod 600 "$tmp"
