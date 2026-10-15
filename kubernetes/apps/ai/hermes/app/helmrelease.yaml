@@ -39,14 +39,27 @@ spec:
 
                 umask 077
                 printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY" > /opt/data/.env
-                # Profile-local env files are required for child workers to
-                # resolve the shared LiteLLM credential.
+                # Platform credentials are profile-scoped. The default profile
+                # owns the Matrix adapter; satellite profiles need only LiteLLM.
                 for profile in /opt/data/profiles/*; do
                   if [ -d "$profile" ]; then
                     tmp="$profile/.env.tmp"
                     {
-                      grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true
+                      if [ "$profile" = /opt/data/profiles/default ]; then
+                        grep -v -E '^(OPENAI_API_KEY|MATRIX_HOMESERVER|MATRIX_USER_ID|MATRIX_ACCESS_TOKEN|MATRIX_DEVICE_ID|MATRIX_RECOVERY_KEY|MATRIX_E2EE_MODE)=' "$profile/.env" 2>/dev/null || true
+                      else
+                        grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true
+                      fi
                       printf '%s\n' "OPENAI_API_KEY=$OPENAI_API_KEY"
+                      if [ "$profile" = /opt/data/profiles/default ]; then
+                        printf '%s\n' \
+                          "MATRIX_HOMESERVER=$MATRIX_HOMESERVER" \
+                          "MATRIX_USER_ID=$MATRIX_USER_ID" \
+                          "MATRIX_ACCESS_TOKEN=$MATRIX_ACCESS_TOKEN" \
+                          "MATRIX_DEVICE_ID=$MATRIX_DEVICE_ID" \
+                          "MATRIX_RECOVERY_KEY=$MATRIX_RECOVERY_KEY" \
+                          "MATRIX_E2EE_MODE=$MATRIX_E2EE_MODE"
+                      fi
                     } > "$tmp"
                     chown 10000:10000 "$tmp"
                     chmod 600 "$tmp"
