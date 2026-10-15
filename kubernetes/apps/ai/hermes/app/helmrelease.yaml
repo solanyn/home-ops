@@ -102,8 +102,8 @@ spec:
                   /opt/hermes/bin/hermes plugins install kaishi00/hermes-conduit-notifier --enable --ref 2a08b5a2a569dfcc220ae63dedb2a1527438344b
                 fi
             securityContext:
-              runAsUser: 10000
-              runAsGroup: 10000
+              runAsUser: 0
+              runAsGroup: 0
               allowPrivilegeEscalation: false
               capabilities:
                 drop: [ALL]
@@ -159,11 +159,8 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  exec:
-                    command:
-                      - /opt/hermes/bin/hermes
-                      - gateway
-                      - status
+                  tcpSocket:
+                    port: 8643
                   initialDelaySeconds: 30
                   periodSeconds: 30
                   timeoutSeconds: 10
@@ -172,11 +169,8 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  exec:
-                    command:
-                      - /opt/hermes/bin/hermes
-                      - gateway
-                      - status
+                  tcpSocket:
+                    port: 8643
                   initialDelaySeconds: 10
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -185,11 +179,8 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  exec:
-                    command:
-                      - /opt/hermes/bin/hermes
-                      - gateway
-                      - status
+                  tcpSocket:
+                    port: 8643
                   periodSeconds: 10
                   timeoutSeconds: 10
                   failureThreshold: 30
