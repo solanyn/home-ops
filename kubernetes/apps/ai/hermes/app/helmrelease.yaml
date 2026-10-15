@@ -1,7 +1,350 @@
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: hermes
 spec:
- ⟪HERMES-CONTEXT-COMPRESSION: 8,590 of 8,790 chars omitted here by Hermes's context compressor. This is NOT part of the original tool call and must never be reproduced in new output — always write full, untruncated content.⟫
+  chartRef:
+    kind: OCIRepository
+    name: hermes
+  interval: 10m
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: true
+      securityContext:
+        fsGroup: 10000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    serviceAccount:
+      hermes:
+        enabled: true
+        annotations:
+          reloader.stakater.com/match: "true"
+    controllers:
+      hermes:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 1
+        initContainers:
+          init:
+            image:
+              repository: docker.io/library/alpine
+              tag: "3.24"
+            command:
+              - sh
+              - -c
+              - |
+                set -euo pipefail
+                cp /tmp/config.yaml /opt/data/config.yaml
+
+                umask 077
+                printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY" > /opt/data/.env
+                # Profile-local env files are required for child workers to
+                # resolve the shared LiteLLM credential.
+                for profile in /opt/data/profiles/*; do
+                  if [ -d "$profile" ]; then
+                    tmp="$profile/.env.tmp"
+                    { grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true; \\
+                      printf 'OPENAI_API_KEY=%s\\n' "$OPENAI_API_KEY"; } > "$tmp"
+                    chown 10000:10000 "$tmp"
+                    chmod 600 "$tmp"
+                    mv "$tmp" "$profile/.env"
+                  fi
+                done
+
+                # .config/op may be owned by a stale UID from a restored snapshot;
+                # op refuses to read a config owned by another user. Fix ownership
+                # here as root so the app (runAsUser 10000) can use the CLI.
+                chown -R 10000:10000 /opt/data/.config 2>/dev/null || true
+
+                # fsGroup relaxes the ssh key mode at mount time and openssh
+                # refuses a group-readable private key; restore it after mount.
+                chmod 600 /opt/data/.ssh/id_ed25519 2>/dev/null || true
+
+                # fsGroup also broadens the op config dir to 2770 and op refuses
+                # a group-readable config path; its daemon needs a writable
+                # XDG_RUNTIME_DIR, which the image points at a root-owned dir.
+                for d in /opt/data/.config/op /opt/data/home/.config/op; do
+                  if [ -d "$d" ]; then
+                    chmod 700 "$d"
+                    find "$d" -type f -exec chmod 600 {} + 2>/dev/null || true
+                  fi
+                done
+                # /tmp and /run are emptyDir volumes, so the image's baked-in
+                # /tmp/hermes-runtime is shadowed by the fresh mount; recreate it
+                # for op's daemon, which needs a writable XDG_RUNTIME_DIR.
+                mkdir -p /tmp/hermes-runtime
+                chown 10000:10000 /tmp/hermes-runtime
+                chmod 700 /tmp/hermes-runtime
+
+                # Keep Hermes host rendezvous locks off the persistent state
+                # tree, whose parent directories may have been created as root.
+                mkdir -p /run/hermes/gateway-locks
+                chown 10000:10000 /run/hermes /run/hermes/gateway-locks
+                chmod 700 /run/hermes /run/hermes/gateway-locks
+            envFrom:
+              - secretRef:
+                  name: hermes
+          install-conduit-plugin:
+            image: &image
+              repository: nousresearch/hermes-agent
+              tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -eu
+                if [ -d /opt/data/plugins/conduit_push ]; then
+                  /opt/hermes/bin/hermes plugins enable conduit_push
+                else
+                  /opt/hermes/bin/hermes plugins install kaishi00/hermes-conduit-notifier --enable --ref 2a08b5a2a569dfcc220ae63dedb2a1527438344b
+                fi
+            securityContext:
+              runAsUser: 10000
+              runAsGroup: 10000
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+              seccompProfile: { type: RuntimeDefault }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 512Mi
+            envFrom:
+              - secretRef:
+                  name: hermes
+        containers:
+          app:
+            image: *image
+            command: ["/bin/sh", "-lc"]
+            args: ["exec hermes chat --serve --port 8643"]
+            env:
+              HERMES_HOME: /opt/data
+              HOME: /opt/data
+              PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/hermes/bin:/usr/local/bin:/usr/bin:/bin
+            securityContext:
+              runAsUser: 10000
+              runAsGroup: 10000
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+              seccompProfile: { type: RuntimeDefault }
+            ports:
+              - name: http
+                containerPort: 8643
+                protocol: TCP
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /opt/hermes/bin/hermes
+                      - healthcheck
+                      - --skip-model-check
+                      - --skip-provider-check
+                      - --skip-version-check
+                      - --skip-channel-check
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /opt/hermes/bin/hermes
+                      - healthcheck
+                      - --skip-model-check
+                      - --skip-provider-check
+                      - --skip-version-check
+                      - --skip-channel-check
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 2
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /opt/hermes/bin/hermes
+                      - healthcheck
+                      - --skip-model-check
+                      - --skip-provider-check
+                      - --skip-version-check
+                      - --skip-channel-check
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 30
+            envFrom:
+              - secretRef:
+                  name: hermes
+            resources:
+              requests:
+                cpu: 100m
+                memory: 1Gi
+              limits:
+                memory: 8Gi
+          gateway:
+            image: *image
+            args: ["gateway", "run"]
+            env:
+              PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/hermes/bin:/usr/local/bin:/usr/bin:/bin
+              S6_YES_I_WANT_A_WORLD_WRITABLE_RUN_BECAUSE_KUBERNETES: "1"
+              HONCHO_BASE_URL: http://honcho.ai.svc.cluster.local
+              HERMES_GATEWAY_LOCK_DIR: /run/hermes/gateway-locks
+              HERMES_GATEWAY_HANDOFF_DIR: /run/hermes/gateway-handoff
+              HERMES_GATEWAY_RESTART_MARKER: /run/hermes/gateway-restarting
+              HERMES_WORKSPACE_ROOT: /opt/data/workspace
+              TZ: Australia/Sydney
+            envFrom:
+              - secretRef:
+                  name: hermes
+            securityContext:
+              runAsUser: 10000
+              runAsGroup: 10000
+            resources:
+              requests:
+                cpu: 100m
+                memory: 2Gi
+              limits:
+                memory: 4Gi
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /opt/hermes/bin/hermes
+                      - healthcheck
+                      - --skip-model-check
+                      - --skip-provider-check
+                      - --skip-version-check
+                      - --skip-channel-check
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /opt/hermes/bin/hermes
+                      - healthcheck
+                      - --skip-model-check
+                      - --skip-provider-check
+                      - --skip-version-check
+                      - --skip-channel-check
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 2
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /opt/hermes/bin/hermes
+                      - healthcheck
+                      - --skip-model-check
+                      - --skip-provider-check
+                      - --skip-version-check
+                      - --skip-channel-check
+                  periodSeconds: 10
+                  timeoutSeconds: 10
+                  failureThreshold: 30
+          dashboard:
+            image: *image
+            env:
+              PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/hermes/bin:/usr/local/bin:/usr/bin:/bin
+              HERMES_GATEWAY_LOCK_DIR: /run/hermes/gateway-locks
+              GATEWAY_HEALTH_URL: http://localhost:8642
+              TZ: Australia/Sydney
+            securityContext:
+              runAsUser: 10000
+              runAsGroup: 10000
+            envFrom:
+              - secretRef:
+                  name: hermes
+            args: ["dashboard", "--host", "0.0.0.0", "--port", "8642"]
+            ports:
+              - name: http
+                containerPort: 8642
+                protocol: TCP
+          serve:
+            image: *image
+            command: ["/bin/sh", "-lc"]
+            args: ["exec hermes serve --host 0.0.0.0 --port 9120"]
+            env:
+              PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/hermes/bin:/usr/local/bin:/usr/bin:/bin
+              HERMES_GATEWAY_LOCK_DIR: /run/hermes/gateway-locks
+              HERMES_HOME: /opt/data
+              HOME: /opt/data
+              TZ: Australia/Sydney
+            securityContext:
+              runAsUser: 10000
+              runAsGroup: 10000
+            ports:
+              - name: http
+                containerPort: 9120
+                protocol: TCP
+    service:
+      hermes:
+        controller: hermes
+        ports:
+          http:
+            port: 8643
+      dashboard:
+        controller: hermes
+        ports:
+          http:
+            port: 8642
+      serve:
+        controller: hermes
+        ports:
+          http:
+            port: 9120
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /opt/data
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          - path: /media
+            readOnly: true
+      configmap:
+        type: configMap
+        name: "{{ .Release.Name }}-config"
+        defaultMode: 0755
+        globalMounts:
+          - path: /tmp/config.yaml
+            subPath: config.yaml
+      honcho:
+        type: configMap
+        name: "{{ .Release.Name }}-honcho"
+        globalMounts:
+          - path: /opt/data/honcho.json
+            subPath: honcho.json
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+      run:
+        type: emptyDir
+        globalMounts:
+          - path: /run
