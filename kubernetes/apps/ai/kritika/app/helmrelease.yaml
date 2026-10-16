@@ -16,7 +16,6 @@ spec:
       reviewWorkers: 1
       indexWorkers: 1
       pollInterval: 10m
-    configFile:
       apps:
         github:
           accounts: [solanyn]
