@@ -34,6 +34,10 @@ spec:
       embedding:
         model: litellm/qwen3-embedding
         dims: 1024
+    env:
+      KRITIKA_REVIEW_WORKERS: "1"
+      KRITIKA_INDEX_WORKERS: "1"
+      KRITIKA_POLL_INTERVAL: 10m
     database:
       owner:
         existingSecret: kritika-postgres-owner
