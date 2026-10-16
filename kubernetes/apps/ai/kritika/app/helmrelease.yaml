@@ -13,9 +13,6 @@ spec:
     replicas: 1
     config:
       webUrl: https://kritika.goyangi.io
-      reviewWorkers: 1
-      indexWorkers: 1
-      pollInterval: 10m
       apps:
         github:
           accounts: [solanyn]
