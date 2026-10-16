@@ -62,7 +62,6 @@ spec:
           memory: 512Mi
         limits:
           memory: 2Gi
-      tools: []
     httpRoute:
       enabled: false
     monitoring:
