@@ -21,7 +21,6 @@ spec:
         github:
           accounts: [solanyn]
           clientId: { env: KRITIKA_GITHUB_CLIENT_ID }
-          clientSecret: { env: KRITIKA_GITHUB_CLIENT_SECRET }
           privateKey: { env: KRITIKA_GITHUB_PRIVATE_KEY }
           webhookSecret: { env: KRITIKA_GITHUB_WEBHOOK_SECRET }
       providers:
@@ -35,7 +34,7 @@ spec:
         model: litellm/kanban-pool
       embedding:
         model: litellm/qwen3-embedding
-        dimensions: 1024
+        dims: 1024
     database:
       owner:
         existingSecret: kritika-postgres-owner
