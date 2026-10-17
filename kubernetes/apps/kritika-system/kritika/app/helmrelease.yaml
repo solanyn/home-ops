@@ -13,6 +13,9 @@ spec:
     replicas: 1
     config:
       webUrl: https://kritika.goyangi.io
+      auth:
+        admin:
+          password: { env: KRITIKA_AUTH_ADMIN_PASSWORD }
       apps:
         github:
           accounts: [solanyn]
