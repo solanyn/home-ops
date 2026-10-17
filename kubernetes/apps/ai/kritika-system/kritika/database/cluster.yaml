@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: kritika-postgres
+spec:
+  instances: 2
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie@sha256:f0cc49632b5cc1e51f65ba03658c89bd31d64ea2672b14843a808a8d281417e1
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+    storageClass: miroir-local
+  enableSuperuserAccess: false
+  postgresql:
+    shared_preload_libraries:
+      - "vchord.so"
+      - "pg_stat_statements"
+    parameters:
+      max_connections: "200"
+      shared_buffers: 256MB
+    extensions:
+      - name: vchord
+        image:
+          reference: ghcr.io/tensorchord/vchord-scratch:pg18-v1.1.1@sha256:bdea43bed2a414e21bbf71767bf6f0739747ac480b267b51772dc214ac28dcb3
+        dynamic_library_path:
+          - /usr/lib/postgresql/18/lib
+        extension_control_path:
+          - /usr/share/postgresql/18/
+  bootstrap:
+    initdb:
+      database: kritika
+      owner: kritika
+      secret:
+        name: kritika-postgres-owner
