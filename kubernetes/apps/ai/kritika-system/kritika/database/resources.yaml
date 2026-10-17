@@ -26,6 +26,8 @@ spec:
     name: kritika-postgres
   name: kritika
   login: true
+  passwordSecret:
+    name: kritika-postgres-credentials
   inRoles:
     - pg_read_all_data
   databaseRoleReclaimPolicy: retain
