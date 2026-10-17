@@ -1,8 +1,15 @@
----
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: kritika-system
+patches:
+  - target:
+      kind: Namespace
+      name: _
+    patch: |-
+      - op: replace
+        path: /metadata/name
+        value: kritika-system
 resources:
   - ./namespace.yaml
   - ./kritika/ks.yaml
