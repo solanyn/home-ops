@@ -31,4 +31,4 @@ spec:
       database: kritika
       owner: kritika
       secret:
-        name: kritika-postgres-owner
+        name: kritika-postgres-credentials

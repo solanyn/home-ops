@@ -6,6 +6,12 @@ metadata:
   name: kritika-database
   namespace: kritika-system
 spec:
+  targetNamespace: kritika-system
+  postBuild:
+    substitute:
+      APP: kritika
+      KOPIUR_CAPACITY: 10Gi
+      KOPIUR_STORAGECLASS: miroir-local
   components:
     - ../../../../components/kopiur
   healthChecks:
@@ -15,17 +21,11 @@ spec:
       namespace: kritika-system
   interval: 1h
   path: ./kubernetes/apps/ai/kritika-system/kritika/database
-  postBuild:
-    substitute:
-      APP: kritika
-      KOPIUR_CAPACITY: 10Gi
-      KOPIUR_STORAGECLASS: miroir-local
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: kritika-system
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -34,8 +34,6 @@ metadata:
   name: kritika
   namespace: kritika-system
 spec:
-  components:
-    - ../../../../components/alerts
   dependsOn:
     - name: kritika-database
   healthChecks:

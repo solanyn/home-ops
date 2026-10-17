@@ -33,13 +33,17 @@ spec:
         model: litellm/qwen3-embedding
         dims: 1024
     database:
-      owner:
-        existingSecret: kritika-postgres-credentials
       app:
         existingSecret: kritika-postgres-app
-      envFrom:
-        - secretRef:
-            name: kritika-secret
+        role: kritika_app
+      owner:
+        existingSecret: kritika-postgres-credentials
+      runner:
+        existingSecret: kritika-postgres-runner
+        role: kritika_runner
+    envFrom:
+      - secretRef:
+          name: kritika-secret
     networkPolicy:
       enabled: true
       services:
