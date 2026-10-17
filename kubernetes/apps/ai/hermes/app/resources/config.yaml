@@ -48,7 +48,7 @@ compression:
   proactive_prune_min_reclaim_tokens: 2048
   idle_compact_after_seconds: 3600
 agent:
-  max_turns: 60
+  max_turns: none
   text_verbosity: high
   gateway_timeout: 1800
   restart_drain_timeout: 60
