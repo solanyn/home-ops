@@ -13,15 +13,14 @@ spec:
     replicas: 1
     config:
       webUrl: https://kritika.goyangi.io
-      auth:
-        admin:
-          password: { env: KRITIKA_AUTH_ADMIN_PASSWORD }
       apps:
         github:
           accounts: [solanyn]
           clientId: { env: KRITIKA_GITHUB_CLIENT_ID }
           privateKey: { env: KRITIKA_GITHUB_PRIVATE_KEY }
           webhookSecret: { env: KRITIKA_GITHUB_WEBHOOK_SECRET }
+          auth:
+            roleMappingExpr: 'user.login == "solanyn" ? "admin" : "none"'
       providers:
         litellm:
           type: openai
