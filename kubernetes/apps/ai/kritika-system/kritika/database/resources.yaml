@@ -6,7 +6,7 @@ metadata:
   name: kritika
 spec:
   cluster:
-    name: postgres
+    name: kritika-postgres
   name: kritika
   owner: kritika
   extensions:
@@ -23,11 +23,11 @@ metadata:
   name: kritika-app-owner
 spec:
   cluster:
-    name: postgres
+    name: kritika-postgres
   name: kritika
   login: true
-  passwordSecret:
-    name: kritika-postgres-owner
+  inRoles:
+    - pg_read_all_data
   databaseRoleReclaimPolicy: retain
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/role_v1.json
@@ -37,9 +37,11 @@ metadata:
   name: kritika-app
 spec:
   cluster:
-    name: postgres
+    name: kritika-postgres
   name: kritika_app
   login: true
+  inRoles:
+    - kritika
   passwordSecret:
     name: kritika-postgres-app
   databaseRoleReclaimPolicy: retain
@@ -51,7 +53,7 @@ metadata:
   name: kritika-runner
 spec:
   cluster:
-    name: postgres
+    name: kritika-postgres
   name: kritika_runner
   login: true
   passwordSecret:

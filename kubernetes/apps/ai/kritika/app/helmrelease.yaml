@@ -23,7 +23,8 @@ spec:
         litellm:
           type: openai
           baseUrl: http://litellm.ai.svc.cluster.local:4000/v1
-          apiKey: { env: KRITIKA_LITELLM_API_KEY }
+          apiKey:
+            env: KRITIKA_LITELLM_API_KEY
       review:
         model: litellm/kanban-pool
       confidence:
@@ -31,24 +32,18 @@ spec:
       embedding:
         model: litellm/qwen3-embedding
         dims: 1024
-    env:
-      KRITIKA_REVIEW_WORKERS: "1"
-      KRITIKA_INDEX_WORKERS: "1"
-      KRITIKA_POLL_INTERVAL: 10m
     database:
       owner:
-        existingSecret: kritika-postgres-owner
+        existingSecret: kritika-postgres-credentials
       app:
         existingSecret: kritika-postgres-app
-      runner:
-        existingSecret: kritika-postgres-runner
       envFrom:
         - secretRef:
             name: kritika-secret
     networkPolicy:
       enabled: true
       services:
-        - name: postgres-rw.storage.svc.cluster.local
+        - name: kritika-postgres-rw.kritika-system.svc.cluster.local
           ports:
             - 5432
       egressPorts:
