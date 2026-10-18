@@ -57,16 +57,26 @@ spec:
         - 443
       postgresPort: 5432
     runner:
-      runtimeClass: gvisor
-      deadline: 20m
-      resources:
-        requests:
-          cpu: 100m
-          memory: 512Mi
-        limits:
-          memory: 2Gi
+      podTemplate:
+        spec:
+          resources:
+            requests:
+              cpu: 10m
+              memory: 512Mi
+            limits:
+              memory: 2Gi
+          runtimeClassName: gvisor
     httpRoute:
-      enabled: false
+      enabled: true
+      annotations:
+        gatus.home-operations.com/endpoint: |-
+          conditions: ["[STATUS] == 200"]
+          path: /api/v1/meta
+      parentRefs:
+        - name: envoy-external
+          namespace: network
+      hostnames:
+        - kritika.goyangi.io
     monitoring:
       dashboards:
         enabled: true
