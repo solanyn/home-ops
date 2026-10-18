@@ -49,10 +49,15 @@ spec:
           name: kritika-secret
     networkPolicy:
       enabled: true
-      services:
-        - name: kritika-postgres-rw.kritika-system.svc.cluster.local
-          ports:
-            - 5432
+      type: cilium
+      dns:
+        namespace: kube-system
+        podSelector:
+          k8s-app: kube-dns
+      postgres:
+        namespace: kritika-system
+        podSelector:
+          cnpg.io/cluster: kritika-postgres
       egressPorts:
         - 443
       postgresPort: 5432
