@@ -5,6 +5,7 @@ auto_discovery:
   depth: 1
   delete: true
 external_secrets:
+  POCKET_ID_ENCRYPTION_KEY: "op://kubernetes/pocket-id/ENCRYPTION_KEY"
   GATUS_HEARTBEAT_TOKEN: op://kubernetes/gatus/GATUS_HEARTBEAT_TOKEN
   GATUS_PUSHOVER_TOKEN: op://kubernetes/gatus/GATUS_PUSHOVER_TOKEN
   GATUS_PUSHOVER_USER_KEY: op://kubernetes/pushover/PUSHOVER_USER_KEY
