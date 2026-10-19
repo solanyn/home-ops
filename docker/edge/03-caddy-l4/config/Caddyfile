@@ -65,6 +65,10 @@ edge-doco-cd.goyangi.io {
 	reverse_proxy doco-cd:8880
 }
 
+id.goyangi.io {
+	reverse_proxy pocket-id:1411
+}
+
 edge-gatus.goyangi.io {
 	reverse_proxy gatus:8080
 }
