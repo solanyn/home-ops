@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     environment:
       APP_URL: https://id.goyangi.io
+      DB_CONNECTION_STRING: /app/data/pocket-id.db
       ENCRYPTION_KEY: ${POCKET_ID_ENCRYPTION_KEY:?POCKET_ID_ENCRYPTION_KEY is required}
       TRUST_PROXY: "true"
       UPDATE_CHECK_DISABLED: "true"
