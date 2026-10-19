@@ -1,0 +1,35 @@
+---
+name: pocket-id
+services:
+  pocket-id:
+    container_name: pocket-id
+    image: ghcr.io/pocket-id/pocket-id:v2.18.0
+    restart: unless-stopped
+    environment:
+      APP_URL: https://id.goyangi.io
+      ENCRYPTION_KEY: ${POCKET_ID_ENCRYPTION_KEY:?POCKET_ID_ENCRYPTION_KEY is required}
+      TRUST_PROXY: "true"
+      UPDATE_CHECK_DISABLED: "true"
+      SESSION_DURATION: "1440"
+      EMAIL_LOGIN_NOTIFICATION_ENABLED: "true"
+      SMTP_HOST: smtp-relay.network.svc.cluster.local
+      SMTP_PORT: "25"
+      SMTP_FROM: noreply@goyangi.io
+      SMTP_TLS: none
+    volumes:
+      - pocket-id-data:/app/data
+    expose:
+      - "1411"
+    healthcheck:
+      test: ["CMD", "/app/pocket-id", "healthcheck"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    networks:
+      - edge
+volumes:
+  pocket-id-data:
+networks:
+  edge:
+    external: true
