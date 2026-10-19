@@ -12,14 +12,8 @@ services:
       UPDATE_CHECK_DISABLED: "true"
       SESSION_DURATION: "1440"
       EMAIL_LOGIN_NOTIFICATION_ENABLED: "true"
-      SMTP_HOST: smtp-relay.network.svc.cluster.local
-      SMTP_PORT: "25"
-      SMTP_FROM: noreply@goyangi.io
-      SMTP_TLS: none
     volumes:
       - pocket-id-data:/app/data
-    expose:
-      - "1411"
     healthcheck:
       test: ["CMD", "/app/pocket-id", "healthcheck"]
       interval: 30s
@@ -33,3 +27,4 @@ volumes:
 networks:
   edge:
     external: true
+    name: edge
