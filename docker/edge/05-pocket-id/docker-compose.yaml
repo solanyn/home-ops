@@ -13,6 +13,12 @@ services:
       UPDATE_CHECK_DISABLED: "true"
       SESSION_DURATION: "1440"
       EMAIL_LOGIN_NOTIFICATION_ENABLED: "true"
+      SMTP_HOST: smtp.migadu.com
+      SMTP_PORT: "465"
+      SMTP_FROM: noreply@goyangi.io
+      SMTP_USER: ${SMTP_RELAY_USERNAME:?SMTP_RELAY_USERNAME is required}
+      SMTP_PASSWORD: ${SMTP_RELAY_PASSWORD:?SMTP_RELAY_PASSWORD is required}
+      SMTP_TLS: tls
     volumes:
       - pocket-id-data:/app/data
     healthcheck:
