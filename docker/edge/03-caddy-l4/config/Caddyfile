@@ -22,10 +22,12 @@
 			}
 		}
 		:80 {
-			# Route ACME HTTP-01 requests to Caddy's own HTTP listener.
-			http {
-				route {
-					proxy 127.0.0.1:8080
+			# The HTTP matcher unpacks the request; proxy the remaining bytes unchanged.
+			@plain_http http
+			route @plain_http {
+				proxy {
+					proxy_protocol v2
+					upstream 127.0.0.1:8080
 				}
 			}
 		}
