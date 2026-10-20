@@ -1,0 +1,11 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDInstance
+metadata:
+  name: pocket-id
+spec:
+  external:
+    url: https://id.goyangi.io
+    apiKeySecretRef:
+      name: pocket-id-external-api
+      key: POCKET_ID_API_KEY
