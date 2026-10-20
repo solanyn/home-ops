@@ -22,11 +22,10 @@
 			}
 		}
 		:80 {
-			@local_http http host {$VPS_LOCAL_HOSTS}
-			route @local_http {
-				proxy {
-					proxy_protocol v2
-					upstream 127.0.0.1:8080
+			# Route ACME HTTP-01 requests to Caddy's own HTTP listener.
+			http {
+				route {
+					proxy 127.0.0.1:8080
 				}
 			}
 		}
