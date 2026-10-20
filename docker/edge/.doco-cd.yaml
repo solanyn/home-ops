@@ -6,6 +6,10 @@ auto_discovery:
   delete: true
 external_secrets:
   POCKET_ID_ENCRYPTION_KEY: "op://kubernetes/pocket-id/ENCRYPTION_KEY"
+  SMTP_RELAY_HOSTNAME: "op://kubernetes/smtp-relay/SMTP_RELAY_HOSTNAME"
+  SMTP_RELAY_SERVER: "op://kubernetes/smtp-relay/SMTP_RELAY_SERVER"
+  SMTP_RELAY_USERNAME: "op://kubernetes/smtp-relay/SMTP_RELAY_USERNAME"
+  SMTP_RELAY_PASSWORD: "op://kubernetes/smtp-relay/SMTP_RELAY_PASSWORD"
   GATUS_HEARTBEAT_TOKEN: op://kubernetes/gatus/GATUS_HEARTBEAT_TOKEN
   GATUS_PUSHOVER_TOKEN: op://kubernetes/gatus/GATUS_PUSHOVER_TOKEN
   GATUS_PUSHOVER_USER_KEY: op://kubernetes/pushover/PUSHOVER_USER_KEY
