@@ -22,8 +22,7 @@
 			}
 		}
 		:80 {
-			# Route HTTP directly to Caddy's HTTP server; port 8080 has no
-			# PROXY-protocol wrapper, so preserve ACME HTTP-01 requests.
+			# Route ACME HTTP-01 requests to Caddy's own HTTP listener.
 			http {
 				route {
 					proxy 127.0.0.1:8080
