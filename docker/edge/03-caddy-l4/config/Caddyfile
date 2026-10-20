@@ -22,13 +22,10 @@
 			}
 		}
 		:80 {
-			# The HTTP matcher unpacks the request; proxy the remaining bytes unchanged.
+			# The HTTP matcher consumes the request; use HTTP-layer proxying to reconstruct it.
 			@plain_http http
 			route @plain_http {
-				proxy {
-					proxy_protocol v2
-					upstream 127.0.0.1:8080
-				}
+				http_proxy 127.0.0.1:8080
 			}
 		}
 	}
@@ -47,6 +44,7 @@
 			proxy_protocol {
 				timeout 2s
 				allow 127.0.0.1/32
+				fallback_policy SKIP
 			}
 		}
 	}
