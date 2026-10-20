@@ -12,6 +12,7 @@ services:
         towonel.goyangi.io
         edge-doco-cd.goyangi.io
         edge-gatus.goyangi.io
+        id.goyangi.io
     ports:
       - 80:80
       - 443:443
