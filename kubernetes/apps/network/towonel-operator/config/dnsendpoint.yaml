@@ -29,6 +29,13 @@ spec:
       providerSpecific:
         - name: external-dns.kubernetes.io/cloudflare-proxied
           value: "false"
+    - dnsName: id.goyangi.io
+      recordType: A
+      targets:
+        - *vps_ip
+      providerSpecific:
+        - name: external-dns.kubernetes.io/cloudflare-proxied
+          value: "false"
     - dnsName: external.goyangi.io
       recordType: CNAME
       targets:
