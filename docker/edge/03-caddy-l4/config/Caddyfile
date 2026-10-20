@@ -22,7 +22,7 @@
 			}
 		}
 		:80 {
-			# The HTTP matcher unpacks the request; proxy the remaining bytes unchanged.
+			# PROXY protocol is required: port 8080's listener wrapper expects it.
 			@plain_http http
 			route @plain_http {
 				proxy {
