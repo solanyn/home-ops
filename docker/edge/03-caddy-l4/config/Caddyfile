@@ -22,10 +22,13 @@
 			}
 		}
 		:80 {
-			# Route HTTP traffic to Caddy's own HTTP listener without PROXY framing.
+			# The HTTP matcher unpacks the request; proxy the remaining bytes unchanged.
 			@plain_http http
 			route @plain_http {
-				proxy 127.0.0.1:8080
+				proxy {
+					proxy_protocol v2
+					upstream 127.0.0.1:8080
+				}
 			}
 		}
 	}
