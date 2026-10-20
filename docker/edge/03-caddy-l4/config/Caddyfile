@@ -22,11 +22,10 @@
 			}
 		}
 		:80 {
-			# Route ACME HTTP-01 requests to Caddy's own HTTP listener.
-			http {
-				route {
-					proxy 127.0.0.1:8080
-				}
+			# Route HTTP traffic to Caddy's own HTTP listener without PROXY framing.
+			@plain_http http
+			route @plain_http {
+				proxy 127.0.0.1:8080
 			}
 		}
 	}
