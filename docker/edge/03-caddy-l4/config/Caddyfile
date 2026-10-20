@@ -22,12 +22,9 @@
 			}
 		}
 		:80 {
-			@acme_http http host id.goyangi.io
-			route @acme_http {
-				proxy {
-					proxy_protocol v2
-					upstream 127.0.0.1:8080
-				}
+			@http_acme http host id.goyangi.io
+			route @http_acme {
+				proxy doco-cd:8880
 			}
 			@local_http http host {$VPS_LOCAL_HOSTS}
 			route @local_http {
