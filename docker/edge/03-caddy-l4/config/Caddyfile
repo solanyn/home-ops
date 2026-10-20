@@ -22,10 +22,13 @@
 			}
 		}
 		:80 {
-			# The HTTP matcher consumes the request; use HTTP-layer proxying to reconstruct it.
+			# HTTP matcher consumes the request; send PROXY v2 before the raw HTTP stream.
 			@plain_http http
 			route @plain_http {
-				http_proxy 127.0.0.1:8080
+				proxy {
+					proxy_protocol v2
+					upstream 127.0.0.1:8080
+				}
 			}
 		}
 	}
