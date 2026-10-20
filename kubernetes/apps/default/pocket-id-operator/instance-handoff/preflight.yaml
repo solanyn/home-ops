@@ -1,0 +1,19 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pocket-id-vps-preflight
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: check
+          image: curlimages/curl:8.12.1
+          command: ["sh", "-ec"]
+          args:
+            - |
+              curl -fsS https://id.goyangi.io/.well-known/openid-configuration | grep -F '"issuer":"https://id.goyangi.io"'
+              curl -fsS https://id.goyangi.io/.well-known/jwks.json >/dev/null

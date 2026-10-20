@@ -30,10 +30,8 @@ spec:
   dependsOn:
     - name: pocket-id-operator
       namespace: default
-    - name: cloudnative-pg-cluster
-      namespace: storage
   interval: 1h
-  path: ./kubernetes/apps/default/pocket-id-operator/instance
+  path: ./kubernetes/apps/default/pocket-id-operator/instance-handoff
   postBuild:
     substitute:
       APP: pocket-id
@@ -53,9 +51,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: pocket-id-instance
-      namespace: default
   interval: 1h
   path: ./kubernetes/apps/default/pocket-id-operator/resources
   prune: true
