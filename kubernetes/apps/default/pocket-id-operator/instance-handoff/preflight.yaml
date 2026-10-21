@@ -11,7 +11,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: check
-          image: curlimages/curl:8.12.1
+          image: curlimages/curl:8.23.0
           command: ["sh", "-ec"]
           args:
             - |
