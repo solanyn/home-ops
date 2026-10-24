@@ -5,12 +5,9 @@ kind: Kustomization
 metadata:
   name: opencode
 spec:
-  targetNamespace: network
+  targetNamespace: ai
   interval: 1h
-  path: ./kubernetes/apps/network/opencode/app
-  postBuild:
-    substitute:
-      APP: opencode
+  path: ./kubernetes/apps/ai/opencode/app
   prune: true
   sourceRef:
     kind: GitRepository
