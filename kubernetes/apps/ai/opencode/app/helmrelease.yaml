@@ -1,0 +1,94 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: opencode
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: opencode
+  interval: 15m
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+    controllers:
+      opencode:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/anomalyco/opencode
+              tag: 2.1.4
+            command:
+              - /bin/sh
+              - -ec
+            args:
+              - exec opencode serve --hostname 0.0.0.0 --port 4096
+            env:
+              HOME: /home/opencode
+              LITELLM_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencode
+                    key: LITELLM_API_KEY
+              OPENCODE_CONFIG: /etc/opencode/opencode.json
+              OPENCODE_SERVER_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: opencode
+                    key: OPENCODE_SERVER_PASSWORD
+              TZ: Australia/Sydney
+            envFrom:
+              - secretRef:
+                  name: opencode
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 4096
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 4096
+                  initialDelaySeconds: 15
+                  periodSeconds: 15
+                  failureThreshold: 6
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 8Gi
+    service:
+      app:
+        controller: opencode
+        ports:
+          http:
+            port: 4096
+    persistence:
+      home:
+        existingClaim: opencode
+        globalMounts:
+          - path: /home/opencode
+      config:
+        type: configMap
+        name: opencode-config
+        globalMounts:
+          - path: /etc/opencode
+            readOnly: true
