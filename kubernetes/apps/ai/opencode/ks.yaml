@@ -6,8 +6,16 @@ metadata:
   name: opencode
 spec:
   targetNamespace: ai
+  components:
+    - ../../../../components/kopiur
   interval: 1h
   path: ./kubernetes/apps/ai/opencode/app
+  postBuild:
+    substitute:
+      APP: opencode
+      KOPIUR_CAPACITY: 10Gi
+      KOPIUR_PUID: "1000"
+      KOPIUR_PGID: "1000"
   prune: true
   sourceRef:
     kind: GitRepository
