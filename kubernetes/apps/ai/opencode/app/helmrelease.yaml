@@ -38,8 +38,8 @@ spec:
               LITELLM_API_KEY:
                 valueFrom:
                   secretKeyRef:
-                    name: opencode
-                    key: LITELLM_API_KEY
+                    name: litellm
+                    key: LITELLM_MASTER_KEY
               OPENCODE_CONFIG: /etc/opencode/opencode.json
               OPENCODE_SERVER_PASSWORD:
                 valueFrom:
