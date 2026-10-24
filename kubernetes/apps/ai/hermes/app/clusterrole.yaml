@@ -1,8 +1,7 @@
-# Cluster-wide read access for the Hermes agent.
-# Deliberately excluded: secrets cluster-wide, pods/exec, pods/portforward,
-# nodes/proxy, cert-manager approve/deny/sign, admissionregistration.
-# Write access: pods/delete only (for stuck pod cleanup). GitOps via
-# Flux + humans is the apply path; the agent only proposes.
+# Cluster-wide access for the Hermes agent.
+# Deliberately excluded: secrets cluster-wide, pods/portforward, nodes/proxy,
+# cert-manager approve/deny/sign, admissionregistration.
+# GitOps via Flux + humans is the apply path; the agent only proposes.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -34,6 +33,9 @@ rules:
   - apiGroups: [""]
     resources: [pods]
     verbs: ["delete"]
+  - apiGroups: [""]
+    resources: [pods/exec]
+    verbs: ["create"]
   # PVC delete for restore recreation (kopiur dataSourceRef triggers restore on new PVC creation).
   - apiGroups: [""]
     resources: [persistentvolumeclaims]
