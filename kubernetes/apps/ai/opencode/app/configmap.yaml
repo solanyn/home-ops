@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opencode-config
+data:
+  opencode.json: |
+    {
+      "$schema": "https://opencode.ai/config.json",
+      "model": "litellm/coding-pool",
+      "provider": {
+        "litellm": {
+          "npm": "@opencode/ai/providers/openai-compatible",
+          "name": "LiteLLM",
+          "options": {
+            "baseURL": "http://litellm.ai.svc.cluster.local:4000/v1",
+            "apiKey": "{env:LITELLM_API_KEY}"
+          },
+          "models": {
+            "coding-pool": {
+              "name": "Coding Pool",
+              "limit": {
+                "context": 262144,
+                "output": 32768
+              }
+            }
+          }
+        }
+      },
+      "compaction": {
+        "auto": true,
+        "prune": true
+      },
+      "permission": {
+        "*": "ask"
+      }
+    }
