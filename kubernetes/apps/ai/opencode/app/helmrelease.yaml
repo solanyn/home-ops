@@ -76,6 +76,29 @@ spec:
         ports:
           http:
             port: 4096
+    route:
+      app:
+        hostnames:
+          - opencode.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 4096
+      api:
+        hostnames:
+          - opencode-api.goyangi.io
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 4096
     persistence:
       home:
         existingClaim: opencode
