@@ -41,11 +41,6 @@ spec:
                     name: litellm
                     key: LITELLM_MASTER_KEY
               OPENCODE_CONFIG: /etc/opencode/opencode.json
-              OPENCODE_SERVER_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: opencode
-                    key: OPENCODE_SERVER_PASSWORD
               TZ: Australia/Sydney
             envFrom:
               - secretRef:
