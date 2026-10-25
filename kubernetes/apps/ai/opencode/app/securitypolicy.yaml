@@ -1,0 +1,38 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: opencode-oidc
+spec:
+  oidc:
+    clientID: opencode
+    clientSecret:
+      name: opencode-oidc
+    logoutPath: /logout
+    provider:
+      issuer: https://id.goyangi.io
+    redirectURL: https://opencode.goyangi.io/oauth2/callback
+    refreshToken: true
+    scopes:
+      - openid
+      - profile
+      - email
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: opencode
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: opencode-api-basic-auth
+spec:
+  basicAuth:
+    users:
+      group: ""
+      kind: Secret
+      name: opencode
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: opencode-api
