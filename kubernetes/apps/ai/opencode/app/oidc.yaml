@@ -13,8 +13,6 @@ spec:
   allowedUserGroups:
     - name: admin
   secret:
-    enabled: true
     name: opencode-oidc
-    storeClientSecret: true
     keys:
       clientSecret: client-secret
