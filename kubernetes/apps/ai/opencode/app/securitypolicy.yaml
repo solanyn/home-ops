@@ -21,18 +21,3 @@ spec:
     - group: gateway.networking.k8s.io
       kind: HTTPRoute
       name: opencode
----
-apiVersion: gateway.envoyproxy.io/v1alpha1
-kind: SecurityPolicy
-metadata:
-  name: opencode-api-basic-auth
-spec:
-  basicAuth:
-    users:
-      group: ""
-      kind: Secret
-      name: opencode
-  targetRefs:
-    - group: gateway.networking.k8s.io
-      kind: HTTPRoute
-      name: opencode-api
