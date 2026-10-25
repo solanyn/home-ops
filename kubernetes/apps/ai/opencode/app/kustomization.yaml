@@ -6,4 +6,6 @@ resources:
   - ./configmap.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./oidc.yaml
   - ./ocirepository.yaml
+  - ./securitypolicy.yaml
