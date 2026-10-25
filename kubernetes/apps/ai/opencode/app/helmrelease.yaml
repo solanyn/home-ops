@@ -42,9 +42,6 @@ spec:
                     key: LITELLM_MASTER_KEY
               OPENCODE_CONFIG: /etc/opencode/opencode.json
               TZ: Australia/Sydney
-            envFrom:
-              - secretRef:
-                  name: opencode
             probes:
               liveness:
                 enabled: true
