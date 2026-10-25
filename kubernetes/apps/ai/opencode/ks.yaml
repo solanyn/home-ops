@@ -6,6 +6,9 @@ metadata:
   name: opencode
 spec:
   targetNamespace: ai
+  dependsOn:
+    - name: pocket-id-resources
+      namespace: default
   components:
     - ../../../../components/kopiur
   interval: 1h
