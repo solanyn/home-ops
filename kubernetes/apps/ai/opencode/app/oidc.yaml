@@ -11,7 +11,8 @@ spec:
   logoutCallbackUrls:
     - https://opencode.goyangi.io
   allowedUserGroups:
-    - name: admin
+    - namespace: default
+      name: admin
   secret:
     name: opencode-oidc
     keys:
