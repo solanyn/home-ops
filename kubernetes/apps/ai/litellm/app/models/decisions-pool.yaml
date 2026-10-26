@@ -7,7 +7,7 @@ spec:
   modelName: decisions-pool
   proxyRef: litellm
   params:
-    model: openrouter/perplexity/pplx-decider-v1.1-27b
+    model: openrouter/perplexity/pplx-decider-v1.2
     apiKeyRef:
       name: litellm
       key: OPENROUTER_API_KEY
