@@ -31,35 +31,6 @@ spec:
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMModel
 metadata:
-  name: kanban-pool-glm
-spec:
-  modelName: kanban-pool
-  proxyRef: litellm
-  params:
-    model: openrouter/z-ai/glm-5.3-flash
-    apiKeyRef:
-      name: litellm
-      key: OPENROUTER_API_KEY
-    additional:
-      reasoning_effort: medium
-      allowed_openai_params: [reasoning_effort]
-      order: 2
-      extra_body:
-        provider:
-          require_parameters: true
-  info:
-    mode: chat
-    maxInputTokens: 1048576
-    supportsFunctionCalling: true
-    supportsPromptCaching: true
-    supportsVision: true
-    extra:
-      input_cost_per_token: 4.8e-08
-      output_cost_per_token: 1.6e-07
----
-apiVersion: litellm.home-operations.com/v1alpha1
-kind: LiteLLMModel
-metadata:
   name: kanban-pool-mimo
 spec:
   modelName: kanban-pool
