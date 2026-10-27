@@ -38,6 +38,7 @@ spec:
   resources:
     requests:
       cpu: 10m
+      memory: 2Gi
     limits:
       hugepages-2Mi: 1Gi
       memory: 4Gi
