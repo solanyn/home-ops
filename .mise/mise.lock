@@ -76,9 +76,9 @@ url_api = "https://api.github.com/repos/rhysd/actionlint/releases/assets/3849249
 provenance = "github-attestations"
 
 [[tools."aqua:mitsuhiko/minijinja"]]
-version = "3.0.3"
+version = "3.0.4"
 backend = "aqua:mitsuhiko/minijinja"
-specifiers = ["3.0.3"]
+specifiers = ["3.0.4"]
 
 [tools."aqua:mitsuhiko/minijinja"."platforms.linux-arm64"]
 checksum = "sha256:b41fee71256ee3ea0f0b3fa32bc7042f4a3db5049ede6262c8d480078a7a67ba"
