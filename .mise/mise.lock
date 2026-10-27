@@ -373,7 +373,7 @@ url = "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellche
 url_api = "https://api.github.com/repos/koalaman/shellcheck/releases/assets/279056944"
 
 [[tools.uv]]
-version = "0.13.5"
+version = "0.13.6"
 backend = "aqua:astral-sh/uv"
 specifiers = ["latest"]
 
