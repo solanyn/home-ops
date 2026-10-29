@@ -6,7 +6,7 @@ model:
 providers:
   litellm:
     api: http://litellm.ai.svc.cluster.local:4000/v1
-    api_key: "not-needed"
+    api_key: ${OPENAI_API_KEY}
     default_model: frontier-pool
     transport: chat_completions
 moa:
@@ -59,6 +59,14 @@ kanban:
   # routes to OpenRouter — so this is the direct spend ceiling. Left unset,
   # the dispatcher derives it from host memory and picks 8.
   max_in_progress: 2
+dashboard:
+  public_url: https://hermes.goyangi.io
+  oauth:
+    provider: self-hosted
+    self_hosted:
+      issuer: https://id.goyangi.io/
+      client_id: hermes-dashboard
+      scopes: "openid profile email"
 updates:
   pre_update_backup: false
 streaming:
