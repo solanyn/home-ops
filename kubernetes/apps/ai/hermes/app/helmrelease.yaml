@@ -61,7 +61,7 @@ spec:
                     tmp="$profile/.env.tmp"
                     {
                       grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true
-                      printf '%s\n' "OPENAI_API_KEY=$OPENAI_API_KEY"
+                      printf '%s\n' "$OPENAI_API_KEY"
                     } > "$tmp"
                     chown 10000:10000 "$tmp"
                     chmod 600 "$tmp"
@@ -69,33 +69,25 @@ spec:
                   fi
                 done
 
-                # .config/op may be owned by a stale UID from a restored snapshot;
-                # op refuses to read a config owned by another user. Fix ownership
-                # here as root so the app (runAsUser 10000) can use the CLI.
+                # .config/op may be owned by a stale UID from a restored snapshot; op refuses to read a config owned by another user. Fix ownership here as root so the app (runAsUser 10000) can use the CLI.
                 chown -R 10000:10000 /opt/data/.config 2>/dev/null || true
 
-                # fsGroup relaxes the ssh key mode at mount time and openssh
-                # refuses a group-readable private key; restore it after mount.
+                # fsGroup relaxes the ssh key mode at mount time and openssh refuses a group-readable private key; restore it after mount.
                 chmod 600 /opt/data/.ssh/id_ed25519 2>/dev/null || true
 
-                # fsGroup also broadens the op config dir to 2770 and op refuses
-                # a group-readable config path; its daemon needs a writable
-                # XDG_RUNTIME_DIR, which the image points at a root-owned dir.
+                # fsGroup also broadens the op config dir to 2770 and op refuses a group-readable config path; its daemon needs a writable XDG_RUNTIME_DIR, which the image points at a root-owned dir.
                 for d in /opt/data/.config/op /opt/data/home/.config/op; do
                   if [ -d "$d" ]; then
                     chmod 700 "$d"
                     find "$d" -type f -exec chmod 600 {} + 2>/dev/null || true
                   fi
                 done
-                # /tmp and /run are emptyDir volumes, so the image's baked-in
-                # /tmp/hermes-runtime is shadowed by the fresh mount; recreate it
-                # for op's daemon, which needs a writable XDG_RUNTIME_DIR.
+                # /tmp and /run are emptyDir volumes, so the image's baked-in /tmp/hermes-runtime is shadowed by the fresh mount; recreate it for op's daemon, which needs a writable XDG_RUNTIME_DIR.
                 mkdir -p /tmp/hermes-runtime
                 chown 10000:10000 /tmp/hermes-runtime
                 chmod 700 /tmp/hermes-runtime
 
-                # Keep Hermes host rendezvous locks off the persistent state
-                # tree, whose parent directories may have been created as root.
+                # Keep Hermes host rendezvous locks off the persistent state tree, whose parent directories may have been created as root.
                 mkdir -p /run/hermes/gateway-locks
                 chown 10000:10000 /run/hermes /run/hermes/gateway-locks
                 chmod 700 /run/hermes /run/hermes/gateway-locks
@@ -261,35 +253,6 @@ spec:
                 spec:
                   tcpSocket:
                     port: 8642
-          serve:
-            image: *image
-            args: ["serve", "--host", "0.0.0.0", "--port", "9120"]
-            env:
-              PATH: /opt/data/homebrew/.linuxbrew/bin:/opt/data/homebrew/.linuxbrew/sbin:/opt/hermes/bin:/usr/local/bin:/usr/bin:/bin
-              HERMES_GATEWAY_LOCK_DIR: /run/hermes/gateway-locks
-              HERMES_HOME: /opt/data
-              HOME: /opt/data
-              TZ: Australia/Sydney
-            securityContext:
-              runAsUser: 10000
-              runAsGroup: 10000
-            ports:
-              - name: serve
-                containerPort: 9120
-                protocol: TCP
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  tcpSocket:
-                    port: 9120
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  tcpSocket:
-                    port: 9120
     service:
       hermes:
         controller: hermes
@@ -301,11 +264,6 @@ spec:
         ports:
           dashboard:
             port: 8642
-      serve:
-        controller: hermes
-        ports:
-          serve:
-            port: 9120
       webhook:
         controller: hermes
         ports:
