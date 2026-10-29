@@ -20,7 +20,6 @@ configMapGenerator:
       - ./resources/honcho.json
   - name: hermes-profile-souls
     files:
-      - hawow.SOUL.md=./resources/SOUL.md
       - counsel.SOUL.md=./resources/profiles/counsel/SOUL.md
       - lore.SOUL.md=./resources/profiles/lore/SOUL.md
       - nexus.SOUL.md=./resources/profiles/nexus/SOUL.md
