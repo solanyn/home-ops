@@ -55,13 +55,14 @@ spec:
                 chmod 600 "$root_env"
                 mv "$root_env" /opt/data/.env
 
-                # Satellite profiles need the shared LiteLLM credential only.
+                # Satellite profiles need a valid shared LiteLLM credential assignment.
+                # Profile-scoped config resolves ${OPENAI_API_KEY} from this file.
                 for profile in /opt/data/profiles/*; do
                   if [ -d "$profile" ]; then
                     tmp="$profile/.env.tmp"
                     {
-                      grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null || true
-                      printf '%s\n' "$OPENAI_API_KEY"
+                      grep -v '^OPENAI_API_KEY=' "$profile/.env" 2>/dev/null | grep -vE '^[[:space:]]*sk-[^[:space:]]+[[:space:]]*$' || true
+                      printf '%s\n' "OPENAI_API_KEY=$OPENAI_API_KEY"
                     } > "$tmp"
                     chown 10000:10000 "$tmp"
                     chmod 600 "$tmp"
@@ -69,7 +70,7 @@ spec:
                   fi
                 done
 
-                # .config/op may be owned by a stale UID from a restored snapshot; op refuses to read a config owned by another user. Fix ownership here as root so the app (runAsUser 10000) can use the CLI.
+                # .config/op may be owned by a stale UID from a restored snapshot; op refuses to read a config owned by another user. Fix ownership here so the app (runAsUser 10000) can use the CLI.
                 chown -R 10000:10000 /opt/data/.config 2>/dev/null || true
 
                 # fsGroup relaxes the ssh key mode at mount time and openssh refuses a group-readable private key; restore it after mount.
@@ -138,6 +139,11 @@ spec:
                     chmod 644 "$profile_home/SOUL.md"
                     /opt/hermes/bin/hermes -p "$profile" config set model.default frontier-pool
                     /opt/hermes/bin/hermes -p "$profile" config set providers.litellm.default_model frontier-pool
+                    case "$profile" in
+                      tinker|nexus)
+                        /opt/hermes/bin/hermes -p "$profile" config set skills.external_dirs '[/opt/data/skills]'
+                        ;;
+                    esac
                   fi
                 done
             securityContext:
