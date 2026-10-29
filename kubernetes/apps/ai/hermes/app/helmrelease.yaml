@@ -55,8 +55,8 @@ spec:
                 chmod 600 "$root_env"
                 mv "$root_env" /opt/data/.env
 
-                # Satellite profiles need a valid shared LiteLLM credential assignment.
-                # Profile-scoped config resolves ${OPENAI_API_KEY} from this file.
+                # Ensure every profile has a correctly named LiteLLM key. Keep the key
+                # in the synced Kubernetes Secret, never in Git or profile config.
                 for profile in /opt/data/profiles/*; do
                   if [ -d "$profile" ]; then
                     tmp="$profile/.env.tmp"
