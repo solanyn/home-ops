@@ -15,6 +15,7 @@ moa:
       enabled: false
 toolsets:
   - hermes-cli
+  - kanban
 terminal:
   backend: local
   cwd: /opt/data/workspace
