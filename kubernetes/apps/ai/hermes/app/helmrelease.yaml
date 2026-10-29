@@ -133,7 +133,6 @@ spec:
               - |
                 set -eu
                 cp /tmp/profile-souls/hawow.SOUL.md /opt/data/SOUL.md
-                chmod 644 /opt/data/SOUL.md
                 for profile in counsel lore nexus pulse quest tinker; do
                   profile_home="/opt/data/profiles/$profile"
                   if [ -d "$profile_home" ]; then
