@@ -6,7 +6,7 @@ model:
 providers:
   litellm:
     api: http://litellm.ai.svc.cluster.local:4000/v1
-    api_key: ${OPENAI_API_KEY}
+    api_key: $${OPENAI_API_KEY}
     default_model: frontier-pool
     transport: chat_completions
 moa:
@@ -62,113 +62,18 @@ kanban:
 updates:
   pre_update_backup: false
 streaming:
-  enabled: false
-security:
-  redact_secrets: true
-privacy:
-  redact_pii: true
-memory:
-  provider: honcho
-  # NB: do not add a honcho_url key here - nothing reads it. The plugin resolves
-  # the URL from HONCHO_BASE_URL (or honcho.json), set on the app container env
-  # in the HelmRelease. A key here silently falls back to Honcho cloud.
-  memory_enabled: true
-  user_profile_enabled: true
-  memory_char_limit: 40000
-  user_char_limit: 12000
-  nudge_interval: 10
-  flush_min_turns: 6
-session_reset:
-  mode: both
-  idle_minutes: 1440
-  at_hour: 4
-approvals:
-  mode: "off"
-  cron_mode: "approve"
-max_concurrent_sessions: 5
-group_sessions_per_user: true
-dashboard:
-  public_url: https://hermes.goyangi.io
-  oauth:
-    provider: self-hosted
-    self_hosted:
-      issuer: https://id.goyangi.io/
-      client_id: hermes-dashboard
-      scopes: "openid profile email"
-skills:
-  creation_nudge_interval: 15
-tool_loop_guardrails:
-  warnings_enabled: true
-  hard_stop_enabled: false
-  warn_after:
-    exact_failure: 2
-    same_tool_failure: 3
-    idempotent_no_progress: 2
-  hard_stop_after:
-    exact_failure: 5
-    same_tool_failure: 8
-    idempotent_no_progress: 5
-tts:
-  provider: openai
-  openai:
-    model: kokoro
-    base_url: http://mac.internal:8765/v1
-stt:
-  provider: openai
-  openai:
-    model: parakeet
-    base_url: http://mac.internal:8765/v1
-voice:
-  auto_tts: true
-delegation:
-  max_iterations: 250
-platform_toolsets:
-  cli:
-    - hermes-cli
-display:
-  tool_progress_command: true
-  show_reasoning: false
-  platforms:
-    matrix:
-      tool_progress: new
-      tool_progress_grouping: accumulate
-      # Terse busy acks: keeps the "working" indicator, drops the per-iteration
-      # and per-tool detail (upstream default is the verbose form).
-      busy_ack_detail: false
-      # No 40-char tool-argument previews in progress lines (upstream sets 40);
-      # shortens each line and keeps tool input such as paths out of chat.
-      tool_preview_length: 0
-      interim_assistant_messages: true
-      long_running_notifications: true
-auxiliary:
-  vision:
-    provider: main
-    timeout: 30
-  web_extract:
-    provider: main
-    timeout: 120
-  tts_audio_tags:
-    provider: main
-    timeout: 30
-  session_search:
-    provider: main
-    timeout: 30
-    max_concurrency: 3
-platforms:
-  matrix:
-    enabled: true
-  api_server:
-    enabled: true
-    host: 0.0.0.0
-    port: 8643
-matrix:
-  allowed_users:
-    - "@andrew:goyangi.io"
-  session_scope: room
-  auto_thread: false
-onboarding:
-  seen:
-    profile_build_offered: true
-mcp_servers:
-  toolhive:
-    url: "http://vmcp-mcp-gateway.ai.svc:4483/mcp"
+  enabled: true
+  flush_interval: 0.2
+  preview_max_chars: 300
+  include_reasoning: false
+compaction:
+  enabled: true
+  summary_model: main
+  summary_end_threshold: 0.55
+  context_limit: 196608
+  summary_retain_recent_tokens: 32000
+  phase2_retain_tokens: 4000
+  background_threshold: 0.65
+  background_min_interval_seconds: 60
+background_tasks:
+  enabled: true
