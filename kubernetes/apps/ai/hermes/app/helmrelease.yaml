@@ -132,6 +132,8 @@ spec:
               - -c
               - |
                 set -eu
+                cp /tmp/profile-souls/hawow.SOUL.md /opt/data/SOUL.md
+                chmod 644 /opt/data/SOUL.md
                 for profile in counsel lore nexus pulse quest tinker; do
                   profile_home="/opt/data/profiles/$profile"
                   if [ -d "$profile_home" ]; then
@@ -139,6 +141,7 @@ spec:
                     chmod 644 "$profile_home/SOUL.md"
                     /opt/hermes/bin/hermes -p "$profile" config set model.default frontier-pool
                     /opt/hermes/bin/hermes -p "$profile" config set providers.litellm.default_model frontier-pool
+                    /opt/hermes/bin/hermes -p "$profile" config set toolsets '[hermes-cli,kanban]'
                     case "$profile" in
                       tinker|nexus)
                         /opt/hermes/bin/hermes -p "$profile" config set skills.external_dirs '[/opt/data/skills]'
