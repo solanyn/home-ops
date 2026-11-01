@@ -21,6 +21,10 @@ spec:
   env:
     - name: FASTMCP_ENV_FILE
       value: /dev/null
+    - name: HOME
+      value: /tmp
+    - name: XDG_CONFIG_HOME
+      value: /tmp/.config
   podTemplateSpec:
     spec:
       containers:
@@ -50,5 +54,15 @@ spec:
               value: in-cluster
             - name: PYTHONUNBUFFERED
               value: "1"
+            - name: HOME
+              value: /tmp
+            - name: XDG_CONFIG_HOME
+              value: /tmp/.config
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}
   groupRef:
     name: mcp-tools
