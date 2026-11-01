@@ -18,6 +18,9 @@ spec:
       cpu: 500m
       memory: 512Mi
   serviceAccount: kubectl-mcp
+  env:
+    - name: FASTMCP_ENV_FILE
+      value: /dev/null
   podTemplateSpec:
     spec:
       containers:
