@@ -47,5 +47,7 @@ spec:
               value: in-cluster
             - name: PYTHONUNBUFFERED
               value: "1"
+            - name: FASTMCP_ENV_FILE
+              value: /dev/null
   groupRef:
     name: mcp-tools
