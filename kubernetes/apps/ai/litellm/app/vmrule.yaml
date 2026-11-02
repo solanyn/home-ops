@@ -32,7 +32,7 @@ spec:
             summary: 'LiteLLM ChatGPT {{ if eq $labels.window_minutes "10080" }}weekly{{ else if eq $labels.window_minutes "300" }}5-hour{{ else }}{{ $labels.window_minutes }}-minute{{ end }} usage limit reached'
             description: >-
               ChatGPT rejected a request because its {{ if eq $labels.window_minutes "10080" }}weekly{{ else if eq $labels.window_minutes "300" }}5-hour{{ else }}unknown{{ end }}
-              allowance is exhausted. Allowance resets at unix {{ $value }}. Fallback models
+              allowance is exhausted. Allowance resets at unix {{ $value | printf "%.0f" }}. Fallback models
               may be serving requests.{{ if eq $labels.window_minutes "10080" }} This is the
               weekly window: the 5-hour window recovering does not restore overall headroom.{{ end }}
           labels:
