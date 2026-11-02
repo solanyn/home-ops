@@ -11,18 +11,32 @@ spec:
       type: vlogs
       interval: 30s
       rules:
+        # Fires only when ChatGPT rejected a request, i.e. the allowance is already
+        # gone. Grouping by the window (300 min = 5-hour, 10080 min = weekly) yields
+        # exactly one alert instance per window: grouping by pod duplicated alerts,
+        # and grouping by resets_at flapped because replicas report it one second
+        # apart. Prefer the exporter's chatgpt_usage_used_percent metric for advance
+        # warning; this rule stays as the authoritative backstop because it proves a
+        # request was actually refused.
         - alert: LiteLLMChatGPTUsageLimitReached
           expr: |-
             kubernetes.pod_name:~"litellm-.*" "usage_limit_reached"
-            | stats by (kubernetes.pod_name) count() as matches
+            | extract "resets_at\x22:<resets_at>," from _msg
+            | extract "limit_window_minutes\x22:<window_minutes>," from _msg
+            | stats by (window_minutes) count() as matches, max(resets_at) as latest_reset
             | filter matches:>0
           keep_firing_for: 15m
           annotations:
-            summary: LiteLLM ChatGPT usage limit reached
-            description: ChatGPT Plus has exhausted its current usage allowance. LiteLLM may be serving fallback models; inspect the reset time in the LiteLLM log.
+            summary: 'LiteLLM ChatGPT {{ if eq $labels.window_minutes "10080" }}weekly{{ else if eq $labels.window_minutes "300" }}5-hour{{ else }}{{ $labels.window_minutes }}-minute{{ end }} usage limit reached'
+            description: >-
+              ChatGPT rejected a request because its {{ if eq $labels.window_minutes "10080" }}weekly{{ else if eq $labels.window_minutes "300" }}5-hour{{ else }}unknown{{ end }}
+              allowance is exhausted. Allowance resets at unix {{ $labels.latest_reset }}. Fallback
+              models may be serving requests.{{ if eq $labels.window_minutes "10080" }} This is the weekly window:
+              the 5-hour window recovering does not restore overall headroom.{{ end }}
           labels:
             severity: critical
             category: capacity
+            window_minutes: "{{ $labels.window_minutes }}"
         - alert: LiteLLMChatGPTAuthenticationRequired
           expr: |-
             kubernetes.pod_name:~"litellm-.*" "Enter code:"
