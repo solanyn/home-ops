@@ -9,4 +9,5 @@ resources:
   - ./embedding.yaml
   - ./frontier-pool.yaml
   - ./kanban-pool.yaml
+  - ./opencode-go.yaml
   - ./simple-pool.yaml
