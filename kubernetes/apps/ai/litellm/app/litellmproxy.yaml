@@ -70,7 +70,7 @@ spec:
     cooldown_time: 30
     enable_pre_call_checks: true
     fallbacks:
-      - frontier-pool: [coding-pool]
+      - frontier-pool: [coding-pool, simple-pool]
       - coding-pool: [simple-pool]
       - kanban-pool: [simple-pool]
   callbacks:

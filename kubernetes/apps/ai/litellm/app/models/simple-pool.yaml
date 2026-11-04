@@ -2,6 +2,34 @@
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMModel
 metadata:
+  name: simple-pool-opencode-go
+spec:
+  modelName: simple-pool
+  proxyRef: litellm
+  params:
+    model: openai/deepseek-v4.1-flash
+    apiBase: https://opencode.ai/inference/go/openai/v1
+    apiKeyRef:
+      name: litellm
+      key: OPENCODE_API_KEY
+    additional:
+      order: 1
+      provider_affinity_header: x-opencode-session
+      extra_headers:
+        User-Agent: litellm/v1.106.6
+  info:
+    mode: chat
+    maxInputTokens: 1000000
+    supportsFunctionCalling: true
+    supportsPromptCaching: true
+    supportsVision: true
+    extra:
+      input_cost_per_token: 3.0e-07
+      output_cost_per_token: 1.2e-06
+---
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
   name: simple-pool-qwen
 spec:
   modelName: simple-pool
@@ -12,7 +40,7 @@ spec:
       name: litellm
       key: OPENROUTER_API_KEY
     additional:
-      order: 1
+      order: 2
       extra_body:
         provider:
           zdr: true
@@ -38,7 +66,7 @@ spec:
       name: litellm
       key: OPENROUTER_API_KEY
     additional:
-      order: 2
+      order: 3
       extra_body:
         provider:
           zdr: true
@@ -65,7 +93,7 @@ spec:
       name: litellm
       key: OPENROUTER_API_KEY
     additional:
-      order: 3
+      order: 4
       extra_body:
         provider:
           zdr: true

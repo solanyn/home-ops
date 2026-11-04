@@ -23,4 +23,15 @@
   kubernetes: {
     managerFilePatterns: ["/^kubernetes/.+\\.yaml(?:\\.j2)?$/"],
   },
+  customManagers: [
+    {
+      customType: "regex",
+      description: "LiteLLM version in the OpenCode Go user agent",
+      managerFilePatterns: ["/^kubernetes/apps/ai/litellm/app/models/.+\\.yaml$/"],
+      matchStrings: ["User-Agent: litellm/(?<currentValue>v?\\d+\\.\\d+\\.\\d+)"],
+      datasourceTemplate: "docker",
+      depNameTemplate: "ghcr.io/berriai/litellm-database",
+      versioningTemplate: "docker",
+    },
+  ],
 }
