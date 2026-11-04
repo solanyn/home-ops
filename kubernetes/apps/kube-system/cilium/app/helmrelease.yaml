@@ -18,6 +18,7 @@ spec:
       bbr: true
     bpf:
       datapathMode: netkit
+      hostLegacyRouting: false
       masquerade: true
       preallocateMaps: true
     bpfClockProbe: true
