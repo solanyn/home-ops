@@ -7,15 +7,8 @@ metadata:
   namespace: kritika-system
 spec:
   targetNamespace: kritika-system
-  components:
-    - ../../../../components/kopiur
   interval: 1h
   path: ./kubernetes/apps/kritika-system/kritika/database
-  postBuild:
-    substitute:
-      APP: kritika
-      KOPIUR_CAPACITY: 10Gi
-      KOPIUR_STORAGECLASS: miroir-local
   prune: true
   sourceRef:
     kind: GitRepository
