@@ -1,0 +1,137 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: kritika-central
+spec:
+  cluster:
+    name: postgres
+  name: kritika
+  owner: kritika
+  extensions:
+    - name: vchord
+      version: "1.1.1"
+      ensure: present
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/role_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: kritika-central-owner
+spec:
+  cluster:
+    name: postgres
+  name: kritika_owner
+  login: true
+  createrole: true
+  createdb: true
+  passwordSecret:
+    name: kritika-postgres-credentials
+  databaseRoleReclaimPolicy: retain
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/role_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: kritika-central-app
+spec:
+  cluster:
+    name: postgres
+  name: kritika_app
+  login: true
+  inRoles:
+    - kritika
+  passwordSecret:
+    name: kritika-postgres-app
+  databaseRoleReclaimPolicy: retain
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/role_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: kritika-central-runner
+spec:
+  cluster:
+    name: postgres
+  name: kritika_runner
+  login: true
+  inRoles:
+    - kritika
+  passwordSecret:
+    name: kritika-postgres-runner
+  databaseRoleReclaimPolicy: retain
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: kritika-postgres-credentials
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: kritika-postgres-credentials
+    creationPolicy: Owner
+    template:
+      type: kubernetes.io/basic-auth
+      data:
+        username: kritika_owner
+        password: "{{ .KRITIKA_POSTGRES_OWNER_PASSWORD }}"
+        uri: "postgres://kritika_owner:{{ .KRITIKA_POSTGRES_OWNER_PASSWORD }}@postgres-rw.storage.svc.cluster.local:5432/kritika?sslmode=require&connect_timeout=10"
+        INIT_POSTGRES_HOST: postgres-rw.storage.svc.cluster.local
+        INIT_POSTGRES_DBNAME: kritika
+  dataFrom:
+    - extract:
+        key: kritika
+    - extract:
+        key: cloudnative-pg
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: kritika-postgres-app
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: kritika-postgres-app
+    creationPolicy: Owner
+    template:
+      type: kubernetes.io/basic-auth
+      data:
+        username: kritika_app
+        password: "{{ .KRITIKA_POSTGRES_APP_PASSWORD }}"
+        uri: "postgres://kritika_app:{{ .KRITIKA_POSTGRES_APP_PASSWORD }}@postgres-rw.storage.svc.cluster.local:5432/kritika?sslmode=require&connect_timeout=10"
+  dataFrom:
+    - extract:
+        key: kritika
+    - extract:
+        key: cloudnative-pg
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: kritika-postgres-runner
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: kritika-postgres-runner
+    creationPolicy: Owner
+    template:
+      type: kubernetes.io/basic-auth
+      data:
+        username: kritika_runner
+        password: "{{ .KRITIKA_POSTGRES_RUNNER_PASSWORD }}"
+        uri: "postgres://kritika_runner:{{ .KRITIKA_POSTGRES_RUNNER_PASSWORD }}@postgres-rw.storage.svc.cluster.local:5432/kritika?sslmode=require&connect_timeout=10"
+  dataFrom:
+    - extract:
+        key: kritika
+    - extract:
+        key: cloudnative-pg
