@@ -55,9 +55,9 @@ spec:
         podSelector:
           k8s-app: kube-dns
       postgres:
-        namespace: kritika-system
+        namespace: storage
         podSelector:
-          cnpg.io/cluster: kritika-postgres
+          cnpg.io/cluster: postgres
       egressPorts:
         - 443
       postgresPort: 5432
