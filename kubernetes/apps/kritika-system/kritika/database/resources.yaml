@@ -3,12 +3,12 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Database
 metadata:
-  name: kritika
+  name: kritika-central
 spec:
   cluster:
     name: postgres
   name: kritika
-  owner: kritika_owner
+  owner: kritika
   extensions:
     - name: vchord
       version: "1.1.1"
@@ -18,7 +18,7 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: DatabaseRole
 metadata:
-  name: kritika-owner
+  name: kritika-central-owner
 spec:
   cluster:
     name: postgres
@@ -34,14 +34,14 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: DatabaseRole
 metadata:
-  name: kritika-app
+  name: kritika-central-app
 spec:
   cluster:
     name: postgres
   name: kritika_app
   login: true
   inRoles:
-    - kritika_owner
+    - kritika
   passwordSecret:
     name: kritika-postgres-app
   databaseRoleReclaimPolicy: retain
@@ -50,14 +50,14 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: DatabaseRole
 metadata:
-  name: kritika-runner
+  name: kritika-central-runner
 spec:
   cluster:
     name: postgres
   name: kritika_runner
   login: true
   inRoles:
-    - kritika_owner
+    - kritika
   passwordSecret:
     name: kritika-postgres-runner
   databaseRoleReclaimPolicy: retain
