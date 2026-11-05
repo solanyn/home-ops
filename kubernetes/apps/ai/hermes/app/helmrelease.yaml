@@ -240,7 +240,7 @@ spec:
             envFrom:
               - secretRef:
                   name: hermes
-            args: ["dashboard", "--host", "0.0.0.0", "--port", "8642"]
+            args: ["dashboard", "--host", "0.0.0.0", "--port", "8642", "--isolated"]
             ports:
               - name: dashboard
                 containerPort: 8642
