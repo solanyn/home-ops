@@ -30,7 +30,7 @@ spec:
   dependsOn:
     - name: kritika-database
       namespace: kritika-system
-    - name: cnpg-kritika
+    - name: cloudnative-pg-cluster
       namespace: storage
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
