@@ -86,6 +86,8 @@ compaction:
   background_min_interval_seconds: 60
 background_tasks:
   enabled: true
+memory:
+  provider: honcho
 platforms:
   api_server:
     host: 0.0.0.0
