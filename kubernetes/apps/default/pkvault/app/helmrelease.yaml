@@ -24,7 +24,7 @@ spec:
           app:
             image:
               repository: ghcr.io/chnapy/pkvault
-              tag: 2.5.1@sha256:661dd1777a17b17de395520a0dbf2a41fc11aee24b4e6c360a671cb9dcdb3b7b
+              tag: 2.5.2@sha256:1fa674e41c8a69f0d7463b671da4a1c68045fbed5bfd3c558a5b6aa721775e26
             env:
               TZ: Australia/Sydney
             probes:
