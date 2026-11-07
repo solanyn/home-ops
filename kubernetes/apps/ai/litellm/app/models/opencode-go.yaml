@@ -15,7 +15,7 @@ spec:
     additional:
       provider_affinity_header: x-opencode-session
       extra_headers:
-        User-Agent: litellm/v1.106.6
+        User-Agent: litellm/v1.108.2
   info:
     mode: chat
     maxInputTokens: 1000000
