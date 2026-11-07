@@ -19,5 +19,5 @@ spec:
   healthChecks:
     - apiVersion: external-secrets.io/v1
       kind: ExternalSecret
-      name: silo-postgres-app
+      name: silo-postgres-app-connection
       namespace: default
