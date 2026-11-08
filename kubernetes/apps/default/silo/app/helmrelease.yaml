@@ -14,6 +14,19 @@ spec:
       silo:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          # subPath mounts on this claim keep root ownership, and Silo installs
+          # plugins as uid 1000 with the cache dir the operator's to secure.
+          init-dirs:
+            image:
+              repository: busybox
+              tag: 1.38
+            command: ["/bin/sh", "-c"]
+            args:
+              - mkdir -p /config/silo/plugins /config/silo/artwork /config/silo/compat && chown 1000:1000 /config/silo/plugins /config/silo/artwork /config/silo/compat
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0
         containers:
           app:
             image: &image
@@ -200,6 +213,13 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         advancedMounts:
           silo:
+            init-dirs:
+              - path: /config/silo/plugins
+                subPath: plugins
+              - path: /config/silo/artwork
+                subPath: artwork
+              - path: /config/silo/compat
+                subPath: compat
             app:
               - path: /config/silo/artwork
                 subPath: artwork
