@@ -1,0 +1,15 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: silo
+spec:
+  clientID: silo
+  callbackUrls:
+    - https://silo.goyangi.io/api/v2/auth/oauth/*/callback
+  logoutCallbackUrls:
+    - https://silo.goyangi.io
+  allowedUserGroups:
+    - name: user
+  secret:
+    name: silo-oidc
