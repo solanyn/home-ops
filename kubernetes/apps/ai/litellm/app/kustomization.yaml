@@ -8,6 +8,7 @@ resources:
   - ./models
   - ./externalsecret.yaml
   - ./grafanadashboard.yaml
+  - ./hooks.yaml
   - ./litellmproxy.yaml
   - ./oidc.yaml
   - ./prometheusrule.yaml
