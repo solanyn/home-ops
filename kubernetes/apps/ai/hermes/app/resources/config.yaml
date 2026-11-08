@@ -9,6 +9,7 @@ providers:
     api_key: ${OPENAI_API_KEY}
     default_model: frontier-pool
     transport: chat_completions
+    session_affinity_header: x-opencode-session
 moa:
   presets:
     default:

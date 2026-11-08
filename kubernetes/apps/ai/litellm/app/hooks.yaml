@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: litellm-hooks
+data:
+  opencode_headers.py: |-
+    """Stamp OpenCode Go requests with a client identity.
+
+    OpenCode Go requires a stable per-conversation ``x-opencode-session`` and asks
+    clients to identify themselves with their own user agent. LiteLLM forwards no
+    headers by default, and its built-in header forwarding replaces a deployment's
+    ``extra_headers`` wholesale, which would drop the user agent. This hook owns
+    both headers for opencode.ai deployments instead.
+    """
+
+    from litellm.integrations.custom_logger import CustomLogger
+
+    SESSION_HEADER = "x-opencode-session"
+    STATIC_SESSION = "litellm-opencode-go"
+    USER_AGENT = "litellm-proxy/1.0 (home-ops)"
+    OPENCODE_HOST = "opencode.ai"
+
+
+    class OpenCodeHeaders(CustomLogger):
+        async def async_pre_call_deployment_hook(self, kwargs, call_type):
+            if OPENCODE_HOST not in str(kwargs.get("api_base") or ""):
+                return kwargs
+
+            headers = {}
+            headers.update((kwargs.get("litellm_params") or {}).get("extra_headers") or {})
+            headers.update(kwargs.get("headers") or {})
+
+            request_headers = (kwargs.get("proxy_server_request") or {}).get("headers") or {}
+            session = ""
+            for name, value in request_headers.items():
+                if name.lower() == SESSION_HEADER and value:
+                    session = str(value)
+                    break
+
+            headers["User-Agent"] = USER_AGENT
+            headers[SESSION_HEADER] = session or STATIC_SESSION
+            kwargs["headers"] = headers
+            return kwargs
+
+
+    proxy_handler_instance = OpenCodeHeaders()

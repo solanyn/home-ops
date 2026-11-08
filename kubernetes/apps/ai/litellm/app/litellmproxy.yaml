@@ -36,6 +36,8 @@ spec:
       value: PRODUCTION
     - name: PROXY_BASE_URL
       value: https://litellm.goyangi.io
+    - name: PYTHONPATH
+      value: /app/hooks
     - name: REDIS_HOST
       value: redis.storage.svc.cluster.local
     - name: REDIS_PORT
@@ -60,9 +62,15 @@ spec:
     - name: chatgpt-auth
       persistentVolumeClaim:
         claimName: litellm
+    - name: hooks
+      configMap:
+        name: litellm-hooks
   volumeMounts:
     - name: chatgpt-auth
       mountPath: /app/chatgpt_tokens
+    - name: hooks
+      mountPath: /app/hooks
+      readOnly: true
   routerSettings:
     redis_host: os.environ/REDIS_HOST
     redis_port: os.environ/REDIS_PORT
@@ -84,6 +92,7 @@ spec:
       port: os.environ/REDIS_PORT
       ttl: 300
       supported_call_types: [embedding, aembedding]
+    callbacks: [opencode_headers.proxy_handler_instance]
     drop_params: true
     num_retries: 2
     prometheus_adapter: true
