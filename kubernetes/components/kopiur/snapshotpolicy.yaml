@@ -10,6 +10,16 @@ spec:
     compressor: zstd
   credentialProjection:
     enabled: true
+  files:
+    # Miroir's NFSv4 server keeps its own recovery state here, owned by nobody at
+    # mode 0700, so kopia cannot read it. An explicit list replaces the defaults.
+    ignoreRules:
+      - /lost+found
+      - System Volume Information
+      - $RECYCLE.BIN
+      - "@eaDir"
+      - .snapshot
+      - .ganesha-recovery
   mover:
     cache:
       capacity: ${KOPIUR_CAPACITY:=5Gi}
