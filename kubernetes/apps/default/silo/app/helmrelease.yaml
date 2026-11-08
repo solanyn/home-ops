@@ -27,6 +27,7 @@ spec:
             securityContext:
               runAsUser: 0
               runAsGroup: 0
+              runAsNonRoot: false
         containers:
           app:
             image: &image
@@ -81,6 +82,9 @@ spec:
             securityContext: &containerSecurity
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
+              # Kept at container level: runAsNonRoot here would forbid the
+              # root init container that owns the plugin install roots.
+              runAsNonRoot: true
               capabilities:
                 drop:
                   - ALL
@@ -158,7 +162,6 @@ spec:
                       - silo
                       - transcode
       securityContext:
-        runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
