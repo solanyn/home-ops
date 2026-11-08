@@ -1,0 +1,91 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: silo
+spec:
+  cluster:
+    name: postgres
+  name: silo
+  owner: silo_owner
+  extensions:
+    - name: vector
+      # renovate: suite=trixie-pgdg depName=postgresql-18-pgvector extractVersion=^(?<version>\d+\.\d+\.\d+)
+      version: "0.8.7"
+      ensure: present
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: silo-owner
+spec:
+  cluster:
+    name: postgres
+  name: silo_owner
+  login: true
+  createrole: true
+  createdb: true
+  passwordSecret:
+    name: silo-postgres-owner
+  databaseRoleReclaimPolicy: retain
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: silo-app
+spec:
+  cluster:
+    name: postgres
+  name: silo
+  login: true
+  inRoles:
+    - silo_owner
+  passwordSecret:
+    name: silo-postgres-app
+  databaseRoleReclaimPolicy: retain
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: silo-postgres-owner
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: silo-postgres-owner
+    creationPolicy: Owner
+    template:
+      type: kubernetes.io/basic-auth
+      data:
+        username: silo_owner
+        password: "{{ .SILO_POSTGRES_OWNER_PASSWORD }}"
+  dataFrom:
+    - extract:
+        key: silo
+    - extract:
+        key: cloudnative-pg
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: silo-postgres-app
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: silo-postgres-app
+    creationPolicy: Owner
+    template:
+      type: kubernetes.io/basic-auth
+      data:
+        username: silo
+        password: "{{ .SILO_POSTGRES_PASSWORD }}"
+  dataFrom:
+    - extract:
+        key: silo
+    - extract:
+        key: cloudnative-pg

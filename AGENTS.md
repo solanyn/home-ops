@@ -6,7 +6,15 @@ Follow conventional commits. Never attribute agents in commit messages. Avoid un
 
 Use GitOps. Do not edit resources directly. Make changes to the repo, commit and push, then run `flux reconcile ks cluster-apps --with-source`.
 
-Read the applicable files under `.agents/` for specific scenarios, including `.agents/instructions/` and `.agents/skills/`.
+- Read the applicable files under `.agents/` for specific scenarios, including `.agents/instructions/` and `.agents/skills/`.
+
+## Manifest authoring workflow
+
+- Before adding or reshaping manifests, read the applicable repository instructions and skills and inspect 1-2 neighbouring apps in the same namespace. Follow the established file layout and resource ownership; do not invent a parallel structure when a local pattern exists.
+- For a standard app, keep `ks.yaml` at `kubernetes/apps/<namespace>/<app>/ks.yaml`; put app resources under `app/` and enumerate each file explicitly in `app/kustomization.yaml`. Register the app in the namespace `kustomization.yaml` in alphabetical order without replacing existing entries.
+- Add only required manifests, using the repository’s established names and one-resource-purpose-per-file patterns. Keep related resources in the directory and Flux Kustomization whose namespace and lifecycle own them. Verify controller namespace/ref semantics and explicit Flux dependencies for cross-namespace resources.
+- Follow neighbouring conventions for YAML documents, schemas, field ordering, secret templates, persistence, routes, probes and chart/image pinning. Preserve unrelated registrations.
+- Validate changed Flux paths and root wiring with the configured renderer; parse YAML, run `git diff --check`, and schema/chart-validate where available. A successful Kustomize render alone does not validate Helm chart output or live operator behavior.
 
 ## Commits
 
