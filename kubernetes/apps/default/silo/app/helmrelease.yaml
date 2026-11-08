@@ -85,7 +85,6 @@ spec:
           serviceName:
             identifier: transcode
         pod:
-          priorityClassName: silo-transcode
           resourceClaims:
             - name: gpu
               resourceClaimTemplateName: silo-gpu

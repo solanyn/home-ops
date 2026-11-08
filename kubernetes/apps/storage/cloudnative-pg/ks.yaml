@@ -91,3 +91,16 @@ spec:
     name: flux-system
     namespace: flux-system
   wait: true
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Database
+      name: silo
+      namespace: storage
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: DatabaseRole
+      name: silo-owner
+      namespace: storage
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: DatabaseRole
+      name: silo-app
+      namespace: storage
