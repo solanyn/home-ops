@@ -6,7 +6,20 @@ Follow conventional commits. Never attribute agents in commit messages. Avoid un
 
 Use GitOps. Do not edit resources directly. Make changes to the repo, commit and push, then run `flux reconcile ks cluster-apps --with-source`.
 
-Read the applicable files under `.agents/` for specific scenarios, including `.agents/instructions/` and `.agents/skills/`.
+- Read the applicable files under `.agents/` for specific scenarios, including `.agents/instructions/` and `.agents/skills/`.
+
+## Manifest authoring workflow
+
+- Before adding or reshaping manifests, read `AGENTS.md`, the applicable `.agents/instructions/` and `.agents/skills/` files, then inspect 1-2 neighbouring apps in the same namespace. Follow the established file layout and resource ownership; do not invent a parallel structure when a local pattern exists.
+- For a standard app, keep `ks.yaml` at `kubernetes/apps/<namespace>/<app>/ks.yaml`; put app resources under `app/` and enumerate each file explicitly in `app/kustomization.yaml`. Register the app in the namespace `kustomization.yaml` in alphabetical order without replacing existing entries.
+- Add only required manifests, using the repository’s established names and one-resource-purpose-per-file patterns (for example `helmrelease.yaml`, `ocirepository.yaml`, `externalsecret.yaml`, `pvc.yaml`, or `httproute.yaml`). Keep related resources in the directory and Flux Kustomization whose namespace and lifecycle own them.
+- For resources tied to another controller’s namespace-scoped object, confirm the CRD’s namespace/reference semantics and inspect a working local example before choosing the directory or Flux `targetNamespace`. Keep dependencies explicit in Flux `dependsOn`, including the dependency namespace.
+- Follow neighbouring conventions for YAML document separators, schemas, field ordering, naming, substitutions, secrets, persistence, routes, probes, and chart/image pinning. Preserve unrelated registrations and resources.
+- Validate every changed Flux path and its parent/root wiring with the configured renderer; parse YAML, run `git diff --check`, and schema/chart-validate where available. Report limits; a successful Kustomize render alone does not validate Helm chart output or live operator behavior.
+
+## Pull request comments
+
+Before adding PR comments, check whether configured repository automation already posts a comment to avoid duplicates.
 
 ## Commits
 
