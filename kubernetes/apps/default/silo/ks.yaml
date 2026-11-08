@@ -11,6 +11,8 @@ spec:
   dependsOn:
     - name: cloudnative-pg-databases
       namespace: storage
+    - name: pocket-id-resources
+      namespace: default
     - name: miroir-config
       namespace: miroir-system
   interval: 1h
