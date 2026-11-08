@@ -10,6 +10,8 @@ spec:
     name: opencode
   interval: 15m
   values:
+    global:
+      fullnameOverride: opencode-web
     defaultPodOptions:
       automountServiceAccountToken: false
       securityContext:
