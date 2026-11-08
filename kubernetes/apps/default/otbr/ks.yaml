@@ -6,6 +6,8 @@ metadata:
   name: otbr
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/kopiur
   dependsOn:
     - name: multus-networks
       namespace: kube-system
@@ -14,6 +16,9 @@ spec:
   postBuild:
     substitute:
       APP: otbr
+      KOPIUR_CAPACITY: 1Gi
+      KOPIUR_PGID: "0"
+      KOPIUR_PUID: "0"
   prune: true
   sourceRef:
     kind: GitRepository
