@@ -99,6 +99,28 @@ spec:
           - backendRefs:
               - identifier: app
                 port: *port
+      jellyfin:
+        hostnames:
+          - "jellyfin.goyangi.io"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *jfPort
+      audiobookshelf:
+        hostnames:
+          - "audiobookshelf.goyangi.io"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *absPort
     persistence:
       config:
         existingClaim: silo
