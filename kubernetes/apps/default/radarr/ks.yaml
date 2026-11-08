@@ -6,6 +6,8 @@ metadata:
   name: radarr
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/kopiur
   dependsOn:
     - name: pocket-id-resources
       namespace: default
