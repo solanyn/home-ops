@@ -7,24 +7,17 @@ metadata:
   namespace: kritika-system
 spec:
   targetNamespace: kritika-system
-  components:
-    - ../../../../components/kopiur
   interval: 1h
   path: ./kubernetes/apps/kritika-system/kritika/database
-  postBuild:
-    substitute:
-      APP: kritika
-      KOPIUR_CAPACITY: 10Gi
-      KOPIUR_STORAGECLASS: miroir-local
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
   healthChecks:
-    - apiVersion: postgresql.cnpg.io/v1
-      kind: Cluster
-      name: kritika-postgres
+    - apiVersion: external-secrets.io/v1
+      kind: ExternalSecret
+      name: kritika-postgres-app
       namespace: kritika-system
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -37,6 +30,8 @@ spec:
   dependsOn:
     - name: kritika-database
       namespace: kritika-system
+    - name: cloudnative-pg-cluster
+      namespace: storage
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
