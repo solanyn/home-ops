@@ -30,9 +30,4 @@ spec:
     - pvc:
         name: ${APP}
       sourcePathOverride: /data
-  verification:
-    quick:
-      schedule:
-        cron: "H 4 * * 0"
-        timezone: Australia/Sydney
   volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=miroir-snap}
