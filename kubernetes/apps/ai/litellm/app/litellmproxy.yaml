@@ -73,6 +73,7 @@ spec:
       - frontier-pool: [coding-pool, simple-pool]
       - coding-pool: [simple-pool]
       - kanban-pool: [simple-pool]
+      - opencode-go: [coding-pool, simple-pool]
   callbacks:
     success: [prometheus]
     failure: [prometheus]
