@@ -40,8 +40,8 @@ spec:
                 cron: "0 3 * * *"
                 jitter: 1h
             quick:
-                cron: "0 */6 * * *"
-                jitter: 30m
+                cron: "0 * * * *"
+                jitter: 10m
             timezone: Australia/Sydney
         takeoverPolicy: Force
     moverDefaults:

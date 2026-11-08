@@ -20,6 +20,8 @@ spec:
       APP: litellm
       KOPIUR_ACCESSMODES: ReadWriteMany
       KOPIUR_CAPACITY: 1Gi
+      KOPIUR_CONTENT_CACHE_MB: "128"
+      KOPIUR_METADATA_CACHE_MB: "256"
       KOPIUR_SNAPSHOTCLASS: miroir-snap
       KOPIUR_PGID: "0"
       KOPIUR_PUID: "0"

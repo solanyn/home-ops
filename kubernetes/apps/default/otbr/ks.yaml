@@ -17,6 +17,8 @@ spec:
     substitute:
       APP: otbr
       KOPIUR_CAPACITY: 1Gi
+      KOPIUR_CONTENT_CACHE_MB: "128"
+      KOPIUR_METADATA_CACHE_MB: "256"
       KOPIUR_PGID: "0"
       KOPIUR_PUID: "0"
   prune: true

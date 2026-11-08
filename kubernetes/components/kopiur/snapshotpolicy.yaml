@@ -15,6 +15,11 @@ spec:
       capacity: ${KOPIUR_CAPACITY:=5Gi}
       mode: Persistent
       storageClassName: ${KOPIUR_CACHE_STORAGECLASS:=miroir-replicated}
+      # kopia's default budgets (5000 MiB/class) exceed a 5Gi cache PVC, so the
+      # sweeper never runs and the cache fills the volume. Metadata applies
+      # twice (index-blobs cap), so keep content + 2*metadata under capacity.
+      contentCacheSizeMb: ${KOPIUR_CONTENT_CACHE_MB:=512}
+      metadataCacheSizeMb: ${KOPIUR_METADATA_CACHE_MB:=1024}
     securityContext:
       runAsUser: ${KOPIUR_PUID:=1000}
       runAsGroup: ${KOPIUR_PGID:=1000}
