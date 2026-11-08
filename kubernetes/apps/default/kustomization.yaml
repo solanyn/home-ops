@@ -51,6 +51,7 @@ resources:
   - ./seasonpackerr/ks.yaml
   - ./seerr/ks.yaml
   - ./dufs/ks.yaml
+  - ./silo/ks.yaml
   - ./sonarr/ks.yaml
   - ./suwayomi/ks.yaml
   - ./tautulli/ks.yaml
