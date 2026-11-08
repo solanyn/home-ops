@@ -1,0 +1,16 @@
+---
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPRemoteProxy
+metadata:
+  name: cua-driver
+spec:
+  # CuaDriver runs on the Mac mini (GUI automation needs macOS Accessibility and
+  # Screen Recording), so the stdio server is bridged to HTTP by mcp-proxy there
+  # and proxied into the cluster. No image: remote proxies only take a URL.
+  remoteUrl: http://192.168.10.30:8799/mcp
+  transport: streamable-http
+  # Required: remoteUrl is a private RFC1918 address.
+  allowPrivateEndpoint: true
+  proxyPort: 8080
+  groupRef:
+    name: mcp-tools
