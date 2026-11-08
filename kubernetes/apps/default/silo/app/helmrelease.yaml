@@ -8,7 +8,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: silo
-  interval: 10m
+  interval: 1h
   values:
     controllers:
       silo:
@@ -16,22 +16,34 @@ spec:
           reloader.stakater.com/auto: "true"
         containers:
           app:
-            image:
+            image: &image
               repository: ghcr.io/silo-server/silo-server
               tag: build-2069@sha256:4135ad1c1177228be9cdcf4aa44df3442148ba1d6eec6c96268679601a10ad63
-            command:
+            command: &command
               - silo
-            env:
+            env: &env
               PORT: &port 8080
               JF_PORT: &jfPort 8096
               ABS_PORT: &absPort 13378
-              TZ: Australia/Sydney
-              PUID: "1000"
-              PGID: "1000"
+              TZ: &tz Australia/Sydney
+              PUID: &puid "1000"
+              PGID: &pgid "1000"
               POSTGRES_TUNE: "off"
-            envFrom:
-              - secretRef:
-                  name: silo-secret
+              HOME: /tmp
+              REDIS_URL: redis://dragonfly-cluster.storage.svc.cluster.local:6379/0
+              SILO_PLUGIN_CACHE_DIR: /tmp/silo-plugins
+              SILO_STOP_GRACE_PERIOD: 11m
+              SILO_NODE_DRAIN_TIMEOUT: 10m
+              DATABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: silo-secret
+                    key: DATABASE_URL
+              SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: silo-secret
+                    key: SECRET_KEY
             probes:
               liveness:
                 enabled: true
@@ -53,24 +65,86 @@ spec:
                   periodSeconds: 10
                   timeoutSeconds: 5
                   failureThreshold: 5
-            securityContext:
+            securityContext: &containerSecurity
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop:
                   - ALL
-                add:
-                  - NET_ADMIN
             resources:
               requests:
                 cpu: 100m
                 memory: 512Mi
               limits:
                 memory: 4Gi
+      transcode:
+        type: statefulset
+        replicas: 1
+        statefulset:
+          podManagementPolicy: Parallel
+          serviceName:
+            identifier: transcode
+        pod:
+          priorityClassName: silo-transcode
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: silo-gpu
+        containers:
+          transcode:
+            image: *image
+            command: *command
+            env:
+              <<: *env
+              MODE: transcode
+              POD_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.name
+              NODE_NAME:
+                value: $(POD_NAME)
+                dependsOn: POD_NAME
+              # Headless service resolves to the pod's own DNS name
+              NODE_URL:
+                value: http://$(POD_NAME).silo-transcode.default.svc.cluster.local:$(PORT)
+                dependsOn: POD_NAME
+              SILO_PLUGIN_CACHE_DIR: /tmp/silo-plugins
+            probes:
+              liveness: &nodeProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: *port
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *nodeProbes
+            securityContext: *containerSecurity
+            resources:
+              requests:
+                cpu: 100m
+                memory: 256Mi
+              limits:
+                memory: 4Gi
+              claims:
+                - name: gpu
     defaultPodOptions:
-      resourceClaims:
-        - name: gpu
-          resourceClaimTemplateName: silo-gpu
+      # The server and its transcode node never share a GPU host: the server
+      # takes the claim first and the node is preemptible.
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/instance: silo
+                matchExpressions:
+                  - key: app.kubernetes.io/controller
+                    operator: In
+                    values:
+                      - silo
+                      - transcode
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -81,6 +155,7 @@ spec:
           type: RuntimeDefault
     service:
       app:
+        controller: silo
         ports:
           http:
             port: *port
@@ -88,6 +163,12 @@ spec:
             port: *jfPort
           audiobookshelf:
             port: *absPort
+      transcode:
+        controller: transcode
+        clusterIP: None
+        ports:
+          http:
+            port: *port
     route:
       app:
         hostnames:
@@ -102,7 +183,7 @@ spec:
                 port: *port
       jellyfin:
         hostnames:
-          - "jellyfin.goyangi.io"
+          - jellyfin.goyangi.io
         parentRefs:
           - name: envoy-internal
             namespace: network
@@ -113,15 +194,34 @@ spec:
                 port: *jfPort
     persistence:
       config:
-        existingClaim: "{{ .Release.Name }}"
+        type: emptyDir
         globalMounts:
-          - path: /config
+          - path: /config/silo
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          silo:
+            app:
+              - path: /config/silo/artwork
+                subPath: artwork
+              - path: /config/silo/compat
+                subPath: compat
+              - path: /tmp/silo-plugins
+                subPath: plugins
+          transcode:
+            transcode:
+              - path: /config/silo/artwork
+                subPath: artwork
+              - path: /config/silo/compat
+                subPath: compat
       media:
         type: nfs
         server: nas.internal
         path: /mnt/world/media
         globalMounts:
-          - path: /mnt/media
+          - path: /media
             readOnly: true
       tmp:
         type: emptyDir
+        globalMounts:
+          - path: /tmp

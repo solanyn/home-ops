@@ -6,11 +6,20 @@ metadata:
   name: silo
 spec:
   targetNamespace: default
+  components:
+    - ../../../../components/kopiur
   dependsOn:
     - name: cloudnative-pg-databases
       namespace: storage
+    - name: miroir-config
+      namespace: miroir-system
   interval: 1h
   path: ./kubernetes/apps/default/silo/app
+  postBuild:
+    substitute:
+      APP: silo
+      KOPIUR_ACCESSMODES: ReadWriteMany
+      KOPIUR_CAPACITY: 20Gi
   prune: true
   sourceRef:
     kind: GitRepository
