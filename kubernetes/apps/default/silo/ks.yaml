@@ -7,8 +7,6 @@ metadata:
 spec:
   targetNamespace: default
   dependsOn:
-    - name: silo-database
-      namespace: default
     - name: cloudnative-pg-databases
       namespace: storage
   interval: 1h
