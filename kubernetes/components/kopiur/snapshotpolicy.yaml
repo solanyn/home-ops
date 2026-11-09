@@ -44,4 +44,31 @@ spec:
   sources:
     - pvc:
         name: ${APP}
+  verification:
+    # quick = are the blobs and indexes intact? verifyFilesPercent makes it read
+    # a slice of file contents too, so it is cheap enough to run nightly.
+    quick:
+      schedule:
+        cron: ${KOPIUR_VERIFY_QUICK_CRON:=H 3 * * *}
+        jitter: 30m
+        timezone: Australia/Sydney
+    # deep = scratch-restore the latest snapshot into a throwaway volume, i.e.
+    # an actual recovery drill. Weekly is plenty.
+    #
+    # `capacity` is deliberately templated from the app's OWN claim: the scratch
+    # volume must be at least as large as the data being restored, and
+    # `spec.concurrency` does NOT gate verify Jobs (it only pools snapshot,
+    # restore and replication). So the weekly cron fans out across all policies
+    # at once, and every deep Job holds real thin-pool space while it runs. Sizing
+    # each from ${KOPIUR_CAPACITY} keeps the total in line with what the app
+    # already reserves instead of multiplying one repo-wide number.
+    deep:
+      schedule:
+        cron: ${KOPIUR_VERIFY_DEEP_CRON:=H 5 * * 0}
+        jitter: 1h
+        timezone: Australia/Sydney
+      capacity: ${KOPIUR_CAPACITY:=5Gi}
+      storageClassName: ${KOPIUR_CACHE_STORAGECLASS:=miroir-replicated}
+    # Both tiers share this. 10% of each file is read and hashed in the quick tier.
+    verifyFilesPercent: 10
   volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=miroir-snap}
