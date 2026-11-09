@@ -47,20 +47,13 @@ spec:
     envFrom:
       - secretRef:
           name: kritika-secret
+    # Disabled: the chart's egress policy drops ClusterIP traffic from kritika
+    # pods when the Service backend is on the same node, so kritika cannot reach
+    # postgres-rw. Additive fixes (toCIDR, toServices, toEntities: all) and an
+    # agent restart all failed; only removing the policy restored connectivity.
+    # Re-enable once Cilium handles ClusterIP DNAT under egress policy here.
     networkPolicy:
-      enabled: true
-      type: cilium
-      dns:
-        namespace: kube-system
-        podSelector:
-          k8s-app: kube-dns
-      postgres:
-        namespace: storage
-        podSelector:
-          cnpg.io/cluster: postgres
-      egressPorts:
-        - 443
-      postgresPort: 5432
+      enabled: false
     runner:
       podTemplate:
         spec:
