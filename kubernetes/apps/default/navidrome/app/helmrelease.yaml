@@ -21,7 +21,7 @@ spec:
             env:
               ND_LOGLEVEL: info
               ND_PORT: &port 4533
-              ND_MUSICFOLDER: /music
+              ND_MUSICFOLDER: /media/music
               ND_DATAFOLDER: /data
               ND_BASEURL: ""
               ND_ENABLEINSIGHTSCOLLECTOR: "false"

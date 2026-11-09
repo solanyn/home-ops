@@ -23,8 +23,8 @@ spec:
               PGID: "1000"
               PORT: &port 3001
               AURRAL_DATA_DIR: /config
-              LIBRARY_FOLDER: /music
-              FILE_BROWSE_ROOTS: /music,/config
+              LIBRARY_FOLDER: /media/music
+              FILE_BROWSE_ROOTS: /media/music,/media/downloads,/config
               OIDC_ENABLED: "true"
               OIDC_ISSUER: https://id.goyangi.io
               OIDC_CLIENT_ID: aurral
