@@ -53,12 +53,4 @@ spec:
     securityContext:
       runAsGroup: 1000
       runAsUser: 1000
-    # Deep verification is a scratch-restore: it needs room for the *restored*
-    # snapshot, not the compressed backup. The largest volume here is hermes at
-    # ~42 GiB, so size the throwaway PVC once at the repository and let smaller
-    # policies restore into unused headroom. This is ephemeral per verify run and
-    # deleted with the Job, but it must still bind on miroir.
-    scratch:
-      capacity: 100Gi
-      storageClassName: miroir-replicated
   mode: ReadWrite
