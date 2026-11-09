@@ -23,7 +23,7 @@ spec:
               PGID: "1000"
               PORT: &port 3001
               AURRAL_DATA_DIR: /config
-              DOWNLOAD_FOLDER: /media/music
+              DOWNLOAD_FOLDER: /media/downloads/aurral
 
               # aurral's weekly-flow playlists default to /app/downloads, which is read-only
               FILE_BROWSE_ROOTS: /media/music,/media/downloads,/config
