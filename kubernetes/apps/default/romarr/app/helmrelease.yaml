@@ -1,0 +1,115 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: romarr
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  interval: 1h
+  values:
+    controllers:
+      romarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/blizzhacker/romarr
+              tag: 1.8.0
+            envFrom:
+              - secretRef:
+                  name: romarr-secret
+            env:
+              TZ: Australia/Sydney
+              ROMARR_PORT: &port 6868
+              ROMARR_DATA: /config/romarr.json
+              ROM_HUB_HOME: /config/rom-hub
+              PUID: "1000"
+              PGID: "1000"
+              UMASK: "002"
+              # Library: RomM reads the same NFS tree; ROMarr writes into it and
+              # asks RomM to rescan. No upload API is involved.
+              LIBRARY_KIND: romm
+              LIBRARY_URL: http://romm.default.svc.cluster.local:8080
+              LIBRARY_PATH: /roms
+              # Acquisition sources.
+              PROWLARR_URL: http://prowlarr.default.svc.cluster.local:9696
+              QBITTORRENT_URL: http://qbittorrent.default.svc.cluster.local:80
+              QBITTORRENT_CATEGORY: romarr
+              # Client secret is provisioned by the Pocket ID operator into
+              # romarr-oidc (same pattern as qui-oidc).
+              ROMARR_OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: romarr-oidc
+                    key: client_secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/system/status
+                    port: *port
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              runAsNonRoot: false
+              runAsUser: 0
+              runAsGroup: 0
+            resources:
+              requests:
+                cpu: 25m
+                memory: 256Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /config
+      # Library tree, same export RomM reads. Writable: ROMarr files the ROMs.
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media/games
+        globalMounts:
+          - path: /roms
+      # Downloads must be visible at the same path qBittorrent reports, or
+      # ROMarr cannot resolve the completed file.
+      downloads:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media/downloads
+        globalMounts:
+          - path: /media/downloads
+      tmp:
+        type: emptyDir
+        sizeLimit: 5Gi
