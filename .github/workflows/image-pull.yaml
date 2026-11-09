@@ -71,13 +71,11 @@ jobs:
         uses: jdx/mise-action@f5be966e4a917d54244728e6a5fdcd1d93a35e6c # v5.2.6
         with:
           cache: false
-          tool_versions: |
-            github:home-operations/flate 0.5.0
 
       - name: Extract Images
         id: extract
         run: |
-          images=$(flate diff images -p ./kubernetes/flux/cluster --allow-missing-secrets --registry-config "$RUNNER_TEMP/ocharted/config.json" -o json)
+          images=$(flate diff images -p ./kubernetes/flux/cluster --allow-missing-kinds Secret,ConfigMap --registry-config "$RUNNER_TEMP/ocharted/config.json" -o json)
           {
             echo 'images<<EOF'
             printf '%s\n' "$images"
