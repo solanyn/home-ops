@@ -44,4 +44,23 @@ spec:
   sources:
     - pvc:
         name: ${APP}
+  verification:
+    # quick = are the blobs and indexes intact? verifyFilesPercent makes it read
+    # a slice of file contents too, so it is cheap enough to run nightly.
+    quick:
+      schedule:
+        cron: ${KOPIUR_VERIFY_QUICK_CRON:=H 3 * * *}
+        jitter: 30m
+        timezone: Australia/Sydney
+    # deep = scratch-restore the latest snapshot into a throwaway volume, i.e.
+    # an actual recovery drill. Weekly is plenty. The scratch size and class come
+    # from moverDefaults.scratch on ClusterRepository/kopiur-s3 so the largest
+    # volume (hermes, ~42 GiB) is not hardcoded into every policy.
+    deep:
+      schedule:
+        cron: ${KOPIUR_VERIFY_DEEP_CRON:=H 5 * * 0}
+        jitter: 1h
+        timezone: Australia/Sydney
+    # Both tiers share this. 10% of each file is read and hashed in the quick tier.
+    verifyFilesPercent: 10
   volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=miroir-snap}
