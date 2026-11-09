@@ -45,6 +45,9 @@ resources:
   - ./questarr/ks.yaml
   - ./unpackerr/ks.yaml
   - ./qbittorrent/ks.yaml
+  - ./lidarr/ks.yaml
+  - ./navidrome/ks.yaml
+  - ./aurral/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./romm/ks.yaml
