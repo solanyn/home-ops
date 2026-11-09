@@ -17,13 +17,15 @@ spec:
           app:
             image:
               repository: ghcr.io/lklynet/aurral
-              tag: 1.53.0@sha256:548665040b99f46bb7fb5623ea9f294c68c4bd648311e24b2c7a1a508cd5ecb7
+              tag: 2.13.0@sha256:b8ceecf5e749474dc54f0393ad8b79e49cb2811f09e646d23ea93f347317c434
             env:
               PUID: "1000"
               PGID: "1000"
               PORT: &port 3001
               AURRAL_DATA_DIR: /config
-              LIBRARY_FOLDER: /media/music
+              DOWNLOAD_FOLDER: /media/downloads/aurral
+
+              # aurral's weekly-flow playlists default to /app/downloads, which is read-only
               FILE_BROWSE_ROOTS: /media/music,/media/downloads,/config
               TZ: Australia/Sydney
             probes:
