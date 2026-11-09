@@ -52,7 +52,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/v1/system/status
+                    path: /api/health
                     port: *port
                   initialDelaySeconds: 30
                   periodSeconds: 30
