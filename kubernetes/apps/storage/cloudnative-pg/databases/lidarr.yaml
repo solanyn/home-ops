@@ -1,0 +1,96 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: lidarr-postgres-owner
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: lidarr-postgres-owner
+    creationPolicy: Owner
+    template:
+      type: kubernetes.io/basic-auth
+      data:
+        username: lidarr_owner
+        password: "{{ .LIDARR_POSTGRES_PASSWORD }}"
+  dataFrom:
+    - extract:
+        key: lidarr
+    - extract:
+        key: cloudnative-pg
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: lidarr-postgres-app
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: lidarr-postgres-app
+    creationPolicy: Owner
+    template:
+      type: kubernetes.io/basic-auth
+      data:
+        username: lidarr
+        password: "{{ .LIDARR_POSTGRES_PASSWORD }}"
+  dataFrom:
+    - extract:
+        key: lidarr
+    - extract:
+        key: cloudnative-pg
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: lidarr-owner
+spec:
+  cluster:
+    name: postgres
+  name: lidarr_owner
+  login: true
+  createrole: true
+  createdb: true
+  passwordSecret:
+    name: lidarr-postgres-owner
+  databaseRoleReclaimPolicy: retain
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: lidarr-app
+spec:
+  cluster:
+    name: postgres
+  name: lidarr
+  login: true
+  inRoles:
+    - lidarr_owner
+  passwordSecret:
+    name: lidarr-postgres-app
+  databaseRoleReclaimPolicy: retain
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: lidarr-main
+spec:
+  cluster:
+    name: postgres
+  name: lidarr_main
+  owner: lidarr_owner
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: lidarr-log
+spec:
+  cluster:
+    name: postgres
+  name: lidarr_log
+  owner: lidarr_owner

@@ -1,0 +1,23 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: aurral
+spec:
+  oidc:
+    clientID: aurral
+    clientSecret:
+      name: aurral-oidc
+    logoutPath: /logout
+    provider:
+      issuer: https://id.goyangi.io/
+    redirectURL: https://aurral.goyangi.io/sso/callback
+    refreshToken: true
+    scopes:
+      - openid
+      - profile
+      - email
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: aurral

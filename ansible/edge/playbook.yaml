@@ -6,6 +6,34 @@
   vars:
     doco_cd_secrets_dir: /opt/doco-cd
   tasks:
+    - name: Configure unattended-upgrades origins
+      ansible.builtin.copy:
+        dest: /etc/apt/apt.conf.d/51unattended-upgrades-origins
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          // Managed by Ansible. States the update origins explicitly instead of
+          // relying on the stock file, whose -updates entry is commented out.
+          Unattended-Upgrade::Allowed-Origins {
+              "${distro_id}:${distro_codename}";
+              "${distro_id}:${distro_codename}-security";
+              "${distro_id}:${distro_codename}-updates";
+              "${distro_id}ESMApps:${distro_codename}-apps-security";
+              "${distro_id}ESM:${distro_codename}-infra-security";
+          };
+
+    - name: Configure unattended-upgrades reboot policy
+      ansible.builtin.copy:
+        dest: /etc/apt/apt.conf.d/52unattended-upgrades-reboot
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          // Managed by Ansible. Kernel updates need a reboot, which stays a
+          // deliberate operation: the host flags /run/reboot-required instead.
+          Unattended-Upgrade::Automatic-Reboot "false";
+
     - name: Install docker dependencies
       ansible.builtin.apt:
         name:
@@ -37,6 +65,22 @@
           - docker-compose-plugin
         state: present
         update_cache: true
+
+    - name: Enable Docker live-restore
+      ansible.builtin.copy:
+        dest: /etc/docker/daemon.json
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          {
+            "live-restore": true
+          }
+
+    - name: Reload Docker for live-restore
+      ansible.builtin.systemd_service:
+        name: docker
+        state: reloaded
 
     - name: Ensure docker compose plugin available
       ansible.builtin.command: docker compose version
