@@ -1,0 +1,91 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: aurral
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: aurral
+  interval: 1h
+  values:
+    controllers:
+      aurral:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/lklynet/aurral
+              tag: 1.53.0@sha256:548665040b99f46bb7fb5623ea9f294c68c4bd648311e24b2c7a1a508cd5ecb7
+            env:
+              PUID: "1000"
+              PGID: "1000"
+              PORT: &port 3001
+              AURRAL_DATA_DIR: /config
+              LIBRARY_FOLDER: /music
+              FILE_BROWSE_ROOTS: /music,/config
+              OIDC_ENABLED: "true"
+              OIDC_ISSUER: https://id.goyangi.io
+              OIDC_CLIENT_ID: aurral
+              OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: aurral-secret
+                    key: client-secret
+              OIDC_REDIRECT_URI: https://aurral.goyangi.io/sso/callback
+              TZ: Australia/Sydney
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: *port
+                  initialDelaySeconds: 15
+                  periodSeconds: 15
+                  timeoutSeconds: 3
+                  failureThreshold: 5
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                memory: 256Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+      tmp:
+        type: emptyDir
+        sizeLimit: 1Gi
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          - path: /media
