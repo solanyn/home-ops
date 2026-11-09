@@ -1,0 +1,17 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: aurral
+spec:
+  clientID: aurral
+  callbackUrls:
+    - https://aurral.goyangi.io/sso/callback
+  logoutCallbackUrls:
+    - https://aurral.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: aurral-oidc
+    keys:
+      clientSecret: client-secret
