@@ -24,6 +24,7 @@ spec:
               PORT: &port 3001
               AURRAL_DATA_DIR: /config
               LIBRARY_FOLDER: /media/music
+              DOWNLOAD_FOLDER: /media/downloads
               FILE_BROWSE_ROOTS: /media/music,/media/downloads,/config
               TZ: Australia/Sydney
             probes:
