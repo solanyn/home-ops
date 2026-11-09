@@ -1,0 +1,17 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: navidrome
+spec:
+  clientID: navidrome
+  callbackUrls:
+    - https://navidrome.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://navidrome.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: navidrome-oidc
+    keys:
+      clientSecret: client-secret
