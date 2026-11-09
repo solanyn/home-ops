@@ -25,15 +25,6 @@ spec:
               AURRAL_DATA_DIR: /config
               LIBRARY_FOLDER: /media/music
               FILE_BROWSE_ROOTS: /media/music,/media/downloads,/config
-              OIDC_ENABLED: "true"
-              OIDC_ISSUER: https://id.goyangi.io
-              OIDC_CLIENT_ID: aurral
-              OIDC_CLIENT_SECRET:
-                valueFrom:
-                  secretKeyRef:
-                    name: aurral-secret
-                    key: client-secret
-              OIDC_REDIRECT_URI: https://aurral.goyangi.io/sso/callback
               TZ: Australia/Sydney
             probes:
               liveness: &probes
