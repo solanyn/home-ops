@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: golift/unpackerr
-              tag: v0.16.1
+              tag: v1.0.1
             env:
               TZ: Australia/Sydney
               UN_DEBUG: false
@@ -34,6 +34,7 @@ spec:
               UN_DIR_MODE: "0755"
               UN_WEBSERVER_METRICS: true
               UN_WEBSERVER_LISTEN_ADDR: 0.0.0.0:5656
+              UN_WEBSERVER_UI_PASSWORD: noauth
             envFrom:
               - secretRef:
                   name: unpackerr-secret
@@ -43,7 +44,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /metrics
+                    path: /
                     port: &metricsPort 5656
                   initialDelaySeconds: 10
                   periodSeconds: 30
