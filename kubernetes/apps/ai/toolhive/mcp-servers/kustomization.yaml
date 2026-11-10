@@ -11,6 +11,5 @@ resources:
   - ./ha-mcp
   - ./kubectl-mcp
   - ./kubesearch
-  - ./seerr-mcp
   - ./talos-mcp
   - ./unifi-mcp
