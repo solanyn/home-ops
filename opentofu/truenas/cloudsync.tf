@@ -39,9 +39,11 @@ resource "truenas_cloudsync_credentials" "b2" {
 }
 
 resource "truenas_cloudsync_task" "kopiur_b2" {
-  description   = "Kopiur repository off-site copy to Backblaze B2"
-  path          = local.kopiur_repo_path
-  credentials   = tonumber(truenas_cloudsync_credentials.b2.id)
+  description = "Kopiur repository off-site copy to Backblaze B2"
+  path        = local.kopiur_repo_path
+  # id is a String and credentials is a Number; the provider coerces, but the
+  # value is only known after apply so it must not be wrapped in tonumber().
+  credentials   = truenas_cloudsync_credentials.b2.id
   direction     = "push"
   transfer_mode = "copy"
 
@@ -51,7 +53,6 @@ resource "truenas_cloudsync_task" "kopiur_b2" {
     minute = "30"
     hour   = "4"
   }
-
   b2 {
     bucket = "goyangi-kopiur"
     folder = ""
