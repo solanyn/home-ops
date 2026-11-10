@@ -65,9 +65,11 @@ resource "truenas_cloudsync_task" "kopiur_b2" {
     folder = ""
   }
 
-  # The previous full mirror of this data took ~12h; cap throughput so a run
-  # cannot saturate the uplink for a full day.
-  bwlimit   = "8M"
+  # No bwlimit: TrueNAS 25.10 expects bwlimit as a schedule list
+  # ([{time = "18:00", bandwidth = ...}]), which the provider still sends as a
+  # plain string, so setting it fails with
+  #   cloud_sync_create.bwlimit.0.time: Time should be in 24 hour format
+  # Set a limit in the TrueNAS UI if the nightly run needs throttling.
   transfers = 4
   enabled   = true
 
