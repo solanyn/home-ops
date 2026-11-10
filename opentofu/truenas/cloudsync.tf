@@ -1,23 +1,28 @@
-# Off-site replication of the Kopiur kopia repository to Backblaze B2.
+# Off-site replication of the cluster's backup artifacts to Backblaze B2.
 #
-# The live repository is served by versitygw from its POSIX backend at
-# /mnt/world/versitygw/data/<bucket> (VGW_BACKEND_ARGS=/mnt/data). The bucket
-# directory is therefore the repository itself, which is why a file-level
-# mirror produces a directly restorable copy: restore = copy the directory
-# back, start versitygw, and kopia opens it unchanged.
+# Data flow is one-directional: cluster -> NAS (versitygw) -> B2. The cluster is
+# always the source of truth; the NAS bucket is a derived copy, and B2 mirrors
+# that derived copy. Nothing is ever written back up the chain during normal
+# operation, so a `sync` (delete-at-destination) is safe and keeps B2 bounded:
+# both sources are already retention-pruned, so mirroring them exactly means B2
+# cannot grow without bound.
 #
-# transfer_mode is deliberately "copy", not "sync". "sync" would delete at the
-# destination anything missing locally, which turns this backup into a mirror:
-# a damaged or accidentally pruned local repository would propagate to the
-# off-site copy on the next run, destroying the thing the backup exists for.
-# "copy" never deletes at the destination. Superseded kopia blobs accumulate
-# in B2, which is harmless (kopia ignores unreferenced content-addressed
-# blobs) and costs little because the repository is already pruned locally.
+# During a restore, disable the Cloud Sync tasks first. Otherwise the mirror
+# will reconcile the restored state back toward whatever the NAS currently
+# holds and can delete objects mid-restore.
+#
+# Paths are the versitygw POSIX backend directories, because VGW_BACKEND_ARGS
+# is /mnt/data mounted from /mnt/world/versitygw/data. A file-level mirror of
+# the bucket directory is therefore equivalent to mirroring the bucket itself,
+# and a restore is: pull B2 -> the same directory -> start versitygw.
 
 locals {
-  # Bucket directory behind the versitygw POSIX backend. Keeping this derived
-  # from the compose VGW_BACKEND_ARGS mount avoids inventing a second path.
-  kopiur_repo_path = "/mnt/world/versitygw/data/kopiur"
+  # Bucket directories behind the versitygw POSIX backend. Keeping these
+  # derived from the compose VGW_BACKEND_ARGS mount avoids inventing a second
+  # path, and keeps both tasks visibly relative to the same root.
+  versitygw_data_root = "/mnt/world/versitygw/data"
+  kopiur_repo_path    = "${local.versitygw_data_root}/kopiur"
+  cnpg_backup_path    = "${local.versitygw_data_root}/cloudnative-pg"
 }
 
 # Adopt the pre-existing UI-created credential rather than recreating it, so
@@ -45,6 +50,7 @@ resource "truenas_cloudsync_credentials" "b2" {
   }
 }
 
+# Kopiur kopia repository: snapshots of every backed-up cluster PVC.
 resource "truenas_cloudsync_task" "kopiur_b2" {
   description = "Kopiur repository off-site copy to Backblaze B2"
   path        = local.kopiur_repo_path
@@ -52,7 +58,7 @@ resource "truenas_cloudsync_task" "kopiur_b2" {
   # value is only known after apply so it must not be wrapped in tonumber().
   credentials   = truenas_cloudsync_credentials.b2.id
   direction     = "push"
-  transfer_mode = "copy"
+  transfer_mode = "sync"
 
   # Nightly, shortly after kopia's own maintenance window (03:00 quick /
   # 06:00 full in Australia/Sydney) has settled.
@@ -74,5 +80,33 @@ resource "truenas_cloudsync_task" "kopiur_b2" {
   enabled   = true
 
   # Skip versitygw internals that are not part of the repository image.
+  exclude = [".sgwtmp/**", ".vgwlocks/**", ".DS_Store"]
+}
+
+# CloudNativePG barman object store: daily base backups plus WAL, pruned to
+# 14 days by barman's own retentionPolicy. Because that policy already bounds
+# the source, `sync` keeps B2 at roughly the same ~23 GiB instead of growing
+# by one ~1 GiB base backup per day forever.
+resource "truenas_cloudsync_task" "cnpg_b2" {
+  description   = "CloudNativePG backups off-site copy to Backblaze B2"
+  path          = local.cnpg_backup_path
+  credentials   = truenas_cloudsync_credentials.b2.id
+  direction     = "push"
+  transfer_mode = "sync"
+
+  # Stagger an hour after the Kopiur task so the two do not compete for the
+  # uplink. barman takes its daily base backup at 00:00 UTC.
+  schedule {
+    minute = "30"
+    hour   = "5"
+  }
+  b2 {
+    bucket = "goyangi-cnpg"
+    folder = ""
+  }
+
+  transfers = 4
+  enabled   = true
+
   exclude = [".sgwtmp/**", ".vgwlocks/**", ".DS_Store"]
 }

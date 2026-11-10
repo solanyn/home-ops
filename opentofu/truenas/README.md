@@ -34,18 +34,23 @@ mirrored path is `/mnt/world/versitygw/data/kopiur` (versitygw maps
 `VGW_BACKEND_ARGS=/mnt/data` to `/mnt/world/versitygw/data`). Do not use
 `/mnt/world/kopiur` — that holds a superseded repository manifest, not live data.
 
-The task uses `transfer_mode = "copy"`, not `sync`: a sync would delete
-off-site blobs when they vanish locally, which destroys the off-site copy in
-exactly the scenario it exists to survive. Superseded blobs accumulate in B2
-and are ignored by kopia, which is harmless.
+The task uses `transfer_mode = "sync"`, not `copy`. Data flows one way —
+cluster -> NAS -> B2 — so the cluster is always the source of truth and the NAS
+bucket is a derived copy. Mirroring it exactly keeps B2 bounded to the same
+retention window instead of accumulating a base backup per day forever.
+
+Because `sync` deletes at the destination, **disable the Cloud Sync tasks before
+a restore**. Otherwise the mirror reconciles the restored state back toward what
+the NAS currently holds.
 
 Restore, in order:
 
-1. Stop anything writing to the repository.
-2. Pull B2 `goyangi-kopiur` back to `/mnt/world/versitygw/data/kopiur`
+1. Disable the Cloud Sync tasks, so the mirror cannot overwrite restored data.
+2. Stop anything writing to the repository.
+3. Pull B2 `goyangi-kopiur` back to `/mnt/world/versitygw/data/kopiur`
    (a reverse Cloud Sync task, or `rclone copy`).
-3. Start versitygw, then confirm the bucket lists the expected shard prefixes.
-4. Point Kopiur at the repository and restore workloads from snapshots.
+4. Start versitygw, then confirm the bucket lists the expected shard prefixes.
+5. Point Kopiur at the repository and restore workloads from snapshots.
 
 versitygw is pinned by tag and digest because the on-disk shard layout is what
 the restore depends on; an unexpected `:latest` upgrade could change it.
