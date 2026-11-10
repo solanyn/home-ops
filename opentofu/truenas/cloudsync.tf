@@ -21,8 +21,15 @@ locals {
 }
 
 # Adopt the pre-existing UI-created credential rather than recreating it, so
-# the key already scoped to this bucket keeps working:
-#   tofu import truenas_cloudsync_credentials.b2 3
+# the key already scoped to this bucket keeps working. Id 3 is the
+# `backblaze-homelab` credential that the removed UI task used; it must be
+# adopted, because creating a second credential with the same name fails with
+# "Object with this name already exists".
+import {
+  to = truenas_cloudsync_credentials.b2
+  id = "3"
+}
+
 resource "truenas_cloudsync_credentials" "b2" {
   name = "backblaze-homelab"
 
