@@ -20,8 +20,6 @@ spec:
               tag: 26.10.29@sha256:5e88307d4af68ee397f0233670b4f35f50d6ce5d12c34fde6b9ecab74ac4836e
             env:
               TZ: &tz Australia/Sydney
-              PUID: &puid "1000"
-              PGID: &pgid "1000"
               FLOPPY_PORT: &port 8000
               DEBUG: "False"
               DEMO_ACCOUNT_ENABLED: "False"
@@ -41,6 +39,7 @@ spec:
               # Keep the logs, generated key and exports on the one backed-up
               # volume; /floppy itself holds the image's application code.
               BACKUP_DIR: /floppy/db/backups
+              LOG_DIR: /floppy/db/logs
               FLOPPY_DATA_DIR: /floppy/db
               HOME: /tmp
               # Signs sessions and encrypts stored integration credentials.
@@ -74,12 +73,15 @@ spec:
               limits:
                 memory: 2Gi
     defaultPodOptions:
-      # The image's entrypoint maps PUID/PGID with groupmod/usermod and chowns
-      # its data dirs, so it has to start as root and drops privileges itself.
+      # Run as the image's unprivileged "abc" user (uid/gid 1000) and skip the
+      # entrypoint's PUID/PGID remap entirely: that path only runs as root, and
+      # a root start cannot chown here because the container drops CAP_CHOWN
+      # (and granting it back to fix file ownership is worse than not needing
+      # it). Every writable path is on the data volume, which fsGroup 1000 owns.
       securityContext:
-        runAsNonRoot: false
-        runAsUser: 0
-        runAsGroup: 0
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
