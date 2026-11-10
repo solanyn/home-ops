@@ -33,12 +33,13 @@ jobs:
       - name: Map changed files to roots
         id: roots
         env:
-          CHANGED: ${{ steps.changed-files.outputs.all_changed_files }}
+          CHANGED: ${{ steps.changed-files.outputs.changed_files }}
         run: |
           echo "changed: $CHANGED"
           unifi=false
           truenas=false
-          for f in $CHANGED; do
+          # changed_files is a JSON array; one path per iteration.
+          for f in $(printf '%s' "$CHANGED" | tr -d '[]"' | tr ',' '\n'); do
               case "$f" in
                   opentofu/unifi/*) unifi=true ;;
                   opentofu/truenas/*) truenas=true ;;
