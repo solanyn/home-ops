@@ -65,7 +65,11 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
-              capabilities: { drop: ["ALL"] }
+              # Enough for the entrypoint's groupmod/usermod/chown and for nginx
+              # to write its config and bind; everything else stays dropped.
+              capabilities:
+                drop: ["ALL"]
+                add: ["CHOWN", "DAC_OVERRIDE", "FOWNER", "SETUID", "SETGID"]
             resources:
               requests:
                 cpu: 50m
@@ -73,15 +77,16 @@ spec:
               limits:
                 memory: 2Gi
     defaultPodOptions:
-      # Run as the image's unprivileged "abc" user (uid/gid 1000) and skip the
-      # entrypoint's PUID/PGID remap entirely: that path only runs as root, and
-      # a root start cannot chown here because the container drops CAP_CHOWN
-      # (and granting it back to fix file ownership is worse than not needing
-      # it). Every writable path is on the data volume, which fsGroup 1000 owns.
+      # Floppy's image is built to start as root: the entrypoint remaps PUID/PGID
+      # with groupmod/usermod, chowns its data dirs, and supervisord runs nginx
+      # as root because it rewrites /etc/nginx/nginx.conf on every start. A
+      # non-root start cannot do any of that, so run as root but keep the
+      # capability set to exactly what those steps need — the alternative
+      # (dropping ALL) fails at the first chown.
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
