@@ -1,0 +1,17 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: floppy
+spec:
+  clientID: floppy
+  callbackUrls:
+    - https://floppy.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://floppy.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: floppy-oidc
+    keys:
+      clientSecret: client-secret

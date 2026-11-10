@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: floppy-postgres-owner
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: floppy-postgres-owner
+    creationPolicy: Owner
+    template:
+      type: kubernetes.io/basic-auth
+      data:
+        username: floppy_owner
+        password: "{{ .FLOPPY_POSTGRES_OWNER_PASSWORD }}"
+  dataFrom:
+    - extract:
+        key: floppy
+    - extract:
+        key: cloudnative-pg
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: floppy-postgres-app
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: floppy-postgres-app
+    creationPolicy: Owner
+    template:
+      type: kubernetes.io/basic-auth
+      data:
+        username: floppy
+        password: "{{ .FLOPPY_POSTGRES_PASSWORD }}"
+  dataFrom:
+    - extract:
+        key: floppy
+    - extract:
+        key: cloudnative-pg
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: floppy-owner
+spec:
+  cluster:
+    name: postgres
+  name: floppy_owner
+  login: true
+  createrole: true
+  createdb: true
+  passwordSecret:
+    name: floppy-postgres-owner
+  databaseRoleReclaimPolicy: retain
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: floppy-app
+spec:
+  cluster:
+    name: postgres
+  name: floppy
+  login: true
+  inRoles:
+    - floppy_owner
+  passwordSecret:
+    name: floppy-postgres-app
+  databaseRoleReclaimPolicy: retain
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: floppy
+spec:
+  cluster:
+    name: postgres
+  name: floppy
+  owner: floppy_owner
