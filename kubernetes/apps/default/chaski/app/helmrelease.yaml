@@ -32,9 +32,6 @@ spec:
         whisparr:
           apprise:
             url: pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "WHISPARR_PUSHOVER_TOKEN" }}
-        seerr:
-          apprise:
-            url: pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "SEERR_PUSHOVER_TOKEN" }}
       routes:
         radarr-download:
           target: radarr
@@ -177,16 +174,6 @@ spec:
             url: "{{ .payload.applicationUrl }}"
             url_title: View Movies
           whenExpr: payload.eventType == "Test"
-        seerr-test:
-          target: seerr
-          title: Test Notification
-          message: Howdy this is a test notification from <b>Seerr</b>
-          params:
-            format: html
-            priority: low
-            url: https://requests.goyangi.io
-            url_title: Open Seerr
-          whenExpr: payload.notification_type == "TEST_NOTIFICATION"
     monitoring:
       serviceMonitor:
         enabled: true
