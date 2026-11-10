@@ -22,6 +22,7 @@ resources:
   - ./cleanrr/ks.yaml
   - ./element-web/ks.yaml
   - ./flaresolverr/ks.yaml
+  - ./floppy/ks.yaml
   - ./forgejo/ks.yaml
   - ./forgejo-runner/ks.yaml
   - ./fusion/ks.yaml
