@@ -1,7 +1,7 @@
 ---
 services:
   versitygw:
-    image: ghcr.io/versity/versitygw:latest
+    image: ghcr.io/versity/versitygw:v1.8.0@sha256:30292fc2eeacc67a36993b01f7a7a5e3361a19cced0e80c1d71cfa2a4b0a2499
     ports:
       - "9000:9000"
       - "9001:9001"
