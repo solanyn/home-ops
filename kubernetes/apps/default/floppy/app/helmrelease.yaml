@@ -21,6 +21,7 @@ spec:
             env:
               TZ: &tz Australia/Sydney
               FLOPPY_PORT: &port 8000
+              ALLOWED_HOSTS: "floppy.goyangi.io,.floppy.default.svc.cluster.local,localhost,127.0.0.1"
               DEBUG: "False"
               DEMO_ACCOUNT_ENABLED: "False"
               ADMIN_ENABLED: "False"
@@ -57,6 +58,11 @@ spec:
                   httpGet:
                     path: /health/
                     port: *port
+                    # Django rejects an unknown Host with DisallowedHost, and the
+                    # kubelet defaults to the pod IP. Probe via an allowed name.
+                    httpHeaders:
+                      - name: Host
+                        value: localhost
                   initialDelaySeconds: 60
                   periodSeconds: 30
                   timeoutSeconds: 5
