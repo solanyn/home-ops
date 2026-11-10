@@ -2,53 +2,49 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-    name: tofu-controller
+  name: tofu-controller
 spec:
-    targetNamespace: flux-system
-    interval: 1h
-    path: ./kubernetes/apps/flux-system/tofu-controller/app
-    prune: true
-    sourceRef:
-        kind: GitRepository
-        name: flux-system
-        namespace: flux-system
+  targetNamespace: flux-system
+  interval: 1h
+  path: ./kubernetes/apps/flux-system/tofu-controller/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-    name: unifi
+  name: unifi
 spec:
-    targetNamespace: network
-    dependsOn:
-        - name: cluster-apps
-          namespace: flux-system
-        - name: tofu-controller
-          namespace: flux-system
-    interval: 1h
-    path: ./kubernetes/apps/flux-system/tofu-controller/unifi
-    prune: true
-    sourceRef:
-        kind: GitRepository
-        name: flux-system
-        namespace: flux-system
-    wait: false
+  targetNamespace: network
+  dependsOn:
+    - name: tofu-controller
+      namespace: flux-system
+  interval: 1h
+  path: ./kubernetes/apps/flux-system/tofu-controller/unifi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-    name: truenas
+  name: truenas
 spec:
-    targetNamespace: flux-system
-    dependsOn:
-        - name: cluster-apps
-          namespace: flux-system
-        - name: tofu-controller
-          namespace: flux-system
-    interval: 1h
-    path: ./kubernetes/apps/flux-system/tofu-controller/truenas
-    prune: true
-    sourceRef:
-        kind: GitRepository
-        name: flux-system
-        namespace: flux-system
-    wait: false
+  targetNamespace: flux-system
+  dependsOn:
+    - name: tofu-controller
+      namespace: flux-system
+  interval: 1h
+  path: ./kubernetes/apps/flux-system/tofu-controller/truenas
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false

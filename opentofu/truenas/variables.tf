@@ -45,3 +45,15 @@ variable "truenas_api_key" {
   type        = string
   sensitive   = true
 }
+
+variable "backblaze_account_id" {
+  description = "Backblaze B2 account ID for the off-site Cloud Sync credential."
+  type        = string
+  sensitive   = true
+}
+
+variable "backblaze_application_key" {
+  description = "Backblaze B2 application key scoped to the off-site bucket."
+  type        = string
+  sensitive   = true
+}

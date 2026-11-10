@@ -23,3 +23,29 @@ tofu import truenas_app.doco_cd doco-cd
 The TrueNAS API key is sourced from the `TRUENAS_API_KEY` field in the `truenas` 1Password item via External Secrets. The provider uses WebSocket authentication with SSH retained as the required fallback for file operations.
 
 `truenas_secret` contains the TrueNAS SSH credentials, the Connect credentials JSON and Connect token, plus the TrueNAS API key and Doco-CD webhook secret. The Connect credentials, token and API key are written to TrueNAS or consumed by the tofu-controller, so remote tofu-controller state must be encrypted and access-controlled.
+
+## Off-site Kopiur replication
+
+`cloudsync.tf` mirrors the Kopiur kopia repository to Backblaze B2 bucket
+`goyangi-kopiur` so the backup survives loss of the NAS.
+
+The live repository is served by versitygw from its POSIX backend, so the
+mirrored path is `/mnt/world/versitygw/data/kopiur` (versitygw maps
+`VGW_BACKEND_ARGS=/mnt/data` to `/mnt/world/versitygw/data`). Do not use
+`/mnt/world/kopiur` — that holds a superseded repository manifest, not live data.
+
+The task uses `transfer_mode = "copy"`, not `sync`: a sync would delete
+off-site blobs when they vanish locally, which destroys the off-site copy in
+exactly the scenario it exists to survive. Superseded blobs accumulate in B2
+and are ignored by kopia, which is harmless.
+
+Restore, in order:
+
+1. Stop anything writing to the repository.
+2. Pull B2 `goyangi-kopiur` back to `/mnt/world/versitygw/data/kopiur`
+   (a reverse Cloud Sync task, or `rclone copy`).
+3. Start versitygw, then confirm the bucket lists the expected shard prefixes.
+4. Point Kopiur at the repository and restore workloads from snapshots.
+
+versitygw is pinned by tag and digest because the on-disk shard layout is what
+the restore depends on; an unexpected `:latest` upgrade could change it.
