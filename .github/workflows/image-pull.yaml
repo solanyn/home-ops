@@ -75,7 +75,7 @@ jobs:
       - name: Extract Images
         id: extract
         run: |
-          images=$(flate diff images -p ./kubernetes/flux/cluster --allow-missing-kinds Secret,ConfigMap --registry-config "$RUNNER_TEMP/ocharted/config.json" -o json)
+          images=$(flate diff images -p ./kubernetes/apps --allow-missing-kinds Secret,ConfigMap --registry-config "$RUNNER_TEMP/ocharted/config.json" -o json)
           {
             echo 'images<<EOF'
             printf '%s\n' "$images"
