@@ -102,6 +102,15 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /floppy/db
+      # The image's runtime entrypoint unconditionally does `mkdir -p /run/floppy`
+      # and writes the resolved port there before dropping privileges. /run is
+      # root-owned in the image and we run as 1000, so give it a private writable
+      # scratch dir instead of escalating to root.
+      runtime:
+        type: emptyDir
+        sizeLimit: 16Mi
+        globalMounts:
+          - path: /run/floppy
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
