@@ -23,6 +23,8 @@ spec:
               SLSKD_APP_DIR: /config
               SLSKD_HTTP_PORT: &port 80
               SLSKD_SLSK_LISTEN_PORT: &soulseekPort 50429
+              # rescans shares hourly so newly imported Lidarr albums get shared
+              SLSKD_SHARE_CACHE_RETENTION: "60"
             envFrom:
               - secretRef:
                   name: slskd-secret
@@ -107,7 +109,8 @@ spec:
                   delay: 5000
                   max_delay: 60000
             shares:
-              directories: []
+              directories:
+                - "[Music]/media/music"
             web:
               authentication:
                 api_keys:
