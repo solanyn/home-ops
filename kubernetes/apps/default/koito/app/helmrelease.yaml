@@ -1,53 +1,53 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: navidrome
+  name: koito
 spec:
   chartRef:
     kind: OCIRepository
-    name: navidrome
+    name: koito
   interval: 1h
   values:
     controllers:
-      navidrome:
+      koito:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: navidrome/navidrome
-              tag: 0.64.2@sha256:59ce76e6e06193fbfbb1736a93b8468227e1ea663fc7b25b1da13fbb97f5197b
+              repository: docker.io/gabehf/koito
+              tag: v0.3.2@sha256:3011de405ba2a5c56270928c2b0391add8aa3b3ed68363531b3c64b61f238857
             env:
-              ND_LOGLEVEL: info
-              ND_PORT: &port 4533
-              ND_MUSICFOLDER: /media/music
-              ND_DATAFOLDER: /data
-              ND_BASEURL: ""
-              ND_ENABLEINSIGHTSCOLLECTOR: "false"
               TZ: Australia/Sydney
+              KOITO_LISTEN_PORT: &port 4110
+              KOITO_CONFIG_DIR: /etc/koito
+              # Statistics are only shown to an authenticated session.
+              KOITO_LOGIN_GATE: "true"
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /ping
+                    path: /
                     port: *port
                   initialDelaySeconds: 10
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
+                cpu: 10m
                 memory: 128Mi
               limits:
-                memory: 1Gi
+                memory: 512Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -63,21 +63,16 @@ spec:
             port: *port
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
         parentRefs:
           - name: envoy-internal
             namespace: network
-            sectionName: https
     persistence:
-      data:
+      config:
         existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /etc/koito
       tmp:
         type: emptyDir
-        sizeLimit: 1Gi
-      media:
-        type: nfs
-        server: nas.internal
-        path: /mnt/world/media
-        globalMounts:
-          - path: /media
-            readOnly: true
+        sizeLimit: 256Mi

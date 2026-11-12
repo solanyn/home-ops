@@ -1,0 +1,139 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: slskd
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: slskd
+  interval: 1h
+  values:
+    controllers:
+      slskd:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/slskd/slskd
+              tag: 0.26.2@sha256:d0963a3e5b16facd295bf4f2156dad0182f246b1b21a032cae12f5494c694843
+            env:
+              DOTNET_BUNDLE_EXTRACT_BASE_DIR: /tmp/.net
+              TZ: Australia/Sydney
+              SLSKD_APP_DIR: /config
+              SLSKD_HTTP_PORT: &port 80
+              SLSKD_SLSK_LISTEN_PORT: &soulseekPort 50429
+              # rescans shares hourly so newly imported Lidarr albums get shared
+              SLSKD_SHARE_CACHE_RETENTION: "60"
+            envFrom:
+              - secretRef:
+                  name: slskd-secret
+            probes:
+              liveness:
+                enabled: true
+                spec:
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        forceRename: "{{ .Release.Name }}"
+        primary: true
+        ports:
+          http:
+            port: *port
+      soulseek:
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 192.168.69.127
+        externalTrafficPolicy: Local
+        ports:
+          soulseek-tcp:
+            port: *soulseekPort
+            protocol: TCP
+    route:
+      app:
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+    configMaps:
+      config:
+        data:
+          slskd.yml: |-
+            directories:
+              downloads: /media/downloads/slskd/complete
+              incomplete: /media/downloads/slskd/incomplete
+            transfers:
+              download:
+                destination:
+                  permissions:
+                    mode: 775
+                retry:
+                  partial: resume
+                  attempts: 3
+                  delay: 5000
+                  max_delay: 60000
+            shares:
+              directories:
+                - "[Music]/media/music"
+            web:
+              authentication:
+                api_keys:
+                  primary:
+                    key: '{{ .SLSKD_API_KEY }}'
+                    role: readwrite
+            remote_configuration: false
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+      config-file:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /config/slskd.yml
+            subPath: slskd.yml
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        globalMounts:
+          - path: /media
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 128Mi
