@@ -71,6 +71,8 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /etc/koito
       tmp:
         type: emptyDir
         sizeLimit: 256Mi
