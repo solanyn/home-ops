@@ -125,7 +125,7 @@ spec:
         type: configMap
         identifier: config
         globalMounts:
-          - path: /app/slskd.yml
+          - path: /config/slskd.yml
             subPath: slskd.yml
       media:
         type: nfs
