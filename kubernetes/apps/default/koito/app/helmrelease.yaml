@@ -22,7 +22,7 @@ spec:
             env:
               TZ: Australia/Sydney
               KOITO_LISTEN_PORT: &port 4110
-              KOITO_CONFIG_DIR: /etc/koito
+              KOITO_CONFIG_DIR: /config
               # Statistics are only shown to an authenticated session.
               KOITO_LOGIN_GATE: "true"
             probes:
