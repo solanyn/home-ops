@@ -4,7 +4,7 @@ kind: LiteLLMProxy
 metadata:
   name: litellm
 spec:
-  image: ghcr.io/berriai/litellm-database:v1.108.3@sha256:aecfcc459b5af208f04b8e916c9912cc3001798e013b4874be1831c20e4a2c26
+  image: ghcr.io/berriai/litellm-database:v1.109.1@sha256:932c54440654f8f8466a85887612d95dcfb04ae2fc01257844332f4bf3b96986
   replicas: 3
   service:
     port: 4000
