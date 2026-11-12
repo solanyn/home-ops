@@ -16,7 +16,7 @@ spec:
       order: 1
       provider_affinity_header: x-opencode-session
       extra_headers:
-        User-Agent: litellm/v1.108.3
+        User-Agent: litellm/v1.109.1
         x-opencode-session: litellm-opencode-go
   info:
     mode: chat
