@@ -11,11 +11,6 @@ metadata:
     app.kubernetes.io/name: hermes
     app.kubernetes.io/part-of: hermes
 rules:
-  - apiGroups: [""]
-    resources: [secrets]
-    resourceNames: [hermes]
-    verbs: ["get"]
-
   # Cluster primitives.
   - apiGroups: [""]
     resources: [namespaces, nodes]
