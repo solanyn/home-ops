@@ -9,3 +9,4 @@ resources:
   - ./usergroups.yaml
   - ./oidc-forgejo.yaml
   - ./oidc-sonarr.yaml
+  - ./oidc-bao.yaml
