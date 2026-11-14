@@ -10,6 +10,7 @@ services:
       CADDY_ACME_EMAIL: andrewchen1520@gmail.com
       VPS_LOCAL_HOSTS: >-
         towonel.goyangi.io
+        bao.goyangi.io
         edge-doco-cd.goyangi.io
         edge-gatus.goyangi.io
         id.goyangi.io

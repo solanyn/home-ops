@@ -1,0 +1,55 @@
+---
+# Renovate: quay.io/openbao/openbao
+name: openbao
+services:
+  openbao:
+    container_name: openbao
+    image: quay.io/openbao/openbao:2.7.2
+    # No -config flag: the image entrypoint already serves the /openbao/config
+    # directory. Passing both makes OpenBao read config.hcl twice and warn.
+    command: ["server"]
+    restart: unless-stopped
+    stop_grace_period: 30s
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      # Injected at deploy time by Doco-CD from 1Password
+      # (op://kubernetes/openbao/OPENBAO_STATIC_SEAL_KEY); never committed.
+      OPENBAO_STATIC_SEAL_KEY: ${OPENBAO_STATIC_SEAL_KEY:?OPENBAO_STATIC_SEAL_KEY is required}
+      # `bao` defaults to https://127.0.0.1:8200; the listener here is plain
+      # HTTP behind Caddy, so every in-container CLI call needs this.
+      BAO_ADDR: http://127.0.0.1:8200
+      # The image entrypoint tries to raise the memlock rlimit as root; the
+      # container runs unprivileged, so skip it (disable_mlock is set in config).
+      SKIP_SETCAP: "true"
+    volumes:
+      # Persistent Raft data. Host path must be owned by the image's
+      # unprivileged uid/gid (100:1000) -- see `just edge openbao-provision`.
+      - /opt/openbao/data:/openbao/data
+    configs:
+      - source: openbao_config
+        target: /openbao/config/config.hcl
+    # No published ports: Caddy reaches openbao:8200 over the shared `edge`
+    # network, and nothing else should be able to.
+    healthcheck:
+      # `bao status` exits 2 when sealed/uninitialized and 1 when the listener
+      # is unreachable; treat sealed as healthy so an uninitialized or sealed
+      # instance does not flap.
+      test:
+        - CMD-SHELL
+        - 'rc=0; bao status -format=json >/dev/null 2>&1 || rc=$$?; [ "$$rc" -eq 0 ] || [ "$$rc" -eq 2 ]'
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    networks:
+      - edge
+
+configs:
+  openbao_config:
+    file: ./config/config.hcl
+
+networks:
+  edge:
+    external: true
+    name: edge
