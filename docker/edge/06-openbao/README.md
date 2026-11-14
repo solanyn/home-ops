@@ -21,6 +21,7 @@ has been rehearsed.
 6. `just edge openbao-init` — **once**. Writes recovery key + root token to a
    0600 file, which you must then copy into 1Password and delete.
 7. `just edge openbao-status` — expect `Initialized true`, `Sealed false`.
+8. Enable OIDC login (see "OIDC login via Pocket ID" below).
 
 ## Doco-CD secret wiring
 
@@ -68,13 +69,44 @@ Tested against OpenBao 2.7.2 on the VPS in a throwaway project: container health
 `operator init` returns 1 recovery key + root token, KV v2 write/read works, Raft
 snapshot saves, and audit entries appear in `docker logs`.
 
+Live instance confirms: auto-unseal survives a container restart, the Raft
+snapshot endpoint returns a gzip archive, and Caddy serves
+`https://bao.goyangi.io` with a Let's Encrypt certificate.
+
+## OIDC login via Pocket ID
+
+The UI and CLI log in through Pocket ID instead of the root token. The client is
+a `PocketIDOIDCClient` CR (`bao`) managed by pocket-id-operator, which adopts the
+external Pocket ID instance on the VPS — do not create the client by hand in the
+UI, and do not call the Pocket ID API directly.
+
+Both redirect URIs must be registered:
+
+- `https://bao.goyangi.io/ui/vault/auth/oidc/oidc/callback` — UI login
+- `http://localhost:8250/oidc/callback` — `bao login -method=oidc`
+
+The same two URIs must appear in the OpenBao role's `allowed_redirect_uris`.
+
+OpenBao's OIDC config endpoint takes `oidc_client_id` and `oidc_client_secret`.
+Passing `client_id`/`client_secret` returns 204 and is silently ignored, leaving
+`oidc_client_id` empty and breaking login with no obvious error. Read the config
+back after writing it and confirm `oidc_client_id` is set.
+
+Groups come from Pocket ID's `groups` claim (group *name*, e.g. `admin`), which
+requires the `groups` scope on both the config and the role. The `admin` role maps
+to the `bao-admin` policy.
+
 ## Known gaps
 
+- **The generated root token and recovery key are not yet in 1Password.** They are
+  in `~/.openbao-init.json` on the Mac mini (mode 0600) because the available
+  service-account token is read-only. Add `OPENBAO_ROOT_TOKEN` and
+  `OPENBAO_RECOVERY_KEY` to the `openbao` item, then delete the file.
 - Backups are intentionally **not** implemented here. Planned follow-up: Doco-CD
   scheduled job running a native Raft snapshot + KV export, age-encrypted to
   `op://kubernetes/age/AGE_PUBLIC_KEY`, uploaded to the `goyangi-edge` B2 bucket,
   with an explicit retention rule and a rehearsed restore.
-- OpenBao has not been initialized, so no secrets, policies, auth methods or
-  consumers exist yet.
+- No secrets, additional policies or consumers exist in OpenBao yet; 1Password
+  Connect is untouched.
 - Doco-CD's OpenBao secret provider is not used; the edge stack still uses its
   1Password provider.
