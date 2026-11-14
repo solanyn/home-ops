@@ -13,6 +13,8 @@ kubeconfig
 talosconfig
 onepassword.env
 bgp.conf
+# One-time OpenBao init output (recovery key + root token); never commit
+.openbao-init.json
 
 # Terraform
 .terraform/

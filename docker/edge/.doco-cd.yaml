@@ -14,3 +14,4 @@ external_secrets:
   GATUS_PUSHOVER_TOKEN: op://kubernetes/gatus/GATUS_PUSHOVER_TOKEN
   GATUS_PUSHOVER_USER_KEY: op://kubernetes/pushover/PUSHOVER_USER_KEY
   TOWONEL_INVITE_HASH_KEY: op://kubernetes/towonel/TOWONEL_INVITE_HASH_KEY
+  OPENBAO_STATIC_SEAL_KEY: op://kubernetes/openbao/OPENBAO_STATIC_SEAL_KEY

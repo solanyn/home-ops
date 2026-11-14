@@ -59,6 +59,10 @@ towonel.goyangi.io {
 	reverse_proxy towonel-hub:8443
 }
 
+bao.goyangi.io {
+	reverse_proxy openbao:8200
+}
+
 edge-doco-cd.goyangi.io {
 	reverse_proxy doco-cd:8880
 }
