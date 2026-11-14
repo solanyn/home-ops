@@ -1,0 +1,21 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: bao
+spec:
+  clientID: bao
+  description: OpenBao administration
+  # The UI flow needs /ui/vault/auth/<mount>/oidc/callback; the CLI flow uses a
+  # loopback listener. Both must be registered or one of the two logins fails.
+  callbackUrls:
+    - https://bao.goyangi.io/ui/vault/auth/oidc/oidc/callback
+    - http://localhost:8250/oidc/callback
+  logoutCallbackUrls:
+    - https://bao.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: bao-oidc
+    keys:
+      clientSecret: client-secret
