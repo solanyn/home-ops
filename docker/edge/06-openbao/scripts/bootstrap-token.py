@@ -29,6 +29,8 @@ path "sys/policies/acl/eso-read" { capabilities = ["read", "create", "update"] }
 path "kv/config"                 { capabilities = ["read", "create", "update"] }
 path "auth/jwt/config"           { capabilities = ["read", "create", "update"] }
 path "auth/jwt/role/goyangi-eso" { capabilities = ["read", "create", "update"] }
+# The job renews its own token on each run so it never expires between deploys.
+path "auth/token/renew-self"     { capabilities = ["update"] }
 """
 
 
@@ -66,12 +68,16 @@ def main() -> None:
     req(rt, "PUT", f"sys/policies/acl/{POLICY}", {"policy": POLICY_HCL})
     print(f"policy '{POLICY}' written")
 
+    # Periodic, not a fixed TTL: a plain 32-day token would silently expire and
+    # break deploys. A periodic token can be renewed indefinitely, and
+    # bootstrap.py renews it on every run, so it stays valid as long as deploys
+    # happen at least once per period.
     created = req(rt, "POST", "auth/token/create", {
         "policies": [POLICY],
         "display_name": "doco-cd-openbao-bootstrap",
         "no_parent": True,
         "renewable": True,
-        "ttl": "720h",
+        "period": "720h",
     })
     token = created["auth"]["client_token"]
 
@@ -80,7 +86,8 @@ def main() -> None:
     req(token, "GET", "sys/auth")
     req(token, "GET", "auth/jwt/role/goyangi-eso")
     req(token, "GET", "sys/policies/acl/eso-read")
-    print("verified: token can read mounts, auth, role and policy")
+    req(token, "PUT", "auth/token/renew-self", {})
+    print("verified: token can read mounts, auth, role, policy and renew itself")
 
     # Prove it is NOT a root-equivalent token.
     try:

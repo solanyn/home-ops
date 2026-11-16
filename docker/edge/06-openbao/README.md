@@ -83,11 +83,18 @@ which `depends_on` the healthy `openbao` container. Compose starts an exited
 job scheduler is deliberately _not_ used, because scheduled jobs only fire on
 their schedule and never on deployment.
 
-The container gets a **scoped** token (`bootstrap` policy), not a root token.
-It can read mounts/auth and write only the ESO wiring; it cannot read or write
-secrets, delete a mount, or mint a root token. Mint it with
-`just edge openbao-bootstrap-token` and store it as `OPENBAO_BOOTSTRAP_TOKEN`
-on the `openbao` 1Password item.
+The container gets a **scoped**, **periodic** token (`bootstrap` policy), not a
+root token. It can read mounts/auth and write only the ESO wiring; it cannot
+read or write secrets, delete a mount, or mint a root token. The token is
+renewable and `bootstrap.py` renews it on every run, so it does not expire
+between deploys (a fixed-TTL token would have silently broken deploys after 32
+days). Mint it with `just edge openbao-bootstrap-token` and store it as
+`OPENBAO_BOOTSTRAP_TOKEN` on the `openbao` 1Password item.
+
+If that variable is **absent**, the job prints a note and exits 0 rather than
+failing. Doco-CD aborts the whole edge stack when a required variable is
+missing, and a half-configured bootstrap job must never block deploys of
+unrelated services.
 
 ### When ESO auth breaks after a cluster key rotation
 
