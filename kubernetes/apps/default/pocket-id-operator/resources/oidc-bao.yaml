@@ -15,6 +15,12 @@ spec:
     - https://bao.goyangi.io
   allowedUserGroups:
     - name: admin
+  # 1Password is the source of truth for the client secret rather than Pocket
+  # ID: the operator never generates or rotates it while this is set, and
+  # neither Pocket ID nor OpenBao can hand the value back once stored.
+  clientSecretRef:
+    name: bao-oidc-client
+    key: client-secret
   secret:
     name: bao-oidc
     keys:

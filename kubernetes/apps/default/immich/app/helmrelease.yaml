@@ -1,0 +1,148 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: immich
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: immich
+  interval: 1h
+  values:
+    controllers:
+      immich:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            envFrom: &envFrom
+              - secretRef:
+                  name: immich-secret
+          init-extensions:
+            dependsOn: init-db
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18
+            env:
+              PGHOST: postgres-rw.storage.svc.cluster.local
+              PGUSER: postgres
+              PGPASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: immich-secret
+                    key: INIT_POSTGRES_SUPER_PASS
+              PGDATABASE: immich
+            command: ["/bin/bash", "-c"]
+            args:
+              - |
+                psql -c "CREATE EXTENSION IF NOT EXISTS vchord CASCADE;"
+                psql -c "CREATE EXTENSION IF NOT EXISTS cube CASCADE;"
+                psql -c "CREATE EXTENSION IF NOT EXISTS earthdistance CASCADE;"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/immich-app/immich-server
+              tag: v3.0.3@sha256:c716dc20f957aafd89fa9d284a2ec63e25c9e2d8d8e87c6197d540a3dce237db
+            env:
+              TZ: Australia/Sydney
+              IMMICH_TELEMETRY_INCLUDE: all
+              IMMICH_TRUSTED_PROXIES: "192.168.0.0/16"
+              # Sole ML backend: Immich Accelerator running natively on the Mac
+              # mini (mlx-swift on Metal). No in-cluster ML container by design.
+              IMMICH_MACHINE_LEARNING_URL: http://192.168.10.30:3003
+              IMMICH_MEDIA_LOCATION: &media /library
+              REDIS_HOSTNAME: &redis immich-valkey
+            envFrom: *envFrom
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 512Mi
+              limits:
+                memory: 2Gi
+      # Dedicated queue backend: Dragonfly v2.1 rejects the dynamic keys BullMQ
+      # generates in Lua. The documented shared-cluster workaround
+      # (--default_lua_flags=allow-undeclared-keys) serialises every script
+      # against the whole store, so isolate the queues here instead.
+      valkey:
+        containers:
+          app:
+            image:
+              repository: docker.io/valkey/valkey
+              tag: 9.1.3
+            args: ["--save", "", "--appendonly", "no", "--maxmemory-policy", "noeviction"]
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: immich
+        ports:
+          http:
+            port: &port 2283
+          metrics:
+            port: &metricsport 8081
+      valkey:
+        controller: valkey
+        ports:
+          http:
+            port: 6379
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/enabled: "true"
+        hostnames:
+          - "photos.goyangi.io"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: immich-app
+                port: *port
+    persistence:
+      matplotlib:
+        type: emptyDir
+        advancedMounts:
+          immich:
+            app:
+              - path: /config/matplotlib
+      library:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/photos/immich
+        advancedMounts:
+          immich:
+            app:
+              - path: *media
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          immich:
+            app:
+              - path: /usr/src/app/.reverse-geocoding-dump
+                subPath: geocoding
+              - path: /usr/src/app/.transformers_cache
+                subPath: transformers

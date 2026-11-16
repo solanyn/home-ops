@@ -1,3 +1,11 @@
+# Imported by name, not ID: UniFi issued this object a UUID-style ID, but the
+# provider only recognises legacy 24-hex IDs and otherwise falls back to a
+# name lookup (which fails against a UUID). See ImportState in network_resource.go.
+import {
+  to = unifi_network.kubernetes_lb
+  id = "name=Kubernetes LB"
+}
+
 import {
   to = unifi_network.default
   id = "677fb0df1ba9a91370f7eed2"
@@ -271,4 +279,28 @@ resource "unifi_network" "vpn" {
   }
   dhcp_guarding = { enabled = false }
   dhcp_relay    = { enabled = false }
+}
+
+# Cilium LoadBalancer pool (192.168.69.0/24) is advertised to the gateway over BGP
+# as /32 routes, but UniFi only creates port-forward allow rules and classifies
+# DNAT'd traffic as LAN when the destination subnet belongs to a network in the
+# LAN group. Without this, forwarded traffic to a Cilium LB IP falls through to
+# UBIOS_WAN_WAN_USER and is dropped. No DHCP server: Cilium owns addressing.
+resource "unifi_network" "kubernetes_lb" {
+  name                = "Kubernetes LB"
+  purpose             = "corporate"
+  vlan                = 169
+  subnet              = "192.168.69.1/24"
+  domain_name         = "internal"
+  auto_scale          = false
+  setting_preference  = "manual"
+  igmp_snooping       = false
+  internet_access     = true
+  multicast_dns       = true
+  enabled             = true
+  gateway_type        = "default"
+  third_party_gateway = false
+  network_isolation   = false
+  dhcp_guarding       = { enabled = false }
+  dhcp_relay          = { enabled = false }
 }
