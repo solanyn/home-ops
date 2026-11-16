@@ -44,14 +44,12 @@ spec:
                   failureThreshold: 5
               readiness: *probes
             securityContext:
-              # The entrypoint chowns /app/data then drops to PUID/PGID via
-              # su-exec, so it needs root and SETUID/SETGID to start.
-              runAsNonRoot: false
-              runAsUser: 0
               allowPrivilegeEscalation: false
-              capabilities:
-                drop: ["ALL"]
-                add: ["CHOWN", "SETUID", "SETGID", "DAC_OVERRIDE"]
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: false
+            args:
+              - src/server/index.ts
+            workingDir: /app
             resources:
               requests:
                 cpu: 20m
@@ -97,9 +95,9 @@ spec:
                 memory: 512Mi
     defaultPodOptions:
       securityContext:
-        runAsNonRoot: false
-        runAsUser: 0
-        runAsGroup: 0
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
