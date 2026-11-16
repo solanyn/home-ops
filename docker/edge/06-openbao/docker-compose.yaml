@@ -45,6 +45,42 @@ services:
     networks:
       - edge
 
+  # Idempotent re-application of the ESO auth config (KV mount, read-only
+  # policy, JWT role). doco-cd runs one-shot `depends_on` services on every
+  # deploy, and bootstrap.py only creates what is missing, so this is safe to
+  # re-run. It deliberately does NOT use the job scheduler: scheduled jobs only
+  # run when their schedule fires, never on deployment.
+  bootstrap:
+    container_name: openbao-bootstrap
+    image: python:3.13-alpine
+    restart: "no"
+    security_opt:
+      - no-new-privileges:true
+    depends_on:
+      openbao:
+        condition: service_healthy
+    environment:
+      # Root token, injected by doco-cd from 1Password; never committed.
+      OPENBAO_TOKEN: ${OPENBAO_BOOTSTRAP_TOKEN:?OPENBAO_BOOTSTRAP_TOKEN is required}
+    volumes:
+      - ./bootstrap.py:/bootstrap.py:ro
+      # Cluster service-account JWKS: PUBLIC keys only, safe to commit.
+      # Refresh with `kubectl get --raw /openid/v1/jwks > jwks.json` and commit.
+      # bootstrap.py merges keys, so a stale file cannot break live ESO auth;
+      # pass --replace only for a deliberate rotation.
+      - ./jwks.json:/jwks.json:ro
+    command:
+      - python
+      - /bootstrap.py
+      - --jwks
+      - /jwks.json
+      - --addr
+      - http://openbao:8200
+      - --token-env
+      - OPENBAO_TOKEN
+    networks:
+      - edge
+
 configs:
   openbao_config:
     file: ./config/config.hcl

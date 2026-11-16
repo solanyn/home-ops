@@ -29,13 +29,13 @@ has been rehearsed.
 for the edge stack. Add:
 
 ```yaml
-  OPENBAO_STATIC_SEAL_KEY: op://kubernetes/openbao/OPENBAO_STATIC_SEAL_KEY
+OPENBAO_STATIC_SEAL_KEY: op://kubernetes/openbao/OPENBAO_STATIC_SEAL_KEY
 ```
 
 The compose file then consumes it with `:?`, so a missing value fails the deploy
 instead of starting an unopenable instance.
 
-Note the bootstrap ordering constraint: Doco-CD still reads its *own*
+Note the bootstrap ordering constraint: Doco-CD still reads its _own_
 configuration using its local `/opt/doco-cd/1pw_token` file. OpenBao must never be
 what supplies the credentials Doco-CD needs to load the config that defines
 OpenBao.
@@ -62,6 +62,47 @@ OpenBao.
   stops the entrypoint trying to raise memlock. `no-new-privileges` is on.
 - **No `-config` flag**: the image entrypoint already loads `/openbao/config`;
   passing both makes OpenBao load the file twice and warn.
+
+## ESO wiring (JWT auth, re-applied by Doco-CD)
+
+External Secrets Operator needs a token to read OpenBao. It does **not** use
+Kubernetes auth: OpenBao runs here on the VPS and cannot reach the cluster API
+server, so it cannot perform a TokenReview. Instead it validates ESO's projected
+service-account token locally against a **static copy of the cluster's
+service-account signing keys** (JWKS). No bootstrap secret lives in the cluster,
+nothing calls back to the API server, and there is no long-lived credential to
+rotate.
+
+`bootstrap.py` owns that config — KV v2 mount, read-only `eso-read` policy, and
+the `goyangi-eso` JWT role. It is idempotent: it creates only what is missing,
+so re-running is safe. `jwks.json` holds **public** keys only and is committed.
+
+Doco-CD re-applies it on every deploy via the `bootstrap` one-shot service,
+which `depends_on` the healthy `openbao` container. Compose starts an exited
+`restart: "no"` service again on each `up`, so a deploy re-runs it; doco-cd's
+job scheduler is deliberately _not_ used, because scheduled jobs only fire on
+their schedule and never on deployment.
+
+The container gets a **scoped** token (`bootstrap` policy), not a root token.
+It can read mounts/auth and write only the ESO wiring; it cannot read or write
+secrets, delete a mount, or mint a root token. Mint it with
+`just edge openbao-bootstrap-token` and store it as `OPENBAO_BOOTSTRAP_TOKEN`
+on the `openbao` 1Password item.
+
+### When ESO auth breaks after a cluster key rotation
+
+The JWKS are static, so a service-account signing-key rotation leaves them
+stale and ESO auth fails until refreshed:
+
+```
+kubectl get --raw /openid/v1/jwks > docker/edge/06-openbao/jwks.json
+git commit -m "chore(openbao): refresh cluster service-account JWKS" && git push
+```
+
+`bootstrap.py` **merges** keys rather than replacing them, so committing a stale
+file can never remove the key ESO is currently using. Pass `--replace` only for
+a deliberate rotation, after confirming the new keys work. Check for drift at
+any time with `just edge openbao-bootstrap-check`.
 
 ## Verified end to end
 
@@ -92,7 +133,7 @@ Passing `client_id`/`client_secret` returns 204 and is silently ignored, leaving
 `oidc_client_id` empty and breaking login with no obvious error. Read the config
 back after writing it and confirm `oidc_client_id` is set.
 
-Groups come from Pocket ID's `groups` claim (group *name*, e.g. `admin`), which
+Groups come from Pocket ID's `groups` claim (group _name_, e.g. `admin`), which
 requires the `groups` scope on both the config and the role. The `admin` role maps
 to the `bao-admin` policy.
 

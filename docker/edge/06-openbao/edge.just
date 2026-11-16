@@ -1,4 +1,4 @@
-set quiet := true
+set quiet
 set shell := ['bash', '-euo', 'pipefail', '-c']
 
 dir := module_directory()
@@ -9,7 +9,7 @@ scripts := dir / 'scripts'
 export EDGE_HOST := '139.99.135.40'
 export EDGE_USER := 'ubuntu'
 export EDGE_PORT := '22222'
-export EDGE_KEY  := home_directory() / '.ssh/edge_ssh'
+export EDGE_KEY := home_directory() / '.ssh/edge_ssh'
 
 [doc('Check the 1Password seal-key reference is readable and well formed; prints no secrets')]
 openbao-check-secrets:
@@ -40,3 +40,13 @@ openbao-init:
 openbao-deploy:
     {{ scripts }}/ssh-edge.sh 'sudo docker restart doco-cd >/dev/null && echo "doco-cd restarted; it re-polls on startup"'
     echo "Watch with: just edge openbao-status"
+
+[doc('Mint the scoped OPENBAO_BOOTSTRAP_TOKEN; writes a 0600 file for 1Password, prints no secret')]
+openbao-bootstrap-token:
+    python3 "{{ dir }}/scripts/bootstrap-token.py" '.openbao-bootstrap-token'
+
+[doc('Report drift in the ESO wiring without changing anything; exits non-zero if drifted')]
+openbao-bootstrap-check:
+    kubectl get --raw /openid/v1/jwks > /tmp/openbao-jwks.json
+    python3 "{{ dir }}/bootstrap.py" --jwks /tmp/openbao-jwks.json --check
+    rm -f /tmp/openbao-jwks.json
