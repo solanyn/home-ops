@@ -301,9 +301,6 @@ resource "unifi_network" "kubernetes_lb" {
   gateway_type        = "default"
   third_party_gateway = false
   network_isolation   = false
-  dhcp_server = {
-    enabled = false
-  }
-  dhcp_guarding = { enabled = false }
-  dhcp_relay    = { enabled = false }
+  dhcp_guarding       = { enabled = false }
+  dhcp_relay          = { enabled = false }
 }
