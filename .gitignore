@@ -15,6 +15,9 @@ onepassword.env
 bgp.conf
 # One-time OpenBao init output (recovery key + root token); never commit
 .openbao-init.json
+# Scoped doco-cd bootstrap token minted by `just edge openbao-bootstrap-token`;
+# a bearer credential for the openbao 1Password item, never commit
+.openbao-bootstrap-token
 
 # Terraform
 .terraform/
