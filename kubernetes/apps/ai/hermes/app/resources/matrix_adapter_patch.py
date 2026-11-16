@@ -48,7 +48,7 @@ PATCH = """            # Answer room-key requests from devices of authorised use
 
 def main() -> int:
     shutil.rmtree(TARGET, ignore_errors=True)
-    shutil.copytree(SOURCE, TARGET)
+    shutil.copytree(SOURCE, TARGET, dirs_exist_ok=True)
 
     adapter = TARGET / "adapter.py"
     text = adapter.read_text()
