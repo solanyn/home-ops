@@ -61,7 +61,10 @@ services:
         condition: service_healthy
     environment:
       # Root token, injected by doco-cd from 1Password; never committed.
-      OPENBAO_TOKEN: ${OPENBAO_BOOTSTRAP_TOKEN:?OPENBAO_BOOTSTRAP_TOKEN is required}
+      # Defaulted rather than required: doco-cd fails the whole edge stack if a
+      # variable is missing, and this job must not be able to block deploys of
+      # unrelated services. bootstrap.py exits 0 with a clear note when unset.
+      OPENBAO_TOKEN: ${OPENBAO_BOOTSTRAP_TOKEN:-}
     volumes:
       - ./bootstrap.py:/bootstrap.py:ro
       # Cluster service-account JWKS: PUBLIC keys only, safe to commit.

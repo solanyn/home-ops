@@ -107,7 +107,12 @@ def read_token(ref: str | None = None, env: str | None = None) -> str:
     if env:
         value = os.environ.get(env, "").strip()
         if not value:
-            raise SystemExit(f"ERROR: environment variable {env} is empty or unset")
+            # Not fatal: this runs on every deploy, so a missing token must not
+            # fail the container and leave a restart loop. Print a clear note.
+            print(f"skip: environment variable {env} is empty or unset; "
+                  f"add OPENBAO_BOOTSTRAP_TOKEN to the openbao 1Password item "
+                  f"(`just edge openbao-bootstrap-token`)")
+            raise SystemExit(0)
         return value
     if not ref:
         raise SystemExit("ERROR: one of --token-ref or --token-env is required")
@@ -199,6 +204,13 @@ def check(bao: Bao, pems: list[str], replace: bool = False) -> bool:
 
 
 def apply(bao: Bao, pems: list[str], replace: bool = False) -> None:
+    # A periodic token expires if it is never renewed, so renew on every run.
+    # Harmless for a non-periodic token; this is what keeps a periodic
+    # bootstrap token alive between deploys.
+    try:
+        bao.write("auth/token/renew-self", {})
+    except BaoError as exc:
+        print(f"note: token renewal skipped ({exc})")
     if not bao.has_mount(KV_MOUNT):
         bao.write(f"sys/mounts/{KV_MOUNT}", {"type": "kv", "options": {"version": "2"}})
         print(f"created kv v{mount_version(bao)} mount '{KV_MOUNT}'")
