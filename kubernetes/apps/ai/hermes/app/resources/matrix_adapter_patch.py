@@ -7,6 +7,9 @@ message" forever, because nothing ever re-sends the key. This patch answers such
 requests for devices belonging to ``MATRIX_ALLOWED_USERS``, which is how every
 other Matrix client recovers a missing session.
 
+The target is an emptyDir mount point, so files are copied individually: copying
+directory metadata onto the mount point is refused for the unprivileged user.
+
 The patch fails open: if the anchor text is absent, for example after an image
 bump, the adapter is left untouched and the gateway still starts.
 """
@@ -46,9 +49,23 @@ PATCH = """            # Answer room-key requests from devices of authorised use
 """
 
 
+def populate() -> None:
+    """Copy the bundled plugin into the emptyDir without touching its metadata."""
+    TARGET.mkdir(parents=True, exist_ok=True)
+    for stale in TARGET.iterdir():
+        if stale.is_dir() and not stale.is_symlink():
+            shutil.rmtree(stale, ignore_errors=True)
+        else:
+            stale.unlink(missing_ok=True)
+    for item in SOURCE.iterdir():
+        if item.is_file():
+            destination = TARGET / item.name
+            shutil.copyfile(item, destination)
+            destination.chmod(0o644)
+
+
 def main() -> int:
-    shutil.rmtree(TARGET, ignore_errors=True)
-    shutil.copytree(SOURCE, TARGET, dirs_exist_ok=True)
+    populate()
 
     adapter = TARGET / "adapter.py"
     text = adapter.read_text()
