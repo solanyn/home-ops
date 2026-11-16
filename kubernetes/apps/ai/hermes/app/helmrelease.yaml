@@ -158,6 +158,31 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 512Mi
+          # Upstream ignores room-key requests from other users, so a client that
+          # misses the one-off megolm key distribution stays on "Waiting for this
+          # message". Serve the gateway a patched adapter copy that serves those
+          # requests for MATRIX_ALLOWED_USERS.
+          patch-matrix-adapter:
+            image: *image
+            command:
+              - /bin/sh
+              - -c
+              - |
+                set -eu
+                python3 /patch/matrix_adapter_patch.py
+            securityContext:
+              runAsUser: 10000
+              runAsGroup: 10000
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: [ALL]
+              seccompProfile: { type: RuntimeDefault }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 256Mi
         containers:
           gateway:
             image: *image
@@ -307,3 +332,20 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /run
+      matrix-patch:
+        type: configMap
+        name: "{{ .Release.Name }}-matrix-adapter-patch"
+        advancedMounts:
+          hermes:
+            patch-matrix-adapter:
+              - path: /patch
+                readOnly: true
+      matrix-adapter:
+        type: emptyDir
+        advancedMounts:
+          hermes:
+            patch-matrix-adapter:
+              - path: /patched
+            gateway:
+              - path: /opt/hermes/plugins/platforms/matrix
+                readOnly: true

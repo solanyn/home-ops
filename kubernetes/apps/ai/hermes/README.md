@@ -128,6 +128,27 @@ After rotation, verify the new `Hermes Agent` device in Element and run
 `/discardsession` in the encrypted room before sending a new message. Events
 encrypted for the previous device may remain undecryptable.
 
+## Room-key backfill patch
+
+Hermes ships mautrix's default key-share policy, which ignores
+`m.room_key_request` from every user except the bot's own. A client that misses
+the one-off megolm key distribution therefore shows "Waiting for this message"
+indefinitely, because nothing ever re-sends that key.
+
+The `patch-matrix-adapter` init container copies the bundled Matrix plugin into
+an emptyDir, applies `resources/matrix_adapter_patch.py` and mounts the result
+over `/opt/hermes/plugins/platforms/matrix` in the gateway only. The patched
+adapter answers key requests from devices belonging to `MATRIX_ALLOWED_USERS`
+(skipping blacklisted devices), so a newly logged-in client can backfill the
+sessions it never received.
+
+Upstream has no equivalent option, so this is a local patch of a vendored file.
+The script matches exact anchor text and fails open: when the anchor disappears,
+for example after an image bump, the adapter stays unpatched, the gateway still
+starts and the container logs `matrix adapter patch: anchor not found`. Check
+that line after every Hermes image update, and drop the patch once upstream
+answers cross-user key requests.
+
 ## Verification
 
 Check the application container rather than relying only on Flux readiness:
