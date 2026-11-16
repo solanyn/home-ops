@@ -51,10 +51,9 @@ spec:
               TZ: Australia/Sydney
               IMMICH_TELEMETRY_INCLUDE: all
               IMMICH_TRUSTED_PROXIES: "192.168.0.0/16"
-              # CPU fallback. The Mac mini MLX node is prepended to this list at
-              # runtime via the admin UI (stored in the database, not env), so a
-              # Mac outage degrades to slow rather than failing jobs.
-              IMMICH_MACHINE_LEARNING_URL: http://immich-ml:3003
+              # Sole ML backend: Immich Accelerator running natively on the Mac
+              # mini (mlx-swift on Metal). No in-cluster ML container by design.
+              IMMICH_MACHINE_LEARNING_URL: http://192.168.10.30:3003
               IMMICH_MEDIA_LOCATION: &media /library
               REDIS_HOSTNAME: &redis immich-valkey
             envFrom: *envFrom
@@ -68,28 +67,6 @@ spec:
                 memory: 512Mi
               limits:
                 memory: 2Gi
-      ml:
-        containers:
-          app:
-            image:
-              repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v3.0.3@sha256:fbb2485a6ec1877697d003a7d81d445bd8aea3248a866aa1c3d75b9e134787d0
-            env:
-              TZ: Australia/Sydney
-              MACHINE_LEARNING_CACHE_FOLDER: &mlcache /cache
-              HF_HOME: *mlcache
-              HF_HUB_CACHE: *mlcache
-              TRANSFORMERS_CACHE: *mlcache
-            envFrom: *envFrom
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
-            resources:
-              requests:
-                cpu: 100m
-                memory: 1Gi
-              limits:
-                memory: 4Gi
       # Dedicated queue backend: Dragonfly v2.1 rejects the dynamic keys BullMQ
       # generates in Lua. The documented shared-cluster workaround
       # (--default_lua_flags=allow-undeclared-keys) serialises every script
@@ -126,11 +103,6 @@ spec:
             port: &port 2283
           metrics:
             port: &metricsport 8081
-      ml:
-        controller: ml
-        ports:
-          http:
-            port: &mlport 3003
       valkey:
         controller: valkey
         ports:
@@ -174,9 +146,3 @@ spec:
                 subPath: geocoding
               - path: /usr/src/app/.transformers_cache
                 subPath: transformers
-      ml-cache:
-        type: emptyDir
-        advancedMounts:
-          ml:
-            app:
-              - path: /cache
