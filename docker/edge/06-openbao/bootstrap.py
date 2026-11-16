@@ -21,8 +21,7 @@ The mount, policy and role are only created if absent, and JWKS keys are
 merged rather than replaced, so re-running is always safe. --check verifies
 without changing anything and exits non-zero on drift.
 
-Secrets: the token comes from --token-env (doco-cd injects it from 1Password)
-or --token-ref (1Password directly when run from a workstation), and is never
+Secrets: the token comes from 1Password via `op read` (--token-ref) and is never
 printed. Only public JWKS material is written to OpenBao.
 """
 from __future__ import annotations
@@ -31,6 +30,7 @@ import argparse
 import base64
 import json
 import os
+import pathlib
 import subprocess
 import sys
 import urllib.error
@@ -98,25 +98,22 @@ class Bao:
         return f"{name}/" in auths
 
 
-def read_token(ref: str | None = None, env: str | None = None) -> str:
-    """Resolve the OpenBao token from an env var or 1Password, never echoing it.
+def read_token(ref: str | None = None) -> str:
+    """Resolve the OpenBao token from 1Password, never echoing it.
 
-    Containerised use takes it from the environment (doco-cd injects it from
-    1Password at deploy time); workstation use reads 1Password directly.
+    Workstation use only: this script is run by hand from the trusted host, so
+    the token comes straight from `op`. When no interactive 1Password session
+    exists (e.g. over ssh), fall back to the service-account token file that the
+    other edge scripts use (`OP_TOKEN_FILE`, default `~/.op-token`).
     """
-    if env:
-        value = os.environ.get(env, "").strip()
-        if not value:
-            # Not fatal: this runs on every deploy, so a missing token must not
-            # fail the container and leave a restart loop. Print a clear note.
-            print(f"skip: environment variable {env} is empty or unset; "
-                  f"add OPENBAO_BOOTSTRAP_TOKEN to the openbao 1Password item "
-                  f"(`just edge openbao-bootstrap-token`)")
-            raise SystemExit(0)
-        return value
     if not ref:
-        raise SystemExit("ERROR: one of --token-ref or --token-env is required")
-    res = subprocess.run(["op", "read", ref], capture_output=True, text=True)
+        raise SystemExit("ERROR: --token-ref is required")
+    env = dict(os.environ)
+    if not env.get("OP_SERVICE_ACCOUNT_TOKEN"):
+        token_file = pathlib.Path(env.get("OP_TOKEN_FILE", "~/.op-token")).expanduser()
+        if token_file.is_file():
+            env["OP_SERVICE_ACCOUNT_TOKEN"] = token_file.read_text().strip()
+    res = subprocess.run(["op", "read", ref], capture_output=True, text=True, env=env)
     if res.returncode != 0 or not res.stdout.strip():
         raise SystemExit(f"ERROR: cannot read {ref}: {res.stderr.strip()[:160]}")
     return res.stdout.strip()
@@ -204,13 +201,6 @@ def check(bao: Bao, pems: list[str], replace: bool = False) -> bool:
 
 
 def apply(bao: Bao, pems: list[str], replace: bool = False) -> None:
-    # A periodic token expires if it is never renewed, so renew on every run.
-    # Harmless for a non-periodic token; this is what keeps a periodic
-    # bootstrap token alive between deploys.
-    try:
-        bao.write("auth/token/renew-self", {})
-    except BaoError as exc:
-        print(f"note: token renewal skipped ({exc})")
     if not bao.has_mount(KV_MOUNT):
         bao.write(f"sys/mounts/{KV_MOUNT}", {"type": "kv", "options": {"version": "2"}})
         print(f"created kv v{mount_version(bao)} mount '{KV_MOUNT}'")
@@ -268,25 +258,32 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--addr", default=DEFAULT_ADDR, help=f"OpenBao address (default {DEFAULT_ADDR})")
-    ap.add_argument("--jwks", help="cluster service-account JWKS JSON "
-                                   "(kubectl get --raw /openid/v1/jwks)")
+    ap.add_argument("--jwks", help="cluster service-account JWKS JSON file; omit to run "
+                                   "`kubectl get --raw /openid/v1/jwks` directly")
     ap.add_argument("--token-ref", default=DEFAULT_OP_TOKEN,
                     help="1Password reference for a token with policy-write access")
-    ap.add_argument("--token-env",
-                    help="read the token from this environment variable instead of 1Password")
     ap.add_argument("--replace", action="store_true",
                     help="replace trusted JWKS keys instead of merging (deliberate rotation)")
     ap.add_argument("--check", action="store_true",
                     help="only report drift; exit 1 if anything is missing")
     args = ap.parse_args()
 
-    if not args.jwks:
-        raise SystemExit("ERROR: --jwks is required")
-    with open(args.jwks) as fh:
-        jwks = json.load(fh)
+    # Read the cluster's signing keys fresh by default, like jfroy/etincelle:
+    # a committed copy silently goes stale when the signing key rotates.
+    if args.jwks:
+        with open(args.jwks) as fh:
+            jwks = json.load(fh)
+    else:
+        try:
+            raw = subprocess.run(["kubectl", "get", "--raw", "/openid/v1/jwks"],
+                                 capture_output=True, text=True, check=True).stdout
+        except (FileNotFoundError, subprocess.CalledProcessError) as exc:
+            raise SystemExit(f"ERROR: cannot read the cluster JWKS via kubectl "
+                             f"({exc}); pass --jwks with a saved file instead") from None
+        jwks = json.loads(raw)
     pems = jwks_to_pems(jwks)
 
-    token = read_token(None if args.token_env else args.token_ref, args.token_env)
+    token = read_token(args.token_ref)
     bao = Bao(args.addr, token)
 
     # /sys/health is unauthenticated; it tells us whether the instance is usable.

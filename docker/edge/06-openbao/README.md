@@ -63,7 +63,7 @@ OpenBao.
 - **No `-config` flag**: the image entrypoint already loads `/openbao/config`;
   passing both makes OpenBao load the file twice and warn.
 
-## ESO wiring (JWT auth, re-applied by Doco-CD)
+## ESO wiring (JWT auth, applied by hand)
 
 External Secrets Operator needs a token to read OpenBao. It does **not** use
 Kubernetes auth: OpenBao runs here on the VPS and cannot reach the cluster API
@@ -74,42 +74,46 @@ nothing calls back to the API server, and there is no long-lived credential to
 rotate.
 
 `bootstrap.py` owns that config — KV v2 mount, read-only `eso-read` policy, and
-the `goyangi-eso` JWT role. It is idempotent: it creates only what is missing,
-so re-running is safe. `jwks.json` holds **public** keys only and is committed.
+the `goyangi-eso` JWT role. Apply it from the Mac mini:
 
-Doco-CD re-applies it on every deploy via the `bootstrap` one-shot service,
-which `depends_on` the healthy `openbao` container. Compose starts an exited
-`restart: "no"` service again on each `up`, so a deploy re-runs it; doco-cd's
-job scheduler is deliberately _not_ used, because scheduled jobs only fire on
-their schedule and never on deployment.
+```
+just edge openbao-bootstrap        # apply (idempotent)
+just edge openbao-bootstrap-check  # report drift, exit 1 if drifted
+```
 
-The container gets a **scoped**, **periodic** token (`bootstrap` policy), not a
-root token. It can read mounts/auth and write only the ESO wiring; it cannot
-read or write secrets, delete a mount, or mint a root token. The token is
-renewable and `bootstrap.py` renews it on every run, so it does not expire
-between deploys (a fixed-TTL token would have silently broken deploys after 32
-days). Mint it with `just edge openbao-bootstrap-token` and store it as
-`OPENBAO_BOOTSTRAP_TOKEN` on the `openbao` 1Password item.
+It runs by hand, like `jfroy/etincelle` — deliberately **not** on a schedule and
+**not** on deploy. Two attempts at automating it were reverted, for reasons
+worth recording:
 
-If that variable is **absent**, the job prints a note and exits 0 rather than
-failing. Doco-CD aborts the whole edge stack when a required variable is
-missing, and a half-configured bootstrap job must never block deploys of
-unrelated services.
+- Doco-CD resolves every `external_secrets` entry **before** deploying any
+  stack, so mapping a bootstrap secret that does not exist yet aborts the whole
+  poll and breaks **all six** edge stacks, not just this one.
+- Doco-CD treats an exited service as failed deployment drift
+  (`service bootstrap has a exited container`), so a `depends_on` one-shot fails
+  every subsequent poll even when the job succeeds. A scheduled job avoids that
+  but then never runs on deploy, which defeats the point.
+
+Nothing about this config needs re-applying on a schedule: it is created once
+and only changes when the JWKS rotate. Making it manual also means a broken
+bootstrap can never fail a deploy.
+
+`bootstrap.py` reads the token from 1Password itself (`op read`, falling back to
+the `~/.op-token` service-account file when there is no interactive session), so
+no token is stored in the cluster or in doco-cd. The JWKS is read fresh from
+`kubectl` on every run rather than committed, so it cannot go stale.
 
 ### When ESO auth breaks after a cluster key rotation
 
-The JWKS are static, so a service-account signing-key rotation leaves them
-stale and ESO auth fails until refreshed:
+The validation keys are whatever was current at the last run, so after a
+service-account signing-key rotation ESO auth fails until the script is re-run:
 
 ```
-kubectl get --raw /openid/v1/jwks > docker/edge/06-openbao/jwks.json
-git commit -m "chore(openbao): refresh cluster service-account JWKS" && git push
+just edge openbao-bootstrap
 ```
 
-`bootstrap.py` **merges** keys rather than replacing them, so committing a stale
-file can never remove the key ESO is currently using. Pass `--replace` only for
-a deliberate rotation, after confirming the new keys work. Check for drift at
-any time with `just edge openbao-bootstrap-check`.
+`bootstrap.py` **merges** keys rather than replacing them, so a run can never
+remove the key ESO is currently using. Pass `--replace` only for a deliberate
+rotation, after confirming the new keys work.
 
 ## Verified end to end
 
