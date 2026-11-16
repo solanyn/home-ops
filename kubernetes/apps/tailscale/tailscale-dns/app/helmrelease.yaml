@@ -10,6 +10,8 @@ spec:
     name: k8s-gateway
   values:
     domain: goyangi.io
+    fallthrough:
+      enabled: true
     ttl: 1
     service:
       annotations:
