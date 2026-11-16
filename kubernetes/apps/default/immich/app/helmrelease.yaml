@@ -76,6 +76,10 @@ spec:
               tag: v3.0.3@sha256:fbb2485a6ec1877697d003a7d81d445bd8aea3248a866aa1c3d75b9e134787d0
             env:
               TZ: Australia/Sydney
+              MACHINE_LEARNING_CACHE_FOLDER: &mlcache /cache
+              HF_HOME: *mlcache
+              HF_HUB_CACHE: *mlcache
+              TRANSFORMERS_CACHE: *mlcache
             envFrom: *envFrom
             securityContext:
               allowPrivilegeEscalation: false
