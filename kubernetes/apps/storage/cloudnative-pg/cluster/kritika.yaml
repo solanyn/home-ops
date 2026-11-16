@@ -70,7 +70,7 @@ metadata:
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
-    name: onepassword-connect
+    name: openbao
   target:
     name: kritika-postgres-credentials
     creationPolicy: Owner
@@ -96,7 +96,7 @@ metadata:
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
-    name: onepassword-connect
+    name: openbao
   target:
     name: kritika-postgres-app
     creationPolicy: Owner
@@ -120,7 +120,7 @@ metadata:
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
-    name: onepassword-connect
+    name: openbao
   target:
     name: kritika-postgres-runner
     creationPolicy: Owner
