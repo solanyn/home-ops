@@ -49,6 +49,9 @@ spec:
               readOnlyRootFilesystem: false
             args:
               - src/server/index.ts
+            command:
+              - bun
+              - run
             workingDir: /app
             resources:
               requests:
