@@ -100,6 +100,16 @@ def main() -> None:
     os.write(fd, (token + "\n").encode())
     os.close(fd)
     print(f"token written to {out_path} (mode 0600, {len(token)} chars)")
+    print()
+    print("Next: add it to 1Password as a password field on the 'openbao' item")
+    print("in the 'kubernetes' vault, labelled exactly OPENBAO_BOOTSTRAP_TOKEN:")
+    print()
+    print("  cat " + out_path + "   # copy the value, then:")
+    print("  rm " + out_path)
+    print()
+    print("Do not commit the file. It is gitignored, and .doco-cd.yaml only maps")
+    print("this secret once the field exists — mapping it early aborts every")
+    print("edge deployment.")
 
 
 if __name__ == "__main__":
