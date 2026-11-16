@@ -18,7 +18,7 @@ import shutil
 import sys
 
 SOURCE = pathlib.Path("/opt/hermes/plugins/platforms/matrix")
-TARGET = pathlib.Path("/patched/platforms/matrix")
+TARGET = pathlib.Path("/patched")
 
 ANCHOR = """            olm.share_keys_min_trust = TrustState.UNVERIFIED
             olm.send_keys_min_trust = TrustState.UNVERIFIED
