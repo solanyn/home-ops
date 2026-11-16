@@ -41,12 +41,10 @@ openbao-deploy:
     {{ scripts }}/ssh-edge.sh 'sudo docker restart doco-cd >/dev/null && echo "doco-cd restarted; it re-polls on startup"'
     echo "Watch with: just edge openbao-status"
 
-[doc('Mint the scoped OPENBAO_BOOTSTRAP_TOKEN; writes a 0600 file for 1Password, prints no secret')]
-openbao-bootstrap-token:
-    python3 "{{ dir }}/scripts/bootstrap-token.py" '.openbao-bootstrap-token'
+[doc('Apply the ESO wiring (KV mount, eso-read policy, JWT role) to OpenBao; idempotent')]
+openbao-bootstrap:
+    python3 "{{ dir }}/bootstrap.py"
 
 [doc('Report drift in the ESO wiring without changing anything; exits non-zero if drifted')]
 openbao-bootstrap-check:
-    kubectl get --raw /openid/v1/jwks > /tmp/openbao-jwks.json
-    python3 "{{ dir }}/bootstrap.py" --jwks /tmp/openbao-jwks.json --check
-    rm -f /tmp/openbao-jwks.json
+    python3 "{{ dir }}/bootstrap.py" --check
