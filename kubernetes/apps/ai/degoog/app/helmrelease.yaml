@@ -1,0 +1,133 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: degoog
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: degoog
+  interval: 30m
+  values:
+    controllers:
+      degoog:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/degoog-org/degoog
+              tag: 1.1.1
+            env:
+              TZ: Australia/Sydney
+              # Admin/store actions require this password. An unlocked instance
+              # lets anyone install extensions, which runs server-side code.
+              DEGOOG_SETTINGS_PASSWORDS:
+                valueFrom:
+                  secretKeyRef:
+                    name: degoog-secret
+                    key: DEGOOG_SETTINGS_PASSWORDS
+              DEGOOG_PUBLIC_INSTANCE: "false"
+              DEGOOG_MCP_DEGOOG_URL: http://localhost:4444
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 4444
+                  initialDelaySeconds: 20
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 20m
+                memory: 128Mi
+              limits:
+                memory: 1Gi
+      mcp:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/degoog-org/mcp
+              tag: 0.4.1
+            env:
+              DEGOOG_MCP_DEGOOG_URL: http://localhost:4444
+              DEGOOG_MCP_AUTH_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: degoog-secret
+                    key: DEGOOG_MCP_AUTH_TOKEN
+            probes:
+              liveness: &mcpProbes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: &mcpport 4443
+                  initialDelaySeconds: 10
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *mcpProbes
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 64Mi
+              limits:
+                memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: degoog
+        ports:
+          http:
+            port: *port
+      mcp:
+        controller: mcp
+        ports:
+          http:
+            port: *mcpport
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/enabled: "true"
+        hostnames:
+          - "degoog.goyangi.io"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: degoog-app
+                port: *port
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /app/data
+      mcp-data:
+        type: emptyDir
+        globalMounts:
+          - path: /data
