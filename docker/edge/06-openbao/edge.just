@@ -44,7 +44,3 @@ openbao-deploy:
 [doc('Apply the ESO wiring (KV mount, eso-read policy, JWT role) to OpenBao; idempotent')]
 openbao-bootstrap:
     python3 "{{ dir }}/bootstrap.py"
-
-[doc('Report drift in the ESO wiring without changing anything; exits non-zero if drifted')]
-openbao-bootstrap-check:
-    python3 "{{ dir }}/bootstrap.py" --check
