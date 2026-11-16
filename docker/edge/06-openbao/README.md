@@ -77,9 +77,13 @@ rotate.
 the `goyangi-eso` JWT role. Apply it from the Mac mini:
 
 ```
-just edge openbao-bootstrap        # apply (idempotent)
-just edge openbao-bootstrap-check  # report drift, exit 1 if drifted
+just edge openbao-bootstrap
 ```
+
+It is idempotent — it creates only what is missing — and verifies its own result
+on every run, failing loudly if the state does not match. That is why there is no
+separate `--check` mode: `check()` runs as the post-apply verification, and with
+a manual command "is it drifted?" is answered by running the apply itself.
 
 It runs by hand, like `jfroy/etincelle` — deliberately **not** on a schedule and
 **not** on deploy. Two attempts at automating it were reverted, for reasons

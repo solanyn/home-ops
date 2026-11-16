@@ -18,8 +18,8 @@ after a cluster service-account signing key rotation:
     ./bootstrap.py --jwks jwks.json
 
 The mount, policy and role are only created if absent, and JWKS keys are
-merged rather than replaced, so re-running is always safe. --check verifies
-without changing anything and exits non-zero on drift.
+merged rather than replaced, so re-running is always safe. Every run verifies
+its own result and fails loudly if the state does not match.
 
 Secrets: the token comes from 1Password via `op read` (--token-ref) and is never
 printed. Only public JWKS material is written to OpenBao.
@@ -264,8 +264,6 @@ def main() -> None:
                     help="1Password reference for a token with policy-write access")
     ap.add_argument("--replace", action="store_true",
                     help="replace trusted JWKS keys instead of merging (deliberate rotation)")
-    ap.add_argument("--check", action="store_true",
-                    help="only report drift; exit 1 if anything is missing")
     args = ap.parse_args()
 
     # Read the cluster's signing keys fresh by default, like jfroy/etincelle:
@@ -295,12 +293,6 @@ def main() -> None:
                          f"initialized={health.get('initialized')})")
 
     print(f"OpenBao {args.addr}: initialized, unsealed")
-    if args.check:
-        if check(bao, pems, replace=args.replace):
-            print("in sync")
-            return
-        raise SystemExit(1)
-
     apply(bao, pems, replace=args.replace)
     print("verifying...")
     if not check(bao, pems, replace=args.replace):
