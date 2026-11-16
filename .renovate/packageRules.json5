@@ -1,0 +1,66 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
+    {
+      description: ["Custom versioning for mylar3"],
+      matchDatasources: ["docker"],
+      versioning: "regex:^version-v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$",
+      matchPackageNames: ["/mylar3/"],
+    },
+    {
+      description: ["Custom regex versioning for kyuz0 amd-strix-halo-toolboxes rocm tags"],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/kyuz0/amd-strix-halo-toolboxes"],
+      versioning: "regex:^rocm-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$",
+      allowedVersions: "/^rocm-6\\./",
+    },
+    {
+      description: ["Custom regex versioning for SearXNG CalVer SHA tags"],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/searxng/searxng"],
+      ignoreUnstable: false,
+      versioning: "regex:^(?<major>\\d{4})\\.(?<minor>\\d{1,2})\\.(?<patch>\\d{1,2})-(?<prerelease>[0-9a-f]+)$",
+    },
+    {
+      description: ["Hold kubectl-mcp-server at 1.24.0 (rohitg00#93 crashloop in toolhive)"],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/rohitghumare64/kubectl-mcp-server"],
+      enabled: false,
+    },
+    {
+      description: "Release notes for metrics-server via ocharted",
+      matchPackageNames: ["ocharted.jory.dev/kubernetes-sigs.github.io/metrics-server/**"],
+      sourceUrl: "https://github.com/kubernetes-sigs/metrics-server",
+    },
+    {
+      description: "Release notes for external-dns via ocharted",
+      matchPackageNames: ["ocharted.jory.dev/kubernetes-sigs.github.io/external-dns/**"],
+      sourceUrl: "https://github.com/kubernetes-sigs/external-dns",
+    },
+    {
+      description: "Release notes for descheduler via ocharted",
+      matchPackageNames: ["ocharted.jory.dev/kubernetes-sigs.github.io/descheduler/**"],
+      sourceUrl: "https://github.com/kubernetes-sigs/descheduler",
+    },
+    {
+      description: "Release notes for headlamp via ocharted",
+      matchPackageNames: ["ocharted.jory.dev/kubernetes-sigs.github.io/headlamp/**"],
+      sourceUrl: "https://github.com/kubernetes-sigs/headlamp",
+    },
+    {
+      description: "Release notes for nvidia-device-plugin via ocharted",
+      matchPackageNames: ["ocharted.jory.dev/nvidia.github.io/k8s-device-plugin/**"],
+      sourceUrl: "https://github.com/NVIDIA/k8s-device-plugin",
+    },
+    {
+      description: "Release notes for ceph-csi-drivers via ocharted",
+      matchPackageNames: ["ocharted.jory.dev/ceph.github.io/ceph-csi-operator/**"],
+      sourceUrl: "https://github.com/ceph/ceph-csi-operator",
+    },
+    {
+      description: "Release notes for k8s-gpu-dra-driver via ocharted",
+      matchPackageNames: ["ocharted.jory.dev/rocm.github.io/k8s-gpu-dra-driver/**"],
+      sourceUrl: "https://github.com/ROCm/k8s-gpu-dra-driver",
+    },
+  ],
+}

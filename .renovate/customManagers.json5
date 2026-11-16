@@ -1,0 +1,48 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  customManagers: [
+    {
+      customType: "regex",
+      description: "opencode plugins pinned in the ConfigMap JSON (no comments possible inside it)",
+      managerFilePatterns: ["/(^|/)llm/opencode/configmap\\.yaml$/"],
+      matchStrings: ['"(?<depName>@[^"/]+/[^"@]+)@(?<currentValue>\\d+\\.\\d+\\.\\d+)"'],
+      datasourceTemplate: "npm",
+    },
+    {
+      customType: "regex",
+      description: "Process annotated dependencies",
+      managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
+      matchStrings: [
+        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.+(:\\s|=)(&\\S+\\s)?[\"']?(?<currentValue>[^\"'\\s]+)[\"']?",
+      ],
+      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+    },
+    {
+      customType: "regex",
+      description: "Process OCI dependencies",
+      managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
+      matchStrings: [
+        "oci://(?<depName>[^:]+):(?<currentValue>\\S+)",
+        "ref:\\s+tag:\\s*(?<currentValue>\\S+)\\s+url:\\s*oci://(?<depName>[^\\s]+)",
+      ],
+      datasourceTemplate: "docker",
+    },
+    {
+      customType: "regex",
+      description: "Talos machineconfig images",
+      managerFilePatterns: ["/talos/.+\\.yaml\\.j2$/"],
+      matchStrings: [
+        "# renovate: datasource=docker depName=(?<depName>\\S+)\\nimage:\\s*(?<currentValue>.+)",
+      ],
+      datasourceTemplate: "docker",
+    },
+    {
+      customType: "regex",
+      description: "MCP Server npm packages",
+      managerFilePatterns: ["/\\.yaml(?:\\.j2)?$/"],
+      matchStrings: ["npx\\s+-y\\s+(?<depName>@?[^@\\s]+)(?:@(?<currentValue>\\S+))?"],
+      datasourceTemplate: "npm",
+      versioningTemplate: "loose",
+    },
+  ],
+}
