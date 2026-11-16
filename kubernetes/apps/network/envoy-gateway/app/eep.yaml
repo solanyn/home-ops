@@ -21,6 +21,8 @@ spec:
         showDetails: true
         excludeDomains:
           - "(?i)^matrix\\.goyangi\\.io(:[0-9]+)?$"
+          - "(?i)^livekit-jwt\\.goyangi\\.io(:[0-9]+)?$"
+          - "(?i)^livekit\\.goyangi\\.io(:[0-9]+)?$"
         filterCodes:
           - "400-599"
       failOpen: false
