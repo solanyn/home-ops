@@ -46,6 +46,15 @@ PATCH = """            # Answer room-key requests from devices of authorised use
                 return await _default_allow_key_share(device, request)
 
             olm.allow_key_share = _allow_key_share
+
+            # MemoryStateStore marks a room's member cache complete after any single
+            # membership event, and share_group_session then trusts that cache. A
+            # collapsed cache yields a session with no recipients at all, which no
+            # client can decrypt. Always ask the homeserver for the joined members.
+            async def _always_fetch_members(room_id):
+                return False
+
+            state_store.has_full_member_list = _always_fetch_members
 """
 
 
