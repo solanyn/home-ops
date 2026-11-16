@@ -10,7 +10,7 @@ import {
 
 resource "unifi_port_forward" "qbittorrent" {
     name     = "qBittorrent"
-    protocol = "tcp"
+    protocol = "tcp_udp"
     logging  = true
 
     forward = {
