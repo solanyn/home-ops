@@ -143,6 +143,12 @@ adapter answers key requests from devices belonging to `MATRIX_ALLOWED_USERS`
 sessions it never received.
 
 Upstream has no equivalent option, so this is a local patch of a vendored file.
+The same script also forces the joined-member fetch when a megolm session is
+shared: `MemoryStateStore` marks a room's member cache complete after a single
+membership event, and `share_group_session` then trusts that cache, so a
+collapsed cache produced sessions with no recipients at all. Every session must
+reach the real member list before encryption can work.
+
 The script matches exact anchor text and fails open: when the anchor disappears,
 for example after an image bump, the adapter stays unpatched, the gateway still
 starts and the container logs `matrix adapter patch: anchor not found`. Check
