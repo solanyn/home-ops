@@ -8,7 +8,7 @@ spec:
   callbackUrls:
     - https://photos.goyangi.io/auth/login
     - https://photos.goyangi.io/user-settings
-    - app.immich:/
+    - app.immich:///oauth-callback
   logoutCallbackUrls:
     - https://photos.goyangi.io
   allowedUserGroups:
