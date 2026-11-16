@@ -26,9 +26,6 @@ spec:
         sonarr:
           apprise:
             url: pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "SONARR_PUSHOVER_TOKEN" }}
-        whisparr:
-          apprise:
-            url: pover://{{ env "PUSHOVER_USER_KEY" }}@{{ env "WHISPARR_PUSHOVER_TOKEN" }}
       routes:
         radarr-download:
           target: radarr
@@ -99,41 +96,6 @@ spec:
             priority: low
             url: "{{ .payload.applicationUrl }}"
             url_title: View Series
-          whenExpr: payload.eventType == "Test"
-        whisparr-download:
-          target: whisparr
-          title: Movie {{ if .payload.isUpgrade }}Upgraded{{ else }}Added{{ end }}
-          message: |-
-            <b>{{ .payload.movie.title }} ({{ .payload.movie.year }})</b>
-            <small>{{ .payload.movie.overview | ellipsis 300 }}</small>
-            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
-          params:
-            format: html
-            priority: low
-            url: "{{ .payload.applicationUrl }}/movie/{{ .payload.movie.tmdbId }}"
-            url_title: View Movie
-          whenExpr: payload.eventType == "Download"
-        whisparr-manual:
-          target: whisparr
-          title: Movie Requires Manual Interaction
-          message: |-
-            <b>{{ .payload.movie.title }} ({{ .payload.movie.year }})</b>
-            <small><b>Client:</b> {{ .payload.downloadClient | default "unknown" }}</small>
-          params:
-            format: html
-            priority: high
-            url: "{{ .payload.applicationUrl }}/activity/queue"
-            url_title: View Queue
-          whenExpr: payload.eventType == "ManualInteractionRequired"
-        whisparr-test:
-          target: whisparr
-          title: Test Notification
-          message: Howdy this is a test notification
-          params:
-            format: html
-            priority: low
-            url: "{{ .payload.applicationUrl }}"
-            url_title: View Movies
           whenExpr: payload.eventType == "Test"
     monitoring:
       serviceMonitor:
