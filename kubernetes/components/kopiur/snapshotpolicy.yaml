@@ -28,6 +28,13 @@ spec:
       # kopia's default budgets (5000 MiB/class) exceed a 5Gi cache PVC, so the
       # sweeper never runs and the cache fills the volume. Metadata applies
       # twice (index-blobs cap), so keep content + 2*metadata under capacity.
+      #
+      # This is the CLAIM size, not the free space. Every mover run also writes
+      # cli-logs/ and content-logs/ into the same volume and nothing prunes them,
+      # so a workload with an hourly schedule accumulates ~750Mi of logs in days.
+      # The margin therefore has to cover that log growth on top of the caches:
+      # at 1Gi, otbr and litellm both hit 96-100% full and their backups failed
+      # hourly with `no space left on device` while writing the index cache.
       contentCacheSizeMb: ${KOPIUR_CONTENT_CACHE_MB:=512}
       metadataCacheSizeMb: ${KOPIUR_METADATA_CACHE_MB:=1024}
     securityContext:
