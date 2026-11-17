@@ -10,7 +10,6 @@ resources:
   - ./namespace.yaml
   - ./actual/ks.yaml
   - ./pkvault/ks.yaml
-  - ./agregarr/ks.yaml
   - ./atuin/ks.yaml
   - ./autobrr/ks.yaml
   - ./audiobookshelf/ks.yaml
