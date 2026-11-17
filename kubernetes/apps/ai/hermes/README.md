@@ -149,6 +149,12 @@ membership event, and `share_group_session` then trusts that cache, so a
 collapsed cache produced sessions with no recipients at all. Every session must
 reach the real member list before encryption can work.
 
+It also logs the crypto handshake so client-side churn is visible: every new olm
+session with the peer device, every one-time-key claim the bot makes, and every
+key request with whether the bot holds the requested session. A client that keeps
+re-establishing olm sessions shows up as repeated `new olm session` lines without
+a preceding `claiming olm session` line.
+
 The script matches exact anchor text and fails open: when the anchor disappears,
 for example after an image bump, the adapter stays unpatched, the gateway still
 starts and the container logs `matrix adapter patch: anchor not found`. Check
