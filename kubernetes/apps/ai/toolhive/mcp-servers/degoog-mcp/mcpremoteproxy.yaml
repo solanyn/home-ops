@@ -6,7 +6,7 @@
 apiVersion: toolhive.stacklok.dev/v1beta1
 kind: MCPRemoteProxy
 metadata:
-  name: degoog-mcp
+  name: degoog-search
 spec:
   remoteUrl: http://degoog-mcp.ai.svc.cluster.local:4443/mcp
   transport: streamable-http
@@ -18,6 +18,6 @@ spec:
       - headerName: Authorization
         valueSecretRef:
           name: degoog-secret
-          key: DEGOOG_MCP_AUTH_TOKEN
+          key: DEGOOG_MCP_AUTHORIZATION
   groupRef:
     name: mcp-tools
