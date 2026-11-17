@@ -96,3 +96,10 @@ platforms:
   api_server:
     host: 0.0.0.0
     port: 8643
+  matrix:
+    enabled: true
+    home_channel:
+      platform: matrix
+      chat_id: "!qzpGQlLccdKjOL3t8tXC3Ehnyjt8Xva7MjSCxiswr-0"
+      name: 🔔 notifications
+      user_id: "@andrew:goyangi.io"
