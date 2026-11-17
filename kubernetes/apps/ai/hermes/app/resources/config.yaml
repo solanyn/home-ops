@@ -38,6 +38,7 @@ terminal:
 # still surface at runtime as failures in `hermes cron doctor` and incidents.
 cron:
   preflight: false
+  wrap_response: false
 compression:
   enabled: true
   threshold: 0.35
