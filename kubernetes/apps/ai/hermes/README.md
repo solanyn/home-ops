@@ -18,9 +18,9 @@ The ExternalSecret maps the access token and device ID into the `hermes` Secret.
 The access token and device ID must always come from the same Matrix login
 response. Do not choose a different device ID after creating the token.
 
-Hermes uses `MATRIX_E2EE_MODE=required`. Its Matrix store is located at
-`/opt/data/platforms/matrix/store/` on the persistent volume. Preserve this store
-across ordinary restarts and upgrades.
+Hermes uses `MATRIX_E2EE_MODE=off`. Its Matrix store is located at
+`/opt/data/platforms/matrix/store/` on the persistent volume; it is unused while
+encryption is disabled but left in place in case E2EE is re-enabled.
 
 ## Provision a bot account
 
@@ -57,7 +57,7 @@ agent and tool permissions, so the bot should not be invited to untrusted rooms.
 
 ## Rotate the Matrix device
 
-Rotate the device only when its token is compromised or its encryption identity
+Only relevant if E2EE is re-enabled. Rotate the device only when its token is compromised or its encryption identity
 is no longer usable. Create a fresh device with the Matrix client API and allow
 the homeserver to generate its ID:
 
@@ -128,38 +128,18 @@ After rotation, verify the new `Hermes Agent` device in Element and run
 `/discardsession` in the encrypted room before sending a new message. Events
 encrypted for the previous device may remain undecryptable.
 
-## Room-key backfill patch
+## Encryption
 
-Hermes ships mautrix's default key-share policy, which ignores
-`m.room_key_request` from every user except the bot's own. A client that misses
-the one-off megolm key distribution therefore shows "Waiting for this message"
-indefinitely, because nothing ever re-sends that key.
+Matrix E2EE is disabled (`MATRIX_E2EE_MODE=off`) because the message key
+distribution between mautrix and Matrix clients proved unreliable: a missed
+megolm key share left messages permanently on "Waiting for this message" in
+every client, and mautrix selects the session to encrypt on by last decryption
+rather than by creation, so key shares could be aimed at sessions a client had
+already discarded.
 
-The `patch-matrix-adapter` init container copies the bundled Matrix plugin into
-an emptyDir, applies `resources/matrix_adapter_patch.py` and mounts the result
-over `/opt/hermes/plugins/platforms/matrix` in the gateway only. The patched
-adapter answers key requests from devices belonging to `MATRIX_ALLOWED_USERS`
-(skipping blacklisted devices), so a newly logged-in client can backfill the
-sessions it never received.
-
-Upstream has no equivalent option, so this is a local patch of a vendored file.
-The same script also forces the joined-member fetch when a megolm session is
-shared: `MemoryStateStore` marks a room's member cache complete after a single
-membership event, and `share_group_session` then trusts that cache, so a
-collapsed cache produced sessions with no recipients at all. Every session must
-reach the real member list before encryption can work.
-
-It also logs the crypto handshake so client-side churn is visible: every new olm
-session with the peer device, every one-time-key claim the bot makes, and every
-key request with whether the bot holds the requested session. A client that keeps
-re-establishing olm sessions shows up as repeated `new olm session` lines without
-a preceding `claiming olm session` line.
-
-The script matches exact anchor text and fails open: when the anchor disappears,
-for example after an image bump, the adapter stays unpatched, the gateway still
-starts and the container logs `matrix adapter patch: anchor not found`. Check
-that line after every Hermes image update, and drop the patch once upstream
-answers cross-user key requests.
+Use unencrypted rooms for Hermes. Rooms that already have encryption enabled
+cannot be converted; retire them rather than keep using them, because the bot
+now sends plaintext events there and clients will flag them.
 
 ## Verification
 
