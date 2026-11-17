@@ -95,38 +95,10 @@ spec:
             envFrom:
               - secretRef:
                   name: hermes
-          install-conduit-plugin:
+          sync-profiles:
             image: &image
               repository: nousresearch/hermes-agent
               tag: v2026.9.24@sha256:fca358f12efd65bfaaca05884166f15c0e2788375ca30d77061ac1ebc96452b7
-            command:
-              - /bin/sh
-              - -c
-              - |
-                set -eu
-                if [ -d /opt/data/plugins/conduit_push ]; then
-                  /opt/hermes/bin/hermes plugins enable conduit_push
-                else
-                  /opt/hermes/bin/hermes plugins install kaishi00/hermes-conduit-notifier --enable --ref 2a08b5a2a569dfcc220ae63dedb2a1527438344b
-                fi
-            securityContext:
-              runAsUser: 10000
-              runAsGroup: 10000
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop: [ALL]
-              seccompProfile: { type: RuntimeDefault }
-            resources:
-              requests:
-                cpu: 10m
-                memory: 128Mi
-              limits:
-                memory: 512Mi
-            envFrom:
-              - secretRef:
-                  name: hermes
-          sync-profiles:
-            image: *image
             command:
               - /bin/sh
               - -c
