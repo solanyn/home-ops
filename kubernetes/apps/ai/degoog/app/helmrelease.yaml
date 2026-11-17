@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/degoog-org/degoog
-              tag: 1.1.1
+              tag: 1.2.0
             env:
               TZ: Australia/Sydney
               # Admin/store actions require this password. An unlocked instance
