@@ -1,0 +1,16 @@
+---
+# Reference-only stubs for objects that exist only at runtime, supplied to
+# `flate diff images` via --supply so a static render can resolve them.
+#
+# flux-system/flux-oidc is created by the PocketIDOIDCClient operator, so it is
+# never in git and flate fails with "Secret flux-system/flux-oidc not found".
+# Only the object identity is needed for alignment; values are never read.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: flux-oidc
+  namespace: flux-system
+type: Opaque
+stringData:
+  clientID: unused
+  clientSecret: unused
