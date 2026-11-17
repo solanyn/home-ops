@@ -18,9 +18,6 @@ configMapGenerator:
   - name: hermes-honcho
     files:
       - ./resources/honcho.json
-  - name: hermes-matrix-adapter-patch
-    files:
-      - ./resources/matrix_adapter_patch.py
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
