@@ -52,7 +52,6 @@ resources:
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./romm/ks.yaml
-  - ./seasonpackerr/ks.yaml
   - ./dufs/ks.yaml
   - ./silo/ks.yaml
   - ./sonarr/ks.yaml
