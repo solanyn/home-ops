@@ -132,9 +132,15 @@ spec:
     persistence:
       data:
         existingClaim: "{{ .Release.Name }}"
-        globalMounts:
-          - path: /app/data
+        advancedMounts:
+          # RWO volume: only the controller that owns the data may mount it.
+          degoog:
+            app:
+              - path: /app/data
       mcp-data:
         type: emptyDir
-        globalMounts:
-          - path: /data
+        advancedMounts:
+          # The sidecar keeps its own state; upstream mounts only /data here.
+          mcp:
+            app:
+              - path: /data
