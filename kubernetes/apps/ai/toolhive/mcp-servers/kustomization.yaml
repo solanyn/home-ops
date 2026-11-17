@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./arr-mcp
   - ./cua-driver
+  - ./degoog-mcp
   - ./flux-operator-mcp
   - ./github-mcp
   - ./grafana-mcp

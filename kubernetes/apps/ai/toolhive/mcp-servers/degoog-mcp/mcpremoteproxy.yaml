@@ -1,0 +1,23 @@
+---
+# degoog-mcp already runs as a sidecar to degoog in the ai namespace, so it is
+# proxied into the MCP gateway rather than deployed a second time. The sidecar
+# requires a bearer token on /mcp; inject it from the secret the degoog chart
+# already renders instead of duplicating the value here.
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPRemoteProxy
+metadata:
+  name: degoog-mcp
+spec:
+  remoteUrl: http://degoog-mcp.ai.svc.cluster.local:4443/mcp
+  transport: streamable-http
+  # Required: remoteUrl is an in-cluster service DNS name.
+  allowPrivateEndpoint: true
+  proxyPort: 8080
+  headerForward:
+    addHeadersFromSecret:
+      - headerName: Authorization
+        valueSecretRef:
+          name: degoog-secret
+          key: DEGOOG_MCP_AUTH_TOKEN
+  groupRef:
+    name: mcp-tools
