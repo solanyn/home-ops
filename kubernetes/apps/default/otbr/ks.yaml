@@ -16,7 +16,7 @@ spec:
   postBuild:
     substitute:
       APP: otbr
-      KOPIUR_CAPACITY: 1Gi
+      KOPIUR_CAPACITY: 5Gi
       KOPIUR_CONTENT_CACHE_MB: "128"
       KOPIUR_METADATA_CACHE_MB: "256"
       KOPIUR_PGID: "0"
