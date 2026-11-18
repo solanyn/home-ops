@@ -38,7 +38,7 @@ spec:
           app:
             image:
               repository: influxdb
-              tag: 2.9-alpine
+              tag: 2.10-alpine
             command: ["influxd"]
             args:
               - --bolt-path=/var/lib/influxdb2/influxd.bolt
