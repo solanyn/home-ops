@@ -29,7 +29,6 @@ spec:
                     name: degoog-secret
                     key: DEGOOG_SETTINGS_PASSWORDS
               DEGOOG_PUBLIC_INSTANCE: "false"
-              DEGOOG_MCP_DEGOOG_URL: http://localhost:4444
             probes:
               liveness: &probes
                 enabled: true
@@ -68,7 +67,7 @@ spec:
               repository: ghcr.io/degoog-org/mcp
               tag: 0.4.1
             env:
-              DEGOOG_MCP_DEGOOG_URL: http://localhost:4444
+              DEGOOG_MCP_DEGOOG_URL: http://degoog-app:4444
               DEGOOG_MCP_AUTH_TOKEN:
                 valueFrom:
                   secretKeyRef:
