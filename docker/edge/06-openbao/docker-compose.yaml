@@ -4,7 +4,7 @@ name: openbao
 services:
   openbao:
     container_name: openbao
-    image: quay.io/openbao/openbao:2.7.2
+    image: quay.io/openbao/openbao:2.7.3
     # No -config flag: the image entrypoint already serves the /openbao/config
     # directory. Passing both makes OpenBao read config.hcl twice and warn.
     command: ["server"]
