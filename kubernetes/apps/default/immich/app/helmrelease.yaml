@@ -76,7 +76,7 @@ spec:
           app:
             image:
               repository: docker.io/valkey/valkey
-              tag: 9.1.4
+              tag: 9.2.0
             args: ["--save", "", "--appendonly", "no", "--maxmemory-policy", "noeviction"]
             securityContext:
               allowPrivilegeEscalation: false
