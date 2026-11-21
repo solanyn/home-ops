@@ -86,6 +86,8 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /config
       media:
         type: nfs
         server: nas.internal
