@@ -1,0 +1,17 @@
+---
+apiVersion: pocketid.internal/v1alpha1
+kind: PocketIDOIDCClient
+metadata:
+  name: sabnzbd
+spec:
+  clientID: sabnzbd
+  callbackUrls:
+    - https://sabnzbd.goyangi.io/oauth2/callback
+  logoutCallbackUrls:
+    - https://sabnzbd.goyangi.io
+  allowedUserGroups:
+    - name: admin
+  secret:
+    name: sabnzbd-oidc
+    keys:
+      clientSecret: client-secret

@@ -54,6 +54,7 @@ resources:
   - ./romm/ks.yaml
   - ./dufs/ks.yaml
   - ./silo/ks.yaml
+  - ./sabnzbd/ks.yaml
   - ./sonarr/ks.yaml
   - ./suwayomi/ks.yaml
   - ./thelounge/ks.yaml
