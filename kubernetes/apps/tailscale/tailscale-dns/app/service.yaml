@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tailscale-dns-k8s-gateway-lan
+  annotations:
+    lbipam.cilium.io/ips: 192.168.69.128
+spec:
+  type: LoadBalancer
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: dns-udp
+      port: 53
+      protocol: UDP
+      targetPort: 1053
+    - name: dns-tcp
+      port: 53
+      protocol: TCP
+      targetPort: 1053
+  selector:
+    app.kubernetes.io/instance: tailscale-dns
+    app.kubernetes.io/name: k8s-gateway
