@@ -1,26 +1,25 @@
 # OpenBao on the edge VPS
 
 OpenBao runs as a Compose service managed by Doco-CD alongside the other edge
-services. It is the eventual replacement for 1Password Connect as the cluster's
-External Secrets source.
+services. It is the cluster's External Secrets source.
 
-**Nothing has been migrated yet.** 1Password Connect stays in place until OpenBao
-is initialized, its recovery material is stored in 1Password, and a Raft restore
-has been rehearsed.
+The cluster is migrated: `openbao` is the only ClusterSecretStore in use, and
+1Password is read only from the workstation for bootstrap inputs. 1Password
+Connect is no longer deployed.
 
 ## Bootstrap order
 
-1. `just edge openbao-check-secrets` — confirms the static seal key is readable
+1. `mise run //docker/edge:openbao-check-secrets` — confirms the static seal key is readable
    from 1Password and is 32 bytes (64 hex chars).
-2. `just edge openbao-validate` — validates the Compose file and `config.hcl`
+2. `mise run //docker/edge:openbao-validate` — validates the Compose file and `config.hcl`
    against the VPS's own Docker Compose.
 3. Add the secret to Doco-CD's external secrets (see below), commit, push.
-4. `just edge openbao-provision` — creates `/opt/openbao/data` with the ownership
+4. `mise run //docker/edge:openbao-provision` — creates `/opt/openbao/data` with the ownership
    the unprivileged image user needs. Safe to re-run while no Raft data exists.
-5. Let Doco-CD reconcile, or `just edge openbao-deploy`.
-6. `just edge openbao-init` — **once**. Writes recovery key + root token to a
+5. Let Doco-CD reconcile, or `mise run //docker/edge:openbao-deploy`.
+6. `mise run //docker/edge:openbao-init` — **once**. Writes recovery key + root token to a
    0600 file, which you must then copy into 1Password and delete.
-7. `just edge openbao-status` — expect `Initialized true`, `Sealed false`.
+7. `mise run //docker/edge:openbao-status` — expect `Initialized true`, `Sealed false`.
 8. Enable OIDC login (see "OIDC login via Pocket ID" below).
 
 ## Doco-CD secret wiring
@@ -77,7 +76,7 @@ rotate.
 the `goyangi-eso` JWT role. Apply it from the Mac mini:
 
 ```
-just edge openbao-bootstrap
+mise run //docker/edge:openbao-bootstrap
 ```
 
 It is idempotent — it creates only what is missing — and verifies its own result
@@ -112,7 +111,7 @@ The validation keys are whatever was current at the last run, so after a
 service-account signing-key rotation ESO auth fails until the script is re-run:
 
 ```
-just edge openbao-bootstrap
+mise run //docker/edge:openbao-bootstrap
 ```
 
 `bootstrap.py` **merges** keys rather than replacing them, so a run can never
