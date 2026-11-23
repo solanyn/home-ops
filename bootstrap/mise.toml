@@ -5,10 +5,21 @@ run = [
   { task = ":nodes" },
   { task = ":k8s" },
   { task = ":kubeconfig", args = ["node"] },
+  { task = ":openbao" },
   { task = ":base" },
   { task = ":apps" },
   { task = ":kubeconfig" },
 ]
+
+[tasks.openbao]
+description = "Seed OpenBao with the cluster's service-account JWKS so the openbao ClusterSecretStore can authenticate"
+hide = true
+run = '''
+mise run //:log info "Running stage..." stage "$MISE_TASK_NAME"
+if ! mise run //docker/edge:openbao-bootstrap; then
+    mise run //:log fatal "Failed to wire External Secrets to OpenBao" stage "$MISE_TASK_NAME"
+fi
+'''
 
 [tasks.nodes]
 hide = true

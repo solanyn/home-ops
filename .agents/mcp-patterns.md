@@ -53,8 +53,8 @@ spec:
                         image:
                             repository: <image>
                             tag: <tag>
-                        command: [...]       # optional
-                        args: [...]          # transport + CLI args
+                        command: [...] # optional
+                        args: [...] # transport + CLI args
                         env:
                             VAR: value
                         envFrom:
@@ -77,7 +77,7 @@ spec:
                 seccompProfile: { type: RuntimeDefault }
         service:
             app:
-                controller: <controller-name>  # only if name != controller name
+                controller: <controller-name> # only if name != controller name
                 ports:
                     http:
                         port: <mcp-port>
@@ -106,11 +106,11 @@ spec:
 
 ## Container Images
 
-| MCP Server | Image | Command/Args |
-|---|---|---|
-| `grafana-mcp` | `grafana/mcp-grafana` | `-t streamable-http --address 0.0.0.0:8000` |
-| `duckdb-mcp` | `ghcr.io/astral-sh/uv:python3.13-bookworm-slim` | `uvx mcp-server-motherduck --transport sse` |
-| `unifi-mcp` | `ghcr.io/sirkirby/unifi-network-mcp` | (default entrypoint, streamable-http on `0.0.0.0:3000`) |
+| MCP Server    | Image                                           | Command/Args                                            |
+| ------------- | ----------------------------------------------- | ------------------------------------------------------- |
+| `grafana-mcp` | `grafana/mcp-grafana`                           | `-t streamable-http --address 0.0.0.0:8000`             |
+| `duckdb-mcp`  | `ghcr.io/astral-sh/uv:python3.13-bookworm-slim` | `uvx mcp-server-motherduck --transport sse`             |
+| `unifi-mcp`   | `ghcr.io/sirkirby/unifi-network-mcp`            | (default entrypoint, streamable-http on `0.0.0.0:3000`) |
 
 ## Transports
 
@@ -119,20 +119,20 @@ spec:
 
 ## Secrets
 
-Use ExternalSecret with `ClusterSecretStore: onepassword-connect`, target name `<mcp-name>-secret`, and `envFrom` in the container spec.
+Use ExternalSecret with `ClusterSecretStore: openbao`, target name `<mcp-name>-secret`, and `envFrom` in the container spec.
 
 ## Exposure
 
 MCP servers can be exposed via HTTPRoute through the envoy-internal gateway. Use the app-template `route:` field to generate an HTTPRoute:
 
 ```yaml
-    route:
-        app:
-            hostnames:
-                - mcp-name.goyangi.io
-            parentRefs:
-                - name: envoy-internal
-                  namespace: network
+route:
+    app:
+        hostnames:
+            - mcp-name.goyangi.io
+        parentRefs:
+            - name: envoy-internal
+              namespace: network
 ```
 
 Then add a remote MCP entry in OpenCode config:

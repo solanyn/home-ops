@@ -36,6 +36,9 @@ jobs:
     needs: filter
     name: Image Pull - Extract Images
     runs-on: home-ops-runner
+    permissions:
+      contents: read
+      id-token: write
     outputs:
       images: ${{ steps.extract.outputs.images }}
     steps:
@@ -45,32 +48,36 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Configure 1Password Connect
-        uses: 1password/load-secrets-action/configure@70062d7a876d3eb6334754fa26efd2fbd90c32f2 # v5.0.1
-        with:
-          connect-host: http://onepassword-connect.external-secrets.svc.cluster.local
-          connect-token: ${{ secrets.OP_CONNECT_TOKEN }}
-
-      - name: Load Secrets
-        id: load-secrets
-        uses: 1password/load-secrets-action@70062d7a876d3eb6334754fa26efd2fbd90c32f2 # v5.0.1 # zizmor: ignore[unpinned-tools]
-        env:
-          OCHARTED_USERNAME: op://kubernetes/ocharted/OCHARTED_USERNAME
-          OCHARTED_PASSWORD: op://kubernetes/ocharted/OCHARTED_PASSWORD
-
-      - name: Login to ocharted
-        env:
-          OCHARTED_USERNAME: ${{ steps.load-secrets.outputs.OCHARTED_USERNAME }}
-          OCHARTED_PASSWORD: ${{ steps.load-secrets.outputs.OCHARTED_PASSWORD }}
-        run: |
-          mkdir -p "$RUNNER_TEMP/ocharted"
-          export DOCKER_CONFIG="$RUNNER_TEMP/ocharted"
-          printf '%s' "$OCHARTED_PASSWORD" | docker login ocharted.goyangi.io --username "$OCHARTED_USERNAME" --password-stdin
-
       - name: Setup Mise
         uses: jdx/mise-action@90f833d396d0cc3674b631d2d225e306476c303a # v5.2.10
         with:
           cache: false
+          tool_versions: |
+            jq latest
+
+      - name: Load Secrets from OpenBao
+        env:
+          AUDIENCE: https://github.com/solanyn
+        run: |
+          set -euo pipefail
+          jwt="$(curl -fsS -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=${AUDIENCE}" | jq -er '.value')"
+          body="$(jq -n --arg role home-ops-ci --arg jwt "$jwt" '{role:$role,jwt:$jwt}')"
+          token="$(curl -fsS -X POST -H 'Content-Type: application/json' -d "$body" \
+            https://bao.goyangi.io/v1/auth/jwt-github/login | jq -er '.auth.client_token')"
+          data="$(curl -fsS -H "X-Vault-Token: $token" \
+            https://bao.goyangi.io/v1/kv/data/ocharted)"
+          for ref in OCHARTED_USERNAME OCHARTED_PASSWORD; do
+            value="$(printf '%s' "$data" | jq -er ".data.data.${ref}")"
+            echo "::add-mask::$value"
+            echo "$ref=$value" >> "$GITHUB_ENV"
+          done
+
+      - name: Login to ocharted
+        run: |
+          mkdir -p "$RUNNER_TEMP/ocharted"
+          export DOCKER_CONFIG="$RUNNER_TEMP/ocharted"
+          printf '%s' "$OCHARTED_PASSWORD" | docker login ocharted.goyangi.io --username "$OCHARTED_USERNAME" --password-stdin
 
       - name: Extract Images
         id: extract

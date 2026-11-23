@@ -39,17 +39,17 @@ Use the repository's flat app layout:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: <app>
+    name: <app>
 spec:
-  targetNamespace: <namespace>
-  interval: 1h
-  path: ./kubernetes/apps/<namespace>/<app>/app
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  wait: false
+    targetNamespace: <namespace>
+    interval: 1h
+    path: ./kubernetes/apps/<namespace>/<app>/app
+    prune: true
+    sourceRef:
+        kind: GitRepository
+        name: flux-system
+        namespace: flux-system
+    wait: false
 ```
 
 Add `dependsOn` only for real dependencies and always include the dependency namespace. Add the Kopiur component at the `ks.yaml` level for persistent applications.
@@ -64,7 +64,7 @@ Register the app in the namespace-level `kustomization.yaml` in alphabetical ord
 - Pin container images by digest when practical.
 - Never put credentials in manifests.
 - Use the existing Pocket ID CR pattern for OIDC clients.
-- Use `ExternalSecret` with the `onepassword` ClusterSecretStore for 1Password-backed values.
+- Use `ExternalSecret` with the `openbao` ClusterSecretStore.
 
 ## Validation
 

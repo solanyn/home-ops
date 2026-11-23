@@ -80,40 +80,12 @@ releases:
     needs:
       - cert-manager/cert-manager
 
-  - name: onepassword-connect
-    namespace: external-secrets
-    inherit:
-      - template: default
-    hooks:
-      - # Wait for CRDs to be available
-        command: kubectl
-        args:
-          - wait
-          - --for=create
-          - crd/clustersecretstores.external-secrets.io
-          - --timeout=2m
-        events:
-          - postsync
-        showlogs: true
-      - # Apply ExternalSecret Resources
-        command: kubectl
-        args:
-          - apply
-          - --server-side
-          - --force-conflicts
-          - --filename=../../kubernetes/apps/{{ .Release.Namespace }}/{{ .Release.Name }}/app/clustersecretstore.yaml
-        events:
-          - postsync
-        showlogs: true
-    needs:
-      - external-secrets/external-secrets
-
   - name: flux-operator
     namespace: flux-system
     inherit:
       - template: default
     needs:
-      - external-secrets/onepassword-connect
+      - external-secrets/external-secrets
 
   - name: flux-instance
     namespace: flux-system
