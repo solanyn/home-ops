@@ -26,7 +26,7 @@ Before adding or editing an `ExternalSecret`, read 1-2 neighboring `externalsecr
 
 For the usual 1Password-backed secret:
 
-- Use `secretStoreRef` with `kind: ClusterSecretStore` and `name: onepassword`.
+- Use `secretStoreRef` with `kind: ClusterSecretStore` and `name: openbao`.
 - Keep `spec` fields in this order: `refreshInterval` (if used locally), `secretStoreRef`, `target`, `dataFrom`. This overrides alphabetical sorting.
 - Use `dataFrom.extract.key` for the 1Password item, matching neighboring manifests. Do not replace it with individual `data.remoteRef.property` mappings just because only one field is needed.
 - When selecting, renaming, or formatting output keys, use `target.template.data`; for example, `Authorization: "Bearer {{ .MCP_ACCESS_TOKEN }}"`. Keep credentials out of manifests.

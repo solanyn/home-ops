@@ -77,6 +77,7 @@ jobs:
           cache: false
           tool_versions: |
             opentofu latest
+            1password-cli latest
 
       - name: Init (no backend)
         if: ${{ needs.filter.outputs[matrix.root] == 'true' }}
@@ -102,6 +103,7 @@ jobs:
     runs-on: ${{ github.event.repository.name }}-runner
     permissions:
       contents: read
+      id-token: write
       pull-requests: write
     steps:
       - name: Checkout
@@ -115,18 +117,22 @@ jobs:
           cache: false
           tool_versions: |
             opentofu latest
+            jq latest
 
-      - name: Configure 1Password Connect
-        uses: 1password/load-secrets-action/configure@70062d7a876d3eb6334754fa26efd2fbd90c32f2 # v5.0.1
-        with:
-          connect-host: http://onepassword-connect.external-secrets.svc.cluster.local
-          connect-token: ${{ secrets.OP_CONNECT_TOKEN }}
-
-      - name: Load Secrets
-        id: load-secrets
-        uses: 1password/load-secrets-action@70062d7a876d3eb6334754fa26efd2fbd90c32f2 # v5.0.1 # zizmor: ignore[unpinned-tools]
+      - name: Load Secrets from OpenBao
         env:
-          UNIFI_API_KEY: op://kubernetes/unifi/UNIFI_API_KEY
+          AUDIENCE: https://github.com/solanyn
+        run: |
+          set -euo pipefail
+          jwt="$(curl -fsS -H "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=${AUDIENCE}" | jq -er '.value')"
+          body="$(jq -n --arg role home-ops-ci --arg jwt "$jwt" '{role:$role,jwt:$jwt}')"
+          token="$(curl -fsS -X POST -H 'Content-Type: application/json' -d "$body" \
+            https://bao.goyangi.io/v1/auth/jwt-github/login | jq -er '.auth.client_token')"
+          value="$(curl -fsS -H "X-Vault-Token: $token" \
+            https://bao.goyangi.io/v1/kv/data/unifi | jq -er '.data.data.UNIFI_API_KEY')"
+          echo "::add-mask::$value"
+          echo "UNIFI_API_KEY=$value" >> "$GITHUB_ENV"
 
       - name: Init (K8s backend)
         working-directory: ./opentofu/unifi
@@ -142,7 +148,7 @@ jobs:
         id: plan
         working-directory: ./opentofu/unifi
         env:
-          UNIFI_API_KEY: ${{ steps.load-secrets.outputs.UNIFI_API_KEY }}
+          UNIFI_API_KEY: ${{ env.UNIFI_API_KEY }}
         shell: bash
         run: |
           set -o pipefail
