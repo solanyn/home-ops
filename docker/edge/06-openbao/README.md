@@ -7,6 +7,23 @@ The cluster is migrated: `openbao` is the only ClusterSecretStore in use, and
 1Password is read only from the workstation for bootstrap inputs. 1Password
 Connect is no longer deployed.
 
+## CI access
+
+GitHub Actions authenticates with its own OIDC token, not a stored secret:
+
+```
+mise run //docker/edge:openbao-check-secrets   # seal key readability
+docker/edge/06-openbao/scripts/ci-oidc.sh       # mount, policy, role
+```
+
+The script is idempotent and creates the `jwt-github` mount, the `ci-read`
+policy (read-only on `kv/{unifi,ocharted}`) and the `home-ops-ci` role bound to
+`solanyn/home-ops`. The cluster's `jwt` mount is separate because it validates
+service-account JWKS for External Secrets.
+
+The Kopiur repository secret reads `kv/kopiur`; it replaced `kv/volsync-template`.
+Do not delete the old item until `kopiur-repository-secret` reports synced.
+
 ## Bootstrap order
 
 1. `mise run //docker/edge:openbao-check-secrets` — confirms the static seal key is readable
