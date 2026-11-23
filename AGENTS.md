@@ -88,9 +88,12 @@ Single cluster Kubernetes GitOps repository with FluxCD v2. Hierarchical pattern
 - `.agents/` - Agent instructions and reusable workflows
     - `.agents/instructions/` - Sorting and review conventions
     - `.agents/skills/` - Task-specific implementation workflows
+- `bootstrap/` - Talos and Kubernetes bootstrap tasks (`bootstrap/mise.toml`)
 - `kubernetes/` - Cluster manifests
-- `kubernetes/mod.just` - Just commands for cluster operations
+- `kubernetes/mise.toml` - Kubernetes workspace tasks
 - `talos/` - Talos Linux configuration
+- `talos/mise.toml` - Talos workspace tasks
+- `docker/edge/mise.toml` - Edge VPS tasks (OpenBao)
 - `third_party/` - Upstream manifests (flux-local CI)
 
 ### Application Patterns
@@ -447,7 +450,7 @@ resources:
 
 - Confirm the live PVC has `dataSourceRef.apiGroup: kopiur.home-operations.com`, `kind: Restore` and the application name.
 - Confirm `kopiur-controller` and `kopiur-webhook` are ready before diagnosing a restore or Pending PVC.
-- Do not use the retired `components/volsync` component. VolSync is not deployed; leftover CRDs do not mean its controller is available.
+- `components/volsync` has been removed. VolSync is not deployed; leftover CRDs and the empty `volsync-system` namespace remain in the cluster and do not mean its controller is available.
 - For a new application, verify the rendered PVC capacity rather than assuming a substitution was consumed.
 
 **Volume types:**
@@ -587,7 +590,7 @@ resources:
 
 #### Security Patterns
 
-- **ExternalSecret**: Reference `onepassword-connect` ClusterSecretStore
+- **ExternalSecret**: Reference the `openbao` ClusterSecretStore
 - **Target secret**: Name as `app-name-secret`
 - **Always use template**: Makes value mapping clear
 
@@ -601,7 +604,7 @@ metadata:
 spec:
     secretStoreRef:
         kind: ClusterSecretStore
-        name: onepassword-connect
+        name: openbao
     target:
         name: app-name-secret
         creationPolicy: Owner
@@ -624,13 +627,14 @@ spec:
 ## Commands
 
 ```bash
-just kube browse-pvc <namespace> <claim>  # Mount PVC to temp container
-just kube prune-pods                      # Delete failed/pending/succeeded pods
-just kube sync-es                         # Sync ExternalSecrets
-just kube cnpg-backup                     # Backup CNPG cluster
+mise tasks --all                                  # List workspace tasks
+mise run //kubernetes:browse-pvc <namespace> <claim>  # Mount PVC to temp container
+mise run //kubernetes:prune-pods                  # Delete failed/pending/succeeded pods
+mise run //kubernetes:sync-es                     # Sync ExternalSecrets
+mise run //kubernetes:cnpg-backup                 # Backup CNPG cluster
 ```
 
-Kopiur snapshots are driven by each application's `SnapshotSchedule`. Inspect or trigger Kopiur resources directly rather than using the legacy VolSync `snapshot` and `backup-and-suspend` recipes.
+Kopiur snapshots are driven by each application's `SnapshotSchedule`. Inspect or trigger Kopiur resources directly; VolSync is retired and has no workspace tasks.
 
 ### CloudNative-PG Cluster Backup and Restore
 
@@ -856,7 +860,7 @@ dataFrom:
 ## Security
 
 - SOPS encryption with Age keys
-- External Secrets Operator for 1Password injection
+- External Secrets Operator backed by OpenBao, with 1Password used only for bootstrap
 - Never commit unencrypted secrets
 
 ## GitOps
@@ -865,6 +869,10 @@ dataFrom:
 2. Hierarchical reconciliation with dependencies
 3. PR validation with linting and rendered-manifest checks
 4. Renovate automation for updates
+
+### Bootstrap
+
+`mise run //bootstrap:cluster` runs the stages in order: Talos machine config, Kubernetes bootstrap, kubeconfig, OpenBao JWKS seeding (`//docker/edge:openbao-bootstrap`), base manifests, core Helm releases, then restores the kubeconfig. Secrets for Talos rendering and bootstrap come from 1Password; in-cluster workloads read from OpenBao through the `openbao` ClusterSecretStore.
 
 ### Runtime verification
 
@@ -885,8 +893,8 @@ dataFrom:
 ### Local rendering with Flate
 
 - `mise` is the required project tool manager and version source of truth for this repository. Before using repo tools, run `mise install` from the repo root; use `mise exec -- <tool>` for commands so versions come from `.mise/config.toml` and `.mise/mise.lock`. Do not install project tools globally or rely on unpinned system/Homebrew versions when a mise-managed version exists. Pin tool versions and commit the updated `.mise/mise.lock` whenever tool configuration changes.
-- Run `lefthook run pre-commit` on staged changes before committing. Hooks format YAML, JSON and Just files with `oxfmt`/`just` and run configured shell/workflow checks; stage formatter output and inspect the diff before commit.
-- Render Flux resources with `just kube render-local-ks <namespace> <kustomization>` (equivalent to `mise exec -- flate build ks --allow-missing-secrets --namespace <namespace> --output yaml <kustomization>`). `--allow-missing-secrets` permits local rendering when cluster-only ExternalSecrets are unavailable; it does not validate their secret values.
+- Run `lefthook run pre-commit` on staged changes before committing. Hooks format YAML, JSON and Markdown with `oxfmt` and run configured shell/workflow checks; stage formatter output and inspect the diff before commit.
+- Render Flux resources with `mise run //kubernetes:render-local-ks <namespace> <kustomization>` (equivalent to `mise exec -- flate build ks --namespace <namespace> --output yaml <kustomization>`). Local rendering does not validate cluster-only ExternalSecret values.
 - For every changed Flux Kustomization path, render the relevant entry point and validate the rendered YAML against the cluster's served API schemas/CRDs using the repository's schema-validation tool. Include the parent/root render to catch Flux tree wiring and duplicate resource IDs. Do not apply manifests directly as a substitute for validation.
 - For changes that depend on live CRDs or operator/chart versions, use an authenticated cluster context and inspect the installed CRDs/Flux state read-only. Report when live validation is blocked; never imply the local render checked the cluster.
 - For HelmRelease changes, render the Helm chart with the exact chart version and values and validate the rendered resources as well as the HelmRelease schema. Do not treat a successful Kustomize/Flate build alone as Helm chart validation.
@@ -894,7 +902,7 @@ dataFrom:
 - Before finishing an implementation, run the relevant lint/format checks, all affected local renders, and schema validation; include exact commands and outcomes in the PR summary.
 
 - Rendering `cluster-apps-private` locally validates the root graph but cannot prove the private source contents are current without its Forgejo credentials. Use the live `flux-system-private` GitRepository and `cluster-apps-private` status for that check.
-- Use `just kube apply-ks` or `just kube delete-ks` only when that direct cluster action is explicitly intended. Normal changes must follow GitOps: edit, commit, push and reconcile.
+- Use `mise run //kubernetes:apply-ks` or `mise run //kubernetes:delete-ks` only when that direct cluster action is explicitly intended. Normal changes must follow GitOps: edit, commit, push and reconcile.
 - Flate is a local renderer. Konflate is repository automation. Neither combines the public and private repositories.
 
 ## Technologies

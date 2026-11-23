@@ -19,11 +19,6 @@ run = "oxfmt {staged_files}"
 glob = ["*.md", "*.markdown", "*.mdx"]
 stage_fixed = true
 
-[pre-commit.commands.format-just]
-run = 'for f in {staged_files}; do just --justfile "$f" --fmt; done'
-glob = ["*.just", ".justfile"]
-stage_fixed = true
-
 [pre-commit.commands.shellcheck]
 run = "shellcheck {staged_files}"
 glob = ["*.sh"]

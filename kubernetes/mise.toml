@@ -1,0 +1,219 @@
+[tasks.apply-ks]
+description = "Apply local Flux Kustomization"
+usage = '''
+arg "<ns>" help="Namespace of the Flux Kustomization"
+arg "<ks>" help="Name of the Flux Kustomization"
+'''
+run = 'mise run //kubernetes:render-local-ks "$usage_ns" "$usage_ks" | kubectl apply --server-side --force-conflicts --field-manager=kustomize-controller -f -'
+
+[tasks.browse-pvc]
+description = "Browse a PVC"
+interactive = true
+usage = '''
+arg "<ns>" help="Namespace of the PVC"
+arg "<claim>" help="Name of the PVC"
+'''
+run = 'kubectl browse-pvc -n "$usage_ns" -i mirror.gcr.io/alpine:latest "$usage_claim"'
+
+[tasks.delete-ks]
+description = "Delete local Flux Kustomization"
+usage = '''
+arg "<ns>" help="Namespace of the Flux Kustomization"
+arg "<ks>" help="Name of the Flux Kustomization"
+'''
+run = 'mise run //kubernetes:render-local-ks "$usage_ns" "$usage_ks" | kubectl delete -f -'
+
+[tasks.node-shell]
+description = "Open a shell on a node"
+interactive = true
+usage = 'arg "<node>" help="Name of the node"'
+run = '''
+kubectl debug "node/$usage_node" -n default -it --image=mirror.gcr.io/alpine:latest --profile=sysadmin
+kubectl delete pod -n default -l app.kubernetes.io/managed-by=kubectl-debug
+'''
+
+[tasks.prune-pods]
+description = "Prune pods in Failed, Pending, or Succeeded state"
+run = '''
+for phase in Failed Pending Succeeded; do
+    kubectl delete pods -A --field-selector status.phase="$phase" --ignore-not-found=true
+done
+'''
+
+[tasks.cnpg-backup]
+description = "Backup CNPG cluster"
+run = '''
+backup_name="backup-$(date +%Y%m%d%H%M%S)"
+echo "Triggering CNPG backup: $backup_name"
+kubectl apply -f - <<< '{"apiVersion":"postgresql.cnpg.io/v1","kind":"Backup","metadata":{"name":"'"$backup_name"'","namespace":"storage"},"spec":{"method":"plugin","cluster":{"name":"postgres"},"pluginConfiguration":{"name":"barman-cloud.cloudnative-pg.io"}}}'
+echo "Waiting for backup to complete..."
+kubectl wait backup.postgresql.cnpg.io -n storage "$backup_name" --for=jsonpath='{.status.phase}'=completed --timeout=600s
+'''
+
+[tasks.cnpg-suspend]
+description = "Suspend CNPG cluster"
+run = 'kubectl annotate cluster postgres -n storage cnpg.io/hibernation=on --overwrite'
+
+[tasks.cnpg-resume]
+description = "Resume CNPG cluster"
+run = 'kubectl annotate cluster postgres -n storage cnpg.io/hibernation-'
+
+[tasks.backup-and-suspend]
+description = "Backup and suspend: CNPG backup, then hibernate the cluster"
+depends = ["cnpg-backup", "cnpg-suspend"]
+run = 'echo "Backup and suspend complete. Safe to reset Talos cluster."'
+
+[tasks.keda]
+description = "Suspend or resume Keda ScaledObjects"
+usage = '''
+arg "<state>" help="Suspend or resume" {
+  choices "suspend" "resume"
+}
+'''
+run = '''
+suffix=""
+[[ "$usage_state" == "suspend" ]] && suffix="=true"
+kubectl get scaledobjects --no-headers -A | while read -r ns name _; do
+    kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite so "$name" "autoscaling.keda.sh/paused$suffix"
+done
+'''
+
+[tasks.sync-es]
+description = "Sync ExternalSecrets"
+run = '''
+kubectl get es --no-headers -A | while read -r ns name _; do
+    kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite es "$name" force-sync="$(date +%s)"
+done
+'''
+
+[tasks.sync-git]
+description = "Sync GitRepositories"
+run = '''
+kubectl get gitrepo --no-headers -A | while read -r ns name _; do
+    kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite gitrepo "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"
+done
+'''
+
+[tasks.sync-hr]
+description = "Sync HelmReleases"
+run = '''
+kubectl get hr --no-headers -A | while read -r ns name _; do
+    kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite hr "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)" reconcile.fluxcd.io/forceAt="$(date +%s)"
+done
+'''
+
+[tasks.sync-ks]
+description = "Sync Kustomizations"
+run = '''
+kubectl get ks --no-headers -A | while read -r ns name _; do
+    kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite ks "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"
+done
+'''
+
+[tasks.sync-oci]
+description = "Sync OCIRepositories"
+run = '''
+kubectl get ocirepo --no-headers -A | while read -r ns name _; do
+    kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite ocirepo "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"
+done
+'''
+
+[tasks.sync-terraform]
+description = "Sync Terraform resources"
+run = '''
+kubectl get terraform --no-headers -A | while read -r ns name _; do
+    kubectl -n "$ns" annotate --field-manager flux-client-side-apply --overwrite terraform "$name" reconcile.fluxcd.io/requestedAt="$(date +%s)"
+done
+'''
+
+[tasks.view-secret]
+description = "View a secret"
+usage = '''
+arg "<ns>" help="Namespace of the secret"
+arg "<secret>" help="Name of the secret"
+'''
+run = 'kubectl view-secret -n "$usage_ns" "$usage_secret"'
+
+[tasks.render-local-ks]
+hide = true
+usage = '''
+arg "<ns>"
+arg "<ks>"
+'''
+run = 'flate build ks --namespace "$usage_ns" --output yaml "$usage_ks"'
+
+[tasks.create-oidc]
+description = "Add OIDC credentials to 1Password item (creates if missing)"
+usage = 'arg "<app>" help="Application name"'
+run = '''
+app="$usage_app"
+prefix=$(echo "$app" | tr '[:lower:]-' '[:upper:]_')
+secret=$(openssl rand -hex 32)
+if op item get "$app" --vault kubernetes &>/dev/null; then
+    if [[ -z "$(op item get "$app" --vault kubernetes --fields password 2>/dev/null)" ]]; then
+        op item edit "$app" --vault kubernetes "password= " >/dev/null
+    fi
+    op item edit "$app" --vault kubernetes "${prefix}_CLIENT_SECRET[password]=$secret" >/dev/null
+    echo "Added ${prefix}_CLIENT_SECRET to '$app'"
+else
+    op item create --vault kubernetes --category login \
+        --title "$app" \
+        "${prefix}_CLIENT_SECRET[password]=$secret" >/dev/null
+    echo "Created '$app' with ${prefix}_CLIENT_SECRET"
+fi
+'''
+
+[tasks.sync-oidc]
+description = "Sync OIDC credentials from terraform.tfvars to 1Password"
+run = '''
+tfvars="$MISE_MONOREPO_ROOT/terraform/authentik/terraform.tfvars"
+if [[ ! -f "$tfvars" ]]; then
+    echo "missing $tfvars" >&2
+    exit 1
+fi
+apps=$(awk '/^[[:space:]]+[a-z0-9-]+[[:space:]]*=/ {print $1}' "$tfvars")
+for app in $apps; do
+    prefix=$(echo "$app" | tr '[:lower:]-' '[:upper:]_')
+    if op item get "$app" --vault kubernetes --fields "${prefix}_CLIENT_SECRET" &>/dev/null; then
+        echo "Skipping $app - ${prefix}_CLIENT_SECRET exists"
+    else
+        mise run //kubernetes:create-oidc "$app" &
+    fi
+done
+wait
+'''
+
+[tasks.invite]
+description = "Create Authentik invitation link"
+usage = 'arg "[name]" default="invite" help="Invitation name"'
+run = '''
+token=$(kubectl get secret -n default authentik -o jsonpath='{.data.AUTHENTIK_BOOTSTRAP_TOKEN}' | base64 -d)
+response=$(curl -s -X POST https://id.goyangi.io/api/v3/stages/invitation/invitations/ \
+  -H "Authorization: Bearer $token" \
+  -H "Content-Type: application/json" \
+  -d "{\"name\": \"$usage_name\", \"flow\": \"enrollment-invitation\"}")
+invite_id=$(echo "$response" | jq -r '.pk')
+echo "https://id.goyangi.io/if/flow/enrollment-invitation/?itoken=$invite_id"
+'''
+
+[tasks.nodepool-teardown]
+description = "Delete the nodepool MIG and all GCP resources"
+confirm = { message = "Delete nodepool and all GCP resources?", default = "no" }
+run = '''
+kubectl delete xcomputenodepools.home-ops.io nodepool
+mise run //kubernetes:nodepool-cleanup
+'''
+
+[tasks.nodepool-cleanup]
+description = "Clean up stale k8s burst nodes"
+run = '''
+nodes=$(kubectl get nodes -l node-role.kubernetes.io/burst=true --no-headers -o custom-columns=NAME:.metadata.name 2>/dev/null || true)
+if [[ -n "$nodes" ]]; then
+    for node in $nodes; do
+        echo "Deleting node: $node"
+        kubectl delete node "$node"
+    done
+else
+    echo "No stale k8s nodes"
+fi
+'''

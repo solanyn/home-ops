@@ -24,7 +24,7 @@ services:
       SKIP_SETCAP: "true"
     volumes:
       # Persistent Raft data. Host path must be owned by the image's
-      # unprivileged uid/gid (100:1000) -- see `just edge openbao-provision`.
+      # unprivileged uid/gid (100:1000) -- see `mise run //docker/edge:openbao-provision`.
       - /opt/openbao/data:/openbao/data
     configs:
       - source: openbao_config

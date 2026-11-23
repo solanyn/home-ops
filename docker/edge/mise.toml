@@ -1,0 +1,45 @@
+[env]
+EDGE_HOST = '139.99.135.40'
+EDGE_USER = 'ubuntu'
+EDGE_PORT = '22222'
+EDGE_KEY = '{{ env.HOME }}/.ssh/edge_ssh'
+
+[tasks.openbao-check-secrets]
+description = "Check the 1Password seal-key reference is readable and well formed; prints no secrets"
+run = "06-openbao/scripts/check-secrets.sh 'op://kubernetes/openbao/OPENBAO_STATIC_SEAL_KEY'"
+
+[tasks.openbao-validate]
+description = "Validate the compose file and config.hcl against the VPS its own docker compose"
+run = '''
+06-openbao/scripts/ssh-edge.sh 'rm -rf /tmp/ob-validate && mkdir -p /tmp/ob-validate/config'
+06-openbao/scripts/scp-edge.sh 06-openbao/docker-compose.yaml /tmp/ob-validate/docker-compose.yaml
+06-openbao/scripts/scp-edge.sh 06-openbao/config/config.hcl /tmp/ob-validate/config/config.hcl
+06-openbao/scripts/ssh-edge.sh 'cd /tmp/ob-validate && OPENBAO_STATIC_SEAL_KEY=$(openssl rand -hex 32) docker compose config --quiet && echo "compose: valid"; rm -rf /tmp/ob-validate'
+python3 06-openbao/scripts/validate.py config 06-openbao/config/config.hcl
+'''
+
+[tasks.openbao-provision]
+description = "Create /opt/openbao/data on the VPS with the ownership the unprivileged image user needs"
+run = "06-openbao/scripts/provision.sh 06-openbao/scripts/ssh-edge.sh"
+
+[tasks.openbao-status]
+description = "Show container and seal state on the VPS"
+run = '''
+06-openbao/scripts/ssh-edge.sh 'sudo docker inspect openbao 2>/dev/null || echo "[]"' | python3 06-openbao/scripts/validate.py inspect
+06-openbao/scripts/ssh-edge.sh 'sudo docker exec openbao bao status' 2>/dev/null | grep -E '^(Seal Type|Recovery Seal Type|Initialized|Sealed|Version)' || echo "status=unavailable"
+'''
+
+[tasks.openbao-init]
+description = "Initialize OpenBao once; writes recovery key + root token to a 0600 file for 1Password"
+run = "06-openbao/scripts/init.sh 06-openbao/scripts/ssh-edge.sh .openbao-init.json 06-openbao/scripts/validate.py"
+
+[tasks.openbao-deploy]
+description = "Ask Doco-CD to reconcile the edge stack now instead of waiting for its poll interval"
+run = '''
+06-openbao/scripts/ssh-edge.sh 'sudo docker restart doco-cd >/dev/null && echo "doco-cd restarted; it re-polls on startup"'
+echo "Watch with: mise run //docker/edge:openbao-status"
+'''
+
+[tasks.openbao-bootstrap]
+description = "Apply the ESO wiring (KV mount, eso-read policy, JWT role) to OpenBao; idempotent"
+run = "python3 06-openbao/bootstrap.py"
