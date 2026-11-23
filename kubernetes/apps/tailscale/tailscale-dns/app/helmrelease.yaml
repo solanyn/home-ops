@@ -14,9 +14,12 @@ spec:
       enabled: true
     ttl: 1
     service:
+      annotations:
+        tailscale.com/hostname: dns
       ipFamily: IPv4
       ipFamilyPolicy: SingleStack
+      loadBalancerClass: tailscale
       port: 53
-      type: ClusterIP
+      type: LoadBalancer
       useTcp: true
     watchedResources: ["HTTPRoute", "Service"]

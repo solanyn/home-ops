@@ -5,3 +5,4 @@ resources:
   - ./ocirepository.yaml
   - ./helmrelease.yaml
   - ./service.yaml
+  - ./tailscale-service.yaml
