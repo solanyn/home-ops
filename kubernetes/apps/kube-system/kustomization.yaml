@@ -8,6 +8,7 @@ components:
   - ../../components/alerts
 
 resources:
+  - ./cluster-network-externalsecret.yaml
   - ./namespace.yaml
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
