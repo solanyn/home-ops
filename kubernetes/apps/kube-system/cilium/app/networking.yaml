@@ -8,7 +8,7 @@ spec:
   allowFirstLastIPs: "No"
   blocks:
     - cidr: 192.168.69.0/24
-    - cidr: 2404:e80:414e:69::/64
+    - cidr: 2404:e80:414e:69::/112
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpadvertisement_v2.json
 apiVersion: cilium.io/v2
