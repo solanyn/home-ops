@@ -10,7 +10,6 @@
 
 helmDefaults:
   cleanupOnFail: true
-  forceConflicts: true
   wait: true
   waitForJobs: true
 
