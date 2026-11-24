@@ -4,10 +4,10 @@
 
 ### Subnets
 
-- **Nodes**: `fd5d:a293:f321:42::/64`
-- **LoadBalancer**: `fd5d:a293:f321:69::/80`
-- **Pods**: `fc69::/108`
-- **Services**: `fc96::/108`
+- **Nodes**: `2404:e80:414e:42::/64`
+- **Pods**: `2404:e80:414e:11::/64`
+- **Services**: `2404:e80:414e:12::/64`
+- **LoadBalancer**: `2404:e80:414e:69::/64`
 
 ## UniFi BGP Configuration
 
@@ -24,7 +24,7 @@ router bgp 64513
   neighbor k8s-v6 remote-as 64514
 
   bgp listen range 192.168.42.0/24 peer-group k8s
-  bgp listen range fd5d:a293:f321:42::/64 peer-group k8s-v6
+  bgp listen range 2404:e80:414e:42::/64 peer-group k8s-v6
 
   address-family ipv4 unicast
     neighbor k8s activate
@@ -35,9 +35,9 @@ router bgp 64513
   address-family ipv6 unicast
     neighbor k8s-v6 activate
     neighbor k8s-v6 soft-reconfiguration inbound
-    network fd5d:a293:f321:69::/80
-    network fc69::/108
-    network fc96::/108
+    network 2404:e80:414e:69::/64
+    network 2404:e80:414e:11::/64
+    network 2404:e80:414e:12::/64
   exit-address-family
 exit
 ```

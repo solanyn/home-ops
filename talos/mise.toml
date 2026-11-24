@@ -67,7 +67,7 @@ description = "Render Talos config for a node"
 usage = 'arg "<node>" help="Node to render the config for"'
 run = '''
 export IS_CONTROLLER="$(mise run //talos:machine-controller "$usage_node")"
-export IPV6_PREFIX="$(op item get cluster --field IPV6_PREFIX --vault kubernetes)"
+export IPV6_PREFIX="$(op read 'op://kubernetes/cluster/IPV6_PREFIX')"
 cluster="$(mise run //:template machineconfig.yaml.j2)"
 node_patch="$(mise run //:template "nodes/${usage_node}.yaml.j2")"
 talosctl machineconfig patch <(printf '%s\n' "$cluster") -p @<(printf '%s\n' "$node_patch")
@@ -107,6 +107,6 @@ mise run //:template "nodes/${usage_node}.yaml.j2" |
 hide = true
 run = '''
 export IS_CONTROLLER=true
-export IPV6_PREFIX="$(op item get cluster --field IPV6_PREFIX --vault kubernetes)"
+export IPV6_PREFIX="$(op read 'op://kubernetes/cluster/IPV6_PREFIX')"
 mise run //:template machineconfig.yaml.j2 | yq -r -e 'select(.machine) | .machine.install.image'
 '''
