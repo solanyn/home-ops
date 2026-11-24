@@ -74,6 +74,7 @@ machine:
     nodeIP:
       validSubnets:
         - 192.168.42.0/24
+        - "{{ ENV.IPV6_PREFIX }}:1::/64"
         - "{{ ENV.IPV6_PREFIX }}:42::/64"
   nodeLabels:
     node.kubernetes.io/gpu: "true"
