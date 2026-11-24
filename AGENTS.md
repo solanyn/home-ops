@@ -51,7 +51,7 @@ The cluster supports dual-stack IPv4/IPv6 networking with globally routable IPv6
 ### IPv6 Subnets
 
 - **Nodes**: `2404:e80:414e:42::/64`
-- **Pods**: `2404:e80:414e:11::/64`
+- **Pods**: `2404:e80:414e:11::/100`, carved into per-node `/108`s
 - **Services**: `2404:e80:414e:12::/64`
 - **LoadBalancer**: `2404:e80:414e:69::/64`
 

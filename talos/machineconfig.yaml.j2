@@ -18,9 +18,6 @@ machine:
       enabled: true
       forwardKubeDNSToHost: true # Requires Cilium socketLB features
       resolveMemberNames: true
-    kubePrism:
-      enabled: true
-      port: 7445
     {% if ENV.IS_CONTROLLER %}
     kubernetesTalosAPIAccess:
       allowedKubernetesNamespaces:
@@ -133,7 +130,7 @@ cluster:
     dnsDomain: cluster.local
     podSubnets:
       - 10.42.0.0/16
-      - "{{ ENV.IPV6_PREFIX }}:11::/64"
+      - "{{ ENV.IPV6_PREFIX }}:11::/100"
     serviceSubnets:
       - 10.43.0.0/16
       - "{{ ENV.IPV6_PREFIX }}:12::/64"
@@ -254,3 +251,7 @@ apiVersion: v1alpha1
 kind: WatchdogTimerConfig
 device: /dev/watchdog0
 timeout: 5m
+---
+apiVersion: v1alpha1
+kind: KubePrismConfig
+port: 7445
