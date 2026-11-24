@@ -8,6 +8,7 @@ spec:
   targetNamespace: default
   components:
     - ../../../../components/kopiur
+    - ../../../../components/kopiur-restore-root
   dependsOn:
     - name: cloudnative-pg-databases
       namespace: storage

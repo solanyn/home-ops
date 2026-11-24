@@ -8,6 +8,7 @@ spec:
   targetNamespace: ai
   components:
     - ../../../../components/kopiur
+    - ../../../../components/kopiur-restore-root
   dependsOn:
     - name: cloudnative-pg-cluster
       namespace: storage
