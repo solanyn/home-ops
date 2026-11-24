@@ -16,6 +16,9 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/default/matter-server/app
   postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-network
     substitute:
       APP: matter-server
       KOPIUR_PGID: "0"

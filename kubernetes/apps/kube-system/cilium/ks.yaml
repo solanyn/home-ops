@@ -8,6 +8,10 @@ spec:
   targetNamespace: kube-system
   interval: 1h
   path: ./kubernetes/apps/kube-system/cilium/app
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-network
   prune: true
   sourceRef:
     kind: GitRepository

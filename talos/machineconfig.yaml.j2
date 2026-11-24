@@ -10,7 +10,7 @@ machine:
     - k8s.goyangi.io
     - 127.0.0.1
     - 192.168.69.120
-    - 2404:e80:414e:69::120
+    - "{{ ENV.IPV6_PREFIX }}:69::120"
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -152,7 +152,7 @@ cluster:
       - 10.60.0.1
       - 127.0.0.1
       - 192.168.69.120
-      - 2404:e80:414e:69::120
+      - "{{ ENV.IPV6_PREFIX }}:69::120"
       - k8s.goyangi.io
     disablePodSecurityPolicy: true
     extraArgs:

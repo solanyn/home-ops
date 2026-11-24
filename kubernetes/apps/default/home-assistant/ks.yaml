@@ -14,6 +14,9 @@ spec:
   interval: 1h
   path: ./kubernetes/apps/default/home-assistant/app
   postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-network
     substitute:
       APP: home-assistant
   prune: true

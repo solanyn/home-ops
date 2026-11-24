@@ -81,6 +81,7 @@ fi
 hide = true
 run = '''
 mise run //:log info "Running stage..." stage "$MISE_TASK_NAME"
+export IPV6_PREFIX="$(op read 'op://kubernetes/cluster/IPV6_PREFIX')"
 if ! helmfile -f helmfile/apps.yaml sync --hide-notes; then
     mise run //:log fatal "Failed to sync helmfile" stage "$MISE_TASK_NAME"
 fi

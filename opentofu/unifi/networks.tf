@@ -183,7 +183,7 @@ resource "unifi_network" "guest" {
   ipv6 = {
     client_address_assignment = "slaac"
     interface_type            = "static"
-    static_subnet             = "2404:e80:414e:50::/64"
+    static_subnet             = "${var.ipv6_prefix}:50::/64"
     pd                        = { interface = "wan", auto_prefixid_enabled = true }
     ra                        = { enabled = true, preferred_lifetime = "4h0m0s", priority = "high" }
   }
