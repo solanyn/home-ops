@@ -195,25 +195,3 @@ response=$(curl -s -X POST https://id.goyangi.io/api/v3/stages/invitation/invita
 invite_id=$(echo "$response" | jq -r '.pk')
 echo "https://id.goyangi.io/if/flow/enrollment-invitation/?itoken=$invite_id"
 '''
-
-[tasks.nodepool-teardown]
-description = "Delete the nodepool MIG and all GCP resources"
-confirm = { message = "Delete nodepool and all GCP resources?", default = "no" }
-run = '''
-kubectl delete xcomputenodepools.home-ops.io nodepool
-mise run //kubernetes:nodepool-cleanup
-'''
-
-[tasks.nodepool-cleanup]
-description = "Clean up stale k8s burst nodes"
-run = '''
-nodes=$(kubectl get nodes -l node-role.kubernetes.io/burst=true --no-headers -o custom-columns=NAME:.metadata.name 2>/dev/null || true)
-if [[ -n "$nodes" ]]; then
-    for node in $nodes; do
-        echo "Deleting node: $node"
-        kubectl delete node "$node"
-    done
-else
-    echo "No stale k8s nodes"
-fi
-'''
