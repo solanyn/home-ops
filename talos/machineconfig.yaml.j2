@@ -6,6 +6,11 @@ machine:
     {% if ENV.IS_CONTROLLER %}
     key: op://kubernetes/talos/MACHINE_CA_KEY
     {% endif %}
+  certSANs:
+    - k8s.goyangi.io
+    - 127.0.0.1
+    - 192.168.69.120
+    - ${IPV6_PREFIX}:69::120
   features:
     apidCheckExtKeyUsage: true
     diskQuotaSupport: true
@@ -95,8 +100,10 @@ machine:
     net.ipv4.tcp_wmem: 4096 65536 33554432
     net.ipv4.tcp_notsent_lowat: "131072"
     net.ipv6.conf.all.accept_ra: "2"
+    net.ipv6.conf.all.forwarding: "1"
     net.ipv6.conf.default.accept_ra: "2"
     net.ipv6.conf.eno1.accept_ra: "2"
+    net.ipv6.conf.eno1.forwarding: "1"
     net.ipv6.conf.eno1/70.accept_ra: "0"
     sunrpc.tcp_max_slot_table_entries: "128"
     sunrpc.tcp_slot_table_entries: "128"
@@ -126,8 +133,11 @@ cluster:
     dnsDomain: cluster.local
     podSubnets:
       - 10.42.0.0/16
+      - "{{ ENV.IPV6_PREFIX }}:11::/64"
     serviceSubnets:
       - 10.43.0.0/16
+      - "{{ ENV.IPV6_PREFIX }}:12::/64"
+    nodeCIDRMaskSizeIPv6: 108
   secret: op://kubernetes/talos/CLUSTER_SECRET
   token: op://kubernetes/talos/CLUSTER_TOKEN
   {% if ENV.IS_CONTROLLER %}
@@ -143,6 +153,10 @@ cluster:
         - level: Metadata
     certSANs:
       - 10.60.0.1
+      - 127.0.0.1
+      - 192.168.69.120
+      - ${IPV6_PREFIX}:69::120
+      - k8s.goyangi.io
     disablePodSecurityPolicy: true
     extraArgs:
       enable-aggregator-routing: "true"

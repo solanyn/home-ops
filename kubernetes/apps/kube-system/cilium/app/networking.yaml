@@ -8,6 +8,7 @@ spec:
   allowFirstLastIPs: "No"
   blocks:
     - cidr: 192.168.69.0/24
+    - cidr: ${IPV6_PREFIX}:69::/64
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpadvertisement_v2.json
 apiVersion: cilium.io/v2
@@ -25,6 +26,17 @@ spec:
         matchExpressions:
           - { key: somekey, operator: NotIn, values: ["never-used-value"] }
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpadvertisement_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumBGPAdvertisement
+metadata:
+  name: podsv6
+  labels:
+    advertise: bgpv6
+spec:
+  advertisements:
+    - advertisementType: PodCIDR
+---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgppeerconfig_v2.json
 apiVersion: cilium.io/v2
 kind: CiliumBGPPeerConfig
@@ -37,6 +49,19 @@ spec:
       advertisements:
         matchLabels:
           advertise: bgp
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgppeerconfig_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumBGPPeerConfig
+metadata:
+  name: l3-bgp-peer-config-v6
+spec:
+  families:
+    - afi: ipv6
+      safi: unicast
+      advertisements:
+        matchExpressions:
+          - { key: advertise, operator: In, values: ["bgp", "bgpv6"] }
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/cilium.io/ciliumbgpclusterconfig_v2.json
 apiVersion: cilium.io/v2
@@ -56,17 +81,24 @@ spec:
           peerAddress: 192.168.1.1
           peerConfigRef:
             name: l3-bgp-peer-config
+        - name: unifi-v6
+          peerASN: 64513
+          peerAddress: ${IPV6_PREFIX}:42::1
+          peerConfigRef:
+            name: l3-bgp-peer-config-v6
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: kube-api
   annotations:
-    lbipam.cilium.io/ips: 192.168.69.120
+    lbipam.cilium.io/ips: 192.168.69.120,${IPV6_PREFIX}:69::120
     external-dns.alpha.kubernetes.io/hostname: k8s.goyangi.io
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
+  ipFamilyPolicy: PreferDualStack
+  ipFamilies: [IPv4, IPv6]
   selector:
     k8s-app: kube-apiserver
     tier: control-plane
