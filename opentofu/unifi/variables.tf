@@ -15,3 +15,8 @@ variable "unifi_site" {
     description = "UniFi site name. Defaults to the controller's default site."
     default     = "default"
 }
+variable "ipv6_prefix" {
+    type        = string
+    description = "Delegated IPv6 /48 prefix, without a trailing colon."
+    default     = ""
+}

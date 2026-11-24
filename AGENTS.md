@@ -46,14 +46,14 @@ Update authentication policy for MLMD compatibility.
 
 ## IPv6 Dual-Stack Configuration
 
-The cluster supports dual-stack IPv4/IPv6 networking with globally routable IPv6 addresses from the ISP-delegated `/48` (`${IPV6_PREFIX}::/48`). There is no ULA for cluster, pod, service or load-balancer addressing; the only ULA in the estate is the Thread mesh prefix, which is internal to Thread.
+The cluster supports dual-stack IPv4/IPv6 networking with globally routable IPv6 addresses from the ISP-delegated `/48` (`<IPV6_PREFIX>::/48`). There is no ULA for cluster, pod, service or load-balancer addressing; the only ULA in the estate is the Thread mesh prefix, which is internal to Thread.
 
 ### IPv6 Subnets
 
-- **Nodes**: `${IPV6_PREFIX}:42::/64`
-- **Pods**: `${IPV6_PREFIX}:11::/100`, carved into per-node `/108`s
-- **Services**: `${IPV6_PREFIX}:12::/64`
-- **LoadBalancer**: `${IPV6_PREFIX}:69::/64`
+- **Nodes**: `<IPV6_PREFIX>:42::/64`
+- **Pods**: `<IPV6_PREFIX>:11::/100`, carved into per-node `/108`s
+- **Services**: `<IPV6_PREFIX>:12::/64`
+- **LoadBalancer**: `<IPV6_PREFIX>:69::/64`
 
 Prefix IDs `10`, `42`, `50`, `70` and `90` are pinned per VLAN in `opentofu/unifi/networks.tf`, which keeps `11`, `12` and `69` reserved for the cluster.
 

@@ -1,1 +1,3 @@
-{{ (fromYaml (readFile (printf "../../../kubernetes/apps/%s/%s/app/helmrelease.yaml" .Release.Namespace .Release.Name))).spec.values | toYaml }}
+{{- $vals := (((fromYaml (readFile (printf "../../../kubernetes/apps/%s/%s/app/helmrelease.yaml" .Release.Namespace .Release.Name))).spec.values) | toYaml) -}}
+{{- $prefix := (env "IPV6_PREFIX") | default "" -}}
+{{- $vals | replace "${IPV6_PREFIX}" $prefix -}}
