@@ -17,6 +17,16 @@ spec:
         - ports:
             - protocol: TCP
               port: "6379"
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: storage
+      toPorts:
+        - ports:
+            - protocol: TCP
+              port: "6379"
+            - protocol: TCP
+              port: "9999"
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
@@ -36,3 +46,13 @@ spec:
         - ports:
             - protocol: TCP
               port: "6379"
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: storage
+      toPorts:
+        - ports:
+            - protocol: TCP
+              port: "6379"
+            - protocol: TCP
+              port: "9999"
