@@ -16,6 +16,7 @@ router bgp 64513
   bgp router-id 192.168.1.1
   bgp log-neighbor-changes
   no bgp default ipv4-unicast
+  no bgp ebgp-requires-policy
 
   neighbor k8s peer-group
   neighbor k8s remote-as 64514
@@ -41,3 +42,7 @@ router bgp 64513
   exit-address-family
 exit
 ```
+
+`no bgp ebgp-requires-policy` is required: without it FRR accepts the session but filters every route Cilium advertises, so the sessions show `established` while the UniFi routing table stays empty and LB/pod traffic falls through the default route.
+
+The listen ranges must match the prefixes the VLAN actually carries. When the delegated prefix IDs are applied they are `:42::/64` for nodes and `:69::/64` for LB, matching the values here; until then the VLAN advertises whatever the UDM derived.
