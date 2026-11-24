@@ -39,7 +39,7 @@ spec:
     - name: PYTHONPATH
       value: /app/hooks
     - name: REDIS_HOST
-      value: redis.storage.svc.cluster.local
+      value: dragonfly-cluster.storage.svc.cluster.local
     - name: REDIS_PORT
       value: "6379"
     - name: GENERIC_CLIENT_ID

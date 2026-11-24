@@ -29,7 +29,7 @@ spec:
               - name: CACHE_ENABLED
                 value: "true"
               - name: CACHE_URL
-                value: redis://redis.storage.svc.cluster.local:6379/0?suppress=true
+                value: redis://dragonfly-cluster.storage.svc.cluster.local:6379/0?suppress=true
               - name: LLM_OPENAI_API_KEY
                 valueFrom:
                   secretKeyRef:

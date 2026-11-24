@@ -32,7 +32,7 @@ spec:
               PAPERLESS_TIME_ZONE: Australia/Sydney
               PAPERLESS_URL: https://paperless.goyangi.io
               PAPERLESS_DBENGINE: postgresql
-              PAPERLESS_REDIS: redis://redis.storage.svc.cluster.local:6379/0
+              PAPERLESS_REDIS: redis://dragonfly-cluster.storage.svc.cluster.local:6379/0
               PAPERLESS_CONSUMPTION_DIR: /inbox
               PAPERLESS_DATA_DIR: /data
               PAPERLESS_MEDIA_ROOT: /data
