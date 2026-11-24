@@ -42,6 +42,7 @@ spec:
                     remediation:
                       remediateLastFailure: true
                       retries: 2
+                      strategy: uninstall
                   timeout: 15m
               target:
                 group: helm.toolkit.fluxcd.io

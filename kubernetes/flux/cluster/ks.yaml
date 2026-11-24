@@ -42,6 +42,7 @@ spec:
                     remediation:
                       remediateLastFailure: true
                       retries: 2
+                      strategy: uninstall
                   # Generous timeout: cold linuxbrew bootstrap + brew install takes ~10min
                   timeout: 15m
               target:
