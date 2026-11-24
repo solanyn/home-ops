@@ -16,6 +16,10 @@ description = "Seed OpenBao with the cluster's service-account JWKS so the openb
 hide = true
 run = '''
 mise run //:log info "Running stage..." stage "$MISE_TASK_NAME"
+until [[ "$(kubectl get --raw /livez 2>/dev/null)" == "ok" ]]; do
+    mise run //:log info "Waiting for the API server before seeding OpenBao" stage "$MISE_TASK_NAME"
+    sleep 5
+done
 if ! mise run //docker/edge:openbao-bootstrap; then
     mise run //:log fatal "Failed to wire External Secrets to OpenBao" stage "$MISE_TASK_NAME"
 fi
