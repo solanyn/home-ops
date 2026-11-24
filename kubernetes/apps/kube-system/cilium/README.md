@@ -5,7 +5,7 @@
 ### Subnets
 
 - **Nodes**: `${IPV6_PREFIX}:42::/64`
-- **Pods**: `${IPV6_PREFIX}:11::/64`
+- **Pods**: `${IPV6_PREFIX}:11::/100`, carved into per-node `/108`s
 - **Services**: `${IPV6_PREFIX}:12::/64`
 - **LoadBalancer**: `${IPV6_PREFIX}:69::/64`
 
@@ -36,7 +36,7 @@ router bgp 64513
     neighbor k8s-v6 activate
     neighbor k8s-v6 soft-reconfiguration inbound
     network ${IPV6_PREFIX}:69::/64
-    network ${IPV6_PREFIX}:11::/64
+    network ${IPV6_PREFIX}:11::/100
     network ${IPV6_PREFIX}:12::/64
   exit-address-family
 exit

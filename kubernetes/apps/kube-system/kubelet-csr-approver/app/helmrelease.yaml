@@ -10,7 +10,7 @@ spec:
     name: kubelet-csr-approver
   interval: 10m
   values:
-    providerRegex: "^worker-\\w+$"
+    providerRegex: "^(worker|k8s)-\\w+$"
     bypassDnsResolution: true
     bypassHostnameCheck: false
     replicas: 1
