@@ -7,4 +7,5 @@ metadata:
     kopiur.home-operations.com/privileged-movers: "true"
     kustomize.toolkit.fluxcd.io/prune: disabled
   labels:
+    cluster-network: enabled
     resource.kubernetes.io/admin-access: "true"

@@ -6,3 +6,4 @@ metadata:
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
   labels:
+    cluster-network: enabled

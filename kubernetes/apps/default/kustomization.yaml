@@ -7,7 +7,6 @@ components:
   - ../../components/alerts
 
 resources:
-  - ./cluster-network-externalsecret.yaml
   - ./namespace.yaml
   - ./actual/ks.yaml
   - ./pkvault/ks.yaml
