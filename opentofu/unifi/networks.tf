@@ -100,7 +100,7 @@ resource "unifi_network" "trusted" {
   ipv6 = {
     client_address_assignment = "slaac"
     interface_type            = "pd"
-    pd                        = { interface = "wan", auto_prefixid_enabled = true }
+    pd                        = { interface = "wan", prefixid = "10", auto_prefixid_enabled = false, start = "::2", stop = "::7d1" }
     ra                        = { enabled = true, preferred_lifetime = "4h0m0s", priority = "high" }
   }
   network_isolation = false
@@ -142,7 +142,7 @@ resource "unifi_network" "servers" {
   ipv6 = {
     client_address_assignment = "slaac"
     interface_type            = "pd"
-    pd                        = { interface = "wan", auto_prefixid_enabled = true }
+    pd                        = { interface = "wan", prefixid = "42", auto_prefixid_enabled = false, start = "::2", stop = "::7d1" }
     ra                        = { enabled = true, preferred_lifetime = "4h0m0s", priority = "high" }
   }
   network_isolation = false
@@ -222,7 +222,7 @@ resource "unifi_network" "iot" {
   ipv6 = {
     client_address_assignment = "slaac"
     interface_type            = "pd"
-    pd                        = { interface = "wan", auto_prefixid_enabled = true }
+    pd                        = { interface = "wan", prefixid = "70", auto_prefixid_enabled = false, start = "::2", stop = "::7d1" }
     ra                        = { enabled = true, preferred_lifetime = "4h0m0s", priority = "high" }
   }
   network_isolation = false
@@ -260,7 +260,7 @@ resource "unifi_network" "vpn" {
   ipv6 = {
     client_address_assignment = "slaac"
     interface_type            = "pd"
-    pd                        = { interface = "wan", auto_prefixid_enabled = true }
+    pd                        = { interface = "wan", prefixid = "90", auto_prefixid_enabled = false, start = "::2", stop = "::7d1" }
     ra                        = { enabled = true, preferred_lifetime = "4h0m0s", priority = "high" }
   }
   network_isolation = true
