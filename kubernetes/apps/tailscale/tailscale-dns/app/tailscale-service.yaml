@@ -9,7 +9,7 @@ spec:
   type: LoadBalancer
   loadBalancerClass: tailscale
   ipFamilies:
-    - IPv4
+    - IPv6
   ipFamilyPolicy: SingleStack
   ports:
     - name: dns-udp
