@@ -17,7 +17,8 @@ spec:
       annotations:
         tailscale.com/hostname: dns
       ipFamily: IPv4
-      ipFamilyPolicy: SingleStack
+      ipFamilyPolicy: PreferDualStack
+      ipFamilies: [IPv4, IPv6]
       loadBalancerClass: tailscale
       port: 53
       type: LoadBalancer
