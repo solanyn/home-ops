@@ -32,11 +32,11 @@
   ],
   packageRules: [
     {
-      description: "Hermes image bumps need the Matrix adapter patch check",
+      description: "Hermes image bumps need a gateway/Matrix smoke check",
       matchDatasources: ["docker"],
       matchPackageNames: ["nousresearch/hermes-agent"],
       prBodyNotes: [
-        "**Matrix adapter patch:** the bundled Matrix plugin is patched at pod start by `resources/matrix_adapter_patch.py`. After deploying, check `kubectl logs -n ai deploy/hermes -c patch-matrix-adapter` for `key-share backfill enabled`. If it reports `anchor not found`, update the anchor for the new adapter before trusting message delivery, and drop the patch if upstream now answers cross-user key requests.",
+        "**After deploying, verify:** the gateway is up on the new tag (`hermes --version`), Matrix rooms still receive replies, and `hermes cron doctor` shows no delivery regressions. The `matrix_adapter_patch.py` init container is gone (E2EE is disabled in config), so there is no adapter anchor to re-check. Also expect a one-off `_config_version` migration from 44 upward on first start — the `init` container re-copies `resources/config.yaml` on every pod start, so capture the migrated file and commit it here rather than leaving it on the PVC.",
       ],
     },
   ],

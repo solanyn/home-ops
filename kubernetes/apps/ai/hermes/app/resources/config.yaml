@@ -91,6 +91,10 @@ compaction:
   background_min_interval_seconds: 60
 background_tasks:
   enabled: true
+# v0.22 turns auto_prune on by default: ended sessions idle 90 days are deleted
+# at startup. Keep history unless Andrew opts in.
+sessions:
+  auto_prune: false
 memory:
   provider: honcho
 platforms:
