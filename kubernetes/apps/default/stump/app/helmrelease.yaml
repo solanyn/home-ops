@@ -25,6 +25,19 @@ spec:
               PGID: &pgid "1000"
               STUMP_CONFIG_DIR: /config
               STUMP_PORT: &port 10801
+              # Stump builds the OIDC redirect from the request host, so behind
+              # the gateway it would otherwise derive an internal name. These
+              # mirror the PocketID client registered in oidc.yaml.
+              STUMP_OIDC_ENABLED: "true"
+              STUMP_OIDC_CLIENT_ID: stump
+              STUMP_OIDC_ISSUER_URL: https://id.goyangi.io
+              STUMP_OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: stump-oidc
+                    key: client-secret
+              STUMP_OIDC_ALLOW_REGISTRATION: "true"
+              STUMP_TRUST_PROXY_HEADERS: "true"
             probes:
               liveness: &probes
                 enabled: true
