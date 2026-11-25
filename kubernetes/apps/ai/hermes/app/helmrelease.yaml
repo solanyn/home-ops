@@ -93,6 +93,17 @@ spec:
                 mkdir -p /run/hermes/gateway-locks
                 chown 10000:10000 /run/hermes /run/hermes/gateway-locks
                 chmod 700 /run/hermes /run/hermes/gateway-locks
+
+                # The image's own /opt/hermes/tools is root-owned and read-only, so PM installs anything the image omits (pnpm, cua-driver) into the writable store root under the state tree instead. Create it here: PM only writes to a store root that already exists, and without it every CLI call warns "install out of sync".
+                mkdir -p /opt/data/tools
+                chown 10000:10000 /opt/data/tools
+                chmod 755 /opt/data/tools
+
+                # The pending-message spool can retain UID 1000 after a snapshot restore. The gateway (10000) can write through the group but cannot chmod a directory it does not own, and its recovery pass chmods the spool to 0700 before replaying — so unowned here means undelivered messages are never replayed.
+                if [ -d /opt/data/pending_messages ]; then
+                  chown 10000:10000 /opt/data/pending_messages
+                  chmod 700 /opt/data/pending_messages
+                fi
             envFrom:
               - secretRef:
                   name: hermes
@@ -118,6 +129,9 @@ spec:
                     esac
                   fi
                 done
+
+                # pnpm and cua-driver ship outside the image's read-only tool store, so a fresh volume would warn "install out of sync" and lose computer_use until someone installed them by hand. Best-effort: a registry outage must not block startup.
+                /opt/hermes/bin/hermes pm install --tools-only || true
             securityContext:
               runAsUser: 10000
               runAsGroup: 10000

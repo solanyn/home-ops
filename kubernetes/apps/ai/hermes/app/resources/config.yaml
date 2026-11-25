@@ -1,4 +1,4 @@
-_config_version: 44
+_config_version: 54
 model:
   default: frontier-pool
   provider: litellm
@@ -108,3 +108,9 @@ platforms:
       chat_id: "!qzpGQlLccdKjOL3t8tXC3Ehnyjt8Xva7MjSCxiswr-0"
       name: 🔔 notifications
       user_id: "@andrew:goyangi.io"
+gateway:
+  multiplex_profiles: true
+plugins:
+  enabled:
+    - honcho
+  disabled: []
