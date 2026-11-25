@@ -56,7 +56,6 @@ resources:
   - ./silo/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./sonarr/ks.yaml
-  - ./stump/ks.yaml
   - ./suwayomi/ks.yaml
   - ./thelounge/ks.yaml
   - ./zigbee/ks.yaml
