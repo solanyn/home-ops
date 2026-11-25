@@ -17,7 +17,7 @@ spec:
           app:
             image:
               repository: ghcr.io/lklynet/aurral
-              tag: 2.13.0@sha256:b8ceecf5e749474dc54f0393ad8b79e49cb2811f09e646d23ea93f347317c434
+              tag: 3.1.0@sha256:8c39d4ec9c484b4577cb1e8503a51f45d29b68100bdd391f274dd8f786bf0b42
             env:
               PUID: "1000"
               PGID: "1000"
