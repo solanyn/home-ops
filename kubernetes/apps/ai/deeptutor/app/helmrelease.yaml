@@ -23,9 +23,10 @@ spec:
               TZ: Australia/Sydney
               PUID: &puid "1000"
               PGID: &pgid "1000"
-              # Content workspace lives on the Kopiur volume so uploads and
-              # generated files are backed up with the app's own state.
-              DEEPTUTOR_WORKSPACE_ROOT: &workspace /data/workspace
+              # Content workspace lives inside the Kopiur volume so uploads and
+              # generated files are backed up with the app's own state. /data is
+              # not mounted; only /app/data is.
+              DEEPTUTOR_WORKSPACE_ROOT: &workspace /app/data/workspace
               DEEPTUTOR_WORKSPACE_ALLOWED_ROOTS: *workspace
             probes:
               liveness: &probes
