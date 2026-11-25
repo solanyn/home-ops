@@ -68,10 +68,54 @@ spec:
                 value: frontier-pool
               - name: LLM_MODEL_CONFIG__OVERRIDES__BASE_URL
                 value: http://litellm.ai.svc.cluster.local:4000/v1
+              - name: DIALECTIC_LEVELS__minimal__MODEL_CONFIG__TRANSPORT
+                value: openai
+              - name: DIALECTIC_LEVELS__minimal__MODEL_CONFIG__MODEL
+                value: cron-pool
+              - name: DIALECTIC_LEVELS__minimal__MODEL_CONFIG__OVERRIDES__BASE_URL
+                value: http://litellm.ai.svc.cluster.local:4000/v1
+              - name: DIALECTIC_LEVELS__low__MODEL_CONFIG__TRANSPORT
+                value: openai
+              - name: DIALECTIC_LEVELS__low__MODEL_CONFIG__MODEL
+                value: cron-pool
+              - name: DIALECTIC_LEVELS__low__MODEL_CONFIG__OVERRIDES__BASE_URL
+                value: http://litellm.ai.svc.cluster.local:4000/v1
+              - name: DIALECTIC_LEVELS__medium__MODEL_CONFIG__TRANSPORT
+                value: openai
+              - name: DIALECTIC_LEVELS__medium__MODEL_CONFIG__MODEL
+                value: frontier-pool
+              - name: DIALECTIC_LEVELS__medium__MODEL_CONFIG__OVERRIDES__BASE_URL
+                value: http://litellm.ai.svc.cluster.local:4000/v1
+              - name: DIALECTIC_LEVELS__high__MODEL_CONFIG__TRANSPORT
+                value: openai
+              - name: DIALECTIC_LEVELS__high__MODEL_CONFIG__MODEL
+                value: frontier-pool
+              - name: DIALECTIC_LEVELS__high__MODEL_CONFIG__OVERRIDES__BASE_URL
+                value: http://litellm.ai.svc.cluster.local:4000/v1
+              - name: DIALECTIC_LEVELS__max__MODEL_CONFIG__TRANSPORT
+                value: openai
+              - name: DIALECTIC_LEVELS__max__MODEL_CONFIG__MODEL
+                value: frontier-pool
+              - name: DIALECTIC_LEVELS__max__MODEL_CONFIG__OVERRIDES__BASE_URL
+                value: http://litellm.ai.svc.cluster.local:4000/v1
+              - name: DREAM_DEDUCTION_MODEL_CONFIG__TRANSPORT
+                value: openai
+              - name: DREAM_DEDUCTION_MODEL_CONFIG__MODEL
+                value: frontier-pool
+              - name: DREAM_DEDUCTION_MODEL_CONFIG__OVERRIDES__BASE_URL
+                value: http://litellm.ai.svc.cluster.local:4000/v1
+              - name: DREAM_INDUCTION_MODEL_CONFIG__TRANSPORT
+                value: openai
+              - name: DREAM_INDUCTION_MODEL_CONFIG__MODEL
+                value: frontier-pool
+              - name: DREAM_INDUCTION_MODEL_CONFIG__OVERRIDES__BASE_URL
+                value: http://litellm.ai.svc.cluster.local:4000/v1
               - name: EMBEDDING_MODEL_CONFIG__TRANSPORT
                 value: openai
               - name: EMBEDDING_MODEL_CONFIG__MODEL
                 value: bge-small-en
+              - name: EMBEDDING_MAX_INPUT_TOKENS
+                value: "512"
               - name: EMBEDDING_MODEL_CONFIG__OVERRIDES__BASE_URL
                 value: http://bge-small-en.ai.svc.cluster.local:8080/v1
               - name: EMBEDDING_MODEL_CONFIG__OVERRIDES__API_KEY

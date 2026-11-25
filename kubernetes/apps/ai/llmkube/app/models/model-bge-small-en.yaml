@@ -21,3 +21,6 @@ spec:
   mode: embedding
   runtime: llamacpp
   replicas: 1
+  contextSize: 1024
+  batchSize: 1024
+  uBatchSize: 1024
