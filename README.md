@@ -57,10 +57,7 @@ There is a template over at [onedr0p/cluster-template](https://github.com/onedr0
 - **Networking & Service Mesh**: [cilium](https://github.com/cilium/cilium) provides eBPF-based networking, BGP peering and load balancing, while [envoy](https://github.com/envoyproxy/envoy) powers north-south traffic management via the Kubernetes Gateway API. [multus](https://github.com/k8snetworkplumbingwg/multus-cni) enables cross-VLAN pod networking, and [external-dns](https://github.com/kubernetes-sigs/external-dns) keeps DNS records in sync automatically. External traffic reaches the cluster through [Towonel](https://codeberg.org/towonel/towonel), a self-hosted tunnel with an edge node on a VPS — no inbound port forwards, and the origin's TLS is passed through untouched.
 - **Security & Secrets**: [cert-manager](https://github.com/cert-manager/cert-manager) automates SSL/TLS certificate management. [pocket-id](https://github.com/pocket-id/pocket-id) provides passkey-based SSO as my OIDC provider. For secrets, I use [external-secrets](https://github.com/external-secrets/external-secrets) backed by [OpenBao](https://openbao.org/) to inject secrets into Kubernetes.
 - **Storage & Data Protection**: [miroir](https://github.com/home-operations/miroir) provides distributed block storage with DRBD replication, with [kopiur](https://github.com/home-operations/kopiur) handling backups and restores. [spegel](https://github.com/spegel-org/spegel) improves reliability by running a stateless, cluster-local OCI image mirror.
-- **Observability**: [VictoriaMetrics](https://victoriametrics.com/) is the metrics and alerting backend. A `VMAgent` scrapes every `ServiceMonitor` and `PodMonitor` and remote-writes to a single-node `VMSingle` with 30 days of retention, while `VMAlert` evaluates my rules and `VMAlertmanager` routes them. Traces land in `VTSingle` (VictoriaTraces) and logs in [VictoriaLogs](https://docs.victoriametrics.com/victorialogs/). [Grafana](https://grafana.com/) is the UI for all three signals, and [kromgo](https://github.com/kashalls/kromgo) serves the badges in this README. [Gatus](https://gatus.io/) runs the public [status page](https://status.goyangi.io).
 - **Automation & CI/CD**: [actions-runner-controller](https://github.com/actions/actions-runner-controller) runs self-hosted GitHub Actions runners directly in the cluster for continuous integration workflows.
-
-> **A note on Prometheus:** [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) is installed, but only for its CRDs and bundled exporters — Prometheus and Alertmanager themselves are disabled in favour of the VictoriaMetrics operator. If you are comparing this against a Prometheus-based setup, the equivalents are `VMAgent` for scraping, `VMSingle` for storage and query, `VMAlert` for rules, and `VMAlertmanager` for routing. `VMRule` plays the role of `PrometheusRule`, and `VMPodScrape`/`VMServiceScrape` that of `PodMonitor`/`ServiceMonitor`.
 
 ### GitOps
 
@@ -80,8 +77,6 @@ This Git repository contains the following directories under [Kubernetes](./kube
 ├── 📁 components # re-useable kustomize components
 └── 📁 flux       # flux system configuration
 ```
-
-Outside of it there is [docker](./docker/) for the Docker Compose stacks that run on the edge VPS under GitOps, and [ansible](./ansible/) for bootstrapping that host.
 
 ### Flux Workflow
 
@@ -109,7 +104,7 @@ Alternative solutions to the first two of these problems would be to host a Kube
 | [1Password](https://1password.com/)             | Human credentials, passkeys and TOTP                           | ~$50/yr        |
 | [Cloudflare](https://www.cloudflare.com/)       | Domains, DNS and R2 object storage                             | ~$30/yr        |
 | [GitHub](https://github.com/)                   | Hosting this repository and continuous integration/deployments | Free           |
-| [OVHcloud](https://www.ovhcloud.com/en-au/vps/) | Edge VPS for the Towonel tunnel, Caddy L4, CrowdSec and Gatus  | ~$12/mo        |
+| [OVHcloud](https://www.ovhcloud.com/en-au/vps/) | Edge VPS for the Towonel tunnel, Caddy L4 and CrowdSec         | ~$12/mo        |
 | [Pushover](https://pushover.net/)               | Kubernetes alerts and application notifications                | $5 OTP         |
 |                                                 |                                                                | Total: ~$19/mo |
 
