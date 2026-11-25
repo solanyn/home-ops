@@ -73,8 +73,9 @@ spec:
                 # .config/op may be owned by a stale UID from a restored snapshot; op refuses to read a config owned by another user. Fix ownership here so the app (runAsUser 10000) can use the CLI.
                 chown -R 10000:10000 /opt/data/.config 2>/dev/null || true
 
-                # fsGroup relaxes the ssh key mode at mount time and openssh refuses a group-readable private key; restore it after mount.
-                chmod 600 /opt/data/.ssh/id_ed25519 2>/dev/null || true
+                # The PVC's SSH files may retain UID 1000 after restore. Give only the Hermes user ownership, then restore OpenSSH's strict file modes after fsGroup handling.
+                chown 10000:10000 /opt/data/.ssh/config /opt/data/.ssh/id_ed25519 /opt/data/.ssh/known_hosts 2>/dev/null || true
+                chmod 600 /opt/data/.ssh/config /opt/data/.ssh/id_ed25519 /opt/data/.ssh/known_hosts 2>/dev/null || true
 
                 # fsGroup also broadens the op config dir to 2770 and op refuses a group-readable config path; its daemon needs a writable XDG_RUNTIME_DIR, which the image points at a root-owned dir.
                 for d in /opt/data/.config/op /opt/data/home/.config/op; do
