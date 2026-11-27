@@ -49,8 +49,7 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /_up
+                  tcpSocket:
                     port: &port 5984
                   periodSeconds: 30
                   timeoutSeconds: 5
@@ -59,8 +58,7 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /_up
+                  tcpSocket:
                     port: *port
                   periodSeconds: 10
                   timeoutSeconds: 5
@@ -68,8 +66,7 @@ spec:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /_up
+                  tcpSocket:
                     port: *port
                   periodSeconds: 5
                   timeoutSeconds: 5
@@ -100,6 +97,9 @@ spec:
             single_node = true
             uuid = e6488a867cb94e309579513e1e055f2b
             max_document_size = 50000000
+
+            [cluster]
+            n = 1
 
             [chttpd]
             bind_address = 0.0.0.0
@@ -139,7 +139,7 @@ spec:
           gatus.home-operations.com/enabled: "true"
           gatus.home-operations.com/endpoint: |-
             path: /_up
-            conditions: ["[STATUS] == 200"]
+            conditions: ["[STATUS] == 401"]
         hostnames:
           - "{{ .Release.Name }}.goyangi.io"
         parentRefs:
