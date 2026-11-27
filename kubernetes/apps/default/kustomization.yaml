@@ -12,7 +12,6 @@ resources:
   - ./pkvault/ks.yaml
   - ./atuin/ks.yaml
   - ./autobrr/ks.yaml
-  - ./affine/ks.yaml
   - ./audiobookshelf/ks.yaml
   - ./brrpolice/ks.yaml
   - ./bazarr/ks.yaml
