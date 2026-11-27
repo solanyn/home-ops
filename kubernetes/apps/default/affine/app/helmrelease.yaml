@@ -29,7 +29,9 @@ spec:
               runAsGroup: 0
               runAsNonRoot: false
               allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
+              capabilities:
+                add: ["CHOWN"]
+                drop: ["ALL"]
             resources:
               requests: { cpu: 5m, memory: 8Mi }
               limits: { memory: 16Mi }
@@ -145,3 +147,43 @@ spec:
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
+    configMaps:
+      affine-config:
+        data:
+          config.json: |
+            {
+              "$schema": "https://github.com/toeverything/affine/releases/download/v0.27.4/config.schema.json",
+              "server": {
+                "name": "AFFiNE",
+                "externalUrl": "https://affine.goyangi.io"
+              },
+              "copilot": {
+                "enabled": false,
+                "byok": {
+                  "enabled": false
+                }
+              },
+              "storages": {
+                "avatar.storage": {
+                  "provider": "fs",
+                  "bucket": "avatars",
+                  "config": {
+                    "path": "/root/.affine/storage"
+                  }
+                },
+                "blob.storage": {
+                  "provider": "fs",
+                  "bucket": "blobs",
+                  "config": {
+                    "path": "/root/.affine/storage"
+                  }
+                },
+                "copilot.storage": {
+                  "provider": "fs",
+                  "bucket": "copilot",
+                  "config": {
+                    "path": "/root/.affine/storage"
+                  }
+                }
+              }
+            }
