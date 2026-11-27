@@ -28,6 +28,10 @@ spec:
               REDIS_SERVER_PORT: "6379"
               REDIS_SERVER_DATABASE: "7"
               AFFINE_INDEXER_ENABLED: "false"
+              # OAuth callbacks are built from server.externalUrl; without it they fall
+              # back to http://localhost:3010 and the token exchange sends a redirect_uri
+              # that no longer matches the authorize request.
+              AFFINE_SERVER_EXTERNAL_URL: https://affine.goyangi.io
               AFFINE_BACKEND_RUNTIME_CONFIG_PATH: &configPath /app/config.json
             securityContext:
               allowPrivilegeEscalation: false
