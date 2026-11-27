@@ -87,7 +87,7 @@ spec:
       config:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
-          - path: /root/.affine
+          - path: /home/node/.affine
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
