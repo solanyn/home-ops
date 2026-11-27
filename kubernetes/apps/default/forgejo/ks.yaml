@@ -19,7 +19,7 @@ spec:
   postBuild:
     substitute:
       APP: forgejo
-      VOLSYNC_CAPACITY: 10Gi
+      KOPIUR_CAPACITY: 10Gi
     substituteFrom:
       - kind: Secret
         name: forgejo-secret
