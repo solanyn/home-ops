@@ -24,7 +24,7 @@ spec:
           00-sync-ntool:
             image:
               repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.8.0@sha256:088e7365787d859427135eff39fd60e1c6480d194443f4678d41a96c7255465f
+              tag: v4.8.1@sha256:274f7f34b839dce37fe3fc6c2539e45fec142fa906d7d9fdd5774124f8f5ed54
             args:
               - --repo=https://github.com/Dimensional/ntool.git
               - --ref=460c7ed41385223ffac686d7364ae1a09994ebbb
