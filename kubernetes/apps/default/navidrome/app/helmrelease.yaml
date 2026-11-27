@@ -26,8 +26,7 @@ spec:
               ND_DATAFOLDER: /data
               ND_SCANSCHEDULE: 1h
               ND_SESSIONTIMEOUT: 24h
-              # Envoy terminates TLS in front of this service.
-              ND_REVERSEPROXYWHITELIST: 10.0.0.0/8,192.168.0.0/16
+              ND_EXTAUTH_TRUSTEDSOURCES: 10.0.0.0/8,192.168.0.0/16
               # Metadata agents only. There is no Last.fm API key, so that agent stays off.
               ND_ENABLEEXTERNALSERVICES: "true"
               ND_LASTFM_ENABLED: "false"
