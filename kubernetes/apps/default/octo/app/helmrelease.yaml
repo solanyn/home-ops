@@ -1,0 +1,210 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: octo
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: octo
+  interval: 1h
+  values:
+    controllers:
+      octo:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/winters27/octo
+              tag: 2026.11.15@sha256:6b611939cc93105e0e7bb02168fcd5c229675b10d63650f2e601fd9224d8d523
+            env:
+              ASPNETCORE_ENVIRONMENT: Production
+              TZ: Australia/Sydney
+              # Navidrome is the library; Octo sits in front of it on this port.
+              Subsonic__Url: http://navidrome.default.svc.cluster.local:4533
+              Subsonic__AutoDetectDownloadPath: "false"
+              Subsonic__DownloadSource: Soulseek
+              Subsonic__EnableSearchDiscovery: "true"
+              Library__DownloadPath: /media/music
+              YouTube__ShimUrl: http://127.0.0.1:8080
+              RadioSources__SonicUrl: http://127.0.0.1:8080
+              # slskd signs in with its compiled-in defaults; the API key path is unused here.
+              Soulseek__BaseUrl: http://slskd.default.svc.cluster.local
+              Soulseek__Username: slskd
+              Soulseek__Password: slskd
+              Soulseek__CheckListenPort: "false"
+              # Lidarr (Orpheus draining) is the album source; both signing and imports
+              # stay Lidarr's job, Octo only asks for the album.
+              Lidarr__BaseUrl: http://lidarr.default.svc.cluster.local
+              Lidarr__RootFolderPath: /media/music
+              Lidarr__QualityProfileId: "34"
+              Lidarr__MetadataProfileId: "1"
+              Lidarr__ApiKey:
+                valueFrom:
+                  secretKeyRef:
+                    name: octo-secret
+                    key: LIDARR_API_KEY
+              # No Last.fm API key: radio and its stations stay off, search is unaffected.
+              LastFm__EnableRadio: "false"
+              LastFm__EnablePersonalizedStations: "false"
+              LastFm__EnableDiscoveryStations: "false"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 8080
+                  initialDelaySeconds: 20
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              runAsUser: 1000
+              runAsGroup: 1000
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+          # Serves stream previews and YouTube downloads; Octo waits for it on its own.
+          shim:
+            image:
+              repository: ghcr.io/winters27/octo-yt-dlp-shim
+              tag: 2026.11.15@sha256:1a7c445b50e3f7e30306026288f193bee93e3431de85f197e21077696bc695e1
+            env:
+              SHIM_THREADS: "128"
+              MAX_CONCURRENT_YTDLP: "5"
+              DOWNLOAD_ROOT: /media/music
+              YTDLP_PATH: /opt/ytdlp/yt-dlp
+              META_DB_PATH: /var/lib/ytshim/meta.db
+              # yt-dlp caches under $HOME/.cache; /root is not writable for uid 1000
+              HOME: /tmp
+            probes:
+              liveness: &shimProbes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 8080
+                  initialDelaySeconds: 15
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *shimProbes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              runAsUser: 1000
+              runAsGroup: 1000
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 128Mi
+              limits:
+                memory: 1Gi
+          # Reads each song once for transition profiles and Sounds-alike radio.
+          sonic:
+            image:
+              repository: ghcr.io/winters27/octo-sonic
+              tag: 2026.11.15@sha256:4dbc9c8003ac569773c7e2e0b397f7ce2e731ad32d24322493e808b815a0cdd5
+            env:
+              MUSIC_ROOT: /media/music
+              ANALYSE_CONCURRENCY: "1"
+              SONIC_ENABLED: "true"
+            probes:
+              liveness: &sonicProbes
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: 8080
+                  initialDelaySeconds: 15
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness: *sonicProbes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              runAsUser: 65534
+              runAsGroup: 65534
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 256Mi
+              limits:
+                memory: 2Gi
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        ports:
+          http:
+            port: 8080
+    route:
+      app:
+        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+        advancedMounts:
+          octo:
+            app:
+              - path: /app/config
+      media:
+        type: nfs
+        server: nas.internal
+        path: /mnt/world/media
+        advancedMounts:
+          octo:
+            app:
+              - path: /media
+            shim:
+              - path: /media
+            sonic:
+              - path: /media
+                readOnly: true
+      shim-tmp:
+        type: emptyDir
+        sizeLimit: 3Gi
+        advancedMounts:
+          octo:
+            shim:
+              - path: /tmp
+      shim-meta:
+        type: emptyDir
+        sizeLimit: 1Gi
+        advancedMounts:
+          octo:
+            shim:
+              - path: /var/lib/ytshim
+      shim-bin:
+        type: emptyDir
+        sizeLimit: 256Mi
+        advancedMounts:
+          octo:
+            shim:
+              - path: /opt/ytdlp
+      sonic-tmp:
+        type: emptyDir
+        sizeLimit: 2Gi
+        advancedMounts:
+          octo:
+            sonic:
+              - path: /tmp
