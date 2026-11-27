@@ -14,27 +14,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          init-config:
-            image:
-              repository: docker.io/library/busybox
-              tag: 1.37@sha256:a7dbc319b1438115a207e11930dc4bb3e643dcb3ec0bdd694bb36cd8fad289ec
-            command: ["sh", "-c"]
-            args:
-              - >-
-                mkdir -p /config/config /config/storage &&
-                cp -f /seed/config.json /config/config/config.json &&
-                chown -R 1000:1000 /config
-            securityContext:
-              runAsUser: 0
-              runAsGroup: 0
-              runAsNonRoot: false
-              allowPrivilegeEscalation: false
-              capabilities:
-                add: ["CHOWN"]
-                drop: ["ALL"]
-            resources:
-              requests: { cpu: 5m, memory: 8Mi }
-              limits: { memory: 16Mi }
           predeploy:
             image:
               repository: ghcr.io/toeverything/affine
@@ -44,8 +23,10 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: affine-secret
-            env:
-              REDIS_SERVER_HOST: 127.0.0.1
+            env: &env
+              REDIS_SERVER_HOST: dragonfly-cluster.storage.svc.cluster.local
+              REDIS_SERVER_PORT: "6379"
+              REDIS_SERVER_DATABASE: "7"
               AFFINE_INDEXER_ENABLED: "false"
             securityContext:
               allowPrivilegeEscalation: false
@@ -59,11 +40,7 @@ spec:
               repository: ghcr.io/toeverything/affine
               tag: 0.27.4@sha256:b649f5ce2384ffdf13c23bccf81d759e15973d59d0b0058af65d895a84373099
             envFrom: *envFrom
-            env:
-              REDIS_SERVER_HOST: 127.0.0.1
-              AFFINE_INDEXER_ENABLED: "false"
-              AFFINE_SERVER_HTTPS: "true"
-              AFFINE_BACKEND_RUNTIME_CONFIG_PATH: /root/.affine/config/config.json
+            env: *env
             probes:
               liveness: &probes
                 enabled: true
@@ -79,25 +56,6 @@ spec:
             resources:
               requests: { cpu: 100m, memory: 1Gi }
               limits: { memory: 4Gi }
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
-          redis:
-            image:
-              repository: docker.io/library/redis
-              tag: 7.4-alpine@sha256:7f7d30b7fdd09467bac58198a1f166dd69789d348d4fe859cccb20e0cf287fbe
-            args: ["--save", "", "--appendonly", "no"]
-            probes:
-              liveness: &redisProbes
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command: ["redis-cli", "ping"]
-              readiness: *redisProbes
-            resources:
-              requests: { cpu: 10m, memory: 32Mi }
-              limits: { memory: 256Mi }
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
@@ -128,62 +86,8 @@ spec:
     persistence:
       config:
         existingClaim: "{{ .Release.Name }}"
-        advancedMounts:
-          affine:
-            init-config:
-              - path: /config
-            app:
-              - path: /root/.affine
-            predeploy:
-              - path: /root/.affine
-      config-seed:
-        type: configMap
-        identifier: affine-config
-        advancedMounts:
-          affine:
-            init-config:
-              - path: /seed
-                readOnly: true
+        globalMounts:
+          - path: /root/.affine
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
-    configMaps:
-      affine-config:
-        data:
-          config.json: |
-            {
-              "$schema": "https://github.com/toeverything/affine/releases/download/v0.27.4/config.schema.json",
-              "server": {
-                "name": "AFFiNE",
-                "externalUrl": "https://affine.goyangi.io"
-              },
-              "copilot": {
-                "enabled": false,
-                "byok": {
-                  "enabled": false
-                }
-              },
-              "storages": {
-                "avatar.storage": {
-                  "provider": "fs",
-                  "bucket": "avatars",
-                  "config": {
-                    "path": "/root/.affine/storage"
-                  }
-                },
-                "blob.storage": {
-                  "provider": "fs",
-                  "bucket": "blobs",
-                  "config": {
-                    "path": "/root/.affine/storage"
-                  }
-                },
-                "copilot.storage": {
-                  "provider": "fs",
-                  "bucket": "copilot",
-                  "config": {
-                    "path": "/root/.affine/storage"
-                  }
-                }
-              }
-            }
