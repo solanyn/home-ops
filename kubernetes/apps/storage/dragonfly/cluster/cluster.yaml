@@ -17,6 +17,10 @@ spec:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
     - --cluster_mode=emulated
+    # BullMQ (AFFiNE, and any other Node queue) reads keys it does not pass as
+    # KEYS, which Dragonfly refuses by default. Allowing undeclared keys restores
+    # Redis semantics at the cost of serialising EVAL calls.
+    - --default_lua_flags=allow-undeclared-keys
   resources:
     requests:
       cpu: 10m
