@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: mirror.gcr.io/library/couchdb
-              tag: 3.5.1@sha256:ccea1e8035bf7afd68336e24056a1ca9c1c46d7abe42da686322c0ac7218e5c2
+              tag: 3.5.3@sha256:0ba6b4b8dd823232185fa2c7de04634b925be62f97c9b7cbece7dd9119470e17
             env:
               TZ: Australia/Sydney
               COUCHDB_USER:
