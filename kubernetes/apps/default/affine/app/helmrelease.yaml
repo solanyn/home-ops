@@ -102,6 +102,12 @@ spec:
               - path: *configPath
                 subPath: config.json
                 readOnly: true
+      app-src:
+        type: emptyDir
+        advancedMounts:
+          affine:
+            app:
+              - path: /app/src
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
