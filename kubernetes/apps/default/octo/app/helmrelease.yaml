@@ -10,6 +10,8 @@ spec:
   interval: 1h
   values:
     controllers:
+      # Octo, the shim and octo-sonic all bind :8080, so they cannot share a pod.
+      # Each sidecar is its own controller and Octo reaches it by service name.
       octo:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -27,8 +29,8 @@ spec:
               Subsonic__DownloadSource: Soulseek
               Subsonic__EnableSearchDiscovery: "true"
               Library__DownloadPath: /media/music
-              YouTube__ShimUrl: http://127.0.0.1:8080
-              RadioSources__SonicUrl: http://127.0.0.1:8080
+              YouTube__ShimUrl: http://octo-shim:8080
+              RadioSources__SonicUrl: http://octo-sonic:8080
               # slskd signs in with its compiled-in defaults; the API key path is unused here.
               Soulseek__BaseUrl: http://slskd.default.svc.cluster.local
               Soulseek__Username: slskd
@@ -73,8 +75,11 @@ spec:
                 memory: 256Mi
               limits:
                 memory: 1Gi
-          # Serves stream previews and YouTube downloads; Octo waits for it on its own.
-          shim:
+      shim:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
             image:
               repository: ghcr.io/winters27/octo-yt-dlp-shim
               tag: 2026.11.15@sha256:1a7c445b50e3f7e30306026288f193bee93e3431de85f197e21077696bc695e1
@@ -110,8 +115,11 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 1Gi
-          # Reads each song once for transition profiles and Sounds-alike radio.
-          sonic:
+      sonic:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
             image:
               repository: ghcr.io/winters27/octo-sonic
               tag: 2026.11.15@sha256:4dbc9c8003ac569773c7e2e0b397f7ce2e731ad32d24322493e808b815a0cdd5
@@ -150,19 +158,39 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
+        controller: octo
+        ports:
+          http:
+            port: 8080
+      shim:
+        controller: shim
+        ports:
+          http:
+            port: 8080
+      sonic:
+        controller: sonic
         ports:
           http:
             port: 8080
     route:
       app:
-        hostnames: ["{{ .Release.Name }}.goyangi.io"]
+        hostnames: ["octo.goyangi.io"]
         parentRefs:
           - name: envoy-internal
             namespace: network
             sectionName: https
+        # Three services exist, so the backend is named explicitly.
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /
     persistence:
       config:
-        existingClaim: "{{ .Release.Name }}"
+        existingClaim: octo
         advancedMounts:
           octo:
             app:
@@ -175,36 +203,38 @@ spec:
           octo:
             app:
               - path: /media
-            shim:
+          shim:
+            app:
               - path: /media
-            sonic:
+          sonic:
+            app:
               - path: /media
                 readOnly: true
       shim-tmp:
         type: emptyDir
         sizeLimit: 3Gi
         advancedMounts:
-          octo:
-            shim:
+          shim:
+            app:
               - path: /tmp
       shim-meta:
         type: emptyDir
         sizeLimit: 1Gi
         advancedMounts:
-          octo:
-            shim:
+          shim:
+            app:
               - path: /var/lib/ytshim
       shim-bin:
         type: emptyDir
         sizeLimit: 256Mi
         advancedMounts:
-          octo:
-            shim:
+          shim:
+            app:
               - path: /opt/ytdlp
       sonic-tmp:
         type: emptyDir
         sizeLimit: 2Gi
         advancedMounts:
-          octo:
-            sonic:
+          sonic:
+            app:
               - path: /tmp
