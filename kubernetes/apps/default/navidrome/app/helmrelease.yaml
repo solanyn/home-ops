@@ -2,43 +2,50 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: aurral
+  name: navidrome
 spec:
   chartRef:
     kind: OCIRepository
-    name: aurral
+    name: navidrome
   interval: 1h
   values:
     controllers:
-      aurral:
+      navidrome:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
-              repository: ghcr.io/lklynet/aurral
-              tag: 3.1.0@sha256:8c39d4ec9c484b4577cb1e8503a51f45d29b68100bdd391f274dd8f786bf0b42
+              repository: docker.io/deluan/navidrome
+              tag: 0.64.2@sha256:38dc2727bfcfd5ede290f8ada114fc90368146f265ae4701ddddbcbe2a44ee52
             env:
-              PUID: "1000"
-              PGID: "1000"
-              PORT: &port 3001
-              AURRAL_DATA_DIR: /config
-              DOWNLOAD_FOLDER: /media/downloads/aurral
-
-              # aurral's weekly-flow playlists default to /app/downloads, which is read-only
-              FILE_BROWSE_ROOTS: /media/music,/media/downloads,/config
               TZ: Australia/Sydney
+              ND_LOGLEVEL: info
+              ND_PORT: &port 4533
+              ND_MUSICFOLDER: /media/music
+              ND_DATAFOLDER: /data
+              ND_SCANSCHEDULE: 1h
+              ND_SESSIONTIMEOUT: 24h
+              # Envoy terminates TLS in front of this service.
+              ND_REVERSEPROXYWHITELIST: 10.0.0.0/8,192.168.0.0/16
+              # Metadata agents only. There is no Last.fm API key, so that agent stays off.
+              ND_ENABLEEXTERNALSERVICES: "true"
+              ND_LASTFM_ENABLED: "false"
+              # Scrobbles go to Koito, which speaks the ListenBrainz API. Each user
+              # pastes their Koito token into their own profile.
+              ND_LISTENBRAINZ_ENABLED: "true"
+              ND_LISTENBRAINZ_BASEURL: http://koito.default.svc.cluster.local:4110/1
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /api/health
+                    path: /ping
                     port: *port
                   initialDelaySeconds: 15
-                  periodSeconds: 15
-                  timeoutSeconds: 3
+                  periodSeconds: 30
+                  timeoutSeconds: 5
                   failureThreshold: 5
               readiness: *probes
             securityContext:
@@ -47,9 +54,10 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
+                cpu: 10m
                 memory: 256Mi
               limits:
-                memory: 2Gi
+                memory: 1Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -71,14 +79,14 @@ spec:
             namespace: network
             sectionName: https
     persistence:
-      config:
+      data:
         existingClaim: "{{ .Release.Name }}"
-      tmp:
-        type: emptyDir
-        sizeLimit: 1Gi
+        globalMounts:
+          - path: /data
       media:
         type: nfs
         server: nas.internal
         path: /mnt/world/media
         globalMounts:
           - path: /media
+            readOnly: true
