@@ -1,0 +1,159 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: couchdb
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+  interval: 1h
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      couchdb:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: mirror.gcr.io/library/couchdb
+              tag: 3.5.1@sha256:ccea1e8035bf7afd68336e24056a1ca9c1c46d7abe42da686322c0ac7218e5c2
+            env:
+              TZ: Australia/Sydney
+              COUCHDB_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: couchdb-secret
+                    key: COUCHDB_ADMIN_USER
+              COUCHDB_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: couchdb-secret
+                    key: COUCHDB_ADMIN_PASSWORD
+              COUCHDB_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: couchdb-secret
+                    key: COUCHDB_SECRET
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /_up
+                    port: &port 5984
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 6
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /_up
+                    port: *port
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /_up
+                    port: *port
+                  periodSeconds: 5
+                  timeoutSeconds: 5
+                  failureThreshold: 60
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: false
+            resources:
+              requests:
+                cpu: 50m
+                memory: 256Mi
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 5984
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 5984
+        runAsNonRoot: true
+        runAsUser: 5984
+        seccompProfile: { type: RuntimeDefault }
+    configMaps:
+      config:
+        data:
+          10-livesync.ini: |-
+            [couchdb]
+            single_node = true
+            uuid = e6488a867cb94e309579513e1e055f2b
+            max_document_size = 50000000
+
+            [chttpd]
+            bind_address = 0.0.0.0
+            port = 5984
+            require_valid_user = true
+            enable_cors = true
+            max_http_request_size = 4294967296
+
+            [chttpd_auth]
+            require_valid_user = true
+
+            [httpd]
+            bind_address = 0.0.0.0
+            port = 5984
+            enable_cors = true
+            WWW-Authenticate = Basic realm="administrator"
+
+            [cors]
+            credentials = true
+            origins = app://obsidian.md, capacitor://localhost, http://localhost
+            headers = accept, authorization, content-type, origin, referer, x-csrf-token
+    persistence:
+      data:
+        existingClaim: "{{ .Release.Name }}"
+        globalMounts:
+          - path: /opt/couchdb/data
+      config:
+        type: configMap
+        identifier: config
+        globalMounts:
+          - path: /opt/couchdb/etc/local.d/10-livesync.ini
+            subPath: 10-livesync.ini
+            readOnly: true
+    route:
+      app:
+        annotations:
+          gatus.home-operations.com/enabled: "true"
+          gatus.home-operations.com/endpoint: |-
+            path: /_up
+            conditions: ["[STATUS] == 200"]
+        hostnames:
+          - "{{ .Release.Name }}.goyangi.io"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: *port
+            timeouts:
+              request: 0s
+    service:
+      app:
+        ports:
+          http:
+            port: *port
