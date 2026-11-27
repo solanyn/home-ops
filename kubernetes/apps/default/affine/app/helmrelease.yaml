@@ -28,6 +28,7 @@ spec:
               REDIS_SERVER_PORT: "6379"
               REDIS_SERVER_DATABASE: "7"
               AFFINE_INDEXER_ENABLED: "false"
+              AFFINE_BACKEND_RUNTIME_CONFIG_PATH: &configPath /app/config.json
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
@@ -88,6 +89,34 @@ spec:
         existingClaim: "{{ .Release.Name }}"
         globalMounts:
           - path: /home/node/.affine
+      runtime-config:
+        type: configMap
+        identifier: affine-runtime-config
+        advancedMounts:
+          affine:
+            app:
+              - path: *configPath
+                subPath: config.json
+                readOnly: true
+            predeploy:
+              - path: *configPath
+                subPath: config.json
+                readOnly: true
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
+    configMaps:
+      affine-runtime-config:
+        data:
+          config.json: |
+            {
+              "$schema": "https://github.com/toeverything/affine/releases/latest/download/config.schema.json",
+              "copilot": {
+                "enabled": true,
+                "byok": {
+                  "enabled": true,
+                  "allowCustomEndpoint": true,
+                  "allowPrivateEndpoint": true
+                }
+              }
+            }
