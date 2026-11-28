@@ -18,7 +18,7 @@ spec:
           app:
             image:
               repository: ghcr.io/blizzhacker/romarr
-              tag: 1.13.2
+              tag: 1.16.0
             envFrom:
               - secretRef:
                   name: romarr-secret
